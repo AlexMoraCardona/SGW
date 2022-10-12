@@ -1,0 +1,14 @@
+<div class="container">
+   <div class="d-flex">
+      <div class="container col-2" >
+      </div> 
+      <div margin-bottom: 10em; class="container col-5">
+         <h2> <%= t('.title')%></h2>
+      </div> 
+      <div class="container col-3">
+         <%= link_to t('.login'), new_session_path unless Current.user %>
+         <%= link_to t('.register'), new_user_path unless Current.user %>
+         <%= link_to t('.logout'), session_path(Current.user), data: { turbo_method: :delete, turbo_confirm: t('common.confirm')} if Current.user %>         
+      </div> 
+   </div> 
+</div> 

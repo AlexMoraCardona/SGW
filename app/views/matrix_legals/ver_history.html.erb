@@ -1,0 +1,26 @@
+
+<div class="container col-11 card p-5">
+    <% if @history_matrix_legals.present? %>
+        <table class="table table-hover"> 
+            <thead>
+                <tr>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Factores no cumplidos</th>
+                    <th scope="col">Factores pendientes</th>
+                    <th scope="col">Factores cumplidos</th>
+                    <th scope="col">Ver matriz</th>
+                </tr>
+            </thead>
+
+            <% @history_matrix_legals.each do |history_matrix_legal| %> 
+                <tr>
+                    <td><%= history_matrix_legal.created_at %></td>
+                    <td><%= history_matrix_legal.meets_earring %></td>
+                    <td><%= history_matrix_legal.meets_partial %></td>
+                    <td><%= history_matrix_legal.meets_compliment %></td>
+                    <td><%= link_to "Ver", show_history_matrix_legals_path(history_matrix_legal.id), class: 'btn btn-sm btn-success' %> </td>
+                </tr>
+            <% end %>
+        </table>  
+    <% end %>
+</div>         

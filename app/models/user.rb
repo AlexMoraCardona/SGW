@@ -1,5 +1,8 @@
 class User < ApplicationRecord
     has_secure_password
+    has_many :meeting_minutes
+    has_one_attached :avatar
+    has_one_attached :firm
     
     #validates :document, name, username, email, password_digest, state,  presence: true #Validar la presencia
     validates :document,  presence: true #Validar la presencia

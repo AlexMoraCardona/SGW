@@ -1,0 +1,3 @@
+class EconomicActivityCode < ApplicationRecord
+    
+end

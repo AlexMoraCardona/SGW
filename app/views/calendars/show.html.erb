@@ -1,0 +1,93 @@
+<%= stylesheet_link_tag "calendar", "data-turbo-track": "reload" %>
+<div class="container">
+    <h2 class="display-5">Calendario   <%= @adm_calendar.year %></h2>
+</div> 
+<hr>
+<% m = 1 %> 
+<div class="container col-12 card p-5">
+    <div class="row g-7">
+        <div class="col-sm-2" >
+            <div style="background-color: #d41717;">Día festivo</div>
+        </div>
+        <div class="col-sm-1" >
+            <div></div>
+        </div>
+        <div class="col-sm-2" >
+            <div style="background-color: #d4d117;">Día con actividad</div>
+        </div>
+        <div class="col-sm-1" >
+            <div></div>
+        </div>
+        <div class="col-sm-2" >
+            <div style="background-color: #9c9b97;">Día actual</div>
+        </div>
+        <div class="col-sm-1" >
+            <div></div>
+        </div>
+        <div class="col-sm-2" >
+            <div style="background-color: #0fa2f7;">Día sin actividad</div>
+        </div>
+        <div class="col-sm-1" >
+            <div></div>
+        </div>
+    </div>      
+    <br>
+
+    <div class="row g-3">
+        
+            <% while m < 13 %> 
+                <div class="col-sm-4">
+                    <div style="width: 300px;">
+                        <% if m == 1 then %><h1>Enero</h1><% end %>
+                        <% if m == 2 then %><h1>Febrero</h1><% end %>
+                        <% if m == 3 then %><h1>Marzo</h1><% end %>
+                        <% if m == 4 then %><h1>Abril</h1><% end %>
+                        <% if m == 5 then %><h1>Mayo</h1><% end %>
+                        <% if m == 6 then %><h1>Junio</h1><% end %>
+                        <% if m == 7 then %><h1>Julio</h1><% end %>
+                        <% if m == 8 then %><h1>Agosto</h1><% end %>
+                        <% if m == 9 then %><h1>Septiembre</h1><% end %>
+                        <% if m == 10 then %><h1>Octubre</h1><% end %>
+                        <% if m == 11 then %><h1>Noviembre</h1><% end %>
+                        <% if m == 12 then %><h1>Diciembre</h1><% end %>
+     
+                        <ol>
+                            <li class="day-name">Lu</li>
+                            <li class="day-name">Ma</li>
+                            <li class="day-name">Mi</li>
+                            <li class="day-name">Ju</li>
+                            <li class="day-name">Vi</li>
+                            <li class="day-name">Sá</li>
+                            <li class="day-name">Do</li>
+        
+                            <% @calendars.where("month = ?", m).each do |calendar| %>  
+                                <% if calendar.day == 1 then %>
+                                    <% if calendar.festive == 1 then %>
+                                        <li style="grid-column-start: <%= calendar.diasem(calendar) %>;"><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-danger'  %></li>
+                                    <% elsif calendar.hoy(calendar) == 1 %>
+                                        <li style="grid-column-start: <%= calendar.diasem(calendar) %>;"><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-secondary'  %></li>
+                                    <% elsif calendar.event(calendar) == 1 %>
+                                        <li style="grid-column-start: <%= calendar.diasem(calendar) %>;"><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-warning'  %></li>
+                                    <% else %>
+                                        <li style="grid-column-start: <%= calendar.diasem(calendar) %>;"><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-primary'  %></li>
+                                    <% end %>
+                                <% else %>
+                                    <% if calendar.festive == 1 then %>
+                                        <li><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-danger'  %></li>
+                                    <% elsif calendar.hoy(calendar) == 1 %>
+                                        <li><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-secondary'  %></li>
+                                    <% elsif calendar.event(calendar) == 1 %>
+                                        <li><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-warning'  %></li>
+                                    <% else %>
+                                        <li><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-primary'  %></li>
+                                    <% end %>
+                                <% end %>
+                            <% end %>
+                        </ol>
+                    </div>
+                </div>
+                <% m = m + 1 %> 
+            <% end %>
+        
+    </div>      
+</div>

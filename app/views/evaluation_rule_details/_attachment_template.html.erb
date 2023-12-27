@@ -1,0 +1,22 @@
+<% if template.files.attached? %>
+    <div data-controller="previews" >
+     <% template.files.each do |file|%>
+        <br>
+        <% if file.image? %>
+            <div>
+                <%= image_tag file, data: {previews_target: "preview"}, class: "image" %>
+                <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+            </div>
+        <% elsif file.video? %>
+                <%= video_tag url_for(file), controls: "", width: "400px" %>          
+                <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+        <% elsif file.audio? %>
+            <%= audio_tag(url_for(file), controls: "") %>          
+            <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+        <% else %>
+            <%= link_to file.filename, url_for(file) %>          
+            <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+        <% end %>
+      <% end %>  
+    </div>
+<% end %>  

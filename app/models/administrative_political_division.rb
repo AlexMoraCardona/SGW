@@ -1,0 +1,2 @@
+class AdministrativePoliticalDivision < ApplicationRecord
+end

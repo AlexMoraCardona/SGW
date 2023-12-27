@@ -1,0 +1,63 @@
+<br>
+<div class="container col-11"> 
+        <div class="d-flex"> 
+            <div class="container">
+               <h2 class="display-5">Evaluaciones</h2>
+               <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, home_path %>
+            </div>
+            <div class="container">
+                <%= form_with href: "evaluation_rule_details/planificar/1", method: :get do |form| %>
+                    <h5 scope="col">Ver evaluación por ciclo:</h5>
+                    <%= form.number_field :evaluation_id, placeholder: 'Nro. Evaluation', onChange: 'this.form.requestSubmit()', value: params[:evaluation_id] %>
+                    
+                <% end %>     
+            </div>
+        </div>
+    
+    <% if params[:evaluation_id].present? %>
+            <%= render partial: 'header_evaluation_rule_detail'  %>  
+    
+        <hr>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Ciclo</th>
+                    <th scope="col">Item</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col"><%= t('.meets') %></th>
+                    <th scope="col">Puntaje</th>
+                    <th scope="col">Criterio</th> 
+                    <th scope="col"><%= t('common.edit') %></th> 
+                </tr>
+            </thead>
+            <tbody> 
+                <%= render partial: 'evaluation_rule_details', collection: @evaluation_rule_details  %>  
+            </tbody>      
+        </table>
+    <% else %>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Nro.Evaluación</th>
+                    <th scope="col"><%= t('.date_evaluation') %></th>
+                    <th scope="col"><%= t('.entity') %></th>
+                    <th scope="col"><%= t('.rule') %></th>
+                    <th scope="col"><%= t('common.show') %></th>
+                    <th scope="col"><%= t('common.see_history') %></th>
+                </tr>
+            </thead>
+            <% @evaluations.each do |evaluation| %>
+                <tr> 
+                    <td><%= evaluation.id %></td> 
+                    <td><%= evaluation.date_evaluation %></td> 
+                    <td><%= evaluation.entity.business_name %></td>
+                    <td><%= evaluation.rule.name %></td> 
+        
+                    <td><%= link_to t('common.show'), evaluation, class: 'btn btn-xs btn-primary' %></td>
+                    <td><%= link_to t('common.see_history'), ver_history_evaluations_path(evaluation), class: 'btn btn-xs btn-success' %></td>
+                </tr>   
+            <% end %>
+        </table>
+    <% end %>
+</div>
+

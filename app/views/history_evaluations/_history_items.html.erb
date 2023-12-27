@@ -1,0 +1,35 @@
+<br>
+<div class="d-flex">
+    <div class="container">
+        <h class="display-6">Items</h>
+    </div> 
+</div>
+<hr>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Ciclo:</th>
+            <th scope="col">Estandar:</th>
+            <th scope="col">Detalle estandar:</th>
+            <th scope="col">Puntaje máximo:</th>
+            <th scope="col">Item</th>
+            <th scope="col">Cumple</th>
+            <th scope="col">Puntaje</th>
+        </tr>
+    </thead> 
+    <tbody>
+        <% @history_items.each do |item| %> 
+            <tr>
+                <td><%= item.label_cycle(item.cycle) %></td>
+                <td><%= item.evaluation_rule_detail.standar_detail_item.standar_detail.standar.name %></td>
+                <td><%= item.evaluation_rule_detail.standar_detail_item.standar_detail.description %></td>
+                <td><%= item.evaluation_rule_detail.standar_detail_item.maximun_value %></td>
+                <td><%= item.description %></td>
+                <td><%= item.label_meets %></td>
+                <td><%= item.score %></td>
+            </tr>
+        <% end %>     
+    </tbody>      
+</table>
+<br>

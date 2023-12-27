@@ -1,0 +1,91 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @matrix_action_item do |form| %> 
+        <% @matrix_action_item.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+   
+        
+        <div class="row g-3">
+            <div class="col-sm-3">
+
+                <%= form.label :year,  style: "display: block" %>
+                <%= form.select(:year, [['2022', 2022], ['2023', 2023], ['2024', 2024]]) %>
+
+            </div>        
+            <div class="col-sm-4">
+                <%= form.label :clasification_type_corrective,  style: "display: block" %>
+                <%= form.text_field :clasification_type_corrective,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-4">
+                <%= form.label :campus,  style: "display: block" %>
+                <%= form.collection_select :campus, @locations.order(id: :asc), :id, :name_locate, { prompt: '--Seleccionar Centro de Trabajo--' },
+                { class: 'form-control input-sm select2' } %>
+        </div>        
+        </div>   
+
+        <div class="row g-3">
+            <div class="col-sm-3">
+                <%= form.label :date_action_conformity,  style: "display: block" %>
+                <%= form.date_field :date_action_conformity,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-3">
+                <%= form.label :origin_action,  style: "display: block" %>
+                <%= form.select(:origin_action, [['Accidentes o Incidentes', 0], ['Auditoría En proceso', 1], ['Inspecciones', 2]]) %>
+            </div>        
+            <div class="col-sm-5">
+                <%= form.label :area,  style: "display: block" %>
+                <%= form.text_field :area,  class: "form-control" %>
+            </div>        
+        </div>   
+
+        <div class="row g-2">
+            <div class="col-sm-8">
+                <%= form.label :description_action,  style: "display: block" %>
+                <%= form.text_field :description_action,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-3">
+                <%= form.label :type_corrective,  style: "display: block" %>
+                <%= form.select(:type_corrective, [['Acción Preventiva', 0], ['Acción de Mejora', 1], ['Acción Correctiva', 2]]) %>
+            </div>        
+        </div>   
+
+        <div class="row g-3">
+            <div class="col-sm-3">
+                <%= form.label :action_implement,  style: "display: block" %>
+                <%= form.select(:action_implement, [['Inmediata', 0], ['Corto Plazo', 1], ['Mediano Plazo', 2], ['Largo Plazo', 3]]) %>
+            </div>        
+            <div class="col-sm-5">
+                <%= form.label :responsible,  style: "display: block" %>
+                <%= form.text_field :responsible,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-3">
+                <%= form.label :commitment_date,  style: "display: block" %>
+                <%= form.date_field :commitment_date,  class: "form-control" %>
+            </div>        
+        </div>  
+
+        <div class="row g-3">
+            <div class="col-sm-3">
+                <%= form.label :closet_date,  style: "display: block" %>
+                <%= form.date_field :closet_date,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-5">
+                <%= form.label :took_actions,  style: "display: block" %>
+                <%= form.select(:took_actions, [['No', 0], ['Si', 1]]) %>
+            </div>        
+            <div class="col-sm-3">
+                <%= form.label :state_actions,  style: "display: block" %>
+                <%= form.select(:state_actions, [['Abierto', 0], ['En proceso', 1], ['Cerrado', 2]]) %>
+            </div>        
+        </div> 
+
+
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    <% end %>
+</div>        
+<br>

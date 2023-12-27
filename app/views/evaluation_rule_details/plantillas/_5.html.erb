@@ -1,0 +1,102 @@
+<div class="container col-11 card p-5"> 
+    <%= render 'encabezado' %>
+    <div>
+        <br>
+    </div>
+
+    <div class="row">
+        <div class="col-11">
+            <div class="row">
+                <h6>GERENTE:</h6>
+            </div>
+        </div>
+    </div>
+    <hr>  
+    <div class="row">
+        <div class="col-11">
+            <div class="row">
+                <h6>Nombre:  <strong><%= @colaborador_ssst.name if @colaborador_ssst.present? %></strong></h6>
+                <h6>Cargo:  <strong><%= @colaborador_ssst.activity if @colaborador_ssst.present? %></strong></h6>
+            </div>
+        </div>
+    </div>
+    <hr>  
+    <div class="row">
+        <div class="col-11">
+            <div class="row">
+                <h6><strong>Responsabilidades en Seguridad y Salud en el Trabajo</strong></h6>
+            </div>
+        </div>
+    </div>
+
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+               * Cumplir los requisitos legales y contractuales en Seguridad y Salud en el Trabajo. <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+               * Elaboración, implementación y difusión de la Política y Objetivos de SST. <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+               * Participar de forma activa en las revisiones periódicas y en el establecimiento de los objetivos de SST. <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+               * Asegurar la disponibilidad de los recursos financieros, humanos, físicos, técnicos, tecnológicos y demás necesarios para el diseño, implementación, revisión, evaluación y mejora de las medidas de prevención y control, para la gestión eficaz de los peligros y riesgos en el lugar de trabajo y para que el responsable del SGSST y el COPASST, puedan cumplir satisfactoriamente con sus funciones. <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+               * Participar en auditorías internas al Sistema de Gestión de Seguridad y Salud en el Trabajo.  <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+               * Solicitar que se presenten informes sobre desempeño del Sistema Gestión de Seguridad y Salud en el Trabajo para su revisión. <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+               * Asignar, comunicar y verificar el cumplimiento de las responsabilidades del SG-SST a todos los niveles de la organización, incluyendo grupos de interés como: COPASST, Comité de Convivencia y Comité de emergencias. <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+               * Establecer mecanismos para la rendición de cuentas al interior de la organización. <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+               * Garantizar la capacitación de los colaboradores y contratistas en los aspectos de SST de acuerdo a las características de la organización. <br>
+            </td>
+        </tr>
+
+        <tr><td><br></td></tr>                
+    </table>
+    <% @firms.each do |firm| %>
+        <% if firm.legal_representative == 1 %>
+            <div class="row"> 
+                <div class="col-11">
+                    <div>&nbsp;</div>
+                    <% if firm.authorize_firm == 1 %>
+                       <% if firm.user.firm.attached? %>
+                          <% if firm.user.firm.image? %> 
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= image_tag firm.user.firm, class: "firma" %>
+                               <p>Firma Representante Legal: ________________________________</p>
+                          <% end %>
+                        <% end %>
+                    <% else %>    
+                        <p>Firma Representante Legal: ________________________________</p>
+                    <% end %>     
+                </div>
+            </div>
+            <br>
+        <% end %>    
+    <% end %>
+</div>
+<br>

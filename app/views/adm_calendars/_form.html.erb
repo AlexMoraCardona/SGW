@@ -1,0 +1,32 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @adm_calendar do |form| %>
+        <% @adm_calendar.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>   
+        
+        <div class="row g-3">
+            <div class="col-sm-3">
+                <%= form.label :year, style: "display: block" %>
+                <%= form.select(:year, [[2023, 2023], [2024, 2024], [2025, 2025], [2026, 2026], [2027, 2027], [2028, 2028], [2029, 2029], [2030, 2030]]) %>
+            </div> 
+            <div class="col-sm-4">
+                <%= form.label :bisiesto,  style: "display: block" %> 
+                <%= form.radio_button :bisiesto, 0 %>
+                <label for="no">No</label>
+                <%= form.radio_button :bisiesto, 1 %>
+                <label for="si">Si</label>
+            </div>        
+            <div class="col-sm-4">    
+                <%= form.label :day_initial, style: "display: block" %>
+                <%= form.select(:day_initial, [['lunes', 1], ['martes', 2], ['miercoles', 3], ['jueves', 4], ['viernes', 5], ['sabado', 6], ['domingo', 7]]) %>
+            </div>                   
+        </div>   
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, adm_calendars_path %>
+    <% end %>
+</div> 
+<br>

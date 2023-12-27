@@ -1,0 +1,232 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @entity do |form| %>
+        <% @entity.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>
+
+        <div class="row g-3">
+            <div class="col-sm-3">
+                <%= form.label :email_entity,  style: "display: block" %>
+                <%= form.email_field :email_entity,  class: "form-control" %>
+            </div>
+            <div class="col-sm-3">
+                <%= form.label :kind_person,  style: "display: block" %>
+                <%= form.radio_button :kind_person, 0 %>
+                <label for="kind_person_natural"><%= t('common.natural') %></label>
+                <%= form.radio_button :kind_person, 1 %>
+                <label for="kind_person_juridica"><%= t('common.legal') %></label>
+            </div>
+            <div class="col-sm-6">
+            <%= form.label :tax_regime,  style: "display: block" %>
+            <%= form.radio_button :tax_regime, "Régimen Común" %>
+                <label for="regimen_comun"><%= t('common.comun') %></label>
+                <%= form.radio_button :tax_regime, "Régimen Simplificado" %>
+                <label for="regimen_simplificado"><%= t('common.simplificado') %></label>
+                <%= form.radio_button :tax_regime, "Régimen Especial" %>
+                <label for="regimen_especial"><%= t('common.especial') %></label>
+            </div>
+        </div>        
+    
+        <div class="form-group">    
+            <%= form.label :business_name,  style: "display: block" %>
+             <%= form.text_field :business_name,  class: "form-control" %>
+        </div>        
+
+       
+        <div class="row g-3">
+            <div class="col-sm-6">
+                <%= form.label :first_name,  style: "display: block" %>
+                <%= form.text_field :first_name,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-6">
+                <%= form.label :second_name,  style: "display: block" %>
+                 <%= form.text_field :second_name,  class: "form-control" %>
+            </div>        
+        </div>        
+
+        <div class="row g-3">
+            <div class="col-sm-6">
+                <%= form.label :surname,  style: "display: block" %>
+                 <%= form.text_field :surname,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-6">
+                <%= form.label :second_surname,  style: "display: block" %>
+                <%= form.text_field :second_surname,  class: "form-control" %>
+            </div>        
+        </div>        
+
+        <div class="form-group" >    
+                <%= form.label :economic_activity,  style: "display: block" %>
+                <%= form.collection_select :economic_activity, EconomicActivityCode.all.order(id: :asc), :id,  :economic_activity_description, style: "width=50px" %>
+        </div>  
+
+
+
+        <div class="row g-3">
+            <div class="col-sm-4">
+                <%= form.label :identification_number,  style: "display: block" %>
+                <%= form.number_field :identification_number,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-2">
+                <%= form.label :verification_digit,  style: "display: block" %>
+                 <%= form.number_field :verification_digit,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-6">
+                <%= form.label :email_legal_representative,  style: "display: block" %>
+                <%= form.email_field :email_legal_representative,  class: "form-control" %>
+            </div>        
+        </div>        
+
+        <div class="row g-3">
+            <div class="col-sm-6">
+                <%= form.label :document_number_legal_representative,  style: "display: block" %>
+                <%= form.number_field :document_number_legal_representative,  class: "form-control" %>
+            </div>  
+            <div class="col-sm-6">
+                <%= form.label :document_type_legal_representative,  style: "display: block" %>
+                <%= form.collection_select :document_type_legal_representative, Document.all.order(id: :asc), :id, :document_type %>
+            </div>  
+        </div>        
+
+
+        <div class="row g-3">
+            <div class="col-sm-6">
+                <%= form.label :first_name_legal_representative,  style: "display: block" %>
+                 <%= form.text_field :first_name_legal_representative,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-6">
+                <%= form.label :second_name_legal_representative,  style: "display: block" %>
+                 <%= form.text_field :second_name_legal_representative,  class: "form-control" %>
+            </div>        
+        </div>        
+
+        <div class="row g-3">
+            <div class="col-sm-6">
+                <%= form.label :surname_legal_representative,  style: "display: block" %>
+                <%= form.text_field :surname_legal_representative,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-6">
+                <%= form.label :second_surname_legal_representative,  style: "display: block" %>
+                 <%= form.text_field :second_surname_legal_representative,  class: "form-control" %>
+            </div>        
+        </div>        
+
+
+        <div class="row g-3">
+            <div class="col-sm-6">
+                 <%= form.label :phone_number_entity,  style: "display: block" %>
+                 <%= form.number_field :phone_number_entity,  class: "form-control" %>
+            </div> 
+            <div class="col-sm-6">
+                <%= form.label :cell_entity,  style: "display: block" %>
+                 <%= form.number_field :cell_entity,  class: "form-control" %>
+            </div> 
+        </div>        
+
+
+        <div class="row g-3">
+            <div class="col-sm-6">
+                <%= form.label :entity_address,  style: "display: block" %>
+                 <%= form.text_field :entity_address,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-6">
+                <%= form.label :entity_zone,  style: "display: block" %>
+                <%= form.radio_button :entity_zone, "Rural" %>
+                <label for="entity_zone_rural"><%= t('common.rural') %></label>
+                <%= form.radio_button :entity_zone, "Urbana" %>
+                <label for="entity_zone_urbana"><%= t('common.urbana') %></label>
+            </div> 
+        </div>        
+
+        <div class="row g-2">
+            <div class="col-sm-8">
+                <%= form.label :entity_location_code,  style: "display: block" %>
+                <%= form.collection_select :entity_location_code, AdministrativePoliticalDivision.all.order(id: :asc), :town_center_code, :town_center_name %>
+            </div>  
+            <div class="col-sm-4">
+                <%= form.label :agricultural_unit,  style: "display: block" %>
+                <%= form.radio_button :agricultural_unit, 0 %>
+                <label for="no">No</label>&nbsp;&nbsp; 
+                <%= form.radio_button :agricultural_unit, 1 %>
+                <label for="si">Si</label>&nbsp;&nbsp;   
+            </div>  
+        </div>  
+
+
+        <div class="row g-3">
+            <div class="col-sm-6">
+                <%= form.label :entity_arl,  style: "display: block" %>
+                <%= form.collection_select :entity_arl, OccupationalRiskManager.all.order(id: :asc), :id, :name %>
+            </div>  
+            <div class="col-sm-6">
+                <%= form.label :license,  style: "display: block" %>
+                <%= form.text_field :license,  class: "form-control" %>
+           </div>        
+        </div>        
+   
+
+        <div class="row g-3">
+            <div class="col-sm-6">
+                <%= form.label :number_workers,  style: "display: block" %>
+                 <%= form.number_field :number_workers,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-6">
+                <%= form.label :risk_classification,  style: "display: block" %>
+                <%= form.collection_select :risk_classification, RiskLevel.all.order(id: :asc), :id, :name %>
+
+            </div>        
+        </div>  
+        <br>
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, entities_path %>
+
+    <% end %>
+</div>   
+<br>
+
+<div class="container col-11 card p-5">
+    <% if @locations.present? %>
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col"><%= t('.code_locate') %></th>
+                    <th scope="col"><%= t('.name_locate') %></th>
+                    <th scope="col">Editar</th>
+                </tr>
+            </thead> 
+            <tbody>
+                <% @locations.each do |location| %>
+                    <tr>
+                        <td><%= location.code_locate %></td>
+                        <td><%= location.name_locate %></td>
+                        <td><%= link_to t('common.edit'), edit_location_path(location), class: 'btn btn-xs btn-primary'  %></td>
+                    </tr>
+                <% end %>           
+            </tbody>      
+        </table>  
+    <% end %>  
+    <br> 
+</div>  
+<br>
+
+
+
+<div class="container col-11 card p-5">
+    <%= form_for @entity do |f| %>
+       <div class="row">
+          <div class="form-group">
+            <h5><%= f.label :"Adjuntar_Logo:", style: "display: block" %></h5>
+            <%= f.file_field :logo %>
+
+            <%= f.submit 'Subir Logo', class: 'btn btn-primary' %>
+          </div> 
+        </div>
+    <% end %>
+    <br> 
+</div>  
+<br>
+
+

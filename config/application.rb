@@ -38,5 +38,7 @@ module SGW
 
     # Don't generate system test files.
     config.generators.system_tests = nil 
+
+    config.active_storage.replace_on_assign_to_many = false
   end
 end

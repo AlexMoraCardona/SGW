@@ -1,0 +1,64 @@
+<div class="container col-11 card p-5">
+    <br>
+
+
+    <%= form_with model: @activity_user do |form| %>
+        <% @activity_user.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %> 
+        <div class="row g-2">
+            <div class="col-sm-8">
+                <strong>Usuario:</strong>
+                <%= @activity_user.user.name %> 
+            </div>  
+            <div class="col-sm-3">
+                <strong>Cargo:</strong>
+                <%= @activity_user.user.activity %> 
+            </div>  
+        </div>  
+
+        <br> 
+        <div class="row g-2">
+            <div class="col-sm-5">
+                <%= form.label :mandatory,  style: "display: block" %> 
+                <%= form.radio_button :mandatory, 0 %>
+                <label for="no_aplica">No</label>
+                <%= form.radio_button :mandatory, 1 %>
+                <label for="si_aplica">Si</label>
+            </div>        
+
+            <div class="col-sm-5">
+                <%= form.label :attended,  style: "display: block" %> 
+                <%= form.radio_button :attended, 0 %>
+                <label for="no_aplica">No</label>
+                <%= form.radio_button :attended, 1 %>
+                <label for="si_aplica">Si</label>
+            </div>        
+        </div>  
+        <br> 
+        <div class="row g-2">
+            <div class="col-sm-5">
+                <%= form.label :confirm,  style: "display: block" %> 
+                <%= form.radio_button :confirm, 0 %>
+                <label for="no_aplica">No</label>
+                <%= form.radio_button :confirm, 1 %>
+                <label for="si_aplica">Si</label>
+            </div>        
+
+            <div class="col-sm-5">
+                <%= form.label :date_confirm, style: "display: block" %>
+                <%= form.text_area :date_confirm,  class: "form-control" %>
+            </div>        
+        </div>  
+        <br> 
+
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    <% end %>
+</div> 
+<br>
+
+

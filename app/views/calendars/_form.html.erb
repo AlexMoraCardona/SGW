@@ -1,0 +1,20 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @calendar do |form| %>
+        <% @calendar.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %> 
+        <div class="col-sm-5">
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccionar si el día es festivo. ">Día festivo: <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+                <%= form.select(:festive, [['No', 0], ['Si', 1]]) %>
+        </div>        
+
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    <% end %>
+</div> 
+<br>
+

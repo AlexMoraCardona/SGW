@@ -1,0 +1,70 @@
+<div class="container col-11">
+    <br>
+
+    <%= form_with model: @user do |form| %>
+        <% @user.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+        <div class="form-group">    
+            <%= form.label :document, style: "display: block" %>
+            <%= form.text_field :document,  class: "form-control" %>
+        </div>
+        <div class="form-group">    
+            <%= form.label :name, style: "display: block" %>
+            <%= form.text_field :name,  class: "form-control" %>
+        </div>
+        <div class="form-group">    
+            <%= form.label :username, style: "display: block" %>
+            <%= form.text_field :username,  class: "form-control" %>
+        </div>
+        <div class="form-group">    
+            <%= form.label :email, style: "display: block" %>
+            <%= form.email_field :email,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+            <%= form.label :state,  style: "display: block" %>
+            <%= form.radio_button :state, 0 %>
+            <label for="Inactivo"><%= t('common.inactivo') %></label>
+            <%= form.radio_button :state, 1 %>
+            <label for="Activo"><%= t('common.activo') %></label>
+        </div>
+
+
+
+
+        <div class="form-group">    
+            <%= form.label :level, style: "display: block" %>
+            <%= form.number_field :level,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :entity,  style: "display: block" %>
+            <%= form.collection_select :entity, Entity.all.order(id: :asc), :id, :business_name %>
+        </div> 
+
+        <div class="form-group">    
+            <%= form.label :activity, style: "display: block" %>
+            <%= form.text_field :activity,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :avatar,  style: "display: block" %> 
+            <%= form.file_field :avatar,  class: "form-control", accept:"image/*", capture:"environment" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :firm,  style: "display: block" %> 
+            <%= form.file_field :firm,  class: "form-control", accept:"image/*", capture:"environment" %>
+        </div>
+        
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, users_path %>
+
+    <% end %>
+</div>        
+ 
+

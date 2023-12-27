@@ -1,0 +1,81 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @meeting_commitment do |form| %>
+        <% @meeting_commitment.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+
+        <div class="form-group">    
+            <%= form.label :number, style: "display: block" %>
+            <%= form.number_field :number,  class: "form-control", min:1 %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :commitment, style: "display: block" %>
+            <%= form.text_field :commitment,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :responsible, style: "display: block" %>
+            <%= form.text_field :responsible,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :date_commitment, style: "display: block" %>
+            <%= form.date_field :date_commitment,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :state_commitment, style: "display: block" %>
+            <%= form.text_field :state_commitment,  class: "form-control" %>
+        </div>
+
+        
+        <%= form.hidden_field :meeting_minute_id, :value => params[:id].to_s, class: "form-control" %>
+
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+    <% end %>
+    <hr>
+    <br>
+    <div class="d-flex">
+        <div class="container">
+            <h class="display-6">Compromisos acordados en esta reunión</h>
+        </div> 
+    </div>
+    <hr>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">No.</th>
+                <th scope="col">Compromiso</th>
+                <th scope="col">Responsable</th>
+                <th scope="col">Fecha acordada para compromiso</th>
+                <th scope="col">Resultado Esperado</th> 
+                <th scope="col">Editar</th>
+                <th scope="col">Eliminar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @meeting_commitments.each do |meeting_commitment| %>
+                <tr>
+                    <td><%= meeting_commitment.number %></td>
+                    <td><%= meeting_commitment.commitment %></td>
+                    <td><%= meeting_commitment.responsible %></td>
+                    <td><%= meeting_commitment.date_commitment %></td>
+                    <td><%= meeting_commitment.state_commitment %></td>
+                    <td><%= link_to t('common.edit'), edit_meeting_commitment_path(meeting_commitment), class: 'btn btn-xs btn-primary'  %></td>
+                    <td><%= link_to t('common.delete'), meeting_commitment, data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el compromiso?' }, class: 'btn btn-xs btn-danger' %></td>
+                </tr>
+            <% end %>     
+        </tbody>      
+    </table>
+    <br>    
+</div>        
+<br>
+
+
+
+

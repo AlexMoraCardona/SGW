@@ -1,0 +1,120 @@
+<br>
+<div>
+
+    <table class="table table-hover" style="border:1px solid black"> 
+        <thead>
+            <tr>
+                <td style="background-color: black;">&nbsp;</td>
+                <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 70px;">
+                    <% if @matrix_corrective_action.entity.logo.present? then %>
+                        <%=  image_tag  @matrix_corrective_action.entity.logo, class: "image_peq" %>
+                    <% end %>
+                </td>
+                <td rowspan="4"; colspan="11"; style="text-align:center;padding-bottom: 70px;">
+                    <div class="col-10"><h5>MATRIZ DE SEGUIMIENTO DE ACCIONES CORRECTIVAS PREVENTIVAS Y DE MEJORA</h5><h6><%= @matrix_corrective_action.entity.business_name if @matrix_corrective_action.present? %> Nit: <%= @matrix_corrective_action.entity.identification_number if @matrix_corrective_action.present? %> </h6></div>
+                </td>
+                <td rowspan="4";  style="text-align:center">
+                </td>
+                <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
+
+                <td style="border:1px solid black"><%= @matrix_corrective_action.date_create  if @matrix_corrective_action.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+       
+            <tr> 
+                <td style="background-color: black;">&nbsp;</td>
+                <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
+                <td style="border:1px solid black"><%= @matrix_corrective_action.date_update if @matrix_corrective_action.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr> 
+                <td style="background-color: black;">&nbsp;</td>
+                <td colspan="2"; style="border:1px solid black">Versión:</td>
+                <td style="border:1px solid black"><%= @matrix_corrective_action.version if @matrix_corrective_action.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr> 
+                <td style="background-color: black;">&nbsp;</td>
+                <td colspan="2"; style="border:1px solid black">Código:</td>
+                <td style="border:1px solid black"><%= @matrix_corrective_action.code if @matrix_corrective_action.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            
+
+            <tr>
+                <td style="background-color: black;">&nbsp;</td>
+                <td colspan="9"; style="border:1px solid black; text-align:center">INFORMACIÓN DE LA ACCIÓN CORRECTIVA, PREVENTIVA Y DE MEJORA </TD>
+                <td colspan="3"; style="border:1px solid black; text-align:center">MEDIDAS DE INTERVENCIÓN NECESARIAS</td>
+                <td style="border:1px solid black; text-align:center">CIERRE DE LA ACCIÓN CORRECTIVA O DE MEJORA</td>
+                <td colspan="3"; style="border:1px solid black; text-align:center">VERIFICACIÓN DE LA EFICACIA</td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>            
+            <tr>  
+                <td style="background-color: black;">&nbsp;</td>
+                <td style="border:1px solid black; text-align:center">Item</TD>
+                <td style="border:1px solid black; text-align:center">Año</TD>
+                <td style="border:1px solid black; text-align:center">N°Acción</TD>
+                <td style="border:1px solid black; text-align:center">Centro de Trabajo</TD>
+                <td style="border:1px solid black; text-align:center">Fecha de la Accion o No Conformidad</TD>
+                <td style="border:1px solid black; text-align:center">Origen de la Accion o No Conformidad</TD>
+                <td style="border:1px solid black; text-align:center">Área donde se Genera la Ación</TD>
+                <td style="border:1px solid black; text-align:center">Descripción de la Acción</TD>
+                <td style="border:1px solid black; text-align:center">Tipo de Acción </TD>
+                <td style="border:1px solid black; text-align:center">ACCIÓN A IMPLEMENTAR</TD>
+                <td style="border:1px solid black; text-align:center">RESPONSABLE</TD>
+                <td style="border:1px solid black; text-align:center">FECHA DE COMPROMISO</TD>
+                <td style="border:1px solid black; text-align:center">Fecha de Cierre</TD>
+                <td style="border:1px solid black; text-align:center">Se realizaron la Acciones</TD>
+                <td style="border:1px solid black; text-align:center">Estado de las Acciones</TD>
+                <th scope="col" style="border:1px solid black">Editar</th>                
+                <td style="background-color: black;">&nbsp;</td>
+             </tr>            
+        </thead>
+        <% @matrix_action_items.each do |item| %>             
+            <tbody>
+                <tr>
+                    <td style="background-color: black;">&nbsp;</td>
+                    <td style="border:1px solid black"><%= item.consecutive %></td>
+                    <td style="border:1px solid black"><%= item.year %></td> 
+                    <td style="border:1px solid black"><%= item.clasification_type_corrective %></td>
+                    <td style="border:1px solid black"><%= @locations.find_by("id = ?", item.campus.to_i).name_locate if item.campus.to_i > 0 %></td>
+                    <td style="border:1px solid black"><%= item.date_action_conformity %></td>
+                    <td style="border:1px solid black"><%= item.label_origin_action(item.origin_action) %></td>
+                    <td style="border:1px solid black"><%= item.area %></td>
+                    <td style="border:1px solid black"><%= item.description_action %></td>
+                    <% if item.type_corrective.to_i == 0  %>
+                        <td style="border:1px solid black; text-align:center; background-color:#038018">Acción Preventiva</td>
+                    <% end  %>    
+                    <% if item.type_corrective.to_i == 1  %>
+                        <td style="border:1px solid black; text-align:center; background-color:#F0E835">Acción de Mejora</td>   
+                    <% end  %>    
+                    <% if item.type_corrective.to_i == 2  %>
+                        <td style="border:1px solid black; text-align:center; background-color:#F03553">Acción Correctiva</td>
+                    <% end  %>    
+                    <td style="border:1px solid black"><%= item.label_action_implement(item.action_implement) %></td>
+                    <td style="border:1px solid black"><%= item.responsible %></td>
+                    <td style="border:1px solid black"><%= item.commitment_date %></td>
+                    <td style="border:1px solid black"><%= item.closet_date %></td>
+                    <td style="border:1px solid black"><%= item.label_si_no(item.took_actions) %></td>
+                    <td style="border:1px solid black"><%= item.label_state_actions(item.state_actions) %></td>
+                    <td style="border:1px solid black"><%= link_to t('common.edit'), edit_matrix_action_item_path(item), class: 'btn btn-xs btn-primary'  %></td>
+                    <td style="background-color: black;">&nbsp;</td>
+                </tr>
+            </body>
+        <% end %>
+        <tr>
+            <td style="background-color: black;">&nbsp;<br>&nbsp;<br>&nbsp;<br></td>
+            <td colspan="5"; style="border:1px solid black; text-align:center">&nbsp;</td>
+            <td colspan="5"; style="border:1px solid black; text-align:center">&nbsp;</td>
+            <td colspan="6"; style="border:1px solid black; text-align:center">&nbsp;</td>
+            <td style="background-color: black;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="background-color: black;">&nbsp;</td>
+            <td colspan="5"; style="border:1px solid black; text-align:center"><%= @matrix_corrective_action.name_user(@matrix_corrective_action.user_legal_representative) %> - Representante Legal</td>
+            <td colspan="5"; style="border:1px solid black; text-align:center"><%= @matrix_corrective_action.name_user(@matrix_corrective_action.user_adviser_sst) %> - Asesor SST</td>
+            <td colspan="6"; style="border:1px solid black; text-align:center"><%= @matrix_corrective_action.name_user(@matrix_corrective_action.user_responsible_sst) %> - Responsable SST</td>
+            <td style="background-color: black;">&nbsp;</td>
+        </tr>
+    </table>  
+</div>    

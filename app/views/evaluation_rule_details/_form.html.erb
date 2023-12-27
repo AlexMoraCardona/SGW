@@ -1,0 +1,113 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @evaluation_rule_detail do |form| %>
+        <% @evaluation_rule_detail.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>
+
+
+
+        
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          Editar
+        </button>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Editar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                Por favor confirmar que desea guardar cambios...
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary">Aceptar</button>
+              </div>
+            </div>
+          </div> 
+        </div>
+  
+                     
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+        <br>    
+        <br>    
+        
+        <div class="row g-3">
+            <div class="col-sm-4">
+                <h5><%= form.label :apply,  style: "display: block" %></h5> 
+                <%= form.radio_button :apply, 0, disabled: true %>
+                <label for="no_aplica"><%= t('common.no_aplica') %></label>
+                <%= form.radio_button :apply, 1, disabled: true %>
+                <label for="si_aplica"><%= t('common.si_aplica') %></label>
+            </div> 
+
+            <div class="col-sm-4">
+                <h5><%= form.label :score,  style: "display: block" %></h5>
+                <small class="text-muted"><%= @evaluation_rule_detail.score %></small>
+                <h6>Máximo Puntaje:
+                  <small class="text-muted"><%= @evaluation_rule_detail.standar_detail_item.maximun_value %></small>
+                </h6>                    
+            </div> 
+
+          </div>        
+
+        <div class="form-group">    
+            <h5><%= form.label :observation, style: "display: block" %></h5>
+            <%= form.text_field :observation,  class: "form-control" %>
+        </div>
+        <br>
+        <div class="form-group">    
+            <h5><%= form.label :description, style: "display: block" %></h5>
+            <%= form.text_field :description,  class: "form-control" %>
+        </div>
+
+        <hr>
+        <div class="col-sm-11">
+          <h5><%= form.label :criterion,  style: "display: block" %></h5>
+          <small class="text-muted"><%= @evaluation_rule_detail.standar_detail_item.criterion %></small>
+        </div> 
+
+        <div class="col-sm-11">
+          <h5><%= form.label :verification_mode,  style: "display: block" %></h5>
+          <small class="text-muted"><%= @evaluation_rule_detail.standar_detail_item.verification_mode  %></small>
+        </div> 
+        <br>
+    <% end %>
+</div>  
+<br> 
+<% if @evidences.present? %>
+  <%= render partial: 'evidences'  %> 
+<% end %> 
+<% if @templates.present? %>
+  <%= render partial: 'templates'  %> 
+<% end %>
+
+<%= render 'evaluation_rule_details/attachment', post: @evaluation_rule_detail%>
+
+<br>
+<div class="container col-11 card p-5">
+    <%= form_for @evaluation_rule_detail do |f| %>
+       <div class="row">
+          <div class="form-group">
+            <h5><%= f.label :"Adjuntar_Archivos:", style: "display: block" %></h5>
+            <%= f.file_field :files, multiple: true %>
+
+            <%= f.submit 'Subir Archivos', class: 'btn btn-primary' %>
+          </div> 
+        </div>
+    <% end %>
+    <br> 
+</div>  
+<br>
+
+
+
+
+

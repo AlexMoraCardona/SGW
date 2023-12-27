@@ -1,0 +1,58 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @standar_detail_item   do |form| %>
+        <% @standar_detail_item .errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+
+        <div class="form-group">    
+            <%= form.label :item_nro, style: "display: block" %>
+            <%= form.text_field :item_nro,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :order_nro, style: "display: block" %>
+            <%= form.number_field :order_nro,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :description, style: "display: block" %>
+            <%= form.text_field :description,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :criterion, style: "display: block" %>
+            <%= form.text_field :criterion,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :verification_mode, style: "display: block" %>
+            <%= form.text_field :verification_mode,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :maximun_value, style: "display: block" %>
+            <%= form.number_field :maximun_value, in: 0.05..100.0, step: 0.05,  class: "form-control" %>
+        </div>
+
+
+        <div class="form-group">    
+            <%= form.label :standar_detail_id,  style: "display: block" %>
+            <%= form.collection_select :standar_detail_id, StandarDetail.all.order(id: :asc), :id, :description %>
+        </div>  
+
+        <div class="form-group">
+            <%= form.radio_button :aplica, 0 %>
+            <label for="No Aplica"><%= t('common.no_aplica') %></label>
+            <%= form.radio_button :aplica, 1 %>
+            <label for="Si Aplica"><%= t('common.si_aplica') %></label>
+        </div>
+
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, standar_detail_items_path %>
+    <% end %>
+</div>        
+<br>

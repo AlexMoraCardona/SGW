@@ -1,0 +1,232 @@
+<% if @entity.present? %>
+    <h2><%= @entity.business_name %> Nit: <%=@entity.identification_number %></h2>
+<% end %>
+
+<% if @matrix_danger_risk.present? %>
+    <td><%= link_to t('common.show_matrix_danger_risk'), matrix_danger_risk_path(@matrix_danger_risk.id), class: 'btn btn-xs btn btn-warning' %></td>
+    <td><%= link_to t('common.danger'), crear_item_matrix_danger_risks_path(@matrix_danger_risk.id), class: 'btn btn-xs btn btn-warning' %></td>
+    <td><%= link_to "PDF", resumen_pdf_matrix_danger_risks_path(@matrix_danger_risk.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#instruDiligenciamiento">
+Instrucciones de diligenciamiento
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="instruDiligenciamiento" tabindex="-1" aria-labelledby="instruDiligenciamientoLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="instruDiligenciamientoLabel">Instrucciones de diligenciamiento</h5>
+<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+<u>ACTIVIDAD</u>: Describir la actividad General ejemplo permanecia en puesto, jefe, asistente, etc <br>
+<u>TAREA</u>: Descripción paso a paso de la actividad a realizar en los puestos de trabajo <br>
+<u>ACTIVIDAD RUTINARIA</u>: Actividad que forma parte de la operación normal de la organización, se ha planificado y es estandarizable. <br>
+<u>ACTIVIDAD NO RUTINARIA</u>: Actividad que no forma parte de la operación normal de la organización, que no estandarizable debido a la diversidad de escenarios y condiciones bajo las cuales pudiera presentarse. <br>
+<u>ClASIFICACIÓN DE PELIGRO</u>: Seleccionar lista desplegable los peligros <br>
+<u>DESCRIPCIÓN DE PELIGRO</u>: Seleccionar lista desplegable los factores de peligros <br>
+<u>FUENTE</u>: Lo que genera el peligro <br>
+<u>SALUD</u>: Tener en cuanta las condiciones de salud que puede generar la exposición al factor de Peligro, enfermedades de origen laboral <br>
+<u>SEGURIDAD</u>: Efectos posibles en cuanto a lesiones, accidentes laborales <br>
+<u>DESCRIPCIÓN DEL CONTROL EXISTENTE</u>: Controles con los que se cuentan en el momento de la identificación del Peligro <br>
+<u>EXPUESTOS</u>: Escriba el número de personas expuestas directa a un(os) peligro(s). <br> 
+<u>NIVEL DE DEFICIENCIA (ND)</u>: Es la magnitud de la relación esperable entre (1) el conjunto de peligros detectados y su relación causal directa con posibles incidentes y (2) con la eficacia de las medidas preventivas existentes en un lugar de trabajo. <br>
+<u>NIVEL DE EXPOSICIÓN (NE)</u>: Es la situación de exposición a un riesgo que se presenta en un tiempo determinado durante la jornada laboral. <br>
+<u>NIVEL DE PROBABILIDAD (NP)</u>: Es el producto del Nivel de Deficiencia (ND) por el Nivel de Exposición (NE). <br>
+<u>NIVEL DE CONSECUENCIA (NC)</u>: Es una medida de la severidad de las consecuencias. <br>
+<u>NIVEL DE RIESGO</u>: Magnitud de un riesgo resultante del producto del Nivel de Probabilidad (NP) por el Nivel de Consecuencia (NC). <br>
+<u>EVALUACIÓN DEL RIESGO</u>: Proceso para determinar el nivel de riesgo asociado al nivel de probabilidad y el nivel de consecuencia. <br>
+<u>MEDIDAS DE CONTROL</u>: Describa las medidas implementadas en la fuente, medio o persona con el fin de minimizar la ocurrencia de incidentes. <br>
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+</div>
+</div>
+</div>
+</div>
+    <%= link_to t('common.indicator'), graficosmpr_path(@matrix_danger_risk.id), class: 'btn btn-xs btn btn-success' %>
+
+    <div class="container col-12">
+
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <strong>Fecha de creación</strong><br>
+                <%= @matrix_danger_risk.created_at.strftime("%F") %> 
+            </div>        
+            <div class="col-sm-3">
+                <strong>Última fecha de actualización</strong><br>
+                <%= @matrix_danger_risk.updated_at.strftime("%F") %> 
+            </div>        
+        </div>
+
+        <div class="row g-4">
+            <div class="col-sm-3">
+                <strong><%= t('.code') %></strong><br>
+                <%= @matrix_danger_risk.code %> 
+            </div>
+            <div class="col-sm-3">
+                <strong><%= t('.version') %></strong><br>
+                <%= @matrix_danger_risk.version %> 
+            </div>
+            <div class="col-sm-3">
+                <strong><%= t('.date_create') %></strong><br>
+                <%= @matrix_danger_risk.date_create %> 
+            </div>        
+            <div class="col-sm-3">
+                <strong><%= t('.date_update') %></strong><br>
+                <%= @matrix_danger_risk.date_update %> 
+            </div>        
+        </div>
+        <hr>
+
+        <div class="row g-4">
+            <div class="col-sm-3">
+                <strong><%= t('.user_legal_representative') %></strong><br>
+                <%=  @matrix_danger_risk.name_user(@matrix_danger_risk.user_legal_representative)  %> 
+            </div>        
+            <div class="col-sm-3">
+                <strong><%= t('.firm_legal_representative') %></strong><br>
+                <%= @matrix_danger_risk.label_firm(@matrix_danger_risk.firm_legal_representative) %> 
+            </div>        
+            <div class="col-sm-3">
+                <strong><%= t('.date_firm_legal_representative') %></strong><br>
+                <%= @matrix_danger_risk.date_firm_legal_representative %> 
+            </div>
+            <div class="col-sm-3">
+                <% if @matrix_danger_risk.firm_legal_representative.to_i == 0 %>
+                    <%= link_to t('common.firmar'), firmar_rep_matrix_danger_risks_path(@matrix_danger_risk.id, 1), class: 'btn btn-xs btn btn-warning' %>
+                <% end %>    
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-sm-3">
+                <strong><%= t('.user_adviser_sst') %></strong><br>
+                <%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_adviser_sst) %> 
+            </div>        
+            <div class="col-sm-3">
+                <strong><%= t('.firm_adviser_sst') %></strong><br>
+                <%= @matrix_danger_risk.label_firm(@matrix_danger_risk.firm_adviser_sst) %> 
+            </div>        
+            <div class="col-sm-3">
+                <strong><%= t('.date_firm_adviser_sst') %></strong><br>
+                <%= @matrix_danger_risk.date_firm_adviser_sst %> 
+            </div>
+            <div class="col-sm-3">
+                <% if @matrix_danger_risk.firm_adviser_sst.to_i == 0 %>
+                    <%= link_to t('common.firmar'), firmar_adv_matrix_danger_risks_path(@matrix_danger_risk.id, 2), class: 'btn btn-xs btn btn-warning' %>
+                <% end %>      
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-sm-3">
+                <strong><%= t('.user_responsible_sst') %></strong><br>
+                <%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_responsible_sst) %> 
+            </div>        
+            <div class="col-sm-3">
+                <strong><%= t('.firm_responsible_sst') %></strong><br>
+                <%= @matrix_danger_risk.label_firm(@matrix_danger_risk.firm_responsible_sst) %> 
+            </div>        
+            <div class="col-sm-3">
+                <strong><%= t('.date_firm_responsible_sst') %></strong><br>
+                <%= @matrix_danger_risk.date_firm_responsible_sst %> 
+            </div>
+            <div class="col-sm-3">
+                <% if @matrix_danger_risk.firm_responsible_sst.to_i == 0 %>
+                    <%= link_to t('common.firmar'), firmar_res_matrix_danger_risks_path(@matrix_danger_risk.id, 3), class: 'btn btn-xs btn btn-warning' %>
+                <% end %>     
+            </div>
+        </div>
+
+    </div>           
+    <br> 
+    <div class="container">
+        <h class="display-6">Resumen estado de los Peligros y Riesgos</h>
+    </div> 
+    <div class="container">
+        <table class="table table-hover">
+            <tr>
+                <td>
+                    <a class="btn btn-primary" href="<%= total_items_matrix_danger_risks_path(@matrix_danger_risk.id, 'T')%>" role="button" >
+                        Total Peligros y Riesgos <span class="badge bg-secondary"><%= @total_items.to_i %></td> </span>
+                    </button>
+                </td> 
+                <td>
+                    <a class="btn btn-primary" href="<%= total_items_matrix_danger_risks_path(@matrix_danger_risk.id, 'I')%>" role="button" >
+                        Nivel I <span class="badge bg-danger"><%= @uno.to_i %></td> </span>
+                    </button>
+                </td>
+                <td>
+                    <a class="btn btn-primary" href="<%= total_items_matrix_danger_risks_path(@matrix_danger_risk.id, 'II')%>" role="button" >
+                        Nivel II <span class="badge bg-warning"><%= @dos.to_i %></td> </span>
+                    </button>
+                </td>
+                <td>
+                    <a class="btn btn-primary" href="<%= total_items_matrix_danger_risks_path(@matrix_danger_risk.id, 'III')%>" role="button" >
+                        Nivel III <span class="badge bg-warning"><%= @tres.to_i %></td> </span>
+                    </button>
+                </td>
+                <td>
+                    <a class="btn btn-primary" href="<%= total_items_matrix_danger_risks_path(@matrix_danger_risk.id, 'IV')%>" role="button" >
+                        Nivel IV <span class="badge bg-success"><%= @cuatro.to_i %></td> </span>
+                    </button>
+                </td>
+            </tr>
+        </table>  
+    </div> 
+    <hr>
+
+    <br>
+    <h2>Peligros y Riesgos</h2>
+    <table class="table table-hover"> 
+        <thead> 
+            <tr>
+                <th scope="col">Nro.</th>
+                <th scope="col">Fecha propuesta</th>
+                <th scope="col">Tarea</th>
+                <th scope="col">Descripción de Peligro</th>
+                <th scope="col">Nivel de riesgo</th>
+                <th scope="col">Control de ingeniería</th>
+                <th scope="col">Controles administrativas, señalización advertencia</th>
+                <th scope="col">Equipos/Elementos de protección personal</th>
+
+                <th scope="col">Ver/Editar</th>
+            </tr>
+        </thead>
+
+        <% @matrix_danger_items.each do |matrix_danger_item| %>
+            <tr> 
+                <td scope="col"><%= matrix_danger_item.consecutive %></td>  
+                <td scope="col"><%= matrix_danger_item.proposed_date %></td>
+                <td scope="col"><%= matrix_danger_item.task %></td>  
+                <td scope="col"><%= matrix_danger_item.clasification_danger_detail.name if matrix_danger_item.clasification_danger_detail_id.present? && matrix_danger_item.clasification_danger_detail_id.to_i > 0 %></td>
+                <% if matrix_danger_item.risk_level_interpretation.to_s == 'I'  %>
+                    <td style="border:1px solid black; text-align:center; background-color:#F03553"><%= matrix_danger_item.risk_level_interpretation %></td>
+                <% end  %>    
+                <% if matrix_danger_item.risk_level_interpretation.to_s == 'II'  %>
+                    <td style="border:1px solid black; text-align:center; background-color:#D98F3B"><%= matrix_danger_item.risk_level_interpretation %></td>
+                <% end  %>    
+               <% if matrix_danger_item.risk_level_interpretation.to_s == 'III'  %>
+                    <td style="border:1px solid black; text-align:center; background-color:#F0E835"><%= matrix_danger_item.risk_level_interpretation %></td>
+                <% end  %>    
+               <% if matrix_danger_item.risk_level_interpretation.to_s == 'IV'  %>
+                    <td style="border:1px solid black; text-align:center; background-color:#038018"><%= matrix_danger_item.risk_level_interpretation %></td>
+                <% end  %>    
+                <td scope="col"><%= matrix_danger_item.intervention_measures_engineering_control %></td>  
+                <td scope="col"><%= matrix_danger_item.intervention_measures_acsw %></td>  
+                <td scope="col"><%= matrix_danger_item.intervention_measures_ppee %></td>  
+                <td><%= link_to t('common.update_matrix_danger_item'), edit_matrix_danger_item_path(matrix_danger_item.id), class: 'btn btn-sm btn-warning' %></td>
+            </tr>
+        <% end %>  
+    </table>  
+    <br> 
+    <hr> 
+<% else %>
+    <div>
+        <%= link_to t('.create_matrix_danger_risk'), new_matrix_danger_risk_path(entity_id: @entity.id), class: 'btn btn-xs btn-primary'  %>
+    </div>
+<% end %>
+
+

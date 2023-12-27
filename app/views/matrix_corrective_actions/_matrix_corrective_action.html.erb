@@ -1,0 +1,236 @@
+<% if @entity.present? %>
+    <h2><%= @entity.business_name %> Nit: <%=@entity.identification_number %></h2>
+<% end %>
+
+<% if @matrix_corrective_action.present? %>
+    <td><%= link_to t('common.show_matrix_corrective_action'), matrix_corrective_action_path(@matrix_corrective_action.id), class: 'btn btn-xs btn btn-warning' %></td>
+    <td><%= link_to t('common.item_action'), crear_item_matrix_corrective_actions_path(@matrix_corrective_action.id), class: 'btn btn-xs btn btn-warning' %></td>
+    <td><%= link_to "PDF", resumen_pdf_matrix_corrective_actions_path(@matrix_corrective_action.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#instruDiligenciamiento">
+      Instrucciones de diligenciamiento
+    </button>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="instruDiligenciamiento" tabindex="-1" aria-labelledby="instruDiligenciamientoLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="instruDiligenciamientoLabel">Instrucciones de diligenciamiento</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <u>Códifique según correpoda</u>: <br>
+            <u>AC</u>:  Acción correctiva <br>
+            <u>AM</u>: Acción de mejora. <br>
+            <u>AP</u>: Acción preventiva con el número que le corresponda. <br>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%= link_to t('common.indicator'), graficosacpm_path(@matrix_corrective_action.id), class: 'btn btn-xs btn btn-success' %>
+
+    <div class="container col-12">
+
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <strong>Fecha de creación</strong><br>
+                <%= @matrix_corrective_action.created_at.strftime("%F") %> 
+            </div>        
+            <div class="col-sm-3">
+                <strong>Última fecha de actualización</strong><br>
+                <%= @matrix_corrective_action.updated_at.strftime("%F") %> 
+            </div>        
+        </div>
+
+        <div class="row g-4">
+            <div class="col-sm-3">
+                <strong><%= t('.code') %></strong><br>
+                <%= @matrix_corrective_action.code %> 
+            </div>
+            <div class="col-sm-3">
+                <strong><%= t('.version') %></strong><br>
+                <%= @matrix_corrective_action.version %> 
+            </div>
+            <div class="col-sm-3">
+                <strong><%= t('.date_create') %></strong><br>
+                <%= @matrix_corrective_action.date_create %> 
+            </div>        
+            <div class="col-sm-3">
+                <strong><%= t('.date_update') %></strong><br>
+                <%= @matrix_corrective_action.date_update %> 
+            </div>        
+        </div>
+        <hr>    
+
+        <div class="row g-4">
+            <div class="col-sm-3">
+                <strong><%= t('.user_legal_representative') %></strong><br>
+                <%=  @matrix_corrective_action.name_user(@matrix_corrective_action.user_legal_representative)  %> 
+            </div>        
+            <div class="col-sm-3">
+                <strong><%= t('.firm_legal_representative') %></strong><br>
+                <%= @matrix_corrective_action.label_firm(@matrix_corrective_action.firm_legal_representative) %> 
+            </div>        
+            <div class="col-sm-3">
+                <strong><%= t('.date_firm_legal_representative') %></strong><br>
+                <%= @matrix_corrective_action.date_firm_legal_representative %> 
+            </div>
+            <div class="col-sm-3">
+                <% if @matrix_corrective_action.firm_legal_representative.to_i == 0 %>
+                    <%= link_to t('common.firmar'), firmar_rep_matrix_corrective_actions_path(@matrix_corrective_action.id, 1), class: 'btn btn-xs btn btn-warning' %>
+                <% end %>      
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-sm-3">
+                <strong><%= t('.user_adviser_sst') %></strong><br>
+                <%= @matrix_corrective_action.name_user(@matrix_corrective_action.user_adviser_sst) %> 
+            </div>        
+            <div class="col-sm-3">
+                <strong><%= t('.firm_adviser_sst') %></strong><br>
+                <%= @matrix_corrective_action.label_firm(@matrix_corrective_action.firm_adviser_sst) %> 
+            </div>        
+            <div class="col-sm-3">
+                <strong><%= t('.date_firm_adviser_sst') %></strong><br>
+                <%= @matrix_corrective_action.date_firm_adviser_sst %> 
+            </div>
+            <div class="col-sm-3">
+                <% if @matrix_corrective_action.firm_adviser_sst.to_i == 0 %>
+                    <%= link_to t('common.firmar'), firmar_adv_matrix_corrective_actions_path(@matrix_corrective_action.id, 2), class: 'btn btn-xs btn btn-warning' %>
+                <% end %>      
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-sm-3">
+                <strong><%= t('.user_responsible_sst') %></strong><br>
+                <%= @matrix_corrective_action.name_user(@matrix_corrective_action.user_responsible_sst) %> 
+            </div>        
+            <div class="col-sm-3">
+                <strong><%= t('.firm_responsible_sst') %></strong><br>
+                <%= @matrix_corrective_action.label_firm(@matrix_corrective_action.firm_responsible_sst) %> 
+            </div>        
+            <div class="col-sm-3">
+                <strong><%= t('.date_firm_responsible_sst') %></strong><br>
+                <%= @matrix_corrective_action.date_firm_responsible_sst %> 
+            </div>
+            <div class="col-sm-3">
+                <% if @matrix_corrective_action.firm_responsible_sst.to_i == 0 %>
+                    <%= link_to t('common.firmar'), firmar_res_matrix_corrective_actions_path(@matrix_corrective_action.id, 3), class: 'btn btn-xs btn btn-warning' %>
+                <% end %>        
+            </div>
+        </div>
+
+    </div>           
+    <br> 
+    
+
+    <table class="table table-hover">  
+        <thead>
+            <tr>
+                <th scope="col"><%= t('.date_create') %></th>
+                <th scope="col"><%= t('.date_update') %></th>
+                <th scope="col"><%= t('.user_legal_representative') %></th>
+                <th scope="col"><%= t('.user_adviser_sst') %></th>
+                <th scope="col"><%= t('.user_responsible_sst') %></th>
+                <th scope="col"><%= t('common.show_matrix_corrective_action') %></th>
+                <th scope="col"><%= t('common.create_items_matrix_corrective_action') %></th>
+                <th scope="col">Resumen PDF</th>
+
+
+            </tr>
+        </thead>
+        <tr>  
+            <td scope="col"><%= @matrix_corrective_action.created_at %></td>   
+            <td scope="col"><%= @matrix_corrective_action.updated_at %></td>
+            <td scope="col"><%= @matrix_corrective_action.name_user(@matrix_corrective_action.user_legal_representative) %></td>
+            <td scope="col"><%= @matrix_corrective_action.name_user(@matrix_corrective_action.user_adviser_sst) %></td>
+            <td scope="col"><%= @matrix_corrective_action.name_user(@matrix_corrective_action.user_responsible_sst) %></td> 
+        </tr>
+    </table>
+    
+    <br> 
+        <div class="container">
+            <h class="display-6">Resumen Seguimiento Acciones</h>
+        </div> 
+        <div class="container">
+            <table class="table table-hover">
+                <tr>
+                    <td>
+                        <a class="btn btn-primary" href="<%= total_items_matrix_corrective_actions_path(@matrix_corrective_action.id, 3)%>" role="button" >
+                            Total Acciones <span class="badge bg-secondary"><%= @total_items.to_i %></td> </span>
+                        </button>
+                    </td> 
+                    <td>
+                        <a class="btn btn-primary" href="<%= total_items_matrix_corrective_actions_path(@matrix_corrective_action.id, 0)%>" role="button" >
+                            Acciones Preventivas <span class="badge bg-success"><%= @ap.to_i %></td> </span>
+                        </button>
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" href="<%= total_items_matrix_corrective_actions_path(@matrix_corrective_action.id, 1)%>" role="button" >
+                            Acciones de Mejora <span class="badge bg-warning"><%= @am.to_i %></td> </span>
+                        </button>
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" href="<%= total_items_matrix_corrective_actions_path(@matrix_corrective_action.id, 2)%>" role="button" >
+                            Acciones Correctivas <span class="badge bg-danger"><%= @ac.to_i %></td> </span>
+                        </button>
+                    </td>
+                </tr>
+            </table>  
+        </div> 
+
+
+
+    <hr>
+    
+
+    <br>
+    <h2>Acciones</h2>
+    <table class="table table-hover"> 
+        <thead> 
+            <tr>
+                <th scope="col">Nro.</th>
+                <th scope="col">Año</th>
+                <th scope="col">Tipo de Acción </th>
+                <th scope="col">Descripción de la acción</th>
+                <th scope="col">Se realizaron la Acciones</th>
+                <th scope="col">Estado de las Acciones</th>
+                <th scope="col">Ver/Editar</th>
+            </tr>
+        </thead>
+
+        <% @matrix_action_items.each do |matrix_action_item| %>
+            <tr> 
+                <td scope="col"><%= matrix_action_item.consecutive %></td>  
+                <td scope="col"><%= matrix_action_item.year %></td>  
+                <% if matrix_action_item.type_corrective.to_i == 0  %>
+                    <td style="border:1px solid black; text-align:center; background-color:#038018">Acción Preventiva</td>
+                <% end  %>    
+                <% if matrix_action_item.type_corrective.to_i == 1  %>
+                    <td style="border:1px solid black; text-align:center; background-color:#F0E835">Acción de Mejora</td>
+                <% end  %>    
+                <% if matrix_action_item.type_corrective.to_i == 2  %>
+                    <td style="border:1px solid black; text-align:center; background-color:#F03553">Acción Correctiva</td>
+                <% end  %>    
+                <td scope="col"><%= matrix_action_item.description_action %></td>
+                <td scope="col"><%= matrix_action_item.label_si_no(matrix_action_item.took_actions) %></td>
+                <td scope="col"><%= matrix_action_item.label_state_actions(matrix_action_item.state_actions) %></td>
+                <td><%= link_to t('common.update_matrix_action_item'), edit_matrix_action_item_path(matrix_action_item.id), class: 'btn btn-sm btn-warning' %></td>
+            </tr>
+        <% end %>  
+    </table>  
+    <br> 
+    <hr> 
+<% else %>
+    <div>
+        <%= link_to t('.create_matrix_corrective_action'), new_matrix_corrective_action_path(entity_id: @entity.id), class: 'btn btn-xs btn-primary'  %>
+    </div>
+<% end %>
+
+

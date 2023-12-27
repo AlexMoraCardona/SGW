@@ -1,0 +1,10 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Evaluacion") do |sheet|
+    sheet.add_row ['Evaluación', 'Empresa', 'Norma', 'Puntaje', 'Porcentaje', 'Resultado']
+    sheet.add_row [@evaluation.id, @evaluation.entity.business_name,  @evaluation.rule.name, @evaluation.score, @evaluation.percentage, @evaluation.result]
+    sheet.add_row []
+    sheet.add_row ['Ciclo', 'Item', 'Descripción', 'Cumple', 'Puntaje']
+    @evaluation_items.each do |evaluation_item|
+        sheet.add_row [evaluation_item.standar_detail_item.standar_detail.standar.label_cycle(evaluation_item.standar_detail_item.standar_detail.standar.cycle), evaluation_item.standar_detail_item.item_nro, evaluation_item.standar_detail_item.description, evaluation_item.label_meets, evaluation_item.score]
+    end
+end    

@@ -1,0 +1,127 @@
+<div class="container col-11 card p-5"> 
+    <%= render 'encabezado' %>
+    <div>
+        <br>
+    </div>
+
+    <div class="row">
+        <div class="col-11">
+            <div class="row">
+                <h6>COPASST - VIGÍA:</h6>
+            </div>
+        </div>
+    </div>
+    <hr>  
+    <div class="row">
+        <div class="col-11">
+            <div class="row">
+                <h6>Nombre:  <strong><%= @colaborador_ssst.name if @colaborador_ssst.present? %></strong></h6>
+                <h6>Cargo:  <strong><%= @colaborador_ssst.activity if @colaborador_ssst.present? %></strong></h6>
+            </div>
+        </div>
+    </div>
+    <hr>  
+    <div class="row">
+        <div class="col-11">
+            <div class="row">
+                <h6><strong>Responsabilidades en Seguridad y Salud en el Trabajo</strong></h6>
+            </div>
+        </div>
+    </div>
+
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+               * Proponer a las directivas las actividades relacionadas con la salud y la seguridad de los trabajadores. <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+               * Participar en la investigación de incidentes y accidentes de trabajo. <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+               * Realizar inspecciones periódicas a las instalaciones y equipos de emergencia. <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+               * Acoger las sugerencias que presenten los trabajadores en materia de seguridad y salud en el trabajo. <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+               * Servir de punto de coordinación entre las directivas y los trabajadores para las situaciones relacionadas con Seguridad y Salud en el Trabajo. <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+               * Liderar la ejecución del programa de pausas activas. <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+               * Realizar las actas de reuniones mensuales. <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+               * Revisión del programa de capacitación en Seguridad y Salud en el Trabajo. <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+               * Apoyar la adopción de las medidas de prevención y control derivadas de la gestión del cambio. <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+               * Participar en la planificación de las auditorías. <br>
+            </td>
+        </tr>
+
+        <tr><td><br></td></tr>                
+    </table>
+    <% @firms.each do |firm| %>
+        <% if firm.legal_representative == 0 %>
+            <div class="row"> 
+                <div class="col-11">
+                    <div>&nbsp;</div>
+                    <% if firm.authorize_firm == 1 %>
+                       <% if firm.user.firm.attached? %>
+                          <% if firm.user.firm.image? %> 
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= image_tag firm.user.firm, class: "firma" %>
+                               <p>Firma Empleado: ________________________________</p>
+                          <% end %>
+                        <% end %>
+                    <% else %>    
+                        <p>Firma Empleado: ________________________________</p>
+                    <% end %>     
+                </div>
+            </div>
+        <% end %>    
+    <% end %>
+    <% @firms.each do |firm| %>
+        <% if firm.legal_representative == 1 %>
+            <div class="row"> 
+                <div class="col-11">
+                    <div>&nbsp;</div>
+                    <% if firm.authorize_firm == 1 %>
+                       <% if firm.user.firm.attached? %>
+                          <% if firm.user.firm.image? %> 
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= image_tag firm.user.firm, class: "firma" %>
+                               <p>Firma Representante Legal: ________________________________</p>
+                          <% end %>
+                        <% end %>
+                    <% else %>    
+                        <p>Firma Representante Legal: ________________________________</p>
+                    <% end %>     
+                </div>
+            </div>
+            <br>
+        <% end %>    
+    <% end %>
+
+</div>
+<br>

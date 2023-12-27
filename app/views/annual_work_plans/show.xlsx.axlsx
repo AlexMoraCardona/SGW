@@ -1,0 +1,10 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Plan de trabajo anual") do |sheet|
+    sheet.add_row ['', 'Plan de Trabajo Anual ' , @annual_work_plan.year, '']
+    sheet.add_row ['', @annual_work_plan.entity.business_name, 'Nit:', @annual_work_plan.entity.identification_number]
+    sheet.add_row []
+    sheet.add_row ['Nro', 'Objetivo', 'Meta', 'Actividad', 'Recursos', 'Responsable', 'Fecha de realización', 'Mes de ejecución', 'Evidencias', 'Observaciones']
+    @annual_work_plan_items.each do |annual_work_plan_item|
+        sheet.add_row [annual_work_plan_item.consecutive, annual_work_plan_item.aim, annual_work_plan_item.goal, annual_work_plan_item.activity, annual_work_plan_item.resource, annual_work_plan_item.responsible, annual_work_plan_item.date_realization, annual_work_plan_item.month, annual_work_plan_item.evidences_plan, annual_work_plan_item.observation ]
+    end
+end  

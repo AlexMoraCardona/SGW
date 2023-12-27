@@ -1,0 +1,44 @@
+<%= render 'shared/header2' %>
+<br>
+<div class="container col-11">
+        <div class="d-flex">
+            <div class="container">
+               <h2 class="display-5"> <%= t('.title')%></h2>
+            </div> 
+            <div class="container"> 
+                <%= form_with model: @evaluation, method: :get do |form| %>
+                    <h5 scope="col">Filtrar por Entidad: </h5>
+                    <%= form.collection_select :entity_id, Entity.all.order(id: :asc), :id, :business_name, { prompt: '--Seleccionar Entidad--' },
+                    { class: 'form-control input-sm select2' , onChange: 'this.form.requestSubmit()', value: params[:entity_id] }  %>
+                <% end %>      
+            </div>  
+
+        </div>
+        <div class="container">
+            <%= link_to t('.create_evaluation'), new_evaluation_path, class: 'btn btn-xs btn-primary' %>
+        </div>
+
+        <hr>
+    <table class="table table-hover"> 
+        <thead>
+            <tr>
+                <th scope="col"><%= t('.date_evaluation') %></th>
+                <th scope="col"><%= t('.entity') %></th>
+                <th scope="col"><%= t('.rule') %></th>
+                <th scope="col"><%= t('common.edit') %></th>
+                <th scope="col"><%= t('common.show') %></th>
+                <th scope="col"><%= t('common.delete') %></th>
+                <th scope="col"><%= t('common.create_items_evaluation') %></th>
+                <th scope="col"><%= t('common.save_history') %></th>
+                <th scope="col"><%= t('common.see_history') %></th>
+            </tr>
+        </thead>
+        <tbody>
+            <%= render partial: 'evaluation', collection: @evaluations  %>  
+        </tbody>      
+    </table>
+</div>
+
+
+
+

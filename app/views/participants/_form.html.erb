@@ -1,0 +1,79 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @participant do |form| %>
+        <% @participant.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>  
+        
+        <div class="form-group" >    
+                <%= form.label :user_id,  style: "display: block" %>
+                <%= form.collection_select :user_id, User.all.order(id: :asc), :id,  :name, style: "width=50px" %>
+        </div>  
+
+        <div class="col-sm-3">
+            <%= form.label :responsible_ssst,  style: "display: block" %>
+            <%= form.radio_button :responsible_ssst, 0 %>
+            <label for="No">NO</label>
+            <%= form.radio_button :responsible_ssst, 1 %>
+            <label for="Si">SI</label>
+        </div>
+
+        <div class="col-sm-3">
+            <%= form.label :arl_activity_report,  style: "display: block" %>
+            <%= form.radio_button :arl_activity_report, 0 %>
+            <label for="No">NO</label>
+            <%= form.radio_button :arl_activity_report, 1 %>
+            <label for="Si">SI</label>
+        </div>
+
+        <div class="col-sm-3">
+            <%= form.label :quote_10_aditional_points,  style: "display: block" %>
+            <%= form.radio_button :quote_10_aditional_points, 0 %>
+            <label for="No">NO</label>
+            <%= form.radio_button :quote_10_aditional_points, 1 %>
+            <label for="Si">SI</label>
+        </div>
+        
+        <div class="col-sm-3">
+            <%= form.label :designating_by_legal_representative,  style: "display: block" %>
+            <%= form.radio_button :designating_by_legal_representative, 0 %>
+            <label for="No">NO</label>
+            <%= form.radio_button :designating_by_legal_representative, 1 %>
+            <label for="Si">SI</label>
+        </div>
+
+        <div class="col-sm-3">
+            <%= form.label :joint_committee_president,  style: "display: block" %>
+            <%= form.radio_button :joint_committee_president, 0 %>
+            <label for="No">NO</label>
+            <%= form.radio_button :joint_committee_president, 1 %>
+            <label for="Si">SI</label>
+        </div>
+
+        <div class="col-sm-3">
+            <%= form.label :joint_committee_secretary,  style: "display: block" %>
+            <%= form.radio_button :joint_committee_secretary, 0 %>
+            <label for="No">NO</label>
+            <%= form.radio_button :joint_committee_secretary, 1 %>
+            <label for="Si">SI</label>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :degree, style: "display: block" %>
+            <%= form.text_field :degree,  class: "form-control" %>
+        </div>
+
+
+        <div class="form-group">    
+            <%= form.label :post_copasst, style: "display: block" %>
+            <%= form.text_field :post_copasst,  class: "form-control" %>
+        </div>
+
+
+
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+    <% end %>
+</div>

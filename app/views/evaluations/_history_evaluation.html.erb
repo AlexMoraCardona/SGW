@@ -1,0 +1,21 @@
+<tr>
+    <td><%= history_evaluation.date_history_evaluation %></td>
+    <td><%= history_evaluation.completed_items %></td>
+    <td><%= history_evaluation.unfulfilled_items %></td>
+    <td><%= history_evaluation.not_apply_items %></td>
+    <td><%= history_evaluation.score %></td>
+    <td><%= history_evaluation.percentage %></td>
+    <td><% if history_evaluation.result.to_s == 'ACEPTABLE'  %>
+        <div style="color:#008000";><%= history_evaluation.result %> </div>
+    <% end  %>    
+    <% if history_evaluation.result.to_s == 'MODERADAMENTE ACEPTABLE'  %>
+        <div style="color:#FFF00";><%= history_evaluation.result %> </div>
+    <% end  %>    
+    <% if history_evaluation.result.to_s == 'CRÍTICO'  %>
+        <div style="color:#FF0000";><%= history_evaluation.result %> </div>
+    <% end  %></td>    
+    <td><%= link_to t('common.show'), history_evaluation, class: 'btn btn-xs btn-primary'  %></td>
+    <td><%= link_to t('common.edit_firms'), edit_history_evaluation_path(history_evaluation), class: 'btn btn-xs btn-secondary'  %></td>
+    <td><%= link_to "PDF",history_evaluation_path(id: history_evaluation.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
+ 
+</tr> 

@@ -1,0 +1,111 @@
+<div class="container col-11">
+    <br>
+        <h4 style="text-align:center">Resultado Evaluación <%= @exam.user.name %></h4>
+        <hr>
+
+        <div class="row g-2">
+            <div class="col-sm-5">
+                <strong>Evaluación Nro:</strong>
+                <%= @exam.id %> 
+            </div>        
+            <div class="col-sm-5">
+               <strong>Fecha:</strong>
+               <%= @exam.created_at.strftime("%Y-%m-%d  %I:%M %p") %>
+            </div>        
+        </div>   
+
+        <div class="form-group">    
+            <strong>Usuario:</strong>
+            <%= @exam.user.name %>
+        </div>
+
+        <div class="form-group">    
+            <strong>Evaluación:</strong>
+            <%= @exam.adm_exam.name %>
+        </div>
+
+        <div class="row g-2">
+            <div class="col-sm-5">
+                <strong>Respuestas correctas:</strong>
+                <%= @exam.total_good %> 
+            </div>        
+            <div class="col-sm-5">
+               <strong>Respuestas incorrectas:</strong>
+               <%= @exam.total_bad %>
+            </div>        
+        </div>   
+
+        <div class="row g-2">
+            <div class="col-sm-5">
+                <strong>Porcentaje mínimo de aprobación:</strong>
+                <%= @exam.percentage_min %>% 
+            </div>        
+            <div class="col-sm-5">
+               <strong>Porcentaje aprobado:</strong>
+               <%= @exam.final_percentage %>%
+            </div>        
+        </div>   
+
+
+        <div class="row g-2">
+            <div class="col-sm-5">
+                <% if @exam.resul == 'Aprobado'  %>
+                    <strong>Resultado final:</strong>
+                    <div style="color:#008000";><%= @exam.resul %> </div>
+                <% end  %>
+                <% if @exam.resul == 'Reprobado'  %>
+                    <strong>Resultado final:</strong>
+                    <div style="color:#FF0000";><%= @exam.resul %> </div>
+                <% end  %>
+            </div>
+            <div class="col-sm-5">
+                <strong>Número de intentos: </strong><%= @can_intentos %>
+            </div>
+        </div>    
+        <hr>
+        <h4 style="text-align:center">Preguntas no respondidas correctamente evaluación <%= @exam.id %></h4>
+
+        <table class="table table-hover">
+            <tbody>
+                <% @exam_details.where("correct = ?", 0).each do |det| %>
+                    <tr>
+                        <td><%= det.exam_question.question%>?</td>
+                    </tr>
+                <% end %>     
+            </tbody>      
+        </table>        
+        <hr>
+        <h4 style="text-align:center">Resumen resultados de los intentos realizados</h4>
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <td>Evaluación Nro:</td>
+                    <td>Fecha:</td>
+                    <td>Porcentaje logrado:</td>
+                    <td>Resultado:</td>
+                </tr>
+            </thead>      
+
+            <tbody>
+                <% @intentos.each do |int| %>
+                    <tr>
+                        <td><%= int.id %></td>
+                        <td><%= int.created_at.strftime("%Y-%m-%d  %I:%M %p") %></td>
+                        <td><%= int.final_percentage %>%</td>
+                        <% if int.resul == 'Aprobado'  %>
+                            <td><div style="color:#008000";><%= int.resul %></div></td>
+                        <% end  %>
+                        <% if int.resul == 'Reprobado'  %>
+                            <td><div style="color:#FF0000";><%= @exam.resul %></div></td>
+                        <% end  %>
+                    </tr>
+                <% end %>     
+            </tbody>      
+        </table>        
+        <hr>
+        <%= link_to '<button class="btn btn-primary" type="button">Salir</button>'.html_safe, home_path %>
+        <br>
+        <br>            
+</div>  
+

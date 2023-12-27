@@ -1,6 +1,10 @@
 class LevelsController < ApplicationController
     def index
-        @levels = Level.all 
+        if  Current.user && Current.user.level == 1
+            @levels = Level.all 
+        else
+             redirect_to new_session_path, alert: t('common.not_logged_in')      
+         end           
     end    
 
     def new
@@ -26,7 +30,7 @@ class LevelsController < ApplicationController
         if @level.update(level_params)
             redirect_to levels_path, notice: 'Nivel actualizado correctamente'
         else
-            render :edit, levels: :unprocessable_entity
+            render :edit, status: :unprocessable_entity
         end         
     end    
 

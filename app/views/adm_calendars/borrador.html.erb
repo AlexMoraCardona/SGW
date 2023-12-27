@@ -1,0 +1,35 @@
+<table class="table table-hover" style="border:1px solid black"> 
+    <thead>
+        <tr>
+            <td colspan="7"; style="text-align:center; padding-bottom: 40px;">
+                <div class="col-10"><h5>Enero</h5><h6><%= @entity.business_name if @entity.present? %> Nit: <%= @entity.identification_number if @entity.present? %> </h6></div>
+            </td>
+        </tr>
+        <tr>    
+            <td>Do</td><td>Lu</td><td>Ma</td><td>Mi</td><td>Ju</td><td>Vi</td><td>Sá</td>
+        </tr>
+    </thead>
+    <tbody>
+    <% @calendars.where("month = ?", 1).each  do |calendar| %>
+        <tr>
+            <td style="background-color: black;">&nbsp;</td>
+            <td style="border:1px solid black"><%= matrix_legal_item.consecutive %></td>
+            <td style="border:1px solid black"><%= matrix_legal_item.year %></td>
+            <td style="border:1px solid black"><%= matrix_legal_item.risk_factor %></td>
+            <td style="border:1px solid black"><%= matrix_legal_item.issuing_entity %></td>
+            <td style="border:1px solid black"><%= matrix_legal_item.requirement %></td>
+            <td style="border:1px solid black"><%= matrix_legal_item.rule_name %></td>
+            <td style="border:1px solid black"><%= matrix_legal_item.applicable_article %></td>
+            <td style="border:1px solid black"><%= matrix_legal_item.label_apply(matrix_legal_item.apply) %></td>
+            <td style="border:1px solid black"><%= matrix_legal_item.evidence_compliance %></td>
+            <td style="border:1px solid black"><%= matrix_legal_item.responsible %></td>
+            <td style="border:1px solid black"><%= matrix_legal_item.label_meets(matrix_legal_item.meets) %></td>
+            <td style="border:1px solid black"><%= matrix_legal_item.description_compliance %></td>
+            <td style="border:1px solid black"><%= link_to "Descargar Archivo", rails_blob_path(matrix_legal_item.attach_evidence, disposition: 'attachment'), class: 'btn btn-sm btn-success' if matrix_legal_item.attach_evidence.attached? %></td>    
+            <td style="border:1px solid black"><%= link_to t('common.edit'), edit_matrix_legal_item_path(matrix_legal_item), class: 'btn btn-xs btn-primary'  %></td>
+            <td style="background-color: black;">&nbsp;</td>
+        </tr>
+    <% end %>           
+</tbody> 
+
+</table>    

@@ -1,0 +1,179 @@
+<div class="container col-11 card p-5">
+    <div class="row">
+        <div class="col">
+            <% if @meeting_minute.entity.logo.present? then %>
+                <%=  image_tag  @meeting_minute.entity.logo, class: "image_peq" %>
+             <% end %>   
+        </div>
+        <div class="col-8">
+            <div class="row justify-content-center">
+                <div class="col-8"><h2>ACTA DE REUNIÓN</h2></div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-4">
+                    <h5>Código: <small class="text-muted"><%= @meeting_minute.code if @meeting_minute.present? %></small></h5>                
+                </div>
+                <div class="col-4">
+                    <h5>Versión: <small class="text-muted"><%= @meeting_minute.version if @meeting_minute.present? %></small></h5>                
+                </div>
+            </div>
+        </div>
+        <div class="col">
+        </div>
+    </div>
+</div>
+<br>
+
+<div class="container col-11 card p-5">
+    <div class="row">
+        <div class="col-3">
+            <h5>Fecha: <small class="text-muted"><%= @meeting_minute.date if @meeting_minute.present? %></small></h5>                
+        </div>
+        <div class="col-6">
+        </div>
+        <div class="col-2">
+            <h5>Acta N°: <small class="text-muted"><%= @meeting_minute.record_number if @meeting_minute.present? %></small></h5>                
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h5>Empresa: <small class="text-muted"><%= @meeting_minute.entity.business_name if @meeting_minute.present? %></small></h5>                
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3">
+            <h5>Evaluación N°: <small class="text-muted"><%= @meeting_minute.evaluation_id if @meeting_minute.present? %></small></h5>                
+        </div>
+        <div class="col-3">
+            <h5>Fecha evaluación: <small class="text-muted"><%= @meeting_minute.evaluation.date_evaluation if @meeting_minute.present? %></small></h5>                
+        </div>
+        <div class="col-5">
+            <h5>Norma: <small class="text-muted"><%= @meeting_minute.evaluation.rule.name if @meeting_minute.present? %></small></h5>                
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h5>Asesor: <small class="text-muted"><%= @meeting_minute.user.name if @meeting_minute.present? %></small></h5>                
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h5>Área / Proceso / Comité : <small class="text-muted"><%= @meeting_minute.area_process_committee if @meeting_minute.present? %></small></h5>                
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h5>Objetivo de la Reunión: <small class="text-muted"><%= @meeting_minute.objective_meeting if @meeting_minute.present? %></small></h5>                
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h5>Tipo de reunión: <small class="text-muted"><%= @meeting_minute.meeting_type if @meeting_minute.present? %></small></h5>                
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <h5>Lugar: <small class="text-muted"><%= @meeting_minute.place if @meeting_minute.present? %></small></h5>                
+        </div>
+        <div class="col-3">
+            <h5>Hora inicio: <small class="text-muted"><%= @meeting_minute.start_time.strftime("%T")  if @meeting_minute.present? %></small></h5>                
+        </div>
+        <div class="col-3">
+            <h5>Hora fin: <small class="text-muted"><%= @meeting_minute.end_time.strftime("%T") if @meeting_minute.present? %></small></h5>                
+        </div>
+    </div>
+    <hr>
+    <br>
+
+    <% if @meeting_attendees.present? %>
+        <%= render partial: 'asistentes'  %>   
+    <% end %> 
+    <br>
+
+    <br>
+    <hr>
+    <div class="row">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <h class="display-6">Orden del Día:</h>
+                </tr>
+            </thead>
+            <hr>
+            <tbody>
+                <tr>
+                    <h5><%= @meeting_minute.order_day if @meeting_minute.present? %></h5>
+                </tr>
+            </tbody>      
+        </table>
+    </div>
+    <br>
+    <hr>
+    <div class="row">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <h class="display-6">Temas tratados:</h>
+                </tr>
+            </thead>
+            <hr>
+            <tbody>
+                <tr>
+                    <h5><%= @meeting_minute.Issues if @meeting_minute.present? %></h5>
+                </tr>
+            </tbody>      
+        </table>
+    </div>
+    <br>
+    <hr>
+    <div class="row">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <h class="display-6">Proposiciones y varios</h>
+                </tr>
+            </thead>
+            <hr>
+            <tbody>
+                <tr>
+                    <h5><%= @meeting_minute.miscellaneous_propositions if @meeting_minute.present? %></h5>
+                </tr>
+            </tbody>      
+        </table>
+    </div>
+    <br>
+    <hr>    
+    <% if @meeting_commitments.present? %>
+        <%= render partial: 'commitments'  %>  
+    <% end %>
+    <br>
+    <div class="row">
+        <div class="col">
+            <h5>Agotada la reunión, se da por terminada siendo las: <small class="text-muted"><%= @meeting_minute.end_time.strftime("%T") if @meeting_minute.present? %></small></h5>                
+        </div>
+    </div>
+    <div></div>
+    <div class="row">
+        <div class="col">
+            <h5>Para constancia firman:</h5>                
+        </div>
+    </div>
+    <br/>
+    <% if @assistants.present? %> 
+        <br>
+        <%= render partial: 'firmantes'  %>  
+    <% end %>
+    <br> 
+    <div class="row">
+        <div class="col">
+            <br>
+            <h5>Elaboró: <small class="text-muted"><%= @meeting_minute.elaborated if @meeting_minute.present? %></small></h5>                
+        </div>
+    </div>
+    <div class="col">
+            <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, meeting_minutes_path %> 
+    </div>
+    
+</div>
+<br>
+

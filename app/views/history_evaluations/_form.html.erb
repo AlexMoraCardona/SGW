@@ -1,0 +1,48 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @history_evaluation do |form| %>
+        <% @history_evaluation.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+
+        <div class="row g-3">
+            <div class="col-sm-11">
+                <%= form.label :id_employee_contractor, style: "display: block" %>
+                <%= form.collection_select :id_employee_contractor, User.all.order(id: :asc), :id, :name, { prompt: '--Seleccionar--' },
+                { class: 'form-control input-sm select2' } %>
+            </div>        
+            <div class="col-sm-4">
+                <%= form.label :date_firm_employee, style: "display: block" %>
+                <%= form.date_field :date_firm_employee,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-3">
+                <%= form.label :firm_employee_contractor, style: "display: block" %>
+                <%= form.number_field :firm_employee_contractor,  class: "form-control" %>
+            </div>        
+
+        </div>   
+
+        <div class="row g-3">
+            <div class="col-sm-11">
+                <%= form.label :id_responsible_execution, style: "display: block" %>
+                <%= form.collection_select :id_responsible_execution, User.all.order(id: :asc), :id, :name, { prompt: '--Seleccionar--' },
+                { class: 'form-control input-sm select2' } %>
+            </div>        
+            <div class="col-sm-4">
+                <%= form.label :date_firm_responsible, style: "display: block" %>
+                <%= form.date_field :date_firm_responsible,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-3">
+                <%= form.label :firm_responsible_execution, style: "display: block" %>
+                <%= form.number_field :firm_responsible_execution,  class: "form-control" %>
+            </div>        
+
+        </div>   
+
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+    <% end %>
+</div>
+<br>

@@ -1,0 +1,39 @@
+<%= render 'shared/header2' %>
+<br>
+<div class="container col-11">
+        <div class="d-flex">
+            <div class="container">
+               <h2 class="display-5"> <%= t('.title')%></h2>
+            </div> 
+            <div class="container">
+                <%= form_with model: @standar_detail_item, method: :get do |form| %>
+                    <h5 scope="col"><%= t('.search_rule_id') %></h5>
+                    <%= form.collection_select :rule_id, Rule.all.order(id: :asc), :id, :name, { prompt: '--Todos--' },
+                    { class: 'form-control input-sm select2' , onChange: 'this.form.requestSubmit()', value: params[:rule_id] }  %>
+            
+                <% end %>      
+            </div>  
+        </div> 
+        <div class="container">
+            <%= link_to t('.create_standar_detail_items'), new_standar_detail_item_path, class: 'btn btn-xs btn-primary' %>
+        </div>
+        <hr>
+    <table class="table table-hover">
+        <thead> 
+            <tr>     
+                <th scope="col"><%= t('.order_nro') %></th>
+                <th scope="col"><%= t('.item_nro') %></th>
+                <th scope="col"><%= t('.description') %></th>
+                <th scope="col"><%= t('.maximun_value') %></th>
+                <th scope="col"><%= t('.standar_detail_id') %></th>
+                <th scope="col"><%= t('.aplica') %></th>
+                <th scope="col"><%= t('common.edit') %></th> 
+            </tr>
+        </thead>
+        <tbody>
+            <%= render partial: 'standar_detail_item', collection: @standar_detail_items  %>  
+
+        </tbody> 
+
+    </table>
+</div>

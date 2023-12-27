@@ -1,0 +1,50 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @adm_exam do |form| %>
+        <% @adm_exam.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+
+
+        <div class="form-group">    
+            <%= form.label :name, style: "display: block" %>
+            <%= form.text_field :name,  class: "form-control" %>
+        </div>
+        <br>  
+        <div class="form-group">    
+            <%= form.label :description, style: "display: block" %>
+            <%= form.text_field :description,  class: "form-control" %>
+        </div>
+        <br>  
+        <div class="row g-4">
+            <div class="col-sm-3">
+                <%= form.label :cant_questions, style: "display: block" %>
+                <%= form.number_field :cant_questions,  class: "form-control", min:1 %>
+            </div>        
+            <div class="col-sm-3">
+                <%= form.label :percentage_min, style: "display: block" %>
+                <%= form.number_field :percentage_min,  class: "form-control", step: 0.01 %>
+            </div>        
+            <div class="col-sm-3">
+                <%= form.label :cant_attempts, style: "display: block" %>
+                <%= form.number_field :cant_attempts,  class: "form-control", min:1 %>
+            </div>        
+            <div class="col-sm-3">
+                <%= form.label :time_max, style: "display: block" %>
+                <%= form.number_field :time_max,  class: "form-control", min:1 %>
+            </div>        
+        </div>        
+        <br>
+        <div class="form-group">    
+            <%= form.label :img_exam,  style: "display: block" %> 
+            <%= form.file_field :img_exam,  class: "form-control", accept:"image/*", capture:"environment" %>
+        </div>
+        <br>
+        <div class="form-group">   
+            <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        </div>    
+    <% end %>
+</div>        
+<br>

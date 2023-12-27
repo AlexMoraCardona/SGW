@@ -1,0 +1,92 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @annual_work_plan_item do |form| %>
+        <% @annual_work_plan_item.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+
+        <tr>  
+            <td>
+                <div class="row g-3">
+                    <div class="col-sm-5">
+                        <%= form.label :estado,  style: "display: block" %> 
+                        <%= form.radio_button :earring, 0 %>
+                        <label for="pendiente">Planeado</label>
+                        <%= form.radio_button :earring, 1 %>
+                        <label for="ejecutado">Ejecutado</label>
+                    </div>        
+                <div class="col-sm-3">
+                    <%= form.label :month, style: "display: block" %>
+                    <%= form.number_field :month,  class: "form-control", min:1 %>
+                </div>        
+                <div class="col-sm-3">
+                    <%= form.label :date_realization, style: "display: block" %>
+                    <%= form.date_field :date_realization,  class: "form-control" %>
+                </div>        
+            </td>
+        </tr>
+
+
+        <div class="form-group">    
+            <%= form.label :aim, style: "display: block" %>
+            <%= form.text_field :aim,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :goal, style: "display: block" %>
+            <%= form.text_field :goal,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :activity, style: "display: block" %>
+            <%= form.text_field :activity,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :resource, style: "display: block" %>
+            <%= form.text_field :resource,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :responsible, style: "display: block" %>
+            <%= form.text_field :responsible,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :evidences_plan, style: "display: block" %>
+            <%= form.text_field :evidences_plan,  class: "form-control" %>
+        </div>
+        
+        <div class="form-group">    
+            <%= form.label :observation, style: "display: block" %>
+            <%= form.text_field :observation,  class: "form-control" %>
+        </div>
+
+        <br>  
+        <div class="form-group">   
+            <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        </div>    
+    <% end %>
+    <hr>
+
+    <%= render 'annual_work_plan_items/attachment', post: @annual_work_plan_item%>    
+    <br>
+    <hr>    
+    <div class="container col-11 card p-5">
+        <%= form_for @annual_work_plan_item do |f| %>
+            <div class="row">
+            <div class="form-group">
+                <h5><%= f.label :"Adjuntar_Archivos:", style: "display: block" %></h5>
+                <%= f.file_field :observation_evidences, multiple: true %>
+ 
+                <%= f.submit 'Subir Archivos', class: 'btn btn-primary' %>
+            </div> 
+            </div>
+        <% end %>
+        <br> 
+    </div>
+    <hr>
+</div>        
+<br>

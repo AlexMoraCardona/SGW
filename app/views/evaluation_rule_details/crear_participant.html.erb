@@ -1,0 +1,161 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @participant do |form| %>
+        <% @participant.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+        <table>
+            <tr>
+                <td style="width:50%">
+                    <%= form.label :user_id,  style: "display: block" %>
+                    <%= form.collection_select :user_id, User.all.order(id: :asc), :id,  :name, style: "width=50px" %>
+                </td> 
+                <td style="width:50%">
+                    <%= form.label :responsible_ssst,  style: "display: block" %>
+                    <%= form.radio_button :responsible_ssst, 0 %>
+                    <label for="No">NO</label>
+                    <%= form.radio_button :responsible_ssst, 1 %>
+                    <label for="Si">SI</label>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:50%">
+                    <%= form.label :designating_by_legal_representative,  style: "display: block" %>
+                    <%= form.radio_button :designating_by_legal_representative, 0 %>
+                    <label for="No">NO</label>
+                    <%= form.radio_button :designating_by_legal_representative, 1 %>
+                    <label for="Si">SI</label>
+                </td> 
+                <td style="width:50%">
+                    <%= form.label :joint_committee_president,  style: "display: block" %>
+                    <%= form.radio_button :joint_committee_president, 0 %>
+                    <label for="No">NO</label>
+                    <%= form.radio_button :joint_committee_president, 1 %>
+                    <label for="Si">SI</label>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width:50%">
+                    <%= form.label :joint_committee_secretary,  style: "display: block" %>
+                    <%= form.radio_button :joint_committee_secretary, 0 %>
+                    <label for="No">NO</label>
+                    <%= form.radio_button :joint_committee_secretary, 1 %>
+                    <label for="Si">SI</label>
+                </td> 
+                <td style="width:50%">
+                    <%= form.label :degree, style: "display: block" %>
+                    <%= form.text_field :degree,  class: "form-control" %>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width:50%">
+                    <%= form.label :post_copasst, style: "display: block" %>
+                    <%= form.text_field :post_copasst,  class: "form-control" %>
+                </td> 
+                <td style="width:50%">
+                    <%= form.label :external_consultant,  style: "display: block" %>
+                    <%= form.radio_button :external_consultant, 0 %>
+                    <label for="No">NO</label>
+                    <%= form.radio_button :external_consultant, 1 %>
+                    <label for="Si">SI</label>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:50%">
+                    <%= form.label :collaborator,  style: "display: block" %>
+                    <%= form.radio_button :collaborator, 0 %>
+                    <label for="No">NO</label>
+                    <%= form.radio_button :collaborator, 1 %>
+                    <label for="Si">SI</label>
+                </td>
+                <td style="width:50%">
+                    <%= form.label :vigia,  style: "display: block" %>
+                    <%= form.radio_button :vigia, 0 %>
+                    <label for="No">NO</label>
+                    <%= form.radio_button :vigia, 1 %>
+                    <label for="Si">SI</label>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <h5> Los siguentes campos se diligencia en el formato "IDENTIFICACIÓN DE TRABAJADORES DE ALTO RIESGO Y COTIZACION DE PENSIÓN ESPECIAL" </h5>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width:50%">
+                    <%= form.label :arl_activity_report,  style: "display: block" %>
+                    <%= form.radio_button :arl_activity_report, 0 %>
+                    <label for="No">NO</label>
+                    <%= form.radio_button :arl_activity_report, 1 %>
+                    <label for="Si">SI</label>
+                </td>
+                <td style="width:50%">
+                    <%= form.label :quote_10_aditional_points,  style: "display: block" %>
+                    <%= form.radio_button :quote_10_aditional_points, 0 %>
+                    <label for="No">NO</label>
+                    <%= form.radio_button :quote_10_aditional_points, 1 %>
+                    <label for="Si">SI</label>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:50%">
+                    <%= form.label :employees_activity, style: "display: block" %>
+                    <%= form.text_field :employees_activity,  class: "form-control" %>
+                </td>
+                <td style="width:50%">
+                    <%= form.label :reported_activity, style: "display: block" %>
+                    <%= form.text_field :reported_activity,  class: "form-control" %>
+                </td>
+            </tr>
+
+            <hr>
+        </table>
+
+        <%= form.hidden_field :evidence_id, :value => params[:id].to_s, class: "form-control" %>
+
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+    <% end %>
+    <hr>
+    <br>
+    <br>
+    <div class="d-flex">
+        <div class="container">
+            <h class="display-6">Funcionarios relacionados en la evidencia:</h>
+        </div> 
+    </div>
+    <hr>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Fecha Evidencia</th>
+                <th scope="col">Nro.Evidencia</th>
+                <th scope="col">Nombre Evidencia</th>
+                <th scope="col">Funcionario</th>
+                <th scope="col">Eliminar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @participants.each do |participant| %> 
+                <tr>
+                    <td><%= participant.evidence.date %></td>
+                    <td><%= participant.evidence_id %></td>
+                    <td><%= participant.evidence.template.name %></td>
+                    <td><%= participant.user.name %></td>
+                    <td><%= link_to t('common.delete'), participant, data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el funcionario?' }, class: 'btn btn-xs btn-danger' %></td>
+                </tr>
+            <% end %>     
+        </tbody>      
+    </table>
+    <br>
+        
+</div>        
+<br>
+
+

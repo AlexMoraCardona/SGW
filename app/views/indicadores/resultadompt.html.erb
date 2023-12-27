@@ -1,0 +1,50 @@
+<br>
+<div class="container col-11" 
+    <br>
+    <h2 class="display-5">Indicadores Plan de Trabajo Anual</h2>
+    <hr>
+    
+    <br>
+    <% if @entities.present? %> 
+        <%= form_with model: @entity do |form| %>
+            <div class="row g-2">
+                <div class="col-sm-7">
+                    <%= form.label :Entidad, style: "display: block" %>
+                    <%= form.collection_select :entity_id, @entities.order(id: :asc), :id, :business_name, { prompt: '--Seleccionar Entidad--' },
+                    { class: 'form-control input-sm select2' } %>
+                </div>
+            </div>    
+            <br>    
+            <button type="submit" class="btn btn-primary">Consultar</button>
+        <% end %>
+    <% end %>
+
+    <% if @annual_work_plans.present? %> 
+        <table class="table table-hover"> 
+            <thead>
+                <tr>
+                    <th scope="col"><%= t('.year') %></th>
+                    <th scope="col"><%= t('.user_legal_representative') %></th>
+                    <th scope="col"><%= t('.user_adviser_sst') %></th>
+                    <th scope="col"><%= t('.user_responsible_sst') %></th>
+                    <th scope="col"><%= t('.version') %></th>
+                    <th scope="col"><%= t('.code') %></th>
+                    <th scope="col">Ver indicadores</th>
+                </tr>
+            </thead>
+
+            <% @annual_work_plans.each do |annual_work_plan| %>
+                <tr> 
+                    <td scope="col"><%= annual_work_plan.year %></td>   
+                    <td scope="col"><%= annual_work_plan.name_user(annual_work_plan.user_legal_representative) %></td>
+                    <td scope="col"><%= annual_work_plan.name_user(annual_work_plan.user_adviser_sst) %></td>
+                    <td scope="col"><%= annual_work_plan.name_user(annual_work_plan.user_responsible_sst) %></td> 
+                    <td scope="col"><%= annual_work_plan.version %></td>   
+                    <td scope="col"><%= annual_work_plan.code %></td>   
+                    <td><%= link_to t('common.show_indicadores_annual_work_plan'), graficosmpt_path(annual_work_plan.id), class: 'btn btn-sm btn-warning' %></td>
+                </tr>
+            <% end %>    
+        </table>  
+        <br>
+    <% end %>    
+</div>      

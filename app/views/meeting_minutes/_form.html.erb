@@ -1,0 +1,194 @@
+<%= form_with model: @meeting_minute do |form| %>
+    <div class="container col-11 card p-5">
+    <br>
+    
+        <% @meeting_minute.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %> 
+ 
+        <div class="row">
+            <div class="col">
+                imagen
+            </div>
+            <div class="col-8">
+                <div class="row justify-content-center">
+                    <div class="col-8"><h2>ACTA DE REUNIÓN</h2></div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-4">
+                        <%= form.label :code, style: "display: block" %>
+                        <%= form.text_field :code,  class: "form-control" %>
+                    </div>
+                    <div class="col-4">
+                        <%= form.label :version, style: "display: block" %>
+                        <%= form.number_field :version,  class: "form-control" %>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                columna3
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="container col-11 card p-5">
+        <div class="row">
+            <div class="col-3">
+                <%= form.label :date, style: "display: block" %>
+                <%= form.date_field :date,  class: "form-control" %>
+            </div>
+            <div class="col-6">
+            </div>
+            <div class="col-2">
+                <%= form.label :record_number, style: "display: block" %>
+                <%= form.number_field :record_number,  class: "form-control" %>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <%= form.label :entity_id,  style: "display: block" %>
+                <%= form.collection_select :entity_id, Entity.all.order(id: :asc), :id,  :business_name, style: "width=400px" %>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <%= form.label :evaluation_id,  style: "display: block" %> 
+                <%= form.collection_select :evaluation_id, Evaluation.all.order(id: :asc), :id, :id, style: "width=400px" %>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <%= form.label :user_id,  style: "display: block" %>
+                <%= form.collection_select :user_id, User.all.order(id: :asc), :id,  :name, style: "width=400px" %>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <%= form.label :area_process_committee, style: "display: block" %>
+                <%= form.text_field :area_process_committee,  class: "form-control" %>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <%= form.label :objective_meeting, style: "display: block" %>
+                <%= form.text_field :objective_meeting,  class: "form-control" %>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <%= form.label :meeting_type, style: "display: block" %>
+                <%= form.text_field :meeting_type,  class: "form-control" %>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-5">
+                <%= form.label :place, style: "display: block" %>
+                <%= form.text_field :place,  class: "form-control" %>
+            </div>
+            <div class="col-3">
+                <%= form.label :start_time, style: "display: block" %>
+                <%= form.time_field :start_time,  class: "form-control" %>
+            </div>
+            <div class="col-3">
+                <%= form.label :end_time, style: "display: block" %>
+                <%= form.time_field :end_time,  class: "form-control" %>
+            </div>
+        </div>
+        <hr>        
+        <% if @meeting_attendees.present? %>
+            <%= render partial: 'asistentes'  %>  
+        <% end %>
+        <br>
+        <hr>   
+        <br>
+        <div class="row">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <h class="display-6">Orden del Día:</h>
+                    </tr>
+                </thead>
+                <hr>
+                <tbody>
+                    <tr>
+                        <%= form.label :order_day, style: "display: block" %>
+                        <%= form.rich_text_area :order_day %>
+                    </tr>
+                </tbody>      
+            </table>
+        </div>
+        <hr>
+        <br>
+        <div class="row">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <h class="display-6">Temas tratados:</h>
+                    </tr>
+                </thead>
+                <hr>
+                <tbody>
+                    <tr>
+                        <%= form.label :Issues, style: "display: block" %>
+                        <%= form.rich_text_area :Issues,  class: "form-control" %>
+                    </tr>
+                </tbody>      
+            </table>
+        </div>
+        <hr>
+        <br>
+        <div class="row">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <h class="display-6">Proposiciones y varios</h>
+                    </tr>
+                </thead>
+                <hr>
+                <tbody>
+                    <tr>
+                        <%= form.label :miscellaneous_propositions, style: "display: block" %>
+                        <%= form.rich_text_area :miscellaneous_propositions,  class: "form-control" %>
+                    </tr>
+                </tbody>      
+            </table>
+        </div>
+        <br>
+        <% if @meeting_commitments.present? %>
+            <%= render partial: 'commitments'  %>  
+        <% end %>
+        <br>
+        <div class="row">
+            <div class="col">
+                <h5>Agotada la reunión, se da por terminada siendo las: <small class="text-muted"><%= @meeting_minute.end_time if @meeting_minute.present? %></small></h5>                
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col">
+                <h5>Para constancia firman:</h5>                
+            </div>
+        </div>
+        <br>
+        <% if @assistants.present? %>
+            <%= render partial: 'firmantes'  %>  
+        <% end %>
+        <br>
+        <div class="row">
+            <div class="col">
+                <%= form.label :elaborated, style: "display: block" %>
+                <%= form.text_field :elaborated,  class: "form-control" %>
+            </div>
+        </div>
+        <br>
+        <div>
+            <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+            <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, occupational_risk_managers_path %>
+        </div>
+    </div>
+<% end %>
+<br>
+
+

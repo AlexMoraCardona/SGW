@@ -1,0 +1,147 @@
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+    <%= javascript_importmap_tags %>
+</head>
+<div> 
+
+    <div>
+        <br>
+    </div>
+
+    <div class="row">
+        <div class="col-11 text-center">
+            <div class="row">
+                <h6><strong>VIGÍA - PERIODO <%= @evidence.period if @evidence.present? %></strong></h6>
+            </div>
+        </div>
+    </div>
+
+    <table> 
+        <tr><td><br></td></tr>                
+        <tr>
+            <td style="text-align:justify">
+                En la empresa <%= @evidence.entity.business_name if @evidence.present? %> adquirimos el compromiso de implementar un Sistema de Gestión de Seguridad y Salud en el Trabajo para todos los empleados de la organización. <br>
+            </td>
+        </tr>
+        <tr><td><br></td></tr>                
+
+        <tr>
+            <td style="text-align:justify">
+                El  <%= @evidence.date.day if @evidence.date.present? %> de <%= I18n.l(@evidence.date, format: '%B') %> de <%= @evidence.date.strftime("%Y") if @evidence.date.present? %> en las instalaciones de <%= @evidence.entity.business_name if @evidence.present? %> se reunió el Representante Legal y sus trabajadores para nombrar el Vigía Del Sistema De Gestión De Seguridad Y Salud En El Trabajo, dando cumplimiento a la Resolución 2013 de 1986 y al Decreto 1295 de 1994 en su artículo 63 y a las exigencias de la división de Seguridad y Salud en el Trabajo del Ministerio de Trabajo, así como lo dispuesto en el Sistema de Gestión de la Seguridad y salud en el Trabajo. <br>
+            </td>
+        </tr>
+        <tr><td><br></td></tr>                
+
+        <tr>
+            <td style="text-align:justify">
+                El período de nombramiento es de dos (2) años, el empleador debe contar con soportes de actuaciones mensuales del vigía en Seguridad y Salud en el Trabajo. <br>
+            </td>
+        </tr>
+        <tr><td><br></td></tr>                
+
+        <tr>
+            <td style="text-align:justify">
+                El Representante legal de <%= @evidence.entity.business_name if @evidence.present? %>, nombra vigía de Seguridad y Salud en el trabajo a: <br>
+            </td>
+        </tr>
+        <tr><td><br></td></tr>                
+
+        <tr>
+            <td style="text-align:justify">
+                * El Señor(a): <%= @vigia.name if @vigia.present? %>, mayor de edad e identificado(a) con la cédula de ciudadanía N° <%= @vigia.document if @vigia.present? %>, quien ocupa el cargo de <%= @vigia.activity if @vigia.present? %> ubicado en la sede de <%= @evidence.place if @evidence.place.present? %>. <br>
+            </td>
+        </tr>
+        <tr><td><br></td></tr>                
+
+        <tr>
+            <td style="text-align:justify">
+                Para su constancia se firma el día <%= @evidence.date.day if @evidence.date.present? %> de <%= I18n.l(@evidence.date, format: '%B') %> de <%= @evidence.date.strftime("%Y") %>. <br>
+            </td>
+        </tr>
+        <tr><td><br></td></tr>                
+
+    </table>
+    <% @firms.each do |firm| %>
+        <% if firm.legal_representative == 1 %>
+            <div class="row  text-center"> 
+            <div class="col-11">
+            <div>&nbsp;</div>
+            <% if firm.authorize_firm == 1 %>
+               <% if firm.user.firm.attached? %>
+                  <% if firm.user.firm.image? %> 
+                       <%= image_tag firm.user.firm, class: "firma" %>
+                       <p align="center">________________________________</p>
+                  <% end %>
+                <% end %>
+            <% else %>    
+                <p align="center">________________________________</p>
+            <% end %>     
+            <div class="col-11">
+                <div class="row">
+                    <h6><strong><%= firm.user.name %></strong></h6>
+                </div>
+            </div>
+            <div class="col-11">
+                <div class="row">
+                    <h6>Representante Legal</h6>
+                </div>
+            </div>
+            <div class="col-11">
+                <div class="row">
+                    <h6><%= firm.user.document %></h6>
+                </div>
+            </div>
+        <% end %>    
+    <% end %>
+
+    <br>
+    <div>&nbsp;</div>
+    <div class="row">
+        <div class="col-11 text-justify">
+            <div class="row text-center">
+                <p>De manera libre y voluntaria aceptó ser el Vigía Del Sistema De Gestión De Seguridad Y Salud En El Trabajo en <%= @evidence.entity.business_name if @evidence.present? %> por lo tanto dejo constancia de mi voluntad mediante la firma en el presente documento.</p> 
+            </div>
+        </div>
+    </div>
+
+    <% @firms.each do |firm| %>
+        <% if firm.legal_representative == 0 %>
+            <div class="row text-center"> 
+                <div class="col-11">
+                    <div>&nbsp;</div>
+                    <% if firm.authorize_firm == 1 %>
+                        <% if firm.user.firm.attached? %>
+                            <% if firm.user.firm.image? %> 
+                                <%= image_tag firm.user.firm, class: "firma" %>
+                                <p align="center">________________________________</p>
+                            <% end %>
+                        <% end %>
+                    <% else %>    
+                        <p align="center">________________________________</p>
+                    <% end %>     
+                </div>
+                <div class="col-11">
+                    <div class="row">
+                        <h6><strong><%= firm.user.name %></strong></h6>
+                    </div>
+                </div>
+                <div class="col-11">
+                    <div class="row">
+                        <h6><strong><%= firm.post %></strong></h6>
+                    </div>
+                </div>
+                <div class="col-11">
+                    <div class="row">
+                        <h6><%= firm.user.document %></h6>
+                    </div>
+                </div>
+
+            </div>
+        <% end %>    
+    <% end %>
+
+</div>

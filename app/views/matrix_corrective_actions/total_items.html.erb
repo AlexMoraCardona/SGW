@@ -1,0 +1,55 @@
+<% if @matrix_action_items.present? %>
+<table class="table table-hover" style="border:1px solid black"> 
+    <thead>
+        <tr>
+            <th scope="col">Nro.</th>
+            <th scope="col">Año</th>
+            <th scope="col">Tipo de Acción </th>
+            <th scope="col">Descripción de la acción</th>
+            <th scope="col">Se realizaron la Acciones</th>
+            <th scope="col">Estado de las Acciones</th>
+        </tr>
+    </thead> 
+    <tbody>
+        <% if params[:format].to_i == 3 %>
+            <% @matrix_action_items.each do |matrix_action_item| %>
+                <tr>
+                    <td scope="col"><%= matrix_action_item.consecutive %></td>  
+                    <td scope="col"><%= matrix_action_item.year %></td>  
+                    <% if matrix_action_item.type_corrective.to_i == 0  %>
+                        <td style="border:1px solid black; text-align:center; background-color:#038018">Acción Preventiva</td>
+                    <% end  %>    
+                    <% if matrix_action_item.type_corrective.to_i == 1  %>
+                        <td style="border:1px solid black; text-align:center; background-color:#F0E835">Acción de Mejora</td>
+                    <% end  %>    
+                    <% if matrix_action_item.type_corrective.to_i == 2  %>
+                        <td style="border:1px solid black; text-align:center; background-color:#F03553">Acción Correctiva</td>
+                    <% end  %>    
+                    <td scope="col"><%= matrix_action_item.description_action %></td>
+                    <td scope="col"><%= matrix_action_item.label_si_no(matrix_action_item.took_actions) %></td>
+                    <td scope="col"><%= matrix_action_item.label_state_actions(matrix_action_item.state_actions) %></td>
+                </tr>
+            <% end %>
+        <% else %>
+            <% @matrix_action_items.where(type_corrective: params[:format].to_i).each do |matrix_action_item| %>
+                <tr>
+                    <td scope="col"><%= matrix_action_item.consecutive %></td>  
+                    <td scope="col"><%= matrix_action_item.year %></td>  
+                    <% if matrix_action_item.type_corrective.to_i == 0  %>
+                        <td style="border:1px solid black; text-align:center; background-color:#038018">Acción Preventiva</td>
+                    <% end  %>    
+                    <% if matrix_action_item.type_corrective.to_i == 1  %>
+                        <td style="border:1px solid black; text-align:center; background-color:#F0E835">Acción de Mejora</td>
+                    <% end  %>    
+                    <% if matrix_action_item.type_corrective.to_i == 2  %>
+                        <td style="border:1px solid black; text-align:center; background-color:#F03553">Acción Correctiva</td>
+                    <% end  %>    
+                    <td scope="col"><%= matrix_action_item.description_action %></td>
+                    <td scope="col"><%= matrix_action_item.label_si_no(matrix_action_item.took_actions) %></td>
+                    <td scope="col"><%= matrix_action_item.label_state_actions(matrix_action_item.state_actions) %></td>
+                </tr>
+            <% end %>
+        <% end %>           
+    </tbody>   
+    </table>         
+<% end %>     

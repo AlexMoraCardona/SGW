@@ -1,0 +1,144 @@
+<br>
+<div class="container col-11"> 
+    <div class="row g-2">
+        <div class="col-sm-10">
+            <h2 class="display-5"><%= t('.title')%></h2>
+        </div>        
+        <hr>
+    </div>            
+</div>   
+
+    <div class="container col-11">
+        <br>
+            <div class="row g-2">
+                <div class="col-sm-12">
+                    <strong><%= t('.entity_id') %></strong>
+                    <%= @history_evaluation.entity.business_name if @history_evaluation.present? %> 
+                </div>        
+            </div>
+
+            <div class="row g-2">
+                <div class="col-sm-4">
+                    <strong><%= t('.evaluation_id') %></strong>
+                    <%= @history_evaluation.evaluation_id if @history_evaluation.present? %> 
+                </div>        
+
+                <div class="col-sm-4">
+                    <strong><%= t('.date_create_evaluation') %></strong>
+                    <%= @history_evaluation.date_create_evaluation if @history_evaluation.present? %> 
+                </div>        
+                <div class="col-sm-4">
+                    <strong><%= t('.date_history_evaluation') %></strong>
+                    <%= @history_evaluation.date_history_evaluation if @history_evaluation.present? %> 
+                </div>        
+            </div>
+
+            <div class="row g-2">
+                <div class="col-sm-12">
+                    <strong><%= t('.rule_id') %></strong>
+                    <%= @history_evaluation.rule.name if @history_evaluation.present? %> 
+                </div>        
+            </div>
+
+            <div class="row g-2"> 
+                <div class="col-sm-6">
+                <strong><%= t('.number_employees') %></strong>
+                <%= @history_evaluation.number_employees if @history_evaluation.present? %>
+                </div>        
+                <div class="col-sm-6">
+                    <strong><%= t('.risk_level_id') %></strong>
+                    <%= @history_evaluation.risk_level.name if @history_evaluation.present? %>
+                </div>        
+            </div>  
+
+            <div class="row g-3">
+                <div class="col-sm-4">
+                    <strong><%= t('.completed_items') %></strong>
+                    <%= @history_evaluation.completed_items if @history_evaluation.present? %>
+                </div>        
+                <div class="col-sm-4">
+                    <strong><%= t('.unfulfilled_items') %></strong>
+                    <%= @history_evaluation.unfulfilled_items if @history_evaluation.present? %>
+                </div>        
+                <div class="col-sm-4">
+                    <strong><%= t('.not_apply_items') %></strong>
+                    <%= @history_evaluation.not_apply_items if @history_evaluation.present? %>
+                </div>        
+            </div>  
+
+            <div class="row g-3">
+                <div class="col-sm-4">
+                    <strong><%= t('.score') %></strong>
+                    <%= @history_evaluation.score if @history_evaluation.present? %>
+                </div>        
+                <div class="col-sm-4">
+                    <strong><%= t('.percentage') %></strong>
+                    <%= @history_evaluation.percentage if @history_evaluation.present? %>
+                </div>        
+                <div class="col-sm-4">
+                    <strong><%= t('.result') %></strong>
+                    <% if @history_evaluation.result.to_s == 'ACEPTABLE' %>
+                        <div style="color:#008000";><%= @history_evaluation.result %> </div>
+                    <% end  %>    
+                    <% if @history_evaluation.to_s == 'MODERADAMENTE ACEPTABLE'  %>
+                        <div style="color:#FFF00";><%= @history_evaluation.result %> </div>
+                    <% end  %>    
+                    <% if @history_evaluation.to_s == 'CRÍTICO'  %>
+                        <div style="color:#FF0000";><%= @history_evaluation.result %> </div>
+                    <% end  %>    
+                </div>        
+            </div>  
+        
+            <div class="row g-2">
+                <div class="col-sm-12">
+                    <strong><%= t('.observation') %></strong>
+                    <%= @history_evaluation.observation if @history_evaluation.present? %> 
+                </div>        
+            </div>
+    </div>    
+    <br>
+    <div class="container col-11">
+        <% if @history_items.present? %>
+            <%= render partial: 'history_items'  %>   
+        <% end %> 
+    </div>    
+
+    <div class="row"><br></div>
+        <table> 
+            <tr>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <p align="center">________________________________</p>
+                </td>
+                <td>
+                </td>
+                <td>
+                    <p align="center">________________________________</p>
+                </td>
+            </tr>
+            <tr>
+                <td> 
+                    <p align="center"><%= @history_evaluation.name(@history_evaluation.id_employee_contractor) if @history_evaluation.present? %></p>
+                </td>
+                <td>    
+                </td>
+                <td>
+                    <p align="center"><%= @history_evaluation.name(@history_evaluation.id_responsible_execution) if @history_evaluation.present? %></p>
+                </td>
+            </tr>
+            <tr>
+                <td WIDTH="50%">
+                    <p align="center"><h7>FIRMA EMPLEADOR O CONTRATANTE</h7></p>
+                </td>
+                <td>
+                </td>
+                <td>
+                    <p align="center"><h7>FIRMA DEL RESPONSABLE DE LA EJECUCIÓN DEL SG-SST</h7></p>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br>

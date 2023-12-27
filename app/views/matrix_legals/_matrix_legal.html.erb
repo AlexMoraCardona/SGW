@@ -1,0 +1,188 @@
+
+<% if @entity.present? %>
+    <h2><%= @entity.business_name %> Nit: <%=@entity.identification_number %></h2>
+<% end %>
+
+<% if @matrix_legal.present? %>
+    <%= link_to t('common.show_matrix_legal'), matrix_legal_path(@matrix_legal.id), class: 'btn btn-xs btn btn-warning' %>
+    <%= link_to t('common.factor'), crear_item_matrix_legals_path(@matrix_legal.id), class: 'btn btn-xs btn btn-warning' %>
+    <%= link_to t('common.indicator'), graficosml_path(@matrix_legal.id), class: 'btn btn-xs btn btn-success' %>
+
+    <div class="container col-12">
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <strong>Fecha de creación</strong><br>
+                <%= @matrix_legal.created_at.strftime("%F") %> 
+            </div>        
+            <div class="col-sm-3">
+                <strong>Última fecha de actualización</strong><br>
+               <%= @matrix_legal.updated_at.strftime("%F") %> 
+            </div>        
+        </div>
+
+        <div class="row g-4">
+            <div class="col-sm-3">
+                <strong><%= t('.code') %></strong><br>
+                <%= @matrix_legal.code %> 
+            </div>
+            <div class="col-sm-3">
+               <strong><%= t('.version') %></strong><br>
+               <%= @matrix_legal.version %> 
+            </div>
+            <div class="col-sm-3">
+                <strong><%= t('.date_create') %></strong><br>
+                <%= @matrix_legal.date_create %> 
+            </div>        
+            <div class="col-sm-3">
+                <strong><%= t('.date_update') %></strong><br>
+               <%= @matrix_legal.date_update %> 
+            </div>        
+        </div>
+        <hr>
+
+        <div class="row g-4">
+            <div class="col-sm-3">
+                <strong><%= t('.user_legal_representative') %></strong><br>
+                <%=  @matrix_legal.name_user(@matrix_legal.user_legal_representative)  %> 
+            </div>        
+            <div class="col-sm-3">
+               <strong><%= t('.firm_legal_representative') %></strong><br>
+               <%= @matrix_legal.label_firm(@matrix_legal.firm_legal_representative) %> 
+            </div>        
+            <div class="col-sm-3">
+               <strong><%= t('.date_firm_legal_representative') %></strong><br>
+               <%= @matrix_legal.date_firm_legal_representative %> 
+            </div>
+            <div class="col-sm-3">
+                <% if @matrix_legal.firm_legal_representative.to_i == 0 %>
+                    <%= link_to t('common.firmar'), firmar_rep_matrix_legals_path(@matrix_legal.id, 1), class: 'btn btn-xs btn btn-warning' %>
+                <% end %>    
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-sm-3">
+                <strong><%= t('.user_adviser_sst') %></strong><br>
+                <%= @matrix_legal.name_user(@matrix_legal.user_adviser_sst) %> 
+            </div>        
+            <div class="col-sm-3">
+               <strong><%= t('.firm_adviser_sst') %></strong><br>
+               <%= @matrix_legal.label_firm(@matrix_legal.firm_adviser_sst) %> 
+            </div>        
+            <div class="col-sm-3">
+               <strong><%= t('.date_firm_adviser_sst') %></strong><br>
+               <%= @matrix_legal.date_firm_adviser_sst %> 
+            </div>
+            <div class="col-sm-3">
+                <% if @matrix_legal.firm_adviser_sst.to_i == 0 %>
+                    <%= link_to t('common.firmar'), firmar_adv_matrix_legals_path(@matrix_legal.id, 2), class: 'btn btn-xs btn btn-warning' %>
+                <% end %>    
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-sm-3">
+                <strong><%= t('.user_responsible_sst') %></strong><br>
+                <%= @matrix_legal.name_user(@matrix_legal.user_responsible_sst) %> 
+            </div>        
+            <div class="col-sm-3">
+                <strong><%= t('.firm_responsible_sst') %></strong><br>
+               <%= @matrix_legal.label_firm(@matrix_legal.firm_responsible_sst) %> 
+            </div>        
+            <div class="col-sm-3">
+               <strong><%= t('.date_firm_responsible_sst') %></strong><br>
+               <%= @matrix_legal.date_firm_responsible_sst %> 
+            </div>
+            <div class="col-sm-3">
+                <% if @matrix_legal.firm_responsible_sst == 0 %>
+                    <%= link_to t('common.firmar'), firmar_res_matrix_legals_path(@matrix_legal.id, 3), class: 'btn btn-xs btn btn-warning' %>
+                <% end %>     
+            </div>
+        </div>
+    
+    </div>           
+
+
+
+
+
+
+    <br> 
+        <div class="container">
+            <h class="display-6">Resumen estado de los requisitos legales</h>
+        </div> 
+        <div class="container">
+            <table class="table table-hover">
+                <tr>
+                    <td>
+                        <a class="btn btn-primary" href="<%= total_items_matrix_legals_path(@matrix_legal.id, 3)%>" role="button" >
+                            Total Requisitos Legales <span class="badge bg-secondary"><%= @total_items.to_i %></td> </span>
+                        </button>
+                    </td> 
+                    <td>
+                        <a class="btn btn-primary" href="<%= total_items_matrix_legals_path(@matrix_legal.id, 0)%>" role="button" >
+                            No cumplidos <span class="badge bg-danger"><%= @no.to_i %></td> </span>
+                        </button>
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" href="<%= total_items_matrix_legals_path(@matrix_legal.id, 1)%>" role="button" >
+                            Parcialmente cumplidos <span class="badge bg-warning"><%= @parcial.to_i %></td> </span>
+                        </button>
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" href="<%= total_items_matrix_legals_path(@matrix_legal.id, 2)%>" role="button" >
+                            Cumplidos <span class="badge bg-success"><%= @si.to_i %></td> </span>
+                        </button>
+                    </td>
+                </tr>
+            </table>  
+        </div> 
+
+
+
+    <hr>
+
+    <br>
+    <div class="d-flex">
+        <div class="container">
+            <h class="display-6">Requisitos Legales</h>
+        </div> 
+    </div>
+    <hr>
+    <% if @matrix_legal_items.present? %>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col"><%= t('.consecutive') %></th>
+                    <th scope="col"><%= t('.year') %></th>
+                    <th scope="col"><%= t('.risk_factor') %></th>
+                    <th scope="col"><%= t('.responsible') %></th>
+                    <th scope="col"><%= t('.meets') %></th>
+                    <th scope="col"><%= t('.description_compliance') %></th>
+                    <th scope="col"><%= t('.attach_evidence') %></th>
+                    <th scope="col">Editar</th>
+                </tr>
+            </thead> 
+            <tbody>
+                <% @matrix_legal_items.each do |matrix_legal_item| %>
+                    <tr>
+                        <td><%= matrix_legal_item.consecutive %></td>
+                        <td><%= matrix_legal_item.year %></td>
+                        <td><%= matrix_legal_item.risk_factor %></td>
+                        <td><%= matrix_legal_item.responsible %></td>
+                        <td><%= matrix_legal_item.label_meets(matrix_legal_item.meets) %></td>
+                        <td><%= matrix_legal_item.description_compliance %></td>
+                        <td><%= link_to "Descargar Archivo", rails_blob_path(matrix_legal_item.attach_evidence, disposition: 'attachment'), class: 'btn btn-sm btn-success' if matrix_legal_item.attach_evidence.attached? %></td>    
+                        <td><%= link_to t('common.edit'), edit_matrix_legal_item_path(matrix_legal_item), class: 'btn btn-xs btn-primary'  %></td>
+                    </tr>
+                <% end %>           
+            </tbody>      
+        </table>  
+    <% end %>     
+<% else %>
+    <div>
+        <%= link_to t('.create_matrix_legal'), new_matrix_legal_path(entity_id: @entity.id), class: 'btn btn-xs btn-primary'  %>
+    </div>
+<% end %>
+
+

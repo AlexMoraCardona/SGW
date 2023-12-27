@@ -1,0 +1,44 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @allow_exam do |form| %>
+        <% @allow_exam.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+
+        <div class="form-group">    
+            <%= form.label :adm_exam_id, style: "display: block" %>
+            <%= form.collection_select :adm_exam_id, AdmExam.all.order(id: :asc), :id, :description, { prompt: '--Seleccionar Evaluación--' },
+            { class: 'form-control input-sm select2' } %>
+        </div>
+        <br>
+
+        <div class="form-group">    
+                <%= form.label :entity_id, style: "display: block" %>
+                <%= form.collection_select :entity_id, Entity.all.order(id: :asc), :id, :business_name, { prompt: '--Seleccionar Entidad--' },
+                { class: 'form-control input-sm select2' } %>
+        </div>        
+        <br>    
+        <div class="row g-2">
+            <div class="col-sm-4">
+                <%= form.label :date_initial, style: "display: block" %>
+                <%= form.date_field :date_initial,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-4">
+                <%= form.label :date_final, style: "display: block" %>
+                <%= form.date_field :date_final,  class: "form-control" %>
+            </div>        
+        </div>  
+
+        <%= form.hidden_field :user_id, :value => Current.user.id.to_i, class: "form-control" %>
+
+        <br>
+
+        <div class="form-group">   
+            <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        </div>    
+    <% end %>
+</div>        
+<br>
+

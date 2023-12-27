@@ -30,6 +30,11 @@ gem "jbuilder"
 # bootstrap 5
 gem "bootstrap"
 
+# graficar
+gem 'chartkick', '~> 5.0', '>= 5.0.2'
+#agrupar para graficar
+gem "groupdate"
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 
@@ -49,7 +54,7 @@ gem "bootsnap", require: false
 gem "sassc-rails"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-# gem "image_processing", "~> 1.2"
+gem "image_processing", "~> 1.2"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -67,3 +72,23 @@ group :development do
   # gem "spring"
 end
 
+
+gem "draper", "~> 4.0"
+
+gem "pg_search", "~> 2.3"
+
+#Gemas para generar pdf produccion
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
+
+# Gema para traducir las fechas
+gem 'rails-i18n'
+
+# Gema para paginar
+gem 'will_paginate', '~> 4.0'
+gem 'bootstrap-will_paginate'
+
+#gemas para crear archivos xls
+gem 'rubyzip', '>= 1.2.1'
+gem 'axlsx'
+gem 'axlsx_rails'

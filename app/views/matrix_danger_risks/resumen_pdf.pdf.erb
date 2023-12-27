@@ -1,0 +1,100 @@
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+    <%= javascript_importmap_tags %>
+</head>
+
+<div>
+    <br>
+    <table class="table table-hover"> 
+        <thead>
+            <tr>
+                <td rowspan="2">
+                    <% if @entity.logo.present? then %>
+                        <%=  image_tag  @entity.logo, class: "image_peq" %>
+                    <% end %>
+                </td>
+                <td>
+                    <h2 style="text-align:center">MATRIZ DE IDENTIFICACIÓN DE PELIGROS, EVALUACIÓN Y VALORACION DE LOS RIESGOS</h2>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h2 style="text-align:center"><%= @entity.business_name %>  Nit: <%= @entity.identification_number if @entity.present? %></h2>
+                </td>
+            </tr>
+        </thead>
+        
+    </table>
+    <hr>
+
+<% if @matrix_danger_risk.present? %>
+    <table class="table table-hover"> 
+        <thead>
+            <tr>
+                <th scope="col">Fecha creación</th>
+                <th scope="col">Fecha actualización</th>
+                <th scope="col">Representante legal</th>
+                <th scope="col">Asesor SST</th>
+                <th scope="col">Responsable SST</th>
+
+            </tr>
+        </thead>
+        <tr>  
+            <td scope="col"><%= @matrix_danger_risk.created_at %></td>   
+            <td scope="col"><%= @matrix_danger_risk.updated_at %></td>
+            <td scope="col"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_legal_representative) %></td>
+            <td scope="col"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_adviser_sst) %></td>
+            <td scope="col"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_responsible_sst) %></td> 
+        </tr>
+    </table>  
+    <br>
+    <h2>Peligros y Riesgos</h2>
+    <table class="table table-hover"> 
+        <thead> 
+            <tr>
+                <th scope="col">Nro.</th>
+                <th scope="col">Fecha propuesta</th>
+                <th scope="col">Tarea</th>
+                <th scope="col">Descripción de Peligro</th>
+                <th scope="col">Nivel de riesgo</th>
+                <th scope="col">Control de ingeniería</th>
+                <th scope="col">Controles administrativas, señalización advertencia</th>
+                <th scope="col">Equipos/Elementos de protección personal</th>
+            </tr>
+        </thead>
+
+        <% @matrix_danger_items.each do |matrix_danger_item| %>
+            <tr> 
+                <td scope="col"><%= matrix_danger_item.consecutive %></td>  
+                <td scope="col"><%= matrix_danger_item.proposed_date %></td>
+                <td scope="col"><%= matrix_danger_item.task %></td>  
+                <td scope="col"><%= matrix_danger_item.clasification_danger_detail.name if matrix_danger_item.clasification_danger_detail_id.present? && matrix_danger_item.clasification_danger_detail_id.to_i > 0 %></td>
+                <% if matrix_danger_item.risk_level_interpretation.to_s == 'I'  %>
+                    <td style="border:1px solid black; text-align:center; background-color:#F03553"><%= matrix_danger_item.risk_level_interpretation %></td>
+                <% end  %>    
+                <% if matrix_danger_item.risk_level_interpretation.to_s == 'II'  %>
+                    <td style="border:1px solid black; text-align:center; background-color:#D98F3B"><%= matrix_danger_item.risk_level_interpretation %></td>
+                <% end  %>    
+               <% if matrix_danger_item.risk_level_interpretation.to_s == 'III'  %>
+                    <td style="border:1px solid black; text-align:center; background-color:#F0E835"><%= matrix_danger_item.risk_level_interpretation %></td>
+                <% end  %>    
+               <% if matrix_danger_item.risk_level_interpretation.to_s == 'IV'  %>
+                    <td style="border:1px solid black; text-align:center; background-color:#038018"><%= matrix_danger_item.risk_level_interpretation %></td>
+                <% end  %> 
+                <td scope="col"><%= matrix_danger_item.intervention_measures_engineering_control %></td>  
+                <td scope="col"><%= matrix_danger_item.intervention_measures_acsw %></td>  
+                <td scope="col"><%= matrix_danger_item.intervention_measures_ppee %></td>  
+            </tr>
+        <% end %>  
+    </table>  
+    <br> 
+    <hr> 
+<% end %>
+
+
+
+</div>    

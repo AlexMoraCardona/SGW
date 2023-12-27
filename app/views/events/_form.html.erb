@@ -1,0 +1,94 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @event do |form| %>
+        <% @event.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+
+        <div class="row g-3">
+            <div class="col-sm-8">
+                <%= form.label :entity_id, style: "display: block" %>
+                <%= form.collection_select :entity_id, Entity.all.order(id: :asc), :id, :business_name, { prompt: '--Seleccionar--' },
+                { class: 'form-control input-sm select2' } %>
+            </div>        
+            <div class="col-sm-3">
+                <%= form.label :date_new, style: "display: block" %>
+                <%= form.date_field :date_new,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-3">
+            <div class="col-sm-11">
+                <%= form.label :user_id, style: "display: block" %>
+                <%= form.collection_select :user_id, User.all.order(id: :asc), :id, :name, { prompt: '--Seleccionar--' },
+                { class: 'form-control input-sm select2' } %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-3">
+            <div class="col-sm-4">
+                <%= form.label :work_accident, style: "display: block" %>
+                <%= form.radio_button :work_accident, 0 %>
+                <label for="no_accidente_trabajo">NO</label>
+                <%= form.radio_button :work_accident, 1 %>
+                <label for="si_accidente_trabajo">SI</label>
+            </div>        
+            <div class="col-sm-4">
+                <%= form.label :mortal_accident, style: "display: block" %>
+                <%= form.radio_button :mortal_accident, 0 %>
+                <label for="no_accidente_mortal">NO</label>
+                <%= form.radio_button :mortal_accident, 1 %>
+                <label for="si_accidente_mortal">SI</label>
+            </div>        
+            <div class="col-sm-3">
+                <%= form.label :occupational_disease, style: "display: block" %>
+                <%= form.radio_button :occupational_disease, 0 %>
+                <label for="no_enfermedad_profesional">NO</label>
+                <%= form.radio_button :occupational_disease, 1 %>
+                <label for="si_enfermedad_profesional">SI</label>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-3">
+            <div class="col-sm-4">
+                <%= form.label :disability_start_date, style: "display: block" %>
+                <%= form.date_field :disability_start_date,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-4">
+                <%= form.label :disability_end_date, style: "display: block" %>
+                <%= form.date_field :disability_end_date,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-3">
+                <%= form.label :days_absenteeism, style: "display: block" %>
+                <%= form.number_field :days_absenteeism,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-3">
+            <div class="col-sm-4">
+                <%= form.label :laboral_inhability, style: "display: block" %>
+                <%= form.radio_button :laboral_inhability, 0 %>
+                <label for="no_enfermedad_laboral">NO</label>
+                <%= form.radio_button :laboral_inhability, 1 %>
+                <label for="si_enfermedad_laboral">SI</label>
+            </div>        
+            <div class="col-sm-4">
+                <%= form.label :common_inhability, style: "display: block" %>
+                <%= form.radio_button :common_inhability, 0 %>
+                <label for="no_enfermedad_comun">NO</label>
+                <%= form.radio_button :common_inhability, 1 %>
+                <label for="si_enfermedad_comun">SI</label>
+            </div>        
+        </div>   
+
+        <%= form.hidden_field :user_reports, :value => Current.user.id, class: "form-control" %>
+
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, events_path %>
+    <% end %>
+</div>
+<br>
+

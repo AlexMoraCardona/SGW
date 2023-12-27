@@ -1,0 +1,119 @@
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+    <%= javascript_importmap_tags %>
+</head>
+<div> 
+    <div>
+        <br>
+    </div>
+
+    <div class="row">
+        <div class="col-11">
+            <div class="row">
+                <h6>COMITÉ DE CONVIVENCIA LABORAL:</h6>
+            </div>
+        </div>
+    </div>
+    <hr>  
+    <div class="row">
+        <div class="col-11">
+            <div class="row">
+                <h6>Nombre:  <strong><%= @colaborador_ssst.name if @colaborador_ssst.present? %></strong></h6>
+                <h6>Cargo:  <strong><%= @colaborador_ssst.activity if @colaborador_ssst.present? %></strong></h6>
+            </div>
+        </div>
+    </div>
+    <hr>  
+    <div class="row">
+        <div class="col-11">
+            <div class="row">
+                <h6><strong>Responsabilidades en Seguridad y Salud en el Trabajo</strong></h6>
+            </div>
+        </div>
+    </div>
+
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+               * Recibir y dar trámite a las quejas presentadas en las que se describan situaciones que puedan constituir acoso laboral, así como las pruebas que las soportan. <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+               * Examinar de manera confidencial los casos específicos o puntuales en los que se formule queja o reclamo, que pudieran tipificar conductas o circunstancias de acoso laboral, al interior de la entidad pública o empresa privada.  <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+               * Escuchar a las partes involucradas de manera individual sobre los hechos que dieron lugar a la queja.  <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+               * Adelantar reuniones con el fin de crear un espacio de diálogo entre las partes involucradas, promoviendo compromisos mutuos para llegar a una solución efectiva de las controversias.  <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+               * Formular planes de mejora y hacer seguimiento a los compromisos. <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+               * Presentar a la alta dirección las recomendaciones para el desarrollo efectivo de las medidas preventivas y correctivas del acoso laboral. <br>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+               * Elaborar informes trimestrales sobre la gestión del Comité que incluya estadísticas de las quejas, seguimiento de los casos y recomendaciones. <br>
+            </td>
+        </tr>
+
+        <tr><td><br></td></tr>                
+    </table>
+    <% @firms.each do |firm| %>
+        <% if firm.legal_representative == 0 %>
+            <div class="row"> 
+                <div class="col-11">
+                    <div>&nbsp;</div>
+                    <% if firm.authorize_firm == 1 %>
+                       <% if firm.user.firm.attached? %>
+                          <% if firm.user.firm.image? %> 
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= image_tag firm.user.firm, class: "firma" %>
+                               <p>Firma Empleado: ________________________________</p>
+                          <% end %>
+                        <% end %>
+                    <% else %>    
+                        <p>Firma Empleado: ________________________________</p>
+                    <% end %>     
+                </div>
+            </div>
+        <% end %>    
+    <% end %>
+    <% @firms.each do |firm| %>
+        <% if firm.legal_representative == 1 %>
+            <div class="row"> 
+                <div class="col-11">
+                    <div>&nbsp;</div>
+                    <% if firm.authorize_firm == 1 %>
+                       <% if firm.user.firm.attached? %>
+                          <% if firm.user.firm.image? %> 
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= image_tag firm.user.firm, class: "firma" %>
+                               <p>Firma Representante Legal: ________________________________</p>
+                          <% end %>
+                        <% end %>
+                    <% else %>    
+                        <p>Firma Representante Legal: ________________________________</p>
+                    <% end %>     
+                </div>
+            </div>
+            <br>
+        <% end %>    
+    <% end %>
+
+</div>
+<br>

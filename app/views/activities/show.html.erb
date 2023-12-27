@@ -1,0 +1,79 @@
+
+<div class="container col-11 card p-5">
+    <div class="row g-3">
+        <div class="col-sm-8">
+            <h4 class="display-7"><%= @calendar.name_day %>, <%= @calendar.day %> de <%= @calendar.label_month(@calendar.month) %> de <%= @calendar.year %></h4>
+        </div>
+        <div class="col-sm-3">    
+            <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, home_path %>
+        </div>    
+    </div>
+    <br>
+    <div class="form-group">
+        <strong><%= t('.entity_id') %></strong>
+        <%= @activity.entity.business_name %>    
+    </div>
+
+    <div class="form-group">
+        <strong><%= t('.origin') %></strong>
+        <%= @activity.origin %>    
+    </div>
+
+    <div class="form-group">    
+        <strong><%= t('.description') %></strong>
+        <%= @activity.description %>    
+    </div>
+
+    <div class="row g-3">
+        <div class="col-sm-4">
+            <strong><%= t('.place') %></strong><br>
+            <%= @activity.place %>
+        </div>        
+        <div class="col-sm-4">
+            <strong><%= t('.citation') %></strong><br>
+            <%= @activity.citation.strftime("%I:%M %p")  %> 
+        </div>        
+        <div class="col-sm-3">
+            <strong><%= t('.state') %></strong><br>
+            <%= @activity.label_state(@activity.state) %> 
+        </div>        
+    </div>  
+
+    <div class="row g-2">
+        <div class="col-sm-8">
+            <strong><%= t('.user_id') %></strong>
+            <%= @activity.user.name %>
+        </div>        
+        <div class="col-sm-3">
+            <strong><%= t('.notify') %></strong>
+            <%= @activity.label_si_no(@activity.notify) %> 
+        </div>        
+    </div>  
+    <div class="form-group">
+        <strong><%= t('.observation') %></strong>
+        <%= @activity.observation %>    
+    </div>
+    <br>
+    <div class="container">
+        <h4 class="display-8">Participantes:</h4>
+    </div>
+    <hr>
+    <table class="table table-hover"> 
+        <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Asistencia Obligatoria</th>
+            <th scope="col">Confirma asistencia</th>
+            <th scope="col">Fecha de confirmación</th>
+            <th scope="col">Asistió</th>
+        </tr>
+        <% @activity_users.where("activity_id = ?", @activity.id).each do |activity_user| %>
+            <tr>
+                <td><%= activity_user.user.name %></td> 
+                <td><%= activity_user.label_si_no(activity_user.mandatory) %></td> 
+                <td><%= activity_user.label_si_no(activity_user.confirm) %></td> 
+                <td><%= activity_user.date_confirm %></td> 
+                <td><%= activity_user.label_si_no(activity_user.attended) %></td> 
+            <tr> 
+        <% end %>  
+    </table>  
+</div> 

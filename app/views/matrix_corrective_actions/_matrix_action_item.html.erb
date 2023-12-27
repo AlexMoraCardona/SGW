@@ -1,0 +1,59 @@
+<% if @matrix_danger_items.present? %>
+<table style="border:1px solid black">
+    <thead>
+        <tr>
+            <th scope="col" style="border:1px solid black"><%= t('.consecutive') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.year') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.clasification_type_corrective') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.campus') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.date_action_conformity') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.origin_action') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.area') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.description_action') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.type_corrective') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.action_implement') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.responsible') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.commitment_date') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.closet_date') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.took_actions') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.state_actions') %></th>
+            <th scope="col" style="border:1px solid black">Editar</th>
+        </tr> 
+    </thead> 
+    <tbody>
+        <% @matrix_action_items.each do |matrix_action_item| %>
+            <tr>
+                <td style="border:1px solid black"><%= matrix_action_item.consecutive %></td>
+                <td style="border:1px solid black"><%= matrix_action_item.year %></td>
+                <td style="border:1px solid black"><%= matrix_action_item.clasification_type_corrective %></td>
+                <td style="border:1px solid black"><%= matrix_action_item.campus %></td>
+                <td style="border:1px solid black"><%= matrix_action_item.date_action_conformity %></td>
+                <td style="border:1px solid black"><%= matrix_action_item.label_origin_action(matrix_action_item.origin_action) %></td>
+                <td style="border:1px solid black"><%= matrix_action_item.area %></td>
+                <td style="border:1px solid black"><%= matrix_action_item.description_action %></td>
+                <% if matrix_action_item.type_corrective.to_i == 0  %> 
+                    <td style="border:1px solid black; text-align:center; background-color:#038018">Acción Preventiva</td>
+                <% end  %>    
+                <% if matrix_action_item.type_corrective.to_i == 1  %>
+                    <td style="border:1px solid black; text-align:center; background-color:#F0E835">Acción de Mejora</td>
+                <% end  %>    
+                <% if matrix_action_item.type_corrective.to_i == 2  %>
+                    <td style="border:1px solid black; text-align:center; background-color:#F03553">Acción Correctiva</td>
+                <% end  %>    
+                <td style="border:1px solid black"><%= matrix_action_item.label_action_implement %></td>
+                <td style="border:1px solid black"><%= matrix_action_item.responsible %></td>
+                <td style="border:1px solid black"><%= matrix_action_item.commitment_date %></td>
+                <td style="border:1px solid black"><%= matrix_action_item.closet_date %></td>
+                <td style="border:1px solid black"><%= matrix_action_item.label_si_no(matrix_action_item.took_actions) %></td>
+                <td style="border:1px solid black"><%= matrix_action_item.label_state_actions(matrix_action_item.state_actions) %></td>
+                <td style="border:1px solid black"><%= link_to t('common.edit'), edit_matrix_action_item_path(matrix_action_item), class: 'btn btn-xs btn-primary'  %></td>
+            </tr>
+        <% end %>           
+    </tbody>      
+</table>  
+<% end %>     
+
+
+
+
+

@@ -1,0 +1,55 @@
+<br>
+<div class="container col-11"> 
+    <div>
+        <h3 style="text-align:center">Indicadores Matriz Plan de Trabajo Anual año: <%= @annual_work_plan.year %></h3>
+        <h3 style="text-align:center"><%= @entity.business_name %>  Nit:<%= @entity.identification_number %></h3>
+    </div> 
+
+    <hr>
+    
+   
+    <div class="row g-2">
+        <div class="col-sm-5">
+            <table  class="table" >
+                <thead>
+                    <tr>
+                        <th colspan="3"; style="text-align:center">Cumplimiento Objetivos</th>
+                    </tr>
+                    <tr>
+                        <th scope="col" style="text-align:center">Estado</th>
+                        <th scope="col" style="text-align:center">Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%  if @datos_objetivos.present? %>
+                        <%  @datos_objetivos.each  do |dat| %>
+                        
+                            <tr>
+                                <% if dat[0].to_s == 'Planeado'  %>
+                                    <td style="border:1px solid black; text-align:center; background-color:#F03553">Planeado</td>
+                                <% end  %>    
+                                <% if dat[0].to_s == 'Ejecutado'  %>
+                                    <td style="border:1px solid black; text-align:center; background-color:#038018">Ejecutado</td>
+                                <% end  %>    
+                                <td style="text-align:center"><%= dat[1] %></td>
+                            </tr>    
+                        <% end %>
+                        <tr>
+                            <td colspan="2"; style="text-align:center">Total</td>
+                            <td style="text-align:center"><%= @total %></td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>        
+        <div class="col-sm-5">
+            <%= column_chart  @datos_objetivos, title: "Indicador Cumplimiento", download: {filename: "Cumplimiento"}, download: {background: "#FFFFFF"}, xtitle: "Nivel de cumplimiento", ytitle: "Cantidad", prefix: "Cantidad: " if @datos_objetivos.present? %>
+        </div>        
+
+    </div>  
+    <hr>
+    
+</div>  
+
+
+

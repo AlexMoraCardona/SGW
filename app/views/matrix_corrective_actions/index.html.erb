@@ -1,0 +1,24 @@
+<br>
+<div class="container col-11" 
+    <br>
+        <h4>MATRIZ DE SEGUIMIENTO DE ACCIONES CORRECTIVAS PREVENTIVAS Y DE MEJORA</h4>
+    <hr>
+    
+    <br>
+ 
+    <% if params[:entity_id].present? %>
+        <%= render 'matrix_corrective_action' %> 
+    <% else %>
+        <%= form_with model: @entity, method: :get do |form| %>
+            <div class="row g-2">
+                <div class="col-sm-7">
+                    <%= form.label :Entidad, style: "display: block" %>
+                    <%= form.collection_select :entity_id, @entities.order(id: :asc), :id, :business_name, { prompt: '--Seleccionar Entidad--' },
+                    { class: 'form-control input-sm select2' } %>
+                </div>
+            </div>    
+            <br>    
+            <button type="submit" class="btn btn-primary">Consultar</button>
+        <% end %>
+
+    <% end %>     

@@ -6,11 +6,11 @@ class Authentication::SessionsController < ApplicationController
     end
 
     def create
-        @user = User.find_by("(email = :login OR username = :login) AND state = true ", { login: params[:login]})
+        @user = User.find_by("(email = :login OR username = :login) AND state = 1 ", { login: params[:login]})
 
         if @user&.authenticate(params[:password])
             session[:user_id] = @user.id
-            redirect_to levels_path, notice: t('.created')
+            redirect_to home_path, notice: t('.created')
         else
             redirect_to new_session_path, alert: t('.failed')
         end     

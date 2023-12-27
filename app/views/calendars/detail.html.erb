@@ -1,0 +1,103 @@
+<div class="container col-11 card p-5">
+    <br>
+
+    <div class="container">
+        <h4 class="display-7"><%= @calendar.name_day %>, <%= @calendar.day %> de <%= @calendar.label_month(@calendar.month) %> de <%= @calendar.year %></h4>
+        <%= link_to t('common.new_activity'), nueva_actividad_path(@calendar.id), class: 'btn btn-xs btn btn-success' %>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, calendar_path(Date.today.year) %>
+    </div> 
+    <hr>
+    <div class="container">
+        <h4 class="display-8">Actividades</h4>
+    </div> 
+    <hr>
+    <% @activities.where("calendar_id = ?", @calendar.id).each do |activity| %>
+
+        <div class="container col-11 card p-5">
+            <div class="form-group">
+                <%= link_to t('common.edit'), edit_activity_path(activity), class: 'btn btn-xs btn-primary'  %>
+                <%= link_to t('common.select_users'), seleccion_path(activity), class: 'btn btn-xs btn-primary'  %>
+            </div>
+            <br>
+            <h4 class="display-7"><%= @calendar.name_day %>, <%= @calendar.day %> de <%= @calendar.label_month(@calendar.month) %> de <%= @calendar.year %></h4>
+            <br>
+            <div class="form-group">
+                <strong><%= t('.entity_id') %></strong>
+                <%= activity.entity.business_name %>    
+            </div>
+
+            <div class="form-group">
+                <strong><%= t('.origin') %></strong>
+                <%= activity.origin %>    
+            </div>
+
+            <div class="form-group">    
+                <strong><%= t('.description') %></strong>
+                <%= activity.description %>    
+            </div>
+
+            <div class="row g-3">
+                <div class="col-sm-4">
+                    <strong><%= t('.place') %></strong><br>
+                    <%= activity.place %>
+                </div>        
+                <div class="col-sm-4">
+                    <strong><%= t('.citation') %></strong><br>
+                    <%= activity.citation.strftime("%I:%M %p")  %> 
+                </div>        
+                <div class="col-sm-3">
+                    <strong><%= t('.state') %></strong><br>
+                    <%= activity.label_state(activity.state) %> 
+                </div>        
+            </div>  
+
+            <div class="row g-2">
+                <div class="col-sm-8">
+                    <strong><%= t('.user_id') %></strong>
+                    <%= activity.user.name %>
+                </div>        
+                <div class="col-sm-3">
+                    <strong><%= t('.notify') %></strong>
+                    <%= activity.label_si_no(activity.notify) %> 
+                </div>        
+            </div>  
+            <div class="form-group">
+                <strong><%= t('.observation') %></strong>
+                <%= activity.observation %>    
+            </div>
+            <br>
+            <div class="container">
+                <h4 class="display-8">Participantes:</h4>
+            </div>
+            <hr>
+            <table class="table table-hover"> 
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Asistencia Obligatoria</th>
+                    <th scope="col">Confirma asistencia</th>
+                    <th scope="col">Fecha de confirmación</th>
+                    <th scope="col">Asistió</th>
+                    <th scope="col">Editar</th>
+                    <th scope="col">Borrar</th>
+                </tr>
+                <% @activity_users.where("activity_id = ?", activity.id).each do |activity_user| %>
+                    <tr>
+                        <td><%= activity_user.user.name %></td> 
+                        <td><%= activity_user.label_si_no(activity_user.mandatory) %></td> 
+                        <td><%= activity_user.label_si_no(activity_user.confirm) %></td> 
+                        <td><%= activity_user.date_confirm %></td> 
+                        <td><%= activity_user.label_si_no(activity_user.attended) %></td> 
+                        <td><%= link_to t('common.edit'), edit_activity_user_path(activity_user), class: 'btn btn-xs btn-primary'  %></td>
+                        <td><%= link_to t('common.delete'), activity_user, data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el participante?' }, class: 'btn btn-xs btn-danger' %></td>
+                    <tr> 
+                <% end %>  
+            </table>  
+        </div> 
+    <% end %>  
+    <br>
+    <div>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, calendar_path(Date.today.year) %>
+    </div>
+</div> 
+
+

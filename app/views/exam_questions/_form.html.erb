@@ -1,0 +1,63 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @exam_question do |form| %>
+        <% @exam_question.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+
+        <div class="row g-2">
+            <div class="col-sm-9">
+                <%= form.label :adm_exam_id, style: "display: block" %>
+                <%= form.collection_select :adm_exam_id, AdmExam.all.order(id: :asc), :id, :description, { prompt: '--Seleccionar Evaluación--' },
+                { class: 'form-control input-sm select2' } %>
+            </div>        
+            <div class="col-sm-2">
+                <%= form.label :number, style: "display: block" %>
+                <%= form.number_field :number,  class: "form-control", min:1 %>
+            </div>        
+        </div>  
+        <br>    
+        <div class="form-group">    
+            <%= form.label :question, style: "display: block" %>
+            <%= form.text_area :question,  class: "form-control" %>
+        </div>
+        <br>
+
+        <div class="form-group">    
+            <%= form.label :good_answe, style: "display: block" %>
+            <%= form.text_area :good_answe,  class: "form-control" %>
+        </div>
+        <br>
+
+        <div class="form-group">    
+            <%= form.label :bad_answer_one, style: "display: block" %>
+            <%= form.text_area :bad_answer_one,  class: "form-control" %>
+        </div>
+        <br>
+
+        <div class="form-group">    
+            <%= form.label :bad_answer_two, style: "display: block" %>
+            <%= form.text_area :bad_answer_two,  class: "form-control" %>
+        </div>
+        <br>
+
+        <div class="form-group">    
+            <%= form.label :bad_answer_three, style: "display: block" %>
+            <%= form.text_area :bad_answer_three,  class: "form-control" %>
+        </div>
+        <br>
+        <div class="form-group">    
+            <%= form.label :img_question,  style: "display: block" %> 
+            <%= form.file_field :img_question,  class: "form-control", accept:"image/*", capture:"environment" %>
+        </div>
+        <br>
+
+        <div class="form-group">   
+            <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        </div>    
+    <% end %>
+</div>        
+<br>
+

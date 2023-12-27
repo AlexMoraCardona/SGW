@@ -1,0 +1,41 @@
+
+<% if @matrix_danger_items.present? %>
+<table style="border:1px solid black">
+    <thead>
+        <tr>
+            <th scope="col" style="border:1px solid black"><%= t('.consecutive') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.risk_factor') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.issuing_entity') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.requirement') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.rule_name') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.applicable_article') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.apply') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.evidence_compliance') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.responsible') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.meets') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.description_compliance') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.attach_evidence') %></th>
+            <th scope="col" style="border:1px solid black">Editar</th>
+        </tr>
+    </thead> 
+    <tbody>
+        <% @matrix_legal_items.each do |matrix_legal_item| %>
+            <tr>
+                <td style="border:1px solid black"><%= matrix_legal_item.consecutive %></td>
+                <td style="border:1px solid black"><%= matrix_legal_item.risk_factor %></td>
+                <td style="border:1px solid black"><%= matrix_legal_item.issuing_entity %></td>
+                <td style="border:1px solid black"><%= matrix_legal_item.requirement %></td>
+                <td style="border:1px solid black"><%= matrix_legal_item.rule_name %></td>
+                <td style="border:1px solid black"><%= matrix_legal_item.applicable_article %></td>
+                <td style="border:1px solid black"><%= matrix_legal_item.label_apply(matrix_legal_item.apply) %></td>
+                <td style="border:1px solid black"><%= matrix_legal_item.evidence_compliance %></td>
+                <td style="border:1px solid black"><%= matrix_legal_item.responsible %></td>
+                <td style="border:1px solid black"><%= matrix_legal_item.label_meets(matrix_legal_item.meets) %></td>
+                <td style="border:1px solid black"><%= matrix_legal_item.description_compliance %></td>
+                <td style="border:1px solid black"><%= link_to "Descargar Archivo", rails_blob_path(matrix_legal_item.attach_evidence, disposition: 'attachment'), class: 'btn btn-sm btn-success' if matrix_legal_item.attach_evidence.attached? %></td>    
+                <td style="border:1px solid black"><%= link_to t('common.edit'), edit_matrix_legal_item_path(matrix_legal_item), class: 'btn btn-xs btn-primary'  %></td>
+            </tr>
+        <% end %>           
+    </tbody>      
+</table>  
+<% end %>     

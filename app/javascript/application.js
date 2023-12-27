@@ -4,3 +4,11 @@ import "controllers"
 
 import "popper"
 import "bootstrap" 
+
+import "chartkick"
+import "Chart.bundle"
+
+//import "direct_uploads"
+import "trix"
+import "@rails/actiontext"
+

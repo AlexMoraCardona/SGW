@@ -8,14 +8,23 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+
   </head>
 
   <body>
     <div class="col col-11">
-    <%= render 'shared/header' %>
     <%= render 'shared/flash' %>
-      <%= yield %>
+    <%= render 'shared/header' %>
+
+    <%= yield %>
     </div>
+    <script>
+        var popoverTriggerList = Array.prototype.slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl)
+        })
+    </script>
 
   </body>
 </html>

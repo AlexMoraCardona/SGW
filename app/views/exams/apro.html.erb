@@ -1,0 +1,41 @@
+<br>
+<div class="container col-11">
+        <div class="d-flex">
+            <div class="container">
+               <h2 class="display-5">Participantes Aprobados</h2>
+            </div> 
+        </div>
+        <hr>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Evaluacion nro:</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Participante</th>
+                <th scope="col">Respuestas correctas</th>
+                <th scope="col">Respuestas incorrectas</th>
+                <th scope="col">Porcentaje</th>
+                <th scope="col">Intentos realizados</th>
+            </tr>
+        </thead>
+        <tbody> 
+            <% @dets.each do |det| %> 
+                <% if det.resul == "Aprobado" %> 
+                    <tr> 
+                        <td><%= det.id %></td>
+                        <td><%= det.created_at.strftime("%Y-%m-%d  %I:%M %p") %></td>
+                        <td><%= det.user.name %></td>
+                        <td><%= det.total_good %></td>
+                        <td><%= det.total_bad %></td>
+                        <td><%= det.final_percentage %></td>
+                        <td><%= Exam.intentos(det.user_id, det.adm_exam_id) %></td>
+                    </tr>
+                <% end %>
+            <% end %>     
+        </tbody>      
+    </table>
+    <div class="form-group">    
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    </div>
+    <br>
+</div>

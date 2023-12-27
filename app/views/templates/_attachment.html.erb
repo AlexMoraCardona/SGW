@@ -1,0 +1,35 @@
+<% if @template.file.attached? %>  
+        <div class="row">
+            <% if @template.file.image? %>
+                <div class="message-image-container">
+                  <div>
+                    <%= image_tag(@template.file, class:"message-image", width: "400px" )%>
+                  </div>
+                  <div>
+                    <%= link_to "Descargar Archivo", rails_blob_path(@template.file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                  </div>
+                </div>
+            <% elsif @template.file.video? %>
+                <div>
+                  <%= video_tag url_for(@template.file), class:"message-video", controls: "", width: "400px" %>          
+                </div>
+                <div>
+                  <%= link_to "Descargar Archivo", rails_blob_path(@template.file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                </div>
+            <% elsif @template.file.audio? %>
+                <div>
+                   <%= audio_tag(url_for(@template.file), class:"message-audio", controls: "") %>          
+                </div>
+                <div>
+                    <%= link_to "Descargar Archivo", rails_blob_path(@template.file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                </div>
+            <% else %>
+                <div>
+                    <%= link_to @template.file.filename, url_for(@template.file), class:"message-file" %>          
+                </div>
+                <div>
+                    <%= link_to "Descargar Archivo", rails_blob_path(@template.file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                </div>    
+            <% end %>
+        </div>
+<% end %>  

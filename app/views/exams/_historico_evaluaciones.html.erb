@@ -1,0 +1,72 @@
+        <br>
+        <h class="display-5" style="text-align:center">Resultados Evaluaciones</h>
+        <hr>
+        <% @adm_exams.each do |ad_ex| %>
+            <% @filtro_exams =    @exams.where("adm_exam_id = ?", ad_ex.id) %>
+            <% @filtro_cant =    @filtro_exams.count %>
+            <% if @filtro_cant > 0 %>
+                <% @allow_exam =  AllowExam.find_by(adm_exam_id: ad_ex.id) %>
+                <div class="form-group">    
+                    <h5><strong>Evaluación:</strong>
+                        <%= ad_ex.name %> <%= link_to 'Ver_detalle', ver_detalle_path(ad_ex), class: 'btn btn-xs btn-success' %>
+                    </h5>
+                </div>
+                <div class="form-group">    
+                    <h5><strong>Entidad:</strong>
+                        <%= @entity.business_name %> Nit: <%=@entity.identification_number %>
+                    </h5>    
+                </div>
+                <div class="row g-2">
+                    <div class="col-sm-5">
+                        <h5><strong>Fecha inicio evaluación:</strong>
+                            <%= @allow_exam.date_initial if @allow_exam.present?  %> 
+                        </h5>    
+                    </div>        
+                    <div class="col-sm-5">
+                        <h5><strong>Fecha final evaluación:</strong>
+                            <%= @allow_exam.date_final if @allow_exam.present? %>
+                        </h5>
+                    </div>        
+                </div>   
+                <br>
+                <h class="display-7" style="text-align:center">Resumen Evaluación</h>
+                <div class="row g-2">
+                    <div class="col-sm-5">
+                        <h5><strong>Número de Empleados:</strong>
+                            <%= Exam.numero_empleados(@entity.id) if @entity.present?  %> 
+                        </h5>
+                    </div>        
+                    <div class="col-sm-5">
+                        <% @vec = Exam.realiza(@entity.id, ad_ex.id) if @entity.present? %>
+                        
+                        <h5><strong>Empleados que realizaron la evaluación:</strong>
+                            <%= @vec[0] if @vec[0].present?  %>
+                        </h5>    
+                    </div>        
+                </div>   
+
+                <div class="row g-2">
+                    <div class="col-sm-5">
+                        <h5><%= link_to 'Aprobaron:', apro_path(@entity.id, ad_ex.id), class: 'btn btn-primary' %>
+                            Total <%= @vec[1] if @vec[1].present? %> - Porcentaje <%= @vec[3] if @vec[3].present? %>%
+                        </h5>    
+                    </div>        
+                    <div class="col-sm-5">
+                        <h5><%= link_to 'Reprobaron:', repro_path(@entity.id, ad_ex.id), class: 'btn btn-primary' %>
+                            Total <%= @vec[2] if @vec[2].present? %> - Porcentaje <%= @vec[4] if @vec[4].present? %>%
+                        </h5>    
+                    </div>        
+                </div>   
+                <hr>
+                <br>
+            <% end %>
+            
+        <% end %>
+
+
+
+
+
+
+
+

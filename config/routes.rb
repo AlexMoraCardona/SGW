@@ -1,10 +1,174 @@
 Rails.application.routes.draw do
-  resources :levels
+  
+  root :to =>  'homes#index' 
+  get 'home', to:  "homes#index"
+  
   namespace :authentication, path: '', as: ''  do
-    resources :users, only: [:new, :create]
+    resources :users
     resources :sessions, only: [:new, :create, :destroy]
   end  
+  
 
+  
+
+  resources :entities 
+  resources :levels
+  resources :administrative_political_divisions
+  resources :documents
+  resources :economic_activity_codes
+  resources :occupational_risk_managers
+  resources :risk_levels  
+  resources :cycles
+  resources :rules
+  resources :standars
+  resources :standar_details
+  resources :standar_detail_items
+  resources :templates 
+  resources :meeting_attendees
+  resources :meeting_commitments
+  resources :assistants
+  resources :employee_news
+  resources :events
+  resources :indicators
+  resources :firms
+  resources :participants
+  resources :evidences
+  resources :history_evaluations
+  resources :matrix_legal_items
+  resources :annual_work_plan_items
+  resources :clasification_dangers
+  resources :clasification_danger_details
+  resources :matrix_danger_items
+  resources :matrix_action_items
+  resources :locations
+  resources :adm_calendars
+  resources :calendars
+  resources :activities
+  resources :activity_users
+  resources :adm_exams
+  resources :exam_questions
+  resources :exams
+  resources :exam_details
+  resources :allow_exams
+  resources :contents
+
+
+  get '/adm_calendars/generar/:id', to: 'adm_calendars#generar', as: 'generar' 
+  get '/adm_calendars/ver_calendario/:id', to: 'adm_calendars#ver_calendario', as: 'ver_calendario' 
+  get '/calendars/detail/:id', to: 'calendars#detail', as: 'detail' 
+  get '/calendars/nueva_actividad/:id', to: 'calendars#nueva_actividad', as: 'nueva_actividad' 
+  get '/calendars/seleccion/:id', to: 'calendars#seleccion', as: 'seleccion' 
+  post '/calendars/seleccion/:id' => 'calendars#citar', as: 'citar'
+  get '/exams/evaluacion/:id', to: 'exams#evaluacion', as: 'evaluacion' 
+  post '/exams/guardar_respuesta/:id' => 'exams#guardar_respuesta', as: 'guardar_respuesta'
+  get '/exams/ver_respuesta/:id' => 'exams#ver_respuesta', as: 'ver_respuesta'
+  get '/exams/historia' => 'exams#historia', as: 'historia'
+  get '/exams/ver_detalle/:id' => 'exams#ver_detalle', as: 'ver_detalle'
+  get '/exams/repro/:id' => 'exams#repro', as: 'repro'
+  get '/exams/apro/:id' => 'exams#apro', as: 'apro'
+  get '/exams/repro_det/:id' => 'exams#repro_det', as: 'repro_det'
+  
+
+  resources :matrix_danger_risks do
+    collection do
+      get '/matrix_danger_risks/crear_item/:id', to: 'matrix_danger_risks#crear_item', as: 'crear_item'
+      get '/matrix_danger_risks/resumen_pdf/:id', to: 'matrix_danger_risks#resumen_pdf', as: 'resumen_pdf'
+      get '/matrix_danger_risks/total_items/:id', to: 'matrix_danger_risks#total_items', as: 'total_items'
+      get '/matrix_danger_risks/firmar_rep/:id', to: 'matrix_danger_risks#firmar_rep', as: 'firmar_rep'
+      get '/matrix_danger_risks/firmar_adv/:id', to: 'matrix_danger_risks#firmar_adv', as: 'firmar_adv'
+      get '/matrix_danger_risks/firmar_res/:id', to: 'matrix_danger_risks#firmar_res', as: 'firmar_res'
+
+    end  
+  end
+
+  resources :matrix_corrective_actions do
+    collection do
+      get '/matrix_corrective_actions/crear_item/:id', to: 'matrix_corrective_actions#crear_item', as: 'crear_item'
+      get '/matrix_corrective_actions/resumen_pdf/:id', to: 'matrix_corrective_actions#resumen_pdf', as: 'resumen_pdf'
+      get '/matrix_corrective_actions/total_items/:id', to: 'matrix_corrective_actions#total_items', as: 'total_items'
+      get '/matrix_corrective_actions/firmar_rep/:id', to: 'matrix_corrective_actions#firmar_rep', as: 'firmar_rep'
+      get '/matrix_corrective_actions/firmar_adv/:id', to: 'matrix_corrective_actions#firmar_adv', as: 'firmar_adv'
+      get '/matrix_corrective_actions/firmar_res/:id', to: 'matrix_corrective_actions#firmar_res', as: 'firmar_res'
+    end  
+  end
+  
+  resources :report_officials do
+    collection do
+      get '/report_officials/actualizarindicadores/:id', to: 'report_officials#actualizarindicadores', as: 'actualizar_indicadores'
+    end
+  end
+
+
+  resources :matrix_legals do
+    collection do
+      get '/matrix_legals/crear_item/:id', to: 'matrix_legals#crear_item', as: 'crear_item'
+      get :crear_historia
+      get '/ver_history/:id', to: 'matrix_legals#ver_history', as: 'ver_history' 
+      get '/show_history/:id', to: 'matrix_legals#show_history', as: 'show_history' 
+      get '/matrix_legals/total_items/:id', to: 'matrix_legals#total_items', as: 'total_items'
+      get '/matrix_legals/firmar_rep/:id', to: 'matrix_legals#firmar_rep', as: 'firmar_rep'
+      get '/matrix_legals/firmar_adv/:id', to: 'matrix_legals#firmar_adv', as: 'firmar_adv'
+      get '/matrix_legals/firmar_res/:id', to: 'matrix_legals#firmar_res', as: 'firmar_res'
+    end
+  end
+
+  resources :annual_work_plans do
+    collection do
+      get '/annual_work_plans/crear_item_plan/:id', to: 'annual_work_plans#crear_item_plan', as: 'crear_item_plan'
+      get '/annual_work_plans/ver_plan/:id', to: 'annual_work_plans#ver_plan', as: 'ver_plan'
+
+    end
+  end
+
+
+  resources :meeting_minutes do
+    collection do
+      get '/meeting_minutes/crear_asistente/:id', to: 'meeting_minutes#crear_asistente', as: 'crear_asistente'
+      get '/meeting_minutes/crear_compromiso/:id', to: 'meeting_minutes#crear_compromiso', as: 'crear_compromiso'
+      get '/meeting_minutes/crear_firma/:id', to: 'meeting_minutes#crear_firma', as: 'crear_firma'
+    end
+  end
+ 
+  resources :evaluation_rule_details do
+    member do
+      get 'crear_evidencia'
+      get '/evaluation_rule_details/crear_firma/:id', to: 'evaluation_rule_details#crear_firma', as: 'crear_firma'
+      get '/evaluation_rule_details/crear_participant/:id', to: 'evaluation_rule_details#crear_participant', as: 'crear_participant'
+      get '/evaluation_rule_details/actualizar_evidencia/:id', to: 'evaluation_rule_details#actualizar_evidencia', as: 'actualizar_evidencia'
+      get '/evaluation_rule_details/ver_evidencia/:id', to: 'evaluation_rule_details#ver_evidencia', as: 'ver_evidencia'
+
+    end
+  end
+
+  resources :evaluations do
+    collection do
+      get :crear_evaluacion
+      get :crear_historia
+      get '/ver_history/:id', to: 'evaluations#ver_history', as: 'ver_history' 
+    end
+  end
+
+  delete "attachments/:id/purge", to: "attachments#purge", as: "purge_attachment"
+
+  get '/indicadores/resultado', to: 'indicadores#resultado', as: 'resultado' 
+  post '/indicadores/resultado' => 'indicadores#consultar', as: 'consultar'
+  get '/indicadores/graficos/:id', to: 'indicadores#graficos', as: 'graficos' 
+  
+  get '/indicadores/resultadompr', to: 'indicadores#resultadompr', as: 'resultadompr' 
+  post '/indicadores/resultadompr' => 'indicadores#consultarmpr', as: 'consultarmpr'
+  get '/indicadores/graficosmpr/:id', to: 'indicadores#graficosmpr', as: 'graficosmpr' 
+
+  get '/indicadores/resultadoml', to: 'indicadores#resultadoml', as: 'resultadoml' 
+  post '/indicadores/resultadoml' => 'indicadores#consultarml', as: 'consultarml'
+  get '/indicadores/graficosml/:id', to: 'indicadores#graficosml', as: 'graficosml' 
+
+  get '/indicadores/resultadoacpm', to: 'indicadores#resultadoacpm', as: 'resultadoacpm' 
+  post '/indicadores/resultadoacpm' => 'indicadores#consultaracpm', as: 'consultaracpm'
+  get '/indicadores/graficosacpm/:id', to: 'indicadores#graficosacpm', as: 'graficosacpm' 
+
+  get '/indicadores/resultadompt', to: 'indicadores#resultadompt', as: 'resultadompt' 
+  post '/indicadores/resultadompt' => 'indicadores#consultarmpt', as: 'consultarmpt'
+  get '/indicadores/graficosmpt/:id', to: 'indicadores#graficosmpt', as: 'graficosmpt' 
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

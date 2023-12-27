@@ -1,0 +1,53 @@
+<div class="container col-12 card p-5">
+    <br>
+    <%= form_with model: @matrix_legal do |form| %>
+        <% @matrix_legal.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>
+
+
+        <div class="row g-4">
+            <div class="col-sm-2">
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingrese el código del formato.">Código Formato:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                <%= form.text_field :code,  class: "form-control" %>
+            </div> 
+            <div class="col-sm-2">
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingrese la versión del formato actual.">Versión Formato:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                <%= form.number_field :version,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-4">    
+               <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingrese la fecha de creación del formato.">Fecha creación formato:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                <%= form.date_field :date_create,  class: "form-control" %>
+            </div>                   
+            <div class="col-sm-4">    
+               <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingrese la fecha de actualización del formato.">Fecha actualización formato:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                <%= form.date_field :date_update,  class: "form-control" %>
+            </div>                   
+        </div>   
+        <br>
+        <div class="form-group">    
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Representante Legal.">Representante Legal:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+            <%= form.collection_select :user_legal_representative, User.all.order(id: :asc), :id,  :name, style: "width=50px" %>
+        </div>
+        <br>    
+        <div class="form-group">    
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Asesor SST.">Asesor SST:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+            <%= form.collection_select :user_adviser_sst, User.all.order(id: :asc), :id,  :name, style: "width=50px" %>
+        </div>
+        <br>    
+        <div class="form-group">    
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Responsable SST.">Responsable SST:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+            <%= form.collection_select :user_responsible_sst, User.all.order(id: :asc), :id,  :name, style: "width=50px" %>
+        </div>
+        <%= form.hidden_field :entity_id, :value => params[:entity_id].to_i, class: "form-control" %>
+
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    <% end %>
+</div>        
+<br>
+
+ 

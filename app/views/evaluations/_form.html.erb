@@ -1,0 +1,67 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @evaluation do |form| %>
+        <% @evaluation.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>   
+        
+        <div class="row g-3">
+            <div class="col-sm-6">
+                <%= form.label :entity_id, style: "display: block" %>
+                <%= form.collection_select :entity_id, Entity.all.order(id: :asc), :id, :business_name, { prompt: '--Seleccionar--' },
+                { class: 'form-control input-sm select2' } %>
+            </div>        
+            <div class="col-sm-6">
+                <%= form.label :date_evaluation, style: "display: block" %>
+                <%= form.date_field :date_evaluation,  class: "form-control" %>
+            </div>        
+        </div>   
+        
+        <div class="row g-3">
+            <div class="col-sm-6">
+                <%= form.label :number_employees, style: "display: block" %>
+                <%= form.number_field :number_employees,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-6">
+                <%= form.label :risk_level_id, style: "display: block" %>
+                <%= form.collection_select :risk_level_id, RiskLevel.all.order(id: :asc), :id, :name, { prompt: '--Seleccionar--' },
+                { class: 'form-control input-sm select2' } %>
+            </div>        
+        </div>  
+
+        <div class="form-group">    
+            <%= form.label :rule_id, style: "display: block" %>
+            <%= form.collection_select :rule_id, Rule.all.order(id: :asc), :id, :name, { prompt: '--Seleccionar--' },
+            { class: 'form-control input-sm select2' } %>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-sm-4">
+                <%= form.label :score, style: "display: block" %>
+                <%= form.number_field :score, in: 0.0..100.0, step: 0.1,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-4">
+                <%= form.label :percentage, style: "display: block" %>
+                <%= form.number_field :percentage, in: 0.0..100.0, step: 0.1,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-4">
+                <%= form.label :result, style: "display: block" %>
+                <%= form.text_field :result,  class: "form-control" %>
+            </div>        
+        </div>  
+
+        <div class="form-group">
+            
+            <%= form.label :observation, style: "display: block" %>
+            <%= form.rich_text_area :observation,  class: "form-control" %>
+        </div>
+
+
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, evaluations_path %>
+    <% end %>
+</div>     
+<br>

@@ -1,0 +1,35 @@
+<% @firms.each do |firm| %>
+    <% if firm.legal_representative == 0 %>
+        <div class="row  text-center"> 
+            <div class="col-11">
+                <div>&nbsp;</div>
+                <% if firm.authorize_firm == 1 %>
+                   <% if firm.user.firm.attached? %>
+                      <% if firm.user.firm.image? %> 
+                           <%= image_tag firm.user.firm, class: "firma" %>
+                           <p align="center">________________________________</p>
+                      <% end %>
+                    <% end %>
+                <% else %>    
+                    <p align="center">________________________________</p>
+                <% end %>     
+            </div>
+            <div class="col-11">
+                <div class="row">
+                    <h6><strong><%= firm.user.name %></strong></h6>
+                </div>
+            </div>
+            <div class="col-11">
+                <div class="row">
+                    <h6><%= firm.post %></h6>
+                </div>
+            </div>
+            <div class="col-11">
+                <div class="row">
+                    <h6><%= firm.user.document %></h6>
+                </div>
+            </div>
+
+        </div>
+    <% end %>    
+<% end %>

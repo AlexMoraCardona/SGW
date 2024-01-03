@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
@@ -90,44 +91,9 @@
 
         <tr><td><br></td></tr>                
     </table>
-    <% @firms.each do |firm| %>
-        <% if firm.legal_representative == 0 %>
-            <div class="row"> 
-                <div class="col-11">
-                    <div>&nbsp;</div>
-                    <% if firm.authorize_firm == 1 %>
-                        <% if firm.user.firm.attached? %>
-                            <% if firm.user.firm.image? %> 
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= image_tag firm.user.firm, class: "firma" %>
-                                <p>Firma Empleado: ________________________________</p>
-                            <% end %>
-                        <% end %>
-                    <% else %>    
-                        <p>Firma Empleado: ________________________________</p>
-                    <% end %>     
-                </div>
-            </div>
-        <% end %>    
-    <% end %>
-    <% @firms.each do |firm| %>
-        <% if firm.legal_representative == 1 %>
-            <div class="row"> 
-                <div class="col-11">
-                    <div>&nbsp;</div>
-                    <% if firm.authorize_firm == 1 %>
-                        <% if firm.user.firm.attached? %>
-                            <% if firm.user.firm.image? %> 
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= image_tag firm.user.firm, class: "firma" %>
-                                <p>Firma Representante Legal: ________________________________</p>
-                            <% end %>
-                        <% end %>
-                    <% else %>    
-                        <p>Firma Representante Legal: ________________________________</p>
-                    <% end %>     
-                </div>
-            </div>
-            <br>
-        <% end %>    
-    <% end %>
+
+    <%= render 'firmanorepresentantederecha' %>
+    <%= render 'firmarepresentantederecha' %>
+
 </div>
 <br>

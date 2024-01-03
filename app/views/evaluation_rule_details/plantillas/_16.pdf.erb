@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+    <%= javascript_importmap_tags %>
+</head>
+<div> 
+    <div>&nbsp;</div>
+    <div class="row">
+        <div class="col-11 text-center">
+            <div class="row">
+                <h5><strong>ACTA DE POSESIÓN COMITÉ  <%= @evidence.period if @evidence.present? %></strong></h5>
+            </div>
+        </div>
+    </div>
+
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                Siendo las <strong><%= @evidence.initial_time.strftime("%I:%M %p") if @evidence.initial_time.present? %></strong> del <strong><%= @evidence.date.day if @evidence.date.present? %></strong> de <strong><%= localize @evidence.date, format: "%B" if @evidence.date.present? %></strong> de <strong><%= @evidence.date.year if @evidence.date.present? %></strong>, el representante legal de <%= @evidence.entity.business_name %>, convoca a los ganadores de las votaciones por parte de los trabajadores y al trabajador escogido por el empleador para que tomen posesión de los cargos del COMITÉ DE CONVIVENCIA LABORAL. 
+            </td>
+        </tr>
+        <tr><td><br></td></tr>                
+
+        <tr>
+            <td>
+                <strong>POR PARTE DEL EMPLEADOR:</strong><br>
+            </td>
+        </tr>
+    </table>
+    <table>
+        <ul>
+            <% @participants.each do |participant| %>
+                <% if participant.company_representative == 1 %>
+                    <tr>
+                       <td style="text-align:justify">
+                            <div class="row"> 
+                                <div class="col-11">
+                                    <li>El señor(a): <strong><%= participant.user.name %></strong>, mayor de edad e identificada con cédula de ciudadanía N° <strong><%= participant.user.document %></strong> quien ocupa el cargo de: <strong><%= participant.user.activity %>.</strong></li>
+                                </div>
+                            </div>
+                        </td>    
+                    </tr>    
+                <% end %>
+            <% end %>
+        </ul>
+    </table>
+    <div><br></div>
+    <div class="row">
+        <div class="col-11">
+            <strong>POR PARTE DE LOS EMPLEADOS:</strong><br>
+        </div>
+    </div>
+    <table>
+        <ul>
+            <% @participants.each do |participant| %>
+                <% if participant.workers_representative == 1 %>
+                    <tr>
+                       <td style="text-align:justify">
+                            <div class="row"> 
+                                <div class="col-11">
+                                    <li>El señor(a): <strong><%= participant.user.name %></strong>, mayor de edad e identificada con cédula de ciudadanía N° <strong><%= participant.user.document %></strong> quien ocupa el cargo de: <strong><%= participant.user.activity %>.</strong></li>
+                                </div>
+                            </div>
+                        </td>    
+                    </tr>    
+                <% end %>
+            <% end %>
+        </ul>
+    </table>
+    <div><br></div>
+    <div class="row">
+        <div class="col-11">
+                Las personas que integrarán el comité de convivencia laboral recibirán el correspondiente manual y recibirán capacitación sobre el cargo que hoy toma posesión.
+        </div>
+    </div>
+    <div><br></div>
+    <div class="row">
+        <div class="col-11">
+            Siendo las <strong><%= @evidence.final_time.strftime("%I:%M %p") if @evidence.final_time.present? %></strong> se termina la reunión y firma por los miembros del comité. 
+        </div>
+    </div>
+
+
+    <%= render 'firmarepresentante' %>
+
+    <div class="row">
+        <div class="col-11">
+            Firman el <strong><%= @evidence.date.day if @evidence.date.present? %></strong> de <strong><%= localize @evidence.date, format: "%B" if @evidence.date.present? %></strong> de <strong><%= @evidence.date.year if @evidence.date.present? %></strong> en aceptación del nombramiento como miembros del Comité de Convivencia Laboral.
+         </div>
+    </div>
+
+    <%= render 'firmanorepresentante' %>
+</div>    

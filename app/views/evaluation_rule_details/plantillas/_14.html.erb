@@ -1,0 +1,52 @@
+<div class="container col-11 card p-5"> 
+    <%= render 'encabezado' %>
+    <div>&nbsp;</div>
+    
+    <div class="row">
+        <div class="col-11 text-center">
+            <div class="row">
+                <h5><strong>ACTA DE APERTURA DE ELECCIONES DE LOS CANDIDATOS PARA EL
+                COMITÉ DE CONVIVENCIA LABORAL</strong></h5>
+            </div>
+        </div>
+    </div>
+
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                Vigencia del Comité de: <%= @evidence.period if @evidence.present? %><br>
+            </td>
+        </tr>
+        <tr><td><br></td></tr>                
+
+        <tr>
+            <td style="text-align:justify"> 
+                En la ciudad de <strong><%= @evidence.place if @evidence.present? %></strong>, Siendo las  <strong><%= @evidence.initial_time.strftime("%I:%M %p") %></strong> del día <strong><%= @evidence.date.day if @evidence.date.present? %></strong> de <strong><%= localize @evidence.date, format: "%B" if @evidence.date.present? %></strong> de <strong><%= @evidence.date.year if @evidence.date.present? %></strong>, se dio apertura al proceso de votación para la elección de los candidatos al <strong>Comité de Convivencia Laboral</strong>, de acuerdo con lo establecido en la Resolución 652 de 2012, modificada por la Resolución 1356 de 2012 emanados del Ministerio de Trabajo, para el Período comprendido entre el año <strong><%= @evidence.year_initial if @evidence.present? %></strong> al <strong><%= @evidence.year_final if @evidence.present? %></strong>.<br>
+            </td>
+        </tr>
+        <tr><td><br></td></tr>                
+        <tr>
+            <td style="text-align:justify">
+                En calidad de Jurado de Votación se nombró a:<br>
+            </td>
+        </tr>
+        <tr><td><br></td></tr>                
+        <tr>
+            <td style="text-align:justify">
+                <ul>
+                    <% @participants.each do |participant| %>
+                        <div class="row"> 
+                            <div class="col-11">
+                                <li><strong><%= participant.user.name %></strong></li>
+                            </div>
+                        </div>
+                    <% end %>
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <%= render 'firmanorepresentante' %>
+    <%= render 'firmarepresentante' %>
+
+</div>

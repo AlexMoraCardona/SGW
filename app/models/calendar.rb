@@ -43,7 +43,7 @@ class Calendar < ApplicationRecord
         end    
     end
 
-    def label_month(month)
+    def self.label_month(month)
         if month == 1 ; 'enero'
         elsif  month == 2 ; 'febrero'
         elsif  month == 3 ; 'marzo'

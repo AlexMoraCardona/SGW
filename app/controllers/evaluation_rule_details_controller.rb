@@ -57,11 +57,11 @@ class EvaluationRuleDetailsController < ApplicationController
         @participants.each do |participant| 
             @responsable_ssst = User.find(participant.user_id) if participant.responsible_ssst == 1 
             @asesor_externo_ssst = User.find(participant.user_id) if participant.external_consultant == 1 
-            @colaborador_ssst = User.find(participant.user_id) if participant.collaborator == 1 
+            @colaborador_ssst = User.find(participant.user_id) if participant.collaborator == 1 && participant.person_complaining == 0 
             @presidente_comite = User.find(participant.user_id) if participant.joint_committee_president == 1 
             @secretario_comite = User.find(participant.user_id) if participant.joint_committee_secretary == 1 
             @vigia = User.find(participant.user_id) if participant.vigia == 1 
-
+            @colaborador_queja = User.find(participant.user_id) if participant.person_complaining == 1 
         end          
         @vista = 'evaluation_rule_details/plantillas/' + @evidence.template_id.to_s 
         @footer = 'Nit: ' + @evidence.entity.identification_number.to_s + ', Dirección: ' + @evidence.entity.entity_address.to_s
@@ -75,8 +75,8 @@ class EvaluationRuleDetailsController < ApplicationController
                          html: { 
                          template: 'evaluation_rule_details/headerformato'
                          }},
-                footer: {center: @footer,
-                         right: '[page] de [topage]'
+                footer: {
+                         right: 'Página: [page] de [topage]'
                         }
                 
                        } 

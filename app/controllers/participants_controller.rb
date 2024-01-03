@@ -48,7 +48,8 @@ class ParticipantsController < ApplicationController
         params.require(:participant).permit(:arl_activity_report, :quote_10_aditional_points, :degree, 
         :designating_by_legal_representative, :joint_committee_president, :joint_committee_secretary, 
         :post_copasst, :user_id, :evidence_id, :responsible_ssst, :external_consultant, :collaborator, 
-        :reported_activity, :employees_activity, :vigia)
+        :reported_activity, :employees_activity, :vigia, :jury_voting, :candidate, :number_votes, :workers_representative, 
+        :company_representative, :person_complaining)
     end 
 
 end  

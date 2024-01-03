@@ -46,7 +46,8 @@ class EvidencesController < ApplicationController
     def evidence_params
         params.require(:evidence).permit(:date, :date_update, :place, :goals, :number_attendees, 
         :number_officials, :period, :entity_id, :template_id, :evaluacion_rule_detail_id, :letter_value,
-         :value, :string, :initial_period, :final_period, :initial_time, :final_time, :vigia)
+         :value, :string, :initial_period, :final_period, :initial_time, :final_time, :vigia, :year_initial, :year_final, 
+         :month_initial, :month_final, :total_votes, :description_complaint, :data, :evidence_authority)
     end 
 
 end   

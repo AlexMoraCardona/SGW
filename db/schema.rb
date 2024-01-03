@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_18_202229) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_03_013637) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -376,6 +376,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_18_202229) do
     t.time "initial_time"
     t.time "final_time"
     t.integer "vigia", default: 0
+    t.integer "year_initial", default: 2000
+    t.integer "year_final", default: 2000
+    t.integer "month_initial", default: 1
+    t.integer "month_final", default: 1
+    t.integer "total_votes", default: 0
+    t.string "description_complaint"
+    t.string "data"
+    t.integer "evidence_authority", default: 0
     t.index ["entity_id"], name: "index_evidences_on_entity_id"
     t.index ["evaluation_rule_detail_id"], name: "index_evidences_on_evaluation_rule_detail_id"
     t.index ["template_id"], name: "index_evidences_on_template_id"
@@ -768,6 +776,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_18_202229) do
     t.string "reported_activity"
     t.string "employees_activity"
     t.integer "vigia", default: 0
+    t.integer "jury_voting", default: 0
+    t.integer "candidate", default: 0
+    t.integer "number_votes", default: 0
+    t.integer "workers_representative", default: 0
+    t.integer "company_representative", default: 0
+    t.integer "person_complaining", default: 0
     t.index ["evidence_id"], name: "index_participants_on_evidence_id"
     t.index ["user_id"], name: "index_participants_on_user_id"
   end

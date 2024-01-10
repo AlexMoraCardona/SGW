@@ -51,6 +51,7 @@ Rails.application.routes.draw do
   resources :exam_details
   resources :allow_exams
   resources :contents
+  resources :training_items
 
 
   get '/adm_calendars/generar/:id', to: 'adm_calendars#generar', as: 'generar' 
@@ -116,7 +117,19 @@ Rails.application.routes.draw do
     collection do
       get '/annual_work_plans/crear_item_plan/:id', to: 'annual_work_plans#crear_item_plan', as: 'crear_item_plan'
       get '/annual_work_plans/ver_plan/:id', to: 'annual_work_plans#ver_plan', as: 'ver_plan'
+      get '/annual_work_plans/firmar_rep/:id', to: 'annual_work_plans#firmar_rep', as: 'firmar_rep'
+      get '/annual_work_plans/firmar_adv/:id', to: 'annual_work_plans#firmar_adv', as: 'firmar_adv'
+      get '/annual_work_plans/firmar_res/:id', to: 'annual_work_plans#firmar_res', as: 'firmar_res'
+    end
+  end
 
+  resources :trainings do
+    collection do
+      get '/trainings/crear_item_training/:id', to: 'trainings#crear_item_training', as: 'crear_item_training'
+      get '/trainings/ver_training/:id', to: 'trainings#ver_training', as: 'ver_training'
+      get '/trainings/firmar_rep/:id', to: 'trainings#firmar_rep', as: 'firmar_rep'
+      get '/trainings/firmar_adv/:id', to: 'trainings#firmar_adv', as: 'firmar_adv'
+      get '/trainings/firmar_res/:id', to: 'trainings#firmar_res', as: 'firmar_res'
     end
   end
 

@@ -3,52 +3,51 @@
 <% end %>
 
 
-<% if @annual_work_plans.present? %>
-    <%= link_to t('.create_annual_work_plan'), new_annual_work_plan_path(entity_id: @entity.id), class: 'btn btn-xs btn-primary'  %>
+<% if @trainings.present? %>
+    <%= link_to t('.create_training'), new_training_path(entity_id: @entity.id), class: 'btn btn-xs btn-primary'  %>
 
     <table class="table table-hover"> 
 
-        <% @annual_work_plans.each do |annual_work_plan| %>
+        <% @trainings.each do |training| %>
             <hr>
             <div class="col-sm-8">
-                <h3>Plan de trabajo del año: <%= annual_work_plan.year %> </h3>
+                <h3>Cronograma de capacitaciones y actividades: <%= training.year %> </h3>
             </div>        
 
-            <%= link_to t('common.create_item_annual_work_plan'), crear_item_plan_annual_work_plans_path(annual_work_plan.id), class: 'btn btn-sm btn-warning' %> &nbsp;
-            <%= link_to t('common.show_annual_work_plan'), annual_work_plan_path(annual_work_plan.id), class: 'btn btn-sm btn-warning' %> &nbsp;
-            <%= link_to 'Excel', annual_work_plan_path(annual_work_plan.id, format: :xlsx), class: 'btn btn-sm btn-success' %> &nbsp;
-            <%= link_to "PDF", ver_plan_annual_work_plans_path(annual_work_plan.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;
-            <%= link_to t('common.indicator'), graficosmpt_path(annual_work_plan.id), class: 'btn btn-sm btn btn-success' %>
+            <%= link_to t('common.create_item_training'), crear_item_training_trainings_path(training.id), class: 'btn btn-sm btn-warning' %> &nbsp;
+            <%= link_to t('common.show_training'), training_path(training.id), class: 'btn btn-sm btn-warning' %> &nbsp;
+            <%= link_to 'Excel', training_path(training.id, format: :xlsx), class: 'btn btn-sm btn-success' %> &nbsp;
+            <%= link_to "PDF", ver_training_trainings_path(training.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;
 
             <div class="container col-12">
                 <br>
                 <div class="row g-2">
                     <div class="col-sm-3">
                         <strong>Fecha de creación</strong><br>
-                        <%= annual_work_plan.created_at.strftime("%F") %> 
+                        <%= training.created_at.strftime("%F") %> 
                     </div>        
                     <div class="col-sm-3">
                         <strong>Última fecha de actualización</strong><br>
-                        <%= annual_work_plan.updated_at.strftime("%F") %> 
+                        <%= training.updated_at.strftime("%F") %> 
                     </div>        
                 </div>
 
                 <div class="row g-4">
                     <div class="col-sm-3">
                         <strong><%= t('.code') %></strong><br>
-                        <%= annual_work_plan.code %> 
+                        <%= training.code %> 
                     </div>
                     <div class="col-sm-3">
                         <strong><%= t('.version') %></strong><br>
-                        <%= annual_work_plan.version %> 
+                        <%= training.version %> 
                     </div>
                     <div class="col-sm-3">
                         <strong><%= t('.date_create') %></strong><br>
-                        <%= annual_work_plan.date_create %> 
+                        <%= training.created_at %> 
                     </div>        
                     <div class="col-sm-3">
                         <strong><%= t('.date_update') %></strong><br>
-                        <%= annual_work_plan.date_update %> 
+                        <%= training.updated_at %> 
                     </div>        
                 </div>
                 <br>
@@ -56,38 +55,38 @@
                 <div class="row g-4">
                     <div class="col-sm-3">
                         <strong><%= t('.user_legal_representative') %></strong><br>
-                        <%=  annual_work_plan.name_user(annual_work_plan.user_legal_representative)  %> 
+                        <%=  training.name_user(training.user_legal_representative)  %> 
                     </div>        
                     <div class="col-sm-3">
                         <strong><%= t('.firm_legal_representative') %></strong><br>
-                        <%= annual_work_plan.label_firm(annual_work_plan.firm_legal_representative) %> 
+                        <%= training.label_firm(training.firm_legal_representative) %> 
                     </div>        
                     <div class="col-sm-3">
                         <strong><%= t('.date_firm_legal_representative') %></strong><br>
-                        <%= annual_work_plan.date_firm_legal_representative %> 
+                        <%= training.date_firm_legal_representative %> 
                     </div>
                     <div class="col-sm-3">
-                        <% if annual_work_plan.firm_legal_representative.to_i == 0 %>
-                            <%= link_to t('common.firmar'), firmar_annual_work_plans_path(annual_work_plan.id, 1), class: 'btn btn-xs btn btn-warning' %>
+                        <% if training.firm_legal_representative.to_i == 0 %>
+                            <%= link_to t('common.firmar'), firmar_rep_trainings_path(training.id, 1), class: 'btn btn-xs btn btn-warning' %>
                         <% end %>    
                     </div>
                 </div>
                 <div class="row g-4">
                     <div class="col-sm-3">
                         <strong><%= t('.user_adviser_sst') %></strong><br>
-                        <%= annual_work_plan.name_user(annual_work_plan.user_adviser_sst) %> 
+                        <%= training.name_user(training.user_adviser_sst) %> 
                     </div>        
                     <div class="col-sm-3">
                         <strong><%= t('.firm_adviser_sst') %></strong><br>
-                        <%= annual_work_plan.label_firm(annual_work_plan.firm_adviser_sst) %> 
+                        <%= training.label_firm(training.firm_adviser_sst) %> 
                     </div>        
                     <div class="col-sm-3">
                         <strong><%= t('.date_firm_adviser_sst') %></strong><br>
-                        <%= annual_work_plan.date_firm_adviser_sst %> 
+                        <%= training.date_firm_adviser_sst %> 
                     </div>
                     <div class="col-sm-3">
-                        <% if annual_work_plan.firm_adviser_sst.to_i == 0 %>
-                            <%= link_to t('common.firmar'), firmar_annual_work_plans_path(annual_work_plan.id, 2), class: 'btn btn-xs btn btn-warning' %>
+                        <% if training.firm_adviser_sst.to_i == 0 %>
+                            <%= link_to t('common.firmar'), firmar_adv_trainings_path(training.id, 2), class: 'btn btn-xs btn btn-warning' %>
                         <% end %>    
                     </div>
                 </div>
@@ -95,19 +94,19 @@
                 <div class="row g-4">
                     <div class="col-sm-3">
                         <strong><%= t('.user_responsible_sst') %></strong><br>
-                        <%= annual_work_plan.name_user(annual_work_plan.user_responsible_sst) %> 
+                        <%= training.name_user(training.user_responsible_sst) %> 
                     </div>        
                     <div class="col-sm-3">
                         <strong><%= t('.firm_responsible_sst') %></strong><br>
-                        <%= annual_work_plan.label_firm(annual_work_plan.firm_responsible_sst) %> 
+                        <%= training.label_firm(training.firm_responsible_sst) %> 
                     </div>        
                     <div class="col-sm-3">
                         <strong><%= t('.date_firm_responsible_sst') %></strong><br>
-                        <%= annual_work_plan.date_firm_responsible_sst %> 
+                        <%= training.date_firm_responsible_sst %> 
                     </div>
                     <div class="col-sm-3">
-                        <% if annual_work_plan.firm_responsible_sst == 0 %>
-                            <%= link_to t('common.firmar'), firmar_res_annual_work_plans_path(annual_work_plan.id, 3), class: 'btn btn-xs btn btn-warning' %>
+                        <% if training.firm_responsible_sst == 0 %>
+                            <%= link_to t('common.firmar'), firmar_res_trainings_path(training.id, 3), class: 'btn btn-xs btn btn-warning' %>
                         <% end %>           
                     </div>
                 </div>
@@ -119,6 +118,6 @@
     <br>
 <% else %>
     <div>
-        <%= link_to t('.create_annual_work_plan'), new_annual_work_plan_path(entity_id: @entity.id), class: 'btn btn-xs btn-primary'  %>
+        <%= link_to t('.create_training'), new_training_path(entity_id: @entity.id), class: 'btn btn-xs btn-primary'  %>
     </div>
 <% end %>

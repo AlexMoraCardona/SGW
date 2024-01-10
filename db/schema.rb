@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_03_013637) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_10_004921) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -384,6 +384,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_03_013637) do
     t.string "description_complaint"
     t.string "data"
     t.integer "evidence_authority", default: 0
+    t.string "object"
+    t.string "policy"
+    t.text "compliances"
     t.index ["entity_id"], name: "index_evidences_on_entity_id"
     t.index ["evaluation_rule_detail_id"], name: "index_evidences_on_evaluation_rule_detail_id"
     t.index ["template_id"], name: "index_evidences_on_template_id"
@@ -891,6 +894,43 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_03_013637) do
     t.index ["standar_detail_item_id"], name: "index_templates_on_standar_detail_item_id"
   end
 
+  create_table "training_items", force: :cascade do |t|
+    t.integer "consecutive"
+    t.string "duration"
+    t.string "training_topic"
+    t.string "goals"
+    t.string "scope"
+    t.string "resources"
+    t.string "responsible"
+    t.date "date_training"
+    t.decimal "training_coverage_percentage"
+    t.decimal "percentage_trained_workers"
+    t.string "observation"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "training_id"
+    t.index ["training_id"], name: "index_training_items_on_training_id"
+  end
+
+  create_table "trainings", force: :cascade do |t|
+    t.integer "year"
+    t.integer "user_legal_representative"
+    t.integer "user_adviser_sst"
+    t.integer "user_responsible_sst"
+    t.integer "version"
+    t.string "code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.date "date_firm_legal_representative"
+    t.date "date_firm_adviser_sst"
+    t.date "date_firm_responsible_sst"
+    t.integer "firm_legal_representative", default: 0
+    t.integer "firm_adviser_sst", default: 0
+    t.integer "firm_responsible_sst", default: 0
+    t.index ["entity_id"], name: "index_trainings_on_entity_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "document", null: false
     t.string "name"
@@ -968,4 +1008,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_03_013637) do
   add_foreign_key "standar_details", "standars"
   add_foreign_key "standars", "rules"
   add_foreign_key "templates", "standar_detail_items"
+  add_foreign_key "training_items", "trainings"
+  add_foreign_key "trainings", "entities"
 end

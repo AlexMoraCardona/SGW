@@ -1,7 +1,7 @@
 class TemplatesController < ApplicationController
     def index
         if  Current.user && Current.user.level == 1
-            @templates = Template.all.order(:format_number).decorate
+            @templates = Template.all.order(format_number: :desc).decorate
          else
              redirect_to new_session_path, alert: t('common.not_logged_in')      
          end           

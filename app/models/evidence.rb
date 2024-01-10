@@ -4,4 +4,5 @@ class Evidence < ApplicationRecord
     belongs_to :evaluation_rule_detail
     has_many :firms
     has_many :participants
+    has_rich_text :compliances
 end

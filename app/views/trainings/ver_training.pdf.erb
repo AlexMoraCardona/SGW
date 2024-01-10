@@ -1,0 +1,108 @@
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+    <%= javascript_importmap_tags %>
+</head>
+
+<br>
+<div>
+
+    <table class="table table-hover" style="border:1px solid black"> 
+        <thead>
+            <tr>
+                <td rowspan="4"; style="background-color: black;">&nbsp;</td>
+                <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
+                    <% if @training.entity.logo.present? then %>
+                        <%=  image_tag  @training.entity.logo, class: "image_peq" %>
+                    <% end %>
+                </td>
+                <td rowspan="4"; colspan="6"; style="text-align:center; padding-bottom: 40px;">
+                    <div><h5>CRONOGRAMA DE CAPACITACIONES Y ACTIVIDADES <%= @training.year if @training.present? %></h5><h6><%= @training.entity.business_name if @training.present? %> Nit: <%= @training.entity.identification_number if @training.present? %> </h6></div>
+                </td>
+                <td rowspan="4";  style="text-align:center"></td>
+
+                <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
+
+                <td style="border:1px solid black"><%= @training.created_at.strftime("%F")  if @training.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
+                <td style="border:1px solid black"><%= @training.updated_at.strftime("%F")  if @training.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Versión:</td>
+                <td style="border:1px solid black"><%= @training.version if @training.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Código:</td>
+                <td style="border:1px solid black"><%= @training.code if @training.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+
+
+            <tr>
+                <td style="background-color: black;">&nbsp;</td>
+                <th style="border:1px solid black; text-align:center">OBJETIVO</th>
+                <th colspan="10" style="border:1px solid black; text-align:center">Generar un proceso educacional estratégico aplicado de manera organizada y sistémica, para proveer, actualizar y ampliar los conocimientos y desarrollar habilidades que cubran la
+                totalidad de requerimientos para el desempeño de puestos y mejoramiento de áreas específicas de la Organización.</th>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="background-color: black;">&nbsp;</td>
+                <td style="border:1px solid black">Nro.</td>
+                <td style="border:1px solid black">TEMA DE CAPACITACIÓN</td>
+                <th style="border:1px solid black">DURACIÓN</th>
+                <th style="border:1px solid black">OBJETIVO</th>
+                <th style="border:1px solid black">ALCANCE</th>
+                <th style="border:1px solid black">RECURSOS</th>
+                <th style="border:1px solid black">RESPONSABLE</th>
+                <th style="border:1px solid black">FECHA</th>
+                <th style="border:1px solid black">% DE COBERTURA EN CAPACITACIONES</th>
+                <th style="border:1px solid black">% DE TRABAJADORES CAPACITADOS</th>
+                <th style="border:1px solid black">OBSERVACIONES</th>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>   
+        </thead>
+
+        <% @training_items.each do |training_item| %>             
+            <tbody>
+                <tr>
+                    <td style="background-color: black;">&nbsp;</td>
+                    <td style="border:1px solid black"><%= training_item.consecutive %></td>
+                    <td style="border:1px solid black"><%= training_item.training_topic %></td>
+                    <td style="border:1px solid black"><%= training_item.duration %></td>
+                    <td style="border:1px solid black"><%= training_item.goals %></td>
+                    <td style="border:1px solid black"><%= training_item.scope %></td>
+                    <td style="border:1px solid black"><%= training_item.resources %></td>
+                    <td style="border:1px solid black"><%= training_item.responsible %></td>
+                    <td style="border:1px solid black"><%= training_item.date_training  %></td>
+                    <td style="border:1px solid black"><%= training_item.training_coverage_percentage  %></td>
+                    <td style="border:1px solid black"><%= training_item.percentage_trained_workers  %></td>
+                    <td style="border:1px solid black"><%= training_item.observation  %></td>
+                    <td style="background-color: black;">&nbsp;</td>
+                </tr>
+            </body>
+        <% end %>
+        <tr style="border:1px solid black">
+            <td style="background-color: black;">&nbsp;</td>
+            <td  colspan="4";style="border:1px solid black"><br><br></td>
+            <td  colspan="4";style="border:1px solid black"><br><br></td>
+            <td  colspan="3";style="border:1px solid black"><br><br></td>
+            <td style="background-color: black;">&nbsp;</td>
+        </tr> 
+        <tr>
+            <td style="background-color: black;">&nbsp;</td>
+            <td  colspan="4"><%= @training.name_user(@training.user_legal_representative) %> - Representante Legal</td>
+            <td  colspan="4"><%= @training.name_user(@training.user_adviser_sst) %> - Asesor SST</td>
+            <td  colspan="3"><%= @training.name_user(@training.user_responsible_sst) %> - Responsable SST</td>
+            <td style="background-color: black;">&nbsp;</td>
+        </tr>
+    </table>
+</div>    

@@ -1,0 +1,10 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "CRONOGRAMA DE CAPACITACIONES Y ACTIVIDADES") do |sheet|
+    sheet.add_row ['', 'CRONOGRAMA DE CAPACITACIONES Y ACTIVIDADES ' , @training.year, '']
+    sheet.add_row ['', @training.entity.business_name, 'Nit:', @training.entity.identification_number]
+    sheet.add_row []
+    sheet.add_row ['Nro', 'TEMA DE CAPACITACIÓN', 'DURACIÓN', 'OBJETIVO', 'ALCANCE', 'RECURSOS', 'RESPONSABLE', 'FECHA', '% DE COBERTURA EN CAPACITACIONES', '% DE TRABAJADORES CAPACITADOS', 'OBSERVACIONES']
+    @training_items.each do |training_item|
+        sheet.add_row [training_item.consecutive, training_item.training_topic, training_item.duration, training_item.goals, training_item.scope, training_item.resources, training_item.responsible, training_item.date_training, training_item.training_coverage_percentage, training_item.percentage_trained_workers, training_item.observation]
+    end
+end  

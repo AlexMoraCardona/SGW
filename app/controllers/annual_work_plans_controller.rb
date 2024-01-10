@@ -82,11 +82,45 @@ class AnnualWorkPlansController < ApplicationController
         @cant = @cant + 1 
     end    
 
+    def firmar_rep 
+        @annual_work_plan = AnnualWorkPlan.find_by(id: params[:id].to_i)
+        if params[:format].to_i == 1
+            if  @annual_work_plan.user_legal_representative.to_i == Current.user.id.to_i
+                redirect_to firmar_rep_annual_work_plans_path
+            else
+                redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Representante Legal."
+            end    
+        end
+    end    
+
+    def firmar_adv
+        @annual_work_plan = AnnualWorkPlan.find_by(id: params[:id].to_i)
+        if params[:format].to_i == 2
+            if  @annual_work_plan.user_adviser_sst.to_i == Current.user.id.to_i
+                redirect_to firmar_adv_annual_work_plans_path
+            else
+                redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Asesor en SST."
+            end    
+        end
+    end    
+
+    def firmar_res
+        @annual_work_plan = AnnualWorkPlan.find_by(id: params[:id].to_i)
+        if params[:format].to_i == 3
+            if  @annual_work_plan.user_responsible_sst.to_i == Current.user.id.to_i
+                redirect_to firmar_res_annual_work_plans_path
+            else
+                redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Responsable en SST."
+            end    
+        end
+    end    
+
     private
 
     def annual_work_plan_params
         params.require(:annual_work_plan).permit(:year, :user_legal_representative, :user_adviser_sst, 
-        :user_responsible_sst, :entity_id, :version, :code, :date_create, :date_update)
+        :user_responsible_sst, :entity_id, :version, :code, :date_create, :date_update, :date_firm_legal_representative, :date_firm_adviser_sst, 
+        :date_firm_responsible_sst, :firm_legal_representative, :firm_adviser_sst, :firm_responsible_sst)
     end 
 
 end  

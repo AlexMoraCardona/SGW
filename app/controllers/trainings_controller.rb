@@ -15,6 +15,10 @@ class TrainingsController < ApplicationController
     
     def show
         @training = Training.find(params[:id])
+        @rep = User.find(@training.user_legal_representative) if  @training.user_legal_representative.present? && @training.user_legal_representative > 0
+        @adv = User.find(@training.user_adviser_sst) if  @training.user_adviser_sst.present? && @training.user_adviser_sst > 0
+        @res = User.find(@training.user_responsible_sst) if  @training.user_responsible_sst.present? && @training.user_responsible_sst > 0
+
         @training_items = TrainingItem.where("training_id = ?", @training.id) if @training.present?
         respond_to do |format|
             format.html
@@ -22,13 +26,14 @@ class TrainingsController < ApplicationController
                 response.headers['Content-Disposition'] = 'attachment; filename="Evaluacion.xlsx"'
             }
         end    
-
-        pp
     end  
     
     def ver_training
         @training = Training.find(params[:id])
         @training_items = TrainingItem.where("training_id = ?", @training.id) if @training.present?
+        @rep = User.find(@training.user_legal_representative) if  @training.user_legal_representative.present? && @training.user_legal_representative > 0
+        @adv = User.find(@training.user_adviser_sst) if  @training.user_adviser_sst.present? && @training.user_adviser_sst > 0
+        @res = User.find(@training.user_responsible_sst) if  @training.user_responsible_sst.present? && @training.user_responsible_sst > 0
 
         respond_to do |format| 
             format.html
@@ -85,7 +90,7 @@ class TrainingsController < ApplicationController
     def firmar_rep 
         @training = Training.find_by(id: params[:id].to_i)
         if params[:format].to_i == 1
-            if  @training.user_legal_representative.to_i == Current.user.id.to_i
+            if  @training.user_legal_representative.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
                 redirect_to firmar_rep_trainings_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Representante Legal."
@@ -96,7 +101,7 @@ class TrainingsController < ApplicationController
     def firmar_adv
         @training = Training.find_by(id: params[:id].to_i)
         if params[:format].to_i == 2
-            if  @training.user_adviser_sst.to_i == Current.user.id.to_i
+            if  @training.user_adviser_sst.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
                 redirect_to firmar_adv_trainings_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Asesor en SST."
@@ -107,7 +112,7 @@ class TrainingsController < ApplicationController
     def firmar_res
         @training = Training.find_by(id: params[:id].to_i)
         if params[:format].to_i == 3
-            if  @training.user_responsible_sst.to_i == Current.user.id.to_i
+            if  @training.user_responsible_sst.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
                 redirect_to firmar_res_trainings_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Responsable en SST."

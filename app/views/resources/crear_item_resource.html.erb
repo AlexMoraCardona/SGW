@@ -1,0 +1,105 @@
+<div class="container col-12 card p-5">
+    <br>
+    <%= form_with model: @resource_item do |form| %>
+        <% @resource_item.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>  
+     
+        <div class="form-group"> 
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar el proceso."><%= t('.process') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+            <%= form.text_field :process,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la actividad."><%= t('.activity') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+            <%= form.text_field :activity,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar los recursos."><%= t('.responsible') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+            <%= form.text_field :responsible,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar el valor presupuestado IVA incluido Año."><%= t('.value') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+            <%= form.number_field :value,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :executed, style: "display: block" %>
+            <%= form.radio_button :executed, 0 %>
+            <label for="no_cumple">NO</label>&nbsp;&nbsp; 
+            <%= form.radio_button :executed, 1 %>
+            <label for="si_cumple">SI</label>&nbsp;&nbsp;   
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :approved, style: "display: block" %>
+            <%= form.radio_button :approved, 0 %>
+            <label for="no_cumple">NO</label>&nbsp;&nbsp; 
+            <%= form.radio_button :approved, 1 %>
+            <label for="si_cumple">SI</label>&nbsp;&nbsp;   
+        </div>
+
+        <div class="form-group">    
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar la fecha en que se aprobó."><%= t('.date_approved') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+            <%= form.date_field :date_approved,  class: "form-control" %>
+        </div>
+
+        <%= form.hidden_field :consecutive, :value => @cant.to_i, class: "form-control" %>
+        <%= form.hidden_field :resource_id, :value => params[:id].to_i, class: "form-control" %>
+
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+    <% end %>
+
+</div>
+<br>
+
+<div class="container col-12 card p-5">
+    <hr>
+    <br>
+    <div class="d-flex">
+        <div class="container">
+            <h class="display-6">Recursos</h>
+        </div> 
+    </div>
+    <hr>
+            
+    <% if @resource_items.present? %>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Nro</th>
+                    <th scope="col">Proceso</th>
+                    <th scope="col">Actividad</th>
+                    <th scope="col">Responsable</th>
+                    <th scope="col">Fecha aprobación</th>
+                    <th scope="col">Ejectutada</th>
+                    <th scope="col">Aprobada</th>
+                    <th scope="col">Editar</th>
+                    <th scope="col">Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% @resource_items.each do |resource_item| %>
+                    <tr>
+                        <td><%= resource_item.consecutive %></td>
+                        <td><%= resource_item.process %></td>
+                        <td><%= resource_item.activity %></td>
+                        <td><%= resource_item.responsible %></td>
+                        <td><%= resource_item.date_approved %></td>
+                        <td><%= resource_item.label(resource_item.executed) %></td>
+                        <td><%= resource_item.label(resource_item.approved) %></td>
+                        <td><%= link_to t('common.edit'), edit_resource_item_path(resource_item), class: 'btn btn-xs btn-primary'  %></td>
+                        <td><%= link_to t('common.delete'), resource_item, data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el item?' }, class: 'btn btn-xs btn-danger' %></td>
+                    </tr>
+                <% end %>     
+            </tbody>      
+        </table>
+    <% end %>     
+</div>
+        
+<br>

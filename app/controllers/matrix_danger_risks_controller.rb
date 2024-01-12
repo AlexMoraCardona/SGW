@@ -104,7 +104,7 @@ class MatrixDangerRisksController < ApplicationController
     def firmar_rep 
         @matrix_danger_risk = MatrixDangerRisk.find_by(id: params[:id].to_i)
         if params[:format].to_i == 1
-            if  @matrix_danger_risk.user_legal_representative.to_i == Current.user.id.to_i
+            if  @matrix_danger_risk.user_legal_representative.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
                 redirect_to firmar_rep_matrix_danger_risks_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Representante Legal."
@@ -115,7 +115,7 @@ class MatrixDangerRisksController < ApplicationController
     def firmar_adv
         @matrix_danger_risk = MatrixDangerRisk.find_by(id: params[:id].to_i)
         if params[:format].to_i == 2
-            if  @matrix_danger_risk.user_adviser_sst.to_i == Current.user.id.to_i
+            if  @matrix_danger_risk.user_adviser_sst.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
                 redirect_to firmar_adv_matrix_danger_risks_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Asesor en SST."
@@ -126,7 +126,7 @@ class MatrixDangerRisksController < ApplicationController
     def firmar_res
         @matrix_danger_risk = MatrixDangerRisk.find_by(id: params[:id].to_i)
         if params[:format].to_i == 3
-            if  @matrix_danger_risk.user_responsible_sst.to_i == Current.user.id.to_i
+            if  @matrix_danger_risk.user_responsible_sst.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
                 redirect_to firmar_res_matrix_danger_risks_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Responsable en SST."
@@ -154,7 +154,9 @@ class MatrixDangerRisksController < ApplicationController
 
     def matrix_danger_risk_params
         params.require(:matrix_danger_risk).permit(:user_legal_representative, :user_adviser_sst, 
-        :user_responsible_sst, :version, :code, :entity_id, :date_create, :date_update)
+        :user_responsible_sst, :version, :code, :entity_id, :date_create, :date_update, :date_firm_legal_representative, 
+        :date_firm_adviser_sst, :date_firm_responsible_sst, :firm_legal_representative, :firm_adviser_sst, 
+        :firm_responsible_sst )
     end 
 
 end  

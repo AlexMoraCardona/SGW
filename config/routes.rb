@@ -52,7 +52,8 @@ Rails.application.routes.draw do
   resources :allow_exams
   resources :contents
   resources :training_items
-
+  resources :resource_items
+  resources :unsafe_conditions
 
   get '/adm_calendars/generar/:id', to: 'adm_calendars#generar', as: 'generar' 
   get '/adm_calendars/ver_calendario/:id', to: 'adm_calendars#ver_calendario', as: 'ver_calendario' 
@@ -133,6 +134,15 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :resources do
+    collection do
+      get '/resources/crear_item_resource/:id', to: 'resources#crear_item_resource', as: 'crear_item_resource'
+      get '/resources/ver_resource/:id', to: 'resources#ver_resource', as: 'ver_resource'
+      get '/resources/firmar_rep/:id', to: 'resources#firmar_rep', as: 'firmar_rep'
+      get '/resources/firmar_adv/:id', to: 'resources#firmar_adv', as: 'firmar_adv'
+      get '/resources/firmar_res/:id', to: 'resources#firmar_res', as: 'firmar_res'
+    end
+  end
 
   resources :meeting_minutes do
     collection do

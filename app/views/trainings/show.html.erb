@@ -83,9 +83,39 @@
         <% end %>
         <tr style="border:1px solid black">
             <td style="background-color: black;">&nbsp;</td>
-            <td  colspan="4";style="border:1px solid black"><br><br></td>
-            <td  colspan="4";style="border:1px solid black"><br><br></td>
-            <td  colspan="3";style="border:1px solid black"><br><br></td>
+            <td  colspan="4";style="border:1px solid black"><br>
+                <% if @training.firm_legal_representative == 1 %>
+                    <% if @rep.present? %>
+                        <% if @rep.firm.attached? %>
+                           <% if @rep.firm.image? %> 
+                                <%= image_tag @rep.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% end %>     
+            </td>
+            <td  colspan="4";style="border:1px solid black"><br>
+                <% if @training.firm_adviser_sst == 1 %>
+                    <% if @adv.present? %>
+                        <% if @adv.firm.attached? %>
+                            <% if @adv.firm.image? %> 
+                                <%= image_tag @adv.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% end %>     
+            </td>
+            <td  colspan="3";style="border:1px solid black"><br>
+                <% if @training.firm_responsible_sst == 1 %>
+                    <% if @res.present? %>
+                        <% if @res.firm.attached? %>
+                            <% if @res.firm.image? %> 
+                                <%= image_tag @res.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% end %>     
+            </td>
             <td style="background-color: black;">&nbsp;</td>
         </tr> 
         <tr>

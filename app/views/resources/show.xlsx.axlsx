@@ -1,0 +1,12 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "RECURSOS") do |sheet|
+    sheet.add_row ['', 'ASIGNACIÓN DE RECURSOS PARA EL SG-SST ' , @resource.year, '']
+    sheet.add_row ['', @resource.entity.business_name, 'Nit:', @resource.entity.identification_number]
+    sheet.add_row []
+    sheet.add_row ['Nro', 'Proceso', 'Actividad', 'Responsable', 'Valor presupuestado IVA incluido Año', 'Ejecutado', 'Aprobado', 'Fecha de aprobación']
+    @resource_items.each do |resource_item|
+        sheet.add_row [resource_item.consecutive, resource_item.process, resource_item.activity, resource_item.responsible, resource_item.value, resource_item.executed, resource_item.approved, resource_item.date_approved]
+    end
+end  
+
+  

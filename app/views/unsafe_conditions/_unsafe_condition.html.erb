@@ -1,0 +1,34 @@
+<div class="container col-12">
+    <% if @entity.present? %>
+        <h2><%= @entity.business_name %> Nit: <%=@entity.identification_number %></h2>
+    <% end %>
+    <br>
+    <%= link_to t('.create_unsafe_condition'), new_unsafe_condition_path(entity_id: @entity.id), class: 'btn btn-xs btn-primary'  %>
+    <br>
+    <% if @unsafe_conditions.present? %>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col"><%= t('.date_report') %></th>
+                    <th scope="col"><%= t('.user_reports') %></th>
+                    <th scope="col"><%= t('.user_receiving') %></th>
+                    <th scope="col">Ver</th>
+                    <th scope="col">Editar</th>
+                </tr>
+            </thead> 
+            <tbody>
+                <% @unsafe_conditions.each do |unsafe_condition| %>
+                    <tr>
+                        <td><%= unsafe_condition.date_report %></td>
+                        <td><%= unsafe_condition.name_user(unsafe_condition.user_reports) %></td>
+                        <td><%= unsafe_condition.name_user(unsafe_condition.user_receiving) %></td>
+                        <td><%= link_to t('common.show'), unsafe_condition_path(unsafe_condition.id), class: 'btn btn-sm btn-warning' %></td>
+                        <td><%= link_to t('common.edit'), edit_unsafe_condition_path(unsafe_condition), class: 'btn btn-xs btn-primary'  %></td>
+                    </tr>
+                <% end %>           
+            </tbody>      
+        </table>  
+    <% end %>     
+<div>
+
+

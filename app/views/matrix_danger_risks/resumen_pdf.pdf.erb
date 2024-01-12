@@ -12,23 +12,33 @@
     <table class="table table-hover"> 
         <thead>
             <tr>
-                <td rowspan="2">
-                    <% if @entity.logo.present? then %>
-                        <%=  image_tag  @entity.logo, class: "image_peq" %>
+                <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
+                    <% if @matrix_danger_risk.entity.logo.present? then %>
+                        <%=  image_tag  @matrix_danger_risk.entity.logo, class: "image_peq" %>
                     <% end %>
                 </td>
-                <td>
-                    <h2 style="text-align:center">MATRIZ DE IDENTIFICACIÓN DE PELIGROS, EVALUACIÓN Y VALORACION DE LOS RIESGOS</h2>
+                <td rowspan="4"; style="border:1px solid black;text-align:center">
+                    <div class="col-10"><h5>MATRIZ DE IDENTIFICACIÓN DE PELIGROS, EVALUACIÓN Y VALORACION DE LOS RIESGOS</h5><h6><%= @matrix_danger_risk.entity.business_name if @matrix_danger_risk.present? %> Nit: <%= @matrix_danger_risk.entity.identification_number if @matrix_danger_risk.present? %> </h6></div>
                 </td>
+                <td style="border:1px solid black">Fecha de Creación:</td>
+
+                <td style="border:1px solid black"><%= @matrix_danger_risk.date_create  if @matrix_danger_risk.present? %></td>
             </tr>
-            <tr>
-                <td>
-                    <h2 style="text-align:center"><%= @entity.business_name %>  Nit: <%= @entity.identification_number if @entity.present? %></h2>
-                </td>
+            <tr> 
+                <td style="border:1px solid black">Fecha de Actualización:</td>
+                <td style="border:1px solid black"><%= @matrix_danger_risk.date_update if @matrix_danger_risk.present? %></td>
+            </tr>
+            <tr> 
+                <td style="border:1px solid black">Versión:</td>
+                <td style="border:1px solid black"><%= @matrix_danger_risk.version if @matrix_danger_risk.present? %></td>
+            </tr>
+            <tr> 
+                <td style="border:1px solid black">Código:</td>
+                <td style="border:1px solid black"><%= @matrix_danger_risk.code if @matrix_danger_risk.present? %></td>
             </tr>
         </thead>
-        
-    </table>
+    </table> 
+
     <hr>
 
 <% if @matrix_danger_risk.present? %>

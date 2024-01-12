@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_10_004921) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_11_163058) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -825,6 +825,40 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_10_004921) do
     t.index ["entity_id"], name: "index_report_officials_on_entity_id"
   end
 
+  create_table "resource_items", force: :cascade do |t|
+    t.integer "consecutive", default: 0
+    t.string "process"
+    t.string "activity"
+    t.string "responsible"
+    t.integer "value", default: 0
+    t.integer "executed", default: 0
+    t.integer "approved", default: 0
+    t.date "date_approved"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "resource_id"
+    t.index ["resource_id"], name: "index_resource_items_on_resource_id"
+  end
+
+  create_table "resources", force: :cascade do |t|
+    t.integer "year", default: 2000
+    t.integer "user_legal_representative"
+    t.integer "user_adviser_sst"
+    t.integer "user_responsible_sst"
+    t.integer "version"
+    t.string "code"
+    t.date "date_firm_legal_representative"
+    t.date "date_firm_adviser_sst"
+    t.date "date_firm_responsible_sst"
+    t.integer "firm_legal_representative", default: 0
+    t.integer "firm_adviser_sst", default: 0
+    t.integer "firm_responsible_sst", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_resources_on_entity_id"
+  end
+
   create_table "risk_levels", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -931,6 +965,55 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_10_004921) do
     t.index ["entity_id"], name: "index_trainings_on_entity_id"
   end
 
+  create_table "unsafe_conditions", force: :cascade do |t|
+    t.date "date_report"
+    t.string "place_report"
+    t.integer "user_reports"
+    t.string "description_condition"
+    t.integer "equipment_condition", default: 0
+    t.integer "floors_condition", default: 0
+    t.integer "not_demarcate_areas", default: 0
+    t.integer "gases_dusts", default: 0
+    t.integer "unsafe_work_design", default: 0
+    t.integer "inadequate_signage", default: 0
+    t.integer "defective_tools", default: 0
+    t.integer "lack_alarm", default: 0
+    t.integer "lack_cleanliness", default: 0
+    t.integer "lack_space_work", default: 0
+    t.integer "incorrect_storage", default: 0
+    t.integer "excessive_noise_levels", default: 0
+    t.integer "inadequate_lighting_ventilation", default: 0
+    t.string "other_unsafe_conditions"
+    t.string "description_act_unsafe"
+    t.integer "not_using_equipment", default: 0
+    t.integer "operating_without_authorization", default: 0
+    t.integer "running_facilities", default: 0
+    t.integer "using_defective_tool", default: 0
+    t.integer "psychoactive_substances", default: 0
+    t.integer "ignore_dangerous", default: 0
+    t.integer "use_wrong_tool", default: 0
+    t.integer "wrong_position", default: 0
+    t.integer "heights_without_authorization", default: 0
+    t.integer "workplace_distractions", default: 0
+    t.integer "gen_on_desk", default: 0
+    t.string "other_features"
+    t.string "alternative_soluctions"
+    t.integer "user_receiving"
+    t.integer "user_coordinator"
+    t.date "date_firm_user_reports"
+    t.date "date_firm_user_receiving"
+    t.date "date_firm_user_coordinator"
+    t.integer "firm_user_reports", default: 0
+    t.integer "firm_user_receiving", default: 0
+    t.integer "firm_user_coordinator", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.integer "version"
+    t.string "code"
+    t.index ["entity_id"], name: "index_unsafe_conditions_on_entity_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "document", null: false
     t.string "name"
@@ -1004,10 +1087,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_10_004921) do
   add_foreign_key "meeting_minutes", "users"
   add_foreign_key "participants", "evidences"
   add_foreign_key "participants", "users"
+  add_foreign_key "resource_items", "resources"
+  add_foreign_key "resources", "entities"
   add_foreign_key "standar_detail_items", "standar_details"
   add_foreign_key "standar_details", "standars"
   add_foreign_key "standars", "rules"
   add_foreign_key "templates", "standar_detail_items"
   add_foreign_key "training_items", "trainings"
   add_foreign_key "trainings", "entities"
+  add_foreign_key "unsafe_conditions", "entities"
 end

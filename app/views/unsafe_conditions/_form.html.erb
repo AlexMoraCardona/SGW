@@ -1,0 +1,339 @@
+<div class="container col-12 card p-5">
+    <br>  
+    <%= form_with model: @unsafe_condition do |form| %>
+        <% @unsafe_condition.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %> 
+        <table>
+            <div class="row g-2">
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingrese el código del formato.">Código Formato:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                    <%= form.text_field :code,  class: "form-control" %>
+                </div> 
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingrese la versión del formato actual.">Versión Formato:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                    <%= form.number_field :version,  class: "form-control" %>
+                </div>        
+            </div>        
+        </table>
+        <table>
+            <tr> 
+                <td style="width: 40%;border:1px solid black;">
+                    <strong><%= form.label :date_report, style: "display: block" %></strong>               
+                </td>
+                <td style="width: 60%;border:1px solid black;">
+                    <%= form.date_field :date_report,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr> 
+                <td style="width: 40%;border:1px solid black;">
+                    <strong><%= form.label :date_report, style: "display: block" %></strong>               
+                </td>
+                <td style="width: 60%;border:1px solid black;">
+                    <%= form.date_field :date_report,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 40%;border:1px solid black;">
+                    <strong><%= form.label :place_report, style: "display: block" %></strong>               
+                </td>
+                <td style="width: 60%;border:1px solid black;">
+                    <%= form.text_field :place_report,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 40%;border:1px solid black;">
+                    <strong><%= form.label :user_reports, style: "display: block" %></strong>               
+                </td>
+                <td style="width: 60%;border:1px solid black;">
+                    <%= form.collection_select :user_reports, User.all.order(id: :asc), :id,  :name, style: "width=400px" %>
+                </td>
+            </tr>
+        </table>    
+        <table>        
+            <tr style="background-color: #00aae4;">    
+                <td style="border:1px solid black; width: 100%; text-align:center">
+                    <strong>DESCRIPCIÓN DE LA CONDICIÓN INSEGURA</strong>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="border:1px solid black; width: 100%">
+                    <%= form.text_area :description_condition,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr style="background-color: #00aae4;">    
+                <td style="border:1px solid black; width: 100%; text-align:center">
+                    <strong>CARACTERÍSTICAS DE LA CONDICIÓN INSEGURA (marque con una x)</strong>               
+                </td>
+            </tr>
+        </table>
+        <table>    
+            <tr>    
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :equipment_condition,  style: "display: block" %></strong> 
+                    <%= form.radio_button :equipment_condition, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :equipment_condition, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :lack_alarm,  style: "display: block" %></strong> 
+                    <%= form.radio_button :lack_alarm, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :lack_alarm, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+            </tr>
+            <tr>    
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :floors_condition,  style: "display: block" %></strong> 
+                    <%= form.radio_button :floors_condition, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :floors_condition, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :lack_cleanliness,  style: "display: block" %></strong> 
+                    <%= form.radio_button :lack_cleanliness, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :lack_cleanliness, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+            </tr>
+            <tr>    
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :not_demarcate_areas,  style: "display: block" %></strong> 
+                    <%= form.radio_button :not_demarcate_areas, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :not_demarcate_areas, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :lack_space_work,  style: "display: block" %></strong> 
+                    <%= form.radio_button :lack_space_work, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :lack_space_work, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+            </tr>
+            <tr>    
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :gases_dusts,  style: "display: block" %></strong> 
+                    <%= form.radio_button :gases_dusts, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :gases_dusts, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :incorrect_storage,  style: "display: block" %></strong> 
+                    <%= form.radio_button :incorrect_storage, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :incorrect_storage, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+            </tr>
+            <tr>    
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :unsafe_work_design,  style: "display: block" %></strong> 
+                    <%= form.radio_button :unsafe_work_design, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :unsafe_work_design, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :excessive_noise_levels,  style: "display: block" %></strong> 
+                    <%= form.radio_button :excessive_noise_levels, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :excessive_noise_levels, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+            </tr>
+            <tr>    
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :inadequate_signage,  style: "display: block" %></strong> 
+                    <%= form.radio_button :inadequate_signage, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :inadequate_signage, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :inadequate_lighting_ventilation,  style: "display: block" %></strong> 
+                    <%= form.radio_button :inadequate_lighting_ventilation, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :inadequate_lighting_ventilation, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+            </tr>
+            <tr>    
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :defective_tools,  style: "display: block" %></strong> 
+                    <%= form.radio_button :defective_tools, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :defective_tools, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :other_unsafe_conditions, style: "display: block" %></strong>               
+                    <%= form.text_field :other_unsafe_conditions,  class: "form-control" %>
+                </td>
+            </tr>
+        </table>
+        <table>    
+            <tr style="background-color: #00aae4;">    
+                <td style="border:1px solid black; width: 100%; text-align:center">
+                    <strong>DESCRIPCIÓN DEL ACTO INSEGURO</strong>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="border:1px solid black; width: 100%">
+                    <%= form.text_area :description_act_unsafe,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr style="background-color: #00aae4;">    
+                <td style="border:1px solid black; width: 100%; text-align:center">
+                    <strong>CARACTERÍSTICAS DEL ACTO INSEGURO (marque con una x)</strong>               
+                </td>
+            </tr>
+        </table>
+        <table>    
+            <tr>    
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :not_using_equipment,  style: "display: block" %></strong> 
+                    <%= form.radio_button :not_using_equipment, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :not_using_equipment, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :use_wrong_tool,  style: "display: block" %></strong> 
+                    <%= form.radio_button :use_wrong_tool, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :use_wrong_tool, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+            </tr>
+            <tr>    
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :operating_without_authorization,  style: "display: block" %></strong> 
+                    <%= form.radio_button :operating_without_authorization, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :operating_without_authorization, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :wrong_position,  style: "display: block" %></strong> 
+                    <%= form.radio_button :wrong_position, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :wrong_position, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+            </tr>
+            <tr>    
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :running_facilities,  style: "display: block" %></strong> 
+                    <%= form.radio_button :running_facilities, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :running_facilities, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :heights_without_authorization,  style: "display: block" %></strong> 
+                    <%= form.radio_button :heights_without_authorization, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :heights_without_authorization, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+            </tr>
+            <tr>    
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :using_defective_tool,  style: "display: block" %></strong> 
+                    <%= form.radio_button :using_defective_tool, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :using_defective_tool, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :workplace_distractions,  style: "display: block" %></strong> 
+                    <%= form.radio_button :workplace_distractions, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :workplace_distractions, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+            </tr>
+            <tr>    
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :psychoactive_substances,  style: "display: block" %></strong> 
+                    <%= form.radio_button :psychoactive_substances, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :psychoactive_substances, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :gen_on_desk,  style: "display: block" %></strong> 
+                    <%= form.radio_button :gen_on_desk, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :gen_on_desk, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+            </tr>
+            <tr>    
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :ignore_dangerous,  style: "display: block" %></strong> 
+                    <%= form.radio_button :ignore_dangerous, 0 %>
+                    <label for="no">No</label>
+                    <%= form.radio_button :ignore_dangerous, 1 %>
+                    <label for="si">Si</label>                    
+                </td>
+                <td style="border:1px solid black; width: 50%">
+                    <strong><%= form.label :other_features, style: "display: block" %></strong>               
+                    <%= form.text_field :other_features,  class: "form-control" %>
+                </td>
+            </tr>
+        </table>
+        <table>    
+            <tr style="background-color: #00aae4;">    
+                <td style="border:1px solid black; width: 100%; text-align:center">
+                    <strong>ALTERNATIVAS DE SOLUCIÓN</strong>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="border:1px solid black; width: 100%">
+                    <%= form.text_area :alternative_soluctions,  class: "form-control" %>
+                </td>
+            </tr>
+        </table>
+        <table>    
+            <tr>    
+                <td style="border:1px solid black; width: 40%">
+                    <strong><%= form.label :user_receiving, style: "display: block" %></strong>               
+                </td>
+                <td style="border:1px solid black; width: 60%">
+                    <%= form.collection_select :user_receiving, User.all.order(id: :asc), :id,  :name, style: "width=400px" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="border:1px solid black; width: 40%">
+                    <strong><%= form.label :user_coordinator, style: "display: block" %></strong>               
+                </td>
+                <td style="border:1px solid black; width: 60%">
+                    <%= form.collection_select :user_coordinator, User.all.order(id: :asc), :id,  :name, style: "width=400px" %>
+                </td>
+            </tr>
+        </table>
+        <% if params[:entity_id].present? %>
+            <%= form.hidden_field :entity_id, :value => params[:entity_id].to_i, class: "form-control" %>
+        <% else %>
+            <%= form.hidden_field :entity_id, :value => @entity.id.to_i, class: "form-control" if @entity.present? %>
+        <% end %>
+
+
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    <% end %>
+</div>        
+<br>
+
+ 

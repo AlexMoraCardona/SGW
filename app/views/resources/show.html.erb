@@ -1,0 +1,126 @@
+<br>
+<div>
+    <table class="table table-hover" style="border:1px solid black"> 
+        <thead>
+            <tr>
+                <td rowspan="4"; style="background-color: black;">&nbsp;</td>
+                <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
+                    <% if @resource.entity.logo.present? then %>
+                        <%=  image_tag  @resource.entity.logo, class: "image_peq" %>
+                    <% end %>
+                </td>
+                <td rowspan="4"; colspan="5"; style="text-align:center; padding-bottom: 40px;">
+                    <div><h5>ASIGNACIÓN DE RECURSOS PARA EL SG-SST <%= @resource.year if @resource.present? %></h5><h6><%= @resource.entity.business_name if @resource.present? %> Nit: <%= @resource.entity.identification_number if @resource.present? %> </h6></div>
+                </td>
+                <td rowspan="4";  style="text-align:center"></td>
+
+                <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
+
+                <td style="border:1px solid black"><%= @resource.created_at.strftime("%F")  if @resource.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
+                <td style="border:1px solid black"><%= @resource.updated_at.strftime("%F")  if @resource.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Versión:</td>
+                <td style="border:1px solid black"><%= @resource.version if @resource.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Código:</td>
+                <td style="border:1px solid black"><%= @resource.code if @resource.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+
+            <tr>
+                <td rowspan="2"; style="background-color: black;">&nbsp;</td>
+                <td rowspan="2"; style="border:1px solid black;text-align:center">Nro.</td>
+                <td rowspan="2"; style="border:1px solid black">Proceso</td>
+                <th rowspan="2"; style="border:1px solid black">Actividad</th>
+                <th rowspan="2"; style="border:1px solid black">Responsable</th>
+                <th rowspan="2"; style="border:1px solid black;text-align:center">Valor presupuestado IVA incluido Año</th>
+                <th colspan="2"; style="border:1px solid black;text-align:center">Ejecutado</th>
+                <th colspan="2"; style="border:1px solid black;text-align:center">Aprobado</th>
+                <th style="border:1px solid black;text-align:center">Fecha de aprobación </th>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>   
+
+            <tr>
+                <th style="border:1px solid black;text-align:center">SI</th>
+                <th style="border:1px solid black;text-align:center">NO</th>
+                <th style="border:1px solid black;text-align:center">SI</th>
+                <th style="border:1px solid black;text-align:center">NO</th>                
+                <th style="border:1px solid black;text-align:center">aaaa/mm/dd</th>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>   
+
+        </thead>
+
+        <% @resource_items.each do |resource_item| %>             
+            <tbody>
+                <tr>
+                    <td style="background-color: black;">&nbsp;</td>
+                    <td style="border:1px solid black;text-align:center"><%= resource_item.consecutive %></td>
+                    <td style="border:1px solid black;text-align:center"><%= resource_item.process %></td>
+                    <td style="border:1px solid black;text-align:center"><%= resource_item.activity %></td>
+                    <td style="border:1px solid black;text-align:center"><%= resource_item.responsible %></td>
+                    <td style="border:1px solid black;text-align:center">$<%= resource_item.miles(resource_item.value) %></td>
+                    <td style="border:1px solid black;text-align:center"><%= resource_item.labelxs(resource_item.executed) %></td>
+                    <td style="border:1px solid black;text-align:center"><%= resource_item.labelxn(resource_item.executed) %></td>
+                    <td style="border:1px solid black;text-align:center"><%= resource_item.labelxs(resource_item.approved) %></td>
+                    <td style="border:1px solid black;text-align:center"><%= resource_item.labelxn(resource_item.approved) %></td>
+                    <td style="border:1px solid black;text-align:center"><%= resource_item.date_approved  %></td>
+                    <td style="background-color: black;">&nbsp;</td>
+                </tr> 
+            </body>
+        <% end %>
+        <tr style="border:1px solid black">
+            <td style="background-color: black;">&nbsp;</td>
+            <td  colspan="4";style="border:1px solid black"><br>
+                <% if @resource.firm_legal_representative == 1 %>
+                    <% if @rep.present? %>
+                        <% if @rep.firm.attached? %>
+                           <% if @rep.firm.image? %> 
+                                <%= image_tag @rep.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% end %>     
+            </td>
+            <td  colspan="3";style="border:1px solid black"><br>
+                <% if @resource.firm_adviser_sst == 1 %>
+                    <% if @adv.present? %>
+                        <% if @adv.firm.attached? %>
+                            <% if @adv.firm.image? %> 
+                                <%= image_tag @adv.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% end %>     
+            </td>
+            <td  colspan="3";style="border:1px solid black"><br>
+                <% if @resource.firm_responsible_sst == 1 %>
+                    <% if @res.present? %>
+                        <% if @res.firm.attached? %>
+                            <% if @res.firm.image? %> 
+                                <%= image_tag @res.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% end %>     
+            </td>
+            <td style="background-color: black;">&nbsp;</td>
+        </tr> 
+        <tr>
+            <td style="background-color: black;">&nbsp;</td>
+            <td  colspan="4"><%= @resource.name_user(@resource.user_legal_representative) %> - Representante Legal</td>
+            <td  colspan="3"><%= @resource.name_user(@resource.user_adviser_sst) %> - Asesor SST</td>
+            <td  colspan="3"><%= @resource.name_user(@resource.user_responsible_sst) %> - Responsable SST</td>
+            <td style="background-color: black;">&nbsp;</td>
+        </tr>
+    </table>
+</div>    

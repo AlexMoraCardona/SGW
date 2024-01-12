@@ -85,7 +85,7 @@ class AnnualWorkPlansController < ApplicationController
     def firmar_rep 
         @annual_work_plan = AnnualWorkPlan.find_by(id: params[:id].to_i)
         if params[:format].to_i == 1
-            if  @annual_work_plan.user_legal_representative.to_i == Current.user.id.to_i
+            if  @annual_work_plan.user_legal_representative.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
                 redirect_to firmar_rep_annual_work_plans_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Representante Legal."
@@ -96,7 +96,7 @@ class AnnualWorkPlansController < ApplicationController
     def firmar_adv
         @annual_work_plan = AnnualWorkPlan.find_by(id: params[:id].to_i)
         if params[:format].to_i == 2
-            if  @annual_work_plan.user_adviser_sst.to_i == Current.user.id.to_i
+            if  @annual_work_plan.user_adviser_sst.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
                 redirect_to firmar_adv_annual_work_plans_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Asesor en SST."
@@ -107,7 +107,7 @@ class AnnualWorkPlansController < ApplicationController
     def firmar_res
         @annual_work_plan = AnnualWorkPlan.find_by(id: params[:id].to_i)
         if params[:format].to_i == 3
-            if  @annual_work_plan.user_responsible_sst.to_i == Current.user.id.to_i
+            if  @annual_work_plan.user_responsible_sst.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
                 redirect_to firmar_res_annual_work_plans_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Responsable en SST."

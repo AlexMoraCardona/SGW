@@ -1,0 +1,123 @@
+<% if @entity.present? %>
+    <h2><%= @entity.business_name %></h2>
+<% end %>
+
+
+<% if @resources.present? %>
+    <%= link_to t('.create_resource'), new_resource_path(entity_id: @entity.id), class: 'btn btn-xs btn-primary'  %>
+
+    <table class="table table-hover"> 
+
+        <% @resources.each do |resource| %>
+            <hr>
+            <div class="col-sm-8">
+                <h3>ASIGNACIÓN DE RECURSOS PARA EL SG-SST: <%= resource.year %> </h3>
+            </div>        
+
+            <%= link_to t('common.create_item_resource'), crear_item_resource_resources_path(resource.id), class: 'btn btn-sm btn-warning' %> &nbsp;
+            <%= link_to t('common.show_resource'), resource_path(resource.id), class: 'btn btn-sm btn-warning' %> &nbsp;
+            <%= link_to 'Excel', resource_path(resource.id, format: :xlsx), class: 'btn btn-sm btn-success' %> &nbsp;
+            <%= link_to "PDF", ver_resource_resources_path(resource.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;
+
+            <div class="container col-12">
+                <br>
+                <div class="row g-2">
+                    <div class="col-sm-3">
+                        <strong>Fecha de creación</strong><br>
+                        <%= resource.created_at.strftime("%F") %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong>Última fecha de actualización</strong><br>
+                        <%= resource.updated_at.strftime("%F") %> 
+                    </div>        
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-sm-3">
+                        <strong><%= t('.code') %></strong><br>
+                        <%= resource.code %> 
+                    </div>
+                    <div class="col-sm-3">
+                        <strong><%= t('.version') %></strong><br>
+                        <%= resource.version %> 
+                    </div>
+                    <div class="col-sm-3">
+                        <strong><%= t('.date_create') %></strong><br>
+                        <%= resource.created_at %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.date_update') %></strong><br>
+                        <%= resource.updated_at %> 
+                    </div>        
+                </div>
+                <br>
+
+                <div class="row g-4">
+                    <div class="col-sm-3">
+                        <strong><%= t('.user_legal_representative') %></strong><br>
+                        <%=  resource.name_user(resource.user_legal_representative)  %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.firm_legal_representative') %></strong><br>
+                        <%= resource.label_firm(resource.firm_legal_representative) %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.date_firm_legal_representative') %></strong><br>
+                        <%= resource.date_firm_legal_representative %> 
+                    </div>
+                    <div class="col-sm-3">
+                        <% if resource.firm_legal_representative.to_i == 0 %>
+                            <%= link_to t('common.firmar'), firmar_rep_resources_path(resource.id, 1), class: 'btn btn-xs btn btn-warning' %>
+                        <% end %>    
+                    </div>
+                </div>
+                <div class="row g-4">
+                    <div class="col-sm-3">
+                        <strong><%= t('.user_adviser_sst') %></strong><br>
+                        <%= resource.name_user(resource.user_adviser_sst) %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.firm_adviser_sst') %></strong><br>
+                        <%= resource.label_firm(resource.firm_adviser_sst) %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.date_firm_adviser_sst') %></strong><br>
+                        <%= resource.date_firm_adviser_sst %> 
+                    </div>
+                    <div class="col-sm-3">
+                        <% if resource.firm_adviser_sst.to_i == 0 %>
+                            <%= link_to t('common.firmar'), firmar_adv_resources_path(resource.id, 2), class: 'btn btn-xs btn btn-warning' %>
+                        <% end %>    
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-sm-3">
+                        <strong><%= t('.user_responsible_sst') %></strong><br>
+                        <%= resource.name_user(resource.user_responsible_sst) %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.firm_responsible_sst') %></strong><br>
+                        <%= resource.label_firm(resource.firm_responsible_sst) %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.date_firm_responsible_sst') %></strong><br>
+                        <%= resource.date_firm_responsible_sst %> 
+                    </div>
+                    <div class="col-sm-3">
+                        <% if resource.firm_responsible_sst == 0 %>
+                            <%= link_to t('common.firmar'), firmar_res_resources_path(resource.id, 3), class: 'btn btn-xs btn btn-warning' %>
+                        <% end %>           
+                    </div>
+                </div>
+
+            </div>           
+        <% end %>  
+        <hr>  
+    </table>  
+    <br>
+<% else %>
+    <div>
+        <%= link_to t('.create_resource'), new_resource_path(entity_id: @entity.id), class: 'btn btn-xs btn-primary'  %>
+    </div>
+<% end %>

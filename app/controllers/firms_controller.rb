@@ -14,8 +14,15 @@ class FirmsController < ApplicationController
 
     def create
         @firm = Firm.new(firm_params)
-        if @firm.save then
-            redirect_to crear_firma_evaluation_rule_detail_path(@firm.evidence_id), notice: t('.created') 
+        if Current.user.level < 3 && Current.user.level > 0
+           if @firm.save then
+                @firm.authorize_firm = 0
+                @firm.date_authorize_firm = nil 
+                @firm.save            
+                redirect_to crear_firma_evaluation_rule_detail_path(@firm.evidence_id), notice: t('.created') 
+            else
+                render :edit, status: :unprocessable_entity
+            end
         else
             render :edit, status: :unprocessable_entity
         end    
@@ -27,18 +34,22 @@ class FirmsController < ApplicationController
     
     def update
         @firm = Firm.find(params[:id])
-        if @firm.update(firm_params)
-            if @firm.authorize_firm.to_i == 0
-                @firm.date_authorize_firm = nil 
-                @firm.save
+        if Current.user.level < 3 && Current.user.level > 0
+            if @firm.update(firm_params)
+                if @firm.authorize_firm.to_i == 0
+                    @firm.date_authorize_firm = nil 
+                    @firm.save
+                else
+                    @firm.date_authorize_firm = Time.now 
+                    @firm.save
+                end    
+                redirect_to crear_firma_evaluation_rule_detail_path(@firm.evidence_id), notice: 'Firma actualizada correctamente'
             else
-                @firm.date_authorize_firm = Time.now 
-                @firm.save
-            end    
-            redirect_to crear_firma_evaluation_rule_detail_path(@firm.evidence_id), notice: 'Firma actualizada correctamente'
+                render :edit, firms: :unprocessable_entity
+            end 
         else
             render :edit, firms: :unprocessable_entity
-        end         
+        end 
     end    
 
     def destroy

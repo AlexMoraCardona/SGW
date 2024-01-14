@@ -40,7 +40,10 @@ class ResourcesController < ApplicationController
             format.pdf {render  pdf: 'ver_resource',
                 margin: {top: 10, bottom: 10, left: 10, right: 10 },
                 disable_javascript: true,
-                page_size: 'letter'
+                page_size: 'letter',
+                footer: {
+                         right: 'Página: [page] de [topage]'
+                        }                
                        } 
         end
       

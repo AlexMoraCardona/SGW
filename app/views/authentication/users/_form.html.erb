@@ -6,10 +6,16 @@
             <div class="alert alert-danger" role="alert">
                 <%= error%> <%= alert %>
             </div>
-        <% end %>    
+        <% end %>
+
         <div class="form-group">    
-            <%= form.label :document, style: "display: block" %>
-            <%= form.text_field :document,  class: "form-control" %>
+            <%= form.label :document_id,  style: "display: block" %>
+            <%= form.collection_select :document_id, Document.all.order(id: :asc), :id, :document_type %>
+        </div> 
+        
+        <div class="form-group">    
+            <%= form.label :nro_document, style: "display: block" %>
+            <%= form.text_field :nro_document,  class: "form-control" %>
         </div>
         <div class="form-group">    
             <%= form.label :name, style: "display: block" %>
@@ -49,7 +55,42 @@
             <%= form.label :activity, style: "display: block" %>
             <%= form.text_field :activity,  class: "form-control" %>
         </div>
+        <br>    
 
+        <div class="row g-2">
+            <div class="col-sm-5">
+                <%= form.label :legal_representative,  style: "display: block" %>
+                <%= form.radio_button :legal_representative, 0 %>
+                <label for="Inactivo">NO</label>
+                <%= form.radio_button :legal_representative, 1 %>
+                <label for="Activo">SI</label>
+            </div>
+            <div class="col-sm-5">
+                <%= form.label :copasst,  style: "display: block" %>
+                <%= form.radio_button :copasst, 0 %>
+                <label for="Inactivo">NO</label>
+                <%= form.radio_button :copasst, 1 %>
+                <label for="Activo">SI</label>
+            </div>
+        </div>        
+        
+        <div class="row g-2">
+            <div class="col-sm-5">
+                <%= form.label :ccl,  style: "display: block" %>
+                <%= form.radio_button :ccl, 0 %>
+                <label for="Inactivo">NO</label>
+                <%= form.radio_button :ccl, 1 %>
+                <label for="Activo">SI</label>
+            </div>
+            <div class="col-sm-5">
+                <%= form.label :collaborator,  style: "display: block" %>
+                <%= form.radio_button :collaborator, 0 %>
+                <label for="Inactivo">NO</label>
+                <%= form.radio_button :collaborator, 1 %>
+                <label for="Activo">SI</label>
+            </div>
+        </div>        
+        <br>
         <div class="form-group">    
             <%= form.label :avatar,  style: "display: block" %> 
             <%= form.file_field :avatar,  class: "form-control", accept:"image/*", capture:"environment" %>

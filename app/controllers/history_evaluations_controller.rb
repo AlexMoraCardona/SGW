@@ -30,8 +30,11 @@ class HistoryEvaluationsController < ApplicationController
             format.html
             format.pdf {render  template: 'history_evaluations/descargar',
             page_size: 'letter',
-            margin: {top: 10, bottom: 10, left: 10, right: 10 }
-        } 
+            margin: {top: 10, bottom: 10, left: 10, right: 10 },
+            footer: {
+                right: 'Página: [page] de [topage]'
+               }                
+        }
         end  
     end    
 

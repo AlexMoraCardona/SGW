@@ -25,12 +25,21 @@ class EvaluationRuleDetailsController < ApplicationController
         @evidence.entity_id = params[:entity_id]
         @evidence.evaluation_rule_detail_id = params[:evaluacion_rule_detail_id] 
         @evidence.template_id = params[:template_id]
-
+        @evidence.date = Time.now
         if @evidence.save then
+            crear_firmas
+            crear_participantes 
             redirect_to edit_evaluation_rule_detail_path(params[:evaluacion_rule_detail_id]), notice: t('.created') 
         else
             render :edit, status: :unprocessable_entity
         end    
+    end  
+    
+    def crear_firmas
+        
+    end    
+    def crear_participantes
+
     end    
 
     def crear_firma
@@ -104,7 +113,7 @@ class EvaluationRuleDetailsController < ApplicationController
     def edit
         @evaluation_rule_detail = EvaluationRuleDetail.find(params[:id])
         @templates = Template.where("standar_detail_item_id = ?", @evaluation_rule_detail.standar_detail_item_id)
-        @evidences = Evidence.where("evaluation_rule_detail_id = ?", @evaluation_rule_detail.id)
+        @evidences = Evidence.where("evaluation_rule_detail_id = ?", @evaluation_rule_detail.id).order(date: :desc)
     end
     
     def update  

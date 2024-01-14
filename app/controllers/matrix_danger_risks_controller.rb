@@ -34,6 +34,7 @@ class MatrixDangerRisksController < ApplicationController
 
     def new
       @matrix_danger_risk = MatrixDangerRisk.new  
+      @template = Template.find(94)
     end    
 
     def create
@@ -144,7 +145,10 @@ class MatrixDangerRisksController < ApplicationController
             format.pdf {render  pdf: 'resumen_pdf',
                 margin: {top: 10, bottom: 10, left: 10, right: 10 },
                 disable_javascript: true,
-                page_size: 'letter'
+                page_size: 'letter',
+                footer: {
+                    right: 'Página: [page] de [topage]'
+                   }                
                        } 
         end
       

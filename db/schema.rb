@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_11_163058) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_14_035350) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -287,6 +287,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_11_163058) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "agricultural_unit", default: 0
+    t.integer "responsible_sst", default: 0
     t.index ["email_entity"], name: "index_entities_on_email_entity", unique: true
   end
 
@@ -1015,7 +1016,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_11_163058) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "document", null: false
+    t.string "nro_document", null: false
     t.string "name"
     t.string "username", null: false
     t.string "email", null: false
@@ -1026,8 +1027,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_11_163058) do
     t.integer "state", default: 0
     t.integer "entity", default: 0
     t.string "activity"
-    t.index ["document"], name: "index_users_on_document", unique: true
+    t.integer "legal_representative", default: 0
+    t.integer "copasst", default: 0
+    t.integer "ccl", default: 0
+    t.integer "collaborator", default: 0
+    t.bigint "document_id"
+    t.index ["document_id"], name: "index_users_on_document_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["nro_document"], name: "index_users_on_nro_document", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
@@ -1096,4 +1103,5 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_11_163058) do
   add_foreign_key "training_items", "trainings"
   add_foreign_key "trainings", "entities"
   add_foreign_key "unsafe_conditions", "entities"
+  add_foreign_key "users", "documents"
 end

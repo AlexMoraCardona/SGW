@@ -46,6 +46,7 @@ class Authentication::UsersController < ApplicationController
 
     private
     def user_params
-        params.require(:user).permit(:document, :name, :username, :email, :password, :state, :level, :entity, :activity, :avatar, :firm)
+        params.require(:user).permit(:nro_document, :name, :username, :email, :password, :state, :level, :entity, :activity, :avatar, :firm, :document_id, 
+        :legal_representative, :copasst, :ccl, :collaborator)
     end    
 end    

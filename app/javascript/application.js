@@ -12,3 +12,4 @@ import "Chart.bundle"
 import "trix"
 import "@rails/actiontext"
 
+

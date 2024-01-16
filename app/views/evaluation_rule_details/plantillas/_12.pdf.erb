@@ -32,10 +32,9 @@
 
         <tr>
             <td style="text-align:justify">
-                El  <%= @evidence.date.day if @evidence.date.present? %> de <%= I18n.l(@evidence.date, format: '%B') %> de <%= @evidence.date.strftime("%Y") if @evidence.date.present? %> en las instalaciones de <%= @evidence.entity.business_name if @evidence.present? %> se reunió el Representante Legal y sus trabajadores para nombrar el Vigía Del Sistema De Gestión De Seguridad Y Salud En El Trabajo, dando cumplimiento a la Resolución 2013 de 1986 y al Decreto 1295 de 1994 en su artículo 63 y a las exigencias de la división de Seguridad y Salud en el Trabajo del Ministerio de Trabajo, así como lo dispuesto en el Sistema de Gestión de la Seguridad y salud en el Trabajo. <br>
+                El  <%= @evidence.date.day if @evidence.date.present? %> de <%= I18n.l(@evidence.date, format: '%B') if @evidence.date.present? %> de <%= @evidence.date.strftime("%Y") if @evidence.date.present? %> en las instalaciones de <%= @evidence.entity.business_name if @evidence.present? %> se reunió el Representante Legal y sus trabajadores para nombrar el Vigía Del Sistema De Gestión De Seguridad Y Salud En El Trabajo, dando cumplimiento a la Resolución 2013 de 1986 y al Decreto 1295 de 1994 en su artículo 63 y a las exigencias de la división de Seguridad y Salud en el Trabajo del Ministerio de Trabajo, así como lo dispuesto en el Sistema de Gestión de la Seguridad y salud en el Trabajo. <br>
             </td>
         </tr>
-        <tr><td><br></td></tr>                
 
         <tr>
             <td style="text-align:justify">
@@ -53,24 +52,22 @@
 
         <tr>
             <td style="text-align:justify">
-                * El Señor(a): <%= @vigia.name if @vigia.present? %>, mayor de edad e identificado(a) con la cédula de ciudadanía N° <%= @vigia.nro_document if @vigia.present? %>, quien ocupa el cargo de <%= @vigia.activity if @vigia.present? %> ubicado en la sede de <%= @evidence.place if @evidence.place.present? %>. <br>
+                * El Señor(a): <strong><%= @vigia.name if @vigia.present? %></strong>, mayor de edad e identificado(a) con la cédula de ciudadanía N° <strong> <%= EvaluationRuleDetail.miles(@vigia.nro_document) if @vigia.present? %></strong>, quien ocupa el cargo de <%= @vigia.activity if @vigia.present? %> ubicado en la sede de <%= @evidence.place if @evidence.place.present? %>. <br>
             </td>
         </tr>
         <tr><td><br></td></tr>                
 
         <tr>
             <td style="text-align:justify">
-                Para su constancia se firma el día <%= @evidence.date.day if @evidence.date.present? %> de <%= I18n.l(@evidence.date, format: '%B') %> de <%= @evidence.date.strftime("%Y") %>. <br>
+                Para su constancia se firma el día <%= @evidence.date.day if @evidence.date.present? %> de <%= I18n.l(@evidence.date, format: '%B') %> de <%= @evidence.date.strftime("%Y") if @evidence.date.present? %>. <br>
             </td>
         </tr>
-        <tr><td><br></td></tr>                
 
     </table>
 
     <%= render 'firmarepresentante' %>
 
     <br>
-    <div>&nbsp;</div>
     <div class="row">
         <div class="col-11 text-justify">
             <div class="row text-center">

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_14_035350) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_16_183608) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -288,6 +288,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_14_035350) do
     t.datetime "updated_at", null: false
     t.integer "agricultural_unit", default: 0
     t.integer "responsible_sst", default: 0
+    t.integer "external_consultant", default: 0
     t.index ["email_entity"], name: "index_entities_on_email_entity", unique: true
   end
 
@@ -786,6 +787,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_14_035350) do
     t.integer "workers_representative", default: 0
     t.integer "company_representative", default: 0
     t.integer "person_complaining", default: 0
+    t.integer "choose", default: 0
     t.index ["evidence_id"], name: "index_participants_on_evidence_id"
     t.index ["user_id"], name: "index_participants_on_user_id"
   end
@@ -1032,6 +1034,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_14_035350) do
     t.integer "ccl", default: 0
     t.integer "collaborator", default: 0
     t.bigint "document_id"
+    t.integer "president_copasst", default: 0
+    t.integer "secretary_copasst", default: 0
+    t.integer "vigia_sgsst", default: 0
+    t.string "cargo_rol"
     t.index ["document_id"], name: "index_users_on_document_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["nro_document"], name: "index_users_on_nro_document", unique: true

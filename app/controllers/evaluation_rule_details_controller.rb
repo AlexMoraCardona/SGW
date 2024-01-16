@@ -40,12 +40,41 @@ class EvaluationRuleDetailsController < ApplicationController
         if  @evidence.present? then
             user_legal_representative = User.find_by("entity = ? and legal_representative = ?", @evidence.entity_id.to_i, 1) 
             user_responsible = User.find(@evidence.entity.responsible_sst.to_i)  if @evidence.entity.responsible_sst.present? && @evidence.entity.responsible_sst.to_i > 0 
+            user_asesor_externo = User.find(@evidence.entity.external_consultant.to_i)  if @evidence.entity.external_consultant.present? && @evidence.entity.external_consultant.to_i > 0 
+            user_presidente_copasst = User.find_by("entity = ? and president_copasst = ?", @evidence.entity_id.to_i, 1) 
+            user_secretario_copasst = User.find_by("entity = ? and secretary_copasst = ?", @evidence.entity_id.to_i, 1) 
+            user_vigia = User.find_by("entity = ? and vigia_sgsst = ?", @evidence.entity_id.to_i, 1) 
+
             if user_legal_representative.present? && @evidence.template_id != 19 && @evidence.template_id != 20 && @evidence.template_id != 21 && @evidence.template_id != 22 && @evidence.template_id != 23 && @evidence.template_id != 24 && @evidence.template_id != 13 && @evidence.template_id != 14 && @evidence.template_id != 15 && @evidence.template_id != 7 && @evidence.template_id != 8 && @evidence.template_id != 9 then
                 @firma_nueva  = Firm.new
                 @firma_nueva.user_id = user_legal_representative.id
                 @firma_nueva.legal_representative = 1
                 @firma_nueva.evidence_id = @evidence.id
                 @firma_nueva.post = 'Representante Legal'  
+                @firma_nueva.save
+            end   
+
+            if user_presidente_copasst.present? && (@evidence.template_id == 34 || @evidence.template_id == 35 || @evidence.template_id == 36) then
+                @firma_nueva  = Firm.new
+                @firma_nueva.user_id = user_presidente_copasst.id
+                @firma_nueva.evidence_id = @evidence.id
+                @firma_nueva.post = 'Presidente COPASST'  
+                @firma_nueva.save
+            end   
+
+            if user_vigia.present? && (@evidence.template_id == 37 || @evidence.template_id == 38 || @evidence.template_id == 39) then
+                @firma_nueva  = Firm.new
+                @firma_nueva.user_id = user_vigia.id
+                @firma_nueva.evidence_id = @evidence.id
+                @firma_nueva.post = 'Vigía SG-SST'  
+                @firma_nueva.save
+            end   
+
+            if user_secretario_copasst.present? && (@evidence.template_id == 34 || @evidence.template_id == 35 || @evidence.template_id == 36) then
+                @firma_nueva  = Firm.new
+                @firma_nueva.user_id = user_secretario_copasst.id
+                @firma_nueva.evidence_id = @evidence.id
+                @firma_nueva.post = 'Secretario(a) COPASST'  
                 @firma_nueva.save
             end   
 
@@ -57,6 +86,13 @@ class EvaluationRuleDetailsController < ApplicationController
                 @firma_nueva.save
             end 
             
+            if user_asesor_externo.present? && (@evidence.template_id == 10 || @evidence.template_id == 11 || @evidence.template_id == 12)  then
+                @firma_nueva  = Firm.new
+                @firma_nueva.user_id = user_asesor_externo.id
+                @firma_nueva.evidence_id = @evidence.id
+                @firma_nueva.post = 'Asesor Externo SG-SST'  
+                @firma_nueva.save
+            end 
             
         end    
     end    
@@ -66,6 +102,17 @@ class EvaluationRuleDetailsController < ApplicationController
             entidad = Entity.find(@evidence.entity_id) if @evidence.present? 
             user_responsible = User.find(entidad.responsible_sst.to_i) if entidad.present? && entidad.responsible_sst.to_i > 0 
             user_representante_legal = User.find_by("entity = ? and legal_representative = ?", @evidence.entity_id.to_i, 1) 
+            user_asesor_externo = User.find(entidad.external_consultant.to_i) if entidad.present? && entidad.external_consultant.to_i > 0 
+            user_vigia = User.find_by("entity = ? and vigia_sgsst = ?", @evidence.entity_id.to_i, 1) 
+
+            if user_vigia.present? && (@evidence.template_id == 37 || @evidence.template_id == 38 || @evidence.template_id == 39)  then
+                @participante_nuevo  = Participant.new
+                @participante_nuevo.user_id = user_vigia.id
+                @participante_nuevo.evidence_id = @evidence.id
+                @participante_nuevo.post_copasst = 'Vigía SG-SST'  
+                @participante_nuevo.vigia = 1
+                @participante_nuevo.save
+            end   
 
             if user_responsible.present? && (@evidence.template_id == 22 || @evidence.template_id == 23 || @evidence.template_id == 24)  then
                 @participante_nuevo  = Participant.new
@@ -75,7 +122,16 @@ class EvaluationRuleDetailsController < ApplicationController
                 @participante_nuevo.collaborator = 1
                 @participante_nuevo.save
             end   
-  
+            if user_asesor_externo.present? && (@evidence.template_id == 10 || @evidence.template_id == 11 || @evidence.template_id == 12)  then
+                @participante_nuevo  = Participant.new
+                @participante_nuevo.user_id = user_asesor_externo.id
+                @participante_nuevo.evidence_id = @evidence.id
+                @participante_nuevo.post_copasst = 'Asesor Externo SG-SST'  
+                @participante_nuevo.external_consultant = 1
+                @participante_nuevo.save
+            end   
+
+            
             if user_representante_legal.present? && (@evidence.template_id == 16 || @evidence.template_id == 17 || @evidence.template_id == 18)  then
                 @participante_nuevo  = Participant.new
                 @participante_nuevo.user_id = user_representante_legal.id

@@ -26,30 +26,79 @@ class EvaluationRuleDetailsController < ApplicationController
         @evidence.evaluation_rule_detail_id = params[:evaluacion_rule_detail_id] 
         @evidence.template_id = params[:template_id]
         @evidence.date = Time.now
+
         if @evidence.save then
             crear_firmas
-            crear_participantes 
+            crear_participantes
             redirect_to edit_evaluation_rule_detail_path(params[:evaluacion_rule_detail_id]), notice: t('.created') 
         else
             render :edit, status: :unprocessable_entity
         end    
     end  
     
-    def crear_firmas
-        
-    end    
-    def crear_participantes
+    def crear_firmas 
+        if  @evidence.present? then
+            user_legal_representative = User.find_by("entity = ? and legal_representative = ?", @evidence.entity_id.to_i, 1) 
+            user_responsible = User.find(@evidence.entity.responsible_sst.to_i)  if @evidence.entity.responsible_sst.present? && @evidence.entity.responsible_sst.to_i > 0 
+            if user_legal_representative.present? && @evidence.template_id != 19 && @evidence.template_id != 20 && @evidence.template_id != 21 && @evidence.template_id != 22 && @evidence.template_id != 23 && @evidence.template_id != 24 && @evidence.template_id != 13 && @evidence.template_id != 14 && @evidence.template_id != 15 && @evidence.template_id != 7 && @evidence.template_id != 8 && @evidence.template_id != 9 then
+                @firma_nueva  = Firm.new
+                @firma_nueva.user_id = user_legal_representative.id
+                @firma_nueva.legal_representative = 1
+                @firma_nueva.evidence_id = @evidence.id
+                @firma_nueva.post = 'Representante Legal'  
+                @firma_nueva.save
+            end   
 
+            if user_responsible.present? && (@evidence.template_id == 22 || @evidence.template_id == 23 || @evidence.template_id == 24)  then
+                @firma_nueva  = Firm.new
+                @firma_nueva.user_id = user_responsible.id
+                @firma_nueva.evidence_id = @evidence.id
+                @firma_nueva.post = 'Responsable SG-SST'  
+                @firma_nueva.save
+            end 
+            
+            
+        end    
     end    
+
+    def crear_participantes
+        if  @evidence.present? then
+            entidad = Entity.find(@evidence.entity_id) if @evidence.present? 
+            user_responsible = User.find(entidad.responsible_sst.to_i) if entidad.present? && entidad.responsible_sst.to_i > 0 
+            user_representante_legal = User.find_by("entity = ? and legal_representative = ?", @evidence.entity_id.to_i, 1) 
+
+            if user_responsible.present? && (@evidence.template_id == 22 || @evidence.template_id == 23 || @evidence.template_id == 24)  then
+                @participante_nuevo  = Participant.new
+                @participante_nuevo.user_id = user_responsible.id
+                @participante_nuevo.evidence_id = @evidence.id
+                @participante_nuevo.post_copasst = 'Responsable SG-SST'  
+                @participante_nuevo.collaborator = 1
+                @participante_nuevo.save
+            end   
+  
+            if user_representante_legal.present? && (@evidence.template_id == 16 || @evidence.template_id == 17 || @evidence.template_id == 18)  then
+                @participante_nuevo  = Participant.new
+                @participante_nuevo.user_id = user_representante_legal.id
+                @participante_nuevo.evidence_id = @evidence.id
+                @participante_nuevo.post_copasst = 'Representante Legal'  
+                @participante_nuevo.collaborator = 1
+                @participante_nuevo.save
+            end   
+            
+        end    
+    end    
+
 
     def crear_firma
         @firm  = Firm.new  
         @firms = Firm.where("evidence_id = ?", params[:id]).decorate if params[:id].present?
+        @evidence = Evidence.find(params[:id])
     end  
     
     def crear_participant
         @participant = Participant.new  
         @participants = Participant.where("evidence_id = ?", params[:id]) if params[:id].present?
+        @evidence = Evidence.find(params[:id])
     end  
  
     def actualizar_evidencia
@@ -67,6 +116,7 @@ class EvaluationRuleDetailsController < ApplicationController
             @responsable_ssst = User.find(participant.user_id) if participant.responsible_ssst == 1 
             @asesor_externo_ssst = User.find(participant.user_id) if participant.external_consultant == 1 
             @colaborador_ssst = User.find(participant.user_id) if participant.collaborator == 1 && participant.person_complaining == 0 
+            @cargo_colaborador = participant.post_copasst if participant.collaborator == 1 && participant.person_complaining == 0
             @presidente_comite = User.find(participant.user_id) if participant.joint_committee_president == 1 
             @secretario_comite = User.find(participant.user_id) if participant.joint_committee_secretary == 1 
             @vigia = User.find(participant.user_id) if participant.vigia == 1 

@@ -1,4 +1,7 @@
 <div class="container col-11 card p-5">
+    <div class="bg-info">
+        <p><%=@evidence.template.filing if @evidence.present? %></p>
+    </div>
     <br>
     <%= form_with model: @participant do |form| %>
         <% @participant.errors.full_messages.each do |error| %>
@@ -123,7 +126,7 @@
                 </td>
                 <td style="width:50%">
                     <%= form.label :reported_activity, style: "display: block" %>
-                    <%= form.text_field :reported_activity,  class: "form-control" %>
+                    <%= form.select(:reported_activity, [['Trabajos en minería con servicio en socavones o en subterráneos.', 'Trabajos en minería con servicio en socavones o en subterráneos.'], ['Trabajos con exposición a altas temperaturas.', 'Trabajos con exposición a altas temperaturas.'], ['Trabajos con exposición a radiaciones ionizantes.', 'Trabajos con exposición a radiaciones ionizantes.'], ['Trabajos con exposición a sustancias comprobadamente cancerígenas.', 'Trabajos con exposición a sustancias comprobadamente cancerígenas.'], ['Actividades de los técnicos aeronáuticos.', 'Actividades de los técnicos aeronáuticos.'], ['Cuerpos de Bomberos - Función específica en operaciones de extinción de incendios.', 'Cuerpos de Bomberos - Función específica en operaciones de extinción de incendios.'], ['INPEC - Actividad dedicada a la custodia y vigilancia de los internos.', 'INPEC - Actividad dedicada a la custodia y vigilancia de los internos.']]) %>
                 </td>
             </tr>
             <tr><td><hr></td><td><hr></td></tr>

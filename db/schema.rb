@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_16_183608) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_17_225731) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -201,6 +201,22 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_16_183608) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "complaints", force: :cascade do |t|
+    t.integer "user_complaint", default: 0
+    t.integer "user_interpose_complaint", default: 0
+    t.date "date_complaint"
+    t.string "relationship_facts"
+    t.integer "have_proof", default: 0
+    t.date "date_firm_complaint"
+    t.integer "firm_complaint", default: 0
+    t.integer "state_complaint", default: 0
+    t.string "observation"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_complaints_on_entity_id"
   end
 
   create_table "contents", force: :cascade do |t|
@@ -1059,6 +1075,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_16_183608) do
   add_foreign_key "assistants", "meeting_minutes"
   add_foreign_key "calendars", "adm_calendars"
   add_foreign_key "clasification_danger_details", "clasification_dangers"
+  add_foreign_key "complaints", "entities"
   add_foreign_key "evaluation_rule_details", "evaluations"
   add_foreign_key "evaluation_rule_details", "standar_detail_items"
   add_foreign_key "evaluations", "entities"

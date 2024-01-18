@@ -74,7 +74,7 @@
         </tr>
         <% if @participants.present? %>
             <% @participants.each do |participant| %>
-                <% if participant.candidate == 1 %>
+                <% if participant.candidate == 1 && participant.company_representative == 0 %>
                     <tr>
                         <td style="border:1px solid black; width: 80%">
                             <h6><%= participant.user.name %></h6>                 
@@ -117,10 +117,10 @@
             <% @participants.each do |participant| %>
                 <% if participant.workers_representative == 1 %>
                     <tr>
-                        <td style="text-align:justify">
+                       <td style="text-align:justify">
                             <div class="row"> 
                                 <div class="col-11">
-                                    <li>El señor(a): <strong><%= participant.user.name %></strong>, mayor de edad e identificada con cédula de ciudadanía N° <strong><%= participant.user.nro_document %></strong> quien ocupa el cargo de: <strong><%= participant.user.activity %>.</strong></li>
+                                    <li>El señor(a): <strong><%= participant.user.name %></strong>, mayor de edad e identificado(a) con cédula de ciudadanía N° <strong><%= EvaluationRuleDetail.miles(participant.user.nro_document) if participant.user.nro_document.present? %></strong> quien ocupa el cargo de: <strong><%= participant.user.activity %>.</strong></li>
                                 </div>
                             </div>
                         </td>    
@@ -144,19 +144,19 @@
             <% @participants.each do |participant| %>
                 <% if participant.company_representative == 1 %>
                     <tr>
-                        <td style="text-align:justify">
+                       <td style="text-align:justify">
                             <div class="row"> 
                                 <div class="col-11">
-                                    <li>El señor(a): <strong><%= participant.user.name %></strong>, mayor de edad e identificada con cédula de ciudadanía N° <strong><%= participant.user.nro_document %></strong> quien ocupa el cargo de: <strong><%= participant.user.activity %>.</strong></li>
+                                    <li>El señor(a): <strong><%= participant.user.name %></strong>, mayor de edad e identificado(a) con cédula de ciudadanía N° <strong><%= EvaluationRuleDetail.miles(participant.user.nro_document) if participant.user.nro_document.present? %></strong> quien ocupa el cargo de: <strong><%= participant.user.activity %>.</strong></li>
                                 </div>
-                          </div>
+                            </div>
                         </td>    
                     </tr>    
                 <% end %>
             <% end %>
         </ul>
     </table>
-    <div>&nbsp;</div>
+    <div>&nbsp;</div>    
     <%= render 'firmanorepresentante' %>
     <%= render 'firmarepresentante' %>
 </div>

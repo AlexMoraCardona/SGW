@@ -54,7 +54,8 @@ Rails.application.routes.draw do
   resources :training_items
   resources :resource_items
   resources :unsafe_conditions
-
+  resources :complaints
+  
   get '/adm_calendars/generar/:id', to: 'adm_calendars#generar', as: 'generar' 
   get '/adm_calendars/ver_calendario/:id', to: 'adm_calendars#ver_calendario', as: 'ver_calendario' 
   get '/calendars/detail/:id', to: 'calendars#detail', as: 'detail' 

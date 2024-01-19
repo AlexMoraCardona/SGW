@@ -1,0 +1,68 @@
+<br>
+<div class="container col-11" 
+    <br>
+    <h2 class="display-5">ADMINISTRACIÓN QUEJAS COMITÉ DE CONVIVENCIA LABORAL</h2>
+    <hr>
+
+    <div class="container"> 
+        <%= form_with method: :get  do |form| %>
+            <h5 scope="col">Filtrar por Entidad: </h5>
+            <%= form.collection_select :entity_id, Entity.all.order(id: :asc), :id, :business_name, { prompt: '--Seleccionar Entidad--' },
+            { class: 'form-control input-sm select2' , onChange: 'this.form.requestSubmit()', value: params[:entity_id] }  %>
+        <% end %>      
+    </div>  
+
+    <hr>
+    <h3>RESUMEN ADMINISTRACIÓN QUEJAS COMITÉ DE CONVIVENCIA LABORAL</h3>
+    <br>
+    <table class="table table-hover">
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Cantidad</th>
+            </tr>
+            <tr>
+                    <td>Quejas Pendientes:</td>
+                    <td><%=@complaints_pendiente%></td>
+            </tr>
+            <tr>
+                 <td>Quejas Resueltas:</td>
+                    <td><%=@complaints_resuelto%></td>
+                </tr>
+                <tr>
+                    <td>Quejas Canceladas:</td>
+                    <td><%=@complaints_cancelado%></td>
+                </tr>
+                <tr>
+                    <td>Total:</td>
+                    <td><%=@complaints_total%></td>
+                </tr>
+    </table>
+
+    <hr>
+
+    <br>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Nro.</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Entidad</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Ver</th>
+                <th scope="col">Descargar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @complaints.each do |complaint| %>
+                <tr>
+                    <td><%= complaint.id %></td>
+                    <td><%= complaint.date_complaint %></td>
+                    <td><%= complaint.entity.business_name if complaint.entity.present? %></td>
+                    <td><%= complaint.estado(complaint.state_complaint) %></td>
+                    <td><%= link_to t('common.show'), edit_complaint_path(complaint), class: 'btn btn-xs btn-primary'  %></td>
+                    <td><%= link_to "PDF", inform_path(complaint.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
+                </tr>
+            <% end %>    
+        </tbody>      
+    </table>
+</div>  

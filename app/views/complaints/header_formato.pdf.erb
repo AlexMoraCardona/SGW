@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <%= javascript_importmap_tags %>
+</head>
+
+<header>
+    <table WIDTH="100%">
+        <tr>
+            <td rowspan="2"; style="width: 25%; text-align:center; border:1px solid black">
+                <% if @complaint.entity.logo.present? then %>
+                  <%=  image_tag  @complaint.entity.logo, class: "image_peq" %>
+                <% end %>   
+            </td>
+            <td style="width: 75%; border:1px solid black; text-align:center">
+                <div><h6><%= @complaint.entity.business_name if @complaint.present? %></h6></div>
+            </td>
+        </tr>
+        <tr>   
+            <td style="width: 75%; border:1px solid black; text-align:center">
+                <div><h6><%= @template.name if @template.present? %></h6></div>
+            </td>
+        </tr>
+    </table>
+    <table>
+        <tr>    
+            <td style="border:1px solid black; width: 25%">
+                <h6>CÓDIGO: </h6>                
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.reference if @template.present? %></small></h6>                
+            </td>
+
+            <td style="border:1px solid black; width: 25%">
+                <h6>VERSIÓN: </h6>                
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.version if @template.present? %></small></h6>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 25%">
+                <h6>FECHA DE ELABORACIÓN: </h6>                
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date if @template.present? %></small></h6>                
+            </td>
+
+            <td style="border:1px solid black; width: 25%">
+                <h6>FECHA DE ACTUALIZACIÓN: </h6>                
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date_updated if @template.present? %></small></h6>                
+            </td>
+        </tr>
+    </table>
+    <br>
+</header>

@@ -1,0 +1,128 @@
+<div class="container col-11">
+    <br>
+    <div class="d-flex"> 
+        <div class="container">
+            <h2 class="display-5">QUEJA COMITÉ DE CONVIVENCIA LABORAL</h2>
+            <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+        </div>
+    </div>
+    <br>
+    <div>
+        <p style="background-color: #00aae4;">INFORMACION BÁSICA</p>
+    </div>
+    <div>
+        <strong>Nombre del colaborador:</strong>
+        <%= @complaint.name(@complaint.user_complaint) %> 
+    </div>        
+    <div>
+        <strong>Documento de Identidad:</strong>
+        <%= @complaint.document(@complaint.user_complaint) %> 
+    </div>        
+    <div>
+        <strong>Cargo:</strong>
+        <%= @complaint.cargo(@complaint.user_complaint) %> 
+    </div>        
+    <div>
+        <strong>Correo electrónico:</strong>
+        <%= @complaint.email(@complaint.user_complaint) %> 
+    </div>  
+    <br>      
+    <div>
+        <strong>Persona contra quien se interpone la queja:</strong>
+        <%= @complaint.name(@complaint.user_interpose_complaint) %> 
+    </div>  
+    <div>
+        <strong>Cargo:</strong>
+        <%= @complaint.cargo(@complaint.user_interpose_complaint) %> 
+    </div>        
+    <div>
+        <strong>Fecha diligenciamiento:</strong>
+        <%= @complaint.date_complaint %> 
+    </div> 
+    <br> 
+    <div>
+        <p style="background-color: #00aae4;"><strong>RELACIÓN DE LOS HECHOS MOTIVO DE LA QUEJA:</strong><br>1.1. Describa todos los elementos en los que se identifiquen las circunstancias de tiempo (cuándo), modo (cómo), lugar (dónde) y cualquier otra que considere pertinente. De ser necesario el Comité podrá solicitarle ampliación de la información aquí descrita.</p>
+        <%= @complaint.relationship_facts %> 
+    </div> 
+    <br> 
+    <div>
+        <p style="background-color: #00aae4;"><strong>1.2 ¿Cuenta usted con alguna prueba? ¿Cuál(es)?  Relaciónelas y adjúntelas</strong></p>
+        <%= @complaint.observation %> 
+    </div> 
+    <br>
+    <div>
+        <p style="background-color: #00aae4;"><strong>1.3 ¿Ha puesto en conocimiento de alguna autoridad los hechos aquí relacionados?</strong></p>
+        <% if @complaint.have_proof == 0  then %>
+            <p>NO</p>
+        <% else %>
+            <p>SI</p>
+        <% end %>
+    </div> 
+    <br>
+
+    <div>
+        <p style="background-color: #00aae4;"><strong>Firma del Funcionario o Contratista:</strong></p>
+        <% if @complaint.firm_complaint == 0  then %>
+            <p>NO</p>
+        <% else %>
+            <p>SI  <strong>Fecha firma: </strong> <%= @complaint.date_firm_complaint %> </p>
+        <% end %>
+    </div> 
+
+    <hr>
+    <br>
+    <div class="form-group">
+       <h5>Archivos adjuntos:</h5>
+    </div>         
+    <hr>
+    <% if @complaint.files_complaint.attached? %>
+        <div data-controller="previews" >
+            <% @complaint.files_complaint.each do |file|%>
+                <br>
+                <% if file.image? %>
+                    <div>
+                        <%= image_tag file, data: {previews_target: "preview"}, class: "image" %>
+                        <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                    </div> 
+                <% elsif file.video? %>
+                    <%= video_tag url_for(file), controls: "", width: "400px" %>          
+                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                <% elsif file.audio? %>
+                    <%= audio_tag(url_for(file), controls: "") %>          
+                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                <% else %>
+                    <%= link_to file.filename, url_for(file) %>          
+                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                <% end %>
+            <% end %>  
+        </div>
+    <% end %>
+    <br>
+    <div class="container col-5 card p-5">
+        <%= form_with model: @complaint do |form| %>
+            <% @complaint.errors.full_messages.each do |error| %>
+                <div class="alert alert-danger" role="alert">
+                    <%= error%> <%= alert %>
+                </div>
+            <% end %>   
+            <div class="d-flex"> 
+                <div class="container">
+                    <p style="background-color: #00aae4;"><strong>Desea cambiar el estado a la queja</strong></p>
+                </div>
+            </div>
+            <div class="form-group">    
+                <%= form.radio_button :state_complaint, 0 %>
+                <label for="pendiente">PENDIENTE</label>&nbsp;&nbsp; 
+                <%= form.radio_button :state_complaint, 1 %>
+                <label for="resuelto">RESUELTO</label>&nbsp;&nbsp;   
+                <%= form.radio_button :state_complaint, 2 %>
+                <label for="cancelado">CANCELADO</label>&nbsp;&nbsp;   
+            </div>
+            <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <% end %>
+    </div>  
+    <br>
+</div>  
+
+
+

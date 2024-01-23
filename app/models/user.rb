@@ -12,7 +12,7 @@ class User < ApplicationRecord
     format: { with: /\A[a-z0-9A-Z]+\z/, message: :invalid} #Validar la presencia
     validates :email,  presence: true #Validar la presencia
     validates :password_digest,  presence: true #Validar la presencia
-    validates :document, uniqueness: true #Valor unico en bd
+    #validates :document, uniqueness: true #Valor unico en bd
     validates :username, uniqueness: true #Valor unico en bd
     validates :email, uniqueness: true #Valor unico en bd
 

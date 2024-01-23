@@ -26,7 +26,7 @@ class EvaluationRuleDetailsController < ApplicationController
         @evidence.evaluation_rule_detail_id = params[:evaluacion_rule_detail_id] 
         @evidence.template_id = params[:template_id]
         @evidence.date = Time.now
-
+        @evidence.compliances = "METAS Capacitar al 100% de los trabajadores. Cumplir con el 80% de las actividades en el cronograma. Cumplir con lo establecido en el presupuesto. Obtener buenas respuestas en la evaluación de capacitación. ESTRATEGIAS Relación entre experto y aprendiz. Conferencias, exposiciones, videos, fotos. Simulación de situaciones reales. Talleres didácticos. Estudios de caso. " if @evidence.template_id == 58 || @evidence.template_id == 59 || @evidence.template_id == 60
         if @evidence.save then
             crear_firmas
             crear_participantes
@@ -78,7 +78,7 @@ class EvaluationRuleDetailsController < ApplicationController
                 @firma_nueva.save
             end   
 
-            if user_responsible.present? && (@evidence.template_id == 22 || @evidence.template_id == 23 || @evidence.template_id == 24 || @evidence.template_id == 43 || @evidence.template_id == 44 || @evidence.template_id == 45)  then
+            if user_responsible.present? && (@evidence.template_id == 22 || @evidence.template_id == 23 || @evidence.template_id == 24 || @evidence.template_id == 43 || @evidence.template_id == 44 || @evidence.template_id == 45 || @evidence.template_id == 58 || @evidence.template_id == 59 || @evidence.template_id == 60)  then
                 @firma_nueva  = Firm.new
                 @firma_nueva.user_id = user_responsible.id
                 @firma_nueva.evidence_id = @evidence.id

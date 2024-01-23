@@ -72,6 +72,7 @@ Rails.application.routes.draw do
   get '/exams/repro_det/:id' => 'exams#repro_det', as: 'repro_det'
   get '/complaints/informe', to: 'complaints#informe', as: 'informe' 
   get '/complaints/informe/:id' => 'complaints#informe', as: 'inform'
+  get '/complaints/resumen/:id' => 'complaints#resumen', as: 'resumen'
 
   resources :matrix_danger_risks do
     collection do

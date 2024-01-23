@@ -12,16 +12,6 @@
             <%= form.number_field :year,  class: "form-control" %>
         </div>
 
-        <div class="row g-2">
-            <div class="col-sm-2">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingrese el código del formato.">Código Formato:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                <%= form.text_field :code,  class: "form-control" %>
-            </div> 
-            <div class="col-sm-2">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingrese la versión del formato actual.">Versión Formato:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                <%= form.number_field :version,  class: "form-control" %>
-            </div>        
-        </div>   
         <br>
         <div class="form-group">    
             <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Representante Legal.">Representante Legal:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
@@ -38,6 +28,11 @@
             <%= form.collection_select :user_responsible_sst, User.all.order(id: :asc), :id,  :name, style: "width=50px" %>
         </div>
         <%= form.hidden_field :entity_id, :value => params[:entity_id].to_i, class: "form-control" %>
+        <%= form.hidden_field :code, :value => @template.reference, class: "form-control" if @template.present? %>
+        <%= form.hidden_field :version, :value => @template.version.to_i, class: "form-control" if @template.present? %>
+        <%= form.hidden_field :date_create, :value => @template.date, class: "form-control" if @template.present? %>
+        <%= form.hidden_field :date_update, :value => @template.date_updated, class: "form-control" if @template.present? %>
+
         <br>    
         <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
         <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>

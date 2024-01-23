@@ -60,7 +60,7 @@ class ComplaintsController < ApplicationController
                         @complaints_cancelado = @complaints.where("state_complaint = ?", 2).count if @complaints.present?
                         @complaints_total = @complaints.count
                     else    
-                        @entity = Entity.all
+                        @entities = Entity.all
                         @complaints = Complaint.all
                         @complaints_pendiente = @complaints.where("state_complaint = ?", 0).count if @complaints.present?
                         @complaints_resuelto = @complaints.where("state_complaint = ?", 1).count if @complaints.present?
@@ -96,6 +96,29 @@ class ComplaintsController < ApplicationController
         end
     end
 
+    def resumen
+        @entity = Entity.find(params[:id].to_i) if params[:id].present?
+        if @entity.present? then
+            @complaints = Complaint.where("entity_id = ?", @entity.id).order(:id) 
+        else
+            @complaints = Complaint.all.order(:id) 
+        end            
+        @complaints_pendiente = @complaints.where("state_complaint = ?", 0).count if @complaints.present?
+        @complaints_resuelto = @complaints.where("state_complaint = ?", 1).count if @complaints.present?
+        @complaints_cancelado = @complaints.where("state_complaint = ?", 2).count if @complaints.present?
+        @complaints_total = @complaints.count if @complaints.present?
+
+
+        @vista = 'complaints/resumen/' 
+        respond_to do |format| 
+            format.html
+            format.pdf {render  pdf: 'informe', 
+                disable_javascript: true,
+                margin: {top: 25, bottom: 25, left: 25, right: 25 },
+                page_size: 'Letter'
+                 } 
+        end
+    end
 
     private
 

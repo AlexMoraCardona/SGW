@@ -52,6 +52,7 @@ class TrainingsController < ApplicationController
 
     def new
       @training =  Training.new
+      @template = Template.find(97)
     end    
 
     def create

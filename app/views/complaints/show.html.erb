@@ -13,7 +13,8 @@
     </div>  
 
     <hr>
-    <h3>RESUMEN ADMINISTRACIÓN QUEJAS COMITÉ DE CONVIVENCIA LABORAL</h3>
+    <h3>RESUMEN ADMINISTRACIÓN QUEJAS COMITÉ DE CONVIVENCIA LABORAL</h3> <%= link_to "PDF", resumen_path(@entity.id, format: 'pdf'), class: 'btn btn-sm btn-success' if @entity.present?  %>
+
     <br>
     <table class="table table-hover">
             <tr>
@@ -59,8 +60,8 @@
                     <td><%= complaint.date_complaint %></td>
                     <td><%= complaint.entity.business_name if complaint.entity.present? %></td>
                     <td><%= complaint.estado(complaint.state_complaint) %></td>
-                    <td><%= link_to t('common.show'), edit_complaint_path(complaint), class: 'btn btn-xs btn-primary'  %></td>
-                    <td><%= link_to "PDF", inform_path(complaint.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
+                    <td><%= link_to t('common.show'), edit_complaint_path(complaint), class: 'btn btn-xs btn-primary' if Current.user.ccl == 1 && Current.user.entity == complaint.entity_id %></td>
+                    <td><%= link_to "PDF", inform_path(complaint.id, format: 'pdf'), class: 'btn btn-sm btn-success' if Current.user.ccl == 1 && Current.user.entity == complaint.entity_id %></td>
                 </tr>
             <% end %>    
         </tbody>      

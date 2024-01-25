@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_17_225731) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_25_211001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -981,6 +981,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_17_225731) do
     t.integer "firm_legal_representative", default: 0
     t.integer "firm_adviser_sst", default: 0
     t.integer "firm_responsible_sst", default: 0
+    t.date "date_create"
+    t.date "date_update"
     t.index ["entity_id"], name: "index_trainings_on_entity_id"
   end
 
@@ -1054,6 +1056,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_17_225731) do
     t.integer "secretary_copasst", default: 0
     t.integer "vigia_sgsst", default: 0
     t.string "cargo_rol"
+    t.integer "brigade", default: 0
     t.index ["document_id"], name: "index_users_on_document_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["nro_document"], name: "index_users_on_nro_document", unique: true

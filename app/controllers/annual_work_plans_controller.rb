@@ -47,6 +47,7 @@ class AnnualWorkPlansController < ApplicationController
 
     def new
       @annual_work_plan =  AnnualWorkPlan.new
+      @template = Template.find(100)
     end    
 
     def create

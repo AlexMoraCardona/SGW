@@ -27,6 +27,9 @@ class EvaluationRuleDetailsController < ApplicationController
         @evidence.template_id = params[:template_id]
         @evidence.date = Time.now
         @evidence.compliances = "METAS Capacitar al 100% de los trabajadores. Cumplir con el 80% de las actividades en el cronograma. Cumplir con lo establecido en el presupuesto. Obtener buenas respuestas en la evaluación de capacitación. ESTRATEGIAS Relación entre experto y aprendiz. Conferencias, exposiciones, videos, fotos. Simulación de situaciones reales. Talleres didácticos. Estudios de caso. " if @evidence.template_id == 58 || @evidence.template_id == 59 || @evidence.template_id == 60
+        @evidence.compliances = "* Compromiso desde la Alta Dirección, en la implementación del Sistema de Gestión de Seguridad y Salud en el Trabajo, asignando los recursos humanos, tecnológicos y financieros, garantizando el cumplimiento de los objetivos. *Prevenir accidentes y enfermedades laborales, como consecuencia a la exposición de los diferentes ambientes de trabajo de todos los empleados, contratistas, proveedores y visitantes. *Dar cumplimiento a todas las disposiciones legales, Decretos, leyes, Resoluciones y demás normas que sean expedidas en materia de seguridad y salud en el trabajo; y a su vez, implementarlas y ejecutarlas al interior de la Organización. *Establecer el principio de la mejora continua, en todos los procesos de aseguramiento de la Seguridad y Salud en el Trabajo. *Fomentar el autocuidado y participación de todo el personal en materia de Seguridad y Salud en el trabajo. *Promover la salud mental, con miras a que todos los empleados que integren la organización estén en ambientes de trabajo saludables. *Compromiso con la mejora continua del SG-SST. " if @evidence.template_id == 64 || @evidence.template_id == 65 || @evidence.template_id == 66
+        @evidence.compliances = "* Desarrollar plan de capacitación y entrenamiento para el personal incluyendo demás partes interesadas. * Proporcionar los recursos necesarios para la implementación del sistema de gestión de seguridad y salud en el trabajo. * Identificar los diferentes peligros y riesgos y establecer controles específicos. * Investigar accidentes, incidentes. * Identificar y realizar seguimiento a los requisitos legales y aplicables. * Cumplir con el plan de trabajo anual según el Decreto 1072 de 2015 Y mejora continua de este. " if @evidence.template_id == 67 || @evidence.template_id == 68 || @evidence.template_id == 69
+
         if @evidence.save then
             crear_firmas
             crear_participantes
@@ -78,7 +81,7 @@ class EvaluationRuleDetailsController < ApplicationController
                 @firma_nueva.save
             end   
 
-            if user_responsible.present? && (@evidence.template_id == 22 || @evidence.template_id == 23 || @evidence.template_id == 24 || @evidence.template_id == 43 || @evidence.template_id == 44 || @evidence.template_id == 45 || @evidence.template_id == 58 || @evidence.template_id == 59 || @evidence.template_id == 60)  then
+            if user_responsible.present? && (@evidence.template_id == 22 || @evidence.template_id == 23 || @evidence.template_id == 24 || @evidence.template_id == 43 || @evidence.template_id == 44 || @evidence.template_id == 45 || @evidence.template_id == 58 || @evidence.template_id == 59 || @evidence.template_id == 60 || @evidence.template_id == 61 || @evidence.template_id == 62 || @evidence.template_id == 63 || @evidence.template_id == 70 || @evidence.template_id == 71 || @evidence.template_id == 72 || @evidence.template_id == 4 || @evidence.template_id == 5 || @evidence.template_id == 6 || @evidence.template_id == 73 || @evidence.template_id == 74 || @evidence.template_id == 75)  then
                 @firma_nueva  = Firm.new
                 @firma_nueva.user_id = user_responsible.id
                 @firma_nueva.evidence_id = @evidence.id
@@ -114,12 +117,13 @@ class EvaluationRuleDetailsController < ApplicationController
                 @participante_nuevo.save
             end   
 
-            if user_responsible.present? && (@evidence.template_id == 22 || @evidence.template_id == 23 || @evidence.template_id == 24)  then
+            if user_responsible.present? && (@evidence.template_id == 22 || @evidence.template_id == 23 || @evidence.template_id == 24 || @evidence.template_id == 4 || @evidence.template_id == 5 || @evidence.template_id == 6)  then
                 @participante_nuevo  = Participant.new
                 @participante_nuevo.user_id = user_responsible.id
                 @participante_nuevo.evidence_id = @evidence.id
                 @participante_nuevo.post_copasst = 'Responsable SG-SST'  
                 @participante_nuevo.collaborator = 1
+                @participante_nuevo.responsible_ssst = 1
                 @participante_nuevo.save
             end   
             if user_asesor_externo.present? && (@evidence.template_id == 10 || @evidence.template_id == 11 || @evidence.template_id == 12)  then
@@ -132,7 +136,7 @@ class EvaluationRuleDetailsController < ApplicationController
             end   
 
             
-            if user_representante_legal.present? && (@evidence.template_id == 16 || @evidence.template_id == 17 || @evidence.template_id == 18)  then
+            if user_representante_legal.present? && (@evidence.template_id == 16 || @evidence.template_id == 17 || @evidence.template_id == 18 || @evidence.template_id == 4 || @evidence.template_id == 5 || @evidence.template_id == 6)  then
                 @participante_nuevo  = Participant.new
                 @participante_nuevo.user_id = user_representante_legal.id
                 @participante_nuevo.evidence_id = @evidence.id

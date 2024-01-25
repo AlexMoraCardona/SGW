@@ -129,7 +129,7 @@ class TrainingsController < ApplicationController
     def training_params
         params.require(:training).permit(:year, :user_legal_representative, :user_adviser_sst, 
         :user_responsible_sst, :entity_id, :version, :code, :date_firm_legal_representative, :date_firm_adviser_sst, 
-        :date_firm_responsible_sst, :firm_legal_representative, :firm_adviser_sst, :firm_responsible_sst)
+        :date_firm_responsible_sst, :firm_legal_representative, :firm_adviser_sst, :firm_responsible_sst, :date_create, :date_update)
     end 
 end  
 

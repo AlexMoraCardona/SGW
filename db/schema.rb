@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_25_211001) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_05_210900) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -771,6 +771,47 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_25_211001) do
     t.index ["user_id"], name: "index_meeting_minutes_on_user_id"
   end
 
+  create_table "occupational_exam_items", force: :cascade do |t|
+    t.integer "consecutive", default: 0
+    t.date "fec_exam"
+    t.date "fec_venc"
+    t.integer "exam_type", default: 0
+    t.string "nro_identification"
+    t.string "name"
+    t.string "post"
+    t.string "concept"
+    t.string "addressing"
+    t.string "recommendations"
+    t.string "restrictions"
+    t.string "sve"
+    t.string "action"
+    t.string "follow_up"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "occupational_exam_id"
+    t.index ["occupational_exam_id"], name: "index_occupational_exam_items_on_occupational_exam_id"
+  end
+
+  create_table "occupational_exams", force: :cascade do |t|
+    t.integer "user_legal_representative"
+    t.integer "user_adviser_sst"
+    t.integer "user_responsible_sst"
+    t.integer "version"
+    t.string "code"
+    t.date "date_create"
+    t.date "date_update"
+    t.date "date_firm_legal_representative"
+    t.date "date_firm_adviser_sst"
+    t.date "date_firm_responsible_sst"
+    t.integer "firm_legal_representative", default: 0
+    t.integer "firm_adviser_sst", default: 0
+    t.integer "firm_responsible_sst", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_occupational_exams_on_entity_id"
+  end
+
   create_table "occupational_risk_managers", force: :cascade do |t|
     t.string "name"
     t.string "code"
@@ -1118,6 +1159,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_25_211001) do
   add_foreign_key "meeting_minutes", "entities"
   add_foreign_key "meeting_minutes", "evaluations"
   add_foreign_key "meeting_minutes", "users"
+  add_foreign_key "occupational_exam_items", "occupational_exams"
+  add_foreign_key "occupational_exams", "entities"
   add_foreign_key "participants", "evidences"
   add_foreign_key "participants", "users"
   add_foreign_key "resource_items", "resources"

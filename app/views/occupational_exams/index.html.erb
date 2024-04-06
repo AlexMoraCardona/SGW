@@ -1,0 +1,23 @@
+<br>
+<div class="container col-11" 
+    <br>
+    <h2 class="display-5">MATRIZ  DE SEGUIMIENTO EXÁMENES OCUPACIONALES</h2>
+    <hr>
+    
+    <br>
+ 
+    <% if params[:entity_id].present? %>
+        <%= render 'occupational_exams' %> 
+    <% else %>
+        <%= form_with model: @entity, method: :get do |form| %>
+            <div class="row g-2">
+                <div class="col-sm-7">
+                    <%= form.label :Entidad, style: "display: block" %>
+                    <%= form.collection_select :entity_id, @entities.order(id: :asc), :id, :business_name, { prompt: '--Seleccionar Entidad--' },
+                    { class: 'form-control input-sm select2' } %>
+                </div>
+            </div>    
+            <br>    
+            <button type="submit" class="btn btn-primary">Consultar</button>
+        <% end %>
+    <% end %>   

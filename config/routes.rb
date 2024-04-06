@@ -55,6 +55,7 @@ Rails.application.routes.draw do
   resources :resource_items
   resources :unsafe_conditions
   resources :complaints
+  resources :occupational_exam_items
   
   get '/adm_calendars/generar/:id', to: 'adm_calendars#generar', as: 'generar' 
   get '/adm_calendars/ver_calendario/:id', to: 'adm_calendars#ver_calendario', as: 'ver_calendario' 
@@ -165,6 +166,17 @@ Rails.application.routes.draw do
 
     end
   end
+
+  resources :occupational_exams do
+    collection do
+      get '/occupational_exams/crear_item_occupational/:id', to: 'occupational_exams#crear_item_occupational', as: 'crear_item_occupational'
+      get '/occupational_exams/ver_occupational/:id', to: 'occupational_exams#ver_occupational', as: 'ver_occupational'
+      get '/occupational_exams/firmar_rep/:id', to: 'occupational_exams#firmar_rep', as: 'firmar_rep'
+      get '/occupational_exams/firmar_adv/:id', to: 'occupational_exams#firmar_adv', as: 'firmar_adv'
+      get '/occupational_exams/firmar_res/:id', to: 'occupational_exams#firmar_res', as: 'firmar_res'
+    end
+  end
+
 
   resources :evaluations do
     collection do

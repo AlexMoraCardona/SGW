@@ -56,6 +56,8 @@ Rails.application.routes.draw do
   resources :unsafe_conditions
   resources :complaints
   resources :occupational_exam_items
+  resources :pension_funds
+  resources :health_promoters
   
   get '/adm_calendars/generar/:id', to: 'adm_calendars#generar', as: 'generar' 
   get '/adm_calendars/ver_calendario/:id', to: 'adm_calendars#ver_calendario', as: 'ver_calendario' 
@@ -184,6 +186,15 @@ Rails.application.routes.draw do
       get :crear_historia
       get '/ver_history/:id', to: 'evaluations#ver_history', as: 'ver_history' 
     end
+  end
+
+  resources :description_jobs do
+    collection do
+      get '/description_jobs/pdf/:id', to: 'description_jobs#pdf', as: 'pdf'
+      get '/description_jobs/firmar_ela/:id', to: 'description_jobs#firmar_ela', as: 'firmar_ela'
+      get '/description_jobs/firmar_rev/:id', to: 'description_jobs#firmar_rev', as: 'firmar_rev'
+      get '/description_jobs/firmar_apr/:id', to: 'description_jobs#firmar_apr', as: 'firmar_apr'
+    end  
   end
 
   delete "attachments/:id/purge", to: "attachments#purge", as: "purge_attachment"

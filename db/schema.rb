@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_05_210900) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_10_005510) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -233,6 +233,36 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_05_210900) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "description_jobs", force: :cascade do |t|
+    t.string "name_job"
+    t.string "immediate_boss"
+    t.string "objetive_job"
+    t.string "academic_training"
+    t.string "experience"
+    t.string "salary_range"
+    t.string "type_contract"
+    t.string "working_hours"
+    t.string "required_knowledge"
+    t.string "competencies"
+    t.string "job_functions"
+    t.string "roles_responsibilities"
+    t.string "observations"
+    t.integer "user_elaboro"
+    t.integer "user_reviso"
+    t.integer "user_aprobo"
+    t.date "date_firm_elaboro"
+    t.date "date_firm_reviso"
+    t.date "date_firm_aprobo"
+    t.integer "firm_elaboro", default: 0
+    t.integer "firm_reviso", default: 0
+    t.integer "firm_aprobo", default: 0
+    t.integer "state_job"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id", null: false
+    t.index ["entity_id"], name: "index_description_jobs_on_entity_id"
   end
 
   create_table "documents", force: :cascade do |t|
@@ -460,6 +490,15 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_05_210900) do
     t.bigint "evidence_id", null: false
     t.index ["evidence_id"], name: "index_firms_on_evidence_id"
     t.index ["user_id"], name: "index_firms_on_user_id"
+  end
+
+  create_table "health_promoters", force: :cascade do |t|
+    t.string "name_entity"
+    t.string "code_entity"
+    t.string "nit_entity"
+    t.string "regime_entity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "history_evaluations", force: :cascade do |t|
@@ -849,6 +888,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_05_210900) do
     t.index ["user_id"], name: "index_participants_on_user_id"
   end
 
+  create_table "pension_funds", force: :cascade do |t|
+    t.string "fund"
+    t.string "code_fund"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "report_officials", force: :cascade do |t|
     t.date "date"
     t.integer "number_oficial"
@@ -1120,6 +1166,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_05_210900) do
   add_foreign_key "calendars", "adm_calendars"
   add_foreign_key "clasification_danger_details", "clasification_dangers"
   add_foreign_key "complaints", "entities"
+  add_foreign_key "description_jobs", "entities"
   add_foreign_key "evaluation_rule_details", "evaluations"
   add_foreign_key "evaluation_rule_details", "standar_detail_items"
   add_foreign_key "evaluations", "entities"

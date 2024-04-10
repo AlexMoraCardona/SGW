@@ -1,0 +1,23 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @pension_fund do |form| %>
+        <% @pension_fund.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+        <div class="form-group">    
+            <%= form.label :fund, style: "display: block" %>
+            <%= form.text_field :fund,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :code_fund, style: "display: block" %>
+            <%= form.text_field :code_fund,  class: "form-control" %>
+        </div>
+        <br>    
+        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, pension_funds_path %>
+    <% end %>
+</div>        
+<br>

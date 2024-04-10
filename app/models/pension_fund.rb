@@ -1,0 +1,2 @@
+class PensionFund < ApplicationRecord
+end

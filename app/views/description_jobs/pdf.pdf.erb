@@ -1,0 +1,280 @@
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+    <%= javascript_importmap_tags %>
+</head>
+
+<div>
+    <table style="border:0px solid black; width: 100%;">
+        <tr>
+            <td rowspan="2" style="border:1px solid black; width: 20%; text-align:center">
+                <% if @entity.logo.present? then %>
+                    <%=  image_tag  @entity.logo, class: "image_peq" %>
+                <% end %>   
+            </td>
+            <td style="border:1px solid black; text-align:center; width: 80%;">
+                <div class="col-10"><h6><%= @entity.business_name if @entity.present? %></h6></div>
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; text-align:center; width: 80%;">
+                <div class="col-10"><h6><%= @template.name if @template.present? %></h6></div>
+            </td>
+        </tr>
+    </table>
+
+    <table style="width: 100%;">
+        <tr>    
+            <td style="border:1px solid black; width: 25%">
+                <h6>CÓDIGO: </h6>                
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.reference if @template.present? %></small></h6>                
+            </td>
+
+            <td style="border:1px solid black; width: 25%">
+                <h6>VERSIÓN: </h6>                
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.version if @template.present? %></small></h6>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 25%">
+                <h6>FECHA DE ELABORACIÓN: </h6>                
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date if @template.present? %></small></h6>                
+            </td>
+
+            <td style="border:1px solid black; width: 25%">
+                <h6>FECHA DE ACTUALIZACIÓN: </h6>                
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date_updated if @template.present? %></small></h6>                
+            </td>
+        </tr>
+    </table>
+
+    <table style="width: 100%;">
+        <tr> 
+            <td style="width: 40%;border:1px solid black; background-color: #00aae4;">
+                <strong>Nombre del Cargo:</strong>               
+            </td>
+            <td style="width: 60%;border:1px solid black;">
+                <%= @description_job.name_job %>
+            </td>
+        </tr>
+        <tr> 
+            <td style="width: 40%;border:1px solid black; background-color: #00aae4;">
+                <strong>Jefe Inmediato:</strong>               
+            </td>
+            <td style="width: 60%;border:1px solid black;">
+                <%= @description_job.immediate_boss %>
+            </td>
+        </tr>
+    </table>
+
+    <table style="width: 100%;">
+        <tr>    
+            <td style="width: 100%;border:1px solid black; text-align:center; background-color: #00aae4;">
+                <strong>Objetivo del Cargo</strong>               
+            </td>
+        </tr>
+        <tr>    
+            <td style="width: 100%;border:1px solid black;">
+                <%= @description_job.objetive_job %>
+            </td>
+        </tr>
+        <tr>    
+            <td style="width: 100%;border:1px solid black; text-align:center; background-color: #00aae4;">
+                <strong>Perfil del Cargo</strong>               
+            </td>
+        </tr>
+    </table>
+
+    <table style="width: 100%;">    
+        <tr> 
+            <td style="width: 40%;border:1px solid black;">
+                <strong>Formación Académica:</strong>               
+            </td>
+            <td style="width: 60%;border:1px solid black;">
+                <%= @description_job.academic_training %>
+            </td>
+        </tr>
+        <tr> 
+            <td style="width: 40%;border:1px solid black; background-color: #00aae4;">
+                <strong>Experiencia Requerida:</strong>               
+            </td>
+            <td style="width: 60%;border:1px solid black;">
+                <%= @description_job.experience %>
+            </td>
+        </tr>
+        <tr> 
+            <td style="width: 40%;border:1px solid black;">
+                <strong>Rango Salarial:</strong>               
+            </td>
+            <td style="width: 60%;border:1px solid black;">
+                <%= @description_job.salary_range %>
+            </td>
+        </tr>
+        <tr> 
+            <td style="width: 40%;border:1px solid black;">
+                <strong>Tipo de Contrato:</strong>               
+            </td>
+            <td style="width: 60%;border:1px solid black;">
+                <%= @description_job.type_contract %>
+            </td>
+        </tr>
+        <tr> 
+            <td style="width: 40%;border:1px solid black;">
+                <strong>Horario laboral:</strong>               
+            </td>
+            <td style="width: 60%;border:1px solid black;">
+                <%= @description_job.working_hours %>
+            </td>
+        </tr>
+        <tr> 
+            <td style="width: 40%;border:1px solid black;">
+                <strong>Conocimientos Requeridos:</strong>               
+            </td>
+            <td style="width: 60%;border:1px solid black;">
+                 <%= @description_job.required_knowledge %> 
+            </td>
+        </tr>
+        <tr> 
+            <td style="width: 40%;border:1px solid black;">
+                <strong>Compentencias para el Cargo:</strong>               
+            </td>
+            <td style="width: 60%;border:1px solid black;">
+                <%= @description_job.competencies %>
+            </td>
+        </tr>
+    </table>
+    <table style="width: 100%;">    
+        <tr>    
+            <td style="width: 100%;border:1px solid black; text-align:center; background-color: #00aae4;">
+                <strong>Funciones del Cargo</strong>               
+            </td>
+        </tr>
+        <tr>    
+            <td style="width: 100%;border:1px solid black;">
+                <%= @description_job.job_functions %>
+            </td>
+        </tr>
+        <tr>    
+            <td style="width: 100%;border:1px solid black; text-align:center; background-color: #00aae4;">
+                <strong>Roles y responsabilidades de Seguridad y Salud en el Trabajo </strong>               
+            </td>
+        </tr>
+        <tr>    
+            <td style="width: 100%;border:1px solid black;">
+                <%= @description_job.roles_responsibilities %>
+            </td>
+        </tr>
+        <tr>    
+            <td style="width: 100%;border:1px solid black; text-align:center; background-color: #00aae4;">
+                <strong>Observaciones</strong>               
+            </td>
+        </tr>
+        <tr>    
+            <td style="width: 100%;border:1px solid black;">
+                <%= @description_job.observations %>
+            </td>
+        </tr>
+    </table>
+    <table style="width: 100%;">    
+        <tr> 
+            <td style="width: 10%;border:1px solid black; background-color: #00aae4;">
+                <strong>Elaboró:</strong>               
+            </td>
+            <td style="width: 20%;border:1px solid black;">
+                <%= DescriptionJob.name_user(@description_job.user_elaboro) %>
+            </td>
+            <td style="width: 10%;border:1px solid black; background-color: #00aae4;">
+                <strong>Fecha:</strong>               
+            </td>
+            <td style="width: 10%;border:1px solid black;">
+                <%= @description_job.date_firm_elaboro %>
+            </td>
+            <td style="width: 10%;border:1px solid black; background-color: #00aae4;">
+                <strong>Firma:</strong>               
+            </td>
+            <td style="width: 40%; border:1px solid black"><br>
+                <% if @description_job.firm_elaboro == 1 %>
+                    <% if @ela.present? %>
+                        <% if @ela.firm.attached? %>
+                            <% if @ela.firm.image? %> 
+                                <%= image_tag @ela.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% end %>     
+            </td>
+        </tr>            
+        <tr> 
+            <td style="width: 10%;border:1px solid black; background-color: #00aae4;">
+                <strong>Revisó:</strong>               
+            </td>
+            <td style="width: 20%;border:1px solid black;">
+                <%= DescriptionJob.name_user(@description_job.user_reviso) %>
+            </td>
+            <td style="width: 10%;border:1px solid black; background-color: #00aae4;">
+                <strong>Fecha:</strong>               
+            </td>
+            <td style="width: 10%;border:1px solid black;">
+                <%= @description_job.date_firm_reviso %>
+            </td>
+            <td style="width: 10%;border:1px solid black; background-color: #00aae4;">
+                <strong>Firma:</strong>               
+            </td>
+            <td style="width: 40%; border:1px solid black"><br>
+                <% if @description_job.firm_reviso == 1 %>
+                    <% if @rev.present? %>
+                        <% if @rev.firm.attached? %>
+                            <% if @rev.firm.image? %> 
+                                <%= image_tag @rev.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% end %>     
+            </td>
+        </tr>            
+        <tr> 
+            <td style="width: 10%;border:1px solid black; background-color: #00aae4;">
+                <strong>Aprobó:</strong>               
+            </td>
+            <td style="width: 20%;border:1px solid black;">
+                <%= DescriptionJob.name_user(@description_job.user_aprobo) %>
+            </td>
+            <td style="width: 10%;border:1px solid black; background-color: #00aae4;">
+                <strong>Fecha:</strong>               
+            </td>
+            <td style="width: 10%;border:1px solid black;">
+                <%= @description_job.date_firm_aprobo %>
+            </td>
+            <td style="width: 10%;border:1px solid black; background-color: #00aae4;">
+                <strong>Firma:</strong>               
+            </td>
+            <td style="width: 40%; border:1px solid black"><br>
+                <% if @description_job.firm_aprobo == 1 %>
+                    <% if @apr.present? %>
+                        <% if @apr.firm.attached? %>
+                            <% if @apr.firm.image? %> 
+                                <%= image_tag @apr.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% end %>     
+            </td>
+        </tr>            
+    </table>  
+
+    <div></br></div>
+    <div>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    </div> 
+</div> 

@@ -1,0 +1,197 @@
+<div class="container col-11 card p-5"> 
+    <%= render 'encabezado' %>
+    
+    <div><br></div>
+    <div><br></div>
+    <div><br></div>
+    <div><br></div>
+
+    <div class="row text-center">
+                <h2><%= @survey_profile.entity.business_name if @survey_profile.present? %></h2>
+    </div>
+
+    <div><br></div>
+    <div><br></div>
+
+    <div class="row text-center">
+        <h2><%= @survey_profile.entity.identification_number if @survey_profile.present? %></h2>
+    </div>
+
+    <div><br></div>
+    <div><br></div>
+    <div class="row text-center">
+        <h2>ESTUDIO SOCIODEMOGRÁFICO </h2>
+    </div>
+
+    <div><br></div>
+
+    <div class="row text-center">
+        <h4><%= @survey_profile.date_profile if @survey_profile.present? %></h4>
+    </div>
+
+    <div><br></div>
+    <div><br></div>
+    <div><br></div>
+    <div><br></div>
+    <div><br></div>
+    <div><br></div>
+    <div><br></div>
+    <div><br></div>
+                
+    
+    <div class="row text-center">
+        <strong>INFORMACIÓN GENERAL DE LA EMPRESA</strong>
+    </div>
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                <strong>RAZÓN SOCIAL:</strong>
+            </td>
+            <td style="border:1px solid black;width: 70%;">
+                <%= @survey_profile.entity.business_name if @survey_profile.present? %>
+            </td>
+        </tr>
+        <tr>
+            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                <strong>NIT:</strong>
+            </td>
+            <td style="border:1px solid black;width: 70%;">
+                <%= @survey_profile.entity.identification_number if @survey_profile.present? %>
+            </td>
+        </tr>
+        <tr>
+            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                <strong>DIRECCIÓN:</strong>
+            </td>
+            <td style="border:1px solid black;width: 70%;">
+                <%= @survey_profile.entity.entity_address if @survey_profile.present? %>
+            </td>
+        </tr>
+        <tr>
+            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                <strong>TELÉFONO:</strong>
+            </td>
+            <td style="border:1px solid black;width: 70%;">
+                <%= @survey_profile.entity.phone_number_entity if @survey_profile.present? %>
+            </td>
+        </tr>
+        <tr>
+            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                <strong>CIUDAD/DEPARTAMENTO:</strong>
+            </td>
+            <td style="border:1px solid black;width: 70%;">
+                <%= @administrative_political_division.municipality_name if @administrative_political_division.present? %>
+            </td>
+        </tr>
+        <tr>
+            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                <strong>REPRESENTANTE LEGAL:</strong>
+            </td>
+            <td style="border:1px solid black;width: 70%;">
+                <%= @survey_profile.entity.first_name_legal_representative + ' ' +  @survey_profile.entity.second_name_legal_representative + ' ' + @survey_profile.entity.surname_legal_representative + ' ' + @survey_profile.entity.second_surname_legal_representative if @survey_profile.present? %>
+            </td>
+        </tr>
+        <tr>
+            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                <strong>CENTROS DE TRABAJO:</strong>
+            </td>
+            <td style="border:1px solid black;width: 70%;">
+                <%= @cantidadsedes if @cantidadsedes.present? %>
+            </td>
+        </tr>
+        <tr>
+            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                <strong>RESPONSABLE DEL SG-SST:</strong>
+            </td>
+            <td style="border:1px solid black;width: 70%;">
+                <%= @responsablesst.name if @responsablesst.present? %>
+            </td>
+        </tr>
+        <tr>
+            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                <strong>PAGO:</strong>
+            </td>
+            <td style="border:1px solid black;width: 70%;">
+               
+            </td>
+        </tr>
+        <tr>
+            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                <strong>ACTIVIDAD ECONÓMICA:</strong>
+            </td>
+            <td style="border:1px solid black;width: 70%;">
+                <%= @economic_activity.economic_activity_description if @economic_activity.present? %>
+            </td>
+        </tr>
+        <tr>
+            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                <strong>ARL:</strong>
+            </td>
+            <td style="border:1px solid black;width: 70%;">
+                <%= @arl.name if @arl.present? %>
+            </td>
+        </tr>
+        <tr>
+            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                <strong>CLASE DE RIESGO ASIGNADO POR LA ARL:</strong>
+            </td>
+            <td style="border:1px solid black;width: 70%;">
+                <%=  @claseriesgo.name if @claseriesgo.present? %>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>
+    <div class="row">
+        <div class="col-11 text-center">
+            <div class="row">
+                <strong>CONTEXTO DE LA ORGANIZACIÓN</strong>
+            </div>
+        </div>
+    </div>
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>OBJETIVO </strong>
+            </div>
+        </div>
+    </div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                Documentar los criterios que permitan elaborar el diagnóstico de condiciones de salud y perfil sociodemográfico de la población trabajadora en <%= @survey_profile.entity.business_name if @survey_profile.entity.present? %> con el fin de priorizar las diversas variables que se deban intervenir, a través de la promoción y prevención en la salud en el trabajo, de acuerdo con los hallazgos identificados.
+            </td>
+        </tr>
+        <tr><td><br></td></tr>                
+    </table>
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>ALCANCE </strong>
+            </div>
+        </div>
+    </div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+            Inicia con la recopilación de los insumos necesarios para elaborar el diagnóstico de las condiciones de salud y perfil sociodemográfico, empleando una encuesta de perfil sociodemográfico, terminando con la elaboración, socialización y divulgación del informe. El proceso aplica para todos los empleados y/o colaboradores de <%= @survey_profile.entity.business_name if @survey_profile.entity.present? %>.
+            </td>
+        </tr>
+        <tr><td><br></td></tr>                
+    </table>
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>MARCO NORMATIVO </strong>
+            </div>
+        </div>
+    </div>
+
+    
+
+
+
+</div>

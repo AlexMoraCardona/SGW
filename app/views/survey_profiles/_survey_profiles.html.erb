@@ -1,0 +1,42 @@
+<% if @entity.present? %>
+    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %></h2>
+<% end %>
+
+
+<% if @survey_profiles.present? %>
+    <%= link_to t('common.create_survey_profile'), new_survey_profile_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+
+    <table class="table table-hover"> 
+        <thead>
+            <tr>
+                <th scope="col"><%= t('.id') %></th>
+                <th scope="col">Nit Entidad</th>
+                <th scope="col">Entidad</th>
+                <th scope="col"><%= t('.date_profile') %></th>
+                <th scope="col"><%= t('.date_vencimiento_profile') %></th>
+                <th scope="col"><%= t('common.edit') %></th>
+        </tr>
+        </thead>
+
+        <% @survey_profiles.each do |survey_profile| %>
+            <tr> 
+                <td><%= survey_profile.id %></td>
+                <td><%= survey_profile.entity.business_name %></td>
+                <td><%= survey_profile.entity.identification_number %></td>
+                <td><%= survey_profile.date_profile %></td>
+                <td><%= survey_profile.date_vencimiento_profile %></td>
+                <td><%= link_to t('common.edit'), edit_survey_profile_path(survey_profile), class: 'btn btn-sm btn-primary'  %></td>
+            </tr>
+        <% end %>  
+        <hr>  
+    </table>  
+    <br>
+<% else %>
+    <div>
+        <%= link_to t('common.create_survey_profile'), new_survey_profile_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+    </div>
+<% end %>
+
+
+
+

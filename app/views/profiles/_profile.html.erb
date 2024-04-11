@@ -1,0 +1,19 @@
+<% if @entity.present? %>
+    <h class="display-6"><%= @entity.business_name %> Nit: <%=@entity.identification_number %></h>
+<% end %>
+
+<% if @survey_profiles.present? %>
+    <%= form_tag encuesta_path(Current.user.id.to_i), method: :get do %>
+        <%= select_tag :survey_profile_id, options_from_collection_for_select(@survey_profiles, :id, :date_profile), class: 'form-control input-sm select2', :prompt  =>  '--Seleccione la fecha de la encuesta a realizar--' %>
+
+        <br>
+        <%= submit_tag 'Hacer encuesta',  :class => 'btn btn-primary btn-block spin pull-right' %>
+    <% end %>
+
+
+<% else %>
+    <div>
+        <h class="display-6">La Entidad no tiene encuestas activas por el momento</h>
+    </div>
+<% end %>
+

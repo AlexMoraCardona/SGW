@@ -1,0 +1,404 @@
+<div class="container col-5 card p-5">
+    <br>
+    <%= form_with model: @profile do |form| %>
+        <% @profile.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <p class="fst-normal fs-3"><strong>Perfil Sociodemográfico </br> <%= @entity.business_name %></strong> </p>
+            <p class="fst-normal">1. En el siguiente formato deberá de contestar una serie de preguntas  las cuales están relacionadas con su vida personal, lo que nos ayudara a recolectar datos y así poder enfocar nuestras actividades empresariales a su bienestar.</strong> </p>
+            <p class="fst-normal">2. <strong>¿Por qué se realiza? </strong> El empleador tiene el deber de conocer su población trabajadora y poder orientar sus actividades o posibles beneficios, esto se realiza según el Decreto 1072 de 2015, Artículo 2.2.4.6.2, numeral 13 y la Secretaria  Seccional de Salud y de protección social de Antioquia.</p>
+            <p class="fst-normal">3. Ante el presente diligenciamiento de la encuesta usted NO estará en ningún riesgo físico o psicológico.</p>
+            <p class="fst-normal">4. <strong>¿Quién tendrá acceso? </strong> El personal de Seguridad y Salud en el Trabajo, será el responsable de velar por la información allí suministrada y de realizar dicho informe.</p>
+        </div>
+        <br>         
+        <br>
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :gender,  style: "display: block" %>
+            <%= form.radio_button :gender, 0 %>
+            <label for="Masculino">Masculino</label></br>
+            <%= form.radio_button :gender, 1 %>
+            <label for="Femenino">Femenino</label></br>
+            <%= form.radio_button :gender, 2 %>
+            <label for="No binario">No binario</label></br>
+            <%= form.radio_button :gender, 3 %>
+            <label for="Otro">Otro</label></br>
+        </div>
+        <br>    
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :blood_type,  style: "display: block" %>
+            <%= form.radio_button :blood_type, 0 %>
+            <label for="A+">A+</label></br>
+            <%= form.radio_button :blood_type, 1 %>
+            <label for="A-">A-</label></br>
+            <%= form.radio_button :blood_type, 2 %>
+            <label for="B+">B+</label></br>
+            <%= form.radio_button :blood_type, 3 %>
+            <label for="B-">B-</label></br>
+            <%= form.radio_button :blood_type, 4 %>
+            <label for="AB+">AB+</label></br>
+            <%= form.radio_button :blood_type, 5 %>
+            <label for="AB-">AB-</label></br>
+            <%= form.radio_button :blood_type, 6 %>
+            <label for="O+">O+</label></br>
+            <%= form.radio_button :blood_type, 7 %>
+            <label for="O-">O-</label></br>
+        </div>
+        <br>    
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :age, style: "display: block" %> <p class="fw-lighter">Edad en años números enteros.</p>
+            <%= form.number_field :age,  class: "form-control", step: 1, max:100, min:1 %>
+        </div>
+        <br>    
+        <br>    
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :weight, style: "display: block" %> <p class="fw-lighter">Peso en kilos números enteros.</p>
+            <%= form.number_field :weight,  class: "form-control", step: 1, max:1000, min:1 %>
+        </div>
+        <br>    
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :height, style: "display: block" %> <p class="fw-lighter">Estatura en centimetros números enteros.</p>
+            <%= form.number_field :height,  class: "form-control", step: 1, max:250, min:1 %>
+        </div>
+        <br>    
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :civil_status,  style: "display: block" %>
+            <%= form.radio_button :civil_status, 0 %>
+            <label for="Soltero (a)">Soltero (a)</label></br>
+            <%= form.radio_button :civil_status, 1 %>
+            <label for="Casado (a)">Casado (a)</label></br>
+            <%= form.radio_button :civil_status, 2 %>
+            <label for="Unión libre">Unión libre</label></br>
+            <%= form.radio_button :civil_status, 3 %>
+            <label for="Viudo (a)">Viudo (a)</label></br>
+            <%= form.radio_button :civil_status, 4 %>
+            <label for="Divorciado/ separado (a)">Divorciado/ separado (a)</label></br>            
+        </div>
+        <br>     
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :education_level,  style: "display: block" %>
+            <%= form.radio_button :education_level, 0 %>
+            <label for="Primaria">Primaria</label></br>
+            <%= form.radio_button :education_level, 1 %>
+            <label for="Secundaria">Secundaria</label></br>
+            <%= form.radio_button :education_level, 2 %>
+            <label for="Técnico">Técnico</label></br>
+            <%= form.radio_button :education_level, 3 %>
+            <label for="Tecnólogo">Tecnólogo</label></br>
+            <%= form.radio_button :education_level, 4 %>
+            <label for="Profesional">Profesional</label></br>   
+            <%= form.radio_button :education_level, 5 %>
+            <label for="Posgrado">Posgrado</label></br>           
+        </div>
+        <br>     
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :secretariat_belongs,  style: "display: block" %>
+            <%= form.text_field :secretariat_belongs,  class: "form-control" %>
+        </div>
+        <br>     
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :dependency_belongs,  style: "display: block" %>
+            <%= form.text_field :dependency_belongs,  class: "form-control" %>
+        </div>
+        <br>     
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :post_actual,  style: "display: block" %>
+            <%= form.text_field :post_actual,  class: "form-control" %>
+        </div>
+        <br>     
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :contract_type,  style: "display: block" %>
+            <%= form.radio_button :contract_type, 0 %>
+            <label for="Fijo">Fijo</label></br>
+            <%= form.radio_button :contract_type, 1 %>
+            <label for="Indefinido">Indefinido</label></br>
+            <%= form.radio_button :contract_type, 2 %>
+            <label for="Contratista">Contratista</label></br>
+        </div>
+        <br>     
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :salary_range,  style: "display: block" %>
+            <%= form.radio_button :salary_range, 0 %>
+            <label for="1 a 2 SMLMV">1 a 2 SMLMV</label></br>
+            <%= form.radio_button :salary_range, 1 %>
+            <label for="2 a 4 SMLMV">2 a 4 SMLMV</label></br>
+            <%= form.radio_button :salary_range, 2 %>
+            <label for="Más de 5 SMLMV">Más de 5 SMLMV</label></br>
+        </div>
+        <br>     
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :health_promoter_id,  style: "display: block" %>
+           <%= form.collection_select :health_promoter_id, HealthPromoter.all.order(id: :asc), :id, :name_entity, style: "width=50px" %>
+        </div>
+        <br>    
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :pension_fund_id,  style: "display: block" %>
+           <%= form.collection_select :pension_fund_id, PensionFund.all.order(id: :asc), :id, :fund, style: "width=50px" %>
+        </div>
+        <br>    
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :occupational_risk_manager_id,  style: "display: block" %>
+           <%= form.collection_select :occupational_risk_manager_id, OccupationalRiskManager.all.order(id: :asc), :id, :name, style: "width=50px" %>
+        </div>
+        <br>    
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :emergency_contact,  style: "display: block" %>
+            <%= form.text_field :emergency_contact,  class: "form-control" %>
+        </div>
+        <br>     
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :phone_emergency_contact,  style: "display: block" %>
+            <%= form.text_field :phone_emergency_contact,  class: "form-control" %>
+        </div>
+        <br>     
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :population_group,  style: "display: block" %>
+            <%= form.radio_button :population_group, 0 %>
+            <label for="Indígena">Indígena</label></br>
+            <%= form.radio_button :population_group, 1 %>
+            <label for="Víctima del conflicto">Víctima del conflicto</label></br>
+            <%= form.radio_button :population_group, 2 %>
+            <label for="Desmovilizado">Desmovilizado</label></br>
+            <%= form.radio_button :population_group, 3 %>
+            <label for="Afro">Afro</label></br>
+            <%= form.radio_button :population_group, 4 %>
+            <label for="LGTBI">LGTBI</label></br>   
+            <%= form.radio_button :population_group, 5 %>
+            <label for="Otro">Otro</label></br>           
+        </div>
+        <br>     
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :administrative_political_division_id,  style: "display: block" %>
+           <%= form.collection_select :administrative_political_division_id, AdministrativePoliticalDivision.all.order(id: :asc), :id, :municipality_name, style: "width=50px" %>
+        </div>
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :address,  style: "display: block" %>
+            <%= form.text_field :address,  class: "form-control" %>
+        </div>
+        <br>     
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :neighborhood,  style: "display: block" %>
+            <%= form.text_field :neighborhood,  class: "form-control" %>
+        </div>
+        <br>     
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :phone,  style: "display: block" %>
+            <%= form.text_field :phone,  class: "form-control" %>
+        </div>
+        <br>     
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :stratum_socioeconomic,  style: "display: block" %>
+            <%= form.radio_button :stratum_socioeconomic, 0 %>
+            <label for="0-1">0-1</label></br>
+            <%= form.radio_button :stratum_socioeconomic, 1 %>
+            <label for="2">2</label></br>
+            <%= form.radio_button :stratum_socioeconomic, 2 %>
+            <label for="3">3</label></br>
+            <%= form.radio_button :stratum_socioeconomic, 3 %>
+            <label for="4">4</label></br>
+            <%= form.radio_button :stratum_socioeconomic, 4 %>
+            <label for="5-6">5-6</label></br>   
+        </div>
+        <br>     
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :housing_type,  style: "display: block" %>
+            <%= form.radio_button :housing_type, 0 %>
+            <label for="Propia">Propia</label></br>
+            <%= form.radio_button :housing_type, 1 %>
+            <label for="Arrendada">Arrendada</label></br>
+            <%= form.radio_button :housing_type, 2 %>
+            <label for="Familiar">Familiar</label></br>
+       </div>
+        <br>     
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :basic_housing_services,  style: "display: block" %>
+            <%= form.radio_button :basic_housing_services, 0 %>
+            <label for="Energía, acueducto, alcantarillado">Energía, acueducto, alcantarillado</label></br>
+            <%= form.radio_button :basic_housing_services, 1 %>
+            <label for="Energía, acueducto, alcantarillado">Energía, acueducto, alcantarillado</label></br>
+            <%= form.radio_button :basic_housing_services, 2 %>
+            <label for="Energía, gas, acueducto, alcantarillado">Energía, gas, acueducto, alcantarillado</label></br>
+            <%= form.radio_button :basic_housing_services, 3 %>
+            <label for="Energía, gas, acueducto, alcantarillado, internet">Energía, gas, acueducto, alcantarillado, internet</label></br>
+        </div>
+        <br>  
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :head_family,  style: "display: block" %>
+            <%= form.radio_button :head_family, 0 %>
+            <label for="Si">Si</label></br>
+            <%= form.radio_button :head_family, 1 %>
+            <label for="No">No</label></br>
+        </div>
+        <br>  
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :has_children,  style: "display: block" %>
+            <%= form.radio_button :has_children, 0 %>
+            <label for="Si">Si</label></br>
+            <%= form.radio_button :has_children, 1 %>
+            <label for="No">No</label></br>
+        </div>
+        <br>  
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :number_children,  style: "display: block" %>
+            <%= form.radio_button :number_children, 0 %>
+            <label for="1">1</label></br>
+            <%= form.radio_button :number_children, 1 %>
+            <label for="2">2</label></br>
+            <%= form.radio_button :number_children, 2 %>
+            <label for="Más de 2">Más de 2</label></br>
+        </div>
+        <br> 
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :number_people_charge,  style: "display: block" %>
+            <%= form.radio_button :number_people_charge, 0 %>
+            <label for="Ninguna">Ninguna</label></br>
+            <%= form.radio_button :number_people_charge, 1 %>
+            <label for="1-2">1-2</label></br>
+            <%= form.radio_button :number_people_charge, 2 %>
+            <label for="3-4">3-4</label></br>
+            <%= form.radio_button :number_people_charge, 3 %>
+            <label for="5-6">5-6</label></br>
+        </div>
+        <br>  
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :live_people_disability,  style: "display: block" %>
+            <%= form.radio_button :live_people_disability, 0 %>
+            <label for="Si">Si</label></br>
+            <%= form.radio_button :live_people_disability, 1 %>
+            <label for="No">No</label></br>
+        </div>
+        <br>  
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :type_disability,  style: "display: block" %>
+            <%= form.radio_button :type_disability, 0 %>
+            <label for="Visual">Visual</label></br>
+            <%= form.radio_button :type_disability, 1 %>
+            <label for="Auditiva">Auditiva</label></br>
+            <%= form.radio_button :type_disability, 2 %>
+            <label for="Física">Física</label></br>
+            <%= form.radio_button :type_disability, 3 %>
+            <label for="Mental">Mental</label></br>
+            <%= form.radio_button :type_disability, 4 %>
+            <label for="Múltiple">Múltiple</label></br>   
+            <%= form.radio_button :type_disability, 5 %>
+            <label for="N/A">N/A</label></br>   
+        </div>
+        <br> 
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :use_time,  style: "display: block" %>
+            <%= form.radio_button :use_time, 0 %>
+            <label for="Recreación y deporte">Recreación y deporte</label></br>
+            <%= form.radio_button :use_time, 1 %>
+            <label for="Labores domésticas">Labores domésticas</label></br>
+            <%= form.radio_button :use_time, 2 %>
+            <label for="Estudio">Estudio</label></br>
+            <%= form.radio_button :use_time, 3 %>
+            <label for="Otro">Otro</label></br>
+        </div>
+        <br> 
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :diagnosed_illness,  style: "display: block" %>
+            <%= form.radio_button :diagnosed_illness, 0 %>
+            <label for="Si">Si</label></br>
+            <%= form.radio_button :diagnosed_illness, 1 %>
+            <label for="No">No</label></br>
+        </div>
+        <br> 
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :what_disease,  style: "display: block" %>
+            <%= form.text_field :what_disease,  class: "form-control" %>
+        </div>
+        <br> 
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :smoke,  style: "display: block" %>
+            <%= form.radio_button :smoke, 0 %>
+            <label for="Si">Si</label></br>
+            <%= form.radio_button :smoke, 1 %>
+            <label for="No">No</label></br>
+        </div>
+        <br> 
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :daily_average_smoke,  style: "display: block" %>
+            <%= form.text_field :daily_average_smoke,  class: "form-control" %>
+        </div>
+        <br> 
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :consume_alcoholic_beverages,  style: "display: block" %>
+            <%= form.radio_button :consume_alcoholic_beverages, 0 %>
+            <label for="Si">Si</label></br>
+            <%= form.radio_button :consume_alcoholic_beverages, 1 %>
+            <label for="No">No</label></br>
+        </div>
+        <br> 
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :average_drinks,  style: "display: block" %>
+            <%= form.radio_button :average_drinks, 0 %>
+            <label for="Diario">Diario</label></br>
+            <%= form.radio_button :average_drinks, 1 %>
+            <label for="Semanal">Semanal</label></br>
+            <%= form.radio_button :average_drinks, 2 %>
+            <label for="Quincenal">Quincenal</label></br>
+            <%= form.radio_button :average_drinks, 3 %>
+            <label for="Mensual">Mensual</label></br>
+            <%= form.radio_button :average_drinks, 4 %>
+            <label for="Ocasional">Ocasional</label></br>
+        </div>
+        <br>
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :sports_practice,  style: "display: block" %>
+            <%= form.radio_button :sports_practice, 0 %>
+            <label for="Si">Si</label></br>
+            <%= form.radio_button :sports_practice, 1 %>
+            <label for="No">No</label></br>
+        </div>
+        <br> 
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :average_sports,  style: "display: block" %>
+            <%= form.radio_button :average_sports, 0 %>
+            <label for="Diario">Diario</label></br>
+            <%= form.radio_button :average_sports, 1 %>
+            <label for="Semanal">Semanal</label></br>
+            <%= form.radio_button :average_sports, 2 %>
+            <label for="Quincenal">Quincenal</label></br>
+            <%= form.radio_button :average_sports, 3 %>
+            <label for="Mensual">Mensual</label></br>
+            <%= form.radio_button :average_sports, 4 %>
+            <label for="Ocasional">Ocasional</label></br>
+        </div>
+        <br>
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <%= form.label :conveyance,  style: "display: block" %>
+            <%= form.radio_button :conveyance, 0 %>
+            <label for="Moto">Moto</label></br>
+            <%= form.radio_button :conveyance, 1 %>
+            <label for="Carro">Carro</label></br>
+            <%= form.radio_button :conveyance, 2 %>
+            <label for="Bicicleta">Bicicleta</label></br>
+            <%= form.radio_button :conveyance, 3 %>
+            <label for="Servicio público">Servicio público</label></br>
+            <%= form.radio_button :conveyance, 4 %>
+            <label for="Ocasional">A pie</label></br>
+        </div>
+        <br>
+        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
+            <p class="fst-normal">Los datos de carácter personal que usted suministre a través de esta encuesta serán objeto de tratamiento en los términos de la Ley 1581 de 2012, el Decreto 1377 de 2013 y el Decreto 886 de 2014. por parte de la Organización, quien se compromete a implementar todas las medidas necesarias para garantizar un tratamiento idóneo de los datos personales y a cumplir con las disposiciones que se tienen en esta materia.
+            ¿Acepto el tratamiento de datos personales?</p>
+            <%= form.radio_button :accept_processing_data, 0 %>
+            <label for="Si">Si</label></br>
+            <%= form.radio_button :accept_processing_data, 1 %>
+            <label for="No">No</label></br>
+        </div>
+        <br> 
+        <%= form.hidden_field :user_id, :value => @user_id.to_i, class: "form-control" %>
+        <%= form.hidden_field :survey_profile_id, :value => @survey_profile_id.to_i, class: "form-control" %>
+
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    <% end %>
+</div>        
+<br>
+
+ 

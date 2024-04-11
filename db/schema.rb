@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_10_005510) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_10_171949) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -895,6 +895,61 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_10_005510) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "profiles", force: :cascade do |t|
+    t.integer "gender", default: 0
+    t.integer "blood_type", default: 0
+    t.integer "age", default: 0
+    t.integer "weight", default: 0
+    t.integer "height", default: 0
+    t.integer "civil_status", default: 0
+    t.integer "education_level", default: 0
+    t.string "secretariat_belongs"
+    t.string "dependency_belongs"
+    t.string "post_actual"
+    t.integer "contract_type", default: 0
+    t.integer "salary_range", default: 0
+    t.string "emergency_contact"
+    t.string "phone_emergency_contact"
+    t.integer "population_group", default: 0
+    t.string "address"
+    t.string "neighborhood"
+    t.string "phone"
+    t.integer "stratum_socioeconomic", default: 0
+    t.integer "housing_type", default: 0
+    t.integer "basic_housing_services", default: 0
+    t.integer "head_family", default: 0
+    t.integer "has_children", default: 0
+    t.integer "number_children", default: 0
+    t.integer "number_people_charge", default: 0
+    t.integer "live_people_disability", default: 0
+    t.integer "type_disability", default: 0
+    t.integer "use_time", default: 0
+    t.integer "diagnosed_illness", default: 0
+    t.string "what_disease"
+    t.integer "smoke", default: 0
+    t.string "daily_average_smoke"
+    t.integer "consume_alcoholic_beverages", default: 0
+    t.integer "average_drinks", default: 0
+    t.integer "sports_practice", default: 0
+    t.integer "average_sports", default: 0
+    t.integer "conveyance", default: 0
+    t.integer "accept_processing_data", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.bigint "survey_profile_id"
+    t.bigint "health_promoter_id"
+    t.bigint "pension_fund_id"
+    t.bigint "occupational_risk_manager_id"
+    t.bigint "administrative_political_division_id"
+    t.index ["administrative_political_division_id"], name: "index_profiles_on_administrative_political_division_id"
+    t.index ["health_promoter_id"], name: "index_profiles_on_health_promoter_id"
+    t.index ["occupational_risk_manager_id"], name: "index_profiles_on_occupational_risk_manager_id"
+    t.index ["pension_fund_id"], name: "index_profiles_on_pension_fund_id"
+    t.index ["survey_profile_id"], name: "index_profiles_on_survey_profile_id"
+    t.index ["user_id"], name: "index_profiles_on_user_id"
+  end
+
   create_table "report_officials", force: :cascade do |t|
     t.date "date"
     t.integer "number_oficial"
@@ -1016,6 +1071,15 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_10_005510) do
     t.datetime "updated_at", null: false
     t.bigint "rule_id"
     t.index ["rule_id"], name: "index_standars_on_rule_id"
+  end
+
+  create_table "survey_profiles", force: :cascade do |t|
+    t.date "date_profile"
+    t.date "date_vencimiento_profile"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_survey_profiles_on_entity_id"
   end
 
   create_table "templates", force: :cascade do |t|
@@ -1210,11 +1274,18 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_10_005510) do
   add_foreign_key "occupational_exams", "entities"
   add_foreign_key "participants", "evidences"
   add_foreign_key "participants", "users"
+  add_foreign_key "profiles", "administrative_political_divisions"
+  add_foreign_key "profiles", "health_promoters"
+  add_foreign_key "profiles", "occupational_risk_managers"
+  add_foreign_key "profiles", "pension_funds"
+  add_foreign_key "profiles", "survey_profiles"
+  add_foreign_key "profiles", "users"
   add_foreign_key "resource_items", "resources"
   add_foreign_key "resources", "entities"
   add_foreign_key "standar_detail_items", "standar_details"
   add_foreign_key "standar_details", "standars"
   add_foreign_key "standars", "rules"
+  add_foreign_key "survey_profiles", "entities"
   add_foreign_key "templates", "standar_detail_items"
   add_foreign_key "training_items", "trainings"
   add_foreign_key "trainings", "entities"

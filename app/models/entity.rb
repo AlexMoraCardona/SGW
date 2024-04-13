@@ -23,6 +23,10 @@ class Entity < ApplicationRecord
     validates :entity_arl, presence: true 
     validates :number_workers, presence: true 
    
-    
+    def self.label_pay(dato)
+        if dato == 0 ; 'PILA MENSUAL'
+        elsif meets == 1 ; 'NÓMINA MENSUAL'
+        end 
+    end  
    
 end

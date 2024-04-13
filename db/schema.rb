@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_10_171949) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_13_005335) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -189,6 +189,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_10_171949) do
     t.index ["adm_calendar_id"], name: "index_calendars_on_adm_calendar_id"
   end
 
+  create_table "cessation_funds", force: :cascade do |t|
+    t.string "name"
+    t.string "nit"
+    t.string "code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "clasification_danger_details", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -335,6 +343,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_10_171949) do
     t.integer "agricultural_unit", default: 0
     t.integer "responsible_sst", default: 0
     t.integer "external_consultant", default: 0
+    t.integer "pay_entity", default: 0
     t.index ["email_entity"], name: "index_entities_on_email_entity", unique: true
   end
 
@@ -942,6 +951,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_10_171949) do
     t.bigint "pension_fund_id"
     t.bigint "occupational_risk_manager_id"
     t.bigint "administrative_political_division_id"
+    t.integer "Antiquity", default: 0
+    t.integer "area_work", default: 0
     t.index ["administrative_political_division_id"], name: "index_profiles_on_administrative_political_division_id"
     t.index ["health_promoter_id"], name: "index_profiles_on_health_promoter_id"
     t.index ["occupational_risk_manager_id"], name: "index_profiles_on_occupational_risk_manager_id"
@@ -1079,6 +1090,15 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_10_171949) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
+    t.integer "user_elaboro"
+    t.integer "user_reviso"
+    t.integer "user_aprobo"
+    t.date "date_firm_elaboro"
+    t.date "date_firm_reviso"
+    t.date "date_firm_aprobo"
+    t.integer "firm_elaboro", default: 0
+    t.integer "firm_aprobo", default: 0
+    t.integer "firm_reviso", default: 0
     t.index ["entity_id"], name: "index_survey_profiles_on_entity_id"
   end
 

@@ -60,7 +60,10 @@ Rails.application.routes.draw do
   resources :health_promoters
   resources :survey_profiles
   resources :profiles
+  resources :cessation_funds
 
+  get '/profiles/firma_aprobo/:id', to: 'profiles#firma_aprobo', as: 'firma_aprobo'
+  get '/profiles/firma_elaboro/:id', to: 'profiles#firma_elaboro', as: 'firma_elaboro'
   get '/profiles/encuesta/:id', to: 'profiles#encuesta', as: 'encuesta' 
   get '/profiles/informe/:id', to: 'profiles#informe', as: 'infoprofile' 
   get '/adm_calendars/generar/:id', to: 'adm_calendars#generar', as: 'generar' 

@@ -11,6 +11,8 @@
                 <th scope="col">Entidad</th>
                 <th scope="col"><%= t('.date_profile') %></th>
                 <th scope="col"><%= t('.date_vencimiento_profile') %></th>
+                <th scope="col">Elaboró</th>
+                <th scope="col">Aprobó</th>
                 <th scope="col"><%= t('common.show') %></th>
             </tr>
         </thead>
@@ -22,6 +24,16 @@
                 <td><%= survey_profile.entity.identification_number %></td>
                 <td><%= survey_profile.date_profile %></td>
                 <td><%= survey_profile.date_vencimiento_profile %></td>
+                <% if survey_profile.firm_elaboro == 0 %>
+                    <td><%= link_to t('common.firmar'), firma_elaboro_path(survey_profile.id, 3), class: 'btn btn-sm btn btn-warning' if survey_profile.user_elaboro.present? %></td>
+                <% else %>
+                    <td><%= survey_profile.date_firm_elaboro %></td>
+                <% end %>      
+                <% if survey_profile.firm_aprobo == 0 %>
+                    <td><%= link_to t('common.firmar'), firma_aprobo_path(survey_profile.id, 1), class: 'btn btn-sm btn btn-warning' if survey_profile.user_aprobo.present? %></td>
+                <% else %>
+                    <td><%= survey_profile.date_firm_aprobo %></td>
+                <% end %>      
                 <td><%= link_to t('common.show'), infoprofile_path(survey_profile), class: 'btn btn-sm btn-primary'  %></td>
             </tr>
         <% end %>  

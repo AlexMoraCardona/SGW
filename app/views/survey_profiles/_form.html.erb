@@ -18,6 +18,17 @@
                 <%= form.date_field :date_vencimiento_profile,  class: "form-control" %>
             </div>                   
         </div>  
+        <div class="row g-2">
+            <div class="col-sm-5">
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Responsable SG-SST.">Responsable SG-SST:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                <%= form.collection_select :user_elaboro, User.all.order(id: :asc), :id,  :name, style: "width=50px" %>
+            </div>        
+            <div class="col-sm-5">    
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Responsable SG-SST.">Responsable SG-SST:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                <%= form.collection_select :user_aprobo, User.all.order(id: :asc), :id,  :name, style: "width=50px" %>
+            </div>                   
+        </div>  
+
         <% if params[:entity_id].present? %>
             <%= form.hidden_field :entity_id, :value => params[:entity_id].to_i, class: "form-control" %>
         <% else %>

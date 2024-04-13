@@ -64,7 +64,32 @@ class ProfilesController < ApplicationController
         @economic_activity = EconomicActivityCode.find(@survey_profile.entity.economic_activity)
         @arl = OccupationalRiskManager.find(@survey_profile.entity.entity_arl)
         @claseriesgo = RiskLevel.find(@survey_profile.entity.risk_classification) if @survey_profile.entity.risk_classification.present?
+        @user_elaboro = User.find(@survey_profile.user_elaboro) if @survey_profile.user_elaboro.present?
+        @user_aprobo = User.find(@survey_profile.user_aprobo) if @survey_profile.user_aprobo.present?
+
     end
+
+    def firma_elaboro
+        @survey_profile = SurveyProfile.find_by(id: params[:id].to_i)
+        if params[:format].to_i == 3
+            if  @survey_profile.user_elaboro == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+                redirect_to firma_elaboro_path
+            else
+                redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Responsable en SST."
+            end    
+        end
+    end    
+
+    def firma_aprobo
+        @survey_profile = SurveyProfile.find_by(id: params[:id].to_i)
+        if params[:format].to_i == 1
+            if  @survey_profile.user_aprobo == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+                redirect_to firma_aprobo_path
+            else
+                redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Representante Legal."
+            end    
+        end
+    end    
 
     private
 
@@ -80,7 +105,7 @@ class ProfilesController < ApplicationController
         :daily_average_smoke, :consume_alcoholic_beverages, :average_drinks, 
         :sports_practice, :average_sports, :conveyance, :accept_processing_data, 
         :user_id, :survey_profile_id, :health_promoter_id, :pension_fund_id, 
-        :occupational_risk_manager_id, :administrative_political_division_id)
+        :occupational_risk_manager_id, :administrative_political_division_id, :Antiquity, :area_work)
     end 
 
 

@@ -35,11 +35,19 @@ class SurveyProfilesController < ApplicationController
     def update
         @survey_profile = SurveyProfile.find(params[:id])
         if @survey_profile.update(survey_profile_params)
+            actualizar_fecha(@survey_profile_id)
             redirect_to survey_profiles_path, notice: 'Encuesta Sociodemográfica actualizada correctamente'
         else
             render :edit, survey_profiles: :unprocessable_entity
         end         
     end    
+    
+    def actualizar_fecha(id)
+        @survey_profile = SurveyProfile.find(id)
+        @survey_profile.date_firm_aprobo = nil if @survey_profile.firm_aprobo.to_i == 0
+        @survey_profile.date_firm_elaboro = nil if @survey_profile.firm_elaboro.to_i == 0
+        @survey_profile.save
+    end  
 
     def destroy
         @survey_profile = SurveyProfile.find(params[:id])
@@ -50,7 +58,9 @@ class SurveyProfilesController < ApplicationController
     private
 
     def survey_profile_params 
-        params.require(:survey_profile).permit(:date_profile, :date_vencimiento_profile, :entity_id)
+        params.require(:survey_profile).permit(:date_profile, :date_vencimiento_profile, :entity_id, :user_elaboro, 
+        :user_reviso, :user_aprobo, :date_firm_elaboro, :date_firm_reviso, :date_firm_aprobo, 
+        :firm_elaboro, :firm_aprobo, :firm_reviso)
     end 
 
 end  

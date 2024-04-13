@@ -113,7 +113,7 @@
                 <strong>PAGO:</strong>
             </td>
             <td style="border:1px solid black;width: 70%;">
-               
+                <%= Entity.label_pay(@survey_profile.entity.pay_entity) if @survey_profile.present? %>
             </td>
         </tr>
         <tr>
@@ -189,9 +189,1186 @@
             </div>
         </div>
     </div>
-
+    <div><br></div>
+    <table>
+        <ul>
+            <tr>
+                <td style="text-align:justify">
+                    <div class="row"> 
+                        <div class="col-11">
+                            <li>Decreto 1072 del 26 de mayo del 2015, artículo 2.2.4.6.20 numeral 9 "La existencia-de un procedimiento para efectuar el diagnóstico de las condiciones de salud de los trabajadores, para la definición de las prioridades de control e intervención".</li>
+                        </div>
+                    </div>
+                </td>    
+            </tr>    
+        </ul>
+        <ul>
+            <tr>
+                <td style="text-align:justify">
+                    <div class="row"> 
+                        <div class="col-11">
+                            <li>Resolución 2346 del 11 de julio de 2007, Expedido por el Ministerio de la Protección Social. "Por la cual se regula la práctica de evaluaciones médicas ocupacionales y el manejo del contenido de las historias clínicas ocupacionales".</li>
+                        </div>
+                    </div>
+                </td>    
+            </tr>    
+        </ul>
+        <ul>
+            <tr>
+                <td style="text-align:justify">
+                    <div class="row"> 
+                        <div class="col-11">
+                            <li>Resolución 0312 de 2019, estándares mínimos en el ciclo Hacer del “PHVA”, estándar condiciones de salud en el trabajo, en los Ítems 3.1.1 “descripción sociodemográfica. Diagnóstico de condiciones de salud”, y 3.1.2 “Actividades de Promoción y Prevención”.</li>
+                        </div>
+                    </div>
+                </td>    
+            </tr>    
+        </ul>
+    </table>
+    <div><br></div>
+    <div class="row">
+        <div class="col-11 text-center">
+            <div class="row">
+                <strong>ESTUDIO SOCIODEMOGRÁFICO: VARIBLES ANALIZADAS</strong>
+            </div>
+        </div>
+    </div>
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>1. GÉNERO</strong>
+            </div>
+        </div>
+    </div>
+    <div><br></div>
+    <% @datos = Profile.vgenero(@survey_profile.id) if @claseriesgo.present? %>
+    <% if @datos.present? %>
+        <% @cant = 0 %>
+        <% @datosg = [] %>        
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <% @datos.each do |dato| %>
+                    <% @cant =  @cant  + dato[1].to_i %>
+                <% end %>    
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">GENERO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @datos.each do |dato| %>
+                            <tr>
+                                <td style="text-align:justify;border:1px solid black;">
+                                    <% dato[0] = Profile.labelgenero(dato[0]) %>
+                                    <% @datosg.push([dato[0], ((dato[1]*100)/@cant)]) %>
+                                    <%=  dato[0] %>
+                                </td>    
+                                <td style="text-align:center;border:1px solid black;">
+                                    <%=  dato[1] %>
+                                </td>    
+                            </tr>    
+                        <% end %>
+                        <tr>
+                            <td style="text-align:justify;background-color: #00aae4;border:1px solid black;">
+                                Total
+                            </td>    
+                            <td style="text-align:center;background-color: #00aae4;border:1px solid black;">
+                                <%=  @cant if @cant.present? %>
+                            </td>    
+                        </tr>    
+                    </tbody %>
+                </table>        
     
-
-
-
+            </div>
+            <div class="col-sm-6">
+                <%= pie_chart  @datosg, title: "GÉNERO", download: {filename: "Género"}, download: {background: "#FFFFFF"}, xtitle: "Tipo de acción", ytitle: "Cantidad", prefix: "Cantidad: ", suffix: "%" if @datos.present? %>
+            </div>             
+        </div>
+    <% end %>
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>2. EDAD</strong>
+            </div>
+        </div>
+    </div>
+    <div><br></div>
+    <% @datos = Profile.vedad(@survey_profile.id) if @claseriesgo.present? %>
+    <% if @datos.present? %>
+        <% @cant = 0 %>
+        <% @datosg = [] %>        
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <% @datos.each do |dato| %>
+                    <% @cant =  @cant  + dato[1].to_i %>
+                <% end %>    
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">EDAD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @datos.each do |dato| %>
+                            <tr>
+                                <td style="text-align:justify;border:1px solid black;">
+                                    <% dato[0] = Profile.labeledad(dato[0]) %>
+                                    <% @datosg.push([dato[0], ((dato[1]*100)/@cant)]) %>
+                                    <%=  dato[0] %>
+                                </td>    
+                                <td style="text-align:center;border:1px solid black;">
+                                    <%=  dato[1] %>
+                                </td>    
+                            </tr>    
+                        <% end %>
+                        <tr>
+                            <td style="text-align:justify;background-color: #00aae4;border:1px solid black;">
+                                Total
+                            </td>    
+                            <td style="text-align:center;background-color: #00aae4;border:1px solid black;">
+                                <%=  @cant if @cant.present? %>
+                            </td>    
+                        </tr>    
+                    </tbody %>
+                </table>        
+    
+            </div>
+            <div class="col-sm-6">
+                <%= pie_chart  @datosg, title: "EDAD", download: {filename: "Edad"}, download: {background: "#FFFFFF"}, xtitle: "Tipo de acción", ytitle: "Cantidad", prefix: "Cantidad: ", suffix: "%" if @datos.present? %>
+            </div>             
+        </div>
+    <% end %>    
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>3. ESTADO CIVIL</strong>
+            </div>
+        </div>
+    </div>
+    <div><br></div>
+    <% @datos = Profile.vestadocivil(@survey_profile.id) if @claseriesgo.present? %>
+    <% if @datos.present? %>
+        <% @cant = 0 %>
+        <% @datosg = [] %>        
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <% @datos.each do |dato| %>
+                    <% @cant =  @cant  + dato[1].to_i %>
+                <% end %>    
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">ESTADO CIVIL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @datos.each do |dato| %>
+                            <tr>
+                                <td style="text-align:justify;border:1px solid black;">
+                                    <% dato[0] = Profile.labelestadocivil(dato[0]) %>
+                                    <% @datosg.push([dato[0], ((dato[1]*100)/@cant)]) %>
+                                    <%=  dato[0] %>
+                                </td>    
+                                <td style="text-align:center;border:1px solid black;">
+                                    <%=  dato[1] %>
+                                </td>    
+                            </tr>    
+                        <% end %>
+                        <tr>
+                            <td style="text-align:justify;background-color: #00aae4;border:1px solid black;">
+                                Total
+                            </td>    
+                            <td style="text-align:center;background-color: #00aae4;border:1px solid black;">
+                                <%=  @cant if @cant.present? %>
+                            </td>    
+                        </tr>    
+                    </tbody %>
+                </table>        
+    
+            </div>
+            <div class="col-sm-6">
+                <%= pie_chart  @datosg, title: "ESTADO CIVIL", download: {filename: "Estado Civil"}, download: {background: "#FFFFFF"}, xtitle: "Tipo de acción", ytitle: "Cantidad", prefix: "Cantidad: ", suffix: "%" if @datos.present? %>
+            </div>             
+        </div>
+    <% end %>    
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>4. PERSONAS A CARGO</strong>
+            </div>
+        </div>
+    </div>
+    <div><br></div>
+    <% @datos = Profile.vpersonasacargo(@survey_profile.id) if @claseriesgo.present? %>
+    <% if @datos.present? %>
+        <% @cant = 0 %>
+        <% @datosg = [] %>        
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <% @datos.each do |dato| %>
+                    <% @cant =  @cant  + dato[1].to_i %>
+                <% end %>    
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">PERSONAS A CARGO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @datos.each do |dato| %>
+                            <tr>
+                                <td style="text-align:justify;border:1px solid black;">
+                                    <% dato[0] = Profile.labelpersonasacargo(dato[0]) %>
+                                    <% @datosg.push([dato[0], ((dato[1]*100)/@cant)]) %>
+                                    <%=  dato[0] %>
+                                </td>    
+                                <td style="text-align:center;border:1px solid black;">
+                                    <%=  dato[1] %>
+                                </td>    
+                            </tr>    
+                        <% end %>
+                        <tr>
+                            <td style="text-align:justify;background-color: #00aae4;border:1px solid black;">
+                                Total
+                            </td>    
+                            <td style="text-align:center;background-color: #00aae4;border:1px solid black;">
+                                <%=  @cant if @cant.present? %>
+                            </td>    
+                        </tr>    
+                    </tbody %>
+                </table>        
+    
+            </div>
+            <div class="col-sm-6">
+                <%= pie_chart  @datosg, title: "PERSONAS A CARGO", download: {filename: "PERSONAS A CARGO"}, download: {background: "#FFFFFF"}, xtitle: "Tipo de acción", ytitle: "Cantidad", prefix: "Cantidad: ", suffix: "%" if @datos.present? %>
+            </div>             
+        </div>
+    <% end %>    
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>5. CIUDAD-MUNICIPIO</strong>
+            </div>
+        </div>
+    </div>
+    <div><br></div>
+    <% @datos = Profile.vciudad(@survey_profile.id) if @claseriesgo.present? %>
+    <% if @datos.present? %>
+        <% @cant = 0 %>
+        <% @datosg = [] %>        
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <% @datos.each do |dato| %>
+                    <% @cant =  @cant  + dato[1].to_i %>
+                <% end %>    
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">CIUDAD - MUNICIPIO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @datos.each do |dato| %>
+                            <tr>
+                                <td style="text-align:justify;border:1px solid black;">
+                                    <% dato[0] = Profile.labelciudad(dato[0]) %>
+                                    <% @datosg.push([dato[0], ((dato[1]*100)/@cant)]) %>
+                                    <%=  dato[0] %>
+                                </td>    
+                                <td style="text-align:center;border:1px solid black;">
+                                    <%=  dato[1] %>
+                                </td>    
+                            </tr>    
+                        <% end %>
+                        <tr>
+                            <td style="text-align:justify;background-color: #00aae4;border:1px solid black;">
+                                Total
+                            </td>    
+                            <td style="text-align:center;background-color: #00aae4;border:1px solid black;">
+                                <%=  @cant if @cant.present? %>
+                            </td>    
+                        </tr>    
+                    </tbody %>
+                </table>        
+    
+            </div>
+            <div class="col-sm-6">
+                <%= pie_chart  @datosg, title: "CIUDAD - MUNICIPIO", download: {filename: "Ciudad - Municipio"}, download: {background: "#FFFFFF"}, xtitle: "Tipo de acción", ytitle: "Cantidad", prefix: "Cantidad: ", suffix: "%" if @datos.present? %>
+            </div>             
+        </div>
+    <% end %>    
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>6. TENENCIA DE VIVIENDA</strong>
+            </div>
+        </div>
+    </div>
+    <div><br></div>
+    <% @datos = Profile.vvivienda(@survey_profile.id) if @claseriesgo.present? %>
+    <% if @datos.present? %>
+        <% @cant = 0 %>
+        <% @datosg = [] %>        
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <% @datos.each do |dato| %>
+                    <% @cant =  @cant  + dato[1].to_i %>
+                <% end %>    
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">TENENCIA DE VIVIENDA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @datos.each do |dato| %>
+                            <tr>
+                                <td style="text-align:justify;border:1px solid black;">
+                                    <% dato[0] = Profile.labelvivienda(dato[0]) %>
+                                    <% @datosg.push([dato[0], ((dato[1]*100)/@cant)]) %>
+                                    <%=  dato[0] %>
+                                </td>    
+                                <td style="text-align:center;border:1px solid black;">
+                                    <%=  dato[1] %>
+                                </td>    
+                            </tr>    
+                        <% end %>
+                        <tr>
+                            <td style="text-align:justify;background-color: #00aae4;border:1px solid black;">
+                                Total
+                            </td>    
+                            <td style="text-align:center;background-color: #00aae4;border:1px solid black;">
+                                <%=  @cant if @cant.present? %>
+                            </td>    
+                        </tr>    
+                    </tbody %>
+                </table>        
+    
+            </div>
+            <div class="col-sm-6">
+                <%= pie_chart  @datosg, title: "TENENCIA DE VIVIENDA", download: {filename: "Tenencia de Vivienda"}, download: {background: "#FFFFFF"}, xtitle: "Tipo de acción", ytitle: "Cantidad", prefix: "Cantidad: ", suffix: "%" if @datos.present? %>
+            </div>             
+        </div>
+    <% end %>    
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>7. ESTRATO</strong>
+            </div>
+        </div>
+    </div>
+    <div><br></div>
+    <% @datos = Profile.vestrato(@survey_profile.id) if @claseriesgo.present? %>
+    <% if @datos.present? %>
+        <% @cant = 0 %>
+        <% @datosg = [] %>        
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <% @datos.each do |dato| %>
+                    <% @cant =  @cant  + dato[1].to_i %>
+                <% end %>    
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">ESTRATO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @datos.each do |dato| %>
+                            <tr>
+                                <td style="text-align:justify;border:1px solid black;">
+                                    <% dato[0] = Profile.labelestrato(dato[0]) %>
+                                    <% @datosg.push([dato[0], ((dato[1]*100)/@cant)]) %>
+                                    <%=  dato[0] %>
+                                </td>    
+                                <td style="text-align:center;border:1px solid black;">
+                                    <%=  dato[1] %>
+                                </td>    
+                            </tr>    
+                        <% end %>
+                        <tr>
+                            <td style="text-align:justify;background-color: #00aae4;border:1px solid black;">
+                                Total
+                            </td>    
+                            <td style="text-align:center;background-color: #00aae4;border:1px solid black;">
+                                <%=  @cant if @cant.present? %>
+                            </td>    
+                        </tr>    
+                    </tbody %>
+                </table>        
+    
+            </div>
+            <div class="col-sm-6">
+                <%= pie_chart  @datosg, title: "ESTRATO", download: {filename: "Estrato"}, download: {background: "#FFFFFF"}, xtitle: "Tipo de acción", ytitle: "Cantidad", prefix: "Cantidad: ", suffix: "%" if @datos.present? %>
+            </div>             
+        </div>
+    <% end %> 
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>8. NIVEL DE ESCOLARIDAD</strong>
+            </div>
+        </div>
+    </div>
+    <div><br></div>
+    <% @datos = Profile.vnivel(@survey_profile.id) if @claseriesgo.present? %>
+    <% if @datos.present? %>
+        <% @cant = 0 %>
+        <% @datosg = [] %>        
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <% @datos.each do |dato| %>
+                    <% @cant =  @cant  + dato[1].to_i %>
+                <% end %>    
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">NIVEL DE ESCOLARIDAD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @datos.each do |dato| %>
+                            <tr>
+                                <td style="text-align:justify;border:1px solid black;">
+                                    <% dato[0] = Profile.labelnivel(dato[0]) %>
+                                    <% @datosg.push([dato[0], ((dato[1]*100)/@cant)]) %>
+                                    <%=  dato[0] %>
+                                </td>    
+                                <td style="text-align:center;border:1px solid black;">
+                                    <%=  dato[1] %>
+                                </td>    
+                            </tr>    
+                        <% end %>
+                        <tr>
+                            <td style="text-align:justify;background-color: #00aae4;border:1px solid black;">
+                                Total
+                            </td>    
+                            <td style="text-align:center;background-color: #00aae4;border:1px solid black;">
+                                <%=  @cant if @cant.present? %>
+                            </td>    
+                        </tr>    
+                    </tbody %>
+                </table>        
+    
+            </div>
+            <div class="col-sm-6">
+                <%= pie_chart  @datosg, title: "NIVEL DE ESCOLARIDAD", download: {filename: "Nivel de Escolaridad"}, download: {background: "#FFFFFF"}, xtitle: "Tipo de acción", ytitle: "Cantidad", prefix: "Cantidad: ", suffix: "%" if @datos.present? %>
+            </div>             
+        </div>
+    <% end %> 
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>9. PROMEDIO SALARIO</strong>
+            </div>
+        </div>
+    </div>
+    <div><br></div>
+    <% @datos = Profile.vsalario(@survey_profile.id) if @claseriesgo.present? %>
+    <% if @datos.present? %>
+        <% @cant = 0 %>
+        <% @datosg = [] %>        
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <% @datos.each do |dato| %>
+                    <% @cant =  @cant  + dato[1].to_i %>
+                <% end %>    
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">PROMEDIO SALARIO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @datos.each do |dato| %>
+                            <tr>
+                                <td style="text-align:justify;border:1px solid black;">
+                                    <% dato[0] = Profile.labelsalario(dato[0]) %>
+                                    <% @datosg.push([dato[0], ((dato[1]*100)/@cant)]) %>
+                                    <%=  dato[0] %>
+                                </td>    
+                                <td style="text-align:center;border:1px solid black;">
+                                    <%=  dato[1] %>
+                                </td>    
+                            </tr>    
+                        <% end %>
+                        <tr>
+                            <td style="text-align:justify;background-color: #00aae4;border:1px solid black;">
+                                Total
+                            </td>    
+                            <td style="text-align:center;background-color: #00aae4;border:1px solid black;">
+                                <%=  @cant if @cant.present? %>
+                            </td>    
+                        </tr>    
+                    </tbody %>
+                </table>        
+    
+            </div>
+            <div class="col-sm-6">
+                <%= pie_chart  @datosg, title: "PROMEDIO SALARIO", download: {filename: "Promedio Salario"}, download: {background: "#FFFFFF"}, xtitle: "Tipo de acción", ytitle: "Cantidad", prefix: "Cantidad: ", suffix: "%" if @datos.present? %>
+            </div>             
+        </div>
+    <% end %> 
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>10. TIPO DE CONTRATO</strong>
+            </div>
+        </div>
+    </div>
+    <div><br></div>
+    <% @datos = Profile.vcontrato(@survey_profile.id) if @claseriesgo.present? %>
+    <% if @datos.present? %>
+        <% @cant = 0 %>
+        <% @datosg = [] %>        
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <% @datos.each do |dato| %>
+                    <% @cant =  @cant  + dato[1].to_i %>
+                <% end %>    
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">TIPO DE CONTRATO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @datos.each do |dato| %>
+                            <tr>
+                                <td style="text-align:justify;border:1px solid black;">
+                                    <% dato[0] = Profile.labelcontrato(dato[0]) %>
+                                    <% @datosg.push([dato[0], ((dato[1]*100)/@cant)]) %>
+                                    <%=  dato[0] %>
+                                </td>    
+                                <td style="text-align:center;border:1px solid black;">
+                                    <%=  dato[1] %>
+                                </td>    
+                            </tr>    
+                        <% end %>
+                        <tr>
+                            <td style="text-align:justify;background-color: #00aae4;border:1px solid black;">
+                                Total
+                            </td>    
+                            <td style="text-align:center;background-color: #00aae4;border:1px solid black;">
+                                <%=  @cant if @cant.present? %>
+                            </td>    
+                        </tr>    
+                    </tbody %>
+                </table>        
+    
+            </div>
+            <div class="col-sm-6">
+                <%= pie_chart  @datosg, title: "TIPO DE CONTRATO", download: {filename: "Tipo de Contrato"}, download: {background: "#FFFFFF"}, xtitle: "Tipo de acción", ytitle: "Cantidad", prefix: "Cantidad: ", suffix: "%" if @datos.present? %>
+            </div>             
+        </div>
+    <% end %> 
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>11. EPS</strong>
+            </div>
+        </div>
+    </div>
+    <div><br></div>
+    <% @datos = Profile.veps(@survey_profile.id) if @claseriesgo.present? %>
+    <% if @datos.present? %>
+        <% @cant = 0 %>
+        <% @datosg = [] %>        
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <% @datos.each do |dato| %>
+                    <% @cant =  @cant  + dato[1].to_i %>
+                <% end %>    
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">EPS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @datos.each do |dato| %>
+                            <tr>
+                                <td style="text-align:justify;border:1px solid black;">
+                                    <% dato[0] = Profile.labeleps(dato[0]) %>
+                                    <% @datosg.push([dato[0], ((dato[1]*100)/@cant)]) %>
+                                    <%=  dato[0] %>
+                                </td>    
+                                <td style="text-align:center;border:1px solid black;">
+                                    <%=  dato[1] %>
+                                </td>    
+                            </tr>    
+                        <% end %>
+                        <tr>
+                            <td style="text-align:justify;background-color: #00aae4;border:1px solid black;">
+                                Total
+                            </td>    
+                            <td style="text-align:center;background-color: #00aae4;border:1px solid black;">
+                                <%=  @cant if @cant.present? %>
+                            </td>    
+                        </tr>    
+                    </tbody %>
+                </table>        
+    
+            </div>
+            <div class="col-sm-6">
+                <%= pie_chart  @datosg, title: "EPS", download: {filename: "EPS"}, download: {background: "#FFFFFF"}, xtitle: "Tipo de acción", ytitle: "Cantidad", prefix: "Cantidad: ", suffix: "%" if @datos.present? %>
+            </div>             
+        </div>
+    <% end %> 
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>12. FONDO DE PENSIÓN</strong>
+            </div>
+        </div>
+    </div>
+    <div><br></div>
+    <% @datos = Profile.vpension(@survey_profile.id) if @claseriesgo.present? %>
+    <% if @datos.present? %>
+        <% @cant = 0 %>
+        <% @datosg = [] %>        
+        <div class="row g-2">
+            <div class="col-sm-11">
+                <% @datos.each do |dato| %>
+                    <% @cant =  @cant  + dato[1].to_i %>
+                <% end %>    
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">FONDO DE PENSIÓN</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @datos.each do |dato| %>
+                            <tr>
+                                <td style="text-align:justify;border:1px solid black;">
+                                    <% dato[0] = Profile.labelpension(dato[0]) %>
+                                    <% @datosg.push([dato[0], ((dato[1]*100)/@cant)]) %>
+                                    <%=  dato[0] %>
+                                </td>    
+                                <td style="text-align:center;border:1px solid black;">
+                                    <%=  dato[1] %>
+                                </td>    
+                            </tr>    
+                        <% end %>
+                        <tr>
+                            <td style="text-align:justify;background-color: #00aae4;border:1px solid black;">
+                                Total
+                            </td>    
+                            <td style="text-align:center;background-color: #00aae4;border:1px solid black;">
+                                <%=  @cant if @cant.present? %>
+                            </td>    
+                        </tr>    
+                    </tbody %>
+                </table>        
+    
+            </div>
+            <div></br></div>
+            <div class="col-sm-11">
+                <%= pie_chart  @datosg, title: "FONDO DE PENSIÓN", download: {filename: "Fondo de Pensión"}, download: {background: "#FFFFFF"}, xtitle: "Tipo de acción", ytitle: "Cantidad", prefix: "Cantidad: ", suffix: "%" if @datos.present? %>
+            </div>             
+        </div>
+    <% end %> 
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>13. ARL</strong>
+            </div>
+        </div>
+    </div>
+    <div><br></div>
+    <% @datos = Profile.varl(@survey_profile.id) if @claseriesgo.present? %>
+    <% if @datos.present? %>
+        <% @cant = 0 %>
+        <% @datosg = [] %>        
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <% @datos.each do |dato| %>
+                    <% @cant =  @cant  + dato[1].to_i %>
+                <% end %>    
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">ARL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @datos.each do |dato| %>
+                            <tr>
+                                <td style="text-align:justify;border:1px solid black;">
+                                    <% dato[0] = Profile.labelarl(dato[0]) %>
+                                    <% @datosg.push([dato[0], ((dato[1]*100)/@cant)]) %>
+                                    <%=  dato[0] %>
+                                </td>    
+                                <td style="text-align:center;border:1px solid black;">
+                                    <%=  dato[1] %>
+                                </td>    
+                            </tr>    
+                        <% end %>
+                        <tr>
+                            <td style="text-align:justify;background-color: #00aae4;border:1px solid black;">
+                                Total
+                            </td>    
+                            <td style="text-align:center;background-color: #00aae4;border:1px solid black;">
+                                <%=  @cant if @cant.present? %>
+                            </td>    
+                        </tr>    
+                    </tbody %>
+                </table>        
+    
+            </div>
+            <div class="col-sm-6">
+                <%= pie_chart  @datosg, title: "ARL", download: {filename: "ARL"}, download: {background: "#FFFFFF"}, xtitle: "Tipo de acción", ytitle: "Cantidad", prefix: "Cantidad: ", suffix: "%" if @datos.present? %>
+            </div>             
+        </div>
+    <% end %> 
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>14. USO DEL TIEMPO LIBRE</strong>
+            </div>
+        </div>
+    </div>
+    <div><br></div>
+    <% @datos = Profile.vtiempo(@survey_profile.id) if @claseriesgo.present? %>
+    <% if @datos.present? %>
+        <% @cant = 0 %>
+        <% @datosg = [] %>        
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <% @datos.each do |dato| %>
+                    <% @cant =  @cant  + dato[1].to_i %>
+                <% end %>    
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">USO DEL TIEMPO LIBRE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @datos.each do |dato| %>
+                            <tr>
+                                <td style="text-align:justify;border:1px solid black;">
+                                    <% dato[0] = Profile.labeltiempo(dato[0]) %>
+                                    <% @datosg.push([dato[0], ((dato[1]*100)/@cant)]) %>
+                                    <%=  dato[0] %>
+                                </td>    
+                                <td style="text-align:center;border:1px solid black;">
+                                    <%=  dato[1] %>
+                                </td>    
+                            </tr>    
+                        <% end %>
+                        <tr>
+                            <td style="text-align:justify;background-color: #00aae4;border:1px solid black;">
+                                Total
+                            </td>    
+                            <td style="text-align:center;background-color: #00aae4;border:1px solid black;">
+                                <%=  @cant if @cant.present? %>
+                            </td>    
+                        </tr>    
+                    </tbody %>
+                </table>        
+    
+            </div>
+            <div class="col-sm-6">
+                <%= pie_chart  @datosg, title: "USO DEL TIEMPO LIBRE", download: {filename: "Uso Tiempo Libre"}, download: {background: "#FFFFFF"}, xtitle: "Tipo de acción", ytitle: "Cantidad", prefix: "Cantidad: ", suffix: "%" if @datos.present? %>
+            </div>             
+        </div>
+    <% end %> 
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>15. LE HAN DIAGNOSTICADO ALGUNA ENFERMEDAD</strong>
+            </div>
+        </div>
+    </div>
+    <div><br></div>
+    <% @datos = Profile.venfermedad(@survey_profile.id) if @claseriesgo.present? %>
+    <% if @datos.present? %>
+        <% @cant = 0 %>
+        <% @datosg = [] %>        
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <% @datos.each do |dato| %>
+                    <% @cant =  @cant  + dato[1].to_i %>
+                <% end %>    
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">LE HAN DIAGNOSTICADO ALGUNA ENFERMEDAD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @datos.each do |dato| %>
+                            <tr>
+                                <td style="text-align:justify;border:1px solid black;">
+                                    <% dato[0] = Profile.labelenfermedad(dato[0]) %>
+                                    <% @datosg.push([dato[0], ((dato[1]*100)/@cant)]) %>
+                                    <%=  dato[0] %>
+                                </td>    
+                                <td style="text-align:center;border:1px solid black;">
+                                    <%=  dato[1] %>
+                                </td>    
+                            </tr>    
+                        <% end %>
+                        <tr>
+                            <td style="text-align:justify;background-color: #00aae4;border:1px solid black;">
+                                Total
+                            </td>    
+                            <td style="text-align:center;background-color: #00aae4;border:1px solid black;">
+                                <%=  @cant if @cant.present? %>
+                            </td>    
+                        </tr>    
+                    </tbody %>
+                </table>        
+    
+            </div>
+            <div class="col-sm-6">
+                <%= pie_chart  @datosg, title: "LE HAN DIAGNOSTICADO ALGUNA ENFERMEDAD", download: {filename: "Diagnosticado Enfermedad"}, download: {background: "#FFFFFF"}, xtitle: "Tipo de acción", ytitle: "Cantidad", prefix: "Cantidad: ", suffix: "%" if @datos.present? %>
+            </div>             
+        </div>
+    <% end %> 
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>16. FUMA</strong>
+            </div>
+        </div>
+    </div>
+    <div><br></div>
+    <% @datos = Profile.vfuma(@survey_profile.id) if @claseriesgo.present? %>
+    <% if @datos.present? %>
+        <% @cant = 0 %>
+        <% @datosg = [] %>        
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <% @datos.each do |dato| %>
+                    <% @cant =  @cant  + dato[1].to_i %>
+                <% end %>    
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">FUMA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @datos.each do |dato| %>
+                            <tr>
+                                <td style="text-align:justify;border:1px solid black;">
+                                    <% dato[0] = Profile.labelfuma(dato[0]) %>
+                                    <% @datosg.push([dato[0], ((dato[1]*100)/@cant)]) %>
+                                    <%=  dato[0] %>
+                                </td>    
+                                <td style="text-align:center;border:1px solid black;">
+                                    <%=  dato[1] %>
+                                </td>    
+                            </tr>    
+                        <% end %>
+                        <tr>
+                            <td style="text-align:justify;background-color: #00aae4;border:1px solid black;">
+                                Total
+                            </td>    
+                            <td style="text-align:center;background-color: #00aae4;border:1px solid black;">
+                                <%=  @cant if @cant.present? %>
+                            </td>    
+                        </tr>    
+                    </tbody %>
+                </table>        
+    
+            </div>
+            <div class="col-sm-6">
+                <%= pie_chart  @datosg, title: "FUMA", download: {filename: "Fuma"}, download: {background: "#FFFFFF"}, xtitle: "Tipo de acción", ytitle: "Cantidad", prefix: "Cantidad: ", suffix: "%" if @datos.present? %>
+            </div>             
+        </div>
+    <% end %> 
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>17. CONSUME BEBIDAS ALCOHÓLICAS</strong>
+            </div>
+        </div>
+    </div>
+    <div><br></div>
+    <% @datos = Profile.vbebida(@survey_profile.id) if @claseriesgo.present? %>
+    <% if @datos.present? %>
+        <% @cant = 0 %>
+        <% @datosg = [] %>        
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <% @datos.each do |dato| %>
+                    <% @cant =  @cant  + dato[1].to_i %>
+                <% end %>    
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">CONSUME BEBIDAS ALCOHÓLICAS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @datos.each do |dato| %>
+                            <tr>
+                                <td style="text-align:justify;border:1px solid black;">
+                                    <% dato[0] = Profile.labelbebida(dato[0]) %>
+                                    <% @datosg.push([dato[0], ((dato[1]*100)/@cant)]) %>
+                                    <%=  dato[0] %>
+                                </td>    
+                                <td style="text-align:center;border:1px solid black;">
+                                    <%=  dato[1] %>
+                                </td>    
+                            </tr>    
+                        <% end %>
+                        <tr>
+                            <td style="text-align:justify;background-color: #00aae4;border:1px solid black;">
+                                Total
+                            </td>    
+                            <td style="text-align:center;background-color: #00aae4;border:1px solid black;">
+                                <%=  @cant if @cant.present? %>
+                            </td>    
+                        </tr>    
+                    </tbody %>
+                </table>        
+    
+            </div>
+            <div class="col-sm-6">
+                <%= pie_chart  @datosg, title: "CONSUME BEBIDAS ALCOHÓLICAS", download: {filename: "Bebidas"}, download: {background: "#FFFFFF"}, xtitle: "Tipo de acción", ytitle: "Cantidad", prefix: "Cantidad: ", suffix: "%" if @datos.present? %>
+            </div>             
+        </div>
+    <% end %> 
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>18. PRACTICA ALGÚN DEPORTE</strong>
+            </div>
+        </div>
+    </div>
+    <div><br></div>
+    <% @datos = Profile.vdeporte(@survey_profile.id) if @claseriesgo.present? %>
+    <% if @datos.present? %>
+        <% @cant = 0 %>
+        <% @datosg = [] %>        
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <% @datos.each do |dato| %>
+                    <% @cant =  @cant  + dato[1].to_i %>
+                <% end %>    
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">PRACTICA ALGÚN DEPORTE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @datos.each do |dato| %>
+                            <tr>
+                                <td style="text-align:justify;border:1px solid black;">
+                                    <% dato[0] = Profile.labeldeporte(dato[0]) %>
+                                    <% @datosg.push([dato[0], ((dato[1]*100)/@cant)]) %>
+                                    <%=  dato[0] %>
+                                </td>    
+                                <td style="text-align:center;border:1px solid black;">
+                                    <%=  dato[1] %>
+                                </td>    
+                            </tr>    
+                        <% end %>
+                        <tr>
+                            <td style="text-align:justify;background-color: #00aae4;border:1px solid black;">
+                                Total
+                            </td>    
+                            <td style="text-align:center;background-color: #00aae4;border:1px solid black;">
+                                <%=  @cant if @cant.present? %>
+                            </td>    
+                        </tr>    
+                    </tbody %>
+                </table>        
+    
+            </div>
+            <div class="col-sm-6">
+                <%= pie_chart  @datosg, title: "PRACTICA ALGÚN DEPORTE", download: {filename: "Deporte"}, download: {background: "#FFFFFF"}, xtitle: "Tipo de acción", ytitle: "Cantidad", prefix: "Cantidad: ", suffix: "%" if @datos.present? %>
+            </div>             
+        </div>
+    <% end %> 
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>19. TIPO DE SANGRE</strong>
+            </div>
+        </div>
+    </div>
+    <div><br></div>
+    <% @datos = Profile.vsangre(@survey_profile.id) if @claseriesgo.present? %>
+    <% if @datos.present? %>
+        <% @cant = 0 %>
+        <% @datosg = [] %>        
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <% @datos.each do |dato| %>
+                    <% @cant =  @cant  + dato[1].to_i %>
+                <% end %>    
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">TIPO DE SANGRE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @datos.each do |dato| %>
+                            <tr>
+                                <td style="text-align:justify;border:1px solid black;">
+                                    <% dato[0] = Profile.labelsangre(dato[0]) %>
+                                    <% @datosg.push([dato[0], ((dato[1]*100)/@cant)]) %>
+                                    <%=  dato[0] %>
+                                </td>    
+                                <td style="text-align:center;border:1px solid black;">
+                                    <%=  dato[1] %>
+                                </td>    
+                            </tr>    
+                        <% end %>
+                        <tr>
+                            <td style="text-align:justify;background-color: #00aae4;border:1px solid black;">
+                                Total
+                            </td>    
+                            <td style="text-align:center;background-color: #00aae4;border:1px solid black;">
+                                <%=  @cant if @cant.present? %>
+                            </td>    
+                        </tr>    
+                    </tbody %>
+                </table>        
+    
+            </div>
+            <div class="col-sm-6">
+                <%= pie_chart  @datosg, title: "TIPO DE SANGRE", download: {filename: "Tipo Sangre"}, download: {background: "#FFFFFF"}, xtitle: "Tipo de acción", ytitle: "Cantidad", prefix: "Cantidad: ", suffix: "%" if @datos.present? %>
+            </div>             
+        </div>
+    <% end %> 
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>20. ANTIGÜEDAD EN LA EMPRESA</strong>
+            </div>
+        </div>
+    </div>
+    <div><br></div>
+    <% @datos = Profile.vantiguedad(@survey_profile.id) if @claseriesgo.present? %>
+    <% if @datos.present? %>
+        <% @cant = 0 %>
+        <% @datosg = [] %>        
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <% @datos.each do |dato| %>
+                    <% @cant =  @cant  + dato[1].to_i %>
+                <% end %>    
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">ANTIGÜEDAD EN LA EMPRESA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @datos.each do |dato| %>
+                            <tr>
+                                <td style="text-align:justify;border:1px solid black;">
+                                   <% dato[0] = Profile.labelantiguedad(dato[0]) %>
+                                   <% @datosg.push([dato[0], ((dato[1]*100)/@cant)]) %>
+                                   <%=  dato[0] %>
+                                </td>    
+                                <td style="text-align:center;border:1px solid black;">
+                                     <%=  dato[1] %>
+                                </td>    
+                            </tr>    
+                        <% end %>
+                        <tr>
+                            <td style="text-align:justify;background-color: #00aae4;border:1px solid black;">
+                               Total
+                            </td>    
+                            <td style="text-align:center;background-color: #00aae4;border:1px solid black;">
+                                <%=  @cant if @cant.present? %>
+                            </td>    
+                        </tr>    
+                    </tbody %>
+                </table>        
+        
+            </div>
+            <div class="col-sm-6">
+                <%= pie_chart  @datosg, title: "ANTIGUEDAD", download: {filename: "Antiguedad Empresa"}, download: {background: "#FFFFFF"}, xtitle: "Tipo de acción", ytitle: "Cantidad", prefix: "Cantidad: ", suffix: "%" if @datos.present? %>
+            </div>             
+        </div>
+    <% end %> 
+    <div><br></div>
+    <div class="row">
+        <div>
+            <div class="row">
+                <strong>21. ÁREA DE TRABAJO</strong>
+            </div>
+        </div>
+    </div>
+    <div><br></div>
+    <% @datos = Profile.varea(@survey_profile.id) if @claseriesgo.present? %>
+    <% if @datos.present? %>
+        <% @cant = 0 %>
+        <% @datosg = [] %>        
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <% @datos.each do |dato| %>
+                    <% @cant =  @cant  + dato[1].to_i %>
+                <% end %>    
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">ÁREA DE TRABAJO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @datos.each do |dato| %>
+                            <tr>
+                                <td style="text-align:justify;border:1px solid black;">
+                                    <% dato[0] = Profile.labelarea(dato[0]) %>
+                                    <% @datosg.push([dato[0], ((dato[1]*100)/@cant)]) %>
+                                    <%=  dato[0] %>
+                                </td>    
+                                <td style="text-align:center;border:1px solid black;">
+                                    <%=  dato[1] %>
+                                </td>    
+                            </tr>    
+                        <% end %>
+                        <tr>
+                            <td style="text-align:justify;background-color: #00aae4;border:1px solid black;">
+                                Total
+                            </td>    
+                            <td style="text-align:center;background-color: #00aae4;border:1px solid black;">
+                                <%=  @cant if @cant.present? %>
+                            </td>    
+                        </tr>    
+                    </tbody %>
+                </table>        
+    
+            </div>
+            <div class="col-sm-6">
+                <%= pie_chart  @datosg, title: "AREA", download: {filename: "Area"}, download: {background: "#FFFFFF"}, xtitle: "Tipo de acción", ytitle: "Cantidad", prefix: "Cantidad: ", suffix: "%" if @datos.present? %>
+            </div>             
+        </div>
+    <% end %>     
+    <div><br></div>
+    <div><br></div>
+    <%= render 'firmas' %>
 </div>

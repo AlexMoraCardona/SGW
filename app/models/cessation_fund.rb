@@ -1,0 +1,2 @@
+class CessationFund < ApplicationRecord
+end

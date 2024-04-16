@@ -1,0 +1,42 @@
+<div class="row"><br></div>
+<table>
+    <tr>    
+        <% @firms.each do |firm| %>
+            <td style="border:0px solid black; width: 50%; text-align:center">
+                <div class="row  text-center"> 
+                    <div class="col-11">
+                        <div></div>
+                        <div>&nbsp;</div>
+                        <div>&nbsp;</div>
+                        <% if firm.authorize_firm == 1 %>
+                            <% if firm.user.firm.attached? %>
+                                <% if firm.user.firm.image? %> 
+                                    <%= image_tag firm.user.firm, class: "firma" %>
+                                    <p align="center">________________________________</p>
+                                <% end %>
+                            <% end %>
+                        <% else %>    
+                            <p align="center">________________________________</p>
+                        <% end %>     
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <h6><strong><%= firm.user.name %></strong></h6>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <h6><%= firm.post %></h6>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <h6><%= firm.user.document.abbreviation %>: <%= Firm.miles(firm.user.nro_document) %></h6>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+            </td>
+        <% end %>    
+    </tr>
+</table>

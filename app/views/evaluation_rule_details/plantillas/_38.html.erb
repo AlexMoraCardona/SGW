@@ -1,0 +1,69 @@
+<div class="container col-11 card p-5"> 
+    <%= render 'encabezado' %>
+    <div>
+        <br>
+    </div>
+
+    <div class="row">
+        <div class="col-11">
+            <div class="row">
+                <h6><strong><%= @evidence.place if @evidence.place.present? %>,  <%= @evidence.date.day if @evidence.date.present? %> días del mes de <%= localize @evidence.date, format: "%B" if @evidence.date.present? %> del año <%= @evidence.date.year if @evidence.date.present? %></strong></h6>
+            </div>
+        </div>
+    </div>
+    <div>
+        <br>
+    </div>
+
+    <div class="row">
+        <div class="col-11">
+            <div class="row">
+                <h6>Señor(a):<strong>  <%= @colaborador_ssst.name if @colaborador_ssst.present? %></strong></h6>
+                <h6>CC No:<strong><%= EvaluationRuleDetail.miles(@colaborador_ssst.nro_document) if @colaborador_ssst.present? %></strong></h6>
+            </div>
+        </div>
+    </div>
+    <div>
+        <br>
+    </div>
+
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Estimado (a) colaborador (a), de acuerdo al examen médico laboral de ingreso, sabemos que hay unas recomendaciones derivadas y es de gran importancia para <strong><%= @evidence.entity.business_name if @evidence.present? %></strong> que todo aquello que pueda alterar su estado de salud sea controlado por lo anterior, lo invitamos a acatar las mismas recomendaciones, teniendo en cuenta lo importante del autocuidado en el cumplimiento de sus labores diarias dentro y fuera de la organización. </p>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <p>Se hará entonces seguimiento a los procesos que sean necesarios para mejorar su condición de salud, igualmente usted debe asumir una actitud de recuperación integral, realizando con disposición, seguridad y de la mejor manera sus actividades.</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <p>Relacionamos entonces cuáles son sus recomendaciones generales:</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <p><%= @evidence.compliances if @evidence.compliances.present? %></p>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <p>También es importante resaltar que es su compromiso entregar información clara, oportuna y veraz sobre su condición de salud, y todos aquellos riesgos y peligros que puedan afectarla enviando oportunamente sus reportes, y comunicados médicos que sean de competencia para el consultorio.</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <p>Cualquier inquietud, comunicarse con <strong><%= @responsable_ssst.name if @responsable_ssst.present? %></strong> al teléfono <strong><%= @responsable_ssst.cel if @responsable_ssst.present? %></strong> o al correo electrónico: <strong><%= @responsable_ssst.email if @responsable_ssst.present? %></strong>. </p>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <p>Atentamente</p>
+            </td>
+        </tr>
+    </table>
+    <%= render 'firmaelabororesponsable' %>
+</div>
+<br>

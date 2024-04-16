@@ -369,5 +369,20 @@ class Profile < ApplicationRecord
         elsif  dato == 2 ; '4 - 5'
         elsif  dato == 3 ; 'Mayor a 5 años'
         end 
-    end     
+    end 
+   
+    def self.vcesantia(dato)
+        profiles = Profile.where("survey_profile_id = ?", dato.to_i)
+        @datos = []
+
+        profiles.group_by(&:cessation_fund_id).each do |niv, det|
+            @datos.push([niv, det.count])
+        end
+        return  @datos 
+    end
+
+    def self.labelcesantia(dato)
+        dato = CessationFund.find(dato).name
+    end    
+    
 end

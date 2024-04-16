@@ -1,0 +1,152 @@
+<br>
+<div class="container col-11" 
+    <br>
+        <h class="display-5">Ficha Técnica</h>
+    <hr>
+    
+    <br>
+ 
+    <% if @survey_profile.present? %>
+     
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <strong>Empresa:</strong>
+            </div>        
+            <div class="col-sm-5">
+                <%= @survey_profile.entity.business_name %> 
+            </div>        
+        </div>   
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <strong>Nit:</strong>
+            </div>        
+            <div class="col-sm-5">
+                <%= EvaluationRuleDetail.miles(@survey_profile.entity.identification_number) if @survey_profile.present? %>
+            </div>        
+        </div>   
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <strong>Encuesta Nro:</strong>
+            </div>        
+            <div class="col-sm-5">
+                <%= @survey_profile.id if @survey_profile.present? %>
+            </div>        
+        </div>   
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <strong>Fecha de creación:</strong>
+            </div>        
+            <div class="col-sm-5">
+                <%= @survey_profile.date_profile if @survey_profile.present? %>
+            </div>        
+        </div>   
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <strong>Fecha de terminación:</strong>
+            </div>        
+            <div class="col-sm-5">
+                <%= @survey_profile.date_vencimiento_profile if @survey_profile.present? %>
+            </div>        
+        </div>   
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <strong>Cantidad Empleados:</strong>
+            </div>        
+            <div class="col-sm-5">
+                <%= @cantemp if @cantemp.present? %>
+            </div>        
+        </div>   
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <strong>Cantidad de Encuestados:</strong>
+            </div>        
+            <div class="col-sm-5">
+                <%= @cantprofiles if @profiles.present? %>
+            </div>        
+        </div>   
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <strong>Pendientes por realizar encuesta:</strong>
+            </div>        
+            <div class="col-sm-5">
+                <%= @cantpendientes if @cantpendientes.present? %>
+            </div>        
+        </div> 
+
+    <% end %>   
+    <hr>
+    <br>
+        <h class="display-5">Empleados pendientes por realizar encuesta</h>
+    <hr>
+    
+    <br>    
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Documento</th>
+                <th scope="col">Nombre</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @pendientes.each do |pendiente| %>
+                <tr>
+                    <td><%= pendiente[0] %></td>
+                    <td><%= pendiente[1] %> </td>
+                    <td><%= pendiente[2] %> </td>
+                </tr>
+            <% end %>    
+        </tbody>      
+    </table>
+    
+    <hr>
+    <br>
+        <h class="display-5">Empleados que ya realizaron la encuesta</h>
+    <hr>
+    
+    <br>    
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Documento</th>
+                <th scope="col">Nombre</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @ya.each do |ya| %>
+                <tr>
+                    <td><%= ya[0] %></td>
+                    <td><%= ya[1] %> </td>
+                    <td><%= ya[2] %> </td>
+                </tr>
+            <% end %>    
+        </tbody>      
+    </table>
+
+    <hr>
+    <br>
+        <h class="display-5">Empleados</h>
+    <hr>
+    
+    <br>    
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Documento</th>
+                <th scope="col">Nombre</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @empleados.each do |emp| %>
+                <tr>
+                    <td><%= emp.id %></td>
+                    <td><%= emp.nro_document %> </td>
+                    <td><%= emp.name %> </td>
+                </tr>
+            <% end %>    
+        </tbody>      
+    </table>
+
+</div>    

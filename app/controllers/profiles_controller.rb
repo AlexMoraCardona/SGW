@@ -91,6 +91,31 @@ class ProfilesController < ApplicationController
         end
     end    
 
+    def fichatecnica
+        @survey_profile = SurveyProfile.find_by(id: params[:id].to_i)
+        @profiles = Profile.where(survey_profile_id: @survey_profile.id) if @survey_profile.present?
+        @cantemp = User.where("entity = ?", @survey_profile.entity_id).count
+        @empleados = User.where("entity = ?", @survey_profile.entity_id)
+        @cantpendientes = 0
+        @pendientes = []
+        @ya = []
+        @empleados.each do |empleado| 
+            @encontro = 0
+            @profiles.each do |profile|
+                if profile.user_id.to_i == empleado.id.to_i then
+                   @encontro = 1
+                   @ya.push([empleado.id, empleado.nro_document, empleado.name])
+                end
+            end    
+            if @encontro.to_i == 0 then
+                @pendientes.push([empleado.id, empleado.nro_document, empleado.name])
+                @cantpendientes += 1 
+            end    
+        end    
+         
+        @cantprofiles = @profiles.count 
+    end    
+
     private
 
     def profile_params
@@ -105,7 +130,8 @@ class ProfilesController < ApplicationController
         :daily_average_smoke, :consume_alcoholic_beverages, :average_drinks, 
         :sports_practice, :average_sports, :conveyance, :accept_processing_data, 
         :user_id, :survey_profile_id, :health_promoter_id, :pension_fund_id, 
-        :occupational_risk_manager_id, :administrative_political_division_id, :Antiquity, :area_work)
+        :occupational_risk_manager_id, :administrative_political_division_id, 
+        :Antiquity, :area_work, :cessation_fund_id)
     end 
 
 

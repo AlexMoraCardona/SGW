@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+    <%= javascript_importmap_tags %>
+</head>
+    
+    <div>&nbsp;</div>
+    <table>
+        <tr>    
+            <td style="border:1px solid black; width: 40%">
+                <strong>RAZÓN SOCIAL:</strong>                
+            </td>
+            <td style="border:1px solid black; width: 60%">
+                <%= @evidence.entity.business_name if @evidence.present? %>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 40%">
+                <strong>NIT:</strong>                
+            </td>
+            <td style="border:1px solid black; width: 60%">
+                <%= EvaluationRuleDetail.miles(@evidence.entity.identification_number) if @evidence.present? %>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 40%">
+                <strong>DIRECCIÓN:</strong>                
+            </td>
+            <td style="border:1px solid black; width: 60%">
+                <%= @evidence.entity.entity_address if @evidence.present? %>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 40%">
+                <strong>TELÉFONO:</strong>                
+            </td>
+            <td style="border:1px solid black; width: 60%">
+                <%= @evidence.entity.phone_number_entity if @evidence.present? %>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 40%">
+                <strong>REPRESENTANTE LEGAL:</strong>                
+            </td>
+            <td style="border:1px solid black; width: 60%">
+                <%= @representante_legal.name if @representante_legal.present? %>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 40%">
+                <strong>RESPONSABLE DEL SG-SST:</strong>                
+            </td>
+            <td style="border:1px solid black; width: 60%">
+                <%= @responsable_ssst.name if @responsable_ssst.present? %>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 40%">
+                <strong>CLASE DE RIESGO:</strong>                
+            </td>
+            <td style="border:1px solid black; width: 60%">
+                <%= @evidence.entity.risk_classification if @evidence.present? %>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 40%">
+                <strong>CÓDIGO ACTIVIDAD ECONÓMICA: </strong>                
+            </td>
+            <td style="border:1px solid black; width: 60%">
+                <%= @evidence.entity.economic_activity if @evidence.present? %>                
+            </td>
+        </tr>
+</table>
+<div><br></div>
+<table> 
+    <tr>
+        <td>
+            <p><strong>PRESCRIBE EL SIGUIENTE REGLAMENTO, CONTENIDO EN LOS SIGUIENTES TÉRMINOS: </strong></p>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align:justify">
+            <p><strong>ARTÍCULO 1°. <%= @evidence.entity.business_name if @evidence.present? %> </strong> se compromete a dar cumplimiento a las disposiciones legales vigentes tendientes a garantizar los mecanismos que aseguren una adecuada y oportuna prevención de los accidentes de trabajo y enfermedades laborales de conformidad con el Código Sustantivo del Trabajo,  artículos 34, 57, 58, 108, 205, 206, 217, 220, 221, 282, 283, 348, 349 (modificado Ley 962/2005 art. 55, anti trámites) 350 y 351, Decreto 2351 de 1965, Ley 9 de 1979, Ley 100/1994, Ley  776/ 2002, Resolución 2400/1979, Decreto 614/1984,  Resolución 2013/1986,  Decreto  1295 /1994, Resolución 1075/1992, Ley 776/2002, Resolución 2346/2007, Resolución 2646/2008, Resolución 1409/2012, Ley 1562/2012, Decreto 1443/2014, Decreto 0427/2015 y demás normas que con tal fin se establezcan.</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align:justify">
+            <p><strong>ARTÍCULO 2°.</strong> Se obliga a promover y garantizar la constitución y funcionamiento del Comité Paritario de Seguridad y Salud en el Trabajo o Vigía según lo establecido por el Decreto 614 de 1984, Resolución 2013 de 1986 y Decreto 1443 de 2014.</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align:justify">
+            <p><strong>ARTÍCULO 3°. <%= @evidence.entity.business_name if @evidence.present? %> </strong> se compromete a destinar los recursos necesarios para desarrollar actividades permanentes, de conformidad con el Sistema de Gestión de Seguridad y Salud en el Trabajo, elaboradas de acuerdo con el Decreto 614 de 1984, la Ley 1562/2012 y el decreto 1072/2015 que dispone el SISTEMA DE GESTIÓN EN SEGURIDAD Y SALUD EN EL TRABAJO, el cual debe contemplar:</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align:justify">
+            <p><strong>Artículo 4.  Sistema de Gestión de la Seguridad y Salud en el Trabajo. </strong> El Sistema de Gestión de la Seguridad y Salud en el Trabajo consiste en el desarrollo de un proceso lógico y por etapas, basado en la mejora continua y que incluye la política, la organización, la planificación, la aplicación, la evaluación, la auditoría y las acciones de mejora con el objetivo de anticipar, reconocer, evaluar y controlar los riesgos que puedan afectar la seguridad y la salud en el trabajo. </p>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align:justify">
+            <p>El SG-SST debe ser liderado e implementado por el empleador o contratante, con la participación de los trabajadores y/o contratistas, garantizando a través de dicho sistema, la aplicación de las medidas de Seguridad y Salud en el Trabajo, el mejoramiento del comportamiento de los trabajadores, las condiciones y el medio ambiente laboral, y el control eficaz de los peligros y riesgos en el lugar de trabajo.</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align:justify">
+            <p>Para el efecto, el empleador o contratante debe abordar la prevención de los accidentes y las enfermedades laborales y también la protección y promoción de la salud de los trabajadores y/o contratistas, a través de la implementación, mantenimiento y mejora continua de un sistema de gestión cuyos principios estén basados en el ciclo PHVA (Planificar, Hacer, Verificar y Actuar).</p>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align:justify">
+            <p><strong>ARTÍCULO 5°. </strong>Los riesgos existentes en la organización están constituidos principalmente por.</p>
+        </td>
+    </tr>
+</table> 
+<table>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            <strong>PELIGROS</strong>                
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            <strong>FACTOR DE RIESGO</strong>                 
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            <strong>Ejemplo de fuente generadora de peligro</strong>                 
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            <strong>Ejemplo medidas de prevención y control</strong>                 
+        </td>
+    </tr>
+    <tr>    
+        <td ROWSPAN=5 style="border:1px solid black; width: 25%">
+            <strong>BIOMECÁNICO</strong></br>Son todos los objetos, puestos de trabajo, máquinas, mesas y herramientas que, por su peso, tamaño, forma o diseño, pueden producir fatiga física o lesiones en músculos o huesos
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Posición de pie prolongado
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Actividades de vigilancia, operación de maquinaria
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Pausas activas, tapetes ergonómicos, higiene postural
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Posición sentado prolongado
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Labores de oficina en general
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Higiene postural, pausas activas, puesto de trabajo ergonómico
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Movimiento repetitivo
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Digitar, operación de máquinas en serie, flexiones de tronco y piernas
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Pausas activas, higiene postural, organización del trabajo, asignación de tareas varias
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Sobreesfuerzos (levantamiento y transporte manual de cargas)
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Transporte o movimiento de maquinaria y equipos con pesos por encima de los límites permisibles
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Higiene postural, pausas activas, ayudas mecánicas
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Hiperextensión
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Alcanzar objetos que están ubicados por fuera del alcance de la mano
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Rediseño del puesto de trabajo
+        </td>
+    </tr>
+    <tr>    
+        <td ROWSPAN=5 style="border:1px solid black; width: 25%">
+            <strong>MECÁNICO</strong></br>Se refiere a aquellos objetos, máquinas, equipos e instalaciones locativas que por sus condiciones de funcionamiento, diseño o estado pueden causarle alguna lesión al trabajador
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Manipulación de materiales
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Traslado de objetos pesados, manejo de láminas de acero y vidrio
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            EPP, ayudas mecánicas
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Contacto con herramientas manuales
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Uso de herramientas y equipos
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Diseñar e implementar protocolo para el manejo de herramientas manuales
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Contacto con herramientas y superficies cortopunzantes
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Uso de herramientas y equipos, Contacto con la herramienta, y con puntas de baldosa, o cerámica
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Implementar programa de riesgo mecánico
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Atrapamiento
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Sistemas de transmisión de fuerza (engranaje, poleas, bandas, rodamientos, sin guardas o protección), aspas
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Guardas de seguridad, censores de proximidad
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Contacto con superficies calientes
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Hornos, calderas
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            EPP, mamparas, sistemas de refracción del calor
+        </td>
+    </tr>
+    <tr>    
+        <td ROWSPAN=5 style="border:1px solid black; width: 25%">
+            <strong>LOCATIVO</strong></br>Son aquellas circunstancias del ambiente de trabajo que potencialmente pueden producir daños a las personas
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Condiciones de orden y aseo
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Arrume de piedras, tierra y material mal almacenado </br> Obstáculos en piso
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Programa de orden y aseo
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Caídas al mismo nivel
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Desnivel del suelo, desorden, pisos lisos
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Mantenimiento locativo, programa de orden y aseo, señalización y demarcación de áreas
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Caídas diferente nivel (menos de 1.5 mt)
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Golpeado con o contra
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Grúas, muebles, maquinaria
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Señalización, EPP, barreras
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Condiciones de pisos, paredes y techos
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Estado de pisos, paredes y techos de las instalaciones provisionales y de la obra
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Programa de orden y aseo </br> Plan de señalización
+        </td>
+    </tr>
+    <tr>    
+        <td ROWSPAN=6 style="border:1px solid black; width: 25%">
+            <strong>QUÍMICOS</strong></br>Se refiere a las sustancias químicas orgánicas, naturales o sintéticas que, durante la fabricación, manejo, transporte, almacenamiento o uso, pueden entrar en contacto con el organismo por inhalación, ingestión o absorción, ocasionando problemas en la salud según su concentración y tiempo de exposición
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Gases y vapores
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Combustibles / pinturas
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Extracción local, protección respiratoria, rotulación de los productos, compatibilidad química, sistema de control contra incendios
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Contacto con sustancias químicas
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Irritación y alergias 
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Extracción local, protección respiratoria, ventilación mecánica, encerramiento de procesos
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Aerosoles líquidos
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Nieblas y rocíos de químicos
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Extracción local, protección respiratoria, rotulación de los productos, compatibilidad química
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Humos y gases de soldadura
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Polvos orgánicos o inorgánicos, humos metálicos o no metálicos,
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Extracción local, protección respiratoria, ventilación mecánica, encerramiento de procesos
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Material particulado
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Polvo de madera, fibra de vidrio
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Extracción local, protección respiratoria, ventilación mecánica, encerramiento de procesos
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Salpicadura de químicos
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Trasvase de químico
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            EPP, ayudas mecánicas, pipeteadores
+        </td>
+    </tr>
+    <tr>    
+        <td ROWSPAN=9 style="border:1px solid black; width: 25%">
+            <strong>FÍSICOS</strong></br>Son aquellos factores ambientales de naturaleza física que, cuando nos exponemos a ellos, pueden provocar daños en la salud, según la intensidad y la concentración de estos
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Ruido
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Taladro, sierra circular, martillo, cizalla
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Encerramiento, mantenimiento de maquinaria, EPP
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Iluminación deficiente o en exceso
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Luminarias
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Distribución adecuada de las lámparas, mantenimiento de luminarias 
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Proyección de partículas
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Pulido de materiales, martillado, corte de piezas 
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Apantallamiento, EPP
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Vibración
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Pulidora / taladro neumático
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Sistemas anti vibratorios, EPP   
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Temperaturas extremas 
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Calor / Frio 
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Sistemas de aire acondicionado, EPP, métodos de refracción del calor
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Presiones anormales   
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Buceo, inmersión, trabajos al altas latitudes
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Equipos con aire autocontenido, períodos de adaptación
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Radiaciones ionizantes
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Rayos x, gama, beta, alfa, neutrones   
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Delantal plomado, apantallamiento plomado, encerramientos, control en el tiempo de exposición
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Radiaciones no ionizantes 
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Radiación UV, radiación visible, radiación infrarroja, microondas, radiofrecuencias
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Apantallamientos, control en el tiempo de exposición, colimadores, EPP
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Humedad  
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Trabajos en sótanos, excavaciones, tanques, cámaras
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            
+        </td>
+    </tr>
+    <tr>    
+        <td ROWSPAN=3 style="border:1px solid black; width: 25%">
+            <strong>ELÉCTRICO</strong></br>Se refiere a los sistemas eléctricos de las máquinas, equipos e instalaciones locativas que conducen o generan energía dinámica o estática que al entrar en contacto con las personas, por condiciones o actos sub – estándares, pueden provocar lesiones, dependiendo de la intensidad y el tiempo de contacto.
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Contacto indirecto (alta y baja tensión) 
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Instalaciones eléctricas defectuosas, apertura o cierre de breaker
+        </td>
+        <td style="border:1px solid black; width: 25%">
+        Mantenimiento eléctrico, EPP, Sistemas GFCI (Interruptor de circuito de falla de tierra), herramientas aisladas
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Contacto directo (alta y baja tensión)
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Subestación de energía
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            EPP, Sistemas GFCI (Interruptor de circuito de falla de tierra), herramientas aisladas
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Contacto con electricidad estática
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Equipos de soldadura más aislados eléctricamente
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Tomas de seguridad, puestas a tierra, Sistemas GFCI (Interruptor de circuito de falla de tierra)
+        </td>
+    </tr>
+    <tr>    
+        <td ROWSPAN=2 style="border:1px solid black; width: 25%">
+            <strong>FÍSICO - QUÌMICO</strong></br>Abarca todos aquellos objetos, materiales combustibles, sustancias químicas y fuentes de calor que, bajo ciertas circunstancias de inflamabilidad o combustibilidad, puedan ocasionar incendios y explosiones con consecuencias graves
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Incendio 
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Manipulación inadecuada de sustancias inflamables, reacciones exotérmicas de sustancias incompatibles
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Extintores, rociadores, compatibilidad química, mantenimiento eléctrico
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Explosiones
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Saturación de vapores combustibles, rompimiento de un cilindro, sobre presión de un recipiente a presión. </br>Excavaciones como espacio confinado.
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Almacenamiento seguro de sustancias y materiales, planes de emergencia, mantenimiento
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            <strong>TAR (TRABAJOS DE ALTO RIESGO)</strong></br>Actividades que por la consecuencia potencial de la materialización del riesgo en su ejecución deben adoptar medidas especiales de planeación y control para evaluar los peligros a los que están expuestos los trabajadores que las realizan
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Trabajo en alturas 
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Trabajos en escaleras, trabajos en andamios
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            EPP, puntos de anclaje, rediseño de los trabajos para hacerlos desde el piso
+        </td>
+    </tr>
+    <tr>    
+        <td ROWSPAN=5 style="border:1px solid black; width: 25%">
+            <strong>BIOLÓGICOS</strong></br>Se refiere a microorganismos o residuos que pueden ocasionar enfermedades a las personas que entran en contacto con ellos
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Ingestión de alimentos contaminado 
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Alimentos del caspete
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Buenas prácticas de manufactura, control de alimentos perecederos
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Contacto con microorganismos 
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Animales (Roedores)
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Uso de EPP, disposición final de residuos, normas de bioseguridad, programa de control de plagas   
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Contacto con fluidos corporales o microorganismos     
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Personas, animales, elementos contaminados con fluidos corporales o con microorganismos
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Uso de EPP, limpieza y desinfección de áreas, disposición final de residuos, normas de bioseguridad
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            SARS- coV2-COVID 19
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Contacto directo o indirecto con superficies o personas contaminadas por el Virus
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            desinfección de manos, uso de EPP (tapabocas) distanciamiento social
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Inhalación o ingestión de microorganismos
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Personas, animales, entorno
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Uso de EPP, limpieza y desinfección de áreas, disposición final de residuos, normas de bioseguridad 
+        </td>
+    </tr>        
+     <tr>    
+        <td ROWSPAN=7 style="border:1px solid black; width: 25%">
+            <strong>PSICOSOCIAL</strong></br>Se refiere a todos aquellos factores que pueden generar insatisfacción, aburrimiento, estrés o poca disposición para hacer las tareas
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Conflictos interpersonales
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Desacuerdo entre compañeros de trabajo, problemas familiares
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Establecer medios y medidas que favorezcan una comunicación asertiva, propiciar el trabajo en equipo  
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Altos ritmos de trabajo
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Acumulación de trabajo
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Reorganización del trabajo, proponer manejas diferentes de realizar las actividades diarias, implementar programas para el manejo del estrés   
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Monotonía de la tarea
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Trabajos repetitivos como trabajos de vigilancia y digitación
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Proponer maneras diferentes de realizar actividades diaria, asignación de tareas diarias  
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Supervisión estricta
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Oficios que impliquen manejo de dinero
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Implementar programas para el manejo del estrés, promover estilo de dirección participativa
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Capacitación insuficiente    
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Perfiles del cargo mal diseñados
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Crear planes de capacitación, tener personas con las capacitación y los conocimientos idóneos para las tareas a desempeñar 
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Sobrecarga de trabajo
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Supresión de cargos, no reemplazo de personas ausentes
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Automatización de procesos, rediseño de los perfiles del cargo
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Agresiones    
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Estrés, fatiga, conflictos personales
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Establecer medios y medidas que favorezcan una comunicación asertiva, propiciar el trabajo en equipo
+        </td>
+    </tr>
+     <tr>    
+        <td ROWSPAN=2 style="border:1px solid black; width: 25%">
+            <strong>PÚBLICO</strong></br>Son todas aquellas circunstancias de orden público, a las cuales se ve expuesto el trabajador por razones de su oficio
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Robos, atracos, asaltos. Atentados, de orden público, etc.
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Violencia
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Capacitación en riesgo público
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            Tránsito
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            vías deterioradas, problemas de salud del conductor, exceso de velocidad, incumplimiento de normas y señales de tránsito, conducir bajo efectos de sustancias psicoactivas, vehículos dañados, personas imprudentes en la vía
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Capacitación en normas y señales de tránsito, curso de conducción, licencia de conducción, mantenimiento preventivo de vehículos 
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            <strong>FENÓMENOS NATURALES</strong></br>
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Derrumbes
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Inundaciones, temblores
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            Capacitación en plan de emergencias y simulacros.
+        </td>
+    </tr>
+ </table> 
+ <div><br></div>
+ <table> 
+     <tr>
+         <td>
+             <p><strong>PARAGRAFO:</strong> A efecto de que los riesgos contemplados en el presente artículo, no se traduzcan en accidentes de trabajo o enfermedades laborales, se ejerce control en la fuente, el medio transmisor y/o en el trabajador, de conformidad con lo estipulado en el Sistema de Gestión de Seguridad y Salud en el Trabajo, el cual se da a conocer a todos los trabajadores al servicio de ella.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><strong>ARTÍCULO 5°. <%= @evidence.entity.business_name if @evidence.present? %></strong>y sus trabajadores darán estricto cumplimiento a las disposiciones legales, así como a las normas técnicas e internas que se adopten para lograr la   implantación de las actividades de Medicina Preventiva y del Trabajo, Higiene y Seguridad Industrial, que sean concordantes con el presente Reglamento y con el Sistema de Gestión de Seguridad y Salud en el Trabajo.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><strong>ARTÍCULO 6°. <%= @evidence.entity.business_name if @evidence.present? %></strong> ha implantado un proceso de inducción del trabajador a las actividades que deba desempeñar, capacitándose respecto a las medidas de prevención y seguridad que exija el medio ambiente laboral y el trabajo específico que vaya a realizar.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><strong>ARTÍCULO 7°.</strong>Este Reglamento permanecerá exhibido en un lugar visible del local de trabajo, cuyo contenido se dará a conocer a todos los trabajadores en el momento de su ingreso.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><strong>ARTÍCULO 8°.</strong> El presente Reglamento entra en vigencia a partir de la elaboración y firma del Representante Legal (ley 962/2005, art. 55 supresión de la revisión y aprobación del reglamento de higiene, y seguridad por el ministerio del trabajo) y durante el tiempo que <%= @evidence.entity.business_name if @evidence.present? %> conserve, sin cambios sustanciales, las condiciones existentes en el momento de su aprobación, tales como actividad económica, métodos de producciones instalaciones locativas o cuando se dicten disposiciones gubernamentales que modifiquen las normas del Reglamento o que limiten  su vigencia.</p>
+        </td>
+    </tr>
+ </table> 
+ <div><br></div>
+ <%= render 'firmarepresentante' %>

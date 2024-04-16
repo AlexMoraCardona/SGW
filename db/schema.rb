@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_13_005335) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_15_213837) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -953,7 +953,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_13_005335) do
     t.bigint "administrative_political_division_id"
     t.integer "Antiquity", default: 0
     t.integer "area_work", default: 0
+    t.bigint "cessation_fund_id"
     t.index ["administrative_political_division_id"], name: "index_profiles_on_administrative_political_division_id"
+    t.index ["cessation_fund_id"], name: "index_profiles_on_cessation_fund_id"
     t.index ["health_promoter_id"], name: "index_profiles_on_health_promoter_id"
     t.index ["occupational_risk_manager_id"], name: "index_profiles_on_occupational_risk_manager_id"
     t.index ["pension_fund_id"], name: "index_profiles_on_pension_fund_id"
@@ -1228,6 +1230,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_13_005335) do
     t.integer "vigia_sgsst", default: 0
     t.string "cargo_rol"
     t.integer "brigade", default: 0
+    t.string "cel"
+    t.string "phone"
     t.index ["document_id"], name: "index_users_on_document_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["nro_document"], name: "index_users_on_nro_document", unique: true
@@ -1295,6 +1299,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_13_005335) do
   add_foreign_key "participants", "evidences"
   add_foreign_key "participants", "users"
   add_foreign_key "profiles", "administrative_political_divisions"
+  add_foreign_key "profiles", "cessation_funds"
   add_foreign_key "profiles", "health_promoters"
   add_foreign_key "profiles", "occupational_risk_managers"
   add_foreign_key "profiles", "pension_funds"

@@ -66,6 +66,7 @@ Rails.application.routes.draw do
   get '/profiles/firma_elaboro/:id', to: 'profiles#firma_elaboro', as: 'firma_elaboro'
   get '/profiles/encuesta/:id', to: 'profiles#encuesta', as: 'encuesta' 
   get '/profiles/informe/:id', to: 'profiles#informe', as: 'infoprofile' 
+  get '/profiles/fichatecnica/:id', to: 'profiles#fichatecnica', as: 'fichatecnica' 
   get '/adm_calendars/generar/:id', to: 'adm_calendars#generar', as: 'generar' 
   get '/adm_calendars/ver_calendario/:id', to: 'adm_calendars#ver_calendario', as: 'ver_calendario' 
   get '/calendars/detail/:id', to: 'calendars#detail', as: 'detail' 

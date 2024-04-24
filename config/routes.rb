@@ -61,7 +61,9 @@ Rails.application.routes.draw do
   resources :survey_profiles
   resources :profiles
   resources :cessation_funds
+  resources :presentations
 
+  get '/presentations/listadopresentaciones', to: 'presentations#listadopresentaciones', as: 'listadopresentaciones'
   get '/profiles/firma_aprobo/:id', to: 'profiles#firma_aprobo', as: 'firma_aprobo'
   get '/profiles/firma_elaboro/:id', to: 'profiles#firma_elaboro', as: 'firma_elaboro'
   get '/profiles/encuesta/:id', to: 'profiles#encuesta', as: 'encuesta' 

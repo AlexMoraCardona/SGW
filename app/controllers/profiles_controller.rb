@@ -19,7 +19,7 @@ class ProfilesController < ApplicationController
         if @profile.save then
             redirect_to profiles_path, notice: t('.created') 
         else
-            render :edit, status: :unprocessable_entity
+            redirect_back fallback_location: root_path, alert: "Su encuesta no pudo ser enviada debido a que no autorizó el tratamiento de datos."
         end    
     end    
 

@@ -1,0 +1,47 @@
+<%= render 'shared/header2' %>
+<br>
+<div class="container col-11">
+    <div class="d-flex">
+        <div class="container">
+            <h2 class="display-5"> <%= t('.title')%></h2>
+        </div> 
+    </div>
+    <hr>
+    <table class="table table-hover">
+        <thead> 
+            <tr>    
+                <th scope="col"><%= t('.id') %></th>
+                <th scope="col"><%= t('.name') %></th>
+                <th scope="col"><%= t('.archivo') %></th>
+            </tr>
+        </thead>
+
+        <% @presentations.each do |presentation| %>
+            <tr>
+                <td><%= presentation.id %></td>
+                <td><%= presentation.name %></td>
+                <td>
+                    <% if presentation.archivo.attached? %>
+                        <div data-controller="previews" >
+                            <% if presentation.archivo.image? %>
+                                <div>
+                                    <%= image_tag presentation.archivo, data: {previews_target: "preview"}, class: "image" %>
+                                    <%= link_to "Descargar Archivo", rails_blob_path(presentation.archivo, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                </div> 
+                            <% elsif presentation.archivo.video? %>
+                                <%= video_tag url_for(presentation.archivo), controls: "", width: "400px" %>          
+                                <%= link_to "Descargar Archivo", rails_blob_path(presentation.archivo, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                            <% elsif presentation.archivo.audio? %>
+                                <%= audio_tag(url_for(presentation.archivo), controls: "") %>          
+                                <%= link_to "Descargar Archivo", rails_blob_path(presentation.archivo, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                            <% else %>
+                                <%= link_to presentation.archivo.filename, url_for(presentation.archivo) %>          
+                                <%= link_to "Descargar Archivo", rails_blob_path(presentation.archivo, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                            <% end %>
+                        </div>
+                    <% end %>
+                </td>
+            </tr>
+        <% end %>    
+    </table>    
+</div>

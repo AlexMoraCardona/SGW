@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+    <%= javascript_importmap_tags %>
+</head>
+    
+    <div><br></div>
+    <div><br></div>
+    <div><br></div>
+    <div><br></div>
+
+    <div class="row text-center">
+                <h2><%= @evidence.entity.business_name if @evidence.present? %></h2>
+    </div>
+
+    <div><br></div>
+    <div><br></div>
+
+    <div class="row text-center">
+        <h2>Nit: <%= @evidence.entity.identification_number if @evidence.present? %></h2>
+    </div>
+
+    <div><br></div>
+    <div><br></div>
+
+    <div><br></div>
+    <div class="row text-center">
+        <h2><%= @evidence.place if @evidence.present? %></h2>
+    </div>
+    <div><br></div>
+
+    <div><br></div>
+    <div class="row text-center">
+        <h2><%= @evidence.year_initial if @evidence.present? %></h2>
+    </div>
+
+    <div><br></div>
+    <div><br></div>
+
+    <p style='page-break-after:always;'></p>
+
+    <div style="text-align:center">
+        <strong>TABLA DE CONTENIDO</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p><strong>1. Objetivo</strong></p>
+                <p><strong>2. Alcance</strong></p>
+                <p><strong>3. Responsables</strong></p>
+                <p><strong>4. Definiciones</strong></p>
+                <p><strong>5. Información Específica Del Sve-Osteomuscular</strong></p>
+                <p><strong>6. Fases Del Sistema De Vigilancia Epidemiológica</strong></p>
+                <p><strong>7. Indicadores De Evaluación</strong></p>
+                <p><strong>8. Control De Registros</strong></p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div> 
+    <p style='page-break-after:always;'></p>   
+    <div>
+        <strong>1. OBJETIVO </strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Proporcionar elementos y herramientas que permitan definir e implementar estrategias orientadas a la prevención de los desórdenes musculoesqueléticos relacionados con el trabajo y su impacto sobre la calidad de vida de los trabajadores y la productividad de <strong><%= @evidence.entity.business_name if @evidence.present? %></strong>, con el fin de evitar lesiones osteomusculares en los colaboradores, y adoptar las medidas preventivas y correctivas para mejorar las condiciones de trabajo.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>2. ALCANCE</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Este programa aplica a todo el personal que se encuentra expuesto a movimientos repetitivos, posturas prolongadas y manipulación de cargas de <strong><%= @evidence.entity.business_name if @evidence.present? %></strong> y específicamente a los trabajadores que hayan presentado alteraciones a nivel osteomuscular asociados a su trabajo, de acuerdo a los resultados de los exámenes médicos ocupacionales.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>3. RESPONSABLES:</strong>
+    </div> 
+    <div>
+        <strong>Gerencia</strong>
+    </div> 
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>
+                    <ul>
+                        <li>Asignar los recursos humanos, técnicos y financieros para el cumplimiento de este sistema de vigilancia epidemiológica.</li>
+                        <li>Evaluar anualmente el sistema y sugerir los ajustes necesarios.</li>
+                        <li>Proporcionar el tiempo necesario y las condiciones idóneas para que se realicen las evaluaciones de puestos de trabajo en forma adecuada.</li>
+                    </ul>
+                </p>
+            </td>
+        </tr>
+    </table> 
+    <div>
+        <strong>Encargado de la Seguridad y Salud en el Trabajo</strong>
+    </div> 
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>
+                    <ul>
+                        <li>Identificar los peligros y riesgos en los diferentes puestos de trabajos, y establecer las medidas de control necesarias.</li>
+                        <li>Coordinar, ejecutar y actualizar el Sistema de Vigilancia Epidemiológica Osteomuscular.</li>
+                        <li>Programar las actividades necesarias a todo el personal, frente a los riesgos que se encuentran expuestos.</li>
+                        <li>Retroalimentar a los trabajadores de los resultados del programa, exámenes médicos ocupacionales, evaluaciones de puestos de trabajo, medidas correctivas, a través de las actividades de capacitación, por medio de metodologías que faciliten la participación de los mismos.</li>
+                    </ul>
+                </p>
+            </td>
+        </tr>
+    </table> 
+    <div>
+        <strong>Trabajador</strong>
+    </div> 
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>
+                    <ul>
+                        <li>Informar sobre necesidades de mantenimiento de los equipos, máquinas, herramientas y puestos de trabajo.</li>
+                        <li>Proporcionar ideas sobre las posibles medidas de control, al Jefe Inmediato o Encargado de la Seguridad y Salud en el Trabajo.</li>
+                        <li>Participar de forma activa en la implementación y ejecución del Sistema de Vigilancia Epidemiológica, así como seguir las recomendaciones y practicar el autocuidado.</li>
+                        <li>Tomar una actitud proactiva que les permita mejorar las actividades de capacitación, hacer sugerencias sobre la misma y participar con preguntas y comentarios.</li>
+                        <li>Reportar oportunamente su estado y condición de salud al encargado del Sistema de Gestión de Seguridad y Salud en el Trabajo.</li>
+                    </ul>
+                </p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>4. DEFINICIONES:</strong>
+    </div> 
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>
+                    <ul>
+                        <li><strong>Examen médico ocupacional: </strong>Enfocado a evaluar la aptitud y condiciones de salud del servidor de acuerdo con las características del trabajo a desarrollar y según los riesgos ocupacionales a los cuales va a estar expuesto.</li>
+                        <li><strong>Programa de vigilancia epidemiológica: </strong>Información para la acción, sistema que se alimenta principalmente con el registro y análisis de la información de estadísticas de ausentismo, de primeros auxilios, morbilidad, diagnóstico epidemiológico de salud de los servidores de una entidad, factores de riesgo prioritarios y evaluaciones ambientales, entre otros, con el fin de planear acciones de prevención y control de las enfermedades laborales, comunes o agravadas por el trabajo o por accidentes.</li>
+                        <li><strong>Antropometría: </strong>Disciplina que describe las diferencias cuantitativas de las medidas del cuerpo humano, sirve de herramienta a la ergonomía en la adaptación del entorno a las personas.</li>
+                        <li><strong>Carga de trabajo: </strong>Medida cualitativa y cuantitativa del nivel de actividad (física, fisiológica, mental) que el trabajador necesita para realizar su trabajo.</li>
+                        <li><strong>Carga física: </strong>Conjunto de requerimientos físicos a los que está sometido el trabajador en su jornada laboral. (Fundación MAFRE 1998).</li>
+                        <li><strong>Carga física dinámica: </strong>Indicador de riesgo de carga física, definida por movimientos repetitivos y sobreesfuerzos.</li>
+                        <li><strong>Carga física estática: </strong>Indicador de riesgo de carga física, definida por posturas inadecuadas de pie, sentado, entre otras (forzadas, sostenidas, prolongadas o mantenidas).</li>
+                        <li><strong>Ciclo de trabajo: </strong>Conjunto de operaciones que se suceden en un orden determinado en un trabajo que se repite. El Tiempo del ciclo básico fundamental es 30 segundos (regla de los 30 segundos). Cuando no hay ciclo definido y segmento consistentemente comprometido: Movimiento concentrado en el 50% de la jornada laboral.</li>
+                        <li><strong>Condición física: </strong>Capacidades físicas representadas en la fuerza, resistencia, coordinación, flexibilidad y velocidad.</li>
+                        <li><strong>Control de cambios:</strong>Evitar las condiciones ergonómicamente desfavorables en los nuevos proyectos o en procesos, que se cumplan de forma sostenida en el tiempo.</li>
+                        <li><strong>Deficiencia: </strong>Toda pérdida o anormalidad de una estructura o función psicológica, fisiológica o anatómica, que pueden ser temporales o permanentes.</li>
+                        <li><strong>Desórdenes musculoesqueléticos (DME): </strong>Los DME comprenden un grupo heterogéneo de diagnósticos que incluyen alteraciones de músculos, tendones, nervios, vainas tendinosas, síndrome de atrapamientos nerviosos, alteraciones articulares y/o neurovasculares debidas a múltiples factores.</li>
+                        <li><strong>Discapacidad: </strong>Toda restricción, disminución o ausencia de la capacidad para realizar una actividad, dentro del margen que se considera normal para el ser humano.</li>
+                        <li><strong>Dolor lumbar inespecífico: </strong>Sensación de dolor o molestia localizado entre el límite inferior de las costillas y el límite inferior de los glúteos, el cual no se debe a fracturas, traumatismo, enfermedades sistémicas o compresión radicular.</li>
+                        <li><strong>Enfermedad de Quervain: </strong>Es la tenosinovitis estenosante del primer compartimento dorsal de la muñeca.</li>
+                        <li><strong>Epicondilitis: </strong>Lesión leve perióstica de la inserción de músculos a nivel del codo. Ergonomía: Ciencia que estudia la relación del hombre y el trabajo.</li>
+                        <li><strong>Estimación del riesgo: </strong>(Valoración) La estimación del riesgo usualmente se basa en el valor esperado de la probabilidad de que ocurra el evento por la consecuencia en caso de que este se manifieste, es el proceso de establecer información sobre los niveles aceptables de un riesgo y / o niveles de riesgo para un individuo, grupo de individuos, proceso, sociedad o ambiente.</li>
+                        <li><strong>Evaluación del riesgo: </strong>Un componente de la estimación del riesgo en el cual se emiten juicios sobre la aceptabilidad del riesgo.</li>
+                        <li><strong>Factor de riesgo: </strong>Aspectos de la persona (comportamiento, estilo de vida, características físicas, mentales, fisiológicas y hereditarias) de las condiciones de trabajo y del ambiente extra laboral que han sido asociadas con las condiciones de la salud del trabajador a través de estudios epidemiológicos.</li>
+                        <li><strong>Factores de riesgo de DME: </strong>aquellos atributos, variables o circunstancias inherentes o no al individuo que están relacionados con los fenómenos de salud y que determinan en la población trabajadora expuesta a ellos, una mayor probabilidad de ocurrencia de DME.</li>
+                        <li><strong>Hombro doloroso: </strong>Sintomatología dolorosa de las articulaciones esternoclavicular, acromioclavicular y glenohumeral, junto a ligamentos, tendones músculos y otros tejidos blandos, que se presentan conexos a trabajo repetitivo sostenido, posturas incómodas y carga física del hombro.</li>
+                        <li><strong>Minusvalía: </strong>Toda situación desventajosa para un individuo determinado, consecuencia de una deficiencia o discapacidad que lo limita e impide el desempeño de su rol cultural, social y ocupacional.</li>
+                        <li><strong>Movimientos repetitivos: </strong>Está definido por los ciclos de trabajo cortos menores a 30 segundos o minuto o alta concentración de movimientos mayor del 50% que utiliza pocos músculos.</li>
+                        <li><strong>Peligro: </strong>Fuente de daño potencial o situación con potencial para causar pérdida.</li>
+                        <li><strong>Postura prolongada: </strong>Cuando se adopta la misma postura por más de 6 horas 75% de la jornada laboral.</li>
+                        <li><strong>Postura: </strong>Se define como la ubicación espacial que adoptan los diferentes segmentos corporales o la posición del cuerpo como conjunto. En este sentido, las posturas que usamos con mayor frecuencia durante nuestra vida son la posición de pie, sentado y acostado.</li>
+                        <li><strong>Posturas anti gravitacionales: </strong>Posición del cuerpo en contra de la fuerza de gravedad.</li>
+                        <li><strong>Posturas mantenidas: </strong>Cuando se adopta una postura biomecánicamente correcta por 2 horas continuas o más, sin posibilidad de cambios. Si la postura es biomecánicamente incorrecta, se considerará mantenida cuando se mantenga por 20 minutos o más.</li>
+                        <li><strong>Prevención integral: </strong>Integración de todas las instancias de prevención: Primaria, secundaria y terciaria para el control de las condiciones de riesgo en el ambiente intralaboral, extra laboral y en las características de susceptibilidad del individuo.</li>
+                        <li><strong>Riesgo atribuible: </strong>Parte del riesgo que se atribuye a una causa o conjunto de condiciones específicas.</li>
+                        <li><strong>Riesgo residual: </strong>El riesgo residual se presenta cuando después de haber reducido o transferido, aparece un riesgo, que para su retención es recomendable implementar planes para manejar o asumir las consecuencias del riesgo si ocurrieran incluida la identificación de un medio de financiación del riesgo.</li>
+                        <li><strong>Riesgo: </strong>Probabilidad por consecuencia de que suceda algo que tendrá impacto sobre los objetivos.</li>
+                        <li><strong>Síndrome del túnel carpiano: </strong>Es la neuropatía por compresión del nervio mediano a través del túnel carpiano.</li>
+                        <li><strong>Sobrecarga postural: </strong>Se refiere al riesgo para el sistema músculo-esquelético, que genera la posición que mantienen los diferentes segmentos durante el desarrollo de las actividades laborales o en nuestra vida cotidiana. Trauma acumulado: Este concepto indica que la lesión se ha desarrollado gradualmente a través de un periodo de tiempo, como resultado de un esfuerzo repetido de alguna parte del cuerpo.</li>
+                        <li><strong>Vigilancia de las condiciones de salud: </strong>Aquellas estrategias y métodos para detectar y estimar sistemáticamente los efectos en la salud de los trabajadores derivados de la exposición laboral a factores de riesgo.</li>
+                        <li><strong>Vigilancia de las condiciones de trabajo: </strong>Aquellas estrategias y métodos para detectar y estimar sistemáticamente la exposición laboral acumulada del trabajador, de un grupo de trabajadores en un puesto de trabajo, área o sección de una empresa.</li>
+                    </ul>
+                </p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>Definición de caso</strong>
+    </div> 
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Se incluyen como definición de caso las siguientes patologías, de acuerdo con lo propuesto por las Guías de atención en salud ocupacional del Ministerio de protección social:</p>
+                <p><strong>Lesiones músculo esqueléticas de miembro superior: </strong> Síndrome del túnel del carpo, tenosinovitis de Quervain, epicondilitis, hombro doloroso, dolor lumbar inespecífico.</p>
+                <p>Para las diferentes patologías se clasifica a la población en tres niveles de afectación de acuerdo con las mencionadas guías:</p>
+                <p>
+                    <ul>
+                        <li><strong>Sanos: </strong> Sin ningún hallazgo en su evaluación médica</li>
+                        <li><strong>Susceptibles: </strong>Sí hallazgos osteomusculares con condiciones asociadas.</li>
+                        <li><strong>Sintomáticos: </strong>Signos y síntomas sugestivos de lesión ME en los últimos 3 meses.</li>
+                        <li><strong>Enfermos: </strong>Diagnóstico médico de lesión.</li>
+                    </ul>
+                </p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>Definición de universo</strong>
+    </div> 
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Se define como universo de vigilancia a todos los trabajadores expuestos a factores de riesgo ocupacional, asociado con la presentación de las patologías mencionadas y de acuerdo con lo definido por la Guías de atención en salud ocupacional. Dentro del plan operativo, sin embargo, se definirán prioridades de atención de acuerdo con las condiciones de trabajo encontradas y las condiciones de salud de la población expuesta.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>5. INFORMACIÓN ESPECÍFICA DEL SVE-OSTEOMUSCULAR</strong>
+    </div> 
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Las lesiones osteomusculares se generan cuando se rompe el equilibrio y la relación que guardan entre sí, las diferentes partes del cuerpo. La exposición a peligro de postura, movimientos repetitivos, posturas prolongadas, el manejo de cargas, entre otras, ocasionando efectos sobre la salud de las personas, por lo que es importante conocer las consecuencias que se puedan presentar, con el fin de desarrollar medidas de prevención, seguimiento y control sobre estos peligros.</p>
+                <p>Los desórdenes músculo esqueléticos relacionados al trabajo son desórdenes causados o empeorados por el ambiente en el trabajo. Estos pueden ocasionar síntomas debilitantes y severos como dolor, entumecimiento, hormigueo, productividad laboral reducida, pérdida de tiempo del trabajo, incapacidad temporal o permanente, inhabilidad para realizar las tareas del puesto, y un incremento en los costos de compensación al trabajador. Los desórdenes músculo esqueléticos son confundidos frecuentemente con la ergonomía. La ergonomía es la ciencia de ajustar las condiciones en los lugares de trabajo y las demandas del mismo a las capacidades de los empleados. En otras palabras, los desórdenes músculo esqueléticos son el problema y la ergonomía es una solución.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>El riesgo para cada exposición depende de varios factores</strong>
+    </div> 
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>
+                    <ul>
+                        <li><strong>Los factores individuales: </strong>Capacidad funcional del trabajador, hábitos, antecedentes, etc.</li>
+                        <li><strong>Los factores ligados a las condiciones de trabajo: </strong>Fuerza, posturas y movimientos.</li>
+                        <li><strong>Los factores organizacionales: </strong>Organización del trabajo, jornadas, horarios, pausas, ritmo y carga de trabajo.</li>
+                        <li><strong>Los factores ambientales: </strong>Puestos de trabajo inadecuado, temperatura, vibración entre otros.</li>
+                    </ul>
+                </p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>Actividades que puedan ocasionar desordenes músculo esquelético</strong>
+    </div> 
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Las lesiones de los miembros superiores relacionadas con el trabajo se producen como consecuencia de la exposición de distintos peligros relacionados con: carga física, postura de trabajo, fuerza ejercida y movimientos repetitivos. Adicional a lo anterior son relevantes las condiciones de trabajo inadecuadas como vibración, temperatura y la organización del trabajo. A continuación, se definen los principales peligros:</p>
+                <p>
+                    <ul>
+                        <li><strong>Carga física: </strong>se define como "el conjunto de requerimientos físicos a lo que el trabajador se ve sometido a lo largo de la jornada laboral”, y se basa en los tipos de trabajo muscular, que son el estático y el dinámico. La carga estática viene determinada por las posturas, mientras que la carga dinámica está determinada por el esfuerzo muscular, los desplazamientos y el manejo de cargas.</li>
+                        <li><strong>Postura: </strong>Se define como la relación de las diferentes partes del cuerpo en equilibrio. Existe la siguiente clasificación de riesgo derivado de la postura:</li>
+                        <li><strong>Postura Prolongada: </strong>Cuando se adopta la misma postura por el 75% o más de la jornada laboral (6 horas o más)</li>
+                        <li><strong>Postura Mantenida: </strong>Cuando se adopta una postura correcta por 2 o más horas continuas sin posibilidad de cambios. Si la postura es incorrecta, se considerará mantenida cuando se mantenga por 20 minutos o más.</li>
+                        <li><strong>Postura Forzada: </strong>Cuando se adoptan posturas por fuera de los ángulos de confort.</li>
+                        <li><strong>Posturas Anti gravitacionales: </strong>Posicionamiento del cuerpo o un segmento en contra de la gravedad.</li>
+                        <li><strong>Fuerza: </strong>Se refiere a la tensión producida en los músculos por el esfuerzo requerido para el desempeño de una tarea. </li>
+                    </ul>
+                </p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>Clasificación</strong>
+    </div> 
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>
+                    <ul>
+                        <li>Se superan las capacidades del individuo.</li>
+                        <li>Se realiza el esfuerzo en carga estática.</li>
+                        <li>Se realiza el esfuerzo en forma repetida.</li>
+                        <li>Los tiempos de descanso son insuficientes.</li>
+                        <li><strong>Movimiento: </strong>Es la esencia del trabajo y se define por el desplazamiento de todo el cuerpo o de uno de sus segmentos en el espacio.</li>
+                        <li><strong>Movimiento repetitivo: </strong>Está dado por los ciclos de trabajo cortos (ciclo menor a 30 segundos o 1 minuto) o alta concentración de movimientos (> del 50%), que utiliza pocos músculos.</li>
+                    </ul>
+                </p>
+                <p></p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>Enfermedades Más Comunes</strong>
+    </div> 
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>
+                    <ul>
+                        <li>Síndrome del Túnel Carpiano (STC)
+                            <p>El síndrome del túnel del carpo (STC) se define como el atrapamiento del nervio mediano en el túnel del carpo, que está formado por el retináculo flexor y los huesos del carpo. Se asocia con traumatismos ocupacionales repetitivos, artritis reumatoide, embarazo, acromegalia, fracturas de muñeca, y otras condiciones, si bien en el 15 % de los casos es idiopático.</p>
+                            <p>El STC se origina a partir de una combinación de factores como ser predisposición congénita (túnel carpiano angosto), traumatismos o lesiones en la muñeca que causan hinchazón (entorsis, fracturas), trastornos hormonales (hiperactividad de la glándula pituitaria, hipotiroidismo), artritis reumatoidea, estrés laboral, uso repetido de herramientas manuales de vibración, retención de líquido durante el embarazo o la menopausia, o el desarrollo de un quiste o de un tumor en el túnel carpiano, entre otras causas.</p>
+                            <p>En general, impacta en primer lugar en la mano hábil. Las personas con diabetes u otros trastornos metabólicos que afectan directamente los nervios son más propensos a padecer esta afección.</p>
+                        </li>
+                        <li>Bursitis
+                            <p>La bursitis es una inflamación de las bursas, unas estructuras en forma de saco situadas entre los tejidos blandos (músculos, tendones, y/o piel) y las prominencias óseas subyacentes. Su función es disminuir la fricción del hueso con los tejidos blandos durante el movimiento de las articulaciones.</p>
+                            <p>Se pueden localizar en zonas donde puede existir fricción entre las partes blandas y el hueso. La inflamación de las bursas produce hinchazón y dolor en las mismas, lo que limita el movimiento de la articulación afectada. Los síntomas dependen de la zona afectada y pueden aparecer de forma repentina o de forma gradual aumentando el dolor.</p>
+                            <p>La persona que sufre de bursitis puede notarlo por el tacto ya que la piel que rodea la bursa está más sensible y con aumento de la temperatura local. En las articulaciones más superficiales puede aparecer hinchazón y enrojecimiento. Otro síntoma posible es la disminución de la movilidad de la articulación por el dolor. La bursitis puede deberse a dos grandes causas:</p>
+                        </li>
+                        <li><strong>Causa mecánica: </strong>Por movimiento repetitivo que fricciona la bursa, o por una presión prolongada y excesiva de la articulación; o por una lesión traumática directa, que es lo que ocurre cuando se produce una contusión.</li>
+                        <li><strong>Causa inflamatoria, sistémica o metabólica: </strong>Como las bursitis por artritis reumatoide, por gota, o por heridas o infecciones. Además, puede estar asociada a la enfermedad tiroidea o a la diabetes.</li>
+                        <li><strong>Epicondilitis o codo de tenista</strong>
+                            <p>El codo de tenista, también llamado epicondilitis, es la inflamación de los tendones epicondíleos, que son los que unen la musculatura del antebrazo y de la mano con el epicóndilo en la cara lateral externa del codo, siendo esta musculatura la encargada de controlar los principales movimientos de la mano.</p>
+                            <p>Cuando se usan estos músculos una y otra vez, se producen pequeñas micro lesiones en el tendón. Con el tiempo esto lleva a que se presente irritación y dolor en la zona señalada anteriormente. Cualquier actividad que involucre la torsión repetitiva de la muñeca puede llevar a esta lesión.</p>
+                            <p>Existen profesiones, que, debido a la repetición de un gesto en concreto, son más propensas a padecer la epicondilitis; pintores, mecánicos, obreros o personas que están durante horas delante del ordenador manejando el ratón.</p>
+                        </li>
+                        <li><strong>Tendinitis</strong>
+                            <p>La tendinitis es la inflamación de un tendón, la estructura fibrosa que une el músculo con el hueso. Esta inflamación puede ir acompañada de una hinchazón del tendón. La tendinitis suele ser una patología crónica que tiene una alta tasa de reincidencia una vez que se produce en el paciente y que provoca dolor y aumento de sensibilidad alrededor de la articulación.</p>
+                            <p>El principal motivo por el que surge es como consecuencia de una sobrecarga muscular o por una lesión. Sin embargo, también puede producirse debido al desarrollo de otra patología o por la edad, ya que con el envejecimiento los tendones van perdiendo elasticidad y se puede producir la degeneración del tendón. Las tendinitis se pueden producir en cualquier tendón que haya en el cuerpo humano. Las áreas más comunes en las que se suele producir son los hombros, los talones, los codos y las muñecas, entre otras.</p>
+                            <p>Generalmente se produce en adultos jóvenes como consecuencia de un esfuerzo repetitivo (a menudo realizado en una mala postura) o por una sobrecarga en alguna zona del cuerpo.</p>
+                        </li>
+                        <li><strong>Dolor lumbar</strong>
+                            <p>Sensación de dolor o molestia localizada entre el límite inferior de las costillas y el límite inferior de los glúteos cuya intensidad varía en función de las posturas y la actividad física. El diagnóstico de lumbalgia inespecífica implica que el dolor no se debe a fracturas, traumatismos o enfermedades sistémicas. El dolor aumenta con la flexión, la sedestación o el aumento de la presión abdominal y disminuye con la bipedestación no prolongada y la marcha.</p>
+                        </li>
+                        <li>Condiciones de trabajo (carga física).</li>
+                        <li>Organizacionales y psicolaborales.</li>
+                        <li>Condiciones ambientales en los puestos y los sistemas de trabajo (temperatura, vibración, entre otros).</li>
+                        <li>Individuales (capacidad funcional del trabajador, hábitos, antecedentes, aspectos psicológicos).</li>
+                        <li><strong>Hernia discal</strong>
+                            <p>La hernia discal se produce cuando una parte de un intervertebral se desplaza fuera de su lugar, ocupando un lugar que no le corresponde. Este desplazamiento ocurre debido a que, por algún motivo, el disco se ha deteriorado. Consecuencia de este desplazamiento el disco comprime la médula espinal o alguna raíz nerviosa que sale de la médula espinal. Esta presión puede producir daños neurológicos (en los nervios) y, por tanto, causar dolor.</p>
+                            <p>Un dato interesante: No todas las personas que tienen una hernia de disco sienten los típicos síntomas de la hernia discal. Si la hernia no comprime la médula o algún nervio, probablemente la persona ni siquiera se entere de que tiene una. Esto es lo que se denomina una hernia discal asintomática.</p>
+                            <p>Los dolores que provoca una hernia pueden ser de distinto tipo. Leves o agudos, puntuales o crónicos, en una zona concreta de la espalda, o extenderse (irradiarse) hacia las piernas o brazos. También puedes experimentar molestias como hormigueos, adormecimiento o insensibilidad en las extremidades. El grado y tipo de molestias dependerá de la ubicación del disco afectado y de su nivel de deterioro.</p>
+                        </li>
+                    </ul>
+                </p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>6. FASES DEL SISTEMA DE VIGILANCIA EPIDEMIOLÓGICA</strong>
+    </div> 
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>El Sistema de Vigilancia Epidemiológica Osteomuscular va dirigido a todos los trabajadores que por razón de la actividad laboral que realizan se ven expuestos a la transmisión accidental de patologías.</p>
+                <p>Este Sistema se divide en seis (6) fases:</p>
+                <p>
+                    <ul>
+                        <li>Identificación de peligros, evaluación y valoración de riesgos.</li>
+                        <li>Población expuesta.</li>
+                        <li>Características para ingresar al SVE-Reporte de ausentismo-Examen ocupacional-restricciones ocupacionales.</li>
+                        <li>Diagnóstico de condiciones de salud-encuesta de condiciones de salud.</li>
+                        <li>Intervención en el Trabajador, medio o fuente.</li>
+                        <li>Seguimiento médico.</li>
+                    </ul>
+                </p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>Identificación De Peligros, Evaluación Y Valoración De Riesgos</strong>
+    </div> 
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>En la Matriz de identificación de peligros, evaluación y valoración de riesgos, se identifican aquellos peligros biomecánicos que puedan afectar la seguridad y salud en cada una de las áreas, actividades y tareas que se realizan en <strong><%= @evidence.entity.business_name if @evidence.present? %></strong>. Así mismo, se determina la población expuesta. Se evalúan los controles establecidos y en caso de ser necesario se determinan nuevos controles con el propósito de eliminar o disminuir el riesgo.</p>
+                <p>Población expuesta</p>
+                <p>Teniendo en cuenta la primera fase del Sistema de Vigilancia Epidemiológica Osteomuscular “Matriz de Identificación de Peligros, Evaluación y Valoración del Riesgo” se establece que todas las áreas, cargos, líneas, grupos de trabajadores con prioridad de intervención (población objeto, universo de vigilancia); desde allí, se tiene presente que todos los colaboradores de <strong><%= @evidence.entity.business_name if @evidence.present? %></strong> se encuentran expuesto al peligro Biomecánico y por ende a la probabilidad de presentar una enfermedad de origen osteomuscular.</p>
+                <p>Así mismo, se tiene presente para incluir la población expuesta los factores de riesgo que se exponen en la Guía de atención integral de Seguridad y Salud en el Trabajo para desórdenes musculoesqueléticos (DME) de miembros superiores.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>Características para ingresar al Sistema de Vigilancia Epidemiológica osteomuscular</strong>
+    </div> 
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>En esta fase <strong><%= @evidence.entity.business_name if @evidence.present? %></strong> utiliza la información proporcionada por las siguientes fuentes:</p>
+                <p>
+                    <ul>
+                        <li>Reporte de ausentismo laboral por condiciones osteomusculares (análisis de ausentismo laboral).</li>
+                        <li>Restricciones ocupacionales de origen osteomuscular.</li>
+                        <li>Diagnóstico de salud osteomuscular (CIE 10).</li>
+                        <li>Exámenes médicos ocupacionales: Evaluaciones médicas con énfasis osteomuscular (exámenes periódicos).</li>
+                    </ul>
+                </p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>Diagnóstico De Condiciones De Salud</strong>
+    </div> 
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Realización de exámenes médicos ocupacionales: los trabajadores serán evaluados a través de los exámenes médicos periódicos que se hace con el fin de identificar cambios subclínicos o clínicos con respecto a la exposición a factores de riesgo en su sitio de trabajo y tener un diagnóstico de las condiciones de salud de sus empleados, que le permita orientar las acciones de los diferentes programas.</p>
+                <p>
+                    <ul>
+                        <li>Visitas de los puestos de trabajo.</li>
+                        <li>Encuestas morbilidad sentida osteomuscular (pueden no ser necesarias si la información de los exámenes periódicos aporta información suficiente).</li>
+                        <li>Intervención en el Trabajador, Medio o Fuente.</li>
+                        <li>La fase de intervención se establece como aquellas actividades enfocadas tanto a la población en general.</li>
+                        <li>Detección precoz de las alteraciones de la salud provocadas por el tiempo de exposición y contenido de la labor. </li>
+                        <li>Realización de pausas activas diariamente, dos veces al día.</li>
+                        <li>Plan de capacitación en: Higiene postural, Levantamientos de cargas, Autocuidado, Educación para el aprovechamiento de los tiempos de Descanso.</li>
+                        <li>Campañas informativas y educativas sobre “ESTILOS DE VIDA SALUDABLES”.</li>
+                        <li>Realización de estudios de puestos de trabajo para áreas, grupos de trabajadores con prioridad de intervención (apoyo de recurso especializado-ergónomo).</li>
+                        <li>Mantenimiento preventivo de equipos (sillas de oficinas ergonómicas, escritorios de oficina).</li>
+                        <li>Programas de acondicionamiento físico (apoyo por medio de las cajas de compensación familiar) Valoración de condición física, definición de rutinas de mejoramiento de la condición física, seguimiento a la mejora.</li>
+                        <li>Estándar de seguridad administrativo y servicios generales, para la aplicación de buenas prácticas posturales en la relación de las tareas. Concurso pausas activas por parte de la población trabajadora.</li>
+                    </ul>
+                </p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>Seguimiento Médico</strong>
+    </div> 
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>En los trabajadores que se encuentran con la calificación de casos prioritarios se llevará a cabo un seguimiento médico anual con el apoyo de la EPS y la ARL, ejecutando en la organización medidas de promoción y prevención. </br> Ejecutar controles de ingeniería a cada uno de los puestos y áreas de trabajo, se realizará un seguimiento mensual a las modificaciones ergonómicas. Las evaluaciones médicas deben hacerse para todo trabajador que ingrese a la empresa, la periodicidad de las evaluaciones médicas ocupacionales con énfasis osteomuscular para colaboradores prioritarios en el Sistema de Vigilancia Epidemiológica osteomuscular debe ser mínima anual; sin que esto signifique que al momento que un trabajador reporte síntomas relacionados con alteraciones osteomusculares, se le realice la consulta médica correspondiente. </p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>7. INDICADORES DE EVALUACIÓN</strong>
+    </div> 
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Los Indicadores de evaluación del Sistema de Vigilancia Epidemiológica Osteomuscular, es la herramienta de medición, la cual nos permite identificar los cambios de una situación y nos ofrece las alertas o advertencias respectivas.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <table>
+        <tr>    
+            <td style="border:1px solid black; width: 50%">
+                Expuestos:</br># De trabajadores expuestos x 100 # Total de trabajadores
+            </td>
+            <td style="border:1px solid black; width: 50%">
+                Incidencia:</br># De trabajadores expuestos (casos nuevos) x100 # De trabajadores expuestos
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 50%">
+                Prevalencia:</br># De casos existentes (nuevos + antiguos) x100 # Total de trabajadores expuestos
+            </td>
+            <td style="border:1px solid black; width: 50%">
+                Cumplimiento:</br># De actividades realizadas x100 # De actividades programadas
+            </td>
+        </tr>
+    </table>
+    <div><br></div>    
+    <div>
+        <strong>8. CONTROL DE REGISTROS</strong>
+    </div> 
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>
+                    <ul>
+                        <li>Formato encuesta de morbilidad sentida osteomuscular.</li>
+                        <li>Exámenes médicos ocupacionales (ingreso-periódico). </li>
+                        <li>Formato Solicitud de Examen Paraclínicos.</li>
+                        <li>Formato Seguimiento de Morbimortalidad y Ausentismo Laboral.</li>
+                    </ul>
+                </p>
+            </td>
+        </tr>
+    </table> 
+
+    <div><br></div>    
+    <div><br></div>
+    <div><br></div>
+    <div><br></div>
+    <%= render 'firmaelaboro' %>

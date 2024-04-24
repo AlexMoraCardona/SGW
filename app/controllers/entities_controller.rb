@@ -18,7 +18,7 @@ class EntitiesController < ApplicationController
         if @entity.save then
             redirect_to entities_path, notice: t('.created') 
         else
-            render :new, status: :unprocessable_entity, alert: 'Se presento error en la creación de la entidad'
+            render :news, status: :unprocessable_entity, alert: 'Se presento error en la creación de la entidad'
         end   
         
     end    

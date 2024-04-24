@@ -6,6 +6,9 @@ class Profile < ApplicationRecord
     belongs_to :occupational_risk_manager
     belongs_to :administrative_political_division
 
+    #validates :accept_processing_data, acceptance: { accept: ['FALSE', 'accepted'] }
+    #validates :accept_processing_data, acceptance: false
+
     def graficosacpm
         @entity = Entity.find(params[:id])
         @matrix_corrective_action = MatrixCorrectiveAction.where('entity_id = ?', @entity.id) if @entity.present?

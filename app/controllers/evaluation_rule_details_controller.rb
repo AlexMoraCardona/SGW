@@ -81,7 +81,7 @@ class EvaluationRuleDetailsController < ApplicationController
                 @firma_nueva.save
             end   
 
-            if user_responsible.present? && (@evidence.template_id == 22 || @evidence.template_id == 23 || @evidence.template_id == 24 || @evidence.template_id == 43 || @evidence.template_id == 44 || @evidence.template_id == 45 || @evidence.template_id == 58 || @evidence.template_id == 59 || @evidence.template_id == 60 || @evidence.template_id == 61 || @evidence.template_id == 62 || @evidence.template_id == 63 || @evidence.template_id == 70 || @evidence.template_id == 71 || @evidence.template_id == 72 || @evidence.template_id == 4 || @evidence.template_id == 5 || @evidence.template_id == 6 || @evidence.template_id == 73 || @evidence.template_id == 74 || @evidence.template_id == 75 || @evidence.template_id == 103 || @evidence.template_id == 104 || @evidence.template_id == 105 || @evidence.template_id == 115 || @evidence.template_id == 116 || @evidence.template_id == 117 || @evidence.template_id == 124 || @evidence.template_id == 125 || @evidence.template_id == 126 || @evidence.template_id == 127 || @evidence.template_id == 128 || @evidence.template_id == 129 || @evidence.template_id == 130 || @evidence.template_id == 131 || @evidence.template_id == 132 || @evidence.template_id == 133 || @evidence.template_id == 134 || @evidence.template_id == 135 || @evidence.template_id == 136 || @evidence.template_id == 137 || @evidence.template_id == 138)  then
+            if user_responsible.present? && (@evidence.template_id == 22 || @evidence.template_id == 23 || @evidence.template_id == 24 || @evidence.template_id == 43 || @evidence.template_id == 44 || @evidence.template_id == 45 || @evidence.template_id == 58 || @evidence.template_id == 59 || @evidence.template_id == 60 || @evidence.template_id == 61 || @evidence.template_id == 62 || @evidence.template_id == 63 || @evidence.template_id == 70 || @evidence.template_id == 71 || @evidence.template_id == 72 || @evidence.template_id == 4 || @evidence.template_id == 5 || @evidence.template_id == 6 || @evidence.template_id == 73 || @evidence.template_id == 74 || @evidence.template_id == 75 || @evidence.template_id == 103 || @evidence.template_id == 104 || @evidence.template_id == 105 || @evidence.template_id == 115 || @evidence.template_id == 116 || @evidence.template_id == 117 || @evidence.template_id == 118 || @evidence.template_id == 119 || @evidence.template_id == 120 || @evidence.template_id == 121 || @evidence.template_id == 122 || @evidence.template_id == 123 || @evidence.template_id == 124 || @evidence.template_id == 125 || @evidence.template_id == 126 || @evidence.template_id == 127 || @evidence.template_id == 128 || @evidence.template_id == 129 || @evidence.template_id == 130 || @evidence.template_id == 131 || @evidence.template_id == 132 || @evidence.template_id == 133 || @evidence.template_id == 134 || @evidence.template_id == 135 || @evidence.template_id == 136 || @evidence.template_id == 137 || @evidence.template_id == 138 || @evidence.template_id == 142 || @evidence.template_id == 143 || @evidence.template_id == 144 || @evidence.template_id == 145 || @evidence.template_id == 146 || @evidence.template_id == 147 || @evidence.template_id == 148 || @evidence.template_id == 149 || @evidence.template_id == 150)  then
                 @firma_nueva  = Firm.new
                 @firma_nueva.user_id = user_responsible.id
                 @firma_nueva.evidence_id = @evidence.id
@@ -89,7 +89,7 @@ class EvaluationRuleDetailsController < ApplicationController
                 @firma_nueva.save
             end 
             
-            if user_asesor_externo.present? && (@evidence.template_id == 10 || @evidence.template_id == 11 || @evidence.template_id == 12 || @evidence.template_id == 43 || @evidence.template_id == 44 || @evidence.template_id == 45 || @evidence.template_id == 127 || @evidence.template_id == 128 || @evidence.template_id == 129 || @evidence.template_id == 130 || @evidence.template_id == 131 || @evidence.template_id == 132 || @evidence.template_id == 133 || @evidence.template_id == 134 || @evidence.template_id == 135 || @evidence.template_id == 136 || @evidence.template_id == 137 || @evidence.template_id == 138)  then
+            if user_asesor_externo.present? && (@evidence.template_id == 10 || @evidence.template_id == 11 || @evidence.template_id == 12 || @evidence.template_id == 43 || @evidence.template_id == 44 || @evidence.template_id == 45)  then
                 @firma_nueva  = Firm.new
                 @firma_nueva.user_id = user_asesor_externo.id
                 @firma_nueva.evidence_id = @evidence.id
@@ -223,7 +223,7 @@ class EvaluationRuleDetailsController < ApplicationController
     def edit
         @evaluation_rule_detail = EvaluationRuleDetail.find(params[:id])
         @templates = Template.where("standar_detail_item_id = ?", @evaluation_rule_detail.standar_detail_item_id)
-        @evidences = Evidence.where("evaluation_rule_detail_id = ?", @evaluation_rule_detail.id).order(date: :desc)
+        @evidences = Evidence.where("evaluation_rule_detail_id = ?", @evaluation_rule_detail.id).order(id: :desc)
     end
     
     def update  

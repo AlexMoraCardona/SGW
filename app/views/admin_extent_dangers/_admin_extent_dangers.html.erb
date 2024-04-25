@@ -1,0 +1,41 @@
+<% if @entity.present? %>
+    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %></h2>
+<% end %>
+
+
+<% if @admin_extent_dangers.present? %>
+    <%= link_to t('common.create_admin_extent_danger'), new_admin_extent_danger_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+
+    <table class="table table-hover"> 
+        <thead>
+            <tr>
+                <th scope="col"><%= t('.id') %></th>
+                <th scope="col">Nit Entidad</th>
+                <th scope="col">Entidad</th>
+                <th scope="col"><%= t('.date_creation') %></th>
+                <th scope="col"><%= t('.date_vencimiento') %></th>
+                <th scope="col"><%= t('.state_extent') %></th>
+                <th scope="col"><%= t('common.edit') %></th>
+        </tr>
+        </thead>
+
+        <% @admin_extent_dangers.each do |admin_extent_danger| %>
+            <tr> 
+                <td><%= admin_extent_danger.id %></td>
+                <td><%= admin_extent_danger.entity.identification_number %></td>
+                <td><%= admin_extent_danger.entity.business_name %></td>
+                <td><%= admin_extent_danger.date_creation %></td>
+                <td><%= admin_extent_danger.date_vencimiento %></td>
+                <td><%= admin_extent_danger.label_state_extent(admin_extent_danger.state_extent) %></td>
+                <td><%= link_to t('common.edit'), edit_admin_extent_danger_path(admin_extent_danger), class: 'btn btn-sm btn-primary'  %></td>
+            </tr>
+        <% end %>  
+        <hr>  
+    </table>  
+    <br>
+<% else %>
+    <div>
+        <%= link_to t('common.create_admin_extent_danger'), new_admin_extent_danger_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+    </div>
+<% end %>
+

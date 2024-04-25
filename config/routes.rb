@@ -62,7 +62,12 @@ Rails.application.routes.draw do
   resources :profiles
   resources :cessation_funds
   resources :presentations
-
+  resources :admin_extent_dangers
+  resources :danger_detail_risks
+  resources :danger_preventions
+  resources :form_preventions
+  
+  get '/form_preventions/informesuge/:id', to: 'form_preventions#informesuge', as: 'informesuge' 
   get '/presentations/listadopresentaciones', to: 'presentations#listadopresentaciones', as: 'listadopresentaciones'
   get '/profiles/firma_aprobo/:id', to: 'profiles#firma_aprobo', as: 'firma_aprobo'
   get '/profiles/firma_elaboro/:id', to: 'profiles#firma_elaboro', as: 'firma_elaboro'

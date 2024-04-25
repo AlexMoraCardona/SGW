@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_23_183559) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_24_221542) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -101,6 +101,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_23_183559) do
     t.integer "time_max", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "admin_extent_dangers", force: :cascade do |t|
+    t.date "date_creation"
+    t.date "date_vencimiento"
+    t.integer "state_extent", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_admin_extent_dangers_on_entity_id"
   end
 
   create_table "administrative_political_divisions", force: :cascade do |t|
@@ -241,6 +251,28 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_23_183559) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "danger_detail_preventions", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "danger_detail_risks", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "clasification_danger_detail_id"
+    t.index ["clasification_danger_detail_id"], name: "index_danger_detail_risks_on_clasification_danger_detail_id"
+  end
+
+  create_table "danger_preventions", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "clasification_danger_detail_id"
+    t.index ["clasification_danger_detail_id"], name: "index_danger_preventions_on_clasification_danger_detail_id"
   end
 
   create_table "description_jobs", force: :cascade do |t|
@@ -499,6 +531,22 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_23_183559) do
     t.bigint "evidence_id", null: false
     t.index ["evidence_id"], name: "index_firms_on_evidence_id"
     t.index ["user_id"], name: "index_firms_on_user_id"
+  end
+
+  create_table "form_preventions", force: :cascade do |t|
+    t.integer "eli", default: 0
+    t.integer "sus", default: 0
+    t.integer "ci", default: 0
+    t.integer "ca", default: 0
+    t.integer "epp", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "admin_extent_danger_id"
+    t.bigint "user_id"
+    t.bigint "danger_prevention_id"
+    t.index ["admin_extent_danger_id"], name: "index_form_preventions_on_admin_extent_danger_id"
+    t.index ["danger_prevention_id"], name: "index_form_preventions_on_danger_prevention_id"
+    t.index ["user_id"], name: "index_form_preventions_on_user_id"
   end
 
   create_table "health_promoters", force: :cascade do |t|
@@ -1251,6 +1299,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_23_183559) do
   add_foreign_key "activities", "users"
   add_foreign_key "activity_users", "activities"
   add_foreign_key "activity_users", "users"
+  add_foreign_key "admin_extent_dangers", "entities"
   add_foreign_key "allow_exams", "adm_exams"
   add_foreign_key "allow_exams", "entities"
   add_foreign_key "allow_exams", "users"
@@ -1260,6 +1309,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_23_183559) do
   add_foreign_key "calendars", "adm_calendars"
   add_foreign_key "clasification_danger_details", "clasification_dangers"
   add_foreign_key "complaints", "entities"
+  add_foreign_key "danger_detail_risks", "clasification_danger_details"
+  add_foreign_key "danger_preventions", "clasification_danger_details"
   add_foreign_key "description_jobs", "entities"
   add_foreign_key "evaluation_rule_details", "evaluations"
   add_foreign_key "evaluation_rule_details", "standar_detail_items"
@@ -1276,6 +1327,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_23_183559) do
   add_foreign_key "exams", "users"
   add_foreign_key "firms", "evidences"
   add_foreign_key "firms", "users"
+  add_foreign_key "form_preventions", "admin_extent_dangers"
+  add_foreign_key "form_preventions", "danger_preventions"
+  add_foreign_key "form_preventions", "users"
   add_foreign_key "history_evaluations", "entities"
   add_foreign_key "history_evaluations", "evaluations"
   add_foreign_key "history_evaluations", "risk_levels"

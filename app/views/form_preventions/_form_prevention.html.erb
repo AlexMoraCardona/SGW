@@ -1,0 +1,18 @@
+<% if @entity.present? %>
+    <h class="display-6"><%= @entity.business_name %> Nit: <%=@entity.identification_number %></h>
+<% end %>
+
+<% if @admin_extent_dangers.present? %>
+    <%= form_tag informesuge_path(Current.user.id.to_i), method: :get do %>
+        <%= select_tag :admin_extent_danger_id, options_from_collection_for_select(@admin_extent_dangers, :id, :date_creation), class: 'form-control input-sm select2', :prompt  =>  '--Seleccione la fecha del informe a realizar--' %>
+
+        <br>
+        <%= submit_tag 'Hacer informe',  :class => 'btn btn-primary btn-block spin pull-right' %>
+    <% end %>
+
+
+<% else %>
+    <div>
+        <h class="display-6">La Entidad no tiene activo el formulario</h>
+    </div>
+<% end %>

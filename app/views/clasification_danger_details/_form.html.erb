@@ -25,3 +25,74 @@
     <% end %>
 </div> 
 <br>
+<div class="container col-11 card p-5">
+   <h2 class="display-6">Posibles Riesgos y Consecuencias</h2>
+   <div>
+       <%= link_to t('common.create_danger_detail_risk'), new_danger_detail_risk_path(clasification_danger_detail_id: @clasification_danger_detail.id), class: 'btn btn-sm btn-primary'  %>
+   </div>
+
+   <% if @danger_detail_risks.present? %>
+
+        <table class="table table-hover"> 
+            <thead>
+                <tr>
+                    <th scope="col"><%= t('.id') %></th>
+                    <th scope="col">Tipo de peligro</th>
+                    <th scope="col">Descrición del peligro</th>
+                    <th scope="col">Posible riesgo/consecuencia</th>
+                    <th scope="col"><%= t('common.edit') %></th>
+                    <th scope="col"><%= t('common.delete') %></th>
+                </tr>
+            </thead>
+
+            <% @danger_detail_risks.each do |danger_detail_risk| %>
+                <tr> 
+                    <td><%= danger_detail_risk.id %></td>
+                    <td><%= danger_detail_risk.clasification_danger_detail.clasification_danger.name %></td>
+                    <td><%= danger_detail_risk.clasification_danger_detail.name %></td>
+                    <td><%= danger_detail_risk.name %></td>
+                    <td><%= link_to t('common.edit'), edit_danger_detail_risk_path(id: danger_detail_risk.id, clasification_danger_detail_id: danger_detail_risk.clasification_danger_detail_id), class: 'btn btn-sm btn-primary'  %></td>
+                    <td><%= link_to t('common.delete'), danger_detail_risk, data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el riesgo/consecuencia?' }, class: 'btn btn-sm btn-danger' %></td>
+                </tr>
+            <% end %>  
+            <hr>  
+        </table>  
+    <% end %>
+</div> 
+<br>
+<br>
+<div class="container col-11 card p-5">
+   <h2 class="display-6">Sugerencia de medidas de prevención y control</h2>
+   <div>
+        <%= link_to t('common.create_danger_prevention'), new_danger_prevention_path(clasification_danger_detail_id: @clasification_danger_detail.id), class: 'btn btn-sm btn-primary'  %>
+   </div>
+
+   <% if @danger_preventions.present? %>
+
+        <table class="table table-hover"> 
+            <thead>
+                <tr>
+                    <th scope="col"><%= t('.id') %></th>
+                    <th scope="col">Tipo de peligro</th>
+                    <th scope="col">Descrición del peligro</th>
+                    <th scope="col">Sugerencia de medida de prevención y control</th>
+                    <th scope="col"><%= t('common.edit') %></th>
+                    <th scope="col"><%= t('common.delete') %></th>
+                </tr>
+            </thead>
+
+            <% @danger_preventions.each do |danger_prevention| %>
+                <tr> 
+                    <td><%= danger_prevention.id %></td>
+                    <td><%= danger_prevention.clasification_danger_detail.clasification_danger.name %></td>
+                    <td><%= danger_prevention.clasification_danger_detail.name %></td>
+                    <td><%= danger_prevention.name %></td>
+                    <td><%= link_to t('common.edit'), edit_danger_prevention_path(id: danger_prevention.id, clasification_danger_detail_id: danger_prevention.clasification_danger_detail_id), class: 'btn btn-sm btn-primary'  %></td>
+                    <td><%= link_to t('common.delete'), danger_prevention, data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar la medida de prevención?' }, class: 'btn btn-sm btn-danger' %></td>
+                </tr>
+            <% end %>  
+            <hr>  
+        </table>  
+    <% end %>
+</div> 
+<br>

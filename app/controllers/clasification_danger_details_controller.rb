@@ -28,6 +28,8 @@ class ClasificationDangerDetailsController < ApplicationController
  
     def edit
         @clasification_danger_detail = ClasificationDangerDetail.find(params[:id])
+        @danger_detail_risks = DangerDetailRisk.where("clasification_danger_detail_id = ?",@clasification_danger_detail.id) if @clasification_danger_detail.present?
+        @danger_preventions = DangerPrevention.where("clasification_danger_detail_id = ?",@clasification_danger_detail.id) if @clasification_danger_detail.present?
     end
     
     def update

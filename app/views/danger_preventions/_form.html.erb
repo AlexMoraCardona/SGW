@@ -1,0 +1,24 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @danger_prevention do |form| %>
+        <% @danger_prevention.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>   
+        
+        <br>
+        <div class="form-group">    
+            <%= form.label :name, style: "display: block" %>
+            <%= form.text_field :name,  class: "form-control" %>
+        </div>
+        <br>
+        <hr>
+        <%= form.hidden_field :clasification_danger_detail_id, :value =>  params[:clasification_danger_detail_id].to_i, class: "form-control" %>
+        
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    <% end %>
+</div> 
+<br>

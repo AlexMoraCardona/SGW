@@ -3,6 +3,7 @@ class Entity < ApplicationRecord
     has_many :evaluations
     has_many :meeting_minutes
     has_many :locations
+    has_many :admin_extent_dangers   
     
     validates :email_entity, presence: true 
     validates :tax_regime, presence: true 

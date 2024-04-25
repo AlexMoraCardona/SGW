@@ -1,0 +1,37 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @admin_extent_danger do |form| %>
+        <% @admin_extent_danger.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+
+        <br>    
+        <div class="row g-3">
+            <div class="col-sm-4">
+                <%= form.label :date_creation, style: "display: block" %>
+                <%= form.date_field :date_creation,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-4">    
+                <%= form.label :date_vencimiento, style: "display: block" %>
+                <%= form.date_field :date_vencimiento,  class: "form-control" %>
+            </div>         
+            <div class="col-sm-4">
+                <%= form.label :state_extent, style: "display: block" %>
+                <%= form.select(:state_extent, [['Inactivo', 0], ['Activo', 1]]) %>
+            </div>           
+        </div>  
+
+        <% if params[:entity_id].present? %>
+            <%= form.hidden_field :entity_id, :value => params[:entity_id].to_i, class: "form-control" %>
+        <% else %>
+            <%= form.hidden_field :entity_id, :value => @entity.id if @entity.id.present? %>
+        <% end %>                
+
+        <div><br> </div>    
+        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, admin_extent_dangers_path %>
+    <% end %>
+</div>        
+<br>

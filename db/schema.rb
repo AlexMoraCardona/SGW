@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_24_221542) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_30_225516) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -1015,6 +1015,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_24_221542) do
     t.index ["pension_fund_id"], name: "index_profiles_on_pension_fund_id"
     t.index ["survey_profile_id"], name: "index_profiles_on_survey_profile_id"
     t.index ["user_id"], name: "index_profiles_on_user_id"
+  end
+
+  create_table "protection_elements", force: :cascade do |t|
+    t.string "name"
+    t.string "body_protect"
+    t.string "rule_protection"
+    t.string "durability"
+    t.integer "date_sheet", default: 0
+    t.integer "delivery_format", default: 0
+    t.integer "personal_induction", default: 0
+    t.integer "state_protection", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "report_officials", force: :cascade do |t|

@@ -1,0 +1,79 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @protection_element do |form| %>
+        <% @protection_element.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+        <div class="form-group">    
+            <%= form.label :name, style: "display: block" %>
+            <%= form.text_field :name,  class: "form-control" %>
+        </div>
+        </br>    
+        <div class="form-group">    
+            <%= form.label :body_protect, style: "display: block" %>
+            <%= form.text_field :body_protect,  class: "form-control" %>
+        </div>
+        </br>
+        <div class="form-group">    
+            <%= form.label :rule_protection, style: "display: block" %>
+            <%= form.text_field :rule_protection,  class: "form-control" %>
+        </div>
+        </br>
+        <div class="form-group">    
+            <%= form.label :durability, style: "display: block" %>
+            <%= form.text_field :durability,  class: "form-control" %>
+        </div>
+        </br>
+        <div class="row g-2">
+            <div class="col-sm-5">
+                <%= form.label :date_sheet,  style: "display: block" %>
+                <%= form.radio_button :date_sheet, 0 %>
+                <label for="N/A">N/A</label>
+                <%= form.radio_button :date_sheet, 1 %>
+                <label for="No">NO</label>
+                <%= form.radio_button :date_sheet, 2 %>
+                <label for="Si">SI</label>
+            </div>
+            <div class="col-sm-5">
+                <%= form.label :delivery_format,  style: "display: block" %>
+                <%= form.radio_button :delivery_format, 0 %>
+                <label for="N/A">N/A</label>
+                <%= form.radio_button :delivery_format, 1 %>
+                <label for="No">NO</label>
+                <%= form.radio_button :delivery_format, 2 %>
+                <label for="Si">SI</label>
+            </div>
+        </div>        
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-5">
+                <%= form.label :personal_induction,  style: "display: block" %>
+                <%= form.radio_button :personal_induction, 0 %>
+                <label for="N/A">N/A</label>
+                <%= form.radio_button :personal_induction, 1 %>
+                <label for="No">NO</label>
+                <%= form.radio_button :personal_induction, 2 %>
+                <label for="Si">SI</label>
+            </div>
+            <div class="col-sm-5">
+                <%= form.label :state_protection,  style: "display: block" %>
+                <%= form.radio_button :state_protection, 0 %>
+                <label for="No">N0</label>
+                <%= form.radio_button :state_protection, 1 %>
+                <label for="Si">SI</label>
+            </div>
+        </div>        
+        <br>
+        <div class="form-group">    
+            <%= form.label :img_elem,  style: "display: block" %> 
+            <%= form.file_field :img_elem,  class: "form-control", accept:"image/*", capture:"environment" %>
+        </div>
+
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, protection_elements_path %>
+    <% end %>
+</div>        
+<br>

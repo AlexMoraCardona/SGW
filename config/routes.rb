@@ -66,6 +66,7 @@ Rails.application.routes.draw do
   resources :danger_detail_risks
   resources :danger_preventions
   resources :form_preventions
+  resources :protection_elements
   
   get '/form_preventions/informesuge/:id', to: 'form_preventions#informesuge', as: 'informesuge' 
   get '/presentations/listadopresentaciones', to: 'presentations#listadopresentaciones', as: 'listadopresentaciones'

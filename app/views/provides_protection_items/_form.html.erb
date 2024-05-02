@@ -1,0 +1,28 @@
+<div class="container col-12 card p-5">
+    <br>
+    <%= form_with model: @provides_protection_item do |form| %>
+        <% @provides_protection_item.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+        </br>
+        </br>
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la cantidad de elementos entregados."><%= t('.cant') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+                <%= form.number_field :cant,  class: "form-control" %>
+            </div>  
+            <div class="col-sm-1">
+            </div>  
+            <div class="col-sm-4"> 
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la fecha de entrega de los elementos entregados."><%= t('.date_entrega') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+                <%= form.date_field :date_entrega,  class: "form-control" %>
+            </div>        
+        </div>   
+        </br>
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+    <% end %>
+
+</div>
+<br>

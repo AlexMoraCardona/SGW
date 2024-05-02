@@ -1,0 +1,90 @@
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+    <%= javascript_importmap_tags %>
+</head>
+<br>
+<div>
+
+    <table class="table table-hover" style="border:1px solid black"> 
+        <thead>
+            <tr>
+                <td rowspan="4"; style="background-color: black;">&nbsp;</td>
+                <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
+                    <% if @matrix_protection.entity.logo.present? then %>
+                        <%=  image_tag  @matrix_protection.entity.logo, class: "image_peq" %>
+                    <% end %>
+                </td>
+                <td rowspan="4"; colspan="4"; style="text-align:center; padding-bottom: 40px;">
+                    <div class="col-12"><h5>MATRIZ  ELEMENTOS DE PROTECCIÓN PERSONAL</h5><h6><%= @matrix_protection.entity.business_name if @matrix_protection.present? %> Nit: <%= @matrix_protection.entity.identification_number if @matrix_protection.present? %> </h6></div>
+                </td>
+                <td rowspan="4";  style="text-align:center"></td>
+
+                <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
+
+                <td style="border:1px solid black"><%= @matrix_protection.date_create  if @matrix_protection.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
+                <td style="border:1px solid black"><%= @matrix_protection.date_update  if @matrix_protection.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Versión:</td>
+                <td style="border:1px solid black"><%= @matrix_protection.version if @matrix_protection.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Código:</td>
+                <td style="border:1px solid black"><%= @matrix_protection.code if @matrix_protection.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+        
+            <tr>
+                <td style="background-color: black;">&nbsp;</td>
+                <th style="border:1px solid black">Área/Oficio</th>
+                <th style="border:1px solid black">Equipo de protección </th>
+                <th style="border:1px solid black">Parte de cuerpo a proteger </th>
+                <th style="border:1px solid black">Imagen </th>
+                <th style="border:1px solid black">Norma </th>
+                <th style="border:1px solid black">Durabilidad</th>
+                <th style="border:1px solid black">Ficha Técnica</th>
+                <th style="border:1px solid black">Formato de Entrega</th>
+                <th style="border:1px solid black">Inducción al personal </th>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+
+        </thead> 
+
+        <% @matrix_protection_items.each do |matrix_protection_item| %>             
+            <tbody>
+                <tr>
+                    <td style="background-color: black;">&nbsp;</td> 
+                    <td style="border:1px solid black"><%= MatrixProtectionItem.label_state_protection(matrix_protection_item.state_protection) %></td>
+                    <td style="border:1px solid black"><%= matrix_protection_item.protection_element.name %></td>
+                    <td style="border:1px solid black"><%= matrix_protection_item.protection_element.body_protect %></td>
+                    <td style="border:1px solid black">
+                        <% if matrix_protection_item.protection_element.img_elem.attached? %>
+                            <% if matrix_protection_item.protection_element.img_elem.image? %> 
+                                <%= image_tag matrix_protection_item.protection_element.img_elem, data: {previews_target: "preview"}, class: "image_peq" %>
+                            <% end %>
+                        <% else %> 
+                            <%= image_tag("avatar.jpg", class: "avatar-mini") %>
+                        <% end %>
+                    </td>
+                    <td style="border:1px solid black"><%= matrix_protection_item.protection_element.rule_protection %></td>
+                    <td style="border:1px solid black"><%= matrix_protection_item.durability %></td>
+                    <td style="border:1px solid black"><%= MatrixProtectionItem.label(matrix_protection_item.date_sheet) %></td>
+                    <td style="border:1px solid black"><%= MatrixProtectionItem.label(matrix_protection_item.delivery_format) %></td>
+                    <td style="border:1px solid black"><%= MatrixProtectionItem.label(matrix_protection_item.personal_induction) %></td>
+                    <td style="background-color: black;">&nbsp;</td>
+                </tr>
+            </body>
+        <% end %>
+    </table>
+</div>    

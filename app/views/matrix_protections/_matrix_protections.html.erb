@@ -1,0 +1,119 @@
+<% if @entity.present? %>
+    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %></h2>
+<% end %>
+
+
+<% if @matrix_protections.present? %>
+    <%= link_to t('common.create_matrix_protection'), new_matrix_protection_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+
+    <table class="table table-hover"> 
+
+        <% @matrix_protections.each do |matrix_protection| %>
+            <hr>
+
+            <%= link_to t('common.create_item_matrix_protection'), crear_item_protection_matrix_protections_path(matrix_protection.id), class: 'btn btn-sm btn-warning' %> &nbsp;
+            <%= link_to t('common.show_matrix_protection'), matrix_protection_path(matrix_protection.id), class: 'btn btn-sm btn-warning' %> &nbsp;
+            <%= link_to "PDF", ver_matrix_protection_matrix_protections_path(matrix_protection.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;
+
+            <div class="container col-12">
+                <br>
+                <div class="row g-2">
+                    <div class="col-sm-3">
+                        <strong>Fecha de creación</strong><br>
+                        <%= matrix_protection.created_at.strftime("%F") %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong>Última fecha de actualización</strong><br>
+                        <%= matrix_protection.updated_at.strftime("%F") %> 
+                    </div>        
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-sm-3">
+                        <strong><%= t('.code') %></strong><br>
+                        <%= matrix_protection.code %> 
+                    </div>
+                    <div class="col-sm-3">
+                        <strong><%= t('.version') %></strong><br>
+                        <%= matrix_protection.version %> 
+                    </div>
+                    <div class="col-sm-3">
+                        <strong><%= t('.date_create') %></strong><br>
+                        <%= matrix_protection.date_create %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.date_update') %></strong><br>
+                        <%= matrix_protection.date_update %> 
+                    </div>        
+                </div>
+                <br>
+
+                <div class="row g-4">
+                    <div class="col-sm-3"> 
+                        <strong><%= t('.user_legal_representative') %></strong><br>
+                        <%=  matrix_protection.name_user(matrix_protection.user_legal_representative)  %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.firm_legal_representative') %></strong><br>
+                        <%= matrix_protection.label_firm(matrix_protection.firm_legal_representative) %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.date_firm_legal_representative') %></strong><br>
+                        <%= matrix_protection.date_firm_legal_representative %> 
+                    </div>
+                    <div class="col-sm-3">
+                        <% if matrix_protection.firm_legal_representative.to_i == 0 %>
+                            <%= link_to t('common.firmar'), firmar_rep_matrix_protections_path(matrix_protection.id, 1), class: 'btn btn-sm btn btn-warning' %>
+                        <% end %>    
+                    </div>
+                </div>
+                <div class="row g-4">
+                    <div class="col-sm-3">
+                        <strong><%= t('.user_adviser_sst') %></strong><br>
+                        <%= matrix_protection.name_user(matrix_protection.user_adviser_sst) %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.firm_adviser_sst') %></strong><br>
+                        <%= matrix_protection.label_firm(matrix_protection.firm_adviser_sst) %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.date_firm_adviser_sst') %></strong><br>
+                        <%= matrix_protection.date_firm_adviser_sst %> 
+                    </div>
+                    <div class="col-sm-3">
+                        <% if matrix_protection.firm_adviser_sst.to_i == 0 %>
+                            <%= link_to t('common.firmar'), firmar_adv_matrix_protections_path(matrix_protection.id, 2), class: 'btn btn-sm btn btn-warning' %>
+                        <% end %>    
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-sm-3">
+                        <strong><%= t('.user_responsible_sst') %></strong><br>
+                        <%= matrix_protection.name_user(matrix_protection.user_responsible_sst) %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.firm_responsible_sst') %></strong><br>
+                        <%= matrix_protection.label_firm(matrix_protection.firm_responsible_sst) %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.date_firm_responsible_sst') %></strong><br>
+                        <%= matrix_protection.date_firm_responsible_sst %> 
+                    </div>
+                    <div class="col-sm-3">
+                        <% if matrix_protection.firm_responsible_sst == 0 %>
+                            <%= link_to t('common.firmar'), firmar_res_matrix_protections_path(matrix_protection.id, 3), class: 'btn btn-sm btn btn-warning' %>
+                        <% end %>           
+                    </div>
+                </div>
+
+            </div>           
+        <% end %>  
+        <hr>  
+    </table>  
+    <br>
+<% else %>
+    <div>
+        <%= link_to t('common.create_matrix_protection'), new_matrix_protection_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+    </div>
+<% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_30_225516) do
+ActiveRecord::Schema[7.0].define(version: 2024_05_02_003259) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -820,6 +820,41 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_30_225516) do
     t.index ["entity_id"], name: "index_matrix_legals_on_entity_id"
   end
 
+  create_table "matrix_protection_items", force: :cascade do |t|
+    t.integer "num", default: 0
+    t.string "durability"
+    t.integer "date_sheet", default: 0
+    t.integer "delivery_format", default: 0
+    t.integer "personal_induction", default: 0
+    t.integer "state_protection", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "matrix_protection_id"
+    t.bigint "protection_element_id"
+    t.index ["matrix_protection_id"], name: "index_matrix_protection_items_on_matrix_protection_id"
+    t.index ["protection_element_id"], name: "index_matrix_protection_items_on_protection_element_id"
+  end
+
+  create_table "matrix_protections", force: :cascade do |t|
+    t.integer "user_legal_representative"
+    t.integer "user_adviser_sst"
+    t.integer "user_responsible_sst"
+    t.integer "version"
+    t.string "code"
+    t.date "date_create"
+    t.date "date_update"
+    t.date "date_firm_legal_representative"
+    t.date "date_firm_adviser_sst"
+    t.date "date_firm_responsible_sst"
+    t.integer "firm_legal_representative", default: 0
+    t.integer "firm_adviser_sst", default: 0
+    t.integer "firm_responsible_sst", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_matrix_protections_on_entity_id"
+  end
+
   create_table "meeting_attendees", force: :cascade do |t|
     t.string "name"
     t.string "post"
@@ -1028,6 +1063,35 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_30_225516) do
     t.integer "state_protection", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "provides_protection_items", force: :cascade do |t|
+    t.integer "cant", default: 0
+    t.date "date_entrega"
+    t.integer "num", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "provides_protection_id"
+    t.bigint "protection_element_id"
+    t.index ["protection_element_id"], name: "index_provides_protection_items_on_protection_element_id"
+    t.index ["provides_protection_id"], name: "index_provides_protection_items_on_provides_protection_id"
+  end
+
+  create_table "provides_protections", force: :cascade do |t|
+    t.integer "user_colaborador"
+    t.integer "user_responsible"
+    t.integer "version", default: 0
+    t.string "code"
+    t.date "date_firm_colaborador"
+    t.date "date_firm_responsible"
+    t.integer "firm_colaborador", default: 0
+    t.integer "firm_responsible", default: 0
+    t.string "post_colaborador"
+    t.string "unit_colaborador"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_provides_protections_on_entity_id"
   end
 
   create_table "report_officials", force: :cascade do |t|
@@ -1362,6 +1426,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_30_225516) do
   add_foreign_key "matrix_danger_risks", "entities"
   add_foreign_key "matrix_legal_items", "matrix_legals"
   add_foreign_key "matrix_legals", "entities"
+  add_foreign_key "matrix_protection_items", "matrix_protections"
+  add_foreign_key "matrix_protection_items", "protection_elements"
+  add_foreign_key "matrix_protections", "entities"
   add_foreign_key "meeting_attendees", "meeting_minutes"
   add_foreign_key "meeting_commitments", "meeting_minutes"
   add_foreign_key "meeting_minutes", "entities"
@@ -1378,6 +1445,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_30_225516) do
   add_foreign_key "profiles", "pension_funds"
   add_foreign_key "profiles", "survey_profiles"
   add_foreign_key "profiles", "users"
+  add_foreign_key "provides_protection_items", "protection_elements"
+  add_foreign_key "provides_protection_items", "provides_protections"
+  add_foreign_key "provides_protections", "entities"
   add_foreign_key "resource_items", "resources"
   add_foreign_key "resources", "entities"
   add_foreign_key "standar_detail_items", "standar_details"

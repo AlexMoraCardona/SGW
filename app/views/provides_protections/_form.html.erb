@@ -1,0 +1,43 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @provides_protection do |form| %>
+        <% @provides_protection.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>
+        <br>    
+        <div class="form-group">    
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Usuario Responsable.">Usuario Responsable de la entrega de los EPP:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+            <%= form.collection_select :user_responsible, User.all.order(id: :asc), :id,  :name, style: "width=50px" %>
+        </div>
+        <br>    
+
+        <br>
+        <div class="form-group">    
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Usuario Colaborador.">Usuario Colaborador:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+            <%= form.collection_select :user_colaborador, User.all.order(id: :asc), :id,  :name, style: "width=50px" %>
+        </div>
+        <br>    
+        <div class="form-group">    
+            <%= form.label :post_colaborador, style: "display: block" %>
+            <%= form.text_field :post_colaborador,  class: "form-control" %>
+        </div>
+        </br>
+        <div class="form-group">    
+            <%= form.label :unit_colaborador, style: "display: block" %>
+            <%= form.text_field :unit_colaborador,  class: "form-control" %>
+        </div>
+        </br>
+
+        <br>    
+        <%= form.hidden_field :entity_id, :value => params[:entity_id].to_i, class: "form-control" %>
+        <%= form.hidden_field :code, :value => @template.reference, class: "form-control" if @template.present? %>
+        <%= form.hidden_field :version, :value => @template.version.to_i, class: "form-control" if @template.present? %>
+
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    <% end %>
+</div>        
+<br>

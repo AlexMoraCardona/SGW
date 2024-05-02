@@ -67,6 +67,8 @@ Rails.application.routes.draw do
   resources :danger_preventions
   resources :form_preventions
   resources :protection_elements
+  resources :matrix_protection_items
+  resources :provides_protection_items
   
   get '/form_preventions/informesuge/:id', to: 'form_preventions#informesuge', as: 'informesuge' 
   get '/presentations/listadopresentaciones', to: 'presentations#listadopresentaciones', as: 'listadopresentaciones'
@@ -195,6 +197,24 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :matrix_protections do
+    collection do
+      get '/matrix_protections/crear_item_protection/:id', to: 'matrix_protections#crear_item_protection', as: 'crear_item_protection'
+      get '/matrix_protections/ver_matrix_protection/:id', to: 'matrix_protections#ver_matrix_protection', as: 'ver_matrix_protection'
+      get '/matrix_protections/firmar_rep/:id', to: 'matrix_protections#firmar_rep', as: 'firmar_rep'
+      get '/matrix_protections/firmar_adv/:id', to: 'matrix_protections#firmar_adv', as: 'firmar_adv'
+      get '/matrix_protections/firmar_res/:id', to: 'matrix_protections#firmar_res', as: 'firmar_res'
+    end
+  end
+
+  resources :provides_protections do
+    collection do
+      get '/provides_protections/crear_item_provide/:id', to: 'provides_protections#crear_item_provide', as: 'crear_item_provide'
+      get '/provides_protections/ver_info_provide/:id', to: 'provides_protections#ver_info_provide', as: 'ver_info_provide'
+      get '/provides_protections/firmar_colaborador/:id', to: 'provides_protections#firmar_colaborador', as: 'firmar_colaborador'
+      get '/provides_protections/firmar_responsable/:id', to: 'provides_protections#firmar_responsable', as: 'firmar_responsable'
+    end
+  end
 
   resources :evaluations do
     collection do

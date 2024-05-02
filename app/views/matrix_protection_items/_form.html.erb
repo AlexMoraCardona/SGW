@@ -1,0 +1,43 @@
+<div class="container col-12 card p-5">
+    <br>
+    <%= form_with model: @matrix_protection_item do |form| %>
+        <% @matrix_protection_item.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+        </br>
+        <div class="form-group">    
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la durabilidad."><%= t('.durability') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+            <%= form.text_field :durability,  class: "form-control" %>
+        </div>
+        </br>
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar inducción personal."><%= t('.state_protection') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+                <%= form.select(:state_protection, [['N/A', 0], ['Servicios Generales', 1], ['Odontólogo / Auxiliar de Odontología', 2], ['Operarios', 3]]) %>
+            </div>  
+            <div class="col-sm-4"> 
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar inducción personal."><%= t('.personal_induction') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+                <%= form.select(:personal_induction, [['N/A', 0], ['NO', 1], ['SI', 2]]) %>
+            </div>        
+        </div>   
+        </br>
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar ficha técnica."><%= t('.date_sheet') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+                <%= form.select(:date_sheet, [['N/A', 0], ['NO', 1], ['SI', 2]]) %>
+            </div>  
+            <div class="col-sm-4"> 
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar formato de entrega."><%= t('.delivery_format') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+                <%= form.select(:delivery_format, [['N/A', 0], ['NO', 1], ['SI', 2]]) %>
+            </div>        
+        </div>   
+        </br>
+
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+    <% end %>
+
+</div>
+<br>

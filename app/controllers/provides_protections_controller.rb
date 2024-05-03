@@ -26,9 +26,12 @@ class ProvidesProtectionsController < ApplicationController
         end    
     end  
     
-    def ver_provides_protection
+    def ver_info_provide
         @provides_protection = ProvidesProtection.find(params[:id])
         @provides_protection_items = ProvidesProtectionItem.where("provides_protection_id = ?", @provides_protection.id) if @provides_protection.present?
+        @colaborador = User.find(@provides_protection.user_colaborador)  if    @provides_protection.user_colaborador.to_i > 0
+        @responsable = User.find(@provides_protection.user_responsible)  if    @provides_protection.user_responsible.to_i > 0
+
         respond_to do |format| 
             format.html
             format.pdf {render  pdf: 'ver_provides_protection',

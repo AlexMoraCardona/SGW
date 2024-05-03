@@ -20,7 +20,7 @@ class ClasificationDangerDetailsController < ApplicationController
         @clasification_danger_detail = ClasificationDangerDetail.new(clasification_danger_detail_params)
 
         if @clasification_danger_detail.save then
-            redirect_to clasification_danger_details_path, notice: t('.created') 
+            redirect_to clasification_danger_details_path(@clasification_danger_detail.clasification_danger_id), notice: t('.created') 
         else
             render :edit, status: :unprocessable_entity
         end    
@@ -35,7 +35,7 @@ class ClasificationDangerDetailsController < ApplicationController
     def update
         @clasification_danger_detail = ClasificationDangerDetail.find(params[:id])
         if @clasification_danger_detail.update(clasification_danger_detail_params)
-            redirect_to clasification_danger_details_path, notice: 'Item actualizado correctamente'
+            redirect_to clasification_danger_details_path(@clasification_danger_detail.clasification_danger_id), notice: 'Item actualizado correctamente'
         else
             render :edit, clasification_danger_details: :unprocessable_entity
         end         

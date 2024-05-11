@@ -15,26 +15,37 @@ class FormPreventionsController < ApplicationController
 
     def create
         @form_prevention = FormPrevention.new(form_prevention_params)
-
         if @form_prevention.save then
-            redirect_to home_path, notice: t('.created') 
+            redirect_back fallback_location: root_path, notice: "Su respuesta fue enviada correctamente." 
         else
             redirect_back fallback_location: root_path, alert: "Su formulario no pudo ser enviado."
         end    
     end    
 
     def informesuge 
-        @form_prevention = FormPrevention.new 
+        
+        @clasification_danger_details = ClasificationDangerDetail.all
+        @clasification_dangers = ClasificationDanger.all
         @user_id =  params[:id].to_i  if params[:id].present?
         @admin_extent_danger_id =  params[:admin_extent_danger_id].to_i  if params[:admin_extent_danger_id].present?
         user = User.find(@user_id) if @user_id.present?
         @entity = Entity.find(user.entity)
     end
 
+    def encuestapre
+        @clasification_danger = ClasificationDanger.find(params[:id].to_i) if params[:id].present?
+        @form_prevention = FormPrevention.new 
+        @clasification_danger_details = ClasificationDangerDetail.where("clasification_danger_id = ?", params[:id].to_i) if params[:id].present? 
+        @admin_extent_danger = AdminExtentDanger.find(params[:format].to_i)
+
+        
+    end   
+    
+
     private
 
     def form_prevention_params
         params.require(:form_prevention).permit(:eli, :sus, :ci, :ca, :epp, :admin_extent_danger_id, 
-        :user_id, :danger_prevention_id)
+        :user_id, :clasification_danger_detail_id, :no_apply)
     end
 end  

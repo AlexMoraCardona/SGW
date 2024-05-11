@@ -49,7 +49,7 @@ class ParticipantsController < ApplicationController
         :designating_by_legal_representative, :joint_committee_president, :joint_committee_secretary, 
         :post_copasst, :user_id, :evidence_id, :responsible_ssst, :external_consultant, :collaborator, 
         :reported_activity, :employees_activity, :vigia, :jury_voting, :candidate, :number_votes, :workers_representative, 
-        :company_representative, :person_complaining, :choose)
+        :company_representative, :person_complaining, :choose, :rh, :company_position, :phone, :brigade_position)
     end 
 
 end  

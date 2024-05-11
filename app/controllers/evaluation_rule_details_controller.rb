@@ -59,7 +59,7 @@ class EvaluationRuleDetailsController < ApplicationController
                 @firma_nueva.save
             end   
 
-            if user_presidente_copasst.present? && (@evidence.template_id == 34 || @evidence.template_id == 35 || @evidence.template_id == 36) then
+            if user_presidente_copasst.present? && (@evidence.template_id == 34 || @evidence.template_id == 35 || @evidence.template_id == 36 || @evidence.template_id == 166 || @evidence.template_id == 167 || @evidence.template_id == 168) then
                 @firma_nueva  = Firm.new
                 @firma_nueva.user_id = user_presidente_copasst.id
                 @firma_nueva.evidence_id = @evidence.id
@@ -75,7 +75,7 @@ class EvaluationRuleDetailsController < ApplicationController
                 @firma_nueva.save
             end   
 
-            if user_secretario_copasst.present? && (@evidence.template_id == 34 || @evidence.template_id == 35 || @evidence.template_id == 36) then
+            if user_secretario_copasst.present? && (@evidence.template_id == 34 || @evidence.template_id == 35 || @evidence.template_id == 36 || @evidence.template_id == 166 || @evidence.template_id == 167 || @evidence.template_id == 168) then
                 @firma_nueva  = Firm.new
                 @firma_nueva.user_id = user_secretario_copasst.id
                 @firma_nueva.evidence_id = @evidence.id
@@ -90,7 +90,8 @@ class EvaluationRuleDetailsController < ApplicationController
                 @evidence.template_id == 122 || @evidence.template_id == 123 || @evidence.template_id == 124 || @evidence.template_id == 125 || @evidence.template_id == 126 || @evidence.template_id == 127 || @evidence.template_id == 128 || @evidence.template_id == 129 || 
                 @evidence.template_id == 130 || @evidence.template_id == 131 || @evidence.template_id == 132 || @evidence.template_id == 133 || @evidence.template_id == 134 || @evidence.template_id == 135 || @evidence.template_id == 136 || @evidence.template_id == 137 || 
                 @evidence.template_id == 138 || @evidence.template_id == 142 || @evidence.template_id == 143 || @evidence.template_id == 144 || @evidence.template_id == 145 || @evidence.template_id == 146 || @evidence.template_id == 147 || @evidence.template_id == 148 || 
-                @evidence.template_id == 149 || @evidence.template_id == 150 || @evidence.template_id == 151 || @evidence.template_id == 152 || @evidence.template_id == 153 || @evidence.template_id == 154 || @evidence.template_id == 155 || @evidence.template_id == 156)  then
+                @evidence.template_id == 149 || @evidence.template_id == 150 || @evidence.template_id == 151 || @evidence.template_id == 152 || @evidence.template_id == 153 || @evidence.template_id == 154 || @evidence.template_id == 155 || @evidence.template_id == 156 || 
+                @evidence.template_id == 175 || @evidence.template_id == 176 || @evidence.template_id == 177)  then
                 @firma_nueva  = Firm.new
                 @firma_nueva.user_id = user_responsible.id
                 @firma_nueva.evidence_id = @evidence.id

@@ -8,6 +8,7 @@ class ExamQuestion < ApplicationRecord
         @preguntas.push([@pregunta.bad_answer_one]) if @pregunta.present?
         @preguntas.push([@pregunta.bad_answer_two]) if @pregunta.present?
         @preguntas.push([@pregunta.bad_answer_three]) if @pregunta.present?
+        @preguntas.push([@pregunta.bad_answer_four]) if @pregunta.present?
         @preguntas.push([@pregunta.good_answe]) if @pregunta.present?
         @preguntas.shuffle!
         return @preguntas

@@ -69,8 +69,17 @@ Rails.application.routes.draw do
   resources :protection_elements
   resources :matrix_protection_items
   resources :provides_protection_items
-  
+  resources :working_conditions
+  resources :working_condition_items
+
+  get '/working_conditions/working_pdf/:id', to: 'working_conditions#working_pdf', as: 'working_pdf'
+  get '/working_conditions/firmar_user/:id', to: 'working_conditions#firmar_user', as: 'firmar_user'
+  get '/working_conditions/mod_detalle/:id', to: 'working_conditions#mod_detalle', as: 'mod_detalle' 
+  get '/working_conditions/detalles_working/:id', to: 'working_conditions#detalles_working', as: 'detalles_working' 
+  get '/admin_extent_dangers/matrix_vista/:id', to: 'admin_extent_dangers#matrix_vista', as: 'matrix_vista' 
+  get '/admin_extent_dangers/matrix_prevention/:id', to: 'admin_extent_dangers#matrix_prevention', as: 'matrix_prevention' 
   get '/form_preventions/informesuge/:id', to: 'form_preventions#informesuge', as: 'informesuge' 
+  get '/form_preventions/encuestapre/:id', to: 'form_preventions#encuestapre', as: 'encuestapre' 
   get '/presentations/listadopresentaciones', to: 'presentations#listadopresentaciones', as: 'listadopresentaciones'
   get '/profiles/firma_aprobo/:id', to: 'profiles#firma_aprobo', as: 'firma_aprobo'
   get '/profiles/firma_elaboro/:id', to: 'profiles#firma_elaboro', as: 'firma_elaboro'

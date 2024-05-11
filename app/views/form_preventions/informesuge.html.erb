@@ -1,37 +1,18 @@
 <div class="container col-5 card p-5">
     <br>
-    <%= form_with model: @form_prevention do |form| %>
-        <% @form_prevention.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %>
-        <div class="col-sm-12 p-3 mb-2 bg-info text-dark text-center">    
-            <p class="fst-normal fs-3">MEDIDAS DE PREVENCIÓN Y CONTROL DE PELIGROS Y RIESGOS POR PARTE DE LOS TRABAJADORES</br> <%= @entity.business_name %> </p>
-        </div>
-        <br> 
-        <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
-            <p class="fst-normal fs-4">Seleccione el Tipo de Riesgo </p>
-            <%= form.collection_select :clasification_danger_id, ClasificationDanger.all.order(id: :asc), :id, :name, style: "width=50px" %>
-        </div>
-        <br>    
-        <% if @form.clasification_danger_id? %>
-            <div class="col-sm-12 p-3 mb-2 bg-info text-dark">    
-                <p class="fst-normal fs-4">Seleccione el Tipo de Riesgo </p>
-                <%= form.collection_select :clasification_danger_id, ClasificationDanger.all.order(id: :asc), :id, :name, style: "width=50px" %>
-            </div>            
-        <% end %>
 
-        
-        
-
-        <br> 
-        <%= form.hidden_field :user_id, :value => @user_id.to_i, class: "form-control" %>
-        <%= form.hidden_field :admin_extent_danger_id, :value => @admin_extent_danger_id.to_i, class: "form-control" %>
-
-        <br>    
-        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
-    <% end %>
+    <div class="col-sm-12 p-3 mb-4 bg-info text-dark"  >    
+        <div class="row text-center">
+            <h4>PELIGROS Y RIESGOS</h4>
+        </div>    
+        <table>
+            <% @clasification_dangers.each do |clasification_danger| %> 
+                <tr>
+                    <td style="border:1px solid black;width: 70%;"> <%= clasification_danger.name %></td>
+                    <td style="text-align:center;border:1px solid black;width: 20%;"> <%= link_to  t('common.show'), encuestapre_path(clasification_danger.id, @admin_extent_danger_id.to_i), class: 'btn btn-sm btn-info'%></td>
+                </tr>
+            <% end %>  
+        </table>
+    </div>
 </div>        
 <br>

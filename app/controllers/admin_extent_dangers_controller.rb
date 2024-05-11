@@ -47,7 +47,34 @@ class AdminExtentDangersController < ApplicationController
         @admin_extent_danger = AdminExtentDanger.find(params[:id])
         @admin_extent_danger.destroy
         redirect_to admin_extent_dangers_path, notice: 'Administración de medida borrada correctamente', admin_extent_danger: :see_other
+    end 
+    
+    def matrix_prevention
+        @template = Template.find(169)
+        @admin_extent_danger = AdminExtentDanger.find(params[:id])
+        @form_preventions = FormPrevention.where("admin_extent_danger_id = ?", @admin_extent_danger.id) if @admin_extent_danger.present?
+        @entity = Entity.find(@admin_extent_danger.entity_id) if @admin_extent_danger.present?
+        @cant = 0
     end    
+    
+    def matrix_vista
+        @template = Template.find(169)
+        @admin_extent_danger = AdminExtentDanger.find(params[:id])
+        @form_preventions = FormPrevention.where("admin_extent_danger_id = ?", @admin_extent_danger.id) if @admin_extent_danger.present?
+        @entity = Entity.find(@admin_extent_danger.entity_id) if @admin_extent_danger.present?
+        @cant = 0
+        respond_to do |format| 
+            format.html
+            format.pdf {render  pdf: 'matrix_vista',
+                margin: {top: 10, bottom: 10, left: 10, right: 10 },
+                disable_javascript: true,
+                page_size: 'letter',
+                footer: {
+                    right: 'Página: [page] de [topage]'
+                   }                
+                       } 
+        end
+    end      
 
     private
 

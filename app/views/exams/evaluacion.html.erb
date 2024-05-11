@@ -10,15 +10,15 @@
           <% end %>  
 
           <div class="carousel-caption d-none d-md-block">
-            <h5><%= @entity.business_name if @entity.present? %> Nit: <%= @entity.identification_number if @entity.present? %></h5>
-            <p>Evaluación: <%= @adm_exam.description %></p>
+            <h1 style="color:#000000";><%= @entity.business_name if @entity.present? %></br> Nit: <%= @entity.identification_number if @entity.present? %></h1>
+            <h1 style="color:#000000";><%= @adm_exam.description %></h1>
           </div>
-
+          
           <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next" data-bs-theme="Warning">
-            <span class="carousel-control-next-icon" aria-hidden="false" data-bs-theme="Warning"></span>
-            <span class="visually-hidden" data-bs-theme="Warning">Next</span>
+          <span  class="carousel-control-next-icon" aria-hidden="false" data-bs-theme="Warning"></span>
+          <span  class="visually-hidden" data-bs-theme="Warning">Next</span>
           </button>
-
+          
         </div>  
         <div class="col-sm-2">
         </div>
@@ -36,36 +36,53 @@
             <div class="col-sm-7">
               <% @exam_questions.each do |q| %>
                 <br>
-                <h4>Pregunta <%= i %>:<br> <%= q.question %>?<h4>
+                <h4>Pregunta <%= i %>:<br> <%= q.question %><h4>
                 <%  @pre =  ExamQuestion.crear_preguntas(q.id) %>  
                 <% if @pre.present? %>
                   <div class="btn-group-vertical" role="group" aria-label="Vertical radio toggle button group">
                     <% if @pre[0].present? %>
                       <% @dato = @pre[0].to_s %>
                       <% @dato = @dato[2..-3] %>
-                      <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[0]%>" id="vbtn-radio1<%= i %>" autocomplete="off">
-                      <label class="btn btn-outline-dark" for="vbtn-radio1<%= i %>"><%= @dato%></label>
+                      <% if not  @dato.blank? %>
+                        <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[0]%>" id="vbtn-radio1<%= i %>" autocomplete="off">
+                        <label class="btn btn-outline-dark" for="vbtn-radio1<%= i %>"><%= @dato  %></label>
+                      <% end %>  
                     <% end %> 
                     <br>
                     <% if @pre[1].present? %>
                       <% @dato = @pre[1].to_s %>
                       <% @dato = @dato[2..-3] %>
-                      <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[1]%>" id="vbtn-radio2<%= i %>" autocomplete="off">
-                      <label class="btn btn-outline-dark" for="vbtn-radio2<%= i %>"><%= @dato%></label>
+                      <% if not  @dato.blank? %>
+                        <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[1]%>" id="vbtn-radio2<%= i %>" autocomplete="off">
+                        <label class="btn btn-outline-dark" for="vbtn-radio2<%= i %>"><%= @dato %></label>
+                      <% end %>  
                     <% end %>  
                     <br>
                     <% if @pre[2].present? %>
                       <% @dato = @pre[2].to_s %>
                       <% @dato = @dato[2..-3] %>
-                      <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[2]%>" id="vbtn-radio3<%= i %>" autocomplete="off">
-                      <label class="btn btn-outline-dark" for="vbtn-radio3<%= i %>"><%= @dato%></label>
+                      <% if not  @dato.blank? %>
+                        <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[2]%>" id="vbtn-radio3<%= i %>" autocomplete="off">
+                        <label class="btn btn-outline-dark" for="vbtn-radio3<%= i %>"><%= @dato %></label>
+                      <% end %>  
                     <% end %>  
                     <br>
                     <% if @pre[3].present? %>
                       <% @dato = @pre[3].to_s %>
                       <% @dato = @dato[2..-3] %>
-                      <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[3]%>" id="vbtn-radio4<%= i %>" autocomplete="off">
-                      <label class="btn btn-outline-dark" for="vbtn-radio4<%= i %>"><%= @dato%></label>
+                      <% if not  @dato.blank? %>
+                        <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[3]%>" id="vbtn-radio4<%= i %>" autocomplete="off">
+                        <label class="btn btn-outline-dark" for="vbtn-radio4<%= i %>"><%= @dato %></label>
+                      <% end %>  
+                    <% end %>  
+                    <br>
+                    <% if @pre[4].present? %>
+                      <% @dato = @pre[4].to_s %>
+                      <% @dato = @dato[2..-3] %>
+                      <% if not  @dato.blank? %>
+                        <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[4]%>" id="vbtn-radio5<%= i %>" autocomplete="off">
+                        <label class="btn btn-outline-dark" for="vbtn-radio5<%= i %>"><%= @dato %></label>
+                      <% end %>  
                     <% end %>  
                     <br>
                   </div>

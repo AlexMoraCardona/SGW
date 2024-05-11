@@ -1,0 +1,215 @@
+<br>
+<div class="container col-12">
+
+    <table class="table table-hover" style="border:1px solid black"> 
+        <thead>
+            <tr>
+                <td style="background-color: black;">&nbsp;</td>
+                <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
+                    <% if @entity.logo.present? then %>
+                        <%=  image_tag  @entity.logo, class: "image_peq" %>
+                    <% end %>
+                </td>
+                <td rowspan="4"; colspan="6"; style="text-align:center; padding-bottom: 40px;">
+                    <div class="col-12"><h5>AUTOREPORTE DE CONDICIONES DE TRABAJO</h5><h6><%= @entity.business_name if @entity.present? %> Nit: <%= @entity.identification_number if @entity.present? %> </h6></div>
+                </td>
+                <td rowspan="4";  style="text-align:center">
+                </td>
+                <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
+
+                <td style="border:1px solid black"><%= @admin_extent_danger.date_creation  if @admin_extent_danger.present? %></td>
+                
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr> 
+                <td style="background-color: black;">&nbsp;</td>
+                <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
+                <td style="border:1px solid black"><%= @admin_extent_danger.date_creation if @admin_extent_danger.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr> 
+                <td style="background-color: black;">&nbsp;</td>
+                <td colspan="2"; style="border:1px solid black">Versión:</td>
+                <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr> 
+                <td style="background-color: black;">&nbsp;</td>
+                <td colspan="2"; style="border:1px solid black">Código:</td>
+                <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+
+        </thead>
+    </table> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Esta encuesta está realizada para detectar condiciones de riesgo que se puedan intervenir desde el área de seguridad y salud en el trabajo, agradecemos diligenciar el formato completo para detectar las condiciones encontradas en cada área. En la columna observaciones anote la condición que considere necesaria intervenir, y por favor descríbala. </p>
+            </td>
+        </tr>
+    </table> 
+    <table style="width:100%;"> 
+        <tr>
+            <td style="width:60%;border:1px solid black;">
+                <strong>CIUDAD: </strong>  <%= AdministrativePoliticalDivision.find(@working_condition.entity.entity_location_code).municipality_name if @working_condition.present? %> 
+            </td>
+            <td style="width:40%;border:1px solid black;">
+                <strong>FECHA: </strong>  <%= @working_condition.date_creation if @working_condition.present? %> 
+            </td>
+        </tr>
+    </table> 
+    <table style="width:100%;"> 
+        <tr>
+            <td style="background-color: #00aae4;width: 100%;border:1px solid black;text-align:center">
+                <div><strong>INFORMACIÓN DEL EMPLEADO</strong></div>  
+            </td>
+        </tr>
+    </table> 
+    <table style="width:100%;"> 
+        <tr>
+            <td style="width:60%;border:1px solid black;">
+                <div><strong>NOMBRE: </strong><%= @working_condition.user.name if @working_condition.present? %></div>  
+            </td>
+            <td style="width:40%;border:1px solid black;">
+                <div><strong>IDENTIFICACIÓN: </strong>  <%= Firm.miles(@working_condition.user.nro_document) if @working_condition.present? %></div> 
+            </td>
+        </tr>
+    </table> 
+    <table style="width:100%;"> 
+        <tr>
+            <td style="width:30%;border:1px solid black;">
+                <% if @working_condition.sex == 0 then %>
+                    <strong>SEXO:</strong> Masculino 
+                <% else %>
+                    <strong>SEXO:</strong> Femenino
+                <% end %>        
+            </td>
+            <td style="width:30%;border:1px solid black;">
+                <strong>EDAD (años): </strong>  <%= @working_condition.age if @working_condition.present? %> 
+            </td>
+            <td style="width:40%;border:1px solid black;">
+                <strong>ESTADO CIVIL: </strong>  <%= WorkingCondition.label_estado(@working_condition.civil_status) if @working_condition.present? %> 
+            </td>
+        </tr>
+    </table> 
+    <table style="width:100%;"> 
+        <tr>
+            <td style="width:50%;border:1px solid black;">
+                <strong>Cargo: </strong>  <%= @working_condition.post if @working_condition.present? %> 
+            </td>
+            <td style="width:50%;border:1px solid black;">
+                <strong>Unidad / Área: </strong>  <%= @working_condition.area if @working_condition.present? %> 
+            </td>
+        </tr>
+    </table> 
+    <table style="width:100%;"> 
+        <tr>
+            <td style="width:100%;border:1px solid black;">
+                <strong>¿Qué equipos opera? </strong>  <%= @working_condition.equipment_operates if @working_condition.present? %> 
+            </td>
+        </tr>
+        <tr>    
+            <td style="width:100%;border:1px solid black;">
+                Señale con una X si está expuesto a alguno de estos riesgos : 
+            </td>
+        </tr>
+    </table>
+    <table style="width:100%;"> 
+        <tr>
+            <td style="background-color: #00aae4;width: 20%;border:1px solid black;text-align:center">
+                <strong>PELIGRO</strong>  
+            </td>
+            <td style="background-color: #00aae4;width: 10%;border:1px solid black;text-align:center">
+                <strong>SI</strong> 
+            </td>
+            <td style="background-color: #00aae4;width: 10%;border:1px solid black;text-align:center">
+                <strong>NO</strong> 
+            </td>
+            <td style="background-color: #00aae4;width: 40%;border:1px solid black;text-align:center">
+                <strong>FUENTES DEL PELIGRO</strong>  
+            </td>
+            <td style="background-color: #00aae4;width: 20%;border:1px solid black;text-align:center">
+                <strong>OBSERVACIONES</strong>  
+            </td>
+        </tr>
+        <% if @working_condition_items.present? %>
+            <% @working_condition_items.each do |working_condition_item| %>
+                <tr>
+                    <td style="width: 20%;border:1px solid black;text-align:center">
+                        <%= working_condition_item.clasification_danger.name %> 
+                    </td>
+                    <td style="width: 10%;border:1px solid black;text-align:center">
+                        <% if working_condition_item.exposed == 1 then %>
+                            <strong>X</strong>  
+                        <% end %> 
+                    </td>
+                    <td style="width: 10%;border:1px solid black;text-align:center">
+                        <% if working_condition_item.exposed == 0 then %> 
+                            <strong>X</strong>  
+                        <% end %> 
+                    </td>
+                    <td style="width: 40%;border:1px solid black;">
+                        <%= working_condition_item.clasification_danger_detail.name %>  
+                    </td>
+                    <td style="width: 20%;border:1px solid black;text-align:center">
+                        <%= working_condition_item.observation %>  
+                    </td>
+                </tr>
+            <% end %> 
+        <% end %>                                 
+    </table> 
+    <table style="width:100%;"> 
+        <tr>
+            <td style="width: 100%;border:1px solid black;">
+                <% if @working_condition.epp == 0 then %>
+                    Usa elementos de protección personal   SI ___  NO X ¿Cuáles?  <%= @working_condition.epp_cuales if @working_condition.present? %>  
+                <% else %>
+                    Usa elementos de protección personal   SI X  NO ___ ¿Cuáles?  <%= @working_condition.epp_cuales if @working_condition.present? %>  
+                <% end %>
+            </td>
+        </tr>
+        <tr>    
+            <td style="width: 50%;border:1px solid black;">
+                Propuestas De control: <%= @working_condition.control_proposal if @working_condition.present? %>
+            </td>
+        </tr>
+    </table> 
+    <div></br></div>            
+    <div></br></div>            
+    <table style="width:100%;">
+        <tr>    
+            <td style="border:0px solid black; width: 70%; text-align:center">
+                        <div class="row  text-center"> 
+                            <div class="col-12">
+                                <div>Firma Del Empleado:</div>
+                                <div>&nbsp;</div>
+                                <div>&nbsp;</div>
+                                <% if @working_condition.firm_user == 1 %>
+                                    <% if @working_condition.user.firm.attached? %>
+                                        <% if @working_condition.user.firm.image? %> 
+                                            <%= image_tag @working_condition.user.firm, class: "firma" %>
+                                            <p align="center">________________________________</p>
+                                        <% end %>
+                                    <% end %>
+                                <% else %>    
+                                    <p align="center">________________________________</p>
+                                <% end %>     
+                            </div>
+                            <div class="col-12">
+                                <div class="row">
+                                    <h6><strong><%= @working_condition.user.name %></strong></h6>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="row">
+                                    <h6><%= @working_condition.user.document.abbreviation %>: <%= Firm.miles(@working_condition.user.nro_document) %></h6>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+            </td>
+        </tr>    
+    </table>
+</div>    

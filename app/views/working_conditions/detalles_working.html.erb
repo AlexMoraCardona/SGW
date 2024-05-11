@@ -1,0 +1,60 @@
+
+<br>
+<div class="container col-12" 
+    <br>
+    <h2>PELIGROS Y RIESGOS</h2>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Esta encuesta está realizada para detectar condiciones de riesgo que se puedan intervenir desde el área de seguridad y salud en el trabajo, agradecemos diligenciar el formato completo para detectar las condiciones encontradas en cada área. En la columna observaciones anote la condición que considere necesaria intervenir, y por favor descríbala. </p>
+            </td>
+        </tr>
+    </table> 
+    <hr>
+    <br>
+    <% @clasification_dangers.each do |clasification_danger| %>
+        <br>
+        <div><h4><%= clasification_danger.name %></h4></div>
+        <table> 
+            <tr style="background-color: #00aae4;border:1px solid black;text-align:center;">
+                <td style="border:1px solid black;text-align:center;width: 70%;">
+                    Descripción del Riesgo
+                </td>
+                <td style="border:1px solid black;text-align:center;width: 10%;">
+                    Expuesto
+                </td>
+                <td style="border:1px solid black;text-align:center;width: 20%;">
+                    Observaciones
+                </td>
+                <td style="border:1px solid black;text-align:center;width: 20%;">
+                    Ver
+                </td>
+            </tr>
+            
+            <% @working_condition_items.where(clasification_danger_id:  clasification_danger.id).each do |working_condition_item| %>
+                <tr style="border:1px solid black;">
+                    <td style="border:1px solid black;width: 70%;">
+                        <%= working_condition_item.clasification_danger_detail.name %>
+                    </td>
+                    <td style="border:1px solid black;text-align:center;width: 10%;">
+                        <% if working_condition_item.exposed == 1 then %>
+                            SI
+                        <% else%>
+                            NO    
+                        <% end %>
+                    </td>
+                    <td style="border:1px solid black;width: 20%;">
+                        <%=  working_condition_item.observation %>
+                    </td>
+                    <td style="border:1px solid black;width: 20%;">
+                        <%= link_to t('common.ver'), edit_working_condition_item_path(working_condition_item.id), class: 'btn btn-sm btn-primary'  %>
+                    </td>
+                </tr>
+            <% end %>
+        </table>
+    <% end %>
+    <br>    
+    <%= link_to '<button class="btn btn-primary" type="button">Finalizar Autoreporte</button>'.html_safe, :home %>
+    <hr>
+    <br>    
+<div>    

@@ -45,7 +45,7 @@ class ExamQuestionsController < ApplicationController
 
     def exam_question_params
         params.require(:exam_question).permit(:number, :question, :bad_answer_one, 
-        :bad_answer_two, :bad_answer_three, :good_answe, :adm_exam_id, :img_question)
+        :bad_answer_two, :bad_answer_three, :good_answe, :adm_exam_id, :img_question, :bad_answer_four)
     end 
 
 end  

@@ -1,0 +1,77 @@
+<br>
+<div class="container col-11" 
+    <br>
+    <h2 class="display-5">AUTOREPORTE DE CONDICIONES DE TRABAJO</h2>
+    <hr>
+    
+    <br>
+ 
+    <% if params[:entity_id].present? %>
+        <div><%= link_to t('.create_working_condition'), new_working_condition_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %></div>
+        <hr>
+
+        <div><h4">AUTOREPORTES REALIZADOS</h4></div>
+        <table> 
+            <tr style="background-color: #00aae4;border:1px solid black;text-align:center;">
+                <td style="border:1px solid black;text-align:center;width: 20%;">
+                    Fecha
+                </td>
+                <td style="border:1px solid black;text-align:center;width: 50%;">
+                    Usuario
+                </td>
+                <td style="border:1px solid black;text-align:center;width: 20%;">
+                    Firmado
+                </td>
+                <td style="border:1px solid black;text-align:center;width: 10%;">
+                    Ver
+                </td>
+                <td style="border:1px solid black;text-align:center;width: 10%;">
+                    Matriz Autoreporte
+                </td>
+                <td style="border:1px solid black;text-align:center;width: 10%;">
+                    PDF
+                </td>
+
+            </tr>
+            <% if @autorealizados.present? %>
+                <% @autorealizados.each do |autorealizado| %>
+                    <tr style="border:1px solid black;">
+                        <td style="border:1px solid black;width: 20%;">
+                            <%= autorealizado.date_creation %>
+                        </td>
+                        <td style="border:1px solid black;text-align:center;width: 50%;">
+                            <%= autorealizado.user.name %>
+                        </td>
+                        <td style="border:1px solid black;width: 20%;text-align:center;">
+                            <% if autorealizado.firm_user.to_i == 0 %>
+                                <%= link_to t('common.firmar'), firmar_user_path(autorealizado.id, 1), class: 'btn btn-sm btn btn-warning' %>
+                            <% else %>
+                                <%= autorealizado.date_firm_user %>
+                            <% end %>    
+                        </td>
+                        <td style="border:1px solid black;width: 10%;text-align:center;">
+                            <%= link_to t('common.ver'), detalles_working_path(autorealizado.id), class: 'btn btn-sm btn-primary'  %>
+                        </td>
+                        <td style="border:1px solid black;width: 10%;text-align:center;">
+                            <%= link_to t('common.Ver_Matriz'), working_condition_path(autorealizado.id), class: 'btn btn-sm btn-primary'  %>
+                        </td>
+                        <td style="border:1px solid black;width: 10%;text-align:center;">
+                            <%= link_to "PDF", working_pdf_path(autorealizado.id, format: 'pdf'), class: 'btn btn-sm btn-primary'  %>
+                        </td>
+                    </tr>
+                <% end %>
+            <% end %>
+        </table>
+    <% else %>
+        <%= form_with model: @entity, method: :get do |form| %>
+            <div class="row g-2">
+                <div class="col-sm-7">
+                    <%= form.label :Entidad, style: "display: block" %>
+                    <%= form.collection_select :entity_id, @entities.order(id: :asc), :id, :business_name, { prompt: '--Seleccionar Entidad--' },
+                    { class: 'form-control input-sm select2' } %>
+                </div>
+            </div>    
+            <br>    
+            <button type="submit" class="btn btn-primary">Consultar</button>
+        <% end %>
+    <% end %>    

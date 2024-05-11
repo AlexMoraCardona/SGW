@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_05_02_003259) do
+ActiveRecord::Schema[7.0].define(version: 2024_05_10_220924) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -502,6 +502,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_02_003259) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "adm_exam_id"
+    t.string "bad_answer_four"
     t.index ["adm_exam_id"], name: "index_exam_questions_on_adm_exam_id"
   end
 
@@ -543,9 +544,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_02_003259) do
     t.datetime "updated_at", null: false
     t.bigint "admin_extent_danger_id"
     t.bigint "user_id"
-    t.bigint "danger_prevention_id"
+    t.integer "no_apply", default: 1
+    t.bigint "clasification_danger_detail_id"
     t.index ["admin_extent_danger_id"], name: "index_form_preventions_on_admin_extent_danger_id"
-    t.index ["danger_prevention_id"], name: "index_form_preventions_on_danger_prevention_id"
+    t.index ["clasification_danger_detail_id"], name: "index_form_preventions_on_clasification_danger_detail_id"
     t.index ["user_id"], name: "index_form_preventions_on_user_id"
   end
 
@@ -976,6 +978,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_02_003259) do
     t.integer "company_representative", default: 0
     t.integer "person_complaining", default: 0
     t.integer "choose", default: 0
+    t.string "rh"
+    t.string "company_position"
+    t.string "phone"
+    t.integer "brigade_position", default: 0
     t.index ["evidence_id"], name: "index_participants_on_evidence_id"
     t.index ["user_id"], name: "index_participants_on_user_id"
   end
@@ -1369,6 +1375,40 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_02_003259) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  create_table "working_condition_items", force: :cascade do |t|
+    t.integer "exposed", default: 0
+    t.string "observation"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "working_condition_id"
+    t.bigint "clasification_danger_id"
+    t.bigint "clasification_danger_detail_id"
+    t.index ["clasification_danger_detail_id"], name: "index_working_condition_items_on_clasification_danger_detail_id"
+    t.index ["clasification_danger_id"], name: "index_working_condition_items_on_clasification_danger_id"
+    t.index ["working_condition_id"], name: "index_working_condition_items_on_working_condition_id"
+  end
+
+  create_table "working_conditions", force: :cascade do |t|
+    t.date "date_creation"
+    t.integer "sex", default: 0
+    t.integer "age", default: 0
+    t.integer "civil_status", default: 0
+    t.string "post"
+    t.string "area"
+    t.string "equipment_operates"
+    t.integer "epp", default: 0
+    t.string "epp_cuales"
+    t.string "control_proposal"
+    t.date "date_firm_user"
+    t.integer "firm_user", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_working_conditions_on_entity_id"
+    t.index ["user_id"], name: "index_working_conditions_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activities", "calendars"
@@ -1405,7 +1445,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_02_003259) do
   add_foreign_key "firms", "evidences"
   add_foreign_key "firms", "users"
   add_foreign_key "form_preventions", "admin_extent_dangers"
-  add_foreign_key "form_preventions", "danger_preventions"
+  add_foreign_key "form_preventions", "clasification_danger_details"
   add_foreign_key "form_preventions", "users"
   add_foreign_key "history_evaluations", "entities"
   add_foreign_key "history_evaluations", "evaluations"
@@ -1459,4 +1499,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_02_003259) do
   add_foreign_key "trainings", "entities"
   add_foreign_key "unsafe_conditions", "entities"
   add_foreign_key "users", "documents"
+  add_foreign_key "working_condition_items", "clasification_danger_details"
+  add_foreign_key "working_condition_items", "clasification_dangers"
+  add_foreign_key "working_condition_items", "working_conditions"
+  add_foreign_key "working_conditions", "entities"
+  add_foreign_key "working_conditions", "users"
 end

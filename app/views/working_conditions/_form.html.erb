@@ -1,0 +1,77 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @working_condition do |form| %>
+        <% @working_condition.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>
+
+        <div class="col-sm-3">
+            <%= form.label :sex,  style: "display: block" %>
+            <%= form.radio_button :sex, 0, :checked => false, required: true %>
+            <label for="masculino">Masculino</label>
+            <%= form.radio_button :sex, 1 %>
+            <label for="femenino">Femenino</label>
+        </div>
+        </br>    
+        <div class="form-group">    
+            <%= form.label :age, style: "display: block" %>
+            <%= form.number_field :age,  class: "form-control", required: true %>
+        </div>
+        </br>
+        <div class="col-sm-6">
+            <%= form.label :civil_status,  style: "display: block" %>
+            <%= form.radio_button :civil_status, 0, :checked => false, required: true %>
+            <label for="soltero">Soltero</label>
+            <%= form.radio_button :civil_status, 1 %>
+            <label for="casado">Casado</label>
+            <%= form.radio_button :civil_status, 2 %>
+            <label for="unionlibre">Unión Libre</label>
+            <%= form.radio_button :civil_status, 3 %>
+            <label for="separado">Separado</label>
+        </div>       
+        </br>
+        <div class="form-group">    
+            <%= form.label :post, style: "display: block" %>
+            <%= form.text_field :post,  class: "form-control", required: true %>
+        </div>
+        </br>
+        <div class="form-group">    
+            <%= form.label :area, style: "display: block" %>
+            <%= form.text_field :area,  class: "form-control", required: true %>
+        </div>
+        </br>
+        <div class="form-group">    
+            <%= form.label :equipment_operates, style: "display: block" %>
+            <%= form.text_field :equipment_operates,  class: "form-control" %>
+        </div>
+        </br>
+        <div class="col-sm-6">
+            <%= form.label :epp,  style: "display: block" %>
+            <%= form.radio_button :epp, 0, :checked => false, required: true %>
+            <label for="no">NO</label>
+            <%= form.radio_button :epp, 1 %>
+            <label for="si">Si</label>
+        </div>
+        </br>
+        <div class="form-group">    
+            <%= form.label :epp_cuales, style: "display: block" %>
+            <%= form.text_field :epp_cuales,  class: "form-control" %>
+        </div>
+        </br>
+        <div class="form-group">    
+            <%= form.label :control_proposal, style: "display: block" %>
+            <%= form.text_field :control_proposal,  class: "form-control" %>
+        </div>
+        </br>
+        <%= form.hidden_field :entity_id, :value => @entity.id, class: "form-control" if @entity.present?%>
+        <%= form.hidden_field :date_creation, :value => Time.now, class: "form-control" %>
+        <%= form.hidden_field :user_id, :value => @user.id, class: "form-control" if @user.present? %>
+
+        <br>    
+        <button type="submit" class="btn btn-primary">Hacer Autoreporte </button>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    <% end %>
+</div>        
+<br>

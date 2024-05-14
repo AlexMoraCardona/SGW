@@ -118,6 +118,8 @@ class EvaluationRuleDetailsController < ApplicationController
             user_asesor_externo = User.find(entidad.external_consultant.to_i) if entidad.present? && entidad.external_consultant.to_i > 0 
             user_vigia = User.find_by("entity = ? and vigia_sgsst = ?", @evidence.entity_id.to_i, 1) 
 
+
+
             if user_vigia.present? && (@evidence.template_id == 37 || @evidence.template_id == 38 || @evidence.template_id == 39)  then
                 @participante_nuevo  = Participant.new
                 @participante_nuevo.user_id = user_vigia.id
@@ -185,9 +187,11 @@ class EvaluationRuleDetailsController < ApplicationController
         @arl = OccupationalRiskManager.find(@evidence.entity.entity_arl)
         @claseriesgo = RiskLevel.find(@evidence.entity.risk_classification) if @evidence.entity.risk_classification.present?
 
+
         @firms.each do |firm| 
             @representante_legal = User.find(firm.user_id) if firm.legal_representative == 1 
         end  
+
         @participants.each do |participant| 
             @responsable_ssst = User.find(participant.user_id) if participant.responsible_ssst == 1 
             @asesor_externo_ssst = User.find(participant.user_id) if participant.external_consultant == 1 

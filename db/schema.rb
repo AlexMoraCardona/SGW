@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_05_10_220924) do
+ActiveRecord::Schema[7.0].define(version: 2024_05_16_033415) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -101,6 +101,20 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_10_220924) do
     t.integer "time_max", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "adm_extinguishers", force: :cascade do |t|
+    t.integer "firm_user", default: 0
+    t.date "date_firm_user"
+    t.date "date_creation"
+    t.string "area"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.bigint "user_id"
+    t.string "post"
+    t.index ["entity_id"], name: "index_adm_extinguishers_on_entity_id"
+    t.index ["user_id"], name: "index_adm_extinguishers_on_user_id"
   end
 
   create_table "admin_extent_dangers", force: :cascade do |t|
@@ -521,6 +535,32 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_10_220924) do
     t.index ["user_id"], name: "index_exams_on_user_id"
   end
 
+  create_table "extinguishers", force: :cascade do |t|
+    t.integer "nro", default: 0
+    t.integer "type_extinguisher", default: 0
+    t.integer "ability", default: 0
+    t.integer "ring", default: 0
+    t.integer "pressure_gauge", default: 0
+    t.integer "barrette", default: 0
+    t.integer "handle", default: 0
+    t.integer "valve", default: 0
+    t.integer "hose", default: 0
+    t.integer "nozzle", default: 0
+    t.integer "cylindrical_body", default: 0
+    t.integer "decal", default: 0
+    t.integer "medium", default: 0
+    t.integer "signaling", default: 0
+    t.integer "location", default: 0
+    t.string "area_location"
+    t.date "date_carga"
+    t.date "date_vec_carga"
+    t.string "observation"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "adm_extinguisher_id"
+    t.index ["adm_extinguisher_id"], name: "index_extinguishers_on_adm_extinguisher_id"
+  end
+
   create_table "firms", force: :cascade do |t|
     t.integer "legal_representative", default: 0
     t.string "post"
@@ -647,6 +687,78 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_10_220924) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cycle_id"], name: "index_indicators_on_cycle_id"
+  end
+
+  create_table "kits", force: :cascade do |t|
+    t.date "date_creation"
+    t.string "area"
+    t.integer "type_kit", default: 0
+    t.integer "clasification_kit", default: 0
+    t.integer "gauze", default: 0
+    t.string "gauze_obs"
+    t.integer "sticking_plaster", default: 0
+    t.string "sticking_plaster_obs"
+    t.integer "tongue_depressor", default: 0
+    t.string "tongue_depressor_obs"
+    t.integer "gloves", default: 0
+    t.string "gloves_obs"
+    t.integer "elastic_bandage25", default: 0
+    t.string "elastic_bandage25_obs"
+    t.integer "elastic_bandage55", default: 0
+    t.string "elastic_bandage55_obs"
+    t.integer "sell_cotton35", default: 0
+    t.string "sell_cotton35_obs"
+    t.integer "sell_cotton55", default: 0
+    t.string "sell_cotton55_obs"
+    t.integer "soap", default: 0
+    t.string "soap_obs"
+    t.integer "saline_solution", default: 0
+    t.string "saline_solution_obs"
+    t.integer "thermometer", default: 0
+    t.string "thermometer_obs"
+    t.integer "alcohol", default: 0
+    t.string "alcohol_obs"
+    t.integer "sterile_gauze", default: 0
+    t.string "sterile_gauze_obs"
+    t.integer "dressing", default: 0
+    t.string "dressing_obs"
+    t.integer "scissors", default: 0
+    t.string "scissors_obs"
+    t.integer "flashlight", default: 0
+    t.string "flashlight_obs"
+    t.integer "batteries", default: 0
+    t.string "batteries_obs"
+    t.integer "spinal_board", default: 0
+    t.string "spinal_board_obs"
+    t.integer "adult_cervical_collar", default: 0
+    t.string "adult_cervical_collar_obs"
+    t.integer "child_cervical_collar", default: 0
+    t.string "child_cervical_collar_obs"
+    t.integer "adult_immobilizers_top", default: 0
+    t.string "adult_immobilizers_top_obs"
+    t.integer "adult_immobilizers_lower", default: 0
+    t.string "adult_immobilizers_lower_obs"
+    t.integer "child_immobilizers_top", default: 0
+    t.string "child_immobilizers_top_obs"
+    t.integer "child_immobilizers_lower", default: 0
+    t.string "child_immobilizers_lower_obs"
+    t.integer "disposable_cups", default: 0
+    t.string "disposable_cups_obs"
+    t.integer "lood_pressure_monitor", default: 0
+    t.string "lood_pressure_monitor_obs"
+    t.integer "stethoscope", default: 0
+    t.string "stethoscope_obs"
+    t.integer "mask_rcp", default: 0
+    t.string "mask_rcp_obs"
+    t.integer "firm_user", default: 0
+    t.date "date_firm_user"
+    t.string "post"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.bigint "user_id"
+    t.index ["entity_id"], name: "index_kits_on_entity_id"
+    t.index ["user_id"], name: "index_kits_on_user_id"
   end
 
   create_table "levels", force: :cascade do |t|
@@ -1416,6 +1528,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_10_220924) do
   add_foreign_key "activities", "users"
   add_foreign_key "activity_users", "activities"
   add_foreign_key "activity_users", "users"
+  add_foreign_key "adm_extinguishers", "entities"
+  add_foreign_key "adm_extinguishers", "users"
   add_foreign_key "admin_extent_dangers", "entities"
   add_foreign_key "allow_exams", "adm_exams"
   add_foreign_key "allow_exams", "entities"
@@ -1442,6 +1556,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_10_220924) do
   add_foreign_key "exam_questions", "adm_exams"
   add_foreign_key "exams", "adm_exams"
   add_foreign_key "exams", "users"
+  add_foreign_key "extinguishers", "adm_extinguishers"
   add_foreign_key "firms", "evidences"
   add_foreign_key "firms", "users"
   add_foreign_key "form_preventions", "admin_extent_dangers"
@@ -1456,6 +1571,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_10_220924) do
   add_foreign_key "history_matrix_legal_items", "history_matrix_legals"
   add_foreign_key "history_matrix_legals", "entities"
   add_foreign_key "history_matrix_legals", "matrix_legals"
+  add_foreign_key "kits", "entities"
+  add_foreign_key "kits", "users"
   add_foreign_key "locations", "entities"
   add_foreign_key "matrix_action_items", "matrix_corrective_actions"
   add_foreign_key "matrix_corrective_actions", "entities"

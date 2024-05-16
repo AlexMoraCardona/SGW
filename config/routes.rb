@@ -71,6 +71,8 @@ Rails.application.routes.draw do
   resources :provides_protection_items
   resources :working_conditions
   resources :working_condition_items
+  resources :extinguishers
+  resources :adm_extinguishers
 
   get '/working_conditions/working_pdf/:id', to: 'working_conditions#working_pdf', as: 'working_pdf'
   get '/working_conditions/firmar_user/:id', to: 'working_conditions#firmar_user', as: 'firmar_user'
@@ -103,6 +105,16 @@ Rails.application.routes.draw do
   get '/complaints/informe', to: 'complaints#informe', as: 'informe' 
   get '/complaints/informe/:id' => 'complaints#informe', as: 'inform'
   get '/complaints/resumen/:id' => 'complaints#resumen', as: 'resumen'
+
+  resources :kits do
+    collection do
+      get '/kits/firmar_kit/:id', to: 'kits#firmar_kit', as: 'firmar_kit'
+      get '/kits/kit_pdf/:id', to: 'kits#kit_pdf', as: 'kit_pdf'
+      get '/kits/kit_adjunto/:id', to: 'kits#kit_adjunto', as: 'kit_adjunto'
+    end  
+  end
+
+
 
   resources :matrix_danger_risks do
     collection do
@@ -156,6 +168,16 @@ Rails.application.routes.draw do
       get '/annual_work_plans/firmar_res/:id', to: 'annual_work_plans#firmar_res', as: 'firmar_res'
     end
   end
+
+  resources :adm_extinguishers do
+    collection do
+      get '/adm_extinguishers/crear_item_extinguisher/:id', to: 'adm_extinguishers#crear_item_extinguisher', as: 'crear_item_extinguisher'
+      get '/adm_extinguishers/ver_extinguisher/:id', to: 'adm_extinguishers#ver_extinguisher', as: 'ver_extinguisher'
+      get '/adm_extinguishers/firmar_extinguisher/:id', to: 'adm_extinguishers#firmar_extinguisher', as: 'firmar_extinguisher'
+      get '/adm_extinguishers/extinguisher_adjunto/:id', to: 'adm_extinguishers#extinguisher_adjunto', as: 'extinguisher_adjunto'
+    end
+  end
+
 
   resources :trainings do
     collection do

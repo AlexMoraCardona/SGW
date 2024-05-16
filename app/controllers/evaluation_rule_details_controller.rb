@@ -201,7 +201,8 @@ class EvaluationRuleDetailsController < ApplicationController
             @secretario_comite = User.find(participant.user_id) if participant.joint_committee_secretary == 1 
             @vigia = User.find(participant.user_id) if participant.vigia == 1 
             @colaborador_queja = User.find(participant.user_id) if participant.person_complaining == 1 
-        end          
+        end   
+               
         @vista = 'evaluation_rule_details/plantillas/' + @evidence.template_id.to_s 
         @footer = 'Nit: ' + @evidence.entity.identification_number.to_s + ', Dirección: ' + @evidence.entity.entity_address.to_s
         respond_to do |format| 

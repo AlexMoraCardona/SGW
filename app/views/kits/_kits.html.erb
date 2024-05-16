@@ -1,0 +1,75 @@
+<% if @entity.present? %>
+    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %></h2>
+<% end %>
+
+
+<% if @kits.present? %>
+    <%= link_to t('common.create_kit'), new_kit_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+    <div></br></div>
+    <table class="table table-hover" style="border:1px solid black"> 
+        <thead>
+            <tr>
+                <td style="border:1px solid black; text-align:center;">
+                    Fecha de creación
+                </td>
+                <td style="border:1px solid black;">
+                    Usuario responsable
+                </td>
+                <td style="border:1px solid black; text-align:center;">
+                    Firma inspección
+                </td>
+                <td style="border:1px solid black; text-align:center;">
+                    Ver
+                </td>
+                <td style="border:1px solid black; text-align:center;">
+                    Editar
+                </td>
+                <td style="border:1px solid black; text-align:center;">
+                    PDF
+                </td>
+                <td style="border:1px solid black; text-align:center;">
+                    Adjunto
+                </td>
+                <td style="border:1px solid black; text-align:center;">
+                    Borrar
+                </td>
+            </tr>
+        </thead>
+        <% @kits.each do |kit| %>
+            <tr>
+                <td style="border:1px solid black; text-align:center;">
+                    <%= kit.date_creation %> 
+                </td>
+                <td style="border:1px solid black;">
+                    <%= kit.user.name %> 
+                </td>
+                <td style="border:1px solid black; text-align:center;">
+                    <% if kit.firm_user == 0 %>
+                        <%= link_to t('common.firmar'), firmar_kit_kits_path(kit.id, 1), class: 'btn btn-sm btn btn-warning' %>
+                    <% else %>
+                        <%= kit.date_firm_user %>    
+                    <% end %>           
+                </td>
+                <td style="border:1px solid black; text-align:center;">
+                    <%= link_to t('common.show_kit'), kit_path(kit.id), class: 'btn btn-sm btn-warning' %> &nbsp;
+                </td>
+                <td style="border:1px solid black; text-align:center;">
+                    <%= link_to t('common.edit_kit'), edit_kit_path(kit.id), class: 'btn btn-sm btn-warning' %> &nbsp;
+                </td>
+                <td style="border:1px solid black; text-align:center;">
+                    <%= link_to "PDF", kit_pdf_kits_path(kit.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;
+                </td>
+                <td style="border:1px solid black; text-align:center;">
+                    <%= link_to "Adjunto", kit_adjunto_kits_path(kit.id), class: 'btn btn-sm btn-success' %> &nbsp;
+                </td>
+                <td style="border:1px solid black; text-align:center;">
+                    <%= link_to t('common.delete'), kit, data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar la Inspección?' }, class: 'btn btn-sm btn-danger' %>
+                </td>
+            </tr>
+        <% end %>  
+    </table>  
+<% else %>
+    <div>
+        <%= link_to t('common.create_kit'), new_kit_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+    </div>
+<% end %>

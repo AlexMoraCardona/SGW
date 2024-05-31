@@ -137,4 +137,25 @@ class Evaluation < ApplicationRecord
             @history_item.save
         end    
     end    
+
+    def calculo_porcentaje_general(id_evaluacion)
+        eval = Evaluation.find(id_evaluacion)
+        details = EvaluationRuleDetail.where("evaluation_id = ? and apply = ?", eval.id, 1)
+        total = 0
+        cumple = 0
+        por = 0.0
+        datos_generales = []
+        details.each do |d|
+            total += 1
+            cumple += 1 if d.meets > 0 
+                
+        end
+        por = ((cumple.to_f / total.to_f) * 100).round(2).to_f if total.to_f > 0
+            
+        datos_generales.push(["Porcentaje Estándares Cumplidos", por.to_f]) if total.to_i > 0 
+        datos_generales.push(["Porcentaje Estándares Pendientes", (100 - por.to_f)]) if total.to_i > 0 
+        return datos_generales 
+    end 
+
+
 end

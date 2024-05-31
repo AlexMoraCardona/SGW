@@ -34,6 +34,8 @@ gem "bootstrap"
 gem 'chartkick', '~> 5.0', '>= 5.0.2'
 #agrupar para graficar
 gem "groupdate"
+#mostrar labels en graficas
+gem 'highcharts-rails', '~> 6.0', '>= 6.0.3'
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"

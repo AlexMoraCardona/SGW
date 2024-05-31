@@ -1,0 +1,42 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @adm_extinguisher do |form| %>
+        <% @adm_extinguisher.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>
+
+        <table>
+            <tr>
+                <td>
+                    <h4>Usuario Responsable</h4> 
+                    <%= @adm_extinguisher.user.name %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h4>Firma autorizada del Usuario Responsable</h4> 
+                    <%= form.radio_button :firm_user, 0 %>
+                    <label for="no">No</label>&nbsp;&nbsp; 
+                    <%= form.radio_button :firm_user, 1 %>
+                    <label for="si">Si</label>&nbsp;&nbsp;   
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <%= form.label :post,  style: "display: block" %>
+                    <%= form.text_field :post,  class: "form-control" %>
+                </td>
+            </tr>
+        </table>
+        <%= form.hidden_field :date_firm_user, :value => Time.now, class: "form-control" %>
+
+
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    <% end %>
+</div>        
+<br>
+

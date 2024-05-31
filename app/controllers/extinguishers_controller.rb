@@ -37,9 +37,9 @@ class ExtinguishersController < ApplicationController
     
     def update
         @extinguisher = Extinguisher.find(params[:id])
-        @entity = Entity.find(@extinguisher.entity_id) if @extinguisher.present?
-        if @extinguisher.update(extinguisher_params)
-            redirect_to adm_extinguishers_path(entity_id: @adm_extinguisher.entity_id), notice: 'Inspección de botiquín de primeros auxilios actualizada correctamente'
+        @entity = Entity.find(@extinguisher.adm_extinguisher.entity_id) if @extinguisher.present?
+        if @extinguisher.update(extinguisher_params) 
+            redirect_to  adm_extinguisher_path(@extinguisher.adm_extinguisher.id), notice: 'Extintor actualizado correctamente'
         else
             render :edit, extinguishers: :unprocessable_entity
         end         
@@ -48,36 +48,9 @@ class ExtinguishersController < ApplicationController
     def destroy
         @extinguisher = Extinguisher.find(params[:id])
         @extinguisher.destroy
-        redirect_to extinguishers_path, notice: 'Inspección de botiquín de primeros auxilios borrada correctamente', extinguisher: :see_other
+        redirect_to extinguishers_path, notice: 'Extintor borrado correctamente', extinguisher: :see_other
     end 
     
-    def matrix_prevention
-        @template = Template.find(169)
-        @extinguisher = Extinguisher.find(params[:id])
-        @form_preventions = FormPrevention.where("extinguisher_id = ?", @extinguisher.id) if @extinguisher.present?
-        @entity = Entity.find(@extinguisher.entity_id) if @extinguisher.present?
-        @cant = 0
-    end    
-    
-    def matrix_vista
-        @template = Template.find(169)
-        @extinguisher = Extinguisher.find(params[:id])
-        @form_preventions = FormPrevention.where("extinguisher_id = ?", @extinguisher.id) if @extinguisher.present?
-        @entity = Entity.find(@extinguisher.entity_id) if @extinguisher.present?
-        @cant = 0
-        respond_to do |format| 
-            format.html
-            format.pdf {render  pdf: 'matrix_vista',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
-    end      
-
     private
 
     def extinguisher_params

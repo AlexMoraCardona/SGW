@@ -526,8 +526,61 @@
             </td>
         </tr>
 
+
     </table>
     <div><br></div>
+    <table style="width: 100%;">        
+        <tr>
+            <td style="border:0px solid black;width: 100%">
+                Recomendaciones: <%= @kit.recomendaciones if @kit.recomendaciones.present? %>
+            </td>
+        </tr>
+    </table>
+
+    <div><br></div>
+    <div><br></div>
+    <% if @kit.present? %>
+        <br>
+        <table style="width: 100%;"> 
+           <tr>
+               <td style="border:0px solid black;">
+                   <% if @kit.kit_fotos.attached? %>
+                       <hr>
+                       <div class="form-group">
+                           <h5>Archivos adjuntos</h5>
+                       </div>         
+                       <div data-controller="previews" >
+                           <% @kit.kit_fotos.each do |file|%>
+                                <br>
+                                <% if file.image? %>
+                                    <div>
+                                        <%= file.blob.filename %>
+                                        <%= image_tag file, data: {previews_target: "preview"}, class: "image" %>
+                                        <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                    </div> 
+                                <% elsif file.video? %>
+                                    <%= file.blob.filename %>
+                                    <%= video_tag url_for(file), controls: "", width: "400px" %>          
+                                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                <% elsif file.audio? %>
+                                    <%= file.blob.filename %>
+                                    <%= audio_tag(url_for(file), controls: "") %>          
+                                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                <% else %>
+                                    <%= link_to file.filename, url_for(file) %>          
+                                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                <% end %>
+                            <% end %>  
+                        </div>
+                    <% end %>  
+                </td>
+            </tr>
+        </table>
+    <% end %>          
+    <div><br></div>
+    <div><br></div>
+
+
     <div><u><%= @kit.user.name if @kit.present? %></u></div>
     <div>Nombre de quien realiza la inspección</div>
     <div>&nbsp;</div>

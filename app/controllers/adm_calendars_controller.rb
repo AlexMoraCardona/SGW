@@ -57,6 +57,11 @@ class AdmCalendarsController < ApplicationController
         @adm_calendar = AdmCalendar.find(params[:id]) if params[:id].present?
         @calendars = Calendar.where("adm_calendar_id = ?", @adm_calendar.id).order(:month, :day) if @adm_calendar.present?
         
+    end  
+    
+    def show
+        yyy
+        @adm_calendar = AdmCalendar.find_by(year: Date.today.year.to_i)
     end    
 
     private

@@ -3,11 +3,11 @@
     <div class="row g-2">
         <div class="col-sm-10"> 
             <h2 class="display-5"><%= t('.title')%> Nro: <%= @evaluation.id  %></h2>
-            <%= link_to 'Exportar a excel', evaluation_path(@evaluation, @evaluation_items, format: :xlsx), class: 'btn btn-success' %>
+            <%= link_to 'Exportar a excel', evaluation_path(@evaluation, @evaluation_items, format: :xlsx), class: 'btn btn-sm btn-success' %>
 
         </div>         
         <div class="col-sm-1">
-            <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, evaluations_path %>
+            <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, evaluations_path %>
         </div> 
         <hr>
     </div>            
@@ -71,11 +71,18 @@
             <%= @evaluation.observation %>
         </div>
         <br>
+        <div class="row g-3">
+            <div class="col-sm-7"> 
+                <%= pie_chart  @evaluation.calculo_porcentaje_general(@evaluation.id), title: "Porcentaje de cumplimiento Estándares Mínimos", download: {filename: "GraficaCiclo"}, download: {background: "#FFFFFF"}, xtitle: "Estándares Cumplidos", ytitle: "Porcentaje", prefix: "Porcentaje: ", suffix: "%", colors: ["#008000", "#FF0000"], donut: true, label: 'true', library: {plotOptions: { pie: { dataLabels: { enabled: true }}}} if @evaluation.present? %>
+            </div>           
+        </div>           
+
+        <br>
  
 
         <div class="row g-3">
             <div class="col-sm-5">
-                <%= column_chart  @evaluation.calculo_porcentaje_ciclo(@evaluation.id), title: "Porcentaje de cumplimiento por ciclo", download: {filename: "GraficaCiclo"}, download: {background: "#FFFFFF"}, xtitle: "Ciclo", ytitle: "Porcentaje", prefix: "Porcentaje: ", suffix: "%" if @evaluation.present? %>
+                <%= column_chart  @evaluation.calculo_porcentaje_ciclo(@evaluation.id), title: "Porcentaje de cumplimiento por ciclo", download: {filename: "GraficaCiclo"}, download: {background: "#FFFFFF"}, xtitle: "Ciclo", ytitle: "Porcentaje", prefix: "Porcentaje: ", suffix: "%", colors: ["#008000"] if @evaluation.present? %>
             </div>           
             <div class="col-sm-3">
                 <%= column_chart  @evaluation.calculo_cumplidos_evaluacion(@evaluation.id), colors: ["#008000"], title: "Items cumplidos por ciclo", download: {filename: "GraficaCiclo"}, download: {background: "#FFFFFF"}, xtitle: "Ciclo", ytitle: "Items cumplidos" if @evaluation.present? %>
@@ -84,7 +91,6 @@
                 <%= column_chart  @evaluation.calculo_pendientes_evaluacion(@evaluation.id), colors: ["#b00"], title: "Items pendientes por ciclo", download: {filename: "GraficaCiclo"}, download: {background: "#FFFFFF"}, xtitle: "Ciclo", ytitle: "Items pendientes" if @evaluation.present? %>
             </div>           
         </div>           
-
        
 </div>    
 <br>

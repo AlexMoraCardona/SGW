@@ -82,9 +82,9 @@ class IndicadoresController < ApplicationController
     end
 
     def graficosmpr
-        @entity = Entity.find(params[:id])
-        @matrix_danger_risk = MatrixDangerRisk.where('entity_id = ?', @entity.id) if @entity.present?
-        @matrix_danger_items = MatrixDangerItem.where('matrix_danger_risk_id = ?', @matrix_danger_risk.ids) if @matrix_danger_risk.present?
+        @matrix_danger_risk = MatrixDangerRisk.find(params[:id]) if params[:id].present?
+        @entity = Entity.find(@matrix_danger_risk.entity_id) if @matrix_danger_risk.present?
+        @matrix_danger_items = MatrixDangerItem.where('matrix_danger_risk_id = ?', @matrix_danger_risk.id) if @matrix_danger_risk.present?
         calculo_nivel_riesgo(@matrix_danger_items)
         calculo_tipo_riesgo(@matrix_danger_items)
         calculo_desc_tipo_riesgo(@matrix_danger_items)
@@ -176,9 +176,9 @@ class IndicadoresController < ApplicationController
     end
 
     def graficosml
-        @entity = Entity.find(params[:id])
-        @matrix_legal = MatrixLegal.where('entity_id = ?', @entity.id) if @entity.present?
-        @matrix_legal_items = MatrixLegalItem.where('matrix_legal_id = ?', @matrix_legal.ids).order(:meets) if @matrix_legal.present?
+        @matrix_legal = MatrixLegal.find(params[:id]) if params[:id].present?
+        @entity = Entity.find(@matrix_legal.entity_id) if @matrix_legal.present?
+        @matrix_legal_items = MatrixLegalItem.where('matrix_legal_id = ?', @matrix_legal.id).order(:meets) if @matrix_legal.present?
         calculo_cumplimiento(@matrix_legal_items)
     end
 
@@ -208,9 +208,9 @@ class IndicadoresController < ApplicationController
     end
 
     def graficosacpm
-        @entity = Entity.find(params[:id])
-        @matrix_corrective_action = MatrixCorrectiveAction.where('entity_id = ?', @entity.id) if @entity.present?
-        @matrix_action_items = MatrixActionItem.where('matrix_corrective_action_id = ?', @matrix_corrective_action.ids) if @matrix_corrective_action.present?
+        @matrix_corrective_action = MatrixCorrectiveAction.find(params[:id]) if params[:id].present?
+        @entity = Entity.find(@matrix_corrective_action.entity_id) if @matrix_corrective_action.present?
+        @matrix_action_items = MatrixActionItem.where('matrix_corrective_action_id = ?', @matrix_corrective_action.id) if @matrix_corrective_action.present?
         calculo_accion(@matrix_action_items)
     end
 

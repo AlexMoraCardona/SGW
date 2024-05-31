@@ -1,6 +1,6 @@
 class CalendarsController < ApplicationController
     def index
-        if  Current.user && Current.user.level == 1
+        if  Current.user 
             @calendars = Calendar.all
          else
              redirect_to new_session_path, alert: t('common.not_logged_in')      

@@ -28,6 +28,7 @@ class AdmExtinguishersController < ApplicationController
     def ver_extinguisher
         @adm_extinguisher = AdmExtinguisher.find(params[:id])
         @extinguishers = Extinguisher.where("adm_extinguisher_id = ?", @adm_extinguisher.id) if @adm_extinguisher.present?
+        @template = Template.find(184)
 
         respond_to do |format| 
             format.html
@@ -86,12 +87,17 @@ class AdmExtinguishersController < ApplicationController
         @adm_extinguisher = AdmExtinguisher.find_by(id: params[:id].to_i)
         if params[:format].to_i == 1
             if  @adm_extinguisher.user_id == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
-                redirect_to firmar_user_adm_extinguishers_path
+                redirect_to firmar_extinguisher_adm_extinguishers_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Representante Legal."
             end    
         end
-    end    
+    end 
+    
+    
+    def extinguisher_adjunto
+        @extinguisher = Extinguisher.find(params[:id])
+    end       
 
     private
 

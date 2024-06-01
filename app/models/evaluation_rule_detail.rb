@@ -23,29 +23,33 @@ class EvaluationRuleDetail < ApplicationRecord
         eval = Evaluation.find(id_evaluacion)
         details = EvaluationRuleDetail.where("evaluation_id = ?", eval.id)
         total_score = 0
+        total_details = 0
+        total_details_cumplidos = 0
         result = ''
         @score_max_eval = 0
         details.each do |detail| 
             total_score += detail.score
             @score_max_eval += detail.maximun_value 
+            total_details += 1
+            total_details_cumplidos += 1 if detail.meets > 0
         end 
         eval.score  = total_score
-        eval.percentage =  ((total_score / @score_max_eval) * 100).round(2) if @score_max_eval.to_f > 0
+        eval.percentage =  ((total_details_cumplidos.to_f / total_details.to_f) * 100).round(2) if total_details.to_f > 0
 
-        if eval.percentage < 61 then
+        if eval.score < 61 then
            eval.result = "CRÍTICO"
            eval.observation = "Plan de Mejoramiento de inmediato a disposición de MinTrabajo
            Enviar a la ARL reporte de avances ( máx a los tres meses)
            Seguimiento anual y Plan de Visita la empresa por parte del Ministerio "
         end 
-        if eval.percentage > 60.99 && eval.percentage < 86 then
+        if eval.score > 60.99 && eval.percentage < 86 then
             eval.result = "MODERADAMENTE ACEPTABLE"
             eval.observation = "Plan de Mejoramiento a disposición de MinTrabajo
             Enviar a la ARL reporte de avances (max a los seis meses)
             Plan de visita MinTrabajo "
         end 
       
-        if eval.percentage > 85.99 then
+        if eval.score > 85.99 then
             eval.result = "ACEPTABLE"
             eval.observation = "Mantener la calificación y evidencias a disposición de MinTrabajo.
             Incluir en el Plan de Anual de Trabajo las mejoras que se establezcan de acuerdo con la evaluación "

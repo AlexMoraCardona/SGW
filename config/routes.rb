@@ -62,7 +62,6 @@ Rails.application.routes.draw do
   resources :profiles
   resources :cessation_funds
   resources :presentations
-  resources :admin_extent_dangers
   resources :danger_detail_risks
   resources :danger_preventions
   resources :form_preventions
@@ -74,14 +73,17 @@ Rails.application.routes.draw do
   resources :extinguishers
   resources :adm_extinguishers
 
+
+
+
+
   get '/working_conditions/working_pdf/:id', to: 'working_conditions#working_pdf', as: 'working_pdf'
   get '/working_conditions/firmar_user/:id', to: 'working_conditions#firmar_user', as: 'firmar_user'
   get '/working_conditions/mod_detalle/:id', to: 'working_conditions#mod_detalle', as: 'mod_detalle' 
   get '/working_conditions/detalles_working/:id', to: 'working_conditions#detalles_working', as: 'detalles_working' 
-  get '/admin_extent_dangers/matrix_vista/:id', to: 'admin_extent_dangers#matrix_vista', as: 'matrix_vista' 
-  get '/admin_extent_dangers/matrix_prevention/:id', to: 'admin_extent_dangers#matrix_prevention', as: 'matrix_prevention' 
   get '/form_preventions/informesuge/:id', to: 'form_preventions#informesuge', as: 'informesuge' 
   get '/form_preventions/encuestapre/:id', to: 'form_preventions#encuestapre', as: 'encuestapre' 
+  get '/form_preventions/firmar_admin_extent/:id', to: 'form_preventions#firmar_admin_extent', as: 'firmar_admin_extent'
   get '/presentations/listadopresentaciones', to: 'presentations#listadopresentaciones', as: 'listadopresentaciones'
   get '/profiles/firma_aprobo/:id', to: 'profiles#firma_aprobo', as: 'firma_aprobo'
   get '/profiles/firma_elaboro/:id', to: 'profiles#firma_elaboro', as: 'firma_elaboro'
@@ -106,14 +108,23 @@ Rails.application.routes.draw do
   get '/complaints/informe/:id' => 'complaints#informe', as: 'inform'
   get '/complaints/resumen/:id' => 'complaints#resumen', as: 'resumen'
 
+
+  resources :admin_extent_dangers do
+    collection do
+      get '/admin_extent_dangers/crear_admin_extent', to: 'admin_extent_dangers#crear_admin_extent', as: 'crear_admin_extent'
+      get '/admin_extent_dangers/matrix_prevention/:id', to: 'admin_extent_dangers#matrix_prevention', as: 'matrix_prevention'
+      get '/admin_extent_dangers/matrix_vista/:id', to: 'admin_extent_dangers#matrix_vista', as: 'matrix_vista'
+
+    end  
+  end
+
   resources :kits do
     collection do
       get '/kits/firmar_kit/:id', to: 'kits#firmar_kit', as: 'firmar_kit'
       get '/kits/kit_pdf/:id', to: 'kits#kit_pdf', as: 'kit_pdf'
       get '/kits/kit_adjunto/:id', to: 'kits#kit_adjunto', as: 'kit_adjunto'
     end  
-  end
-
+  end  
 
 
   resources :matrix_danger_risks do

@@ -1,0 +1,49 @@
+<div class="container col-5 card p-5">
+    <br>
+    <div style="text-align:center;">
+        <%= link_to '<button class="btn btn-sm btn-outline-dark" type="button">Retornar</button>'.html_safe, :back %>
+    </div>
+    <div></br></div>
+    <div class="col-sm-12 p-3 mb-4 bg-info text-dark"  >    
+        <div class="row text-center">
+            <h4>PELIGROS Y RIESGOS</h4>
+        </div>     
+        <div></br></div>
+        <div class="row text-center">
+            <h5><%= @clasification_danger.name if @clasification_danger.present? %></h5>
+            <div>N/A: No Aplica   /   ELI: Eliminación   /   SUS: Sustitución   /   CI: Controles de Ingeniería   /   CA: Controles Administrativos   /   EPP: Elementos de Protección Personal</div>
+
+        </div>          
+        <div></br></div>
+        <table>
+            <% @clasification_dangers.each do |clasification_danger| %> 
+                <tr>
+                    <td style="border:0px solid black;"> <%= clasification_danger.name %></td> 
+                </tr>
+                <% @form_preventions.where("clasification_danger_id = ?", clasification_danger.id).each do |form_prevention| %> 
+                    <tr>
+                        <td style="border:1px solid black;width: 50%;"> <%= form_prevention.clasification_danger_detail.name %></td> 
+                        <td style="text-align:center;border:1px solid black;width: 40%;"> 
+                            <% if form_prevention.eli == 0 then %>N/A<% end %>
+                            <% if form_prevention.eli == 1 then %>ELI<% end %>
+                            <% if form_prevention.eli == 2 then %>SUS<% end %>
+                            <% if form_prevention.eli == 3 then %>CI<% end %>
+                            <% if form_prevention.eli == 4 then %>CA<% end %>
+                            <% if form_prevention.eli == 5 then %>EPP<% end %>
+                        </td>
+                        <td style="text-align:center;border:1px solid black;width: 20%;"> <%= link_to  t('common.edit'), encuestapre_path(form_prevention.id), class: 'btn btn-sm btn-outline-dark'%></td>
+                    </tr>
+                <% end %>  
+                <tr>
+                    <td style="border:0px solid black;"></br></td> 
+                </tr>
+            <% end %>  
+        </table>
+    </div>
+    <div style="text-align:center;">
+        <%= link_to '<button class="btn btn-sm btn-outline-dark" type="button">Retornar</button>'.html_safe, :back %>
+    </div>
+
+</div> 
+
+<br>

@@ -2,18 +2,43 @@
     <h class="display-6"><%= @entity.business_name %> Nit: <%=@entity.identification_number %></h>
 <% end %>
 
-
+<div>
+    <%= link_to t('common.new_admin_extent_danger'), crear_admin_extent_admin_extent_dangers_path, class: 'btn btn-sm btn-outline-primary' %></td>
+</div>
+<div></br></div>
 <% if @admin_extent_dangers.present? %>
-    <%= form_tag informesuge_path(Current.user.id.to_i), method: :get do %>
-        <%= select_tag :admin_extent_danger_id, options_from_collection_for_select(@admin_extent_dangers, :id, :date_creation), class: 'form-control input-sm select2', :prompt  =>  '--Seleccione la fecha del informe a realizar--' %>
-
-        <br>
-        <%= submit_tag 'Hacer informe',  :class => 'btn btn-primary btn-block spin pull-right' %>
-    <% end %>
-
-
-<% else %>
-    <div>
-        <h class="display-6">La Entidad no tiene activo el formulario</h>
-    </div>
+    <table class="table table-hover">
+        <thead> 
+            <tr>    
+                <th style="border:1px solid black;" scope="col"><%= t('.id') %></th>
+                <th style="border:1px solid black;" scope="col"><%= t('.date_creation') %></th>
+                <th style="border:1px solid black;" scope="col"><%= t('.state_extent') %></th>
+                <th style="border:1px solid black;" scope="col"><%= t('.entity_id') %></th>
+                <th style="border:1px solid black;" scope="col"><%= t('.user_id') %></th>
+                <th style="border:1px solid black;text-align:center;" scope="col"> Firmar</th>
+                <th style="border:1px solid black;text-align:center;" scope="col"><%= t('common.edit') %></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @admin_extent_dangers.each do |admin_extent_danger| %>
+                <tr>
+                    <td style="border:1px solid black"><%= admin_extent_danger.id %></td>
+                    <td style="border:1px solid black"><%= admin_extent_danger.date_creation %></td>
+                    <td style="border:1px solid black"><%= admin_extent_danger.label_state_extent(admin_extent_danger.state_extent) %></td>
+                    <td style="border:1px solid black"><%= admin_extent_danger.entity.business_name %></td>
+                    <td style="border:1px solid black"><%= admin_extent_danger.user.name %></td>
+                    <td style="border:1px solid black;text-align:center;">
+                        <% if admin_extent_danger.firm_user == 0 %>
+                            <%= link_to t('common.firmar'), firmar_admin_extent_path(admin_extent_danger.id), class: 'btn btn-sm btn-outline-primary' %>
+                        <% else %>
+                            <%= admin_extent_danger.date_firm_user %>    
+                        <% end %>           
+                    </td>
+                    <td style="border:1px solid black;text-align:center;"><%= link_to t('common.edit'), edit_form_prevention_path(admin_extent_danger), class: 'btn btn-sm btn-outline-primary'  %></td>
+                </tr>
+            <% end %>           
+        </tbody>      
+    </table>
 <% end %>
+<hr>
+

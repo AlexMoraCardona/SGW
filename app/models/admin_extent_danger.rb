@@ -1,5 +1,6 @@
 class AdminExtentDanger < ApplicationRecord
     belongs_to :entity
+    belongs_to :user
     has_many   :danger_detail_risks
     has_many   :danger_preventions 
     has_many :form_preventions

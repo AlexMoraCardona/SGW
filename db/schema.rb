@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_05_31_044729) do
+ActiveRecord::Schema[7.0].define(version: 2024_06_01_005149) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -124,7 +124,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_31_044729) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
+    t.integer "firm_user", default: 0
+    t.date "date_firm_user"
+    t.bigint "user_id"
+    t.string "post"
     t.index ["entity_id"], name: "index_admin_extent_dangers_on_entity_id"
+    t.index ["user_id"], name: "index_admin_extent_dangers_on_user_id"
   end
 
   create_table "administrative_political_divisions", force: :cascade do |t|
@@ -583,12 +588,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_31_044729) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "admin_extent_danger_id"
-    t.bigint "user_id"
     t.integer "no_apply", default: 1
     t.bigint "clasification_danger_detail_id"
+    t.bigint "clasification_danger_id"
     t.index ["admin_extent_danger_id"], name: "index_form_preventions_on_admin_extent_danger_id"
     t.index ["clasification_danger_detail_id"], name: "index_form_preventions_on_clasification_danger_detail_id"
-    t.index ["user_id"], name: "index_form_preventions_on_user_id"
+    t.index ["clasification_danger_id"], name: "index_form_preventions_on_clasification_danger_id"
   end
 
   create_table "health_promoters", force: :cascade do |t|
@@ -1532,6 +1537,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_31_044729) do
   add_foreign_key "adm_extinguishers", "entities"
   add_foreign_key "adm_extinguishers", "users"
   add_foreign_key "admin_extent_dangers", "entities"
+  add_foreign_key "admin_extent_dangers", "users"
   add_foreign_key "allow_exams", "adm_exams"
   add_foreign_key "allow_exams", "entities"
   add_foreign_key "allow_exams", "users"
@@ -1562,7 +1568,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_31_044729) do
   add_foreign_key "firms", "users"
   add_foreign_key "form_preventions", "admin_extent_dangers"
   add_foreign_key "form_preventions", "clasification_danger_details"
-  add_foreign_key "form_preventions", "users"
+  add_foreign_key "form_preventions", "clasification_dangers"
   add_foreign_key "history_evaluations", "entities"
   add_foreign_key "history_evaluations", "evaluations"
   add_foreign_key "history_evaluations", "risk_levels"

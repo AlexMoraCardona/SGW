@@ -2,7 +2,7 @@ class FormPreventionsController < ApplicationController
     def index
         if params[:entity_id].present? && Current.user 
             @entity = Entity.find(params[:entity_id])
-            @admin_extent_dangers = AdminExtentDanger.where("entity_id = ? and date_creation <= ? and date_vencimiento >= ? and state_extent = ?", params[:entity_id].to_i, Date.today, Date.today, 1)  
+            @admin_extent_dangers = AdminExtentDanger.where("entity_id = ? and user_id = ?", params[:entity_id].to_i, Current.user.id).order(id: :desc)  
         else    
             if  Current.user 
                 @entities = Entity.all.order(id: :asc) if Current.user.level == 1
@@ -20,32 +20,42 @@ class FormPreventionsController < ApplicationController
         else
             redirect_back fallback_location: root_path, alert: "Su formulario no pudo ser enviado."
         end    
-    end    
-
-    def informesuge 
-        
-        @clasification_danger_details = ClasificationDangerDetail.all
-        @clasification_dangers = ClasificationDanger.all
-        @user_id =  params[:id].to_i  if params[:id].present?
-        @admin_extent_danger_id =  params[:admin_extent_danger_id].to_i  if params[:admin_extent_danger_id].present?
-        user = User.find(@user_id) if @user_id.present?
-        @entity = Entity.find(user.entity)
-    end
-
-    def encuestapre
-        @clasification_danger = ClasificationDanger.find(params[:id].to_i) if params[:id].present?
-        @form_prevention = FormPrevention.new 
-        @clasification_danger_details = ClasificationDangerDetail.where("clasification_danger_id = ?", params[:id].to_i) if params[:id].present? 
-        @admin_extent_danger = AdminExtentDanger.find(params[:format].to_i)
-
-        
     end   
     
+    def edit 
+        @admin_extent_danger = AdminExtentDanger.find(params[:id])
+        @form_preventions = FormPrevention.where("admin_extent_danger_id = ?", @admin_extent_danger).order(:clasification_danger_id) if @admin_extent_danger.present?
+        @clasification_dangers  = ClasificationDanger.all
+    end
+    
+    def update
+            @form_prevention = FormPrevention.find(params[:id])
+            if @form_prevention.update(form_prevention_params)
+                redirect_to edit_form_prevention_path(@form_prevention.admin_extent_danger_id), notice: 'Actualizado correctamente'
+            else
+                render :edit, form_preventions: :unprocessable_entity
+            end         
+    end    
+
+    def encuestapre
+        @form_prevention = FormPrevention.find(params[:id].to_i)
+        @clasification_danger_detail = ClasificationDangerDetail.find(@form_prevention.clasification_danger_detail_id) if @form_prevention.present?
+
+    end   
+    
+    def firmar_admin_extent
+        @admin_extent_danger = AdminExtentDanger.find(params[:id].to_i)
+        if  @admin_extent_danger.user_id.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+        else
+            redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma."
+        end    
+
+    end    
+
 
     private
 
     def form_prevention_params
-        params.require(:form_prevention).permit(:eli, :sus, :ci, :ca, :epp, :admin_extent_danger_id, 
-        :user_id, :clasification_danger_detail_id, :no_apply)
+        params.require(:form_prevention).permit(:eli, :sus, :ci, :ca, :epp, :admin_extent_danger_id, :clasification_danger_detail_id, :no_apply, :clasification_danger_id)
     end
 end  

@@ -137,9 +137,31 @@
         </div>
         <div class="col-sm-1">
         </div>    
-        <div class="col-sm-4">
-            <%= link_to image_tag("calendar2.png", class: "calendar"), calendar_path(Date.today.year), class: 'btn btn-outline-primary'  %>
+        <div class="col-sm-4"> 
             <div>
+                <h5>Dashboard <%= @entity.business_name if @entity.present? %></h5>
+                <table>
+                    <tr>    
+                        <td> 
+                            <%= pie_chart  @datos_generales, title: "Porcentaje de cumplimiento Estándares Mínimos", download: {filename: "GraficaCiclo"}, download: {background: "#FFFFFF"}, xtitle: "Estándares Cumplidos", ytitle: "Porcentaje", prefix: "Porcentaje: ", suffix: "%", colors: ["#008000", "#FF0000"], donut: true, label: 'true'  if @datos_generales.present? %>
+                        </td>
+                        <td>dos</td>
+                    </tr>
+                    <tr>    
+                        <td>tres</td>
+                        <td>cuatro</td>
+                    </tr>
+                </table>
+            </div>
+        </div>    
+    </div>
+</div> 
+<br>
+<div class="container col-11" class="text-center">
+    <div class="row g-2">
+        <div class="col-sm-6"> 
+            <div>
+                <%= link_to image_tag("calendar2.png", class: "calendar"), calendar_path(Date.today.year), class: 'btn btn-outline-primary'  %>
                 <h5>Próximos eventos</h5>
                 <hr>
                 <%  @calendars.each do |calendar| %>

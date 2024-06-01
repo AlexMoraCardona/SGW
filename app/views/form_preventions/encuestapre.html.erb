@@ -3,54 +3,47 @@
 
     <div class="col-sm-12 p-3 mb-4 bg-info text-dark"  >    
         <div class="row text-center">
-            <h4>DESCRIPCIÓN PELIGROS Y RIESGOS</h4> </br>
-            <h5><%= @clasification_danger.name if @clasification_danger.present? %></h5>
-            <div>ELI: Eliminación / SUS: Sustitución / CI: Controles de Ingeniería / CA: Controles Administrativos / EPP: Elementos de Protección Personal</div>
+            <h4>PELIGRO / RIESGO</h4> </br>
+            <h5><%= @form_prevention.clasification_danger.name if @form_prevention.present? %></h5>
 
-        </div>    
-        <table>
+            <h4>DESCRIPCIÓN PELIGRO / RIESGO</h4> </br>
+            <h5><%= @form_prevention.clasification_danger_detail.name if @form_prevention.present? %></h5>
+
+            <div>N/A: No Aplica   /   ELI: Eliminación / SUS: Sustitución / CI: Controles de Ingeniería / CA: Controles Administrativos / EPP: Elementos de Protección Personal</div>
+
+        </div> 
+        <div></br></div>   
+        <div>
             <%= form_with model: @form_prevention do |form| %>
                 <% @form_prevention.errors.full_messages.each do |error| %>
                     <div class="alert alert-danger" role="alert">
                         <%= error%> <%= alert %>
                     </div>
-                <% end %>
-
-                <% @clasification_danger_details.each do |clasification_danger_detail| %> 
-                    <tr>
-                        <td style="border:1px solid black;width: 50%;"> <%= clasification_danger_detail.name %></td>
-                        <td style="text-align:center;border:1px solid black;width: 30%;"> 
+                <% end %>  
+                        <div style="text-align:center;border:0px solid black;width: 100%;"> 
                             <%= form.label :eli,  style: "display: block" %> 
-                            <%= form.radio_button :eli, 0, :checked => false, required: true %>
+                            <%= form.radio_button :eli, 0 %>
                             <label for="no_aplica">N/A</label>
                             <%= form.radio_button :eli, 1 %>
                             <label for="eliminacion">ELI</label>
                             <%= form.radio_button :eli, 2 %>
                             <label for="sustitucion">SUS</label>
                             <%= form.radio_button :eli, 3 %>
+
                             <label for="controlesingenieria">CI</label>
                             <%= form.radio_button :eli, 4 %>
                             <label for="controlesadiministrativos">CA</label>
                             <%= form.radio_button :eli, 5 %>
                             <label for="elementospp">EPP</label>
-                        </td>
-                        <td style="text-align:center;border:1px solid black;width: 10%;">
-                            <%= form.submit 'Guardar', class: "btn btn-sm btn-primary", data: { turbo_confirm: 'Desea enviar su respuesta?' }  %>     
-                        </td>
-
-                    </tr>
-
-                    <%= form.hidden_field :user_id, :value => Current.user.id.to_i, class: "form-control" %>
-                    <%= form.hidden_field :admin_extent_danger_id, :value => @admin_extent_danger.id.to_i, class: "form-control" %>
-                    <%= form.hidden_field :clasification_danger_detail_id, :value => clasification_danger_detail.id.to_i, class: "form-control" %>
-
-                <% end %>
-            <% end %>  
-        </table>
+                        </div>
+                        <div></br></div>
+                        <div style="text-align:center;"> 
+                            <button type="submit" class="btn btn-sm btn-outline-dark"><%=t('common.submit')%></button> 
+                            <%= link_to '<button class="btn btn-sm btn-outline-dark" type="button">Retornar</button>'.html_safe, :back %>
+                        </div>
+            <% end %>    
+        </div>
     </div>
-
-
-        <br>    
-        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    <br>  
 </div>        
 <br>

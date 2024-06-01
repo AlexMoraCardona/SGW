@@ -151,11 +151,12 @@ class Evaluation < ApplicationRecord
                 
         end
         por = ((cumple.to_f / total.to_f) * 100).round(2).to_f if total.to_f > 0
-            
-        datos_generales.push(["Porcentaje Estándares Cumplidos", por.to_f]) if total.to_i > 0 
-        datos_generales.push(["Porcentaje Estándares Pendientes", (100 - por.to_f)]) if total.to_i > 0 
+        
+        cumpli = "Estándares Cumplidos: " +  cumple.to_s
+        pendi = "Estándares Pendientes: " + (total.to_i - cumple.to_i).to_s
+        datos_generales.push([cumpli, por.to_f]) if total.to_i > 0 
+        datos_generales.push([pendi, (100 - por.to_f)]) if total.to_i > 0 
         return datos_generales 
     end 
-
 
 end

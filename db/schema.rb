@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_06_01_005149) do
+ActiveRecord::Schema[7.0].define(version: 2024_06_11_005609) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -204,6 +204,17 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_01_005149) do
     t.datetime "updated_at", null: false
     t.bigint "meeting_minute_id", null: false
     t.index ["meeting_minute_id"], name: "index_assistants_on_meeting_minute_id"
+  end
+
+  create_table "business_days", force: :cascade do |t|
+    t.date "date_skilled"
+    t.integer "day_skilled", default: 0
+    t.integer "month_skilled", default: 0
+    t.integer "year_skilled", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_business_days_on_entity_id"
   end
 
   create_table "calendars", force: :cascade do |t|
@@ -1487,6 +1498,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_01_005149) do
     t.integer "brigade", default: 0
     t.string "cel"
     t.string "phone"
+    t.integer "clasification_post", default: 0
+    t.integer "sex", default: 0
     t.index ["document_id"], name: "index_users_on_document_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["nro_document"], name: "index_users_on_nro_document", unique: true
@@ -1544,6 +1557,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_01_005149) do
   add_foreign_key "annual_work_plan_items", "annual_work_plans"
   add_foreign_key "annual_work_plans", "entities"
   add_foreign_key "assistants", "meeting_minutes"
+  add_foreign_key "business_days", "entities"
   add_foreign_key "calendars", "adm_calendars"
   add_foreign_key "clasification_danger_details", "clasification_dangers"
   add_foreign_key "complaints", "entities"

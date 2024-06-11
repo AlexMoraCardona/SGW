@@ -4,214 +4,238 @@
         <h2 class="display-5">Frecuencia de Accidentalidad</h2>
 
        <hr>
-    </div> 
-    
-    <div class="row g-2">
-        <%= column_chart  @datos_frecuencia_accidentalidad, title: "Frecuencia de accidentalidad", download: {filename: "FrecuenciaAccidentalidad"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", prefix: "Indicador: ", suffix: "%" if @report_official.present? %>
-    </div>
-    <br>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Año</th>
-                <th scope="col">Mes</th>
-                <th scope="col">Nro.Accidentes</th>
-                <th scope="col">Nro.Funcionarios</th>
-                <th scope="col">Indicador</th>
-            </tr>
-        </thead>
-        <tbody>
-
-
-            <%  @report_official.each do |rep| %>
-                <tr>
-                    <td><%= rep.year %></td>
-                    <td><%= rep.month %></td>
-                    <td><%= rep.total_work_accidents %></td>
-                    <td><%= rep.total_officials %></td>
-                    <td><%= rep.frecuencia_accidentalidad %></td>
-                </tr>    
-            <% end %>
-        </tbody>
-    </table>
+    </div>  
+    <div class="row g-3">
+        <div class="col-sm-5">
+            <%= column_chart  @datos_frecuencia_accidentalidad, title: "Frecuencia de accidentalidad", download: {filename: "FrecuenciaAccidentalidad"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", prefix: "Indicador: ", suffix: "%" if @report_official.present? %>
+        </div>
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-5">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Año</th>
+                        <th scope="col">Mes</th>
+                        <th scope="col">Nro.Accidentes</th>
+                        <th scope="col">Nro.Funcionarios</th>
+                        <th scope="col">Indicador</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%  @report_official.each do |rep| %>
+                        <tr>
+                            <td><%= rep.year %></td>
+                            <td><%= rep.month %></td>
+                            <td><%= rep.total_work_accidents %></td>
+                            <td><%= rep.total_officials %></td>
+                            <td><%= rep.frecuencia_accidentalidad %></td>
+                        </tr>    
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+    </div>        
     <hr>
     
     <div class="row g-2">
          <h2 class="display-5">Severidad de Accidentalidad</h2>
          <hr>
     </div>
-    
-    <div class="row g-2">
-       <%= column_chart  @datos_severidad_accidentalidad, title: "Severidad de accidentalidad", download: {filename: "SeveridadAccidentalidad"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", prefix: "Indicador: ", suffix: "%" if @report_official.present? %>
-    </div>
-    <br>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Año</th>
-                <th scope="col">Mes</th>
-                <th scope="col">Nro.Día Incapacidad</th>
-                <th scope="col">Nro.Funcionarios</th>
-                <th scope="col">Indicador</th>
-            </tr>
-        </thead>
-        <tbody>
-
-
-            <%  @report_official.each do |rep| %>
-                <tr>
-                    <td><%= rep.year %></td>
-                    <td><%= rep.month %></td>
-                    <td><%= rep.total_days_severidad_accidents %></td>
-                    <td><%= rep.total_officials %></td>
-                    <td><%= rep.severidad_accidentalidad %></td>
-                </tr>    
-            <% end %>
-        </tbody>
-    </table>
-    <hr>
+    <div class="row g-3">
+        <div class="col-sm-5">
+           <%= column_chart  @datos_severidad_accidentalidad, title: "Severidad de accidentalidad", download: {filename: "SeveridadAccidentalidad"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", prefix: "Indicador: ", suffix: "%" if @report_official.present? %>
+        </div>
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-5">
+            <br>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Año</th>
+                        <th scope="col">Mes</th>
+                        <th scope="col">Nro.Día Incapacidad</th>
+                        <th scope="col">Nro.Funcionarios</th>
+                        <th scope="col">Indicador</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%  @report_official.each do |rep| %>
+                        <tr>
+                            <td><%= rep.year %></td>
+                            <td><%= rep.month %></td>
+                            <td><%= rep.total_days_severidad_accidents %></td>
+                            <td><%= rep.total_officials %></td>
+                            <td><%= rep.severidad_accidentalidad %></td>
+                        </tr>    
+                    <% end %>
+                </tbody>
+            </table>
+            <hr>
+        </div>
+    </div>        
     
     <div class="row g-2">
          <h2 class="display-5">Ausentismo</h2>
          <hr>
     </div>
-    
-    <div class="row g-2">
-       <%= column_chart  @datos_ausentismo, title: "Ausentismo", download: {filename: "Ausentismo"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", prefix: "Indicador: ", suffix: "%" if @report_official.present? %>
+
+    <div class="row g-3">
+        <div class="col-sm-5">
+           <%= column_chart  @datos_ausentismo, title: "Ausentismo", download: {filename: "Ausentismo"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", prefix: "Indicador: ", suffix: "%" if @report_official.present? %>
+        </div>
+    <div class="col-sm-1">
     </div>
-    <br>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Año</th>
-                <th scope="col">Mes</th>
-                <th scope="col">Días de ausencia</th>
-                <th scope="col">Días de trabajo</th>
-                <th scope="col">Indicador</th>
-            </tr>
-        </thead>
-        <tbody>
-
-
-            <%  @report_official.each do |rep| %>
+    <div class="col-sm-5">
+        <br>
+        <table class="table">
+            <thead>
                 <tr>
-                    <td><%= rep.year %></td>
-                    <td><%= rep.month %></td>
-                    <td><%= rep.total_days_absenteeism %></td>
-                    <td><%= (rep.working_days_month * rep.total_officials) %></td>
-                    <td><%= rep.ausentismo_causa_medica %></td>
-                </tr>    
-            <% end %>
-        </tbody>
-    </table>
-    <hr>
-    
+                    <th scope="col">Año</th>
+                    <th scope="col">Mes</th>
+                    <th scope="col">Días de ausencia</th>
+                    <th scope="col">Días de trabajo</th>
+                    <th scope="col">Indicador</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%  @report_official.each do |rep| %>
+                    <tr>
+                        <td><%= rep.year %></td>
+                        <td><%= rep.month %></td>
+                        <td><%= rep.total_days_absenteeism %></td>
+                        <td><%= (rep.working_days_month * rep.total_officials) %></td>
+                        <td><%= rep.ausentismo_causa_medica %></td>
+                    </tr>    
+                <% end %>
+            </tbody>
+        </table>
+        <hr>
+    </div>
+
     <div class="row g-2">
          <h2 class="display-5">Prevalencia de enfermedad laboral</h2>
          <hr>
     </div>
-    
-    <div class="row g-2">
-       <%= column_chart  @datos_prevalencia, title: "Prevalencia de enfermedad laboral", download: {filename: "PrevalenciaEnfermedadLaboral"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", prefix: "Indicador: ", suffix: "%" if @report_official.present? %>
-    </div>
+
+    <div class="row g-3">
+        <div class="col-sm-5">
+            <%= column_chart  @datos_prevalencia, title: "Prevalencia de enfermedad laboral", download: {filename: "PrevalenciaEnfermedadLaboral"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", prefix: "Indicador: ", suffix: "%" if @report_official.present? %>
+        </div>
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-5">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Año</th>
+                        <th scope="col">Mes</th>
+                        <th scope="col">Casos nuevos y antiguos</th>
+                        <th scope="col">Promedio de funcionarios y contratistas</th>
+                        <th scope="col">Indicador</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%  @report_official.each do |rep| %>
+                        <tr>
+                            <td><%= rep.year %></td>
+                            <td><%= rep.month %></td>
+                            <td><%= rep.total_occupational_disease %></td>
+                            <td><%= rep.promedio_year_officials %></td>
+                            <td><%= rep.prevalencia_enfermedad_laboral %></td>
+                        </tr>    
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+    </div>        
     <br>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Año</th>
-                <th scope="col">Mes</th>
-                <th scope="col">Casos nuevos y antiguos</th>
-                <th scope="col">Promedio de funcionarios y contratistas</th>
-                <th scope="col">Indicador</th>
-            </tr>
-        </thead>
-        <tbody>
-
-
-            <%  @report_official.each do |rep| %>
-                <tr>
-                    <td><%= rep.year %></td>
-                    <td><%= rep.month %></td>
-                    <td><%= rep.total_occupational_disease %></td>
-                    <td><%= rep.promedio_year_officials %></td>
-                    <td><%= rep.prevalencia_enfermedad_laboral %></td>
-                </tr>    
-            <% end %>
-        </tbody>
-    </table>
     <hr>
     
     <div class="row g-2">
          <h2 class="display-5">Incidencia de enfermedad laboral</h2>
          <hr>
     </div>
-    
-    <div class="row g-2">
-       <%= column_chart  @datos_incidencia, title: "Incidencia de enfermedad laboral", download: {filename: "IncidenciaEnfermedadLaboral"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", prefix: "Indicador: ", suffix: "%" if @report_official.present? %>
-    </div>
-    <br>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Año</th>
-                <th scope="col">Mes</th>
-                <th scope="col">Casos nuevos</th>
-                <th scope="col">Promedio de funcionarios y contratistas</th>
-                <th scope="col">Indicador</th>
-            </tr>
-        </thead>
-        <tbody>
 
-
-            <%  @report_official.each do |rep| %>
-                <tr>
-                    <td><%= rep.year %></td>
-                    <td><%= rep.month %></td>
-                    <td><%= rep.total_occupational_disease_year %></td>
-                    <td><%= rep.promedio_year_officials %></td>
-                    <td><%= rep.incidencia_enfermedad_laboral %></td>
-                </tr>    
-            <% end %>
-        </tbody>
-    </table>
-    <hr>
+    <div class="row g-3">
+        <div class="col-sm-5">
+           <%= column_chart  @datos_incidencia, title: "Incidencia de enfermedad laboral", download: {filename: "IncidenciaEnfermedadLaboral"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", prefix: "Indicador: ", suffix: "%" if @report_official.present? %>
+        </div>
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-5">
+            <br>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Año</th>
+                        <th scope="col">Mes</th>
+                        <th scope="col">Casos nuevos</th>
+                        <th scope="col">Promedio de funcionarios y contratistas</th>
+                        <th scope="col">Indicador</th>
+                    </tr>
+                </thead>
+                <tbody>
     
+    
+                    <%  @report_official.each do |rep| %>
+                        <tr>
+                            <td><%= rep.year %></td>
+                            <td><%= rep.month %></td>
+                            <td><%= rep.total_occupational_disease_year %></td>
+                            <td><%= rep.promedio_year_officials %></td>
+                            <td><%= rep.incidencia_enfermedad_laboral %></td>
+                        </tr>    
+                    <% end %>
+                </tbody>
+            </table>
+            <hr>
+        </div>
+    </div>        
+
+   
     <div class="row g-2">
          <h2 class="display-5">Proporción de accidentes de trabajos mortales</h2>
          <hr>
     </div>
+    <div class="row g-3">
+        <div class="col-sm-5">
+            <%= column_chart  @datos_proporcion, title: "Proporción de accidentes de trabajo mortales", download: {filename: "ProporcionAcidentesMortales"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", prefix: "Indicador: ", suffix: "%" if @report_official.present? %>
+        </div>
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-5">
+            <br>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Año</th>
+                        <th scope="col">Mes</th>
+                        <th scope="col">Accidentes mortales en el año</th>
+                        <th scope="col">Accidentes en el año</th>
+                        <th scope="col">Indicador</th>
+                    </tr>
+                </thead>
+                <tbody>
     
-    <div class="row g-2">
-       <%= column_chart  @datos_proporcion, title: "Proporción de accidentes de trabajo mortales", download: {filename: "ProporcionAcidentesMortales"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", prefix: "Indicador: ", suffix: "%" if @report_official.present? %>
-    </div>
+    
+                    <%  @report_official.each do |rep| %>
+                        <tr>
+                            <td><%= rep.year %></td>
+                            <td><%= rep.month %></td>
+                            <td><%= rep.total_accidents_mortal_year %></td>
+                            <td><%= rep.total_accidents_work_year %></td>
+                            <td><%= rep.proporcion_accidentes_mortales %></td>
+                        </tr>    
+                    <% end %>
+                </tbody>
+            </table>
+
+            <hr>
+        </div>
+    </div>        
     <br>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Año</th>
-                <th scope="col">Mes</th>
-                <th scope="col">Accidentes mortales en el año</th>
-                <th scope="col">Accidentes en el año</th>
-                <th scope="col">Indicador</th>
-            </tr>
-        </thead>
-        <tbody>
-
-
-            <%  @report_official.each do |rep| %>
-                <tr>
-                    <td><%= rep.year %></td>
-                    <td><%= rep.month %></td>
-                    <td><%= rep.total_accidents_mortal_year %></td>
-                    <td><%= rep.total_accidents_work_year %></td>
-                    <td><%= rep.proporcion_accidentes_mortales %></td>
-                </tr>    
-            <% end %>
-        </tbody>
-    </table>
-
-
-
     <hr>
     
     <div class="row g-2">
@@ -219,34 +243,6 @@
          <hr>
     </div>
     
-    <div class="row g-2">
-       <%= column_chart  @datos_proporcion, title: "Proporción de accidentes de trabajo mortales", download: {filename: "ProporcionAcidentesMortales"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", prefix: "Indicador: ", suffix: "%" if @report_official.present? %>
-    </div>
-    <br>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Año</th>
-                <th scope="col">Mes</th>
-                <th scope="col">Accidentes mortales en el año</th>
-                <th scope="col">Accidentes en el año</th>
-                <th scope="col">Indicador</th>
-            </tr>
-        </thead>
-        <tbody>
-
-
-            <%  @report_official.each do |rep| %>
-                <tr>
-                    <td><%= rep.year %></td>
-                    <td><%= rep.month %></td>
-                    <td><%= rep.total_accidents_mortal_year %></td>
-                    <td><%= rep.total_accidents_work_year %></td>
-                    <td><%= rep.proporcion_accidentes_mortales %></td>
-                </tr>    
-            <% end %>
-        </tbody>
-    </table>
     <hr>
     <table class="table">
             <tr>

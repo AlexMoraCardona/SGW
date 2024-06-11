@@ -72,7 +72,7 @@ Rails.application.routes.draw do
   resources :working_condition_items
   resources :extinguishers
   resources :adm_extinguishers
-
+  resources :business_days
 
 
 

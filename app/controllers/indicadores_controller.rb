@@ -7,11 +7,11 @@ class IndicadoresController < ApplicationController
     def resultado
         if  Current.user && Current.user.level == 1
             @entities = Entity.all
-            @anos=[2023,2022,2021]
+            @anos=[2025,2024,2023,2022,2021]
         else
             if Current.user && Current.user.level > 1
                 @entities = Entity.where(id: Current.user.entity)
-                @anos=[2023,2022,2021]
+                @anos=[2025,2024,2023,2022,2021]
             else  
                 redirect_to new_session_path, alert: t('common.not_logged_in')       
             end
@@ -68,10 +68,10 @@ class IndicadoresController < ApplicationController
         end  
     end      
     
-    def graficos
-        @year = 2023 
+    def graficos 
+        @year = Time.now.year  
         @entity = Entity.find(params[:id])
-        @report_official = ReportOfficial.where('entity_id = ? and year = ?', @entity.id, 2023).order("year desc,month desc") if @entity.present?
+        @report_official = ReportOfficial.where('entity_id = ? and year = ?', @entity.id, @year).order("year desc,month desc") if @entity.present?
         @events = Event.where('entity_id = ?', @entity.id) if @entity.present?
         calculo_frecuencia_accidentalidad(@report_official)
         calculo_severidad_accidentalidad(@report_official)
@@ -361,6 +361,7 @@ class IndicadoresController < ApplicationController
             fecha = rep.year.to_s + '-' + rep.month.to_s  
             @datos_frecuencia_accidentalidad.push([fecha, rep.frecuencia_accidentalidad.to_f]) 
         end
+        @datos_frecuencia_accidentalidad.sort!
     end
 
     def calculo_severidad_accidentalidad(report_official)

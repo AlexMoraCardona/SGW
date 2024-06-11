@@ -1,5 +1,26 @@
 class ReportOfficial < ApplicationRecord
 
+    def self.label_month(month)
+        if month == 1 ; 'enero'
+        elsif  month == 2 ; 'febrero'
+        elsif  month == 3 ; 'marzo'
+        elsif  month == 4 ; 'abril'
+        elsif  month == 5 ; 'mayo'
+        elsif  month == 6 ; 'junio'
+        elsif  month == 7 ; 'julio'
+        elsif  month == 8 ; 'agosto'
+        elsif  month == 9 ; 'septiembre'
+        elsif  month == 10 ; 'octubre'
+        elsif  month == 11 ; 'noviembre'
+        elsif  month == 12 ; 'diciembre'
+        end 
+    end 
+
+    def self.label_entidad(dato)
+        Entity.find(dato).business_name if dato.present?
+    end    
+
+
     def self.dato_total_work_accidents(report_official, month)
         dato = 0
         report_official.each do |rep|

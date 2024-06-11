@@ -1,0 +1,27 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @business_day do |form| %>
+        <% @business_day.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+
+        <br>    
+        <div class="row g-2">
+            <div class="col-sm-4">
+                <%= form.label :date_skilled, style: "display: block" %>
+                <%= form.date_field :date_skilled,  class: "form-control" %>
+            </div>        
+        </div>  
+
+        <%= form.hidden_field :entity_id, :value => Current.user.entity.to_i, class: "form-control" %>
+        <br>
+
+        <div class="form-group">   
+            <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        </div>    
+    <% end %>
+</div>        
+<br>
+

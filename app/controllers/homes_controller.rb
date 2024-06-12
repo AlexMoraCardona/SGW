@@ -7,6 +7,10 @@ class HomesController < ApplicationController
          calculo_sex
          calculo_clasificacion_cargo
          accidentes_mortales
+         dias_incapacidad_accidentes
+         enfermedad_laboral
+         dias_comun_laboral
+         actos_inseguros
     end    
 
 
@@ -78,6 +82,61 @@ class HomesController < ApplicationController
         end
     end    
 
+    def dias_incapacidad_accidentes
+        entity = Entity.find(Current.user.entity)
+        año = Time.new.year 
+        @dias_incapacidad_accidentes = 0
+        report_official = ReportOfficial.where("entity_id = ? and year = ?", entity.id, año) 
+        @dias_incapacidad_accidentes =    report_official.sum("total_days_severidad_accidents") if report_official.present?
+
+    end
+
+    def enfermedad_laboral
+        entity = Entity.find(Current.user.entity)
+        año = Time.new.year 
+        @enfermedad_laboral = 0
+        report_official = ReportOfficial.where("entity_id = ? and year = ?", entity.id, año).last 
+
+        @enfermedad_laboral =    report_official.total_occupational_disease_year if report_official.present?
+
+    end
+
+    
+    def dias_comun_laboral
+        entity = Entity.find(Current.user.entity)
+        año = Time.new.year 
+        @dias_comun_laboral = 0
+        report_official = ReportOfficial.where("entity_id = ? and year = ?", entity.id, año) 
+        @dias_comun_laboral =    report_official.sum("total_days_absenteeism") if report_official.present?
+    end
+
+    def actos_inseguros
+        entity = Entity.find(Current.user.entity)
+        @working_conditions = WorkingCondition.where("entity_id = ?", entity.id) if entity.present?
+        @working_condition_items = WorkingConditionItem.where("exposed = ?", 1) 
+        if @working_conditions.present? then
+            @items = []
+            @working_conditions.each do |working_condition|
+                if @working_condition_items.present? then
+                    @working_condition_items.where("working_condition_id = ?",working_condition.id).each do |working_condition_item|
+                        @items << working_condition_item  
+                    end
+                end        
+            end
+        end    
+
+        @cantidad = @items.count
+        @totalactos = 0
+        @totalactosinter = 0
+        @totalactosnointer = 0 
+        if @cantidad > 0 then
+            @items.each do |item|
+                @totalactos += 1
+                @totalactosinter += 1 if item.intervention == 1
+                @totalactosnointer += 1 if item.intervention == 0
+            end    
+        end    
+    end
 
 
     def show

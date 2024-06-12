@@ -120,6 +120,26 @@ class WorkingConditionsController < ApplicationController
         @clasification_dangers = ClasificationDanger.all.order(:id)
     end  
 
+    def reporte
+        @working_conditions = WorkingCondition.where("entity_id = ?", params[:entity_id].to_i) if params[:entity_id].present?
+        @working_condition_items = WorkingConditionItem.where("exposed = ?", 1) 
+        @entity = Entity.find(params[:entity_id]) if params[:entity_id].present?
+        if @working_conditions.present? then
+            @items = []
+            @working_conditions.each do |working_condition|
+                if @working_condition_items.present? then
+                    @working_condition_items.where("working_condition_id = ?",working_condition.id).each do |working_condition_item|
+                        @items << working_condition_item  
+                    end
+                end        
+            end
+        end    
+        @cantidad = @items.count
+    end 
+
+    def edit_item
+        @working_condition_item = WorkingConditionItem.find(params[:id])
+    end     
 
     
 

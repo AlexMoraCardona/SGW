@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_06_11_005609) do
+ActiveRecord::Schema[7.0].define(version: 2024_06_11_202600) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -1514,6 +1514,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_11_005609) do
     t.bigint "working_condition_id"
     t.bigint "clasification_danger_id"
     t.bigint "clasification_danger_detail_id"
+    t.integer "user_intervention", default: 0
+    t.date "date_intervention"
+    t.string "observation_intervention"
+    t.integer "intervention", default: 0
     t.index ["clasification_danger_detail_id"], name: "index_working_condition_items_on_clasification_danger_detail_id"
     t.index ["clasification_danger_id"], name: "index_working_condition_items_on_clasification_danger_id"
     t.index ["working_condition_id"], name: "index_working_condition_items_on_working_condition_id"

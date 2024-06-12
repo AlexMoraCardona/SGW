@@ -75,8 +75,8 @@ Rails.application.routes.draw do
   resources :business_days
 
 
-
-
+  get '/working_conditions/edit_item/:id', to: 'working_conditions#edit_item', as: 'edit_item_working_condition'
+  get '/working_conditions/reporte/:entity_id', to: 'working_conditions#reporte', as: 'reporte_working_condition'
   get '/working_conditions/working_pdf/:id', to: 'working_conditions#working_pdf', as: 'working_pdf'
   get '/working_conditions/firmar_user/:id', to: 'working_conditions#firmar_user', as: 'firmar_user'
   get '/working_conditions/mod_detalle/:id', to: 'working_conditions#mod_detalle', as: 'mod_detalle' 
@@ -152,7 +152,7 @@ Rails.application.routes.draw do
   
   resources :report_officials do
     collection do
-      get '/report_officials/actualizarindicadores/:id', to: 'report_officials#actualizarindicadores', as: 'actualizar_indicadores'
+      get '/report_officials/actualizar_indicadores/:id', to: 'report_officials#actualizar_indicadores', as: 'actualizar_indicadores'
     end
   end
 

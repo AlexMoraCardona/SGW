@@ -1,0 +1,66 @@
+<br>
+<div class="container col-12" 
+        <br>
+        <div><h2>REPORTE DE CONDICIONES DE TRABAJO</h2></div>
+        <div><h4><%= @entity.business_name %></h4></div>
+        <br>
+        <hr>
+        <table> 
+            <tr style="background-color: #00aae4;border:1px solid black;text-align:center;">
+                <td style="border:1px solid black;text-align:center;">
+                    ID
+                </td>
+                <td style="border:1px solid black;text-align:center;">
+                    Fecha
+                </td>
+                <td style="border:1px solid black;text-align:center;">
+                    Usuario
+                </td>
+                <td style="border:1px solid black;text-align:center;">
+                    Descripción del Riesgo
+                </td>
+                <td style="border:1px solid black;text-align:center;">
+                    Intervenido
+                </td>
+                <td style="border:1px solid black;text-align:center;">
+                    Fecha Intervención
+                </td>
+                <td style="border:1px solid black;text-align:center;">
+                    Ver
+                </td>
+            </tr>
+            <% @items.each do |item| %>
+                <tr style="border:1px solid black;">
+                    <td style="border:1px solid black;">
+                        <%= item.id %>
+                    </td>
+                    <td style="border:1px solid black;">
+                        <%= item.created_at.strftime("%F") %>
+                    </td>
+                    <td style="border:1px solid black;">
+                        <%= item.working_condition.user.name %>
+                    </td>
+                    <td style="border:1px solid black;">
+                        <%= item.clasification_danger_detail.name %>
+                    </td>
+                    <td style="border:1px solid black;text-align:center;">
+                        <% if item.intervention == 1 then %>
+                            SI
+                        <% else%>
+                            NO    
+                        <% end %>
+                    </td>
+                    <td style="border:1px solid black;text-align:center;">
+                        <%=  item.date_intervention %>
+                    </td>
+                    <td style="border:1px solid black;">
+                        <%= link_to t('common.ver'), edit_item_working_condition_path(item.id), class: 'btn btn-sm btn-outline-primary'  %>
+                    </td>
+                </tr>
+            <% end %>
+        </table>
+        <br>    
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :home %>
+        <hr>
+        <br>    
+<div>    

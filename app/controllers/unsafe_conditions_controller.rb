@@ -59,6 +59,8 @@ class UnsafeConditionsController < ApplicationController
         end    
     end    
 
+  
+    
     private
 
     def unsafe_condition_params

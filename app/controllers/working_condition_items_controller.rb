@@ -38,12 +38,14 @@ class WorkingConditionItemsController < ApplicationController
         @working_condition_item = WorkingConditionItem.find(params[:id])
         @working_condition_item.destroy
         redirect_to working_condition_items_path, notice: 'Detalle borrado correctamente', working_condition_item: :see_other
-    end    
+    end  
+    
+   
 
     private
 
     def working_condition_item_params
-        params.require(:working_condition_item).permit(:exposed, :observation, :working_condition_id, :clasification_danger_id, :clasification_danger_detail_id )
+        params.require(:working_condition_item).permit(:exposed, :observation, :working_condition_id, :clasification_danger_id, :clasification_danger_detail_id, :user_intervention, :date_intervention, :observation_intervention, :intervention )
     end  
 
 end  

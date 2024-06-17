@@ -3,7 +3,7 @@
         <h2><%= @entity.business_name %> Nit: <%=@entity.identification_number %></h2>
     <% end %>
     <br>
-    <%= link_to t('.create_unsafe_condition'), new_unsafe_condition_path(entity_id: @entity.id), class: 'btn btn-xs btn-primary'  %>
+    <%= link_to t('.create_unsafe_condition'), new_unsafe_condition_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
     <br>
     <% if @unsafe_conditions.present? %>
         <table class="table table-hover">
@@ -12,18 +12,32 @@
                     <th scope="col"><%= t('.date_report') %></th>
                     <th scope="col"><%= t('.user_reports') %></th>
                     <th scope="col"><%= t('.user_receiving') %></th>
+                    <th scope="col">Firma usuario reporta</th>
+                    <th scope="col">Firma usuario recibe</th>
                     <th scope="col">Ver</th>
-                    <th scope="col">Editar</th>
                 </tr>
             </thead> 
-            <tbody>
+            <tbody> 
                 <% @unsafe_conditions.each do |unsafe_condition| %>
                     <tr>
                         <td><%= unsafe_condition.date_report %></td>
-                        <td><%= unsafe_condition.name_user(unsafe_condition.user_reports) %></td>
-                        <td><%= unsafe_condition.name_user(unsafe_condition.user_receiving) %></td>
-                        <td><%= link_to t('common.show'), unsafe_condition_path(unsafe_condition.id), class: 'btn btn-sm btn-warning' %></td>
-                        <td><%= link_to t('common.edit'), edit_unsafe_condition_path(unsafe_condition), class: 'btn btn-xs btn-primary'  %></td>
+                        <td><%= UnsafeCondition.name_user(unsafe_condition.user_reports) %></td>
+                        <td><%= UnsafeCondition.name_user(unsafe_condition.user_receiving) %></td>
+                        <td style="text-align:center">
+                            <% if unsafe_condition.firm_user_reports.to_i == 0 %>
+                                <%= link_to t('common.firmar'), firmar_reporta_path(unsafe_condition.id, 1), class: 'btn btn-sm btn btn-warning' %>
+                            <% else %>
+                                <%= unsafe_condition.date_firm_user_reports %>
+                            <% end %>
+                        </td>
+                        <td style="text-align:center">
+                            <% if unsafe_condition.firm_user_receiving.to_i == 0 %>
+                                <%= link_to t('common.firmar'), firmar_recibe_path(unsafe_condition.id, 2), class: 'btn btn-sm btn btn-warning' %>
+                            <% else %>
+                                <%= unsafe_condition.date_firm_user_receiving %>
+                            <% end %>
+                        </td>
+                        <td style="text-align:center"><%= link_to t('common.show'), unsafe_condition_path(unsafe_condition.id), class: 'btn btn-sm btn-warning' %></td>
                     </tr>
                 <% end %>           
             </tbody>      

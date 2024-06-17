@@ -358,7 +358,7 @@ class IndicadoresController < ApplicationController
     def calculo_frecuencia_accidentalidad(report_official)
         @datos_frecuencia_accidentalidad = []
         report_official.each do |rep| 
-            fecha = rep.year.to_s + '-' + rep.month.to_s  
+            fecha = Calendar.label_month(rep.month).to_s  
             @datos_frecuencia_accidentalidad.push([fecha, rep.frecuencia_accidentalidad.to_f]) 
         end
         @datos_frecuencia_accidentalidad.sort!
@@ -367,7 +367,7 @@ class IndicadoresController < ApplicationController
     def calculo_severidad_accidentalidad(report_official)
         @datos_severidad_accidentalidad = []
         report_official.each do |rep| 
-            fecha = rep.year.to_s + '-' + rep.month.to_s  
+            fecha = Calendar.label_month(rep.month).to_s 
             @datos_severidad_accidentalidad.push([fecha, rep.severidad_accidentalidad.to_f]) 
         end
     end
@@ -375,7 +375,7 @@ class IndicadoresController < ApplicationController
     def calculo_ausentismo(report_official)
         @datos_ausentismo = []
         report_official.each do |rep| 
-            fecha = rep.year.to_s + '-' + rep.month.to_s  
+            fecha = Calendar.label_month(rep.month).to_s
             @datos_ausentismo.push([fecha, rep.ausentismo_causa_medica.to_f]) 
         end
     end
@@ -383,23 +383,23 @@ class IndicadoresController < ApplicationController
     def calculo_prevalencia(report_official)
         @datos_prevalencia = []
         report_official.each do |rep| 
-            fecha = rep.year.to_s + '-' + rep.month.to_s  
-            @datos_prevalencia.push([fecha, rep.prevalencia_enfermedad_laboral.to_f]) 
+            fecha = Calendar.label_month(rep.month).to_s
+            @datos_prevalencia.push([fecha, rep.prevalencia_enfermedad_laboral.to_i]) 
         end
     end
 
     def calculo_incidencia(report_official)
         @datos_incidencia = []
         report_official.each do |rep| 
-            fecha = rep.year.to_s + '-' + rep.month.to_s  
-            @datos_incidencia.push([fecha, rep.incidencia_enfermedad_laboral.to_f]) 
+            fecha = Calendar.label_month(rep.month).to_s
+            @datos_incidencia.push([fecha, rep.incidencia_enfermedad_laboral.to_i]) 
         end
     end
 
     def calculo_proporcion(report_official)
         @datos_proporcion = []
         report_official.each do |rep| 
-            fecha = rep.year.to_s + '-' + rep.month.to_s  
+            fecha = Calendar.label_month(rep.month).to_s
             @datos_proporcion.push([fecha, rep.proporcion_accidentes_mortales.to_f]) 
         end
     end

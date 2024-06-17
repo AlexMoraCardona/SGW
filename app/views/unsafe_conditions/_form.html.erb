@@ -1,5 +1,6 @@
 <div class="container col-12 card p-5">
-    <br>  
+    <br> 
+    <table> 
     <%= form_with model: @unsafe_condition do |form| %>
         <% @unsafe_condition.errors.full_messages.each do |error| %>
             <div class="alert alert-danger" role="alert">
@@ -7,34 +8,6 @@
             </div>
         <% end %> 
         <table>
-            <div class="row g-2">
-                <div class="col-sm-2">
-                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingrese el código del formato.">Código Formato:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                    <%= form.text_field :code,  class: "form-control" %>
-                </div> 
-                <div class="col-sm-2">
-                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingrese la versión del formato actual.">Versión Formato:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                    <%= form.number_field :version,  class: "form-control" %>
-                </div>        
-            </div>        
-        </table>
-        <table>
-            <tr> 
-                <td style="width: 40%;border:1px solid black;">
-                    <strong><%= form.label :date_report, style: "display: block" %></strong>               
-                </td>
-                <td style="width: 60%;border:1px solid black;">
-                    <%= form.date_field :date_report,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr> 
-                <td style="width: 40%;border:1px solid black;">
-                    <strong><%= form.label :date_report, style: "display: block" %></strong>               
-                </td>
-                <td style="width: 60%;border:1px solid black;">
-                    <%= form.date_field :date_report,  class: "form-control" %>
-                </td>
-            </tr>
             <tr>    
                 <td style="width: 40%;border:1px solid black;">
                     <strong><%= form.label :place_report, style: "display: block" %></strong>               
@@ -304,35 +277,21 @@
                 </td>
             </tr>
         </table>
-        <table>    
-            <tr>    
-                <td style="border:1px solid black; width: 40%">
-                    <strong><%= form.label :user_receiving, style: "display: block" %></strong>               
-                </td>
-                <td style="border:1px solid black; width: 60%">
-                    <%= form.collection_select :user_receiving, User.all.order(id: :asc), :id,  :name, style: "width=400px" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="border:1px solid black; width: 40%">
-                    <strong><%= form.label :user_coordinator, style: "display: block" %></strong>               
-                </td>
-                <td style="border:1px solid black; width: 60%">
-                    <%= form.collection_select :user_coordinator, User.all.order(id: :asc), :id,  :name, style: "width=400px" %>
-                </td>
-            </tr>
-        </table>
         <% if params[:entity_id].present? %>
             <%= form.hidden_field :entity_id, :value => params[:entity_id].to_i, class: "form-control" %>
         <% else %>
             <%= form.hidden_field :entity_id, :value => @entity.id.to_i, class: "form-control" if @entity.present? %>
         <% end %>
+        <%= form.hidden_field :date_report, :value => Time.now, class: "form-control"  %>
+        <%= form.hidden_field :user_receiving, :value => @asesor_recibe.id, class: "form-control" if @asesor_recibe.present? %>
 
-
-        <br>    
-        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+        <div></br></div>  
+        <div>  
+            <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+            <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+        </div>            
     <% end %>
+    </table>
 </div>        
 <br>
 

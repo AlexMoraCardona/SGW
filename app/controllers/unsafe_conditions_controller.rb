@@ -14,12 +14,16 @@ class UnsafeConditionsController < ApplicationController
     end    
 
     def new
-      @unsafe_condition = UnsafeCondition.new  
+      @unsafe_condition = UnsafeCondition.new 
+      @entity = Entity.find(params[:entity_id].to_i) if params[:entity_id].present? 
+      @asesor_recibe = User.find(@entity.responsible_sst) if @entity.responsible_sst > 0 
+      @asesor_recibe = User.find(@entity.external_consultant) if @entity.external_consultant > 0 
     end    
 
     def create
-        @unsafe_condition = UnsafeCondition.new(unsafe_condition_params)
+        @unsafe_condition  = UnsafeCondition.new(unsafe_condition_params)
         if @unsafe_condition.save then
+            UnsafeCondition.evaluarcondicion(@unsafe_condition)
             redirect_to unsafe_conditions_path, notice: t('.created') 
         else
             render :edit, status: :unprocessable_entity
@@ -34,11 +38,20 @@ class UnsafeConditionsController < ApplicationController
     def update
         @unsafe_condition = UnsafeCondition.find(params[:id])
         if @unsafe_condition.update(unsafe_condition_params)
+            actualizar_fecha(@unsafe_condition.id)
             redirect_to unsafe_conditions_path, notice: 'Reporte actualizado correctamente'
         else
             render :edit, unsafe_conditions: :unprocessable_entity
         end         
+    end  
+    
+    def actualizar_fecha(id)
+        @unsafe_condition = UnsafeCondition.find(id)
+        @unsafe_condition.date_firm_user_reports = nil if @unsafe_condition.firm_user_reports.to_i == 0
+        @unsafe_condition.date_firm_user_receiving = nil if @unsafe_condition.firm_user_receiving.to_i == 0
+        @unsafe_condition.save
     end    
+    
 
     def destroy
         @unsafe_condition = UnsafeCondition.find(params[:id])
@@ -47,6 +60,7 @@ class UnsafeConditionsController < ApplicationController
     end    
 
     def show
+        @template = Template.find(193)
         @unsafe_condition = UnsafeCondition.find(params[:id])
         @reporta = User.find(@unsafe_condition.user_reports) if  @unsafe_condition.user_reports.present? && @unsafe_condition.user_reports > 0
         @recibe = User.find(@unsafe_condition.user_receiving) if  @unsafe_condition.user_receiving.present? && @unsafe_condition.user_receiving > 0
@@ -59,7 +73,28 @@ class UnsafeConditionsController < ApplicationController
         end    
     end    
 
-  
+    def firmar_reporta
+        @unsafe_condition = UnsafeCondition.find_by(id: params[:id].to_i)
+        if params[:format].to_i == 1
+            if  @unsafe_condition.user_reports.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+                redirect_to firmar_reporta_path
+            else
+                redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma."
+            end    
+        end
+    end    
+
+    def firmar_recibe
+        @unsafe_condition = UnsafeCondition.find_by(id: params[:id].to_i)
+        if params[:format].to_i == 2
+            if  @unsafe_condition.user_receiving.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+                redirect_to firmar_recibe_path
+            else
+                redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma."
+            end    
+        end
+    end    
+    
     
     private
 

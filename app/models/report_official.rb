@@ -370,23 +370,25 @@ class ReportOfficial < ApplicationRecord
             #Frecuencia de accidentalidad
             eventsmontwork_accident += 1 if (event.work_accident == 1 && event.date_new.month == @report_official.month && event.date_new.year == @report_official.year)   
             #Severidad de accidentalidad
-            if event.disability_start_date <=  fechafinal && event.disability_end_date >= fechainicial  
-                if event.work_accident == 1 && event.mortal_accident == 0  then
-                    if  event.disability_start_date.month == @report_official.month && event.disability_start_date.year == @report_official.year then
-                        if event.disability_end_date.month == @report_official.month && event.disability_end_date.year == @report_official.year then
-                            eventsmontwork_accidentdays  +=  (event.disability_end_date.day - event.disability_start_date.day) + 1   
+            if event.disability_start_date.present? && event.disability_end_date.present? 
+                if event.disability_start_date <=  fechafinal && event.disability_end_date >= fechainicial  
+                    if event.work_accident == 1 then
+                        if  event.disability_start_date.month == @report_official.month && event.disability_start_date.year == @report_official.year then
+                            if event.disability_end_date.month == @report_official.month && event.disability_end_date.year == @report_official.year then
+                                eventsmontwork_accidentdays  +=  (event.disability_end_date.day - event.disability_start_date.day) + 1   
+                            else
+                                eventsmontwork_accidentdays  +=  (event.disability_start_date.end_of_month.day - event.disability_start_date.day) + 1
+                            end   
                         else
-                            eventsmontwork_accidentdays  +=  (event.disability_start_date.end_of_month.day - event.disability_start_date.day) + 1
-                        end   
-                    else
-                        if event.disability_end_date.month == @report_official.month && event.disability_end_date.year == @report_official.year then
-                            eventsmontwork_accidentdays  +=  (event.disability_end_date.day - fechainicial.day) + 1
-                        else
-                            eventsmontwork_accidentdays += (fechafinal.day -   fechainicial.day) + 1
-                        end
-                    end  
-                end 
-            end
+                            if event.disability_end_date.month == @report_official.month && event.disability_end_date.year == @report_official.year then
+                                eventsmontwork_accidentdays  +=  (event.disability_end_date.day - fechainicial.day) + 1
+                            else
+                                eventsmontwork_accidentdays += (fechafinal.day -   fechainicial.day) + 1
+                            end
+                        end  
+                    end 
+                end
+            end    
             #Proporcion de accidentes de trabajo mortales
             if event.work_accident == 1  then
                 if  event.date_new.year == @report_official.year && event.date_new.month <= @report_official.month   then
@@ -408,89 +410,89 @@ class ReportOfficial < ApplicationRecord
             end 
 
             #Ausentismo   
-
-            if event.disability_start_date <=  fechafinal && event.disability_end_date >= fechainicial  
-                if event.laboral_inhability == 1 || event.common_inhability == 1  then
-                    if  event.disability_start_date.month == @report_official.month && event.disability_start_date.year == @report_official.year then
-                        if event.disability_end_date.month == @report_official.month && event.disability_end_date.year == @report_official.year then
-                            fini = event.disability_start_date
-                            ffin = event.disability_end_date
-                            f = event.disability_start_date
-                            while f <= ffin
-                                no_esta = 0
-                                if @habil.present? then
-                                    @habil.each do |habil|
-                                        if habil.date_skilled == f then
-                                            no_esta = 1
-                                        end  
-                                    end
-                                end   
-                                if no_esta == 0 then     
-                                    dias_ausentismo  += 1
-                                end    
-                                f += 1
-                            end
+            if event.disability_start_date.present? && event.disability_end_date.present? 
+                if event.disability_start_date <=  fechafinal && event.disability_end_date >= fechainicial  
+                    if event.laboral_inhability == 1 || event.common_inhability == 1  then
+                        if  event.disability_start_date.month == @report_official.month && event.disability_start_date.year == @report_official.year then
+                            if event.disability_end_date.month == @report_official.month && event.disability_end_date.year == @report_official.year then
+                                fini = event.disability_start_date
+                                ffin = event.disability_end_date
+                                f = event.disability_start_date
+                                while f <= ffin
+                                    no_esta = 0
+                                    if @habil.present? then
+                                        @habil.each do |habil|
+                                            if habil.date_skilled == f then
+                                                no_esta = 1
+                                            end  
+                                        end
+                                    end   
+                                    if no_esta == 0 then     
+                                        dias_ausentismo  += 1
+                                    end    
+                                    f += 1
+                                end
+                            else
+                                fini = event.disability_start_date
+                                ffin = event.disability_start_date.end_of_month
+                                f = event.disability_start_date
+                                while f <= ffin
+                                    no_esta = 0
+                                    if @habil.present? then
+                                        @habil.each do |habil|
+                                            if habil.date_skilled == f then
+                                                no_esta = 1
+                                            end  
+                                        end 
+                                    end    
+                                    if no_esta == 0 then     
+                                        dias_ausentismo  += 1
+                                    end    
+                                    f += 1
+                                end
+                            end   
                         else
-                            fini = event.disability_start_date
-                            ffin = event.disability_start_date.end_of_month
-                            f = event.disability_start_date
-                            while f <= ffin
-                                no_esta = 0
-                                if @habil.present? then
-                                    @habil.each do |habil|
-                                        if habil.date_skilled == f then
-                                            no_esta = 1
-                                        end  
-                                    end 
-                                end    
-                                if no_esta == 0 then     
-                                    dias_ausentismo  += 1
-                                end    
-                                f += 1
+                            if event.disability_end_date.month == @report_official.month && event.disability_end_date.year == @report_official.year then
+                                fini = fechainicial
+                                ffin = event.disability_end_date
+                                f = fechainicial
+                                while f <= ffin
+                                    no_esta = 0
+                                    if @habil.present? then
+                                        @habil.each do |habil|
+                                            if habil.date_skilled == f then
+                                                no_esta = 1
+                                            end  
+                                        end 
+                                    end    
+                                    if no_esta == 0 then     
+                                        dias_ausentismo  += 1
+                                    end    
+                                    f += 1
+                                end
+                            else
+                                fini = fechainicial
+                                ffin = fechafinal
+                                f = fechainicial
+                                while f <= ffin
+                                    no_esta = 0
+                                    if @habil.present? then
+                                        @habil.each do |habil|
+                                            if habil.date_skilled == f then
+                                                no_esta = 1
+                                            end  
+                                        end 
+                                    end    
+                                    if no_esta == 0 then     
+                                        dias_ausentismo  += 1
+                                    end    
+                                    f += 1
+                                end
                             end
-                        end   
-                    else
-                        if event.disability_end_date.month == @report_official.month && event.disability_end_date.year == @report_official.year then
-                            fini = fechainicial
-                            ffin = event.disability_end_date
-                            f = fechainicial
-                            while f <= ffin
-                                no_esta = 0
-                                if @habil.present? then
-                                    @habil.each do |habil|
-                                        if habil.date_skilled == f then
-                                            no_esta = 1
-                                        end  
-                                    end 
-                                end    
-                                if no_esta == 0 then     
-                                    dias_ausentismo  += 1
-                                end    
-                                f += 1
-                            end
-                        else
-                            fini = fechainicial
-                            ffin = fechafinal
-                            f = fechainicial
-                            while f <= ffin
-                                no_esta = 0
-                                if @habil.present? then
-                                    @habil.each do |habil|
-                                        if habil.date_skilled == f then
-                                            no_esta = 1
-                                        end  
-                                    end 
-                                end    
-                                if no_esta == 0 then     
-                                    dias_ausentismo  += 1
-                                end    
-                                f += 1
-                            end
-                        end
-                    end  
-                end 
+                        end  
+                    end 
+                end
             end
-
         end  
         
         @report_official.total_officials = total_officials 
@@ -507,7 +509,7 @@ class ReportOfficial < ApplicationRecord
         @report_official.total_occupational_disease_year = total_occupational_disease_year
         @report_official.incidencia_enfermedad_laboral = ((total_occupational_disease_year.to_f / promedio.to_f) * 100000).round(2) if promedio > 0  
         @report_official.total_days_absenteeism = dias_ausentismo 
-        @report_official.ausentismo_causa_medica = ((dias_ausentismo.to_f / (@report_official.working_days_month.to_f * total_officials.to_f)) * 100000).round(2) if total_officials > 0  
+        @report_official.ausentismo_causa_medica = ((dias_ausentismo.to_f / (@report_official.working_days_month.to_f * total_officials.to_f)) * 100).round(2) if total_officials > 0  
         @report_official.save
     end    
 

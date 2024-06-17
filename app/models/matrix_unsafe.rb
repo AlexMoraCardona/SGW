@@ -1,0 +1,2 @@
+class MatrixUnsafe < ApplicationRecord
+end

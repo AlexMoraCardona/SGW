@@ -73,8 +73,15 @@ Rails.application.routes.draw do
   resources :extinguishers
   resources :adm_extinguishers
   resources :business_days
-
-
+  resources :matrix_conditions
+  resources :matrix_unsafe_items
+  
+  get '/matrix_conditions/condition_pdf/:id', to: 'matrix_conditions#condition_pdf', as: 'condition_pdf'
+  get '/matrix_conditions/crear_item_condition/:id', to: 'matrix_conditions#crear_item_condition', as: 'crear_item_condition'
+  get '/matrix_conditions/firmar_representante/:id', to: 'matrix_conditions#firmar_representante', as: 'firmar_representante'
+  get '/matrix_conditions/firmar_responsible/:id', to: 'matrix_conditions#firmar_responsible', as: 'firmar_responsible'
+  get '/unsafe_conditions/firmar_reporta/:id', to: 'unsafe_conditions#firmar_reporta', as: 'firmar_reporta'
+  get '/unsafe_conditions/firmar_recibe/:id', to: 'unsafe_conditions#firmar_recibe', as: 'firmar_recibe'
   get '/working_conditions/edit_item/:id', to: 'working_conditions#edit_item', as: 'edit_item_working_condition'
   get '/working_conditions/reporte/:entity_id', to: 'working_conditions#reporte', as: 'reporte_working_condition'
   get '/working_conditions/working_pdf/:id', to: 'working_conditions#working_pdf', as: 'working_pdf'

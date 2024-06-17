@@ -1,0 +1,151 @@
+<div class="container col-11 card p-5">
+    <br>
+    <div class="container col-12">
+
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <strong>Ver reporte acto/condición insegura</strong><br>
+                <%= link_to t('common.show'), unsafe_condition_path(@matrix_unsafe_item.unsafe_condition_id), class: 'btn btn-sm btn-warning' %></td>
+                <%= link_to t('common.return'), matrix_condition_path(@matrix_unsafe_item.matrix_condition_id), class: 'btn btn-sm btn-warning' %></td>
+            </div>        
+        </div>
+
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <strong>Fecha de creación</strong><br>
+                <%= @matrix_unsafe_item.date_item %> 
+            </div>        
+            <div class="col-sm-3">
+                <strong>Usuario que reporta:</strong><br>
+                <%= MatrixUnsafeItem.name_user(@matrix_unsafe_item.user_reporta) %> 
+            </div>        
+        </div>
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <strong>Cargo del usuario que reporta:</strong><br>
+                <%= @matrix_unsafe_item.cargo_reporta %> 
+            </div>        
+            <div class="col-sm-3"> 
+                <strong>Correo del usuario que reporta:</strong><br>
+                <%= @matrix_unsafe_item.correo_reporta %> 
+            </div>        
+        </div>
+    </div>
+
+    <%= form_with model: @matrix_unsafe_item do |form| %>
+        <% @matrix_unsafe_item.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %> 
+            </div>
+        <% end %>
+
+        <div class="form-group">    
+            <%= form.label :sede,  style: "display: block" %>
+            <%= form.text_field :sede,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :exact_ubication,  style: "display: block" %>
+            <%= form.text_field :exact_ubication,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :description_usafe,  style: "display: block" %>
+            <%= form.text_field :description_usafe,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :solution_usafe,  style: "display: block" %>
+            <%= form.text_field :solution_usafe,  class: "form-control" %>
+        </div>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <%= form.label :tip_action, style: "display: block" %>
+                <%= form.radio_button :tip_action, 0 %>
+                <label for="no_cumple">Acto/Condición insegura</label>&nbsp;&nbsp; 
+                <%= form.radio_button :tip_action, 1 %>
+                <label for="si_cumple">Otro tipo de acción</label>&nbsp;&nbsp;   
+                
+            </div>        
+            <div class="col-sm-6">
+                <%= form.label :state_unsafe, style: "display: block" %>
+                <%= form.radio_button :state_unsafe, 0 %>
+                <label for="no_cumple">Abierta</label>&nbsp;&nbsp; 
+                <%= form.radio_button :state_unsafe, 1 %>
+                <label for="si_cumple">Cerrada</label>&nbsp;&nbsp;   
+            </div>  
+        </div>   
+        <div class="form-group">    
+            <%= form.label :observations,  style: "display: block" %>
+            <%= form.text_field :observations,  class: "form-control" %>
+        </div>
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <strong>Usuario que recibe:</strong><br>
+                <%= MatrixUnsafeItem.name_user(@matrix_unsafe_item.user_recibe) %> 
+            </div>        
+            <div class="col-sm-3">
+                <%= form.label :date_intervencion,  style: "display: block" %>
+                <%= form.date_field :date_intervencion,  class: "form-control" %>
+            </div>        
+        </div>
+
+        <br>     
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+    <% end %>
+    <br>
+
+    <div><br></div>
+    <div class="container col-11 card p-5">
+        <%= form_for @matrix_unsafe_item do |f| %>
+           <div class="row">
+              <div class="form-group">
+                <h5><%= f.label :"Adjuntar_Archivos:", style: "display: block" %></h5>
+                <%= f.file_field :registros, multiple: true %>
+    
+                <%= f.submit 'Subir Archivos', class: 'btn btn-primary' %>
+              </div> 
+            </div>
+        <% end %>
+        <br> 
+    </div>  
+    <br>
+    
+    <hr>
+    <br>
+    <div class="container col-11 card p-5">
+        <div class="form-group">
+            <h5>Archivos adjuntos:</h5>
+        </div>         
+        <hr>
+        <% if @matrix_unsafe_item.registros.attached? %>
+            <div data-controller="previews" >
+                <% @matrix_unsafe_item.registros.each do |file|%>
+                    <br>
+                    <% if file.image? %>
+                        <div>
+                            <%= image_tag file, data: {previews_target: "preview"}, class: "image" %>
+                            <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
+                            <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                        </div> 
+                    <% elsif file.video? %>
+                        <%= video_tag url_for(file), controls: "", width: "400px" %>          
+                        <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
+                        <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                    <% elsif file.audio? %>
+                        <%= audio_tag(url_for(file), controls: "") %>          
+                        <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
+                        <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                    <% else %>
+                        <%= link_to file.filename, url_for(file) %>          
+                        <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
+                        <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                    <% end %>
+                <% end %>  
+            </div>
+        <% end %>  
+    </div>        
+</div>        
+<br>

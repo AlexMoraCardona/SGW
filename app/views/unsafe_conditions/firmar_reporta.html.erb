@@ -1,0 +1,37 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @unsafe_condition do |form| %>
+        <% @unsafe_condition.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>
+
+        <table>
+            <tr>
+                <td>
+                    <h4>Usuario que reporta</h4> 
+                    <%= UnsafeCondition.name_user(@unsafe_condition.user_reports) %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h4>Firma autorizada del Usuario que reporta</h4> 
+                    <%= form.radio_button :firm_user_reports, 0 %>
+                    <label for="no">No</label>&nbsp;&nbsp; 
+                    <%= form.radio_button :firm_user_reports, 1 %>
+                    <label for="si">Si</label>&nbsp;&nbsp;   
+                </td>
+            </tr>
+        </table>
+        <%= form.hidden_field :date_firm_user_reports, :value => Time.now, class: "form-control" %>
+        <br>    
+
+        
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    <% end %>
+</div>        
+<br>
+
+ 

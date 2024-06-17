@@ -1,0 +1,35 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @matrix_condition do |form| %>
+        <% @matrix_condition.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>
+
+        <table>
+            <tr>
+                <td>
+                    <h4>Representante Legal</h4> 
+                    <%= @matrix_condition.name_user(@matrix_condition.user_representante) %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h4>Firma autorizada del Representante Legal</h4> 
+                    <%= form.radio_button :firm_representante, 0 %>
+                    <label for="no">No</label>&nbsp;&nbsp; 
+                    <%= form.radio_button :firm_representante, 1 %>
+                    <label for="si">Si</label>&nbsp;&nbsp;   
+                </td>
+            </tr>
+        </table>
+        <%= form.hidden_field :date_firm_representante, :value => Time.now, class: "form-control" %>
+        <br>    
+
+        
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    <% end %>
+</div>        
+<br>

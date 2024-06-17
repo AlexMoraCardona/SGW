@@ -1,0 +1,84 @@
+<br>
+<div>
+
+    <table class="table table-hover" style="border:1px solid black"> 
+        <thead>
+            <tr>
+                <td style="background-color: black;">&nbsp;</td>
+                <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
+                    <% if @matrix_condition.entity.logo.present? then %>
+                        <%=  image_tag  @matrix_condition.entity.logo, class: "image_peq" %>
+                    <% end %>
+                </td>
+                <td rowspan="4"; colspan="7"; style="text-align:center">
+                    <div class="col-10"><h5>MATRIZ DE SEGUIMIENTO DE ACTOS Y CONDICIONES INSEGURAS</h5><h6><%= @matrix_condition.entity.business_name if @matrix_condition.present? %> Nit: <%= @matrix_condition.entity.identification_number if @matrix_condition.present? %> </h6></div>
+                </td>
+                <td rowspan="4";  style="text-align:center">
+                </td>
+                <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
+
+                <td style="border:1px solid black"><%= @matrix_condition.date_unsafe  if @matrix_condition.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr> 
+                <td style="background-color: black;">&nbsp;</td>
+                <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
+                <td style="border:1px solid black"><%= @matrix_condition.date_unsafe if @matrix_condition.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr> 
+                <td style="background-color: black;">&nbsp;</td>
+                <td colspan="2"; style="border:1px solid black">Versión:</td>
+                <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr> 
+                <td style="background-color: black;">&nbsp;</td>
+                <td colspan="2"; style="border:1px solid black">Código:</td>
+                <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+
+            <tr>  
+                <td style="background-color: black;">&nbsp;</td>
+                <td style="border:1px solid black; text-align:center">N°</TD>
+                <td style="border:1px solid black; text-align:center">Fecha reporte</TD>
+                <td style="border:1px solid black; text-align:center">Nombre  completo de quien reporta</TD>
+                <td style="border:1px solid black; text-align:center">Cargo de quien reporta</TD>
+                <td style="border:1px solid black; text-align:center">Correo electrónico</TD>
+                <td style="border:1px solid black; text-align:center">Sede del reporte</TD>
+                <td style="border:1px solid black; text-align:center">Ubicación  exacta de la condición /acto inseguro</TD>
+                <td style="border:1px solid black; text-align:center">Descripción de la condición / acto inseguro</TD>
+                <td style="border:1px solid black; text-align:center">TIPO DE ACCIÓN</TD>
+                <td style="border:1px solid black; text-align:center">ESTADO</TD>
+                <td style="border:1px solid black; text-align:center">OBSERVACIONES</TD>
+                <td style="border:1px solid black; text-align:center">VER/EDITAR</TD>
+                <td style="background-color: black;">&nbsp;</td>
+             </tr>  
+             
+        </thead>
+        <% @numero = 0 %>          
+        <% @matrix_unsafe_items.each do |item| %>   
+            <% @numero += 1 %>          
+            <tbody>
+                <tr>
+                    <td style="background-color: black;">&nbsp;</td>
+                    <td style="border:1px solid black; text-align:center"><%= @numero %></td>
+                    <td style="border:1px solid black"><%= item.date_item %></td>
+                    <td style="border:1px solid black"><%= MatrixUnsafeItem.name_user(item.user_reporta) %></td>
+                    <td style="border:1px solid black"><%= item.cargo_reporta %></td>
+                    <td style="border:1px solid black"><%= item.correo_reporta %></td>
+                    <td style="border:1px solid black"><%= item.sede %></td>
+                    <td style="border:1px solid black"><%= item.exact_ubication %></td>
+                    <td style="border:1px solid black"><%= item.description_usafe %></td>
+                    <td style="border:1px solid black"><%= MatrixUnsafeItem.tipo_accion(item.tip_action) %></td>
+                    <td style="border:1px solid black"><%= MatrixUnsafeItem.estado(item.state_unsafe) %></td>
+                    <td style="border:1px solid black"><%= item.observations %></td>
+                    <td style="border:1px solid black"><%= link_to t('common.edit'), edit_matrix_unsafe_item_path(item), class: 'btn btn-sm btn-primary'  %></td>
+                    <td style="background-color: black;">&nbsp;</td>
+                </tr>
+            </body>
+        <% end %>
+    </table>  
+    </br>
+</div>    

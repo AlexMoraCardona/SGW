@@ -112,28 +112,17 @@ class HomesController < ApplicationController
 
     def actos_inseguros
         entity = Entity.find(Current.user.entity)
-        @working_conditions = WorkingCondition.where("entity_id = ?", entity.id) if entity.present?
-        @working_condition_items = WorkingConditionItem.where("exposed = ?", 1) 
-        if @working_conditions.present? then
-            @items = []
-            @working_conditions.each do |working_condition|
-                if @working_condition_items.present? then
-                    @working_condition_items.where("working_condition_id = ?",working_condition.id).each do |working_condition_item|
-                        @items << working_condition_item  
-                    end
-                end        
-            end
-        end    
-
-        @cantidad = @items.count
-        @totalactos = 0
+        @matrix_condition = MatrixCondition.find_by(entity_id: entity.id) if entity.present?
+        @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", @matrix_condition.id) if @matrix_condition.present?
+        @cantidad = @matrix_unsafe_items.count
         @totalactosinter = 0
-        @totalactosnointer = 0 
-        if @cantidad > 0 then
-            @items.each do |item|
+        @totalactos = 0
+        @totalactosnointer = 0
+        if @cantidad > 0 then 
+            @matrix_unsafe_items.each do |item|
                 @totalactos += 1
-                @totalactosinter += 1 if item.intervention == 1
-                @totalactosnointer += 1 if item.intervention == 0
+                @totalactosinter += 1 if item.state_unsafe == 1
+                @totalactosnointer += 1 if item.state_unsafe == 0
             end    
         end    
     end

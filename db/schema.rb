@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_06_11_202600) do
+ActiveRecord::Schema[7.0].define(version: 2024_06_15_193135) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -821,6 +821,20 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_11_202600) do
     t.index ["matrix_corrective_action_id"], name: "index_matrix_action_items_on_matrix_corrective_action_id"
   end
 
+  create_table "matrix_conditions", force: :cascade do |t|
+    t.date "date_unsafe"
+    t.integer "user_representante", default: 0
+    t.integer "user_responsible", default: 0
+    t.date "date_firm_representante"
+    t.date "date_firm_responsible"
+    t.integer "firm_representante", default: 0
+    t.integer "firm_responsible", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_matrix_conditions_on_entity_id"
+  end
+
   create_table "matrix_corrective_actions", force: :cascade do |t|
     t.integer "user_legal_representative"
     t.integer "user_adviser_sst"
@@ -984,6 +998,44 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_11_202600) do
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
     t.index ["entity_id"], name: "index_matrix_protections_on_entity_id"
+  end
+
+  create_table "matrix_unsafe_items", force: :cascade do |t|
+    t.date "date_item"
+    t.integer "user_reporta", default: 0
+    t.string "cargo_reporta"
+    t.string "correo_reporta"
+    t.string "sede"
+    t.string "exact_ubication"
+    t.string "description_usafe"
+    t.string "solution_usafe"
+    t.integer "tip_action", default: 0
+    t.integer "state_unsafe", default: 0
+    t.string "observations"
+    t.integer "user_recibe", default: 0
+    t.date "date_intervencion"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.bigint "unsafe_condition_id"
+    t.bigint "matrix_condition_id"
+    t.index ["entity_id"], name: "index_matrix_unsafe_items_on_entity_id"
+    t.index ["matrix_condition_id"], name: "index_matrix_unsafe_items_on_matrix_condition_id"
+    t.index ["unsafe_condition_id"], name: "index_matrix_unsafe_items_on_unsafe_condition_id"
+  end
+
+  create_table "matrix_unsafes", force: :cascade do |t|
+    t.date "date_unsafe"
+    t.integer "user_representante", default: 0
+    t.integer "user_responsible", default: 0
+    t.date "date_firm_representante"
+    t.date "date_firm_responsible"
+    t.integer "firm_representante", default: 0
+    t.integer "firm_responsible", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_matrix_unsafes_on_entity_id"
   end
 
   create_table "meeting_attendees", force: :cascade do |t|
@@ -1600,6 +1652,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_11_202600) do
   add_foreign_key "kits", "users"
   add_foreign_key "locations", "entities"
   add_foreign_key "matrix_action_items", "matrix_corrective_actions"
+  add_foreign_key "matrix_conditions", "entities"
   add_foreign_key "matrix_corrective_actions", "entities"
   add_foreign_key "matrix_danger_items", "clasification_danger_details"
   add_foreign_key "matrix_danger_items", "clasification_dangers"
@@ -1611,6 +1664,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_11_202600) do
   add_foreign_key "matrix_protection_items", "matrix_protections"
   add_foreign_key "matrix_protection_items", "protection_elements"
   add_foreign_key "matrix_protections", "entities"
+  add_foreign_key "matrix_unsafe_items", "entities"
+  add_foreign_key "matrix_unsafe_items", "matrix_conditions"
+  add_foreign_key "matrix_unsafe_items", "unsafe_conditions"
+  add_foreign_key "matrix_unsafes", "entities"
   add_foreign_key "meeting_attendees", "meeting_minutes"
   add_foreign_key "meeting_commitments", "meeting_minutes"
   add_foreign_key "meeting_minutes", "entities"

@@ -1,0 +1,97 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @matrix_unsafe_item do |form| %>
+        <% @matrix_unsafe_item.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>   
+
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <%= form.label :date_item,  style: "display: block" %>
+                <%= form.date_field :date_item,  class: "form-control" %>
+                
+            </div>        
+            <div class="col-sm-6">
+                <%= form.label :user_reporta, style: "display: block" %>
+                <%= form.collection_select :user_reporta, User.all.order(id: :asc), :id, :name, { prompt: '--Seleccionar--' },
+                { class: 'form-control input-sm select2' } %>
+            </div>  
+        </div>   
+
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <%= form.label :cargo_reporta,  style: "display: block" %>
+                <%= form.text_field :cargo_reporta,  class: "form-control" %>
+                
+            </div>        
+            <div class="col-sm-6">
+                <%= form.label :correo_reporta,  style: "display: block" %>
+                <%= form.text_field :correo_reporta,  class: "form-control" %>
+            </div>  
+        </div>   
+
+        <div class="form-group">    
+            <%= form.label :sede,  style: "display: block" %>
+            <%= form.text_field :sede,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :exact_ubication,  style: "display: block" %>
+            <%= form.text_field :exact_ubication,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :description_usafe,  style: "display: block" %>
+            <%= form.text_field :description_usafe,  class: "form-control" %>
+        </div>
+
+        <div class="form-group">    
+            <%= form.label :solution_usafe,  style: "display: block" %>
+            <%= form.text_field :solution_usafe,  class: "form-control" %>
+        </div>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <%= form.label :tip_action, style: "display: block" %>
+                <%= form.radio_button :tip_action, 0 %>
+                <label for="no_cumple">Acto/Condición insegura</label>&nbsp;&nbsp; 
+                <%= form.radio_button :tip_action, 1 %>
+                <label for="si_cumple">Otro tipo de acción</label>&nbsp;&nbsp;   
+                
+            </div>        
+            <div class="col-sm-6">
+                <%= form.label :state_unsafe, style: "display: block" %>
+                <%= form.radio_button :state_unsafe, 0 %>
+                <label for="no_cumple">Abierta</label>&nbsp;&nbsp; 
+                <%= form.radio_button :state_unsafe, 1 %>
+                <label for="si_cumple">Cerrada</label>&nbsp;&nbsp;   
+            </div>  
+        </div>   
+        <div class="form-group">    
+            <%= form.label :observations,  style: "display: block" %>
+            <%= form.text_field :observations,  class: "form-control" %>
+        </div>
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <%= form.label :user_recibe, style: "display: block" %>
+                <%= form.collection_select :user_recibe, User.all.order(id: :asc), :id, :name, { prompt: '--Seleccionar--' },
+                { class: 'form-control input-sm select2' } %>
+
+            </div>        
+            <div class="col-sm-3">
+                <%= form.label :date_intervencion,  style: "display: block" %>
+                <%= form.date_field :date_intervencion,  class: "form-control" %>
+            </div>        
+        </div>
+        <%= form.hidden_field :entity_id, :value => @matrix_condition.entity_id, class: "form-control" if @matrix_condition.present? %>
+        <%= form.hidden_field :unsafe_condition_id, :value => 11, class: "form-control" %>
+        <%= form.hidden_field :matrix_condition_id, :value => @matrix_condition.id, class: "form-control" if @matrix_condition.present? %>
+
+        <br>      
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+    <% end %>
+    <br>
+    <div><br></div>
+</div>        
+<br>

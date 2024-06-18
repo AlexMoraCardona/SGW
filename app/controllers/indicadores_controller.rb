@@ -79,6 +79,7 @@ class IndicadoresController < ApplicationController
         calculo_prevalencia(@report_official)
         calculo_incidencia(@report_official)
         calculo_proporcion(@report_official)
+        calculo_peligrosriesgos(@entity)
     end
 
     def graficosmpr
@@ -402,6 +403,24 @@ class IndicadoresController < ApplicationController
             fecha = Calendar.label_month(rep.month).to_s
             @datos_proporcion.push([fecha, rep.proporcion_accidentes_mortales.to_f]) 
         end
+    end
+
+    def calculo_peligrosriesgos(entity)
+        @matrix_danger_risks = MatrixDangerRisk.find_by(entity_id: entity.id) if entity.present?
+        @matrix_danger_items = MatrixDangerItem.where('matrix_danger_risk_id = ?', @matrix_danger_risks.id) if @matrix_danger_risks.present?
+
+        @total = 0
+        @inter = 0
+        @datos_peligrosriesgos = []
+        @matrix_danger_items.each do |rep| 
+            @total += 1
+            if rep.danger_intervened == 1 then
+                @inter += 1
+            end    
+        end
+        @indicador_peligrosriesgos = (@inter * 100)/ @total
+        @datos_peligrosriesgos.push([@inter, @indicador_peligrosriesgos]) 
+
     end
 
 end 

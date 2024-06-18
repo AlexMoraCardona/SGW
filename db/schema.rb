@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_06_15_193135) do
+ActiveRecord::Schema[7.0].define(version: 2024_06_18_004240) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -607,6 +607,29 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_15_193135) do
     t.index ["clasification_danger_id"], name: "index_form_preventions_on_clasification_danger_id"
   end
 
+  create_table "format_actions", force: :cascade do |t|
+    t.date "date_format"
+    t.string "description_conformity"
+    t.string "causes_conformity"
+    t.string "task"
+    t.string "activity"
+    t.string "section"
+    t.string "type_action"
+    t.string "description_action"
+    t.integer "user_responsible", default: 0
+    t.string "post_responsible"
+    t.string "area_responsible"
+    t.date "date_execution"
+    t.date "date_verification"
+    t.string "efficiency_results"
+    t.integer "action_completed", default: 0
+    t.string "observations"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_format_actions_on_entity_id"
+  end
+
   create_table "health_promoters", force: :cascade do |t|
     t.string "name_entity"
     t.string "code_entity"
@@ -900,6 +923,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_15_193135) do
     t.integer "number_exposed_contrators"
     t.integer "number_exposed_totals"
     t.bigint "location_id", null: false
+    t.integer "danger_intervened", default: 0
     t.index ["clasification_danger_detail_id"], name: "index_matrix_danger_items_on_clasification_danger_detail_id"
     t.index ["clasification_danger_id"], name: "index_matrix_danger_items_on_clasification_danger_id"
     t.index ["location_id"], name: "index_matrix_danger_items_on_location_id"
@@ -1639,6 +1663,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_15_193135) do
   add_foreign_key "form_preventions", "admin_extent_dangers"
   add_foreign_key "form_preventions", "clasification_danger_details"
   add_foreign_key "form_preventions", "clasification_dangers"
+  add_foreign_key "format_actions", "entities"
   add_foreign_key "history_evaluations", "entities"
   add_foreign_key "history_evaluations", "evaluations"
   add_foreign_key "history_evaluations", "risk_levels"

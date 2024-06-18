@@ -1,0 +1,236 @@
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+    <%= javascript_importmap_tags %>
+</head>
+
+<div>
+    <table class="table table-hover" style="border:1px solid black"> 
+        <thead>
+            <tr>
+                <td rowspan="4"; style="background-color: black;">&nbsp;</td>
+                <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
+                    <% if @format_action.entity.logo.present? then %>
+                        <%=  image_tag  @format_action.entity.logo, class: "image_peq" %>
+                    <% end %>
+                </td>
+                <td rowspan="4"; style="text-align:center; padding-bottom: 40px;">
+                    <div><h5>FORMATO PARA EL REGISTRO DE ACCIONES PREVENTIVAS, CORRECTIVAS Y DE MEJORA</h5><h6><%= @format_action.entity.business_name if @format_action.present? %> Nit: <%= @format_action.entity.identification_number if @format_action.present? %> </h6></div>
+                </td>
+                <td rowspan="4";  style="text-align:center"></td>
+
+                <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
+
+                <td style="border:1px solid black"><%= @template.date  if @template.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
+                <td style="border:1px solid black"><%= @template.date_updated if @template.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Versión:</td>
+                <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Código:</td>
+                <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+        </thead>
+    </table>
+    
+    <table> 
+        <table style="width: 100%;">
+            <tr style="background-color: #00aae4;">    
+                <td style="background-color: black;">&nbsp;</td>
+                <td style="width: 100%;border:1px solid black;text-align:center;">
+                    <strong>SISTEMA DE GESTIÓN DE LA SEGURIDAD Y SALUD EN EL TRABAJO SG-SST</strong>               
+                </td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr>    
+                <td style="background-color: black;">&nbsp;</td>
+                <td style="width: 100%;border:1px solid black;">
+                    <br>
+                    Formato para el registro de acciones preventivas, correctivas y de mejora.
+                </td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr>    
+                <td style="background-color: black;">&nbsp;</td>
+                <td style="width: 50%;border:1px solid black;">
+                    <br>
+                    <strong>Fecha</strong>               
+                    <%= @format_action.date_format %>
+                </td>
+                <td style="width: 50%;border:1px solid black;">
+                </td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr style="background-color: #00aae4;">  
+                <td style="background-color: black;">&nbsp;</td>
+                <td style="width: 100%;border:1px solid black;text-align:center;">
+                    <strong>REGISTROS DE LAS ACCIONES PREVENTIVAS Y CORRECTIVAS</strong>               
+                </td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr>      
+                <td style="background-color: black;">&nbsp;</td>
+                <td style="width: 100%;border:1px solid black;">
+                    <br>
+                    <strong><%= t('.description_conformity') %></strong>               
+                    <%= @format_action.description_conformity %>
+                </td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr> 
+                <td style="background-color: black;">&nbsp;</td>
+                <td style="width: 100%;border:1px solid black;">
+                    <br>
+                    <strong><%= t('.causes_conformity') %></strong>               
+                    <%= @format_action.causes_conformity %>
+                </td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr style="background-color: #00aae4;"> 
+                <td style="background-color: black;">&nbsp;</td>
+                <td style="border:1px solid black; width: 100%; text-align:center">
+                    <strong>Sección, Actividad, Tarea, en la cual se detectó la no conformidad:</strong>               
+                </td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+        </table> 
+        <table style="width: 100%;">
+            <tr> 
+                <td style="background-color: black;">&nbsp;</td>
+                <td style="width: 35%;border:1px solid black;">
+                    <br>
+                    <strong><%= t('.section') %></strong>               
+                    <%= @format_action.section %>
+                </td>
+                <td style="width: 35%;border:1px solid black;">
+                    <br>
+                    <strong><%= t('.activity') %></strong>               
+                    <%= @format_action.activity %>
+                </td>
+                <td style="width: 40%;border:1px solid black;">
+                    <br>    
+                    <strong><%= t('.task') %></strong>               
+                    <%= @format_action.task %>
+                </td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr style="background-color: #00aae4;">  
+                <td style="background-color: black;">&nbsp;</td>
+                <td style="width: 100%;border:1px solid black;text-align:center;">
+                    <strong>CLASIFICACIÓN DE LA ACCIÓN A EJECUTAR</strong>               
+                </td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="background-color: black;">&nbsp;</td>
+                <td style="width: 100%;border:1px solid black;">
+                    <br>
+                    <strong><%= t('.type_action') %></strong>               
+                    <%= @format_action.type_action %>
+                </td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="background-color: black;">&nbsp;</td>
+                <td style="width: 100%;border:1px solid black;">
+                    <br>
+                    <strong><%= t('.description_action') %></strong>               
+                    <%= @format_action.description_action %>
+                </td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="background-color: black;">&nbsp;</td>
+                <td style="width: 100%;border:1px solid black;">
+                    <br>
+                    <%= t('.user_responsible') %>
+                    <%= FormatAction.name_user(@format_action.user_responsible) %>
+                </td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr>   
+                <td style="background-color: black;">&nbsp;</td>
+                <td style="width: 50%;border:1px solid black;">
+                    <br>
+                    <strong><%= t('.post_responsible') %></strong>               
+                    <%= @format_action.post_responsible %>
+                </td>
+                <td style="width: 50%;border:1px solid black;">
+                    <br>
+                    <strong><%= t('.area_responsible') %></strong>               
+                    <%= @format_action.area_responsible %>
+                </td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr>   
+                <td style="background-color: black;">&nbsp;</td>
+                <td style="width: 50%;border:1px solid black;">
+                    <br>
+                    <strong><%= t('.date_execution') %></strong>               
+                    <%= @format_action.date_execution %>
+                </td>
+                <td style="width: 50%;border:1px solid black;">
+                    <br>
+                    <strong><%= t('.date_verification') %></strong>               
+                    <%= @format_action.date_verification %>
+                </td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr>  
+                <td style="background-color: black;">&nbsp;</td>
+                <td style="width: 50%;border:1px solid black;">
+                    <br>
+                    <strong><%= t('.efficiency_results') %></strong>               
+                    <%= @format_action.efficiency_results %>
+                </td>
+                <td style="width: 50%;border:1px solid black;">
+                    <br>
+                    <strong><%= t('.action_completed') %></strong>
+                    <% if @format_action.action_completed == 0 then %>
+                        NO
+                    <% else %>
+                        SI
+                    <% end %>
+                </td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr> 
+                <td style="background-color: black;">&nbsp;</td>
+                <td style="width: 100%;border:1px solid black;">
+                    <br>
+                    <strong><%= t('.observations') %></strong>               
+                    <%= @format_action.observations %>
+                </td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+        </table>
+        <br>
+        <br>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    </table>
+</div>        
+<br>
+

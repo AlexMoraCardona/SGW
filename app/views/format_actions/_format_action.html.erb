@@ -1,0 +1,40 @@
+<div class="container col-12">
+    <% if @entity.present? %>
+        <h2><%= @entity.business_name %> Nit: <%=@entity.identification_number %></h2>
+    <% end %>
+    <br>
+    <%= link_to t('common.create_format_action'), new_format_action_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+    <br>
+    <% if @format_actions.present? %>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col"><%= t('.date_format') %></th>
+                    <th scope="col"><%= t('.description_conformity') %></th>
+                    <th scope="col"><%= t('.type_action') %></th>
+                    <th scope="col"><%= t('.user_responsible') %></th>
+                    <th scope="col"><%= t('.action_completed') %></th>
+                    <th scope="col">Editar</th>
+                    <th scope="col">Ver</th>
+                    <th scope="col">PDF</th>
+                </tr>
+            </thead> 
+            <tbody> 
+                <% @format_actions.each do |format_action| %>
+                    <tr>
+                        <td><%= format_action.date_format %></td>
+                        <td><%= format_action.description_conformity %></td>
+                        <td><%= format_action.type_action %></td>
+                        <td><%= FormatAction.name_user(format_action.user_responsible) %></td>
+                        <td><%= FormatAction.label_action_completed(format_action.action_completed) %></td>
+                        <td style="text-align:center"><%= link_to t('common.show'), format_action_path(format_action.id), class: 'btn btn-sm btn-warning' %></td>
+                        <td><%= link_to t('common.edit'), edit_format_action_path(format_action), class: 'btn btn-sm btn-primary'  %></td>
+                        <td><%= link_to "PDF", format_action_pdf_path(format_action.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
+                    </tr>
+                <% end %>           
+            </tbody>      
+        </table>  
+    <% end %>     
+<div>
+
+

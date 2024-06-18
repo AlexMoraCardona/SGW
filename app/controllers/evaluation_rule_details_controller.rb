@@ -50,7 +50,7 @@ class EvaluationRuleDetailsController < ApplicationController
             user_secretario_copasst = User.find_by("entity = ? and secretary_copasst = ?", @evidence.entity_id.to_i, 1) 
             user_vigia = User.find_by("entity = ? and vigia_sgsst = ?", @evidence.entity_id.to_i, 1) 
 
-            if user_legal_representative.present? && @evidence.template_id != 19 && @evidence.template_id != 20 && @evidence.template_id != 21 && @evidence.template_id != 22 && @evidence.template_id != 23 && @evidence.template_id != 24 && @evidence.template_id != 13 && @evidence.template_id != 14 && @evidence.template_id != 15 && @evidence.template_id != 7 && @evidence.template_id != 8 && @evidence.template_id != 9 && @evidence.template_id != 52 && @evidence.template_id != 53 && @evidence.template_id != 54 && @evidence.template_id != 115 && @evidence.template_id != 116 && @evidence.template_id != 117 then
+            if user_legal_representative.present? && @evidence.template_id != 19 && @evidence.template_id != 20 && @evidence.template_id != 21 && @evidence.template_id != 22 && @evidence.template_id != 23 && @evidence.template_id != 24 && @evidence.template_id != 13 && @evidence.template_id != 14 && @evidence.template_id != 15 && @evidence.template_id != 7 && @evidence.template_id != 8 && @evidence.template_id != 9 && @evidence.template_id != 52 && @evidence.template_id != 53 && @evidence.template_id != 54 && @evidence.template_id != 115 && @evidence.template_id != 116 && @evidence.template_id != 117 && @evidence.template_id != 199 && @evidence.template_id != 200 && @evidence.template_id != 201 then
                 @firma_nueva  = Firm.new
                 @firma_nueva.user_id = user_legal_representative.id
                 @firma_nueva.legal_representative = 1
@@ -59,7 +59,7 @@ class EvaluationRuleDetailsController < ApplicationController
                 @firma_nueva.save
             end   
 
-            if user_presidente_copasst.present? && (@evidence.template_id == 34 || @evidence.template_id == 35 || @evidence.template_id == 36 || @evidence.template_id == 166 || @evidence.template_id == 167 || @evidence.template_id == 168) then
+            if user_presidente_copasst.present? && (@evidence.template_id == 34 || @evidence.template_id == 35 || @evidence.template_id == 36 || @evidence.template_id == 166 || @evidence.template_id == 167 || @evidence.template_id == 168 || @evidence.template_id == 199 || @evidence.template_id == 200 || @evidence.template_id == 201) then
                 @firma_nueva  = Firm.new
                 @firma_nueva.user_id = user_presidente_copasst.id
                 @firma_nueva.evidence_id = @evidence.id
@@ -75,7 +75,7 @@ class EvaluationRuleDetailsController < ApplicationController
                 @firma_nueva.save
             end   
 
-            if user_secretario_copasst.present? && (@evidence.template_id == 34 || @evidence.template_id == 35 || @evidence.template_id == 36 || @evidence.template_id == 166 || @evidence.template_id == 167 || @evidence.template_id == 168) then
+            if user_secretario_copasst.present? && (@evidence.template_id == 34 || @evidence.template_id == 35 || @evidence.template_id == 36 || @evidence.template_id == 166 || @evidence.template_id == 167 || @evidence.template_id == 168  || @evidence.template_id == 199 || @evidence.template_id == 200 || @evidence.template_id == 201) then
                 @firma_nueva  = Firm.new
                 @firma_nueva.user_id = user_secretario_copasst.id
                 @firma_nueva.evidence_id = @evidence.id
@@ -91,7 +91,7 @@ class EvaluationRuleDetailsController < ApplicationController
                 @evidence.template_id == 130 || @evidence.template_id == 131 || @evidence.template_id == 132 || @evidence.template_id == 133 || @evidence.template_id == 134 || @evidence.template_id == 135 || @evidence.template_id == 136 || @evidence.template_id == 137 || 
                 @evidence.template_id == 138 || @evidence.template_id == 142 || @evidence.template_id == 143 || @evidence.template_id == 144 || @evidence.template_id == 145 || @evidence.template_id == 146 || @evidence.template_id == 147 || @evidence.template_id == 148 || 
                 @evidence.template_id == 149 || @evidence.template_id == 150 || @evidence.template_id == 151 || @evidence.template_id == 152 || @evidence.template_id == 153 || @evidence.template_id == 154 || @evidence.template_id == 155 || @evidence.template_id == 156 || 
-                @evidence.template_id == 175 || @evidence.template_id == 176 || @evidence.template_id == 177 || @evidence.template_id == 187 || @evidence.template_id == 188 || @evidence.template_id == 189)  then
+                @evidence.template_id == 175 || @evidence.template_id == 176 || @evidence.template_id == 177 || @evidence.template_id == 187 || @evidence.template_id == 188 || @evidence.template_id == 189 || @evidence.template_id == 190 || @evidence.template_id == 191 || @evidence.template_id == 192)   then
                 @firma_nueva  = Firm.new
                 @firma_nueva.user_id = user_responsible.id
                 @firma_nueva.evidence_id = @evidence.id

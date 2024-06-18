@@ -11,6 +11,7 @@ class HomesController < ApplicationController
          enfermedad_laboral
          dias_comun_laboral
          actos_inseguros
+         peligros_riesgos
     end    
 
 
@@ -125,6 +126,22 @@ class HomesController < ApplicationController
                 @totalactosnointer += 1 if item.state_unsafe == 0
             end    
         end    
+    end
+
+    def peligros_riesgos
+        entity = Entity.find(Current.user.entity)
+        @matrix_danger_risks = MatrixDangerRisk.find_by(entity_id: entity.id) if entity.present?
+        @matrix_danger_items = MatrixDangerItem.where('matrix_danger_risk_id = ?', @matrix_danger_risks.id) if @matrix_danger_risks.present?
+
+        @totalpeligrosinter = 0
+        @totalpeligros = 0
+        @datos_peligrosriesgos = []
+        @matrix_danger_items.each do |rep| 
+            @totalpeligros += 1
+            if rep.danger_intervened == 1 then
+                @totalpeligrosinter += 1
+            end    
+        end
     end
 
 

@@ -2,7 +2,7 @@
     <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %></h2>
 <% end %>
 
-<% if @matrix_corrective_action.present? %>
+<% if @matrix_corrective_action.present? %> 
     <td><%= link_to t('common.show_matrix_corrective_action'), matrix_corrective_action_path(@matrix_corrective_action.id), class: 'btn btn-sm btn btn-warning' %></td>
     <td><%= link_to t('common.item_action'), crear_item_matrix_corrective_actions_path(@matrix_corrective_action.id), class: 'btn btn-sm btn btn-warning' %></td>
     <td><%= link_to "PDF", resumen_pdf_matrix_corrective_actions_path(@matrix_corrective_action.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
@@ -198,6 +198,7 @@
                 <th scope="col">Nro.</th>
                 <th scope="col">Año</th>
                 <th scope="col">Tipo de Acción </th>
+                <th scope="col">N°Acción</th>
                 <th scope="col">Descripción de la acción</th>
                 <th scope="col">Se realizaron la Acciones</th>
                 <th scope="col">Estado de las Acciones</th>
@@ -218,6 +219,7 @@
                 <% if matrix_action_item.type_corrective.to_i == 2  %>
                     <td style="border:1px solid black; text-align:center; background-color:#F03553">Acción Correctiva</td>
                 <% end  %>    
+                <td scope="col"><%= matrix_action_item.clasification_type_corrective %></td>
                 <td scope="col"><%= matrix_action_item.description_action %></td>
                 <td scope="col"><%= matrix_action_item.label_si_no(matrix_action_item.took_actions) %></td>
                 <td scope="col"><%= matrix_action_item.label_state_actions(matrix_action_item.state_actions) %></td>

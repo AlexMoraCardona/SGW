@@ -2,7 +2,7 @@ class UnsafeConditionsController < ApplicationController
     def index
         if params[:entity_id].present?
             @entity = Entity.find(params[:entity_id])
-            @unsafe_conditions = UnsafeCondition.where(entity_id: @entity.id).order(:date_report) if @entity.id.present?
+            @unsafe_conditions = UnsafeCondition.where(entity_id: @entity.id).order(date_report: :desc) if @entity.id.present?
         else    
             if  Current.user && Current.user.level == 1
                 @entities = Entity.all
@@ -93,12 +93,17 @@ class UnsafeConditionsController < ApplicationController
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma."
             end    
         end
-    end    
+    end  
+    
+    def add_evidences
+        @unsafe_condition = UnsafeCondition.find_by(id: params[:id].to_i)
+
+    end     
     
     
     private
 
-    def unsafe_condition_params
+    def unsafe_condition_params 
         params.require(:unsafe_condition).permit(:date_report, :place_report, :user_reports, :description_condition, 
         :equipment_condition, :floors_condition, :not_demarcate_areas, :gases_dusts, :unsafe_work_design, 
         :inadequate_signage, :defective_tools, :lack_alarm, :lack_cleanliness, :lack_space_work, :incorrect_storage, 
@@ -107,7 +112,7 @@ class UnsafeConditionsController < ApplicationController
         :psychoactive_substances, :ignore_dangerous, :use_wrong_tool, :wrong_position, :heights_without_authorization, 
         :workplace_distractions, :gen_on_desk, :other_features, :alternative_soluctions, :user_receiving, 
         :user_coordinator, :date_firm_user_reports, :date_firm_user_receiving, :date_firm_user_coordinator, 
-        :firm_user_reports, :firm_user_receiving, :firm_user_coordinator, :entity_id)
+        :firm_user_reports, :firm_user_receiving, :firm_user_coordinator, :entity_id, :exact_ubication, evidencias: [])
     end 
 
 end  

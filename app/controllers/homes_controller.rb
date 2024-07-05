@@ -115,7 +115,8 @@ class HomesController < ApplicationController
         entity = Entity.find(Current.user.entity)
         @matrix_condition = MatrixCondition.find_by(entity_id: entity.id) if entity.present?
         @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", @matrix_condition.id) if @matrix_condition.present?
-        @cantidad = @matrix_unsafe_items.count
+        @cantidad = 0
+        @cantidad = @matrix_unsafe_items.count if @matrix_unsafe_items.present?
         @totalactosinter = 0
         @totalactos = 0
         @totalactosnointer = 0

@@ -4,7 +4,7 @@
  
 <% if @matrix_condition.present? %> 
     <td><%= link_to t('common.show_matrix_condition'), matrix_condition_path(@matrix_condition.id), class: 'btn btn-sm btn btn-warning' %></td>
-    <td><%= link_to t('common.crear_item'), crear_item_condition_path(@matrix_condition.id), class: 'btn btn-sm btn btn-warning' %></td>
+    <td><%= link_to t('common.crear_acto'), crear_item_condition_path(@matrix_condition.id), class: 'btn btn-sm btn btn-warning' %></td>
     <td><%= link_to "PDF", condition_pdf_path(@matrix_condition.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
     
     <div class="container col-12">
@@ -22,34 +22,37 @@
                 <%=  MatrixCondition.name_user(@matrix_condition.user_representante)  %> 
             </div>        
             <div class="col-sm-3">
-                <strong><%= t('.firm_representante') %></strong><br>
-                <%= MatrixCondition.label_firm(@matrix_condition.firm_representante) %> 
-            </div>        
-            <div class="col-sm-3">
-                <% if @matrix_condition.firm_representante.to_i == 0 %>
-                    <%= link_to t('common.firmar'), firmar_representante_path(@matrix_condition.id, 1), class: 'btn btn-sm btn btn-warning' %>
-                <% else %>    
-                    <%= @matrix_condition.date_firm_representante %> 
-                <% end %>    
-            </div>
-        </div>
-        <div class="row g-4">
-            <div class="col-sm-3">
                 <strong><%= t('.user_responsible') %></strong><br>
                 <%=  MatrixCondition.name_user(@matrix_condition.user_responsible)  %> 
             </div>        
-            <div class="col-sm-3">
-                <strong><%= t('.firm_responsible') %></strong><br>
-                <%= MatrixCondition.label_firm(@matrix_condition.firm_responsible) %> 
-            </div>        
-            <div class="col-sm-3">
-                <% if @matrix_condition.firm_responsible.to_i == 0 %>
-                    <%= link_to t('common.firmar'), firmar_responsible_path(@matrix_condition.id, 2), class: 'btn btn-sm btn btn-warning' %>
-                <% else %>    
-                    <%= @matrix_condition.date_firm_responsible %> 
-                <% end %>    
+        </div> 
+        <div class="row g-3">
+            <div class="col-sm-5">
+                <%= pie_chart  @datos_matrix_conditions, title: "Matriz de Actos y Condiciones Inseguras", download: {filename: "GraficaCiclo"}, download: {background: "#FFFFFF"}, xtitle: "Cerrados", ytitle: "Abiertos", suffix: " Actos o Condiciones", colors: ["#008000", "#FF0000"], donut: true, label: 'true', width: "200px", height: "200px", legend: "bottom", loading: "Loading..."  if @datos_matrix_conditions.present? %>
             </div>
-        </div>
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-5">
+                <br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Total de Actos y Condiciones Inseguras</th>
+                            <th scope="col">Abiertas</th>
+                            <th scope="col">Cerradas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <tr>
+                                <td style="text-align:center"><%= @total_items %></td>
+                                <td style="text-align:center"><%= @abierta %></td>
+                                <td style="text-align:center"><%= @cerrada %></td>
+                            </tr>    
+                    </tbody>
+                </table>
+            </div>
+        </div>        
+
     </div>           
     <br> 
     <hr>

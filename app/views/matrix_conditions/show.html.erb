@@ -53,6 +53,7 @@
                 <td style="border:1px solid black; text-align:center">ESTADO</TD>
                 <td style="border:1px solid black; text-align:center">OBSERVACIONES</TD>
                 <td style="border:1px solid black; text-align:center">VER/EDITAR</TD>
+                <td style="border:1px solid black; text-align:center">ELIMINAR</TD>
                 <td style="background-color: black;">&nbsp;</td>
              </tr>  
              
@@ -72,9 +73,19 @@
                     <td style="border:1px solid black"><%= item.exact_ubication %></td>
                     <td style="border:1px solid black"><%= item.description_usafe %></td>
                     <td style="border:1px solid black"><%= MatrixUnsafeItem.tipo_accion(item.tip_action) %></td>
-                    <td style="border:1px solid black"><%= MatrixUnsafeItem.estado(item.state_unsafe) %></td>
+                    
+                    <% if item.state_unsafe == 0  %>
+                         <td style="border:1px solid black; text-align:center; background-color:#F03553"><%= MatrixUnsafeItem.estado(item.state_unsafe) %></td>
+                    <% end  %>    
+                    <% if item.state_unsafe == 1  %>
+                         <td style="border:1px solid black; text-align:center; background-color:#038018"><%= MatrixUnsafeItem.estado(item.state_unsafe) %></td>
+                    <% end  %>    
+
+                    
                     <td style="border:1px solid black"><%= item.observations %></td>
                     <td style="border:1px solid black"><%= link_to t('common.edit'), edit_matrix_unsafe_item_path(item), class: 'btn btn-sm btn-primary'  %></td>
+                    <td style="border:1px solid black"><%= link_to t('common.delete'), matrix_unsafe_item_path(item), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el acto o condición insegura?' }, class: 'btn btn-sm btn-danger' %></td>
+
                     <td style="background-color: black;">&nbsp;</td>
                 </tr>
             </body>

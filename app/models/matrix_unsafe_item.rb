@@ -12,8 +12,9 @@ class MatrixUnsafeItem < ApplicationRecord
     end
 
     def self.tipo_accion(dato)
-        if dato == 0 ; 'Acto/Condición insegura'
-        elsif  dato == 1 ; 'Otro tipo de acción'
+        if dato == 0 ; 'Preventiva'
+        elsif  dato == 1 ; 'Correctiva'
+        elsif  dato == 2 ; 'Mejora'
         end 
     end
 

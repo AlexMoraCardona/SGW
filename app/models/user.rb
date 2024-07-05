@@ -21,6 +21,13 @@ class User < ApplicationRecord
 
     before_save :downcase_attributes
 
+
+    def self.label_entity(dato)
+        entity = Entity.find(dato)
+        name = entity.business_name if entity.present?
+    end    
+
+
     private
     def downcase_attributes
         self.username = username.downcase 

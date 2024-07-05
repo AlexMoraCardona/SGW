@@ -3,6 +3,7 @@ class MatrixConditionsController < ApplicationController
         if params[:entity_id].present?
             @entity = Entity.find(params[:entity_id])
             @matrix_condition = MatrixCondition.find_by(entity_id: params[:entity_id])
+            indicador_matrix_condition(@matrix_condition.id) if @matrix_condition.present?
         else    
             if  Current.user && Current.user.level == 1
                 @entities = Entity.all
@@ -12,6 +13,8 @@ class MatrixConditionsController < ApplicationController
             end           
         end 
     end 
+
+
     
     def show
         @matrix_condition = MatrixCondition.find(params[:id])
@@ -111,7 +114,29 @@ class MatrixConditionsController < ApplicationController
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Asesor en SST."
             end    
         end
+    end  
+  
+    def indicador_matrix_condition(matrix_condition_id)
+        @total_items = 0
+        @abierta = 0
+        @cerrada = 0
+
+        @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", matrix_condition_id) if matrix_condition_id.present?
+        
+        if @matrix_unsafe_items.present? 
+            @matrix_unsafe_items.each do |item| 
+                @total_items += 1 
+                if item.state_unsafe == 0; @abierta += 1
+                else @cerrada += 1    
+                end
+            end    
+        end 
+        @datos_matrix_conditions = []
+        @datos_matrix_conditions.push(['Cerradas', @cerrada ])
+        @datos_matrix_conditions.push(['Abiertas', @abierta ])
+
     end    
+
 
     private
 

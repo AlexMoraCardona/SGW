@@ -60,6 +60,16 @@
             </td>
             <td style="background-color: black;">&nbsp;</td>
         </tr>
+        <tr>    
+            <td style="background-color: black;">&nbsp;</td>
+            <td style="border:1px solid black;">
+                <strong>Ubicación exacta del acto o condición insegura:</strong>               
+            </td>
+            <td style="border:1px solid black;">
+                <%= @unsafe_condition.exact_ubication  if @unsafe_condition.exact_ubication.present? %>
+            </td>
+            <td style="background-color: black;">&nbsp;</td>
+        </tr>
         <tr>
             <td style="background-color: black;">&nbsp;</td>
             <td style="border:1px solid black;">
@@ -390,6 +400,47 @@
             </td>
             <td style="background-color: black;">&nbsp;</td>
         </tr>
+        <tr style="background-color: #00aae4;"> 
+            <td style="background-color: black;">&nbsp;</td>   
+            <td colspan="2"; style="border:1px solid black; width: 100%; text-align:center">
+                <strong>ARCHIVOS ADJUNTOS</strong>               
+            </td>
+            <td style="background-color: black;">&nbsp;</td>
+        </tr>
+        <tr>    
+            <td style="background-color: black;">&nbsp;</td>
+            <td colspan="2"; style="border:1px solid black; width: 100%">
+
+                <% if @unsafe_condition.evidencias.attached? %>
+                    <div data-controller="previews" >
+                        <% @unsafe_condition.evidencias.each do |file|%>
+                            <br>
+                            <% if file.image? %>
+                                <div>
+                                    <%= image_tag file, data: {previews_target: "preview"}, class: "image" %>
+                                    <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
+                                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                </div> 
+                            <% elsif file.video? %>
+                                <%= video_tag url_for(file), controls: "", width: "400px" %>          
+                                <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
+                                <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                            <% elsif file.audio? %>
+                                <%= audio_tag(url_for(file), controls: "") %>          
+                                <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
+                                <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                            <% else %>
+                                <%= link_to file.filename, url_for(file) %>          
+                                <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
+                                <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                            <% end %>
+                        <% end %>  
+                    </div>
+                <% end %>  
+            </td>
+            <td style="background-color: black;">&nbsp;</td>
+        </tr>
+
         <tr> 
             <td style="background-color: black;">&nbsp;</td>   
             <td style="border:1px solid black; width: 40%">

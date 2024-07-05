@@ -12,6 +12,7 @@ class MatrixCondition < ApplicationRecord
         if firm == 0 ; 'NO'
         elsif  firm == 1 ; 'SI'
         end 
-    end      
-
+    end  
+    
+    
 end

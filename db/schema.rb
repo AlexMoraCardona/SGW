@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_06_18_004240) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_03_140522) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -1547,6 +1547,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_18_004240) do
     t.bigint "entity_id"
     t.integer "version"
     t.string "code"
+    t.string "exact_ubication"
     t.index ["entity_id"], name: "index_unsafe_conditions_on_entity_id"
   end
 

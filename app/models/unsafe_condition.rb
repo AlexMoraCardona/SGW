@@ -1,4 +1,5 @@
 class UnsafeCondition < ApplicationRecord
+    has_many_attached :evidencias
     belongs_to :entity
 
     def self.name_user(user_id)
@@ -143,7 +144,7 @@ class UnsafeCondition < ApplicationRecord
         @matrix_unsafe_item.cargo_reporta = @user.activity if @user.present?
         @matrix_unsafe_item.correo_reporta = @user.email if @user.present?
         @matrix_unsafe_item.sede = @unsafe_condition.place_report if @unsafe_condition.present?
-        @matrix_unsafe_item.exact_ubication = @unsafe_condition.place_report if @unsafe_condition.present?
+        @matrix_unsafe_item.exact_ubication = @unsafe_condition.exact_ubication if @unsafe_condition.present?
         @matrix_unsafe_item.description_usafe = dato
         @matrix_unsafe_item.solution_usafe = @unsafe_condition.alternative_soluctions if @unsafe_condition.present?
         @matrix_unsafe_item.tip_action = 0

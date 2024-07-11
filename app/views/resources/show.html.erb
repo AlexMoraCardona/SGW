@@ -9,7 +9,7 @@
                         <%=  image_tag  @resource.entity.logo, class: "image_peq" %>
                     <% end %>
                 </td>
-                <td rowspan="4"; colspan="5"; style="text-align:center; padding-bottom: 40px;">
+                <td rowspan="4"; colspan="7"; style="text-align:center; padding-bottom: 40px;">
                     <div><h5>ASIGNACIÓN DE RECURSOS PARA EL SG-SST <%= @resource.year if @resource.present? %></h5><h6><%= @resource.entity.business_name if @resource.present? %> Nit: <%= @resource.entity.identification_number if @resource.present? %> </h6></div>
                 </td>
                 <td rowspan="4";  style="text-align:center"></td>
@@ -46,6 +46,8 @@
                 <th colspan="2"; style="border:1px solid black;text-align:center">Ejecutado</th>
                 <th colspan="2"; style="border:1px solid black;text-align:center">Aprobado</th>
                 <th style="border:1px solid black;text-align:center">Fecha de Aprobación </th>
+                <th rowspan="2"; style="border:1px solid black;text-align:center">Editar</th>
+                <th rowspan="2"; style="border:1px solid black;text-align:center">Eliminar</th>
                 <td style="background-color: black;">&nbsp;</td>
             </tr>   
 
@@ -74,6 +76,8 @@
                     <td style="border:1px solid black;text-align:center"><%= resource_item.labelxs(resource_item.approved) %></td>
                     <td style="border:1px solid black;text-align:center"><%= resource_item.labelxn(resource_item.approved) %></td>
                     <td style="border:1px solid black;text-align:center"><%= resource_item.date_approved  %></td>
+                    <td style="border:1px solid black; text-align:center;"><%= link_to t('common.edit'), edit_resource_item_path(resource_item), class: 'btn btn-sm btn-primary'  %></td>
+                    <td style="border:1px solid black; text-align:center;"><%= link_to t('common.delete'), resource_item_path(resource_item), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar la asignación de recurso?' }, class: 'btn btn-sm btn-danger' %></td>
                     <td style="background-color: black;">&nbsp;</td>
                 </tr> 
             </body>
@@ -91,7 +95,7 @@
                     <% end %>     
                 <% end %>     
             </td>
-            <td  colspan="3";style="border:1px solid black"><br>
+            <td  colspan="4";style="border:1px solid black"><br>
                 <% if @resource.firm_adviser_sst == 1 %>
                     <% if @adv.present? %>
                         <% if @adv.firm.attached? %>
@@ -102,7 +106,7 @@
                     <% end %>     
                 <% end %>     
             </td>
-            <td  colspan="3";style="border:1px solid black"><br>
+            <td  colspan="4";style="border:1px solid black"><br>
                 <% if @resource.firm_responsible_sst == 1 %>
                     <% if @res.present? %>
                         <% if @res.firm.attached? %>
@@ -118,8 +122,8 @@
         <tr>
             <td style="background-color: black;">&nbsp;</td>
             <td  colspan="4"><%= @resource.name_user(@resource.user_legal_representative) %> - Representante Legal</td>
-            <td  colspan="3"><%= @resource.name_user(@resource.user_adviser_sst) %> - Asesor SST</td>
-            <td  colspan="3"><%= @resource.name_user(@resource.user_responsible_sst) %> - Responsable SST</td>
+            <td  colspan="4"><%= @resource.name_user(@resource.user_adviser_sst) %> - Asesor SST</td>
+            <td  colspan="4"><%= @resource.name_user(@resource.user_responsible_sst) %> - Responsable SST</td>
             <td style="background-color: black;">&nbsp;</td>
         </tr>
     </table>

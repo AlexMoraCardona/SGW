@@ -26,23 +26,23 @@
 
                 <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
 
-                <td style="border:1px solid black"><%= @annual_work_plan.created_at.strftime("%F")  if @annual_work_plan.present? %></td>
+                <td style="border:1px solid black"><%= @template.date if @template.present? %></td>
                 <td style="background-color: black;">&nbsp;</td>
 
             </tr>
             <tr> 
                 <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
-                <td style="border:1px solid black"><%= @annual_work_plan.updated_at.strftime("%F")  if @annual_work_plan.present? %></td>
+                <td style="border:1px solid black"><%= @template.date_updated if @template.present? %></td>
                 <td style="background-color: black;">&nbsp;</td>
             </tr>
             <tr> 
                 <td colspan="2"; style="border:1px solid black">Versión:</td>
-                <td style="border:1px solid black"><%= @annual_work_plan.version if @annual_work_plan.present? %></td>
+                <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
                 <td style="background-color: black;">&nbsp;</td>
             </tr>
             <tr> 
                 <td colspan="2"; style="border:1px solid black">Código:</td>
-                <td style="border:1px solid black"><%= @annual_work_plan.code if @annual_work_plan.present? %></td>
+                <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
                 <td style="background-color: black;">&nbsp;</td>
             </tr>
 
@@ -103,18 +103,127 @@
                     <td style="border:1px solid black"><%= annual_work_plan_item.resource %></td>
                     <td style="border:1px solid black"><%= annual_work_plan_item.responsible %></td>
                     <td style="border:1px solid black"><%= annual_work_plan_item.date_realization %></td>
-                    <td style="border:1px solid black"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) if annual_work_plan_item.month == 1  %></td>
-                    <td style="border:1px solid black"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) if annual_work_plan_item.month == 2  %></td>
-                    <td style="border:1px solid black"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) if annual_work_plan_item.month == 3  %></td>
-                    <td style="border:1px solid black"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) if annual_work_plan_item.month == 4  %></td>
-                    <td style="border:1px solid black"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) if annual_work_plan_item.month == 5  %></td>
-                    <td style="border:1px solid black"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) if annual_work_plan_item.month == 6  %></td>
-                    <td style="border:1px solid black"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) if annual_work_plan_item.month == 7  %></td>
-                    <td style="border:1px solid black"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) if annual_work_plan_item.month == 8  %></td>
-                    <td style="border:1px solid black"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) if annual_work_plan_item.month == 9  %></td>
-                    <td style="border:1px solid black"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) if annual_work_plan_item.month == 10  %></td>
-                    <td style="border:1px solid black"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) if annual_work_plan_item.month == 11  %></td>
-                    <td style="border:1px solid black"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) if annual_work_plan_item.month == 12  %></td>
+
+                    <% if annual_work_plan_item.month == 1  %>
+                        <% if  annual_work_plan_item.earring == 0 %>
+                            <td style="border:1px solid black; background-color:#F03553"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% else %>
+                            <td style="border:1px solid black; background-color:#038018"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% end  %>
+                    <% else %>
+                        <td style="border:1px solid black"></td>
+                    <% end  %>
+
+                    <% if annual_work_plan_item.month == 2  %>
+                        <% if  annual_work_plan_item.earring == 0 %>
+                            <td style="border:1px solid black; background-color:#F03553"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% else %>
+                            <td style="border:1px solid black; background-color:#038018"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% end  %>
+                    <% else %>
+                        <td style="border:1px solid black"></td>
+                    <% end  %>
+                    
+                    <% if annual_work_plan_item.month == 3  %>
+                        <% if  annual_work_plan_item.earring == 0 %>
+                            <td style="border:1px solid black; background-color:#F03553"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% else %>
+                            <td style="border:1px solid black; background-color:#038018"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% end  %>
+                    <% else %>
+                        <td style="border:1px solid black"></td>
+                    <% end  %>
+
+                    <% if annual_work_plan_item.month == 4  %>
+                        <% if  annual_work_plan_item.earring == 0 %>
+                            <td style="border:1px solid black; background-color:#F03553"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% else %>
+                            <td style="border:1px solid black; background-color:#038018"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% end  %>
+                    <% else %>
+                        <td style="border:1px solid black"></td>
+                    <% end  %>
+
+                    <% if annual_work_plan_item.month == 5  %>
+                        <% if  annual_work_plan_item.earring == 0 %>
+                            <td style="border:1px solid black; background-color:#F03553"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% else %>
+                            <td style="border:1px solid black; background-color:#038018"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% end  %>
+                    <% else %>
+                        <td style="border:1px solid black"></td>
+                    <% end  %>
+                    
+                    <% if annual_work_plan_item.month == 6  %>
+                        <% if  annual_work_plan_item.earring == 0 %>
+                            <td style="border:1px solid black; background-color:#F03553"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% else %>
+                            <td style="border:1px solid black; background-color:#038018"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% end  %>
+                    <% else %>
+                        <td style="border:1px solid black"></td>
+                    <% end  %>
+
+                    <% if annual_work_plan_item.month == 7  %>
+                        <% if  annual_work_plan_item.earring == 0 %>
+                            <td style="border:1px solid black; background-color:#F03553"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% else %>
+                            <td style="border:1px solid black; background-color:#038018"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% end  %>
+                    <% else %>
+                        <td style="border:1px solid black"></td>
+                    <% end  %>
+
+                    <% if annual_work_plan_item.month == 8  %>
+                        <% if  annual_work_plan_item.earring == 0 %>
+                            <td style="border:1px solid black; background-color:#F03553"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% else %>
+                            <td style="border:1px solid black; background-color:#038018"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% end  %>
+                    <% else %>
+                        <td style="border:1px solid black"></td>
+                    <% end  %>
+
+                    <% if annual_work_plan_item.month == 9  %>
+                        <% if  annual_work_plan_item.earring == 0 %>
+                            <td style="border:1px solid black; background-color:#F03553"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% else %>
+                            <td style="border:1px solid black; background-color:#038018"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% end  %>
+                    <% else %>
+                        <td style="border:1px solid black"></td>
+                    <% end  %>
+
+                    <% if annual_work_plan_item.month == 10  %>
+                        <% if  annual_work_plan_item.earring == 0 %>
+                            <td style="border:1px solid black; background-color:#F03553"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% else %>
+                            <td style="border:1px solid black; background-color:#038018"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% end  %>
+                    <% else %>
+                        <td style="border:1px solid black"></td>
+                    <% end  %>
+
+                    <% if annual_work_plan_item.month == 11  %>
+                        <% if  annual_work_plan_item.earring == 0 %>
+                            <td style="border:1px solid black; background-color:#F03553"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% else %>
+                            <td style="border:1px solid black; background-color:#038018"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% end  %>
+                    <% else %>
+                        <td style="border:1px solid black"></td>
+                    <% end  %>
+
+                    <% if annual_work_plan_item.month == 12  %>
+                        <% if  annual_work_plan_item.earring == 0 %>
+                            <td style="border:1px solid black; background-color:#F03553"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% else %>
+                            <td style="border:1px solid black; background-color:#038018"><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
+                        <% end  %>
+                    <% else %>
+                        <td style="border:1px solid black"></td>
+                    <% end  %>
+                    
                     <td style="border:1px solid black"><%= annual_work_plan_item.evidences_plan  %></td>
                     <td style="border:1px solid black"><%= annual_work_plan_item.observation  %></td>
                     <td style="background-color: black;">&nbsp;</td>

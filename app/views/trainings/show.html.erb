@@ -10,7 +10,7 @@
                         <%=  image_tag  @training.entity.logo, class: "image_peq" %>
                     <% end %>
                 </td>
-                <td rowspan="4"; colspan="6"; style="text-align:center; padding-bottom: 40px;">
+                <td rowspan="4"; colspan="8"; style="text-align:center; padding-bottom: 40px;">
                     <div><h5>CRONOGRAMA DE CAPACITACIONES Y ACTIVIDADES <%= @training.year if @training.present? %></h5><h6><%= @training.entity.business_name if @training.present? %> Nit: <%= @training.entity.identification_number if @training.present? %> </h6></div>
                 </td>
                 <td rowspan="4";  style="text-align:center"></td>
@@ -41,7 +41,7 @@
             <tr>
                 <td style="background-color: black;">&nbsp;</td>
                 <th style="border:1px solid black; text-align:center">OBJETIVO</th>
-                <th colspan="10" style="border:1px solid black; text-align:center">Generar un proceso educacional estratégico aplicado de manera organizada y sistémica, para proveer, actualizar y ampliar los conocimientos y desarrollar habilidades que cubran la
+                <th colspan="12" style="border:1px solid black; text-align:center">Generar un proceso educacional estratégico aplicado de manera organizada y sistémica, para proveer, actualizar y ampliar los conocimientos y desarrollar habilidades que cubran la
                 totalidad de requerimientos para el desempeño de puestos y mejoramiento de áreas específicas de la Organización.</th>
                 <td style="background-color: black;">&nbsp;</td>
             </tr>
@@ -58,6 +58,8 @@
                 <th style="border:1px solid black">% DE COBERTURA EN CAPACITACIONES</th>
                 <th style="border:1px solid black">% DE TRABAJADORES CAPACITADOS</th>
                 <th style="border:1px solid black">OBSERVACIONES</th>
+                <th style="border:1px solid black">EDITAR</th>
+                <th style="border:1px solid black">ELIMINAR</th>
                 <td style="background-color: black;">&nbsp;</td>
             </tr>   
         </thead>
@@ -77,6 +79,8 @@
                     <td style="border:1px solid black;text-align:center"><%= training_item.training_coverage_percentage  %>%</td>
                     <td style="border:1px solid black;text-align:center"><%= training_item.percentage_trained_workers  %>%</td>
                     <td style="border:1px solid black"><%= training_item.observation  %></td>
+                    <td style="border:1px solid black; text-align:center;"><%= link_to t('common.edit'), edit_training_item_path(training_item), class: 'btn btn-sm btn-primary'  %></td>
+                    <td style="border:1px solid black; text-align:center;"><%= link_to t('common.delete'), training_item_path(training_item), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar la capacitación o actividad?' }, class: 'btn btn-sm btn-danger' %></td>
                     <td style="background-color: black;">&nbsp;</td>
                 </tr>
             </body>
@@ -105,7 +109,7 @@
                     <% end %>     
                 <% end %>     
             </td>
-            <td  colspan="3";style="border:1px solid black"><br>
+            <td  colspan="5";style="border:1px solid black"><br>
                 <% if @training.firm_responsible_sst == 1 %>
                     <% if @res.present? %>
                         <% if @res.firm.attached? %>
@@ -122,7 +126,7 @@
             <td style="background-color: black;">&nbsp;</td>
             <td  colspan="4"><%= @training.name_user(@training.user_legal_representative) %> - Representante Legal</td>
             <td  colspan="4"><%= @training.name_user(@training.user_adviser_sst) %> - Asesor SST</td>
-            <td  colspan="3"><%= @training.name_user(@training.user_responsible_sst) %> - Responsable SST</td>
+            <td  colspan="5"><%= @training.name_user(@training.user_responsible_sst) %> - Responsable SST</td>
             <td style="background-color: black;">&nbsp;</td>
         </tr>
     </table>

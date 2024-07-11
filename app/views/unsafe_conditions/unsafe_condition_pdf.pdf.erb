@@ -1,0 +1,506 @@
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+    <%= javascript_importmap_tags %>
+</head>
+<br>
+<div>
+    <table class="table table-hover" style="border:1px solid black"> 
+        <thead>
+            <tr>
+                <td rowspan="4"; style="background-color: black;">&nbsp;</td>
+                <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
+                    <% if @unsafe_condition.entity.logo.present? then %>
+                        <%=  image_tag  @unsafe_condition.entity.logo, class: "image_peq" %>
+                    <% end %>
+                </td>
+                <td rowspan="4"; style="text-align:center; padding-bottom: 40px;">
+                    <div><h5>REPORTE DE ACTOS Y CONDICIONES INSEGURAS</h5><h6><%= @unsafe_condition.entity.business_name if @unsafe_condition.present? %> Nit: <%= @unsafe_condition.entity.identification_number if @unsafe_condition.present? %> </h6></div>
+                </td>
+                <td rowspan="4";  style="text-align:center"></td>
+
+                <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
+
+                <td style="border:1px solid black"><%= @unsafe_condition.created_at.strftime("%F")  if @unsafe_condition.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
+                <td style="border:1px solid black"><%= @unsafe_condition.updated_at.strftime("%F")  if @unsafe_condition.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Versión:</td>
+                <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Código:</td>
+                <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+        </thead>
+    </table>
+
+    <table  class="table table-hover" style="border:1px solid black">
+
+        <tr> 
+            <td style="background-color: black;">&nbsp;</td>
+            <td style="border:1px solid black;">
+                <strong>Fecha de reporte:</strong>               
+            </td>
+            <td style="border:1px solid black;">
+                <%= @unsafe_condition.date_report  if @unsafe_condition.date_report.present? %>
+            </td>
+            <td style="background-color: black;">&nbsp;</td>
+        </tr>
+        <tr>    
+            <td style="background-color: black;">&nbsp;</td>
+            <td style="border:1px solid black;">
+                <strong>lugar y sede del reporte:</strong>               
+            </td>
+            <td style="border:1px solid black;">
+                <%= @unsafe_condition.place_report  if @unsafe_condition.place_report.present? %>
+            </td>
+            <td style="background-color: black;">&nbsp;</td>
+        </tr>
+        <tr>    
+            <td style="background-color: black;">&nbsp;</td>
+            <td style="border:1px solid black;">
+                <strong>Ubicación exacta del acto o condición insegura:</strong>               
+            </td>
+            <td style="border:1px solid black;">
+                <%= @unsafe_condition.exact_ubication  if @unsafe_condition.exact_ubication.present? %>
+            </td>
+            <td style="background-color: black;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="background-color: black;">&nbsp;</td>
+            <td style="border:1px solid black;">
+                <strong>Persona que reporta:</strong>               
+            </td>
+            <td style="border:1px solid black;">
+                 <%= @reporta.name  if @reporta.present? %> 
+            </td>
+            <td style="background-color: black;">&nbsp;</td>
+        </tr>
+        <tr>    
+            <td style="background-color: black;">&nbsp;</td>
+            <td style="border:1px solid black;">
+                <strong>Cargo de la persona que reporta:</strong>               
+            </td>
+            <td style="border:1px solid black;">
+                <%= @reporta.activity  if @reporta.present? %> 
+            </td>
+            <td style="background-color: black;">&nbsp;</td>
+        </tr>
+
+
+        <tr style="background-color: #00aae4;">    
+            <td style="background-color: black">&nbsp;</td>    
+            <td colspan="2"; style="border:1px solid black; text-align:center">
+                <strong>DESCRIPCIÓN DE LA CONDICIÓN INSEGURA</strong>               
+            </td>
+            <td style="background-color: black;">&nbsp;</td>    
+        </tr>
+        <tr>    
+            <td style="background-color: black;">&nbsp;</td>    
+            <td colspan="2"; style="border:1px solid black;">
+                <%= @unsafe_condition.description_condition %>
+            </td>
+            <td style="background-color: black;">&nbsp;</td>    
+        </tr>
+        <tr style="background-color: #00aae4;">    
+            <td style="background-color: black;">&nbsp;</td>    
+            <td colspan="2"; style="border:1px solid black; text-align:center">
+                <strong>CARACTERÍSTICAS DE LA CONDICIÓN INSEGURA (marque con una x)</strong>               
+            </td>
+            <td style="background-color: black;">&nbsp;</td>    
+        </tr>
+        <tr>    
+            <td style="background-color: black;">&nbsp;</td>    
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.equipment_condition') %></strong> 
+                <% if @unsafe_condition.equipment_condition == 0 then %>
+                    No
+                <% else %>
+                    Si    
+                <% end %>                    
+            </td>
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.lack_alarm') %></strong> 
+                <% if @unsafe_condition.lack_alarm == 0 then %>
+                    No
+                <% else %>
+                    Si    
+                <% end %>                     
+            </td>
+            <td style="background-color: black;">&nbsp;</td>    
+        </tr>
+        <tr>    
+            <td style="background-color: black;">&nbsp;</td>    
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.floors_condition') %></strong> 
+                <% if @unsafe_condition.floors_condition == 0 then %>
+                    No
+                <% else %>
+                    Si    
+                <% end %>                     
+            </td>                  
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.lack_cleanliness') %></strong> 
+                <% if @unsafe_condition.lack_cleanliness == 0 then %>
+                     No
+                <% else %>
+                    Si    
+                <% end %>                     
+            </td>
+            <td style="background-color: black;">&nbsp;</td>    
+        </tr>
+        <tr>    
+            <td style="background-color: black;">&nbsp;</td>    
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.not_demarcate_areas') %></strong> 
+                <% if @unsafe_condition.not_demarcate_areas == 0 then %>
+                    No
+                <% else %>
+                    Si    
+                <% end %>                     
+            </td>
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.lack_space_work') %></strong> 
+                <% if @unsafe_condition.lack_space_work == 0 then %>
+                    No
+                <% else %>
+                    Si    
+                <% end %>                     
+            </td>
+            <td style="background-color: black;">&nbsp;</td>    
+        </tr>
+        <tr>    
+            <td style="background-color: black;">&nbsp;</td>    
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.gases_dusts') %></strong> 
+                <% if @unsafe_condition.gases_dusts == 0 then %>
+                    No
+                <% else %>
+                    Si    
+                <% end %>                     
+            </td>
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.incorrect_storage') %></strong> 
+                <% if @unsafe_condition.incorrect_storage == 0 then %>
+                    No
+                <% else %>
+                    Si    
+                <% end %>                     
+            </td>
+            <td style="background-color: black;">&nbsp;</td>    
+        </tr>
+        <tr>    
+            <td style="background-color: black;">&nbsp;</td>    
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.unsafe_work_design') %></strong> 
+                <% if @unsafe_condition.unsafe_work_design == 0 then %>
+                    No
+                <% else %>
+                    Si    
+                <% end %>                     
+            </td>
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.excessive_noise_levels') %></strong> 
+                <% if @unsafe_condition.excessive_noise_levels == 0 then %>
+                    No
+                <% else %>
+                    Si    
+                <% end %>                     
+            </td>
+            <td style="background-color: black;">&nbsp;</td>    
+        </tr>
+        <tr>    
+            <td style="background-color: black;">&nbsp;</td>    
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.inadequate_signage') %></strong> 
+                <% if @unsafe_condition.inadequate_signage == 0 then %>
+                    No
+                <% else %>
+                    Si    
+                <% end %>                     
+            </td>
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.inadequate_lighting_ventilation') %></strong> 
+                <% if @unsafe_condition.inadequate_lighting_ventilation == 0 then %>
+                    No
+                <% else %>
+                    Si    
+                <% end %>                     
+            </td>
+            <td style="background-color: black;">&nbsp;</td>    
+        </tr>
+        <tr>    
+            <td style="background-color: black;">&nbsp;</td>    
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.defective_tools') %></strong> 
+                <% if @unsafe_condition.defective_tools == 0 then %>
+                     No
+                <% else %>
+                    Si    
+                <% end %>                     
+            </td>
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.other_unsafe_conditions') %></strong> 
+                <%= @unsafe_condition.other_unsafe_conditions %>
+            </td>
+            <td style="background-color: black;">&nbsp;</td>    
+        </tr>
+        <tr style="background-color: #00aae4;">   
+            <td style="background-color: black;">&nbsp;</td>    
+            <td colspan="2"; style="border:1px solid black; width: 100%; text-align:center">
+                 <strong>DESCRIPCIÓN DEL ACTO INSEGURO</strong>               
+            </td>
+            <td style="background-color: black;">&nbsp;</td>    
+        </tr>
+        <tr>    
+            <td style="background-color: black;">&nbsp;</td>    
+            <td colspan="2"; style="border:1px solid black; width: 100%">
+                <%= @unsafe_condition.description_act_unsafe %>
+            </td>
+            <td style="background-color: black;">&nbsp;</td>    
+        </tr>
+        <tr style="background-color: #00aae4;">    
+            <td style="background-color: black;">&nbsp;</td>    
+            <td colspan="2"; style="border:1px solid black; width: 100%; text-align:center">
+                <strong>CARACTERÍSTICAS DEL ACTO INSEGURO (marque con una x)</strong>               
+            </td>
+            <td style="background-color: black;">&nbsp;</td>    
+        </tr>
+        <tr>    
+            <td style="background-color: black;">&nbsp;</td>    
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.not_using_equipment') %></strong> 
+                <% if @unsafe_condition.not_using_equipment == 0 then %>
+                    No
+                <% else %>
+                     Si    
+                <% end %>                     
+            </td>
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.use_wrong_tool') %></strong> 
+                <% if @unsafe_condition.use_wrong_tool == 0 then %>
+                    No
+                <% else %>
+                    Si    
+                <% end %>                     
+            </td>
+            <td style="background-color: black;">&nbsp;</td>    
+        </tr>
+        <tr>    
+            <td style="background-color: black;">&nbsp;</td>    
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.operating_without_authorization') %></strong> 
+                <% if @unsafe_condition.operating_without_authorization == 0 then %>
+                    No
+                <% else %>
+                    Si    
+                <% end %>                     
+            </td>
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.wrong_position') %></strong> 
+                <% if @unsafe_condition.wrong_position == 0 then %>
+                    No
+                <% else %>
+                    Si    
+                <% end %>                     
+            </td>
+            <td style="background-color: black;">&nbsp;</td>    
+        </tr>
+        <tr>    
+            <td style="background-color: black;">&nbsp;</td>    
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.running_facilities') %></strong> 
+                <% if @unsafe_condition.running_facilities == 0 then %>
+                    No
+                <% else %>
+                    Si    
+                <% end %>                     
+            </td>
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.heights_without_authorization') %></strong> 
+                <% if @unsafe_condition.heights_without_authorization == 0 then %>
+                    No
+                <% else %>
+                    Si    
+                <% end %>                     
+            </td>
+            <td style="background-color: black;">&nbsp;</td>    
+        </tr>
+        <tr>    
+            <td style="background-color: black;">&nbsp;</td>    
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.using_defective_tool') %></strong> 
+                <% if @unsafe_condition.using_defective_tool == 0 then %>
+                    No
+                <% else %>
+                    Si    
+                <% end %>                     
+            </td>
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.workplace_distractions') %></strong> 
+                <% if @unsafe_condition.workplace_distractions == 0 then %>
+                    No
+                <% else %>
+                    Si    
+                <% end %>                     
+            </td>
+            <td style="background-color: black;">&nbsp;</td>    
+        </tr>
+        <tr>    
+            <td style="background-color: black;">&nbsp;</td>    
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.psychoactive_substances') %></strong> 
+                <% if @unsafe_condition.psychoactive_substances == 0 then %>
+                    No
+                <% else %>
+                    Si    
+                <% end %>                     
+            </td>
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.gen_on_desk') %></strong> 
+                <% if @unsafe_condition.gen_on_desk == 0 then %>
+                   No
+                <% else %>
+                    Si    
+                <% end %>                     
+            </td>
+            <td style="background-color: black;">&nbsp;</td>    
+        </tr>
+        <tr>    
+            <td style="background-color: black;">&nbsp;</td>    
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.ignore_dangerous') %></strong> 
+                <% if @unsafe_condition.ignore_dangerous == 0 then %>
+                    No
+                <% else %>
+                    Si    
+                <% end %>                     
+            </td>
+            <td style="border:1px solid black; width: 50%">
+                <strong><%= t('.other_features') %></strong> 
+                <%= @unsafe_condition.other_features %>
+            </td>
+            <td style="background-color: black;">&nbsp;</td>    
+        </tr>
+        <tr style="background-color: #00aae4;"> 
+            <td style="background-color: black;">&nbsp;</td>   
+            <td colspan="2"; style="border:1px solid black; width: 100%; text-align:center">
+                <strong>ALTERNATIVAS DE SOLUCIÓN</strong>               
+            </td>
+            <td style="background-color: black;">&nbsp;</td>
+        </tr>
+        <tr>    
+            <td style="background-color: black;">&nbsp;</td>
+            <td colspan="2"; style="border:1px solid black; width: 100%">
+                <%= @unsafe_condition.alternative_soluctions %>
+            </td>
+            <td style="background-color: black;">&nbsp;</td>
+        </tr>
+        <tr style="background-color: #00aae4;"> 
+            <td style="background-color: black;">&nbsp;</td>   
+            <td colspan="2"; style="border:1px solid black; width: 100%; text-align:center">
+                <strong>ARCHIVOS ADJUNTOS</strong>               
+            </td>
+            <td style="background-color: black;">&nbsp;</td>
+        </tr>
+        <tr>    
+            <td style="background-color: black;">&nbsp;</td>
+            <td colspan="2"; style="border:1px solid black; width: 100%">
+
+                <% if @unsafe_condition.evidencias.attached? %>
+                    <div data-controller="previews" >
+                        <% @unsafe_condition.evidencias.each do |file|%>
+                            <br>
+                            <% if file.image? %>
+                                <div>
+                                    <%= image_tag file, data: {previews_target: "preview"}, class: "image" %>
+                                    <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
+                                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                </div> 
+                            <% elsif file.video? %>
+                                <%= video_tag url_for(file), controls: "", width: "400px" %>          
+                                <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
+                                <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                            <% elsif file.audio? %>
+                                <%= audio_tag(url_for(file), controls: "") %>          
+                                <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
+                                <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                            <% else %>
+                                <%= link_to file.filename, url_for(file) %>          
+                                <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
+                                <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                            <% end %>
+                        <% end %>  
+                    </div>
+                <% end %>  
+            </td>
+            <td style="background-color: black;">&nbsp;</td>
+        </tr>
+
+        <tr> 
+            <td style="background-color: black;">&nbsp;</td>   
+            <td style="border:1px solid black; width: 40%">
+                <strong><%= t('.user_reports') %></strong>
+            </td>
+            <td style="border:1px solid black; width: 60%">
+                <strong><%= t('.user_receiving') %></strong>
+            </td>
+            <td style="background-color: black;">&nbsp;</td>   
+        </tr>
+        <tr>    
+            <td style="background-color: black;">&nbsp;</td>   
+            <td style="border:1px solid black; width: 40%">
+                <%=  UnsafeCondition.name_user(@unsafe_condition.user_reports) %>
+            </td>
+            <td style="border:1px solid black; width: 60%">
+                <%=  UnsafeCondition.name_user(@unsafe_condition.user_receiving) %>
+            </td>
+            <td style="background-color: black;">&nbsp;</td>   
+        </tr>
+        <tr> 
+            <td style="background-color: black;">&nbsp;</td>   
+            <td style="border:1px solid black; width: 40%">
+                <strong>Firma:</strong></br>
+                <% if @unsafe_condition.firm_user_reports == 1 %>
+                    <% if @reporta.present? %>
+                        <% if @reporta.firm.attached? %>
+                            <% if @reporta.firm.image? %> 
+                                <%= image_tag @reporta.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% end %>     
+            </td>
+
+            <td style="border:1px solid black; width: 60%">
+                <strong>Firma:</strong></br>
+                <% if @unsafe_condition.firm_user_receiving == 1 %>
+                    <% if @recibe.present? %>
+                        <% if @recibe.firm.attached? %>
+                            <% if @recibe.firm.image? %> 
+                                <%= image_tag @recibe.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% end %>     
+            </td>
+            <td style="background-color: black;">&nbsp;</td>   
+        </tr>
+
+
+    </table>
+    <div></br></div>
+<div>
+

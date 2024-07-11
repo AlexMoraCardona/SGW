@@ -7,465 +7,80 @@
     <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
     <%= javascript_importmap_tags %>
 </head>
-<div><br></div>
-<table> 
-    <tr>
-        <td style="text-align:justify">
-            <p>En las instalaciones de la <strong><%= @evidence.entity.business_name if @evidence.present? %></strong>, se hizo la invitación a los voluntarios inscritos para la elección y conformación de las brigadas de emergencia, así:</p>
-        </td>
-    </tr>
-    <tr>    
-        <td style="text-align:justify">
-            <p></p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p><strong>Comité operativo de emergencias ¨COE¨</strong></p>
-        </td>
-    </tr>
-    <tr>
-        <td style="text-align:justify">
-            <p>
-                <ul>
-                    <li>Jefe de brigada</li>
-                    <li>Brigada de primeros auxilios</li>
-                    <li>Brigada de emergencia</li>
-                    <li>Brigada de Evacuación y rescate</li>
-                </ul>
-            </p>
-        </td>
-    </tr>
-    <tr>
-        <td style="text-align:justify">
-            <p><strong>Desarrollo de la Reunión</strong></p>
-        </td>
-    </tr>
-    <tr>
-        <td style="text-align:justify">
-            <p>
-                <ol>
-                    <li>Funciones, responsabilidades y niveles de la autoridad de los integrantes.</li>
-                    <li>Elección de los cargos (por votación entre los participantes, postulación voluntaria o propuesta entre los participantes).</li>
-                    <li>Aceptación de los cargos.</li>
-                    <li>Cierre de la reunión</li>
-                </ol>
-            </p>
-        </td>
-    </tr>
-    <tr>
-        <td style="text-align:justify">
-            <p>Previa socialización de las funciones, responsabilidades, niveles de autoridad, elección y aceptación de los cargos dentro del total de los voluntarios inscritos se convocó a la reunión para elección de las brigadas resultando elegidos, las siguientes personas:</p>
-        </td>
-    </tr>
-</table>
-<div><br></div>   
-<table style="width: 100%;> 
-    <tr>
-        <td style="border:1px solid black;width: 100%;text-align:center;">
-            <strong>CONFORMACIÓN DE LA BRIGADA DE EMERGENCIAS </strong>
-        </td>
-    </tr>
-    <tr>
-        <td style="border:1px solid black;width: 100%;">
-            Fecha de actualización: <%= @evidence.date %>
-        </td>
-    </tr>
-</table> 
-<table style="width: 100%;> 
-    <tr>
-        <td style="border:1px solid black;width: 100%;background-color: #FFFF00;text-align:center;">
-            <strong>JEFE DE BRIGADISTAS </strong>
-        </td>
-    </tr>
-</table> 
-<table style="width: 100%;> 
-    <tr>
-        <td style="border:1px solid black;width: 50%;">
-            <strong>Coordinador de brigada</strong>                
-        </td>
-        <td style="border:1px solid black;width: 20%;text-align:center;">
-            <strong>Cargo</strong> 
-        </td>
-        <td style="border:1px solid black;width: 10%;text-align:center;">
-            <strong>RH</strong> 
-        </td>
-        <td style="border:1px solid black;width: 20%;text-align:center;">
-            <strong>Teléfono</strong> 
-        </td>                        
-    </tr>
-    <tr> 
-        <% @participants.where("brigade_position = ?", 1).each do |participant| %>    
-            <td style="border:1px solid black;width: 50%;">
-                <%= Participant.nombre(participant.user_id) %>               
-            </td>
-            <td style="border:1px solid black;width: 20%;text-align:center;">
-                <%= participant.company_position if participant.company_position.present? %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%= participant.rh if participant.rh.present? %>
-            </td>
-            <td style="border:1px solid black;width: 20%;text-align:center;">
-                <%= participant.phone if participant.phone.present? %>
-            </td>                        
-        <% end %>
-    </tr>
-    <tr>
-        <td style="border:1px solid black;width: 50%;">
-            <strong>Suplente Brigada</strong>                
-        </td>
-        <td style="border:1px solid black;width: 20%;text-align:center;">
-            <strong>Cargo</strong> 
-        </td>
-        <td style="border:1px solid black;width: 10%;text-align:center;">
-        <strong>RH</strong> 
-        </td>
-        <td style="border:1px solid black;width: 20%;text-align:center;">
-            <strong>Teléfono</strong> 
-        </td>                        
-    </tr>
-    <tr>
-        <% @participants.where("brigade_position = ?", 2).each do |participant| %>
-            <td style="border:1px solid black;width: 50%;">
-                <%= Participant.nombre(participant.user_id) %>               
-            </td>
-            <td style="border:1px solid black;width: 20%;text-align:center;">
-                <%= participant.company_position if participant.company_position.present? %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%= participant.rh if participant.rh.present? %>
-            </td>
-            <td style="border:1px solid black;width: 20%;text-align:center;">
-                <%= participant.phone if participant.phone.present? %>
-            </td>                        
-        <% end %>
-    </tr>
-</table> 
-<table style="width: 100%;> 
-    <tr>
-        <td style="border:1px solid black;width: 100%;background-color: #96ebbd;text-align:center;">
-            <strong>PREVENCIÓN Y CONTROL DE INCENDIOS</strong>
-        </td>
-    </tr>
-</table> 
-<table style="width: 100%;> 
-    <tr>
-        <td style="border:1px solid black;width: 50%;">
-            <strong>Coordinador prevención y control de incendios</strong>                
-        </td>
-        <td style="border:1px solid black;width: 20%;text-align:center;">
-            <strong>Cargo</strong> 
-        </td>
-        <td style="border:1px solid black;width: 10%;text-align:center;">
-            <strong>RH</strong> 
-        </td>
-        <td style="border:1px solid black;width: 20%;text-align:center;">
-            <strong>Teléfono</strong> 
-        </td>                        
-    </tr>
-    <tr>
-        <% @participants.where("brigade_position = ?", 3).each do |participant| %>
-            <td style="border:1px solid black;width: 50%;">
-                <%= Participant.nombre(participant.user_id) %>               
-            </td>
-            <td style="border:1px solid black;width: 20%;text-align:center;">
-                <%= participant.company_position if participant.company_position.present? %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%= participant.rh if participant.rh.present? %>
-            </td>
-            <td style="border:1px solid black;width: 20%;text-align:center;">
-                <%= participant.phone if participant.phone.present? %>
-            </td>                        
-        <% end %>
-    </tr>
-    <tr>
-        <td style="border:1px solid black;width: 50%;">
-            <strong>Suplente Brigada</strong>                
-        </td>   
-        <td style="border:1px solid black;width: 20%;text-align:center;">
-            <strong>Cargo</strong> 
-        </td>
-        <td style="border:1px solid black;width: 10%;text-align:center;">
-            <strong>RH</strong> 
-        </td>
-        <td style="border:1px solid black;width: 20%;text-align:center;">
-            <strong>Teléfono</strong> 
-        </td>                        
-    </tr>
-    <tr>
-        <% @participants.where("brigade_position = ?", 4).each do |participant| %>
-            <td style="border:1px solid black;width: 50%;">
-                <%= Participant.nombre(participant.user_id) %>               
-            </td>
-            <td style="border:1px solid black;width: 20%;text-align:center;">
-                <%= participant.company_position if participant.company_position.present? %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%= participant.rh if participant.rh.present? %>
-            </td>
-            <td style="border:1px solid black;width: 20%;text-align:center;">
-                <%= participant.phone if participant.phone.present? %>
-            </td>                        
-        <% end %>
-    </tr>
-</table> 
-<table style="width: 100%;> 
-    <tr>
-        <td style="border:1px solid black;width: 100%;background-color: #96ebbd;text-align:center;">
-            <strong>BRIGADISTAS</strong>
-        </td>
-    </tr>
-</table> 
-<table style="width: 100%;> 
-    <tr>
-        <td style="border:1px solid black;width: 50%;">
-            <strong>Nombre</strong>                
-        </td>
-        <td style="border:1px solid black;width: 20%;text-align:center;">
-            <strong>Cargo</strong> 
-        </td>
-        <td style="border:1px solid black;width: 10%;text-align:center;">
-            <strong>RH</strong> 
-        </td>
-        <td style="border:1px solid black;width: 20%;text-align:center;">
-            <strong>Teléfono</strong> 
-        </td>                        
-    </tr>
-    <% @participants.where("brigade_position = ?", 5).each do |participant| %>
-        <tr>
-            <td style="border:1px solid black;width: 50%;">
-                <%= Participant.nombre(participant.user_id) %>               
-            </td>
-            <td style="border:1px solid black;width: 20%;text-align:center;">
-                <%= participant.company_position if participant.company_position.present? %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%= participant.rh if participant.rh.present? %>
-            </td>
-            <td style="border:1px solid black;width: 20%;text-align:center;">
-                <%= participant.phone if participant.phone.present? %>
-            </td>                        
-        </tr>
-    <% end %>
-</table > 
-<table style="width: 100%;> 
-    <tr>
-        <td style="border:1px solid black;width: 100%;background-color: #03e0f4;text-align:center;">
-            <strong>PRIMEROS AUXILIOS</strong>
-        </td>
-    </tr>
-</table> 
-<table style="width: 100%;> 
-    <tr>
-        <td style="border:1px solid black;width: 50%;">
-            <strong>Coordinador Primeros Auxilios</strong>                
-        </td>
-        <td style="border:1px solid black;width: 20%;text-align:center;">
-            <strong>Cargo</strong> 
-        </td>
-        <td style="border:1px solid black;width: 10%;text-align:center;">
-            <strong>RH</strong> 
-        </td>
-        <td style="border:1px solid black;width: 20%;text-align:center;">
-            <strong>Teléfono</strong> 
-        </td>                        
-    </tr>
-    <tr>
-        <% @participants.where("brigade_position = ?", 6).each do |participant| %>
-            <td style="border:1px solid black;width: 50%;">
-                <%= Participant.nombre(participant.user_id) %>               
-            </td>
-            <td style="border:1px solid black;width: 20%;text-align:center;">
-                <%= participant.company_position if participant.company_position.present? %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%= participant.rh if participant.rh.present? %>
-            </td>
-            <td style="border:1px solid black;width: 20%;text-align:center;">
-                <%= participant.phone if participant.phone.present? %>
-            </td>                        
-        <% end %>
-    </tr>
-    <tr>
-        <td style="border:1px solid black;width: 50%;">
-            <strong>Suplente Brigada</strong>                
-        </td>
-        <td style="border:1px solid black;width: 20%;text-align:center;">
-            <strong>Cargo</strong> 
-        </td>
-        <td style="border:1px solid black;width: 10%;text-align:center;">
-            <strong>RH</strong> 
-        </td>
-        <td style="border:1px solid black;width: 20%;text-align:center;">
-            <strong>Teléfono</strong> 
-        </td>                        
-    </tr>
-    <tr>
-        <% @participants.where("brigade_position = ?", 7).each do |participant| %>
-            <td style="border:1px solid black;width: 50%;">
-                <%= Participant.nombre(participant.user_id) %>               
-            </td>
-            <td style="border:1px solid black;width: 20%;text-align:center;">
-                <%= participant.company_position if participant.company_position.present? %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%= participant.rh if participant.rh.present? %>
-            </td>
-            <td style="border:1px solid black;width: 20%;text-align:center;">
-                <%= participant.phone if participant.phone.present? %>
-            </td>                        
-        <% end %>
-    </tr>
-</table> 
-<table style="width: 100%;> 
-    <tr>
-        <td style="border:1px solid black;width: 100%;background-color: #03e0f4;text-align:center;">
-            <strong>BRIGADISTAS</strong>
-        </td>
-    </tr>
-</table> 
-<table style="width: 100%;> 
-    <tr>
-        <td style="border:1px solid black;width: 50%;">
-            <strong>Nombre</strong>                
-        </td>
-        <td style="border:1px solid black;width: 20%;text-align:center;">
-            <strong>Cargo</strong> 
-        </td>
-        <td style="border:1px solid black;width: 10%;text-align:center;">
-            <strong>RH</strong> 
-        </td>
-        <td style="border:1px solid black;width: 20%;text-align:center;">
-            <strong>Teléfono</strong> 
-        </td>                        
-    </tr>
-    <% @participants.where("brigade_position = ?", 8).each do |participant| %>
-        <tr>
-            <td style="border:1px solid black;width: 50%;">
-                <%= Participant.nombre(participant.user_id) %>               
-            </td>
-            <td style="border:1px solid black;width: 20%;text-align:center;">
-                <%= participant.company_position if participant.company_position.present? %>
-            </td>
-        
-        
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%= participant.rh if participant.rh.present? %>
-            </td>
-            <td style="border:1px solid black;width: 20%;text-align:center;">
-                <%= participant.phone if participant.phone.present? %>
-            </td>                        
-        </tr>
-    <% end %>
-</table> 
-<table style="width: 100%;> 
-    <tr>
-        <td style="border:1px solid black;width: 100%;background-color: #59d42e;text-align:center;">
-            <strong>EVACUACIÓN</strong>
-        </td>
-    </tr>
-</table> 
-<table style="width: 100%;> 
-    <tr>
-        <td style="border:1px solid black;width: 50%;">
-            <strong>Coordinador Evacuación</strong>               
-        </td>
-        <td style="border:1px solid black;width: 20%;text-align:center;">
-            <strong>Cargo</strong> 
-        </td>
-        <td style="border:1px solid black;width: 10%;text-align:center;">
-            <strong>RH</strong> 
-        </td>
-        <td style="border:1px solid black;width: 20%;text-align:center;">
-            <strong>Teléfono</strong> 
-        </td>                        
-    </tr>
-    <tr>
-        <% @participants.where("brigade_position = ?", 9).each do |participant| %>
-            <td style="border:1px solid black;width: 50%;">
-                <%= Participant.nombre(participant.user_id) %>               
-            </td>
-            <td style="border:1px solid black;width: 20%;text-align:center;">
-                <%= participant.company_position if participant.company_position.present? %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%= participant.rh if participant.rh.present? %>
-            </td>
-            <td style="border:1px solid black;width: 20%;text-align:center;">
-                <%= participant.phone if participant.phone.present? %>
-            </td>                        
-        <% end %>
-    </tr>
-    <tr>
-        <td style="border:1px solid black;width: 50%;">
-            <strong>Suplente Brigada</strong>                
-        </td>
-        <td style="border:1px solid black;width: 20%;text-align:center;">
-            <strong>Cargo</strong> 
-        </td>
-        <td style="border:1px solid black;width: 10%;text-align:center;">
-            <strong>RH</strong> 
-        </td>
-        <td style="border:1px solid black;width: 20%;text-align:center;">
-            <strong>Teléfono</strong> 
-        </td>                        
-    </tr>
-    <tr>
-        <% @participants.where("brigade_position = ?", 10).each do |participant| %>
-            <td style="border:1px solid black;width: 50%;">
-                <%= Participant.nombre(participant.user_id) %>               
-            </td>
-            <td style="border:1px solid black;width: 20%;text-align:center;">
-                <%= participant.company_position if participant.company_position.present? %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%= participant.rh if participant.rh.present? %>
-            </td>
-            <td style="border:1px solid black;width: 20%;text-align:center;">
-                <%= participant.phone if participant.phone.present? %>
-            </td>                        
-        <% end %>
-    </tr>
-</table> 
-<table style="width: 100%;> 
-    <tr>
-        <td style="border:1px solid black;width: 100%;background-color: #59d42e;text-align:center;">
-            <strong>BRIGADISTAS</strong>
-        </td>
-    </tr>
-</table> 
-<table style="width: 100%;> 
-    <tr>
-        <td style="border:1px solid black;width: 50%;">
-            <strong>Nombre</strong>                
-        </td>
-        <td style="border:1px solid black;width: 20%;text-align:center;">
-            <strong>Cargo</strong> 
-        </td>
-        <td style="border:1px solid black;width: 10%;text-align:center;">
-            <strong>RH</strong> 
-        </td>
-        <td style="border:1px solid black;width: 20%;text-align:center;">
-            <strong>Teléfono</strong> 
-        </td>                        
-    </tr>
-    <% @participants.where("brigade_position = ?", 11).each do |participant| %>
-        <tr>
-            <td style="border:1px solid black;width: 50%;">
-                <%= Participant.nombre(participant.user_id) %>               
-            </td>
-            <td style="border:1px solid black;width: 20%;text-align:center;">
-                <%= participant.company_position if participant.company_position.present? %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%= participant.rh if participant.rh.present? %>
-            </td>
-            <td style="border:1px solid black;width: 20%;text-align:center;">
-                <%= participant.phone if participant.phone.present? %>
-            </td>                        
-        </tr>
-    <% end %>
-</table> 
+    <div><br></div>
+    <div><br></div>
+    <div>
+        Fecha: <%= @evidence.date if @evidence.present? %>
+    </div>
+    <div><br></div>
 
-<div><br></div>
+
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>En la <strong><%= @evidence.entity.business_name if @evidence.present? %></strong> con Nit:  <strong><%= EvaluationRuleDetail.miles(@evidence.entity.identification_number) if @evidence.present? %>-<%= @evidence.entity.verification_digit if @evidence.entity.verification_digit.present? %></strong>, en la ciudad de <strong><%= @evidence.place if @evidence.present? %></strong>, en cumplimiento a lo establecido en la Resolución 2400 de 1979 ART. 223 que reglamenta la constitución de brigadas de extinción de incendios, la LEY 9 DE 1979 ART. 127 que ordena proveer facilidades y recursos necesarios para la prestación de primeros auxilios a sus trabajadores, el DECRETO 1443 de 2014 del Ministerio de Trabajo en sus capítulos III artículo 8 numeral 9, participación de los trabajadores en los procesos de capacitación en Seguridad y Salud en el Trabajo, Capítulo V, artículo 25 numeral 11, conformar, capacitar, dotar y entrenar una brigada de emergencia en la organización y el Decreto 1072 de 2015, Libro 2, Parte 2, Título 4, Capítulo 6, Artículo 2.2.4.6.25; y a las demás exigencias del Ministerio de Trabajo.</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <p>Se reunieron los trabajadores para conformar la Brigada de Emergencias, con énfasis en primeros auxilios, evacuación y rescate y prevención y control de conatos de incendios. Se establece que el periodo de los miembros de la Brigada de Emergencias de <strong><%= @evidence.entity.business_name if @evidence.present? %></strong> es de dos años contados a partir de la firma de la presente acta. Para la conformación de la brigada integral de emergencia el Señor: <strong><%= @representante_legal.name if @representante_legal.present? %></strong> en calidad de representante legal de <strong><%= @evidence.entity.business_name if @evidence.present? %></strong> y a través de la participación voluntaria de los trabajadores, describe a los siguientes funcionarios como representantes de la Brigada.</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <p></p>
+            </td>
+        </tr>
+    </table>
+    <div><br></div> 
+        <table style="width: 100%;"> 
+            <tr>
+                <td style="border:1px solid black;width: 100%;background-color: #00aae4;text-align:center;">
+                    <strong>LISTADO MIEMBROS DE LA BRIGADA EMERGENCIAS EMPRESARIALES</strong>
+                </td>
+            </tr>
+        </table> 
+    
+        <table style="width: 100%;"> 
+            <tr>
+                <td style="border:1px solid black;width: 10%;text-align:center;">
+                    <strong>N°</strong>                
+                </td>
+                <td style="border:1px solid black;width: 60%;">
+                    <strong>NOMBRE TRABAJADOR</strong> 
+                </td>
+                <td style="border:1px solid black;width: 30%;text-align:center;">
+                    <strong>CÉDULA DE CIUDADANÍA</strong> 
+                </td>
+            </tr>
+            <tr>
+                <% @cant = 0 %>
+                <% @participants.where("brigade_personnel = ?", 1).each do |participant| %>
+                    <tr>
+                        <% @cant += 1 %>
+                        <td style="border:1px solid black;width: 10%;text-align:center;">
+                            <%= @cant %>               
+                        </td>
+                        <td style="border:1px solid black;width: 60%;">
+                            <%= Participant.nombre(participant.user_id) %>               
+                        </td>
+                        <td style="border:1px solid black;width: 30%;text-align:center;">
+                            <%= Participant.documento(participant.user_id) %>
+                        </td>
+                    </tr>    
+                <% end %>
+            </tr>
+        <table> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Con la creación de la brigada de emergencias se está dando cumplimiento a las normas legales vigentes en lo que se refiere a Seguridad y Salud en el Trabajo.</p>
+            </td>
+        </tr>
+    </table>
+    <div><br></div> 
+    <%= render 'firmarepresentante' %>  
+    <%= render 'firmanorepresentante' %>  
+
+<br>

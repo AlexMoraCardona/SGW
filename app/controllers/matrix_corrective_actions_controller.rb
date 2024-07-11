@@ -26,10 +26,11 @@ class MatrixCorrectiveActionsController < ApplicationController
             end           
         end 
          
-    end    
+    end     
 
     def new
       @matrix_corrective_action = MatrixCorrectiveAction.new  
+      @template = Template.find(208)
     end    
 
     def create
@@ -68,7 +69,7 @@ class MatrixCorrectiveActionsController < ApplicationController
         @matrix_corrective_action = MatrixCorrectiveAction.find(params[:id]) if params[:id].present?
         @locations  = Location.where("entity_id = ?", @matrix_corrective_action.entity_id) if @matrix_corrective_action.present?
         @cant = @matrix_action_items.count if @matrix_action_items.present?
-        @cant = @cant + 1 
+        @cant = @cant + 1
     end    
 
     def total_items

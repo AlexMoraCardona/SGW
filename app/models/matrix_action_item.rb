@@ -3,8 +3,7 @@ class MatrixActionItem < ApplicationRecord
 
     def label_state_actions(state)
         if state == 0 ; 'Abierto'
-        elsif state == 1 ; 'En proceso'
-        elsif state == 2 ; 'Cerrado'
+        elsif state == 1 ; 'Cerrado'
         end 
     end      
 
@@ -15,11 +14,24 @@ class MatrixActionItem < ApplicationRecord
     end 
     
     def label_origin_action(origin)
-        if origin == 0 ; 'Accidentes o Incidentes'
-        elsif origin == 1 ; 'Auditoría En proceso'
-        elsif origin == 2 ; 'Inspecciones'
+        if origin == 0 ; 'Revisión por la dirección'
+        elsif origin == 1 ; 'Inspecciones'
+        elsif origin == 2 ; 'Indicadores'
+        elsif origin == 3 ; 'Recomendaciones COPASST'
+        elsif origin == 4 ; 'Auditorías'
+        elsif origin == 5 ; 'Investigaciones AT-EL'
+        elsif origin == 6 ; 'Evaluación inicial'
+        elsif origin == 7 ; 'Cumplimiento requisitos legales'
+        elsif origin == 8 ; 'Intervención de peligros y riesgos priorizados'
+        elsif origin == 9 ; 'Quejas o sugerencias'
+        elsif origin == 10 ; 'Reporte de actos y condiciones inseguras'
+        elsif origin == 11 ; 'Cambios de procedimientos'
+        elsif origin == 12 ; 'Simulacros emergencias'
+        elsif origin == 13 ; 'Recomendaciones ARL'
+        elsif origin == 13 ; 'Otros'
         end 
-    end  
+    end 
+    
 
     def label_action_implement(action)
         if action == 0 ; 'Inmediata'

@@ -9,9 +9,22 @@ class MatrixActionItemsController < ApplicationController
 
     def create
         @matrix_action_item = MatrixActionItem.new(matrix_action_item_params)
+        @matrix_corrective_action = MatrixCorrectiveAction.find(@matrix_action_item.matrix_corrective_action_id) if @matrix_action_item.present?
+        @matrix_action_items = MatrixActionItem.where("matrix_corrective_action_id = ?", @matrix_action_item.matrix_corrective_action_id) if @matrix_action_item.present?
+
+        if @matrix_action_items.present?
+            @matrix_action_item.clasification_type_corrective = "AP" +   (@matrix_action_items.where("type_corrective = ?", 0).count + 1).to_s if @matrix_action_item.type_corrective == 0  
+            @matrix_action_item.clasification_type_corrective = "AM" +   (@matrix_action_items.where("type_corrective = ?", 1).count + 1).to_s if @matrix_action_item.type_corrective == 1  
+            @matrix_action_item.clasification_type_corrective = "AC" +   (@matrix_action_items.where("type_corrective = ?", 2).count + 1).to_s if @matrix_action_item.type_corrective == 2  
+        else
+            @matrix_action_item.clasification_type_corrective = "AP1" if @matrix_action_item.type_corrective == 0  
+            @matrix_action_item.clasification_type_corrective = "AM1" if @matrix_action_item.type_corrective == 1  
+            @matrix_action_item.clasification_type_corrective = "AC1" if @matrix_action_item.type_corrective == 2  
+        end
 
         if @matrix_action_item.save then
-            redirect_to matrix_corrective_actions_path, notice: t('.created') 
+            redirect_to matrix_corrective_actions_path(entity_id: @matrix_corrective_action.entity_id), notice: 'Por favor diligencie el nuevo formulario'
+
         else
             render :edit, status: :unprocessable_entity
         end    

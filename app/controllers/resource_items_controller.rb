@@ -34,10 +34,10 @@ class ResourceItemsController < ApplicationController
         end         
     end    
 
-    def destroy
+    def destroy 
         @resource_item = ResourceItem.find(params[:id])
         @resource_item.destroy
-        redirect_to resource_items_path, notice: 'Recurso borrado correctamente', resource_item: :see_other
+        redirect_back fallback_location: root_path, notice: 'Recurso borrado correctamente', resource_item: :see_other
     end    
 
     private

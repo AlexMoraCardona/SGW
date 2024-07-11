@@ -13,7 +13,8 @@ class AnnualWorkPlansController < ApplicationController
         end 
     end  
     
-    def show
+    def show 
+        @template = Template.find(100)
         @annual_work_plan = AnnualWorkPlan.find(params[:id])
         @annual_work_plan_items = AnnualWorkPlanItem.where("annual_work_plan_id = ?", @annual_work_plan.id) if @annual_work_plan.present?
         respond_to do |format|
@@ -29,6 +30,7 @@ class AnnualWorkPlansController < ApplicationController
     def ver_plan
         @annual_work_plan = AnnualWorkPlan.find(params[:id])
         @annual_work_plan_items = AnnualWorkPlanItem.where("annual_work_plan_id = ?", @annual_work_plan.id) if @annual_work_plan.present?
+        @template = Template.find(100)
 
         respond_to do |format| 
             format.html

@@ -286,11 +286,89 @@
                 </thead>
                 <tbody>
                         <tr>
-                            <td style="text-align:center"><%= @total %></td>
-                            <td style="text-align:center"><%= @inter %></td>
+                            <td style="text-align:center"><%= @totalpeligrosriesgos %></td>
+                            <td style="text-align:center"><%= @interpeligrosriesgos %></td>
                             <td style="text-align:center"><%= @indicador_peligrosriesgos %></td>
                             <td style="text-align:center">
                                 <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="De <%= @total %> peligros/riesgos identificados se ha intervenido el <%= @indicador_peligrosriesgos %>% de peligros/riesgos. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                            </td>
+                        </tr>    
+                </tbody>
+            </table>
+
+            <hr>
+        </div>
+    </div>        
+    <br>
+    <hr>
+
+    <div class="row g-2">
+         <h2 class="display-5">Porcentaje de cobertura en capacitaciones</h2>
+         <hr>
+    </div>
+    <div class="row g-3">
+        <div class="col-sm-5">
+            <%= column_chart  @datos_coberturacapacitaciones, title: "Porcentaje de cobertura en capacitaciones", download: {filename: "PorcentajeCoberturaCapacitaciones"}, download: {background: "#FFFFFF"}, xtitle: "Capacitaciones/Actividades realizadas", ytitle: "Porcentaje realizado", suffix: "% realizado" if @datos_peligrosriesgos.present? %>
+        </div>
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-5">
+            <br>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Total de Capacitaciones/Actividades</th>
+                        <th scope="col">Capacitaciones/Actividades realizadas</th>
+                        <th scope="col">Indicador</th>
+                        <th scope="col">Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr>
+                            <td style="text-align:center"><%= @total_coberturacapacitaciones %></td>
+                            <td style="text-align:center"><%= @datos_coberturacapacitaciones[0][0] %></td>
+                            <td style="text-align:center"><%= @datos_coberturacapacitaciones[0][1] %></td>
+                            <td style="text-align:center">
+                                <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="Porcentaje de cobertura en capacitaciones del <%= @datos_coberturacapacitaciones[0][1] %>%"><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                            </td>
+                        </tr>    
+                </tbody>
+            </table>
+
+            <hr>
+        </div>
+    </div>        
+    <br>
+    <hr>
+
+    <div class="row g-2">
+         <h2 class="display-5">Porcentaje de trabajadores capacitados</h2>
+         <hr>
+    </div>
+    <div class="row g-3">
+        <div class="col-sm-5">
+            <%= column_chart  @datos_trabajadorescapacitados, title: "Porcentaje de trabajadores capacitados", download: {filename: "PorcentajeTrabajadoresCapacitados"}, download: {background: "#FFFFFF"}, xtitle: "Trabajadores Capacitados", ytitle: "Porcentaje capacitado", suffix: "% capacitado" if @datos_trabajadorescapacitados.present? %>
+        </div>
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-5">
+            <br>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Total de Trabajadores</th>
+                        <th scope="col">Trabajadores Capacitados</th>
+                        <th scope="col">Indicador</th>
+                        <th scope="col">Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr>
+                            <td style="text-align:center"><%= @total_trabajadores %></td>
+                            <td style="text-align:center"><%= @total_trabajadoresc %></td>
+                            <td style="text-align:center"><%= @datos_trabajadorescapacitados[0][1] %></td>
+                            <td style="text-align:center">
+                                <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="Porcentaje de trabajadores capacitados del <%= @datos_trabajadorescapacitados[0][1] %>%"><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
                             </td>
                         </tr>    
                 </tbody>

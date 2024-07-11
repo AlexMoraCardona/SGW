@@ -117,12 +117,53 @@
         <br> 
     </div>  
     <br>
+
     
     <hr>
     <br>
     <div class="container col-11 card p-5">
         <div class="form-group">
-            <h5>Archivos adjuntos:</h5>
+            <h5>Archivos adjuntos Antes:</h5>
+        </div>         
+        <hr>
+        <% if @unsafe_condition.present? %>
+            <% if @unsafe_condition.evidencias.attached? %>
+                <div data-controller="previews" >
+                    <% @unsafe_condition.evidencias.each do |file|%> 
+                        <br>
+                        <% if file.image? %>
+                            <div>
+                                <%= image_tag file, data: {previews_target: "preview"}, class: "image" %>
+                                <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
+                                <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                            </div> 
+                        <% elsif file.video? %>
+                            <%= video_tag url_for(file), controls: "", width: "400px" %>          
+                            <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
+                            <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                        <% elsif file.audio? %>
+                            <%= audio_tag(url_for(file), controls: "") %>          
+                            <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
+                            <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                        <% else %>
+                            <%= link_to file.filename, url_for(file) %>          
+                            <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
+                            <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                        <% end %>
+                    <% end %>
+                <% end %>      
+            </div>
+        <% end %>  
+    </div>        
+
+
+
+
+    <hr>
+    <br>
+    <div class="container col-11 card p-5">
+        <div class="form-group">
+            <h5>Archivos adjuntos Despues:</h5>
         </div>         
         <hr>
         <% if @matrix_unsafe_item.registros.attached? %>

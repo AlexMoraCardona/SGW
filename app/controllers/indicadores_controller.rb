@@ -80,6 +80,9 @@ class IndicadoresController < ApplicationController
         calculo_incidencia(@report_official)
         calculo_proporcion(@report_official)
         calculo_peligrosriesgos(@entity)
+        calculo_coberturacapacitaciones(@entity)
+        calculo_trabajadorescapacitados(@entity)
+
     end
 
     def graficosmpr
@@ -409,18 +412,50 @@ class IndicadoresController < ApplicationController
         @matrix_danger_risks = MatrixDangerRisk.find_by(entity_id: entity.id) if entity.present?
         @matrix_danger_items = MatrixDangerItem.where('matrix_danger_risk_id = ?', @matrix_danger_risks.id) if @matrix_danger_risks.present?
 
-        @total = 0
-        @inter = 0
+        @totalpeligrosriesgos = 0
+        @interpeligrosriesgos = 0
         @datos_peligrosriesgos = []
         @matrix_danger_items.each do |rep| 
-            @total += 1
+            @totalpeligrosriesgos += 1
             if rep.danger_intervened == 1 then
-                @inter += 1
+                @interpeligrosriesgos += 1
             end    
         end
-        @indicador_peligrosriesgos = (@inter * 100)/ @total
-        @datos_peligrosriesgos.push([@inter, @indicador_peligrosriesgos]) 
+        @indicador_peligrosriesgos = (@interpeligrosriesgos * 100)/ @totalpeligrosriesgos
+        @datos_peligrosriesgos.push([@interpeligrosriesgos, @indicador_peligrosriesgos]) 
 
+    end
+
+    def calculo_coberturacapacitaciones(entity)
+        año = Time.new.year 
+        training = Training.find_by(year: año, entity_id: entity.id)
+        training_items = TrainingItem.where("training_id = ?",training.id) if training.present?
+        @total_coberturacapacitaciones = training_items.count if training_items.present?
+        cant = 0
+        @datos_coberturacapacitaciones = []
+        training_items.each  do |det|
+            cant += 1 if det.state_cap == 1
+        end     
+        por = ((cant.to_f / @total_coberturacapacitaciones.to_f) * 100).round(2).to_f if   @total_coberturacapacitaciones.to_f > 0
+
+        @datos_coberturacapacitaciones.push([cant, por.to_f])
+    end
+
+    def calculo_trabajadorescapacitados(entity)
+        año = Time.new.year 
+        training = Training.find_by(year: año, entity_id: entity.id)
+        training_items = TrainingItem.where("training_id = ?",training.id) if training.present?
+        @total_trabajadores = 0
+        @total_trabajadoresc = 0
+
+        @datos_trabajadorescapacitados = []
+        training_items.each  do |det|
+            @total_trabajadores += det.cant_emple_cap if det.state_cap != 2
+            @total_trabajadoresc += det.cant_cap if det.state_cap == 1
+        end     
+        por = ((@total_trabajadoresc.to_f / @total_trabajadores.to_f) * 100).round(2).to_f if   @total_trabajadores.to_f > 0
+
+        @datos_trabajadorescapacitados.push([@total_trabajadoresc, por.to_f])
     end
 
 end 

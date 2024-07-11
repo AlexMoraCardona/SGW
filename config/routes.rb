@@ -77,6 +77,8 @@ Rails.application.routes.draw do
   resources :matrix_unsafe_items
   resources :format_actions 
 
+  get '/matrix_unsafe_items/matrix_unsafe_item_pdf/:id', to: 'matrix_unsafe_items#matrix_unsafe_item_pdf', as: 'matrix_unsafe_item_pdf'
+  get '/unsafe_conditions/unsafe_condition_pdf/:id', to: 'unsafe_conditions#unsafe_condition_pdf', as: 'unsafe_condition_pdf'
   get '/unsafe_conditions/add_evidences/:id', to: 'unsafe_conditions#add_evidences', as: 'add_evidences'
   get '/format_actions/format_action_pdf/:id', to: 'format_actions#format_action_pdf', as: 'format_action_pdf'
   get '/matrix_conditions/condition_pdf/:id', to: 'matrix_conditions#condition_pdf', as: 'condition_pdf'

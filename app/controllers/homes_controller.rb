@@ -12,6 +12,7 @@ class HomesController < ApplicationController
          dias_comun_laboral
          actos_inseguros
          peligros_riesgos
+         capacitaciones
     end    
 
 
@@ -37,18 +38,19 @@ class HomesController < ApplicationController
     
     def calculo_sex
         users = User.where("entity = ? and state = ?", @entity.id, 1).order(:sex) if @entity.present?
-        total = 0
+        total = users.count if users.present?
         @datos_sex = []
         users.group_by(&:sex).each  do |niv, det|
             cant = 0
             det.each do |d|
-               total += 1 
                cant += 1 
             end  
+            por = ((cant.to_f / total.to_f) * 100).round(2).to_f if total.to_f > 0
+
             hom = "Hombres: " +  cant.to_s  if  niv.to_i == 0
             muj = "Mujeres: " + cant.to_s if  niv.to_i == 1
-            @datos_sex.push([hom, cant]) if  niv.to_i == 0
-            @datos_sex.push([muj, cant]) if  niv.to_i == 1
+            @datos_sex.push([hom, por.to_f]) if  niv.to_i == 0
+            @datos_sex.push([muj, por.to_f]) if  niv.to_i == 1
         end
     end     
 
@@ -144,6 +146,31 @@ class HomesController < ApplicationController
             end    
         end
     end
+
+    def capacitaciones
+        entity = Entity.find(Current.user.entity)
+        año = Time.new.year 
+        training = Training.find_by(year: año, entity_id: entity.id)
+        training_items = TrainingItem.where("training_id = ?",training.id) if training.present?
+        total = training_items.count if training_items.present?
+
+        @datos_capacitacion = []
+        training_items.group_by(&:state_cap).each  do |niv, det|
+            cant = 0
+            det.each do |d|
+               cant += 1 
+            end  
+            por = ((cant.to_f / total.to_f) * 100).round(2).to_f if total.to_f > 0
+
+            pendientes = "Pendientes: " +  cant.to_s  if  niv.to_i == 0
+            realizadas = "Realizadas: " + cant.to_s if  niv.to_i == 1
+            canceladas = "Canceladas: " + cant.to_s if  niv.to_i == 2
+
+            @datos_capacitacion.push([pendientes, por.to_f]) if  niv.to_i == 0
+            @datos_capacitacion.push([realizadas, por.to_f]) if  niv.to_i == 1
+            @datos_capacitacion.push([canceladas, por.to_f]) if  niv.to_i == 2
+        end
+    end     
 
 
     def show

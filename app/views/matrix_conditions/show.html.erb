@@ -8,9 +8,9 @@
                 <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
                     <% if @matrix_condition.entity.logo.present? then %>
                         <%=  image_tag  @matrix_condition.entity.logo, class: "image_peq" %>
-                    <% end %>
+                    <% end %> 
                 </td>
-                <td rowspan="4"; colspan="7"; style="text-align:center">
+                <td rowspan="4"; colspan="10"; style="text-align:center">
                     <div class="col-10"><h5>MATRIZ DE SEGUIMIENTO DE ACTOS Y CONDICIONES INSEGURAS</h5><h6><%= @matrix_condition.entity.business_name if @matrix_condition.present? %> Nit: <%= @matrix_condition.entity.identification_number if @matrix_condition.present? %> </h6></div>
                 </td>
                 <td rowspan="4";  style="text-align:center">
@@ -51,8 +51,10 @@
                 <td style="border:1px solid black; text-align:center">Descripción de la condición / acto inseguro</TD>
                 <td style="border:1px solid black; text-align:center">TIPO DE ACCIÓN</TD>
                 <td style="border:1px solid black; text-align:center">ESTADO</TD>
+                <td style="border:1px solid black; text-align:center">FECHA DE INTERVENCIÓN</TD>
                 <td style="border:1px solid black; text-align:center">OBSERVACIONES</TD>
                 <td style="border:1px solid black; text-align:center">VER/EDITAR</TD>
+                <td style="border:1px solid black; text-align:center">PDF</TD>
                 <td style="border:1px solid black; text-align:center">ELIMINAR</TD>
                 <td style="background-color: black;">&nbsp;</td>
              </tr>  
@@ -80,11 +82,13 @@
                     <% if item.state_unsafe == 1  %>
                          <td style="border:1px solid black; text-align:center; background-color:#038018"><%= MatrixUnsafeItem.estado(item.state_unsafe) %></td>
                     <% end  %>    
+                    <td style="border:1px solid black; text-align:center"><%= item.date_intervencion %></td>
 
                     
                     <td style="border:1px solid black"><%= item.observations %></td>
-                    <td style="border:1px solid black"><%= link_to t('common.edit'), edit_matrix_unsafe_item_path(item), class: 'btn btn-sm btn-primary'  %></td>
-                    <td style="border:1px solid black"><%= link_to t('common.delete'), matrix_unsafe_item_path(item), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el acto o condición insegura?' }, class: 'btn btn-sm btn-danger' %></td>
+                    <td style="border:1px solid black; text-align:center;"><%= link_to t('common.edit'), edit_matrix_unsafe_item_path(item), class: 'btn btn-sm btn-primary'  %></td>
+                    <td style="border:1px solid black; text-align:center;"><%= link_to "PDF", matrix_unsafe_item_pdf_path(item, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
+                    <td style="border:1px solid black; text-align:center;"><%= link_to t('common.delete'), matrix_unsafe_item_path(item), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el acto o condición insegura?' }, class: 'btn btn-sm btn-danger' %></td>
 
                     <td style="background-color: black;">&nbsp;</td>
                 </tr>

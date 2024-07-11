@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_03_140522) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_11_195133) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -506,6 +506,11 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_03_140522) do
     t.string "object"
     t.string "policy"
     t.text "compliances"
+    t.integer "por_cobertura", default: 0
+    t.integer "por_trabajadores", default: 0
+    t.integer "por_reacciones", default: 0
+    t.integer "por_aprendizaje", default: 0
+    t.integer "por_resultados", default: 0
     t.index ["entity_id"], name: "index_evidences_on_entity_id"
     t.index ["evaluation_rule_detail_id"], name: "index_evidences_on_evaluation_rule_detail_id"
     t.index ["template_id"], name: "index_evidences_on_template_id"
@@ -1187,6 +1192,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_03_140522) do
     t.string "company_position"
     t.string "phone"
     t.integer "brigade_position", default: 0
+    t.integer "brigade_personnel", default: 0
     t.index ["evidence_id"], name: "index_participants_on_evidence_id"
     t.index ["user_id"], name: "index_participants_on_user_id"
   end
@@ -1477,6 +1483,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_03_140522) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "training_id"
+    t.integer "cant_emple", default: 0
+    t.integer "cant_emple_cap", default: 0
+    t.integer "cant_cap", default: 0
+    t.integer "state_cap", default: 0
     t.index ["training_id"], name: "index_training_items_on_training_id"
   end
 

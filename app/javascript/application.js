@@ -9,8 +9,8 @@ import "chartkick"
 import "Chart.bundle"
 
 //import "direct_uploads"
-import "trix"
-import "@rails/actiontext"
+require("trix")
+require("@rails/actiontext")
 
 
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_11_195133) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_15_192113) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -204,6 +204,32 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_11_195133) do
     t.datetime "updated_at", null: false
     t.bigint "meeting_minute_id", null: false
     t.index ["meeting_minute_id"], name: "index_assistants_on_meeting_minute_id"
+  end
+
+  create_table "audit_report_items", force: :cascade do |t|
+    t.string "process"
+    t.string "finding"
+    t.integer "type_finding", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "audit_report_id"
+    t.index ["audit_report_id"], name: "index_audit_report_items_on_audit_report_id"
+  end
+
+  create_table "audit_reports", force: :cascade do |t|
+    t.integer "user_representante", default: 0
+    t.integer "user_audit", default: 0
+    t.date "date_firm_representante"
+    t.date "date_firm_audit"
+    t.integer "firm_representante", default: 0
+    t.integer "firm_audit", default: 0
+    t.date "date_audit"
+    t.string "conclusions"
+    t.string "observations"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_audit_reports_on_entity_id"
   end
 
   create_table "business_days", force: :cascade do |t|
@@ -1648,6 +1674,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_11_195133) do
   add_foreign_key "annual_work_plan_items", "annual_work_plans"
   add_foreign_key "annual_work_plans", "entities"
   add_foreign_key "assistants", "meeting_minutes"
+  add_foreign_key "audit_report_items", "audit_reports"
+  add_foreign_key "audit_reports", "entities"
   add_foreign_key "business_days", "entities"
   add_foreign_key "calendars", "adm_calendars"
   add_foreign_key "clasification_danger_details", "clasification_dangers"

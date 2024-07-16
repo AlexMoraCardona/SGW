@@ -1,7 +1,4 @@
-class AnnualWorkPlan < ApplicationRecord
-    belongs_to :entity
-    has_many :annual_work_plan_items
-
+class AuditReport < ApplicationRecord
     def name_user(user_id)
         name = 'No encontrado'
         user =  User.find(user_id)
@@ -13,6 +10,5 @@ class AnnualWorkPlan < ApplicationRecord
         if firm == 0 ; 'NO'
         elsif  firm == 1 ; 'SI'
         end 
-    end  
-    
+    end      
 end

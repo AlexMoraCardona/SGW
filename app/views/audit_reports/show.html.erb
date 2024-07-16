@@ -1,0 +1,284 @@
+<table style="border:0px solid black;width: 100%">
+    <tr style="padding: 20px;">
+        <td rowspan="2" style="border:1px solid black; width: 20%; text-align:center">
+            <% if @entity.logo.present? then %>
+                <%=  image_tag  @entity.logo, class: "image_peq" %>
+            <% end %>   
+        </td>
+        <td style="border:1px solid black; text-align:center">
+            <div class="col-10"><h6><%= @entity.business_name if @entity.present? %></h6></div>
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; text-align:center">
+            <div class="col-10"><h6><%= @template.name if @template.present? %></h6></div>
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            <h6>CÓDIGO: </h6>                
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.reference if @template.present? %></small></h6>                
+        </td>
+
+        <td style="border:1px solid black; width: 25%">
+            <h6>VERSIÓN: </h6>                
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.version if @template.present? %></small></h6>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            <h6>FECHA DE ELABORACIÓN: </h6>                 
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date if @template.present? %></small></h6>                
+        </td>
+
+        <td style="border:1px solid black; width: 25%">
+            <h6>FECHA DE ACTUALIZACIÓN: </h6>                
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date_updated if @template.present? %></small></h6>                
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            </br>
+            <p><strong>OBJETIVO DE LA AUDITORÍA: </strong>Verificar el cumplimiento de la Resolución 0312 de 2019</p>                
+            </br>
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            </br>
+            <p><strong>ALCANCE DE LA AUDITORÍA: </strong>Evaluar la planificación, desarrollo y aplicación del Sistema de Gestión de la Seguridad y Salud en el Trabajo (SG-SST);</p>                
+            </br>
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            </br>
+                <p><strong>CRITERIOS DE LA AUDITORÍA:</strong></p>                
+                <p>Decreto 1072 de 2015</p>                
+                <p>Resolución 0312 de 2019</p>                
+                <p>Plan de Trabajo anual</p>                
+                <p>Plan de Capacitación </p>                
+                <p>Matriz de Peligros y riesgos</p>                
+                <p>Plan de preparación y atención de emergencias</p>                
+            </br>
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            </br>
+                <p><strong>EQUIPO AUDITOR: </strong></p>   
+                <p><%= @user_audit.name if @user_audit.present? %></p>                
+            </br>
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            </br>
+                <p><strong>FECHA DE AUDITORIA: </strong></p>   
+                <p><%= @audit_report.date_audit if @audit_report.present? %></p>                
+            </br>
+        </td>
+    </tr>
+    <tr>    
+        <td style="text-align:center; border:1px solid black; background-color: #00aae4;">
+                <p><strong>RESULTADOS DE AUDITORÍA</strong></p>   
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="text-align:center;border:1px solid black; width: 25%">
+            </br>
+            <p><strong>PROCESO</strong></p>                
+            </br>
+        </td>
+        <td style="text-align:center;border:1px solid black; width: 25%">
+            </br>
+            <p><strong>TIPO DE HALLAZGO</strong></p>                
+            </br>
+        </td>
+        <td style="text-align:center;border:1px solid black; width: 50%">
+            </br>
+            <p><strong>HALLAZGO</strong></p>                
+            </br>
+        </td>
+    </tr>
+    <% if @audit_report_items.present? then %>
+        <% @audit_report_items.each do |audit_report_item| %>
+            <tr>    
+                <td style="border:1px solid black; width: 25%">
+                    <p><%= audit_report_item.process %></p>                
+                </td>
+                <td style="border:1px solid black; width: 25%">
+                    <p><%= AuditReportItem.label_type_finding(audit_report_item.type_finding) %></p>                
+                </td>
+                <td style="border:1px solid black; width: 25%">
+                    <p><%= audit_report_item.finding %></p>                
+                </td>
+            </tr>
+        <% end %>   
+    <% end %>   
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 100%">
+            </br>
+                <p><strong>CONCLUSIONES: </strong></p>                
+                <p><%= @audit_report.conclusions %></p>                
+            </br>
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 100%">
+            </br>
+                <p><strong>OBSERVACIONES GENERALES Y OPORTUNIDADES DE MEJORA: </strong></p>                
+                <p><%= @audit_report.observations %></p>                
+            </br>
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 100%">
+            </br>
+                <p><strong>ARCHIVOS ADJUNTO: </strong></p>                
+            </br>
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 100%">
+            <% if @audit_report_items.present? then %>
+                <% @audit_report_items.each do |audit_report_item| %>
+
+                    <% if audit_report_item.finding_evidences.attached? %>
+                        <div data-controller="previews" >
+                            <% audit_report_item.finding_evidences.each do |file|%>
+                                <br>
+                                <div>
+                                    <%= audit_report_item.finding %>    
+                                </div>
+                                <br>
+                                <% if file.image? %>
+                                    <div>
+                                        <%= image_tag file, data: {previews_target: "preview"}, class: "image" %>
+                                    </div>
+                                <% elsif file.video? %>
+                                        <%= video_tag url_for(file), controls: "", width: "400px" %>          
+                                <% elsif file.audio? %>
+                                    <%= audio_tag(url_for(file), controls: "") %>          
+                                <% else %>
+                                    <%= link_to file.filename, url_for(file) %>          
+                                <% end %>
+                            <% end %>    
+                        </div>
+                    <% end %>  
+                <% end %>  
+            <% end %>  
+        </td>
+    </tr>
+</table>
+<div class="row"><br></div>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:0px solid black; width: 50%; text-align:center">
+                <% if @user_audit.present? %>
+                    <div class="row  text-center"> 
+                        <div class="col-11">
+                            <div>Firma del auditor líder:</div>
+                            <div>&nbsp;</div>
+                            <div>&nbsp;</div>
+                            <% if @audit_report.firm_audit == 1 %>
+                               <% if @user_audit.firm.attached? %>
+                                  <% if @user_audit.firm.image? %> 
+                                       <%= image_tag @user_audit.firm, class: "firma" %>
+                                        <p align="center">________________________________</p>
+                                  <% end %>
+                                <% end %>
+                            <% else %>    
+                                <p align="center">________________________________</p>
+                             <% end %>     
+                        </div>
+                       <div class="col-11">
+                            <div class="row">
+                                <h6><strong><%= @user_audit.name %></strong></h6>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <h6><%= @user_audit.activity %></h6>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <h6><%= @user_audit.document.abbreviation %>: <%= Firm.miles(@user_audit.nro_document) %></h6>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <h6>Fecha firma: <%= @audit_report.date_firm_audit  if @audit_report.date_firm_audit %></h6>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                <% end %>    
+        </td>
+        <td style="border:0px solid black; width: 50%; text-align:center">
+                <% if @user_representante.present? %>
+                    <div class="row  text-center"> 
+                        <div class="col-11">
+                            <div>Firma del Representante Legal:</div>
+                            <div>&nbsp;</div>
+                            <div>&nbsp;</div>
+                            <% if  @audit_report.firm_representante == 1 %>
+                               <% if @user_representante.firm.attached? %>
+                                  <% if @user_representante.firm.image? %> 
+                                       <%= image_tag @user_representante.firm, class: "firma" %>
+                                        <p align="center">________________________________</p>
+                                  <% end %>
+                                <% end %>
+                            <% else %>    
+                                <p align="center">________________________________</p>
+                             <% end %>     
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <h6><strong><%= @user_representante.name %></strong></h6>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <h6><%= @user_representante.activity %></h6>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <h6><%= @user_representante.document.abbreviation %>: <%= Firm.miles(@user_representante.nro_document) %></h6>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <h6>Fecha firma: <%= @audit_report.date_firm_representante  if @audit_report.date_firm_representante %></h6>
+                            </div>
+                        </div>
+        
+                    </div>
+                    <br> 
+                <% end %>    
+        </td>
+    </tr>
+</table>
+

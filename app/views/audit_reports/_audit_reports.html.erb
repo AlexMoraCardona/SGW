@@ -1,0 +1,107 @@
+<% if @entity.present? %>
+    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
+<% end %>
+
+
+<% if @audit_reports.present? %>
+    <%= link_to t('.create_audit_report'), new_audit_report_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+
+    <table class="table table-hover"> 
+
+        <% @audit_reports.each do |audit_report| %>
+            <hr>
+            <div class="col-sm-8">
+                <h3>Informe de auditoría interna del: <%= audit_report.date_audit %> </h3>
+            </div>        
+
+            <%= link_to t('common.create_item_auditoria_interna_audit_report'), crear_item_auditoria_interna_path(audit_report.id), class: 'btn btn-sm btn-warning' %> &nbsp;
+            <%= link_to t('common.show_audit_report'), audit_report_path(audit_report.id), class: 'btn btn-sm btn-warning' %> &nbsp;
+            <%= link_to t('common.edit'), edit_audit_report_path(audit_report.id), class: 'btn btn-sm btn-warning' %> &nbsp;
+            <%= link_to "PDF", ver_auditoria_interna_pdf_path(audit_report.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;
+
+            <div class="container col-12">
+                <br>
+
+                <div class="row g-4">
+                    <div class="col-sm-3">
+                        <strong><%= t('.user_representante') %></strong><br>
+                        <%=  audit_report.name_user(audit_report.user_representante)  %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.firm_representante') %></strong><br>
+                        <%= audit_report.label_firm(audit_report.firm_representante) %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.date_firm_representante') %></strong><br>
+                        <%= audit_report.date_firm_representante %> 
+                    </div>
+                    <div class="col-sm-3">
+                        <% if audit_report.firm_representante.to_i == 0 %>
+                            <%= link_to t('common.firmar'), firmar_representante_audi_path(audit_report.id, 1), class: 'btn btn-sm btn btn-warning' %>
+                        <% end %>    
+                    </div>
+                </div>
+                <div class="row g-4">
+                    <div class="col-sm-3">
+                        <strong><%= t('.user_audit') %></strong><br>
+                        <%= audit_report.name_user(audit_report.user_audit) %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.firm_audit') %></strong><br>
+                        <%= audit_report.label_firm(audit_report.firm_audit) %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.date_firm_audit') %></strong><br>
+                        <%= audit_report.date_firm_audit %> 
+                    </div>
+                    <div class="col-sm-3">
+                        <% if audit_report.firm_audit.to_i == 0 %>
+                            <%= link_to t('common.firmar'), firmar_auditor_path(audit_report.id, 2), class: 'btn btn-sm btn btn-warning' %>
+                        <% end %>    
+                    </div>
+                </div>
+            </div> 
+            <hr>
+            <br>
+            <div class="d-flex">
+                <div class="container">
+                    <h class="display-6">Hallazgos</h>
+                </div> 
+            </div>
+            <hr>
+            <% if @audit_report_items.present? %>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Tipo de hallazgo</th>
+                            <th scope="col">Proceso</th>
+                            <th scope="col">Hallazgo</th>
+                            <th scope="col">Editar</th>
+                            <th scope="col">Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @audit_report_items.where("audit_report_id = ?", audit_report.id).each do |audit_report_item| %>
+                            <tr>
+                                <td><%= audit_report_item.id %></td>
+                                <td><%= AuditReportItem.label_type_finding(audit_report_item.type_finding) %></td>
+                                <td><%= audit_report_item.process %></td>
+                                <td><%= audit_report_item.finding %></td>
+                                <td><%= link_to t('common.edit'), edit_audit_report_item_path(audit_report_item), class: 'btn btn-sm btn-primary'  %></td>
+                                <td><%= link_to t('common.delete'), audit_report_item, data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el hallazgo?' }, class: 'btn btn-sm btn-danger' %></td>
+                            </tr>
+                        <% end %>     
+                    </tbody>      
+                </table>
+            <% end %>     
+ 
+        <% end %>  
+        <hr>  
+    </table>  
+    <br>
+<% else %>
+    <div>
+        <%= link_to t('common.create_audit_report'), new_audit_report_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+    </div>
+<% end %>

@@ -8,3 +8,7 @@ window.Stimulus   = application
 
 
 export { application }
+
+// application.js
+import "trix"
+import "@rails/actiontext"

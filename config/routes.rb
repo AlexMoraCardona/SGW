@@ -76,7 +76,13 @@ Rails.application.routes.draw do
   resources :matrix_conditions
   resources :matrix_unsafe_items
   resources :format_actions 
+  resources :audit_reports
+  resources :audit_report_items
 
+  get '/audit_reports/crear_item_auditoria_interna/:id', to: 'audit_reports#crear_item_auditoria_interna', as: 'crear_item_auditoria_interna'
+  get '/audit_reports/firmar_representante/:id', to: 'audit_reports#firmar_representante', as: 'firmar_representante_audi'
+  get '/audit_reports/firmar_auditor/:id', to: 'audit_reports#firmar_auditor', as: 'firmar_auditor'
+  get '/audit_reports/ver_auditoria_interna_pdf/:id', to: 'audit_reports#ver_auditoria_interna_pdf', as: 'ver_auditoria_interna_pdf'
   get '/matrix_unsafe_items/matrix_unsafe_item_pdf/:id', to: 'matrix_unsafe_items#matrix_unsafe_item_pdf', as: 'matrix_unsafe_item_pdf'
   get '/unsafe_conditions/unsafe_condition_pdf/:id', to: 'unsafe_conditions#unsafe_condition_pdf', as: 'unsafe_condition_pdf'
   get '/unsafe_conditions/add_evidences/:id', to: 'unsafe_conditions#add_evidences', as: 'add_evidences'

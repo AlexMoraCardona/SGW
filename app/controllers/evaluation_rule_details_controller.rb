@@ -67,7 +67,7 @@ class EvaluationRuleDetailsController < ApplicationController
                 @firma_nueva.save
             end   
 
-            if user_vigia.present? && (@evidence.template_id == 37 || @evidence.template_id == 38 || @evidence.template_id == 39 || @evidence.template_id == 166 || @evidence.template_id == 167 || @evidence.template_id == 168) then
+            if user_vigia.present? && (@evidence.template_id == 37 || @evidence.template_id == 38 || @evidence.template_id == 39 || @evidence.template_id == 166 || @evidence.template_id == 167 || @evidence.template_id == 168 || @evidence.template_id == 88 || @evidence.template_id == 89 || @evidence.template_id == 90) then
                 @firma_nueva  = Firm.new
                 @firma_nueva.user_id = user_vigia.id
                 @firma_nueva.evidence_id = @evidence.id
@@ -85,7 +85,7 @@ class EvaluationRuleDetailsController < ApplicationController
 
             if user_responsible.present? && (@evidence.template_id == 22 || @evidence.template_id == 23 || @evidence.template_id == 24 || @evidence.template_id == 43 || @evidence.template_id == 44 || @evidence.template_id == 45 || @evidence.template_id == 58 || 
                 @evidence.template_id == 59 || @evidence.template_id == 60 || @evidence.template_id == 61 || @evidence.template_id == 62 || @evidence.template_id == 63 || @evidence.template_id == 70 || @evidence.template_id == 71 || @evidence.template_id == 72 || 
-                @evidence.template_id == 4 || @evidence.template_id == 5 || @evidence.template_id == 6 || @evidence.template_id == 73 || @evidence.template_id == 74 || @evidence.template_id == 75 || @evidence.template_id == 103 || @evidence.template_id == 104 || 
+                @evidence.template_id == 4 || @evidence.template_id == 5 || @evidence.template_id == 6 || @evidence.template_id == 73 || @evidence.template_id == 74 || @evidence.template_id == 75 || @evidence.template_id == 103 || @evidence.template_id == 104 || @evidence.template_id == 85 || @evidence.template_id == 86 || @evidence.template_id == 87 ||  
                 @evidence.template_id == 105 || @evidence.template_id == 115 || @evidence.template_id == 116 || @evidence.template_id == 117 || @evidence.template_id == 118 || @evidence.template_id == 119 || @evidence.template_id == 120 || @evidence.template_id == 121 || 
                 @evidence.template_id == 122 || @evidence.template_id == 123 || @evidence.template_id == 124 || @evidence.template_id == 125 || @evidence.template_id == 126 || @evidence.template_id == 127 || @evidence.template_id == 128 || @evidence.template_id == 129 || 
                 @evidence.template_id == 130 || @evidence.template_id == 131 || @evidence.template_id == 132 || @evidence.template_id == 133 || @evidence.template_id == 134 || @evidence.template_id == 135 || @evidence.template_id == 136 || @evidence.template_id == 137 || 
@@ -111,6 +111,7 @@ class EvaluationRuleDetailsController < ApplicationController
     end    
 
     def crear_participantes
+
         if  @evidence.present? then
             entidad = Entity.find(@evidence.entity_id) if @evidence.present? 
             user_responsible = User.find(entidad.responsible_sst.to_i) if entidad.present? && entidad.responsible_sst.to_i > 0 
@@ -120,7 +121,7 @@ class EvaluationRuleDetailsController < ApplicationController
 
 
 
-            if user_vigia.present? && (@evidence.template_id == 37 || @evidence.template_id == 38 || @evidence.template_id == 39)  then
+            if user_vigia.present? && (@evidence.template_id == 37 || @evidence.template_id == 38 || @evidence.template_id == 39 || @evidence.template_id == 88 || @evidence.template_id == 89 || @evidence.template_id == 90)  then
                 @participante_nuevo  = Participant.new
                 @participante_nuevo.user_id = user_vigia.id
                 @participante_nuevo.evidence_id = @evidence.id
@@ -129,7 +130,7 @@ class EvaluationRuleDetailsController < ApplicationController
                 @participante_nuevo.save
             end   
 
-            if user_responsible.present? && (@evidence.template_id == 22 || @evidence.template_id == 23 || @evidence.template_id == 24 || @evidence.template_id == 4 || @evidence.template_id == 5 || @evidence.template_id == 6 || @evidence.template_id == 115 || @evidence.template_id == 116 || @evidence.template_id == 117)  then
+            if user_responsible.present? && (@evidence.template_id == 22 || @evidence.template_id == 23 || @evidence.template_id == 24 || @evidence.template_id == 4 || @evidence.template_id == 5 || @evidence.template_id == 6 || @evidence.template_id == 115 || @evidence.template_id == 116 || @evidence.template_id == 117 || @evidence.template_id == 85 || @evidence.template_id == 86 || @evidence.template_id == 87)  then
                 @participante_nuevo  = Participant.new
                 @participante_nuevo.user_id = user_responsible.id
                 @participante_nuevo.evidence_id = @evidence.id

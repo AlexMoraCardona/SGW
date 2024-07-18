@@ -1,0 +1,2 @@
+class TypeConditionInspection < ApplicationRecord
+end

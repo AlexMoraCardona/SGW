@@ -78,7 +78,20 @@ Rails.application.routes.draw do
   resources :format_actions 
   resources :audit_reports
   resources :audit_report_items
+  resources :direction_reviews
+  resources :improvement_plans
+  resources :improvement_items
+  resources :type_condition_inspections
+  resources :situation_conditions
+  resources :safety_inspections
+  resources :safety_inspection_items
 
+  get '/improvement_plans/crear_item_improvement_plan/:id', to: 'improvement_plans#crear_item_improvement_plan', as: 'crear_item_improvement_plan'
+  get '/improvement_plans/firmar_representante_improvement/:id', to: 'improvement_plans#firmar_representante_improvement', as: 'firmar_representante_improvement_plan'
+  get '/improvement_plans/firmar_responsable_improvement/:id', to: 'improvement_plans#firmar_responsable_improvement', as: 'firmar_responsable_improvement_plan'
+  get '/improvement_plans/ver_improvement_plan_pdf/:id', to: 'improvement_plans#ver_improvement_plan_pdf', as: 'ver_improvement_plan_pdf'
+  get '/direction_reviews/firmar_representante_review/:id', to: 'direction_reviews#firmar_representante_review', as: 'firmar_representante_review'
+  get '/direction_reviews/ver_review_pdf/:id', to: 'direction_reviews#ver_review_pdf', as: 'ver_review_pdf'
   get '/audit_reports/crear_item_auditoria_interna/:id', to: 'audit_reports#crear_item_auditoria_interna', as: 'crear_item_auditoria_interna'
   get '/audit_reports/firmar_representante/:id', to: 'audit_reports#firmar_representante', as: 'firmar_representante_audi'
   get '/audit_reports/firmar_auditor/:id', to: 'audit_reports#firmar_auditor', as: 'firmar_auditor'

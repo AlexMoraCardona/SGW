@@ -9,6 +9,12 @@ class AuditReportItem < ApplicationRecord
         end 
     end     
 
+    def self.label_type_action(dato)
+        if dato == 0 ; 'Preventiva'
+        elsif  dato == 1 ; 'Correctiva'
+        elsif  dato == 2 ; 'Mejora'
+        end 
+    end     
 
 
 end

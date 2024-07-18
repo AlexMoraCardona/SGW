@@ -1,0 +1,392 @@
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+    <%= javascript_importmap_tags %>
+</head>
+<table style="border:0px solid black;width: 100%">
+    <tr style="padding: 20px;">
+        <td rowspan="2" style="border:1px solid black; width: 20%; text-align:center">
+            <% if @entity.logo.present? then %>
+                <%=  image_tag  @entity.logo, class: "image_peq" %>
+            <% end %>   
+        </td>
+        <td style="border:1px solid black; text-align:center">
+            <div class="col-10"><h6><%= @entity.business_name if @entity.present? %></h6></div>
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; text-align:center">
+            <div class="col-10"><h6><%= @template.name if @template.present? %></h6></div>
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            <h6>CÓDIGO: </h6>                
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.reference if @template.present? %></small></h6>                
+        </td>
+
+        <td style="border:1px solid black; width: 25%">
+            <h6>VERSIÓN: </h6>                
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.version if @template.present? %></small></h6>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            <h6>FECHA DE ELABORACIÓN: </h6>                 
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date if @template.present? %></small></h6>                
+        </td>
+
+        <td style="border:1px solid black; width: 25%">
+            <h6>FECHA DE ACTUALIZACIÓN: </h6>                
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date_updated if @template.present? %></small></h6>                
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="text-align:center;border:1px solid black; background-color: #00aae4;">
+               <p><strong>REVISIÓN ALTA DIRECCIÓN</strong></p>                
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="text-align:center;border:1px solid black; width: 35%">
+            <p><strong>ELEMENTOS A VERIFICAR</strong></p>                
+        </td>
+        <td style="text-align:center;border:1px solid black; width: 35%">
+            <p><strong>GESTIÓN REALIZADA</strong></p>                
+        </td>
+        <td style="text-align:center;border:1px solid black; width: 30%">
+            <p><strong>RESULTADOS O RECOMENDACIONES ALTA DIRECCIÓN</strong></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">1. Revisar las estrategias implementadas y determinar si han sido eficaces para alcanzar los objetivos, metas y resultados esperados del Sistema de Gestión de la Seguridad y Salud en el Trabajo</p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g1 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r1 %></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">2. Revisar el cumplimiento del plan de trabajo anual en seguridad y salud en el trabajo y su cronograma</p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g2 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r2 %></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">3.Analizar la suficiencia de los recursos asignados para la implementación del Sistema de Gestión de la Seguridad y Salud en el Trabajo y el cumplimiento de los resultados esperados</p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g3 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r3 %></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">4.Revisar la capacidad del Sistema de Gestión de la Seguridad y Salud en el Trabajo SG-SST, para satisfacer las necesidades globales de la empresa en materia de seguridad y salud en el trabajo</p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g4 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r4 %></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">5.Analizar la necesidad de realizar cambios en el Sistema de Gestión de la Seguridad y Salud en el Trabajo SG-SST, incluida la revisión de la política y sus objetivos</p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g5 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r5 %></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">6. Evaluar la eficacia de las medidas de seguimiento con base en las revisiones anteriores de la alta dirección y realizar los ajustes necesarios</p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g6 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r6 %></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">7.Analizar el resultado de los indicadores y de las auditorias anteriores del Sistema de Gestión de la Seguridad y Salud en el Trabajo SG-SST</p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g7 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r7 %></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">8.Aportar información sobre nuevas prioridades y objetivos estratégicos de la organización que puedan ser insumos para la planificación y la mejora continua</p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g8 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r8 %></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">9. Recolectar información para determinar si las medidas de prevención y control de peligros y riesgos se aplican y son eficaces</p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g9 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r9 %></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">10.lntercambiar información con los trabajadores sobre los resultados y su desempeño en seguridad y salud en el trabajo</p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g10 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r10 %></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">11.Servir de base para la adopción de decisiones que tengan por objeto mejorar la identificación de peligros y el control de los riesgos y en general mejorar la gestión en seguridad y salud en el trabajo de la </p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g11 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r11 %></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">12.Determinar si promueve la participación de los trabajadores</p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g12 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r12 %></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">13.Evidenciar que se cumpla con la normatividad nacional vigente aplicable en materia de riesgos laborales, el cumplimiento de los estándares mínimos del Sistema de Garantía de Calidad del Sistema General de </p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g13 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r13 %></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">14.Establecer acciones que permitan la mejora continua en seguridad y salud en el trabajo</p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g14 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r14 %></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">15.Establecer el cumplimiento de planes específicos, de las metas establecidas y de Los objetivos propuestos</p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g15 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r15 %></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">16.lnspeccionar sistemáticamente los puestos de trabajo, las máquinas y equipos y en general, las instalaciories de la empresa</p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g16 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r16 %></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">17.vigilar las condiciones en los ambientes de trabajo</p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g17 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r17 %></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">18.vigilarlas condiciones de salud de los trabajadores</p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g18 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r18 %></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">19.Mantener actualizada la identificación de peligros, la evaluación y valoración de los riesgos</p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g19 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r19 %></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">20.ldentificar la notificación y la investigación de incidentes, accidentes de trabajo y enfermedades laborales</p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g20 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r20 %></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">21.ldentificar ausentismo laboral por causas asociadas con seguridad y salud en el trabajo</p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g21 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r21 %></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">22.ldentificar pérdidas como daños a la propiedad, máquinas y equipos entre otros, relacionados con seguridad y salud en el trabajo</p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g22 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r22 %></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">23. Identificar deficiencias en la gestión de la seguridad y salud en el trabajo</p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g23 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r23 %></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify">24.ldentificar la efectividad de los programas de rehabilitación de la salud de los trabajadores</p>                
+        </td>
+        <td style="border:1px solid black; width: 35%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.g24 %></p>                
+        </td>
+        <td style="border:1px solid black; width: 30%;padding: 1em;">
+            <p style="text-align:justify"><%= @direction_review.r24 %></p>                
+        </td>
+    </tr>
+
+</table>
+</br>
+<div class="row"><br></div>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:0px solid black; width: 100%; text-align:center">
+                <% if @user_representante.present? %>
+                    <div class="row  text-center"> 
+                        <div class="col-11">
+                            <div>Firma del Representante Legal:</div>
+                            <div>&nbsp;</div>
+                            <div>&nbsp;</div>
+                            <% if  @direction_review.firm_representante == 1 %>
+                               <% if @user_representante.firm.attached? %>
+                                  <% if @user_representante.firm.image? %> 
+                                       <%= image_tag @user_representante.firm, class: "firma" %>
+                                        <p align="center">________________________________</p>
+                                  <% end %>
+                                <% end %>
+                            <% else %>    
+                                <p align="center">________________________________</p>
+                             <% end %>     
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <h6><strong><%= @user_representante.name %></strong></h6>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <h6><%= @user_representante.activity %></h6>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <h6><%= @user_representante.document.abbreviation %>: <%= Firm.miles(@user_representante.nro_document) %></h6>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <h6>Fecha firma: <%= @direction_review.date_firm_representante  if @direction_review.date_firm_representante %></h6>
+                            </div>
+                        </div>
+        
+                    </div>
+                    <br> 
+                <% end %>    
+        </td>
+    </tr>
+</table>
+

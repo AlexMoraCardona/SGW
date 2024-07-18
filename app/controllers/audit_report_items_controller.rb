@@ -45,7 +45,7 @@ class AuditReportItemsController < ApplicationController
     private
 
     def audit_report_item_params
-        params.require(:audit_report_item).permit(:process, :finding, :type_finding, :audit_report_id, finding_evidences: [] )
+        params.require(:audit_report_item).permit(:process, :finding, :type_finding, :audit_report_id, :type_action, finding_evidences: [] )
     end  
 
 end  

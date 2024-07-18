@@ -1,0 +1,109 @@
+<% if @entity.present? %>
+    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
+<% end %>
+
+
+<% if @improvement_plans.present? %>
+    <%= link_to t('.create_improvement_plan'), new_improvement_plan_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+
+    <table class="table table-hover"> 
+
+        <% @improvement_plans.each do |improvement_plan| %>
+            <hr>
+            <div class="col-sm-8">
+                <h3>Informe plan de mejoramiento SG-SST del: <%= improvement_plan.date_plan %> </h3>
+            </div>        
+
+            <%= link_to t('common.create_item_plan'), crear_item_improvement_plan_path(improvement_plan.id), class: 'btn btn-sm btn-warning' %> &nbsp;
+            <%= link_to t('common.show_item_plan'), improvement_plan_path(improvement_plan.id), class: 'btn btn-sm btn-warning' %> &nbsp;
+            <%= link_to t('common.edit'), edit_improvement_plan_path(improvement_plan.id), class: 'btn btn-sm btn-warning' %> &nbsp;
+            <%= link_to "PDF", ver_improvement_plan_pdf_path(improvement_plan.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;
+
+            <div class="container col-12">
+                <br>
+
+                <div class="row g-4">
+                    <div class="col-sm-3">
+                        <strong><%= t('.user_representante') %></strong><br>
+                        <%=  improvement_plan.name_user(improvement_plan.user_representante)  %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.firm_representante') %></strong><br>
+                        <%= improvement_plan.label_firm(improvement_plan.firm_representante) %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.date_firm_representante') %></strong><br>
+                        <%= improvement_plan.date_firm_representante %> 
+                    </div>
+                    <div class="col-sm-3">
+                        <% if improvement_plan.firm_representante.to_i == 0 %>
+                            <%= link_to t('common.firmar'), firmar_representante_improvement_plan_path(improvement_plan.id, 1), class: 'btn btn-sm btn btn-warning' %>
+                        <% end %>    
+                    </div>
+                </div>
+                <div class="row g-4">
+                    <div class="col-sm-3">
+                        <strong><%= t('.user_responsible') %></strong><br>
+                        <%= improvement_plan.name_user(improvement_plan.user_responsible) %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.firm_responsible') %></strong><br>
+                        <%= improvement_plan.label_firm(improvement_plan.firm_responsible) %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.date_firm_responsible') %></strong><br>
+                        <%= improvement_plan.date_firm_responsible %> 
+                    </div>
+                    <div class="col-sm-3">
+                        <% if improvement_plan.firm_responsible.to_i == 0 %>
+                            <%= link_to t('common.firmar'), firmar_responsable_improvement_plan_path(improvement_plan.id, 2), class: 'btn btn-sm btn btn-warning' %>
+                        <% end %>    
+                    </div>
+                </div>
+            </div> 
+            <hr>
+            <br>
+            <div class="d-flex">
+                <div class="container">
+                    <h class="display-6">Actividades</h>
+                </div> 
+            </div>
+            <hr>
+            <% if @improvement_items.present? %>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Actividad</th>
+                            <th scope="col">Fecha inicio</th>
+                            <th scope="col">Feha final</th>
+                            <th scope="col">Cumplimiento</th>
+                            <th scope="col">Editar</th>
+                            <th scope="col">Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @improvement_items.where("improvement_plan_id = ?", improvement_plan.id).each do |improvement_item| %>
+                            <tr>
+                                <td><%= improvement_item.id %></td>
+                                <td><%= improvement_item.activity_plan %></td>
+                                <td><%= improvement_item.date_initial %></td>
+                                <td><%= improvement_item.date_fin %></td>
+                                <td><%= improvement_item.percentage_compliance %>%</td>
+                                <td><%= link_to t('common.edit'), edit_improvement_item_path(improvement_item), class: 'btn btn-sm btn-primary'  %></td>
+                                <td><%= link_to t('common.delete'), improvement_item, data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar la actividad?' }, class: 'btn btn-sm btn-danger' %></td>
+                            </tr>
+                        <% end %>     
+                    </tbody>      
+                </table>
+            <% end %>     
+ 
+        <% end %>  
+        <hr>  
+    </table>  
+    <br>
+<% else %>
+    <div>
+        <%= link_to t('common.create_improvement_plan'), new_improvement_plan_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+    </div>
+<% end %>

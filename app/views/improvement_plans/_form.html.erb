@@ -1,0 +1,35 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @improvement_plan do |form| %>
+        <% @improvement_plan.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>
+
+        <%= form.hidden_field :entity_id, :value => params[:entity_id].to_i, class: "form-control" if params[:entity_id].present? %>
+
+        <div class="row g-2">
+            <div class="col-sm-4">
+                <%= form.label :date_plan, style: "display: block" %>
+                <%= form.date_field :date_plan,  class: "form-control" %>
+            </div>        
+        </div>  
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-4">
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Representante Legal.">Representante Legal:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                <%= form.collection_select :user_representante, User.all.order(id: :asc), :id,  :name, style: "width=50px" %>
+            </div>        
+            <div class="col-sm-4">
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Responsable en SG-SST.">Responsable SG-SST:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                <%= form.collection_select :user_responsible, User.all.order(id: :asc), :id,  :name, style: "width=50px" %>
+            </div>        
+        </div>  
+
+        <br>    
+        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    <% end %>
+</div>        
+<br>

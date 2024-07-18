@@ -1,0 +1,74 @@
+<head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+<meta charset='utf-8' />
+<%= wicked_pdf_javascript_include_tag "number_pages" %>
+<%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+<%= javascript_importmap_tags %>
+</head>
+<br>
+<div>
+ 
+    <table class="table table-hover" style="border:1px solid black"> 
+        <thead>
+            <tr>
+                <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
+                    <% if @entity.logo.present? then %>
+                        <%=  image_tag  @entity.logo, class: "image_peq" %>
+                    <% end %> 
+                </td>
+                <td rowspan="4"; colspan="5"; style="text-align:center">
+                    <div class="col-10"><h6><%= @template.name if @template.present? %></h6></div>
+                </td>
+                <td rowspan="4";  style="text-align:center">
+                </td>
+                <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
+
+                <td style="border:1px solid black"><%= @template.date  if @template.present? %></td>
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
+                <td style="border:1px solid black"><%= @template.date_updated if @template.present? %></td>
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Versión:</td>
+                <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Código:</td>
+                <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
+            </tr>
+
+            <tr>  
+                <td style="border:1px solid black; text-align:center">ACTIVIDAD</TD>
+                <td style="border:1px solid black; text-align:center">ACCION DE MEJORAMIENTO  CORRECTIVA</TD>
+                <td style="border:1px solid black; text-align:center">FECHA DE INICIO</TD>
+                <td style="border:1px solid black; text-align:center">FECHA DE TERMINACIÓN</TD>
+                <td style="border:1px solid black; text-align:center">OBJETIVO </TD>
+                <td style="border:1px solid black; text-align:center">RECURSOS</TD>
+                <td style="border:1px solid black; text-align:center">PROCESO RESPONSABLE</TD>
+                <td style="border:1px solid black; text-align:center">CUMPLIMIENTO DE LA ACCIÓN %</TD>
+                <td style="border:1px solid black; text-align:center">OBSERVACIONES</TD>
+                <td style="border:1px solid black; text-align:center">VER/EDITAR</TD>
+             </tr>  
+        </thead>
+        <% @improvement_items.each do |item| %>   
+            <tbody>
+                <tr>
+                    <td style="border:1px solid black;"><%= item.activity_plan %></td>
+                    <td style="border:1px solid black"><%= item.action_improvement %></td>
+                    <td style="border:1px solid black"><%= item.date_initial %></td>
+                    <td style="border:1px solid black"><%= item.date_fin %></td>
+                    <td style="border:1px solid black"><%= item.aim_improvement %></td>
+                    <td style="border:1px solid black"><%= item.resources_improvement %></td>
+                    <td style="border:1px solid black"><%= item.responsible_action %></td>
+                    <td style="border:1px solid black; text-align:center"><%= item.percentage_compliance %>%</td>
+                    <td style="border:1px solid black"><%= item.observation %></td>
+                    <td style="border:1px solid black; text-align:center;"><%= link_to t('common.edit'), edit_improvement_item_path(item), class: 'btn btn-sm btn-primary'  %></td>
+                </tr>
+            </body> 
+        <% end %>
+    </table>  
+    </br>
+</div>    
+

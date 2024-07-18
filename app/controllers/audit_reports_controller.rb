@@ -74,6 +74,7 @@ class AuditReportsController < ApplicationController
     def update
         @audit_report = AuditReport.find(params[:id])
         if @audit_report.update(audit_report_params)
+            actualizar_fecha(@audit_report.id)
             redirect_to audit_reports_path(entity_id: @audit_report.entity_id), notice: 'Auditoría interna actualizada correctamente'
         else
             render :edit, audit_reports: :unprocessable_entity
@@ -85,6 +86,13 @@ class AuditReportsController < ApplicationController
         @audit_report.destroy
         redirect_to audit_reports_path, notice: 'Auditoría interna borrada correctamente', audit_report: :see_other
     end  
+
+    def actualizar_fecha(id)
+        @audit_report = AuditReport.find(id)
+        @audit_report.date_firm_representante = nil if @audit_report.firm_representante.to_i == 0
+        @audit_report.date_firm_audit = nil if @audit_report.firm_audit.to_i == 0
+        @audit_report.save
+    end      
      
     def crear_item_auditoria_interna 
         @audit_report_item = AuditReportItem.new  
@@ -105,7 +113,7 @@ class AuditReportsController < ApplicationController
     def firmar_auditor
         @audit_report = AuditReport.find_by(id: params[:id].to_i)
         if params[:format].to_i == 2
-            if  @audit_report.user_auditor.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @audit_report.user_audit.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
                 redirect_to firmar_auditor_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Auditor."

@@ -22,6 +22,10 @@ class HomesController < ApplicationController
             total = 0
             cumple = 0
             por = 0.0
+            @puntaje_eva = eval.score if eval.present?
+            @porcentaje_eva = eval.percentage if eval.present?
+            @result_eva = eval.result if eval.present?
+
             @datos_generales = []
             details.each do |d|
                 total += 1

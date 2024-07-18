@@ -38,21 +38,16 @@ class EvaluationRuleDetail < ApplicationRecord
 
         if eval.score < 61 then
            eval.result = "CRÍTICO"
-           eval.observation = "Plan de Mejoramiento de inmediato a disposición de MinTrabajo
-           Enviar a la ARL reporte de avances ( máx a los tres meses)
-           Seguimiento anual y Plan de Visita la empresa por parte del Ministerio "
+           eval.observation = "<br>* Plan de Mejoramiento de inmediato a disposición de MinTrabajo.<br/> <br>* Enviar a la ARL reporte de avances ( máx a los tres meses).<br/> <br>* Seguimiento anual y Plan de Visita la empresa por parte del Ministerio.<br/>"
         end 
         if eval.score > 60.99 && eval.percentage < 86 then
             eval.result = "MODERADAMENTE ACEPTABLE"
-            eval.observation = "Plan de Mejoramiento a disposición de MinTrabajo
-            Enviar a la ARL reporte de avances (max a los seis meses)
-            Plan de visita MinTrabajo "
+            eval.observation = "<br>* Plan de Mejoramiento a disposición de MinTrabajo.<br/> <br>* Enviar a la ARL reporte de avances (max a los seis meses).<br/> <br>* Plan de visita MinTrabajo.<br/>"
         end 
       
         if eval.score > 85.99 then
             eval.result = "ACEPTABLE"
-            eval.observation = "Mantener la calificación y evidencias a disposición de MinTrabajo.
-            Incluir en el Plan de Anual de Trabajo las mejoras que se establezcan de acuerdo con la evaluación "
+            eval.observation = "<br>* Mantener la calificación y evidencias a disposición de MinTrabajo.<br/> <br>* Incluir en el Plan de Anual de Trabajo las mejoras que se establezcan de acuerdo con la evaluación.<br/>"
         end 
 
         eval.save  

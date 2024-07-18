@@ -12,7 +12,16 @@
                 <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccionar el tipo de hallazgo."><%= t('.type_finding') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button> <br>          
                 <%= form.select(:type_finding, [['Conformidad', 0], ['No conformidad', 1], ['Observación', 2]]) %>
             </div>  
-        </div>   
+            <div class="col-sm-6">
+                <%= form.label :type_action, style: "display: block" %>
+                <%= form.radio_button :type_action, 0 %>
+                <label for="preventiva">Preventiva</label>&nbsp;&nbsp; 
+                <%= form.radio_button :type_action, 1 %>
+                <label for="correctiva">Correctiva</label>&nbsp;&nbsp;   
+                <%= form.radio_button :type_action, 2 %>
+                <label for="mejora">Mejora</label>&nbsp;&nbsp;   
+            </div>        
+        </div> 
 
         <div class="form-group"> 
             <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar el proceso."><%= t('.process') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
@@ -51,27 +60,27 @@
     </div>
 
     <% if @audit_report_item.finding_evidences.attached? %>
-    <div data-controller="previews" >
-     <% @audit_report_item.finding_evidences.each do |file|%>
-        <br>
-        <% if file.image? %>
-            <div>
-                <%= image_tag file, data: {previews_target: "preview"}, class: "image" %>
+        <div data-controller="previews" >
+         <% @audit_report_item.finding_evidences.each do |file|%>
+            <br>
+            <% if file.image? %>
+                <div>
+                    <%= image_tag file, data: {previews_target: "preview"}, class: "image" %>
+                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                </div>
+            <% elsif file.video? %>
+                    <%= video_tag url_for(file), controls: "", width: "400px" %>          
+                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+            <% elsif file.audio? %>
+                <%= audio_tag(url_for(file), controls: "") %>          
                 <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-            </div>
-        <% elsif file.video? %>
-                <%= video_tag url_for(file), controls: "", width: "400px" %>          
+            <% else %>
+                <%= link_to file.filename, url_for(file) %>          
                 <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-        <% elsif file.audio? %>
-            <%= audio_tag(url_for(file), controls: "") %>          
-            <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-        <% else %>
-            <%= link_to file.filename, url_for(file) %>          
-            <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-        <% end %>
-      <% end %>  
-    </div>
-<% end %>  
+            <% end %>
+          <% end %>  
+        </div>
+    <% end %>  
 
 
 </div>

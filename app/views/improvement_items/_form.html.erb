@@ -1,0 +1,106 @@
+<div class="container col-12 card p-5">
+    <br> 
+    <%= form_with model: @improvement_item do |form| %>
+        <% @improvement_item.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+        
+        <div class="form-group"> 
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la actividad."><%= t('.activity_plan') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+            <%= form.text_field :activity_plan,  class: "form-control" %>
+        </div>
+        <br/>
+        <div class="form-group"> 
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingresar la acción de mejoramiento correctiva."><%= t('.action_improvement') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+            <%= form.text_field :action_improvement,  class: "form-control" %>
+        </div>
+        <br/>
+        <div class="row g-2">
+            <div class="col-sm-4">
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la fecha en que inicia la actividad."><%= t('.date_initial') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+                <%= form.date_field :date_initial,  class: "form-control" %>
+            </div>  
+            <div class="col-sm-4">
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la fecha en que termina la actividad."><%= t('.date_fin') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+                <%= form.date_field :date_fin,  class: "form-control" %>
+            </div>  
+        </div>   
+        <br/>
+        <div class="form-group"> 
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar el objetivo."><%= t('.aim_improvement') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+            <%= form.text_field :aim_improvement,  class: "form-control" %>
+        </div>
+        <br/>
+        <div class="form-group"> 
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar los recursos."><%= t('.resources_improvement') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+            <%= form.text_field :resources_improvement,  class: "form-control" %>
+        </div>
+        <br/>
+        <div class="row g-2">
+            <div class="col-sm-7">
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar el responsable del proceso."><%= t('.responsible_action') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+                <%= form.text_field :responsible_action,  class: "form-control" %>
+            </div>  
+            <div class="col-sm-4">
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar cual es el porcentaje de cumplimiento de la actividad."><%= t('.percentage_compliance') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+                <%= form.number_field :percentage_compliance,  class: "form-control" %>
+            </div>  
+        </div>   
+        <br/>
+        <div class="form-group"> 
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar las observaciones de la actividad."><%= t('.observation') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+            <%= form.text_field :observation,  class: "form-control" %>
+        </div>
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+    <% end %>
+    <br>
+    <hr>    
+    <div class="container col-11 card p-5">
+        <%= form_for @improvement_item do |f| %>
+            <div class="row">
+                <div class="form-group">
+                    <h5><%= f.label :"Adjuntar_Archivos:", style: "display: block" %></h5>
+                    <%= f.file_field :file_improvements, multiple: true %>
+            
+                    <%= f.submit 'Subir Archivos', class: 'btn btn-primary' %>
+                </div> 
+            </div>
+        <% end %>
+        <br> 
+    </div>
+    <hr>
+    <div class="row">
+        <div class="form-group">
+            <h5>Archivos adjuntos</h5>
+        </div> 
+    </div>
+
+    <% if @improvement_item.file_improvements.attached? %>
+        <div data-controller="previews" >
+    
+            <% @improvement_item.file_improvements.each do |file|%>
+                <br>
+                <% if file.image? %>
+                    <div>
+                        <%= image_tag file, data: {previews_target: "preview"}, class: "image" %>
+                        <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                    </div>
+                <% elsif file.video? %>
+                        <%= video_tag url_for(file), controls: "", width: "400px" %>          
+                        <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                <% elsif file.audio? %>
+                    <%= audio_tag(url_for(file), controls: "") %>          
+                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                <% else %>
+                    <%= link_to file.filename, url_for(file) %>          
+                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                <% end %>
+            <% end %>  
+        </div>
+    <% end %>  
+
+</div>
+<br>

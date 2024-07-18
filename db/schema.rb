@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_15_192113) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_18_011241) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -213,6 +213,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_15_192113) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "audit_report_id"
+    t.integer "type_action", default: 0
     t.index ["audit_report_id"], name: "index_audit_report_items_on_audit_report_id"
   end
 
@@ -359,6 +360,65 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_15_192113) do
     t.datetime "updated_at", null: false
     t.bigint "entity_id", null: false
     t.index ["entity_id"], name: "index_description_jobs_on_entity_id"
+  end
+
+  create_table "direction_reviews", force: :cascade do |t|
+    t.integer "user_representante", default: 0
+    t.date "date_firm_representante"
+    t.integer "firm_representante"
+    t.date "date_review"
+    t.string "g1"
+    t.string "r1"
+    t.string "g2"
+    t.string "r2"
+    t.string "g3"
+    t.string "r3"
+    t.string "g4"
+    t.string "r4"
+    t.string "g5"
+    t.string "r5"
+    t.string "g6"
+    t.string "r6"
+    t.string "g7"
+    t.string "r7"
+    t.string "g8"
+    t.string "r8"
+    t.string "g9"
+    t.string "r9"
+    t.string "g10"
+    t.string "r10"
+    t.string "g11"
+    t.string "r11"
+    t.string "g12"
+    t.string "r12"
+    t.string "g13"
+    t.string "r13"
+    t.string "g14"
+    t.string "r14"
+    t.string "g15"
+    t.string "r15"
+    t.string "g16"
+    t.string "r16"
+    t.string "g17"
+    t.string "r17"
+    t.string "g18"
+    t.string "r18"
+    t.string "g19"
+    t.string "r19"
+    t.string "g20"
+    t.string "r20"
+    t.string "g21"
+    t.string "r21"
+    t.string "g22"
+    t.string "r22"
+    t.string "g23"
+    t.string "r23"
+    t.string "g24"
+    t.string "r24"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_direction_reviews_on_entity_id"
   end
 
   create_table "documents", force: :cascade do |t|
@@ -748,6 +808,36 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_15_192113) do
     t.integer "meets_earring", default: 0
     t.index ["entity_id"], name: "index_history_matrix_legals_on_entity_id"
     t.index ["matrix_legal_id"], name: "index_history_matrix_legals_on_matrix_legal_id"
+  end
+
+  create_table "improvement_items", force: :cascade do |t|
+    t.string "activity_plan"
+    t.string "action_improvement", default: "0"
+    t.date "date_initial"
+    t.date "date_fin"
+    t.string "aim_improvement"
+    t.string "resources_improvement"
+    t.string "responsible_action"
+    t.integer "percentage_compliance", default: 0
+    t.string "observation"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "improvement_plan_id"
+    t.index ["improvement_plan_id"], name: "index_improvement_items_on_improvement_plan_id"
+  end
+
+  create_table "improvement_plans", force: :cascade do |t|
+    t.integer "user_representante", default: 0
+    t.integer "user_responsible", default: 0
+    t.date "date_firm_representante"
+    t.date "date_firm_responsible"
+    t.integer "firm_representante", default: 0
+    t.integer "firm_responsible", default: 0
+    t.date "date_plan"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_improvement_plans_on_entity_id"
   end
 
   create_table "indicators", force: :cascade do |t|
@@ -1423,6 +1513,40 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_15_192113) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "safety_inspection_items", force: :cascade do |t|
+    t.integer "state_compliance", default: 0
+    t.string "observation"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "safety_inspection_id"
+    t.bigint "situation_condition_id"
+    t.index ["safety_inspection_id"], name: "index_safety_inspection_items_on_safety_inspection_id"
+    t.index ["situation_condition_id"], name: "index_safety_inspection_items_on_situation_condition_id"
+  end
+
+  create_table "safety_inspections", force: :cascade do |t|
+    t.date "date_inspection"
+    t.string "place_inspection"
+    t.string "area_inspection"
+    t.string "productivity_affectation"
+    t.integer "user_responsible", default: 0
+    t.date "date_firm_responsible"
+    t.integer "firm_responsible", default: 0
+    t.string "post_responsible"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_safety_inspections_on_entity_id"
+  end
+
+  create_table "situation_conditions", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "type_condition_inspection_id"
+    t.index ["type_condition_inspection_id"], name: "index_situation_conditions_on_type_condition_inspection_id"
+  end
+
   create_table "standar_detail_items", force: :cascade do |t|
     t.string "description"
     t.decimal "maximun_value", default: "0.0"
@@ -1535,6 +1659,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_15_192113) do
     t.date "date_create"
     t.date "date_update"
     t.index ["entity_id"], name: "index_trainings_on_entity_id"
+  end
+
+  create_table "type_condition_inspections", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "unsafe_conditions", force: :cascade do |t|
@@ -1683,6 +1813,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_15_192113) do
   add_foreign_key "danger_detail_risks", "clasification_danger_details"
   add_foreign_key "danger_preventions", "clasification_danger_details"
   add_foreign_key "description_jobs", "entities"
+  add_foreign_key "direction_reviews", "entities"
   add_foreign_key "evaluation_rule_details", "evaluations"
   add_foreign_key "evaluation_rule_details", "standar_detail_items"
   add_foreign_key "evaluations", "entities"
@@ -1712,6 +1843,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_15_192113) do
   add_foreign_key "history_matrix_legal_items", "history_matrix_legals"
   add_foreign_key "history_matrix_legals", "entities"
   add_foreign_key "history_matrix_legals", "matrix_legals"
+  add_foreign_key "improvement_items", "improvement_plans"
+  add_foreign_key "improvement_plans", "entities"
   add_foreign_key "kits", "entities"
   add_foreign_key "kits", "users"
   add_foreign_key "locations", "entities"
@@ -1753,6 +1886,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_15_192113) do
   add_foreign_key "provides_protections", "entities"
   add_foreign_key "resource_items", "resources"
   add_foreign_key "resources", "entities"
+  add_foreign_key "safety_inspection_items", "safety_inspections"
+  add_foreign_key "safety_inspection_items", "situation_conditions"
+  add_foreign_key "safety_inspections", "entities"
+  add_foreign_key "situation_conditions", "type_condition_inspections"
   add_foreign_key "standar_detail_items", "standar_details"
   add_foreign_key "standar_details", "standars"
   add_foreign_key "standars", "rules"

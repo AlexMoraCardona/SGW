@@ -1,0 +1,54 @@
+<% if @entity.present? %>
+    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
+<% end %>
+
+
+<% if @direction_reviews.present? %>
+    <%= link_to t('.create_direction_review'), new_direction_review_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+
+    <table class="table table-hover"> 
+
+        <% @direction_reviews.each do |direction_review| %>
+            <hr>
+            <div class="col-sm-8">
+                <h3>Informe revisión por la alta dirección del: <%= direction_review.date_review %> </h3>
+            </div>        
+
+            <%= link_to t('common.show_review'), direction_review_path(direction_review.id), class: 'btn btn-sm btn-warning' %> &nbsp;
+            <%= link_to t('common.edit'), edit_direction_review_path(direction_review.id), class: 'btn btn-sm btn-warning' %> &nbsp;
+            <%= link_to "PDF", ver_review_pdf_path(direction_review.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;
+
+            <div class="container col-12">
+                <br>
+
+                <div class="row g-4">
+                    <div class="col-sm-3"> 
+                        <strong><%= t('.user_representante') %></strong><br>
+                        <%=  direction_review.name_user(direction_review.user_representante)  %> 
+                    </div>        
+                    <div class="col-sm-3"> 
+                        <strong><%= t('.firm_representante') %></strong><br>
+                        <%= direction_review.label_firm(direction_review.firm_representante) %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.date_firm_representante') %></strong><br>
+                        <%= direction_review.date_firm_representante %> 
+                    </div>
+                    <div class="col-sm-3">
+                        <% if direction_review.firm_representante.to_i == 0 %>
+                            <%= link_to t('common.firmar'), firmar_representante_review_path(direction_review.id, 1), class: 'btn btn-sm btn btn-warning' %>
+                        <% end %>    
+                    </div>
+                </div>
+            </div> 
+            <hr>
+            <br>
+        <% end %>  
+        <hr>  
+    </table>  
+    <br>
+<% else %>
+    <div>
+        <%= link_to t('common.create_review'), new_direction_review_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+    </div>
+<% end %>

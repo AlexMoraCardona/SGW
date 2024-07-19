@@ -1,0 +1,507 @@
+<table style="border:0px solid black;width: 100%">
+    <tr style="padding: 20px;">
+        <td rowspan="2" style="border:1px solid black; width: 20%; text-align:center">
+            <% if @entity.logo.present? then %>
+                <%=  image_tag  @entity.logo, class: "image_peq" %>
+            <% end %>   
+        </td>
+        <td style="border:1px solid black; text-align:center">
+            <div class="col-10"><h6><%= @entity.business_name if @entity.present? %></h6></div>
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; text-align:center">
+            <div class="col-10"><h6><%= @template.name if @template.present? %></h6></div>
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            <h6>CÓDIGO: </h6>                
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.reference if @template.present? %></small></h6>                
+        </td>
+
+        <td style="border:1px solid black; width: 25%">
+            <h6>VERSIÓN: </h6>                
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.version if @template.present? %></small></h6>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            <h6>FECHA DE ELABORACIÓN: </h6>                 
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date if @template.present? %></small></h6>                
+        </td>
+
+        <td style="border:1px solid black; width: 25%">
+            <h6>FECHA DE ACTUALIZACIÓN: </h6>                
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date_updated if @template.present? %></small></h6>                
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 50%">
+            </br>
+            <p><strong>Fecha  de realización de la inspección: </strong></p>                
+            </br>
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            </br>
+            <p><%= @safety_inspection.date_inspection if @safety_inspection.present? %></p>                
+            </br>
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 50%">
+            </br>
+            <p><strong>Lugar de la inspección: </strong></p>                
+            </br>
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            </br>
+            <p><%= @safety_inspection.place_inspection if @safety_inspection.present? %></p>                
+            </br>
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 50%">
+            </br>
+            <p><strong>Área de trabajo a inspeccionar: </strong></p>                
+            </br>
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            </br>
+            <p><%= @safety_inspection.area_inspection if @safety_inspection.present? %></p>                
+            </br>
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 100%">
+            </br>
+                <p><strong>SI:</strong> CUMPLE TOTALMENTE   <strong>NO:</strong> NO CUMPLE <strong>PARCIAL: </strong>  CUMPLE EN PARTE  (Especifique en observaciones cuales no cumplen) </p>                
+            </br>
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="text-align:center;border:1px solid black; width: 40%">
+            </br>
+            <p><strong>SITUACIÓN O CONDICIÓN A INSPECCIONAR</strong></p>                
+            </br>
+        </td>
+        <td style="text-align:center;border:1px solid black; width: 20%">
+            </br>
+            <p><strong>CUMPLIMIENTO</strong></p>                
+            </br>
+        </td>
+        <td style="text-align:center;border:1px solid black; width: 40%">
+            </br>
+            <p><strong>OBSERVACIONES</strong></p>                
+            </br>
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 100%;background-color: #00aae4;text-align:center;">
+                <p><strong>GENERAL: PASILLOS, ESCALERAS Y ÁREA COMUNES<strong></p>                
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 100%;background-color: #00aae4;text-align:center;">
+                <p><strong>CONDICIONES DE ORDEN Y ASEO<strong></p>                
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <% if @safety_inspection_items.present? then %>
+        <% @safety_inspection_items.each do |safety_inspection_item| %>
+            <% if safety_inspection_item.situation_condition.type_condition_inspection.id == 1  %>
+                <tr>    
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.situation_condition.name %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 20%;text-align:center;">
+                        <p><%= SafetyInspectionItem.label_state_compliance(safety_inspection_item.state_compliance) %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.observation %></p>                
+                    </td>
+                </tr>
+            <% end %> 
+        <% end %>       
+    <% end %>   
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 100%;background-color: #00aae4;text-align:center;">
+                <p><strong>CONDICIONES LOCATIVAS<strong></p>                
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <% if @safety_inspection_items.present? then %>
+        <% @safety_inspection_items.each do |safety_inspection_item| %>
+            <% if safety_inspection_item.situation_condition.type_condition_inspection.id == 2  %>
+                <tr>    
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.situation_condition.name %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 20%;text-align:center;">
+                        <p><%= SafetyInspectionItem.label_state_compliance(safety_inspection_item.state_compliance) %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.observation %></p>                
+                    </td>
+                </tr>
+            <% end %> 
+        <% end %>       
+    <% end %>   
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 100%;background-color: #00aae4;text-align:center;">
+                <p><strong>OFICINAS Y/O BODEGAS<strong></p>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 100%;background-color: #00aae4;text-align:center;">
+                <p><strong>CONDICIONES DE CARGA FÍSICA<strong></p>                
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <% if @safety_inspection_items.present? then %>
+        <% @safety_inspection_items.each do |safety_inspection_item| %>
+            <% if safety_inspection_item.situation_condition.type_condition_inspection.id == 3  %>
+                <tr>    
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.situation_condition.name %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 20%;text-align:center;">
+                        <p><%= SafetyInspectionItem.label_state_compliance(safety_inspection_item.state_compliance) %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.observation %></p>                
+                    </td>
+                </tr>
+            <% end %> 
+        <% end %>       
+    <% end %>   
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 100%;background-color: #00aae4;text-align:center;">
+                <p><strong>CONDICIONES LOCATIVAS<strong></p>                
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <% if @safety_inspection_items.present? then %>
+        <% @safety_inspection_items.each do |safety_inspection_item| %>
+            <% if safety_inspection_item.situation_condition.type_condition_inspection.id == 4  %>
+                <tr>    
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.situation_condition.name %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 20%;text-align:center;">
+                        <p><%= SafetyInspectionItem.label_state_compliance(safety_inspection_item.state_compliance) %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.observation %></p>                
+                    </td>
+                </tr>
+            <% end %> 
+        <% end %>       
+    <% end %>   
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 100%;background-color: #00aae4;text-align:center;">
+                <p><strong>CONDICIONES ORDEN Y ASEO<strong></p>                
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <% if @safety_inspection_items.present? then %>
+        <% @safety_inspection_items.each do |safety_inspection_item| %>
+            <% if safety_inspection_item.situation_condition.type_condition_inspection.id == 5  %>
+                <tr>    
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.situation_condition.name %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 20%;text-align:center;">
+                        <p><%= SafetyInspectionItem.label_state_compliance(safety_inspection_item.state_compliance) %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.observation %></p>                
+                    </td>
+                </tr>
+            <% end %> 
+        <% end %>       
+    <% end %>   
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 100%;background-color: #00aae4;text-align:center;">
+                <p><strong>CONDICIONES FÍSICAS<strong></p>                
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <% if @safety_inspection_items.present? then %>
+        <% @safety_inspection_items.each do |safety_inspection_item| %>
+            <% if safety_inspection_item.situation_condition.type_condition_inspection.id == 6  %>
+                <tr>    
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.situation_condition.name %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 20%;text-align:center;">
+                        <p><%= SafetyInspectionItem.label_state_compliance(safety_inspection_item.state_compliance) %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.observation %></p>                
+                    </td>
+                </tr>
+            <% end %> 
+        <% end %>       
+    <% end %>   
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 100%;background-color: #00aae4;text-align:center;">
+                <p><strong>CONDICIONES ELÉCTRICAS<strong></p>                
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <% if @safety_inspection_items.present? then %>
+        <% @safety_inspection_items.each do |safety_inspection_item| %>
+            <% if safety_inspection_item.situation_condition.type_condition_inspection.id == 7  %>
+                <tr>    
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.situation_condition.name %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 20%;text-align:center;">
+                        <p><%= SafetyInspectionItem.label_state_compliance(safety_inspection_item.state_compliance) %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.observation %></p>                
+                    </td>
+                </tr>
+            <% end %> 
+        <% end %>       
+    <% end %>   
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 100%;background-color: #00aae4;text-align:center;">
+                <p><strong>ALMACENAMIENTO DE MATERIALES<strong></p>                
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <% if @safety_inspection_items.present? then %>
+        <% @safety_inspection_items.each do |safety_inspection_item| %>
+            <% if safety_inspection_item.situation_condition.type_condition_inspection.id == 8  %>
+                <tr>    
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.situation_condition.name %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 20%;text-align:center;">
+                        <p><%= SafetyInspectionItem.label_state_compliance(safety_inspection_item.state_compliance) %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.observation %></p>                
+                    </td>
+                </tr>
+            <% end %> 
+        <% end %>       
+    <% end %>   
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 100%;background-color: #00aae4;text-align:center;">
+                <p><strong>PRODUCTOS QUÍMICOS Y SUSTANCIAS PELIGROSAS<strong></p>                
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <% if @safety_inspection_items.present? then %>
+        <% @safety_inspection_items.each do |safety_inspection_item| %>
+            <% if safety_inspection_item.situation_condition.type_condition_inspection.id == 9  %>
+                <tr>    
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.situation_condition.name %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 20%;text-align:center;">
+                        <p><%= SafetyInspectionItem.label_state_compliance(safety_inspection_item.state_compliance) %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.observation %></p>                
+                    </td>
+                </tr>
+            <% end %> 
+        <% end %>       
+    <% end %>   
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 100%;background-color: #00aae4;text-align:center;">
+                <p><strong>SANEAMIENTO BÁSICO<strong></p>                
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <% if @safety_inspection_items.present? then %>
+        <% @safety_inspection_items.each do |safety_inspection_item| %>
+            <% if safety_inspection_item.situation_condition.type_condition_inspection.id == 10  %>
+                <tr>    
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.situation_condition.name %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 20%;text-align:center;">
+                        <p><%= SafetyInspectionItem.label_state_compliance(safety_inspection_item.state_compliance) %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.observation %></p>                
+                    </td>
+                </tr>
+            <% end %> 
+        <% end %>       
+    <% end %>   
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 100%;background-color: #00aae4;text-align:center;">
+                <p><strong>PLAN DE EMERGENCIAS<strong></p>                
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <% if @safety_inspection_items.present? then %>
+        <% @safety_inspection_items.each do |safety_inspection_item| %>
+            <% if safety_inspection_item.situation_condition.type_condition_inspection.id == 11  %>
+                <tr>    
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.situation_condition.name %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 20%;text-align:center;">
+                        <p><%= SafetyInspectionItem.label_state_compliance(safety_inspection_item.state_compliance) %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.observation %></p>                
+                    </td>
+                </tr>
+            <% end %> 
+        <% end %>       
+    <% end %>   
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 100%;background-color: #00aae4;text-align:center;">
+                <p><strong>ELEMENTOS DE PROTECCIÓN PERSONAL<strong></p>                
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <% if @safety_inspection_items.present? then %>
+        <% @safety_inspection_items.each do |safety_inspection_item| %>
+            <% if safety_inspection_item.situation_condition.type_condition_inspection.id == 12  %>
+                <tr>    
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.situation_condition.name %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 20%;text-align:center;">
+                        <p><%= SafetyInspectionItem.label_state_compliance(safety_inspection_item.state_compliance) %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.observation %></p>                
+                    </td>
+                </tr>
+            <% end %> 
+        <% end %>       
+    <% end %>   
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 100%;background-color: #00aae4;text-align:center;">
+                <p><strong>ENTORNO AMBIENTAL<strong></p>                
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <% if @safety_inspection_items.present? then %>
+        <% @safety_inspection_items.each do |safety_inspection_item| %>
+            <% if safety_inspection_item.situation_condition.type_condition_inspection.id == 13  %>
+                <tr>    
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.situation_condition.name %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 20%;text-align:center;">
+                        <p><%= SafetyInspectionItem.label_state_compliance(safety_inspection_item.state_compliance) %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.observation %></p>                
+                    </td>
+                </tr>
+            <% end %> 
+        <% end %>       
+    <% end %>   
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 100%;background-color: #00aae4;text-align:center;">
+                <p><strong>CONDICIONES VEHÍCULOS<strong></p>                
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <% if @safety_inspection_items.present? then %>
+        <% @safety_inspection_items.each do |safety_inspection_item| %>
+            <% if safety_inspection_item.situation_condition.type_condition_inspection.id == 14  %>
+                <tr>    
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.situation_condition.name %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 20%;text-align:center;">
+                        <p><%= SafetyInspectionItem.label_state_compliance(safety_inspection_item.state_compliance) %></p>                
+                    </td>
+                    <td style="border:1px solid black; width: 40%">
+                        <p><%= safety_inspection_item.observation %></p>                
+                    </td>
+                </tr>
+            <% end %> 
+        <% end %>       
+    <% end %>   
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 100%;">
+                <p><strong>Existe Afectación en la productividad: <strong></p>      
+                <p><%= @safety_inspection.productivity_affectation %></p>          
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 100%;">
+                <p>NOTA. LAS SITUACIONES O CONDICIONES INSPECCIONADAS QUE NO CUMPLEN O SON PARCIALES,  DEBEN SER REPORTADAS AL RESPONSABLE DEL SG-SST PARA SUS RESPECTIVAS MEDIDAS DE </p>      
+                        
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,85 @@
+<% if @entity.present? %>
+    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
+<% end %>
+
+
+<% if @safety_inspections.present? %>
+    <%= link_to t('.create_safety_inspection'), new_safety_inspection_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+
+    <table class="table table-hover"> 
+
+        <% @safety_inspections.each do |safety_inspection| %>
+            <hr>
+            <div class="col-sm-8">
+                <h3>Informe de inspección de seguridad del: <%= safety_inspection.date_inspection %> </h3>
+            </div>        
+
+            <%= link_to t('common.show_safety_inspection'), safety_inspection_path(safety_inspection.id), class: 'btn btn-sm btn-warning' %> &nbsp;
+            <%= link_to t('common.edit'), edit_safety_inspection_path(safety_inspection.id), class: 'btn btn-sm btn-warning' %> &nbsp;
+            <%= link_to "PDF", ver_inspeccion_pdf_path(safety_inspection.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;
+
+            <div class="container col-12">
+                <br>
+
+                <div class="row g-4">
+                    <div class="col-sm-3">
+                        <strong><%= t('.user_responsible') %></strong><br>
+                        <%= safety_inspection.name_user(safety_inspection.user_responsible) %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.firm_responsible') %></strong><br>
+                        <%= safety_inspection.label_firm(safety_inspection.firm_responsible) %> 
+                    </div>        
+                    <div class="col-sm-3">
+                        <strong><%= t('.date_firm_responsible') %></strong><br>
+                        <%= safety_inspection.date_firm_responsible %> 
+                    </div>
+                    <div class="col-sm-3">
+                        <% if safety_inspection.firm_responsible.to_i == 0 %>
+                            <%= link_to t('common.firmar'), firmar_responsable_inspeccion_path(safety_inspection.id, 2), class: 'btn btn-sm btn btn-warning' %>
+                        <% end %>    
+                    </div>
+                </div>
+            </div> 
+            <hr>
+            <br>
+            <div class="d-flex">
+                <div class="container">
+                    <h class="display-6">Situaciones o Condiciones</h>
+                </div> 
+            </div>
+            <hr>
+            <% if @safety_inspection_items.present? %>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Situación o Condición</th>
+                            <th scope="col">Cumplimiento</th>
+                            <th scope="col">Editar</th>
+                            <th scope="col">Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @safety_inspection_items.where("safety_inspection_id = ?", safety_inspection.id).each do |safety_inspection_item| %>
+                            <tr>
+                                <td><%= safety_inspection_item.id %></td>
+                                <td><%= safety_inspection_item.situation_condition.name %></td>
+                                <td><%= SafetyInspectionItem.label_state_compliance(safety_inspection_item.state_compliance) %></td>
+                                <td><%= link_to t('common.edit'), edit_safety_inspection_item_path(safety_inspection_item), class: 'btn btn-sm btn-primary'  %></td>
+                                <td><%= link_to t('common.delete'), safety_inspection_item, data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el hallazgo?' }, class: 'btn btn-sm btn-danger' %></td>
+                            </tr>
+                        <% end %>     
+                    </tbody>      
+                </table>
+            <% end %>     
+ 
+        <% end %>  
+        <hr>  
+    </table>  
+    <br>
+<% else %>
+    <div>
+        <%= link_to t('common.create_safety_inspection'), new_safety_inspection_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+    </div>
+<% end %>

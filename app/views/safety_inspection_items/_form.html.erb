@@ -1,0 +1,73 @@
+<div class="container col-12 card p-5">
+    <br>
+    <%= form_with model: @safety_inspection_item do |form| %>
+        <% @safety_inspection_item.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+
+
+        <br>
+        <div class="form-group">    
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccionar el cumplimiento de la situación o condición."><%= t('.state_compliance') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button> <br>          
+                <%= form.select(:state_compliance, [['N/A', 0], ['SI', 1], ['NO', 2], ['PARCIAL', 3]]) %>
+            </div>  
+        </div>
+        <br>
+        <div class="form-group">    
+            <%= form.label :observation,  style: "display: block" %>
+            <%= form.text_area :observation,  class: "form-control" %>
+        </div>
+        <br>  
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+    <% end %>
+    <br>
+    <hr>    
+    <div class="container col-11 card p-5">
+        <%= form_for @safety_inspection_item do |f| %>
+            <div class="row">
+                <div class="form-group">
+                    <h5><%= f.label :"Adjuntar_Archivos:", style: "display: block" %></h5>
+                    <%= f.file_field :inspection_evidences, multiple: true %>
+ 
+                    <%= f.submit 'Subir Archivos', class: 'btn btn-primary' %>
+                </div> 
+            </div>
+        <% end %>
+        <br> 
+    </div>
+    <hr>
+    <div class="row">
+        <div class="form-group">
+            <h5>Archivos adjuntos</h5>
+        </div> 
+    </div>
+
+    <% if @safety_inspection_item.inspection_evidences.attached? %>
+        <div data-controller="previews" >
+         <% @safety_inspection_item.inspection_evidences.each do |file|%>
+            <br>
+            <% if file.image? %>
+                <div>
+                    <%= image_tag file, data: {previews_target: "preview"}, class: "image" %>
+                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                </div>
+            <% elsif file.video? %>
+                    <%= video_tag url_for(file), controls: "", width: "400px" %>          
+                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+            <% elsif file.audio? %>
+                <%= audio_tag(url_for(file), controls: "") %>          
+                <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+            <% else %>
+                <%= link_to file.filename, url_for(file) %>          
+                <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+            <% end %>
+          <% end %>  
+        </div>
+    <% end %>  
+
+
+</div>
+<br>

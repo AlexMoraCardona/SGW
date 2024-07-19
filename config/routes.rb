@@ -86,6 +86,8 @@ Rails.application.routes.draw do
   resources :safety_inspections
   resources :safety_inspection_items
 
+  get '/safety_inspections/ver_inspeccion_pdf/:id', to: 'safety_inspections#ver_inspeccion_pdf', as: 'ver_inspeccion_pdf'
+  get '/safety_inspections/firmar_responsable_inspeccion/:id', to: 'safety_inspections#firmar_responsable_inspeccion', as: 'firmar_responsable_inspeccion'
   get '/improvement_plans/crear_item_improvement_plan/:id', to: 'improvement_plans#crear_item_improvement_plan', as: 'crear_item_improvement_plan'
   get '/improvement_plans/firmar_representante_improvement/:id', to: 'improvement_plans#firmar_representante_improvement', as: 'firmar_representante_improvement_plan'
   get '/improvement_plans/firmar_responsable_improvement/:id', to: 'improvement_plans#firmar_responsable_improvement', as: 'firmar_responsable_improvement_plan'

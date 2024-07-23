@@ -85,6 +85,7 @@ Rails.application.routes.draw do
   resources :situation_conditions
   resources :safety_inspections
   resources :safety_inspection_items
+  resources :commitments
 
   get '/safety_inspections/ver_inspeccion_pdf/:id', to: 'safety_inspections#ver_inspeccion_pdf', as: 'ver_inspeccion_pdf'
   get '/safety_inspections/firmar_responsable_inspeccion/:id', to: 'safety_inspections#firmar_responsable_inspeccion', as: 'firmar_responsable_inspeccion'
@@ -258,7 +259,7 @@ Rails.application.routes.draw do
       get '/evaluation_rule_details/crear_participant/:id', to: 'evaluation_rule_details#crear_participant', as: 'crear_participant'
       get '/evaluation_rule_details/actualizar_evidencia/:id', to: 'evaluation_rule_details#actualizar_evidencia', as: 'actualizar_evidencia'
       get '/evaluation_rule_details/ver_evidencia/:id', to: 'evaluation_rule_details#ver_evidencia', as: 'ver_evidencia'
-
+      get '/evaluation_rule_details/crear_compromiso/:id', to: 'evaluation_rule_details#crear_compromiso', as: 'crear_compromiso'
     end
   end
 

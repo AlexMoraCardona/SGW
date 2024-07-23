@@ -1,0 +1,78 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @commitment do |form| %>
+        <% @commitment.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>  
+        <%= form.hidden_field :evidence_id, :value => params[:id].to_i, class: "form-control" %>
+  
+        <div>
+            <div class="form-group">    
+                <%= form.label :activity, style: "display: block" %>
+                <%= form.text_area :activity,  class: "form-control" %>
+            </div>
+            <br>
+            <div class="col-sm-5">   
+                <%= form.label :user_responsible, style: "display: block" %>
+                <%= form.text_field :user_responsible,  class: "form-control" %>
+            </div>
+            <br>
+            <div class="row g-2">
+                <div class="col-sm-5">
+                    <%= form.label :date_ejecution, style: "display: block" %>
+                    <%= form.date_field :date_ejecution,  class: "form-control" %>
+                </div>
+                <div class="col-sm-4">
+                    <%= form.label :state_commitment,  style: "display: block" %>
+                    <%= form.radio_button :state_commitment, 0, disabled: false %>
+                    <label for="pendiente">Pendiente</label>
+                    <%= form.radio_button :state_commitment, 1, disabled: false %>
+                    <label for="ejecutado">Ejecutado</label>
+                </div> 
+            </div>        
+            <br>
+            <br>
+            <%= form.submit 'Guardar', class: "btn btn-sm btn-primary", data: { turbo_confirm: 'Desea guardar los cambios?' }  %>     
+            <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+        </div>            
+    <% end %>
+    <hr>
+    <br>
+    <br>
+    <div class="d-flex">
+        <div class="container">
+            <h class="display-6">Compromisos</h>
+        </div> 
+    </div>
+    <hr>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Actividad</th>
+                <th scope="col">Funcionario responsable</th>
+                <th scope="col">Fecha ejecución</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Eliminar</th>
+                <th scope="col">Borrar</th>
+            </tr>
+        </thead>
+        <tbody> 
+            <% @commitments.each do |commitment| %> 
+                <tr>
+                    <td><%= commitment.id %></td>
+                    <td><%= commitment.activity %></td>
+                    <td><%= commitment.user_responsible %></td>
+                    <td><%= commitment.date_ejecution %></td>
+                    <td><%= Commitment.state_commitment(commitment.state_commitment) %></td>
+                    <td><%= link_to t('common.edit'), edit_commitment_path(commitment), class: 'btn btn-sm btn-primary'  %></td>
+                    <td><%= link_to t('common.delete'), commitment, data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el compromiso?' }, class: 'btn btn-sm btn-danger' %></td>
+                </tr>
+            <% end %>     
+        </tbody>      
+    </table>
+    <br>
+
+</div>

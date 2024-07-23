@@ -29,7 +29,7 @@
                     <strong><%= form.label :user_reports, style: "display: block" %></strong>               
                 </td>
                 <td style="width: 60%;border:1px solid black;">
-                    <%= form.collection_select :user_reports, User.all.order(id: :asc), :id,  :name, style: "width=400px" %>
+                    <%= Current.user.name %>
                 </td>
             </tr>
         </table>    
@@ -292,6 +292,7 @@
         <% end %>
         <%= form.hidden_field :date_report, :value => Time.now, class: "form-control"  %>
         <%= form.hidden_field :user_receiving, :value => @asesor_recibe.id, class: "form-control" if @asesor_recibe.present? %>
+        <%= form.hidden_field :user_reports, :value => Current.user.id, class: "form-control" if Current.user.present? %>
 
         <div></br></div>  
         <div>  

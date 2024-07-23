@@ -10,7 +10,7 @@ class UnsafeCondition < ApplicationRecord
     end 
     
     def self.evaluarcondicion(unsafe)
-        @unsafe_condition = UnsafeCondition.find(unsafe.id)
+        @unsafe_condition = UnsafeCondition.find(unsafe)
 
         if @unsafe_condition.equipment_condition == 1 then 
             dato = 'Equipos en mal estado'

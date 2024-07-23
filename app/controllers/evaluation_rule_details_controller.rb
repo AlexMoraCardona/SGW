@@ -30,7 +30,26 @@ class EvaluationRuleDetailsController < ApplicationController
         @evidence.compliances = "<br>* Compromiso desde la Alta Dirección, en la implementación del Sistema de Gestión de Seguridad y Salud en el Trabajo, asignando los recursos humanos, tecnológicos y financieros, garantizando el cumplimiento de los objetivos.<br/> <br>*Prevenir accidentes y enfermedades laborales, como consecuencia a la exposición de los diferentes ambientes de trabajo de todos los empleados, contratistas, proveedores y visitantes.<br/> <br>*Dar cumplimiento a todas las disposiciones legales, Decretos, leyes, Resoluciones y demás normas que sean expedidas en materia de seguridad y salud en el trabajo; y a su vez, implementarlas y ejecutarlas al interior de la Organización.<br/> <br>*Establecer el principio de la mejora continua, en todos los procesos de aseguramiento de la Seguridad y Salud en el Trabajo.<br/> <br>*Fomentar el autocuidado y participación de todo el personal en materia de Seguridad y Salud en el trabajo.<br/> <br>*Promover la salud mental, con miras a que todos los empleados que integren la organización estén en ambientes de trabajo saludables.<br/> <br>*Compromiso con la mejora continua del SG-SST.<br/>" if @evidence.template_id == 64 || @evidence.template_id == 65 || @evidence.template_id == 66
         @evidence.compliances = "<br>* Desarrollar plan de capacitación y entrenamiento para el personal incluyendo demás partes interesadas.<br/> <br>* Proporcionar los recursos necesarios para la implementación del sistema de gestión de seguridad y salud en el trabajo.<br/> <br>* Identificar los diferentes peligros y riesgos y establecer controles específicos.<br/> <br>* Investigar accidentes, incidentes.<br/> <br>* Identificar y realizar seguimiento a los requisitos legales y aplicables.<br/> <br>* Cumplir con el plan de trabajo anual según el Decreto 1072 de 2015 Y mejora continua de este.<br/>" if @evidence.template_id == 67 || @evidence.template_id == 68 || @evidence.template_id == 69
         @evidence.compliances = "<br>* Examen médico ocupacional.<br/> <br>* Higiene postural.<br/> <br>* Pausas activas.<br/> <br>* Realización de pruebas complementarias.<br/> <br>* Remitir a EPS.<br/> <br>* Uso de elementos de protección personal.<br/> <br>* Continuar manejo médico<br/>" if @evidence.template_id == 115 || @evidence.template_id == 116 || @evidence.template_id == 117
-        @evidence.compliances = "INSTALACIONES LOCATIVAS </br> RECOMENDACIONES:  </br> REGISTRO FOTOGRÁFICO </br>PROPUESTAS GENERALES DE INTERVENCIÓN </br>Las propuestas de intervención están orientadas a brindar recomendaciones sobre las condiciones de seguridad que se deben tener en relación con todos los aspectos por mejorar, observados en el recorrido de inspección. </br>Adicional a la propuesta emitida en cada uno de los hallazgos, se dan recomendaciones generales para tener en cuenta con la finalidad de mejorar espacios de trabajo y propiciar la ejecución de tareas de manera segura." if @evidence.template_id == 154 || @evidence.template_id == 155 || @evidence.template_id == 156
+        @texto = "<br>" if @evidence.template_id == 154 || @evidence.template_id == 155 || @evidence.template_id == 156
+
+        if @evidence.template_id == 154 || @evidence.template_id == 155 || @evidence.template_id == 156 then
+            @safety_inspection = SafetyInspection.where("entity_id = ?",@evidence.entity_id).last if @evidence.entity_id.present?
+            @safety_inspection_items = SafetyInspectionItem.where("safety_inspection_id = ?", @safety_inspection.id) if @safety_inspection.present?
+            @safety_inspection_items.each do |safety_inspection_item|
+                if safety_inspection_item.state_compliance > 1
+                    @texto = @texto.to_s + "<br>"
+                    @texto = @texto.to_s + "<strong>" + safety_inspection_item.situation_condition.type_condition_inspection.name.to_s + "</strong>"
+                    @texto = @texto.to_s + "<br>"
+                    @texto = @texto.to_s + safety_inspection_item.situation_condition.name.to_s
+                    @texto = @texto.to_s + "<br>"
+                    @texto = @texto.to_s + "Observaciones: "
+                    @texto = @texto.to_s + safety_inspection_item.observation.to_s 
+                    @texto = @texto.to_s + "<br>"
+                end
+            end    
+        end
+
+        @evidence.compliances = @texto if @evidence.template_id == 154 || @evidence.template_id == 155 || @evidence.template_id == 156
 
         if @evidence.save then
             crear_firmas
@@ -50,7 +69,7 @@ class EvaluationRuleDetailsController < ApplicationController
             user_secretario_copasst = User.find_by("entity = ? and secretary_copasst = ?", @evidence.entity_id.to_i, 1) 
             user_vigia = User.find_by("entity = ? and vigia_sgsst = ?", @evidence.entity_id.to_i, 1) 
 
-            if user_legal_representative.present? && @evidence.template_id != 19 && @evidence.template_id != 20 && @evidence.template_id != 21 && @evidence.template_id != 22 && @evidence.template_id != 23 && @evidence.template_id != 24 && @evidence.template_id != 13 && @evidence.template_id != 14 && @evidence.template_id != 15 && @evidence.template_id != 7 && @evidence.template_id != 8 && @evidence.template_id != 9 && @evidence.template_id != 52 && @evidence.template_id != 53 && @evidence.template_id != 54 && @evidence.template_id != 115 && @evidence.template_id != 116 && @evidence.template_id != 117 && @evidence.template_id != 199 && @evidence.template_id != 200 && @evidence.template_id != 201 then
+            if user_legal_representative.present? && @evidence.template_id != 19 && @evidence.template_id != 20 && @evidence.template_id != 21 && @evidence.template_id != 22 && @evidence.template_id != 23 && @evidence.template_id != 24 && @evidence.template_id != 13 && @evidence.template_id != 14 && @evidence.template_id != 15 && @evidence.template_id != 7 && @evidence.template_id != 8 && @evidence.template_id != 9 && @evidence.template_id != 52 && @evidence.template_id != 53 && @evidence.template_id != 54 && @evidence.template_id != 115 && @evidence.template_id != 116 && @evidence.template_id != 117 && @evidence.template_id != 199 && @evidence.template_id != 200 && @evidence.template_id != 201 && @evidence.template_id != 223 && @evidence.template_id != 224 && @evidence.template_id != 225 then
                 @firma_nueva  = Firm.new
                 @firma_nueva.user_id = user_legal_representative.id
                 @firma_nueva.legal_representative = 1
@@ -59,7 +78,7 @@ class EvaluationRuleDetailsController < ApplicationController
                 @firma_nueva.save
             end   
 
-            if user_presidente_copasst.present? && (@evidence.template_id == 34 || @evidence.template_id == 35 || @evidence.template_id == 36 || @evidence.template_id == 166 || @evidence.template_id == 167 || @evidence.template_id == 168 || @evidence.template_id == 199 || @evidence.template_id == 200 || @evidence.template_id == 201) then
+            if user_presidente_copasst.present? && (@evidence.template_id == 34 || @evidence.template_id == 35 || @evidence.template_id == 36 || @evidence.template_id == 166 || @evidence.template_id == 167 || @evidence.template_id == 168 || @evidence.template_id == 199 || @evidence.template_id == 200 || @evidence.template_id == 201 || @evidence.template_id == 223 || @evidence.template_id == 224 || @evidence.template_id == 225) then
                 @firma_nueva  = Firm.new
                 @firma_nueva.user_id = user_presidente_copasst.id
                 @firma_nueva.evidence_id = @evidence.id
@@ -67,7 +86,7 @@ class EvaluationRuleDetailsController < ApplicationController
                 @firma_nueva.save
             end   
 
-            if user_vigia.present? && (@evidence.template_id == 37 || @evidence.template_id == 38 || @evidence.template_id == 39 || @evidence.template_id == 166 || @evidence.template_id == 167 || @evidence.template_id == 168 || @evidence.template_id == 88 || @evidence.template_id == 89 || @evidence.template_id == 90) then
+            if user_vigia.present? && (@evidence.template_id == 37 || @evidence.template_id == 38 || @evidence.template_id == 39 || @evidence.template_id == 166 || @evidence.template_id == 167 || @evidence.template_id == 168 || @evidence.template_id == 88 || @evidence.template_id == 89 || @evidence.template_id == 90 || @evidence.template_id == 223 || @evidence.template_id == 224 || @evidence.template_id == 225) then
                 @firma_nueva  = Firm.new
                 @firma_nueva.user_id = user_vigia.id
                 @firma_nueva.evidence_id = @evidence.id
@@ -75,7 +94,7 @@ class EvaluationRuleDetailsController < ApplicationController
                 @firma_nueva.save
             end   
 
-            if user_secretario_copasst.present? && (@evidence.template_id == 34 || @evidence.template_id == 35 || @evidence.template_id == 36 || @evidence.template_id == 166 || @evidence.template_id == 167 || @evidence.template_id == 168  || @evidence.template_id == 199 || @evidence.template_id == 200 || @evidence.template_id == 201) then
+            if user_secretario_copasst.present? && (@evidence.template_id == 34 || @evidence.template_id == 35 || @evidence.template_id == 36 || @evidence.template_id == 166 || @evidence.template_id == 167 || @evidence.template_id == 168  || @evidence.template_id == 199 || @evidence.template_id == 200 || @evidence.template_id == 201 || @evidence.template_id == 223 || @evidence.template_id == 224 || @evidence.template_id == 225) then
                 @firma_nueva  = Firm.new
                 @firma_nueva.user_id = user_secretario_copasst.id
                 @firma_nueva.evidence_id = @evidence.id
@@ -161,6 +180,11 @@ class EvaluationRuleDetailsController < ApplicationController
         end    
     end    
 
+    def crear_compromiso
+        @commitment = Commitment.new
+        @commitments = Commitment.where("evidence_id = ?", params[:id]) if params[:id].present?
+        @evidence = Evidence.find(params[:id])
+    end    
 
     def crear_firma
         @firm  = Firm.new  
@@ -187,7 +211,7 @@ class EvaluationRuleDetailsController < ApplicationController
         @economic_activity = EconomicActivityCode.find(@evidence.entity.economic_activity)
         @arl = OccupationalRiskManager.find(@evidence.entity.entity_arl)
         @claseriesgo = RiskLevel.find(@evidence.entity.risk_classification) if @evidence.entity.risk_classification.present?
-
+        @commitments = Commitment.where("evidence_id = ?", @evidence.id)
 
         @firms.each do |firm| 
             @representante_legal = User.find(firm.user_id) if firm.legal_representative == 1 

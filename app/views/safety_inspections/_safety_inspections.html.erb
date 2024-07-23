@@ -6,7 +6,6 @@
 <% if @safety_inspections.present? %>
     <%= link_to t('.create_safety_inspection'), new_safety_inspection_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
 
-    <table class="table table-hover"> 
 
         <% @safety_inspections.each do |safety_inspection| %>
             <hr>
@@ -40,43 +39,51 @@
                         <% end %>    
                     </div>
                 </div>
+                <br>
+                <div class="accordion accordion-flush" id="accordionFlushExample<%= safety_inspection.id %>">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<%= safety_inspection.id %>" aria-expanded="false" aria-controls="flush-collapse<%= safety_inspection.id %>">
+                                <div class="d-flex">
+                                  <div class="container">
+                                      <h><u>Ver Situaciones o Condiciones</u></h>
+                                  </div> 
+                                </div>
+                            </button>
+                        </h2>
+                        <div id="flush-collapse<%= safety_inspection.id %>" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample<%= safety_inspection.id %>">
+                            <div class="accordion-body">
+                                <% if @safety_inspection_items.present? %>
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">ID</th>
+                                                <th scope="col">Situación o Condición</th>
+                                                <th scope="col">Cumplimiento</th>
+                                                <th scope="col">Editar</th>
+                                                <th scope="col">Eliminar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% @safety_inspection_items.where("safety_inspection_id = ?", safety_inspection.id).each do |safety_inspection_item| %>
+                                                <tr>
+                                                    <td><%= safety_inspection_item.id %></td>
+                                                    <td><%= safety_inspection_item.situation_condition.name %></td>
+                                                    <td><%= SafetyInspectionItem.label_state_compliance(safety_inspection_item.state_compliance) %></td>
+                                                    <td><%= link_to t('common.edit'), edit_safety_inspection_item_path(safety_inspection_item), class: 'btn btn-sm btn-primary'  %></td>
+                                                    <td><%= link_to t('common.delete'), safety_inspection_item, data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el hallazgo?' }, class: 'btn btn-sm btn-danger' %></td>
+                                                </tr>
+                                            <% end %>     
+                                        </tbody>      
+                                    </table>
+                                <% end %>     
+                            </div>
+                        </div>
+                  </div>
+                </div>
+                <br>
             </div> 
-            <hr>
-            <br>
-            <div class="d-flex">
-                <div class="container">
-                    <h class="display-6">Situaciones o Condiciones</h>
-                </div> 
-            </div>
-            <hr>
-            <% if @safety_inspection_items.present? %>
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Situación o Condición</th>
-                            <th scope="col">Cumplimiento</th>
-                            <th scope="col">Editar</th>
-                            <th scope="col">Eliminar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% @safety_inspection_items.where("safety_inspection_id = ?", safety_inspection.id).each do |safety_inspection_item| %>
-                            <tr>
-                                <td><%= safety_inspection_item.id %></td>
-                                <td><%= safety_inspection_item.situation_condition.name %></td>
-                                <td><%= SafetyInspectionItem.label_state_compliance(safety_inspection_item.state_compliance) %></td>
-                                <td><%= link_to t('common.edit'), edit_safety_inspection_item_path(safety_inspection_item), class: 'btn btn-sm btn-primary'  %></td>
-                                <td><%= link_to t('common.delete'), safety_inspection_item, data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el hallazgo?' }, class: 'btn btn-sm btn-danger' %></td>
-                            </tr>
-                        <% end %>     
-                    </tbody>      
-                </table>
-            <% end %>     
- 
         <% end %>  
-        <hr>  
-    </table>  
     <br>
 <% else %>
     <div>

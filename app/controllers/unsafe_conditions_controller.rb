@@ -23,7 +23,8 @@ class UnsafeConditionsController < ApplicationController
     def create
         @unsafe_condition  = UnsafeCondition.new(unsafe_condition_params)
         if @unsafe_condition.save then
-            UnsafeCondition.evaluarcondicion(@unsafe_condition)
+            UnsafeCondition.evaluarcondicion(@unsafe_condition.id)
+            firmaautomatica(@unsafe_condition.id)
             redirect_to unsafe_conditions_path, notice: t('.created') 
         else
             render :edit, status: :unprocessable_entity
@@ -52,6 +53,12 @@ class UnsafeConditionsController < ApplicationController
         @unsafe_condition.save
     end    
     
+    def firmaautomatica(id)
+        @unsafe_condition = UnsafeCondition.find(id)
+        @unsafe_condition.date_firm_user_reports = Time.now
+        @unsafe_condition.firm_user_reports = 1
+        @unsafe_condition.save
+    end    
 
     def destroy
         @unsafe_condition = UnsafeCondition.find(params[:id])

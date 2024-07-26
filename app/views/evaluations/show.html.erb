@@ -3,14 +3,54 @@
     <div class="row g-2">
         <div class="col-sm-10"> 
             <h2 class="display-5"><%= t('.title')%> Nro: <%= @evaluation.id  %></h2>
+            <%= link_to "PDF", ver_evaluation_pdf_evaluations_path(@evaluation.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;
             <%= link_to 'Exportar a excel', evaluation_path(@evaluation, @evaluation_items, format: :xlsx), class: 'btn btn-sm btn-success' %>
-
         </div>         
         <div class="col-sm-1">
-            <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, evaluations_path %>
+           <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, evaluations_path %>
         </div> 
         <hr>
-    </div>            
+    </div> 
+    <br>
+
+    <div class="row g-4">
+        <div class="col-sm-3">
+            <strong>Empleador o Contratante</strong><br>
+            <%=  @evaluation.name_user(@evaluation.user_representante)  %> 
+        </div>        
+        <div class="col-sm-3">
+            <strong>Firma</strong><br>
+            <%= @evaluation.label_firm(@evaluation.firm_representante) %> 
+        </div>        
+        <div class="col-sm-3">
+            <strong><%= t('.date_firm_representante') %></strong><br>
+            <%= @evaluation.date_firm_representante %> 
+        </div>
+        <div class="col-sm-3">
+            <% if @evaluation.firm_representante.to_i == 0 %>
+                <%= link_to t('common.firmar'), firmar_representante_evaluation_path(@evaluation.id, 1), class: 'btn btn-sm btn btn-warning' %>
+            <% end %>    
+        </div>
+    </div>
+    <div class="row g-4">
+        <div class="col-sm-3">
+            <strong>Responsable de la ejecución del SG-SST</strong><br>
+            <%= @evaluation.name_user(@evaluation.user_responsible) %> 
+        </div>        
+        <div class="col-sm-3">
+            <strong><%= t('.firm_responsible') %></strong><br>
+            <%= @evaluation.label_firm(@evaluation.firm_responsible) %> 
+        </div>        
+        <div class="col-sm-3">
+            <strong><%= t('.date_firm_responsible') %></strong><br>
+            <%= @evaluation.date_firm_responsible %> 
+        </div>
+        <div class="col-sm-3">
+            <% if @evaluation.firm_responsible.to_i == 0 %>
+                <%= link_to t('common.firmar'), firmar_responsable_evaluation_path(@evaluation.id, 2), class: 'btn btn-sm btn btn-warning' %>
+            <% end %>    
+        </div>
+    </div>
 </div>  
 
 <div class="container col-12">

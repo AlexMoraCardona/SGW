@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_22_235200) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_25_201742) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -548,6 +548,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_22_235200) do
     t.bigint "entity_id"
     t.bigint "risk_level_id"
     t.bigint "rule_id"
+    t.integer "user_responsible", default: 0
+    t.date "date_firm_responsible"
+    t.integer "firm_responsible", default: 0
+    t.integer "user_representante", default: 0
+    t.date "date_firm_representante"
+    t.integer "firm_representante", default: 0
     t.index ["entity_id"], name: "index_evaluations_on_entity_id"
     t.index ["risk_level_id"], name: "index_evaluations_on_risk_level_id"
     t.index ["rule_id"], name: "index_evaluations_on_rule_id"

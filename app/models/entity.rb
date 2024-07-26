@@ -29,5 +29,11 @@ class Entity < ApplicationRecord
         elsif meets == 1 ; 'NÓMINA MENSUAL'
         end 
     end  
+
+    def self.label_agricultural_unit(dato)
+        if dato == 0 ; 'NO'
+        elsif dato == 1 ; 'SI'
+        end 
+    end 
    
 end

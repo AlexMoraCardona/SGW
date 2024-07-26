@@ -141,6 +141,8 @@ Rails.application.routes.draw do
   get '/complaints/informe', to: 'complaints#informe', as: 'informe' 
   get '/complaints/informe/:id' => 'complaints#informe', as: 'inform'
   get '/complaints/resumen/:id' => 'complaints#resumen', as: 'resumen'
+  get '/evaluations/firmar_responsable_evaluation/:id', to: 'evaluations#firmar_responsable_evaluation', as: 'firmar_responsable_evaluation'
+  get '/evaluations/firmar_representante_evaluation/:id', to: 'evaluations#firmar_representante_evaluation', as: 'firmar_representante_evaluation'
 
 
   resources :admin_extent_dangers do
@@ -294,6 +296,7 @@ Rails.application.routes.draw do
 
   resources :evaluations do
     collection do
+      get '/evaluations/ver_evaluation_pdf/:id', to: 'evaluations#ver_evaluation_pdf', as: 'ver_evaluation_pdf'
       get :crear_evaluacion
       get :crear_historia
       get '/ver_history/:id', to: 'evaluations#ver_history', as: 'ver_history' 

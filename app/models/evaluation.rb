@@ -5,6 +5,8 @@ class Evaluation < ApplicationRecord
     belongs_to :rule
     has_many :meeting_minutes
     has_rich_text :observation
+
+
     
     def calculo_porcentaje_ciclo(id_evaluacion)
         eval = Evaluation.find(id_evaluacion)
@@ -158,5 +160,21 @@ class Evaluation < ApplicationRecord
         datos_generales.push([pendi, (100 - por.to_f)]) if total.to_i > 0 
         return datos_generales 
     end 
+
+
+    def name_user(user_id)
+        name = 'No encontrado'
+        if user_id > 0
+            user =  User.find(user_id)
+            name = user.name
+        end    
+        return  name 
+    end
+
+    def label_firm(firm)
+        if firm == 0 ; 'NO'
+        elsif  firm == 1 ; 'SI'
+        end 
+    end  
 
 end

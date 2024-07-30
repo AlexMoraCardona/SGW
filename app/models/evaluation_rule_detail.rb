@@ -75,7 +75,7 @@ class EvaluationRuleDetail < ApplicationRecord
     def self.label_meets(dato)
         if dato == 0 ; 'NO'
         elsif dato == 1 ; 'SI'
-        elsif dato == 1 ; 'NA'
+        elsif dato == 2 ; 'NA'
         end 
     end 
 

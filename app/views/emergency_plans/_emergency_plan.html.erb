@@ -1,0 +1,54 @@
+<% if @entity.present? %>
+    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
+<% end %>
+
+
+<% if @emergency_plans.present? %>
+    <%= link_to t('common.create_plan_emergency'), new_emergency_plan_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+
+    <table class="table table-hover"> 
+        <thead>
+            <tr>
+                <th scope="col"><%= t('common.id') %></th>
+                <th scope="col"><%= t('common.entity_id') %></th>
+                <th scope="col">Fecha de creación</th>
+                <th scope="col"><%= t('common.show') %></th>
+                <th scope="col"><%= t('common.edit') %></th>
+                <th scope="col"><%= t('common.firmar') %></th>
+                <th scope="col"><%= t('common.pdf') %></th>
+                <th scope="col"><%= t('common.delete') %></th>                
+            </tr>
+        </thead>
+        <% @emergency_plans.each do |emergency_plan| %>
+            <tr>
+                <td><%= emergency_plan.id %></td>
+                <td><%= emergency_plan.entity.business_name %></td>
+                <td><%= emergency_plan.date_plan %></td>
+                <td><%= link_to t('common.show'), emergency_plan, class: 'btn btn-sm btn-primary' %></td>
+                <td><%= link_to t('common.edit'), edit_emergency_plan_path(emergency_plan), class: 'btn btn-sm btn-primary'  %></td>
+                <% if emergency_plan.firm_responsible.to_i == 0 %>
+                    <td><%= link_to t('common.firmar'), firmar_responsable_plan_path(emergency_plan.id, 2), class: 'btn btn-sm btn btn-warning' %></td>
+                <% else %>     
+                    <td><%= emergency_plan.date_firm_responsible %></td>
+                <% end %>     
+                <td><%= link_to "PDF", ver_emergency_plan_pdf_path(emergency_plan.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
+                <td><%= link_to t('common.delete'), emergency_plan, data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el plan de emergencia?' }, class: 'btn btn-sm btn-danger' %></td>
+            </tr>
+        <% end %>  
+        <hr>  
+    </table>  
+    <br>
+<% else %>
+    <div>
+        <%= link_to t('common.create_plan_emergency'), new_emergency_plan_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+    </div>
+<% end %>
+
+
+
+
+
+
+
+
+

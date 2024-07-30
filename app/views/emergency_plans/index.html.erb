@@ -1,0 +1,27 @@
+<br>
+<div class="container col-11" 
+    <br>
+    <h4 style="text-align:center">PLAN DE EMERGENCIAS</h4>
+    <hr>
+    
+    <br>
+ 
+    <% if params[:entity_id].present? %>
+        <%= render 'emergency_plan' %> 
+    <% else %>
+        <%= form_with model: @entity, method: :get do |form| %>
+            <div class="row g-2">
+                <div class="col-sm-7">
+                    <%= form.label :Entidad, style: "display: block" %>
+                    <%= form.collection_select :entity_id, @entities.order(id: :asc), :id, :business_name, { prompt: '--Seleccionar Entidad--' },
+                    { class: 'form-control input-sm select2' } %>
+                </div>
+            </div>    
+            <br>    
+            <button type="submit" class="btn btn-primary">Consultar</button>
+        <% end %>
+
+    <% end %>     
+</div>
+
+

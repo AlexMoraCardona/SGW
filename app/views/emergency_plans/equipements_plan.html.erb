@@ -1,0 +1,67 @@
+<div class="container col-12 card p-5">
+    <br>
+    <%= form_with model: @equipement_used_plan do |form| %>
+        <% @equipement_used_plan.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>  
+     
+        <div class="form-group"> 
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingrese el tipo de equipo utilizado.">Tipo de equipo utilizado: <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+            <%= form.radio_button :type_equipement, 0 %>
+            <label for="electricas">Herramientos Eléctricas</label>
+            <%= form.radio_button :type_equipement, 1 %>
+            <label for="manuales">Herramientas Manuales</label>
+        </div>
+        </br>    
+        <div class="form-group"> 
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingrese el nombre del  equipo propio de las labores, como equipos de cómputo, impresoras, fax, escáner, teléfonos, caja fuerte y mobiliario de la Empresa.">Nombre del equipo: <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+            <%= form.text_field :name,  class: "form-control" %>
+        </div>
+        </br>    
+        <%= form.hidden_field :emergency_plan_id, :value => params[:id].to_i, class: "form-control" %>
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+    <% end %>
+
+</div>
+<br>
+
+<div class="container col-12 card p-5">
+    <hr>
+    <br>
+    <div class="d-flex">
+        <div class="container">
+            <h class="display-6">Equipos utilizados</h>
+        </div> 
+    </div>
+    <hr>
+             
+    <% if @equipement_used_plans.present? %>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Tipo de equipo</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Editar</th>
+                    <th scope="col">Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% @equipement_used_plans.where("emergency_plan_id = ?",params[:id].to_i).each do |equipement_used_plan| %>
+                    <tr>
+                        <td><%= equipement_used_plan.id %></td>
+                        <td><%= EquipementUsedPlan.label_type_equipement(equipement_used_plan.type_equipement) %></td>
+                        <td><%= equipement_used_plan.name %></td>
+                        <td><%= link_to t('common.edit'), edit_equipement_used_plan_path(equipement_used_plan), class: 'btn btn-xs btn-primary'  %></td>
+                        <td><%= link_to t('common.delete'), equipement_used_plan, data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el equipo?' }, class: 'btn btn-xs btn-danger' %></td>
+                    </tr>
+                <% end %>     
+            </tbody>      
+        </table>
+    <% end %>     
+</div>
+        
+<br>

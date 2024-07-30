@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_25_201742) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_29_203256) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -233,6 +233,15 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_25_201742) do
     t.index ["entity_id"], name: "index_audit_reports_on_entity_id"
   end
 
+  create_table "brigadista_plans", force: :cascade do |t|
+    t.string "name_brigadista"
+    t.string "perfil_brigadista"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "emergency_plan_id"
+    t.index ["emergency_plan_id"], name: "index_brigadista_plans_on_emergency_plan_id"
+  end
+
   create_table "business_days", force: :cascade do |t|
     t.date "date_skilled"
     t.integer "day_skilled", default: 0
@@ -450,6 +459,139 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_25_201742) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "emergency_plans", force: :cascade do |t|
+    t.string "sede"
+    t.string "ciudad"
+    t.string "direccion"
+    t.string "ubi_geografica"
+    t.string "per_norte"
+    t.string "per_sur"
+    t.string "per_oriente"
+    t.string "per_occidente"
+    t.string "vias_peatonal"
+    t.string "vias_vehicular"
+    t.integer "sector_influencia", default: 0
+    t.integer "mov_telurico", default: 0
+    t.string "desc_mov_telurico"
+    t.integer "inundaciones", default: 0
+    t.string "desc_inundaciones"
+    t.integer "incendio", default: 0
+    t.string "desc_incendio"
+    t.string "aquien_lado_derecho"
+    t.string "espe_actividades"
+    t.string "vias_acceso"
+    t.integer "per_administrativo", default: 0
+    t.integer "per_operativo", default: 0
+    t.integer "per_admin_m", default: 0
+    t.integer "per_admin_f", default: 0
+    t.integer "per_admin_directa", default: 0
+    t.integer "per_admin_ind", default: 0
+    t.integer "per_admin_soc", default: 0
+    t.integer "per_oper_m", default: 0
+    t.integer "per_oper_f", default: 0
+    t.integer "per_oper_directa", default: 0
+    t.integer "per_oper_ind", default: 0
+    t.integer "per_oper_soc", default: 0
+    t.integer "per_total", default: 0
+    t.integer "per_total_m", default: 0
+    t.integer "per_total_f", default: 0
+    t.integer "per_total_dir", default: 0
+    t.integer "per_total_ind", default: 0
+    t.integer "per_total_soc", default: 0
+    t.string "jornada_laboral_lunes"
+    t.string "jornada_laboral_sabado"
+    t.string "carac_construccion"
+    t.string "tiempo_construccion"
+    t.string "terreno"
+    t.string "construido"
+    t.integer "pisos", default: 0
+    t.integer "entradas_salidas", default: 0
+    t.integer "locales_externos", default: 0
+    t.string "cumple_sismo"
+    t.string "escalera_emergencia"
+    t.string "sotano"
+    t.string "ascensores"
+    t.string "inst_electricas"
+    t.string "fallas_estructurales"
+    t.string "redes_gas"
+    t.string "control_acceso"
+    t.string "redes_contra_incendio"
+    t.string "hidrantes"
+    t.string "sis_alarma"
+    t.string "sis_humo"
+    t.string "sis_iluminacion_emer"
+    t.string "equipo_comunicacion"
+    t.string "tanqueh2o"
+    t.string "planta_energia"
+    t.string "almacenamiento_quimico"
+    t.string "mapa_sede"
+    t.integer "accidentes_trabaja", default: 0
+    t.string "obs_accidentes_trabaja"
+    t.integer "accidentes_visi", default: 0
+    t.string "obs_accidentes_visi"
+    t.integer "asalto", default: 0
+    t.string "obs_asalto"
+    t.integer "evento_terrorista", default: 0
+    t.string "obs_evento_terrorista"
+    t.string "descripcion_insumos"
+    t.string "elementos_derecho"
+    t.string "elementos_izquierdo"
+    t.string "inst_especiales"
+    t.string "antec_emergencia"
+    t.integer "redes_incendio44", default: 0
+    t.integer "sistema_alarma44", default: 0
+    t.integer "sotano44", default: 0
+    t.integer "gas_domiciliario44", default: 0
+    t.integer "salidas_emergencia", default: 0
+    t.integer "sistema_humo44", default: 0
+    t.integer "tanque_h2o44", default: 0
+    t.integer "planta_energia44", default: 0
+    t.integer "valvula_entrada44", default: 0
+    t.integer "extintores44", default: 0
+    t.integer "botiquin44", default: 0
+    t.integer "camilla_portatil44", default: 0
+    t.string "analisis_amenazas"
+    t.string "recursos_externos"
+    t.string "emer_medica_ent"
+    t.string "emer_medica_tel"
+    t.string "emer_medica_mun"
+    t.string "emer_incen_ent"
+    t.string "emer_incen_tel"
+    t.string "emer_incen_mun"
+    t.string "emer_respon_ent"
+    t.string "emer_respon_tel"
+    t.string "emer_respon_mun"
+    t.string "emer_natur_ent"
+    t.string "emer_natur_tel"
+    t.string "emer_natur_mun"
+    t.string "emer_civiluno_ent"
+    t.string "emer_civiluno_tel"
+    t.string "emer_civiluno_mun"
+    t.string "emer_civildos_ent"
+    t.string "emer_civildos_tel"
+    t.string "emer_civildos_mun"
+    t.string "emer_civiltres_ent"
+    t.string "emer_civiltres_tel"
+    t.string "emer_civiltres_mun"
+    t.string "emer_hospital_ent"
+    t.string "emer_hospital_tel"
+    t.string "emer_hospital_mun"
+    t.integer "empresa_fue_creada", default: 0
+    t.integer "numero_sedes", default: 0
+    t.integer "user_responsible", default: 0
+    t.date "date_firm_responsible"
+    t.integer "firm_responsible", default: 0
+    t.date "date_plan"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.string "descripcion_operativo"
+    t.string "rutas_evacuacion"
+    t.string "punto_encuentro"
+    t.string "codigo_empresa"
+    t.index ["entity_id"], name: "index_emergency_plans_on_entity_id"
+  end
+
   create_table "employee_news", force: :cascade do |t|
     t.date "date_new"
     t.integer "work_accident", default: 0
@@ -504,6 +646,15 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_25_201742) do
     t.integer "external_consultant", default: 0
     t.integer "pay_entity", default: 0
     t.index ["email_entity"], name: "index_entities_on_email_entity", unique: true
+  end
+
+  create_table "equipement_used_plans", force: :cascade do |t|
+    t.integer "type_equipement", default: 0
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "emergency_plan_id"
+    t.index ["emergency_plan_id"], name: "index_equipement_used_plans_on_emergency_plan_id"
   end
 
   create_table "evaluation_models", force: :cascade do |t|
@@ -1480,6 +1631,28 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_25_201742) do
     t.index ["entity_id"], name: "index_report_officials_on_entity_id"
   end
 
+  create_table "res_ext_plans", force: :cascade do |t|
+    t.string "name"
+    t.string "place"
+    t.string "phone"
+    t.integer "cant", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "emergency_plan_id"
+    t.index ["emergency_plan_id"], name: "index_res_ext_plans_on_emergency_plan_id"
+  end
+
+  create_table "res_int_plans", force: :cascade do |t|
+    t.integer "cant", default: 0
+    t.string "clase"
+    t.string "description"
+    t.string "ubication"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "emergency_plan_id"
+    t.index ["emergency_plan_id"], name: "index_res_int_plans_on_emergency_plan_id"
+  end
+
   create_table "resource_items", force: :cascade do |t|
     t.integer "consecutive", default: 0
     t.string "process"
@@ -1823,6 +1996,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_25_201742) do
   add_foreign_key "assistants", "meeting_minutes"
   add_foreign_key "audit_report_items", "audit_reports"
   add_foreign_key "audit_reports", "entities"
+  add_foreign_key "brigadista_plans", "emergency_plans"
   add_foreign_key "business_days", "entities"
   add_foreign_key "calendars", "adm_calendars"
   add_foreign_key "clasification_danger_details", "clasification_dangers"
@@ -1832,6 +2006,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_25_201742) do
   add_foreign_key "danger_preventions", "clasification_danger_details"
   add_foreign_key "description_jobs", "entities"
   add_foreign_key "direction_reviews", "entities"
+  add_foreign_key "emergency_plans", "entities"
+  add_foreign_key "equipement_used_plans", "emergency_plans"
   add_foreign_key "evaluation_rule_details", "evaluations"
   add_foreign_key "evaluation_rule_details", "standar_detail_items"
   add_foreign_key "evaluations", "entities"
@@ -1902,6 +2078,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_25_201742) do
   add_foreign_key "provides_protection_items", "protection_elements"
   add_foreign_key "provides_protection_items", "provides_protections"
   add_foreign_key "provides_protections", "entities"
+  add_foreign_key "res_ext_plans", "emergency_plans"
+  add_foreign_key "res_int_plans", "emergency_plans"
   add_foreign_key "resource_items", "resources"
   add_foreign_key "resources", "entities"
   add_foreign_key "safety_inspection_items", "safety_inspections"

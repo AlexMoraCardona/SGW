@@ -1,0 +1,27 @@
+<div class="container col-12 card p-5">
+    <br>
+    <%= form_with model: @equipement_used_plan do |form| %>
+        <% @equipement_used_plan.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>  
+     
+        <div class="form-group"> 
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingrese el tipo de equipo utilizado.">Tipo de equipo utilizado: <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+            <%= form.radio_button :type_equipement, 0 %>
+            <label for="electricas">Herramientos Eléctricas</label>
+            <%= form.radio_button :type_equipement, 1 %>
+            <label for="manuales">Herramientas Manuales</label>
+        </div>
+        </br>    
+        <div class="form-group"> 
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingrese el nombre del  equipo propio de las labores, como equipos de cómputo, impresoras, fax, escáner, teléfonos, caja fuerte y mobiliario de la Empresa.">Nombre del equipo: <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+            <%= form.text_field :name,  class: "form-control" %>
+        </div>
+        </br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+    <% end %>
+
+</div>
+<br>

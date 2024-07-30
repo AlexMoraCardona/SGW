@@ -86,7 +86,18 @@ Rails.application.routes.draw do
   resources :safety_inspections
   resources :safety_inspection_items
   resources :commitments
+  resources :emergency_plans
+  resources :equipement_used_plans
+  resources :brigadista_plans
+  resources :res_int_plans
+  resources :res_ext_plans
 
+  get '/emergency_plans/resources_ext_plan/:id', to: 'emergency_plans#resources_ext_plan', as: 'resources_ext_plan'
+  get '/emergency_plans/resources_int_plan/:id', to: 'emergency_plans#resources_int_plan', as: 'resources_int_plan'
+  get '/emergency_plans/brigadistas_plan/:id', to: 'emergency_plans#brigadistas_plan', as: 'brigadistas_plan'
+  get '/emergency_plans/equipements_plan/:id', to: 'emergency_plans#equipements_plan', as: 'equipements_plan'
+  get '/emergency_plans/firmar_responsable_plan/:id', to: 'emergency_plans#firmar_responsable_plan', as: 'firmar_responsable_plan'
+  get '/emergency_plans/ver_emergency_plan_pdf/:id', to: 'emergency_plans#ver_emergency_plan_pdf', as: 'ver_emergency_plan_pdf'
   get '/safety_inspections/ver_inspeccion_pdf/:id', to: 'safety_inspections#ver_inspeccion_pdf', as: 'ver_inspeccion_pdf'
   get '/safety_inspections/firmar_responsable_inspeccion/:id', to: 'safety_inspections#firmar_responsable_inspeccion', as: 'firmar_responsable_inspeccion'
   get '/improvement_plans/crear_item_improvement_plan/:id', to: 'improvement_plans#crear_item_improvement_plan', as: 'crear_item_improvement_plan'

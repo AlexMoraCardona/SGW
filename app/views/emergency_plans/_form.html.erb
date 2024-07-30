@@ -1,0 +1,836 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @emergency_plan do |form| %>
+        <% @emergency_plan.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+        <%= form.hidden_field :user_responsible, :value => Current.user.id, class: "form-control" %>
+        <%= form.hidden_field :entity_id, :value => params[:entity_id].to_i, class: "form-control" if params[:entity_id].present? %>
+
+        <div class="form-group">  
+            <div class="col-sm-6">  
+                <strong>FECHA DE CREACIÓN DEL PLAN DE EMERGECIA</strong>
+                <%= form.date_field :date_plan,  class: "form-control" %>
+            </div>
+        </div>
+        <br>
+
+        <div class="form-group">    
+            <strong>RESEÑA HISTÓRICA E INFORMACIÓN GENERAL DE LA SEDE</strong>
+        </div>
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>La Empresa fue creada en el año: </strong>
+                <%= form.number_field :empresa_fue_creada,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-5">
+                <strong>Total de sedes: </strong>
+                <%= form.number_field :numero_sedes,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Sede: </strong>
+                <%= form.text_field :sede,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-5">
+                <strong>Ciudad: </strong>
+                <%= form.text_field :ciudad,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Dirección: </strong>
+                <%= form.text_field :direccion,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-5">
+                <strong>Ubicación geográfica: </strong>
+                <%= form.text_field :ubi_geografica,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Perímetro Norte: </strong>
+                <%= form.text_field :per_norte,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-5">
+                <strong>Perímetro Sur: </strong>
+                <%= form.text_field :per_sur,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Perímetro Oriente: </strong>
+                <%= form.text_field :per_oriente,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-5">
+                <strong>Perímetro Occidente: </strong>
+                <%= form.text_field :per_occidente,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="col-sm-11">
+            <strong>Vías de Acceso Peatonal: </strong>
+            <%= form.text_area :vias_peatonal,  class: "form-control" %>
+        </div>        
+        <br>
+        <div class="col-sm-11">
+            <strong>Vías de Acceso Vehicular: </strong>
+            <%= form.text_area :vias_vehicular,  class: "form-control" %>
+        </div>        
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-11">
+                <strong>Sector de influencia: </strong></br>
+                <%= form.radio_button :sector_influencia, 0 %>
+                <label for="Comercial">Comercial</label>
+                <%= form.radio_button :sector_influencia, 1 %>
+                <label for="Industrial">Industrial</label>
+                <%= form.radio_button :sector_influencia, 2 %>
+                <label for="Bancaria">Bancaria</label>
+                <%= form.radio_button :sector_influencia, 3 %>
+                <label for="Residencial">Residencial</label>
+                <%= form.radio_button :sector_influencia, 4 %>
+                <label for="Entidadespúblicas">Entidades públicas</label>
+                <%= form.radio_button :sector_influencia, 5 %>
+                <label for="Militarpolicial">Militar y/o policial</label>
+            </div>        
+        </div>   
+        <br>
+        <div class="form-group">    
+            <strong>CARACTERÍSTICAS GENERALES DE LA EDIFICACIÓN</strong>
+        </div>
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Características de la construcción y tipo de acabados: </strong>
+                <%= form.text_area :carac_construccion,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-5">
+                <strong>Tiempo de construcción: </strong>
+                <%= form.text_field :tiempo_construccion,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Terreno (m2): </strong>
+                <%= form.text_field :terreno,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-5">
+                <strong>Construidos (m2): </strong>
+                <%= form.text_field :construido,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Número de pisos: </strong>
+                <%= form.number_field :pisos,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-5">
+                <strong>Número de entradas y salidas: </strong>
+                <%= form.number_field :entradas_salidas,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Número de Locales Externos: </strong>
+                <%= form.number_field :locales_externos,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-5">
+                <strong>Cumple con el Código de Sismo Resistencia: </strong>
+                <%= form.text_field :cumple_sismo,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Escalera de emergencia: </strong>
+                <%= form.text_field :escalera_emergencia,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-5">
+                <strong>Sótano: </strong>
+                <%= form.text_field :sotano,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Ascensores: </strong>
+                <%= form.text_field :ascensores,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-5">
+                <strong>Instalaciones eléctricas: </strong>
+                <%= form.text_field :inst_electricas,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Fallas estructurales: </strong>
+                <%= form.text_field :fallas_estructurales,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-5">
+                <strong>Redes de Gas: </strong>
+                <%= form.text_field :redes_gas,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Control y restricciones de acceso: </strong>
+                <%= form.text_field :control_acceso,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-5">
+                <strong>Redes contra incendio: </strong>
+                <%= form.text_field :redes_contra_incendio,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Hidrantes: </strong>
+                <%= form.text_field :hidrantes,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-5">
+                <strong>Sistema de alarma: </strong>
+                <%= form.text_field :sis_alarma,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Sistema de detección de Humo y/o Calor: </strong>
+                <%= form.text_field :sis_humo,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-5">
+                <strong>Sistema de iluminación de emergencia: </strong>
+                <%= form.text_field :sis_iluminacion_emer,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Equipos de comunicación: </strong>
+                <%= form.text_field :equipo_comunicacion,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-5">
+                <strong>Tanque de reserva H2O: </strong>
+                <%= form.text_field :tanqueh2o,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Planta de Energía: </strong>
+                <%= form.text_field :planta_energia,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-5">
+                <strong>Almacenamiento de químicos: </strong>
+                <%= form.text_field :almacenamiento_quimico,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="form-group">
+            <strong>MAPA DE LA SEDE (TOMADO DE LA PLATAFORMA GOOGLE MAPS)</strong>
+            <%= form.rich_text_area :mapa_sede,  class: "form-control" %>
+        </div>
+        <br>
+        <div class="form-group">    
+            <strong>ANTECEDENTES HISTÓRICOS DE INCIDENTES O EMERGENCIAS PRESENTADAS</strong>
+        </div>
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Accidentes y/o Incidentes de Trabajadores: </strong>
+                <%= form.radio_button :accidentes_trabaja, 0 %>
+                <label for="no">NO</label>
+                <%= form.radio_button :accidentes_trabaja, 1 %>
+                <label for="si">SI</label>
+            </div>        
+            <div class="col-sm-5">
+                <strong>DESCRIPCIÓN: </strong>
+                <%= form.text_field :obs_accidentes_trabaja,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Accidentes y/o Incidentes de Visitantes: </strong>
+                <%= form.radio_button :accidentes_visi, 0 %>
+                <label for="no">NO</label>
+                <%= form.radio_button :accidentes_visi, 1 %>
+                <label for="si">SI</label>
+            </div>        
+            <div class="col-sm-5">
+                <strong>DESCRIPCIÓN: </strong>
+                <%= form.text_field :obs_accidentes_visi,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Asalto: </strong>
+                <%= form.radio_button :asalto, 0 %>
+                <label for="no">NO</label>
+                <%= form.radio_button :asalto, 1 %>
+                <label for="si">SI</label>
+            </div>        
+            <div class="col-sm-5">
+                <strong>DESCRIPCIÓN: </strong>
+                <%= form.text_field :obs_asalto,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Evento Terroristas: </strong>
+                <%= form.radio_button :evento_terrorista, 0 %>
+                <label for="no">NO</label>
+                <%= form.radio_button :evento_terrorista, 1 %>
+                <label for="si">SI</label>
+            </div>        
+            <div class="col-sm-5">
+                <strong>DESCRIPCIÓN: </strong>
+                <%= form.text_field :obs_evento_terrorista,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Movimiento Telúrico: </strong>
+                <%= form.radio_button :mov_telurico, 0 %>
+                <label for="no">NO</label>
+                <%= form.radio_button :mov_telurico, 1 %>
+                <label for="si">SI</label>
+            </div>        
+            <div class="col-sm-5">
+                <strong>DESCRIPCIÓN: </strong>
+                <%= form.text_field :desc_mov_telurico,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Inundaciones: </strong>
+                <%= form.radio_button :inundaciones, 0 %>
+                <label for="no">NO</label>
+                <%= form.radio_button :inundaciones, 1 %>
+                <label for="si">SI</label>
+            </div>        
+            <div class="col-sm-5">
+                <strong>DESCRIPCIÓN: </strong>
+                <%= form.text_field :desc_inundaciones,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Incendio: </strong>
+                <%= form.radio_button :incendio, 0 %>
+                <label for="no">NO</label>
+                <%= form.radio_button :incendio, 1 %>
+                <label for="si">SI</label>
+            </div>        
+            <div class="col-sm-5">
+                <strong>DESCRIPCIÓN: </strong>
+                <%= form.text_field :desc_incendio,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="form-group">    
+            <strong>ENTORNO</strong></br>
+        </div>
+        <br>
+        <div class="form-group">
+            <strong>La EMPRESA al lado derecho se encuentra ESPECIFICAR A QUIEN TIENE AL LADO</strong>
+            <%= form.text_field :aquien_lado_derecho,  class: "form-control" %>
+        </div>
+        <br>
+        <div class="form-group">
+            <strong>Las actividades económicas que se encuentran alrededor de la EMPRESA son de: ESPECIFICAR ACTIVIDADES</strong>
+            <%= form.text_field :espe_actividades,  class: "form-control" %>
+        </div>
+        <br>
+        <div class="form-group">    
+            <strongVíAS DE ACCESO</strong></br>
+        </div>
+        <br>
+        <div class="form-group">
+            <strong>Para acceder a las instalaciones se puede hacer por la ESPECIFICAR DIRECCIÓN en el sentido ESPECIFICAR NORTE A SUR – SUR A NORTE</strong>
+            <%= form.text_field :vias_acceso,  class: "form-control" %>
+        </div>
+        <br>
+        <div class="form-group">
+            <strong>ACTIVIDAD ECONÓMICA DE NOMBRE EMPRESA</strong>
+            ESPECIFICAR CÓDIGO DE LA EMPRESA
+            <%= form.text_field :codigo_empresa,  class: "form-control" %>
+        </div>
+        <br>
+        <div class="form-group">
+            <strong>DESCRIPCIÓN GENERAL DE LA POBLACIÓN</strong>
+        </div>
+        <br>
+        <div class="form-group">
+            <strong>PERSONAL ADMINISTRATIVO</strong>
+        </div>
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-4">
+                <strong>Total personal administrativo: </strong>
+                <%= form.text_field :per_administrativo,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-4">
+                <strong>Total personal administrativo hombres: </strong>
+                <%= form.text_field :per_admin_m,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-3">
+                <strong>Total personal administrativo mujeres: </strong>
+                <%= form.text_field :per_admin_f,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-4">
+                <strong>Vinculación directa personal administrativo: </strong>
+                <%= form.text_field :per_admin_directa,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-4">
+                <strong>Vinculación indirecta personal administrativo: </strong>
+                <%= form.text_field :per_admin_ind,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-3">
+                <strong>Vinculación socios personal administrativo: </strong>
+                <%= form.text_field :per_admin_soc,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <br>
+        <div class="form-group">
+            <strong>PERSONAL OPERATIVO</strong>
+        </div>
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-4">
+                <strong>Total personal operativo: </strong>
+                <%= form.text_field :per_operativo,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-4">
+                <strong>Total personal operativo hombres: </strong>
+                <%= form.text_field :per_oper_m,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-3">
+                <strong>Total personal operativo mujeres: </strong>
+                <%= form.text_field :per_oper_f,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-4">
+                <strong>Vinculación directa personal operativo: </strong>
+                <%= form.text_field :per_oper_directa,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-4">
+                <strong>Vinculación indirecta personal operativo: </strong>
+                <%= form.text_field :per_oper_ind,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-3">
+                <strong>Vinculación socios personal operativo: </strong>
+                <%= form.text_field :per_oper_soc,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="form-group">
+            <strong>PERSONAL TOTAL</strong>
+        </div>
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-4">
+                <strong>Total personal: </strong>
+                <%= form.text_field :per_total,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-4">
+                <strong>Total personal hombres: </strong>
+                <%= form.text_field :per_total_m,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-3">
+                <strong>Total personal mujeres: </strong>
+                <%= form.text_field :per_total_f,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-4">
+                <strong>Total vinculación directa: </strong>
+                <%= form.text_field :per_total_dir,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-4">
+                <strong>Total vinculación indirecta: </strong>
+                <%= form.text_field :per_total_ind,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-3">
+                <strong>Total vinculación socios: </strong>
+                <%= form.text_field :per_total_soc,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="form-group">
+            <strong>JORNADAS LABORALES</strong>
+        </div>
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <strong>Lunes a viernes jornada laboral: </strong>
+                <%= form.text_field :jornada_laboral_lunes,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-5">
+                <strong>Sábados jornada laboral: </strong>
+                <%= form.text_field :jornada_laboral_sabado,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>
+        <div class="form-group">
+            <strong>DESCRIPCIÓN DEL PROCESO OPERATIVO</strong>
+        </div>
+        <br>
+        <div class="col-sm-11">
+            <strong>ESPECIFICAR EL PROCESO: </strong>
+            <%= form.text_field :descripcion_operativo,  class: "form-control" %>
+        </div>        
+        <br>
+        <div class="form-group">
+            <strong>DESCRIPCIÓN DE INSUMOS</strong>
+        </div>
+        <br>
+        <div class="col-sm-11">
+            Ejemplo:Los principales insumos utilizados en la prestación de los servicios son papelería, lapiceros, carpetas, AZ legajadores, cosedoras, rollos térmicos, perforadoras y demás elementos necesarios para el desarrollo de las actividades administrativas:
+            <%= form.text_field :descripcion_insumos,  class: "form-control" %>
+        </div>        
+        <br>
+        <div class="form-group">
+            <strong>ELEMENTOS ESTRUCTURALES</strong>
+        </div>
+        <br>
+        <div class="col-sm-11">
+            La entidad al lado derecho se encuentra con ESPECIFICAR LO QUE TIENE A ESE LADO:
+            <%= form.text_field :elementos_derecho,  class: "form-control" %>
+        </div>        
+        <br>
+        <div class="col-sm-11">
+            La entidad al lado izquierdo se encuentra con ESPECIFICAR LO QUE TIENE A ESE LADO:
+            <%= form.text_field :elementos_izquierdo,  class: "form-control" %>
+        </div>        
+        <br>
+        <div class="form-group">
+            <strong>INSTALACIONES ESPECIALES</strong>
+        </div>
+        <br>
+        <div class="col-sm-11">
+            Ejemplo: Agua potable, electricidad, servicios de telefonía e internet:
+            <%= form.text_field :inst_especiales,  class: "form-control" %>
+        </div>        
+        <br>
+        <div class="form-group">
+            <strong>ANTECEDENTES DE EMERGENCIA</strong>
+        </div>
+        <br>
+        <div class="col-sm-11">
+            ESPECIFICAR ANTECEDENTES QUE SE HAYAN TENIDO EN LOS ÚLTIMOS 20 AÑOS: Ejemplo: Hasta la fecha NOMBRE EMPRESA no se ha visto afectada por eventos de emergencia; sin embargo, cada año se integra a las actividades de emergencia avisadas por medio de simulacros, con el fin de entrenar a las Brigadas y preparar al personal en caso de emergencias.
+            <%= form.text_field :antec_emergencia,  class: "form-control" %>
+        </div>        
+        <br>
+        <div class="row g-3">
+            <div class="col-sm-4">
+                <strong>Redes contra incendio: </strong>
+                <%= form.radio_button :redes_incendio44, 0 %>
+                <label for="no">NO</label>
+                <%= form.radio_button :redes_incendio44, 1 %>
+                <label for="si">SI</label>
+            </div>        
+            <div class="col-sm-4">
+                <strong>Sistema de Alarma: </strong>
+                <%= form.radio_button :sistema_alarma44, 0 %>
+                <label for="no">NO</label>
+                <%= form.radio_button :sistema_alarma44, 1 %>
+                <label for="si">SI</label>
+            </div>        
+            <div class="col-sm-3">
+                <strong>Sótano: </strong>
+                <%= form.radio_button :sotano44, 0 %>
+                <label for="no">NO</label>
+                <%= form.radio_button :sotano44, 1 %>
+                <label for="si">SI</label>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-3">
+            <div class="col-sm-4">
+                <strong>Gas domiciliario: </strong>
+                <%= form.radio_button :gas_domiciliario44, 0 %>
+                <label for="no">NO</label>
+                <%= form.radio_button :gas_domiciliario44, 1 %>
+                <label for="si">SI</label>
+            </div>        
+            <div class="col-sm-4">
+                <strong>Salidas de emergencia: </strong>
+                <%= form.radio_button :salidas_emergencia, 0 %>
+                <label for="no">NO</label>
+                <%= form.radio_button :salidas_emergencia, 1 %>
+                <label for="si">SI</label>
+            </div>        
+            <div class="col-sm-3">
+                <strong>Sistema de detección de Humo y/o Calor: </strong>
+                <%= form.radio_button :sistema_humo44, 0 %>
+                <label for="no">NO</label>
+                <%= form.radio_button :sistema_humo44, 1 %>
+                <label for="si">SI</label>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-3">
+            <div class="col-sm-4">
+                <strong>Tanque de reserva H2O: </strong>
+                <%= form.radio_button :tanque_h2o44, 0 %>
+                <label for="no">NO</label>
+                <%= form.radio_button :tanque_h2o44, 1 %>
+                <label for="si">SI</label>
+            </div>        
+            <div class="col-sm-4">
+                <strong>Planta de Energía: </strong>
+                <%= form.radio_button :planta_energia44, 0 %>
+                <label for="no">NO</label>
+                <%= form.radio_button :planta_energia44, 1 %>
+                <label for="si">SI</label>
+            </div>        
+            <div class="col-sm-3">
+                <strong>Válvula entrada (conexión bomberos): </strong>
+                <%= form.radio_button :valvula_entrada44, 0 %>
+                <label for="no">NO</label>
+                <%= form.radio_button :valvula_entrada44, 1 %>
+                <label for="si">SI</label>
+            </div>        
+        </div>   
+        <br>
+        <div class="row g-3">
+            <div class="col-sm-4">
+                <strong>Extintores: </strong>
+                <%= form.radio_button :extintores44, 0 %>
+                <label for="no">NO</label>
+                <%= form.radio_button :extintores44, 1 %>
+                <label for="si">SI</label>
+            </div>        
+            <div class="col-sm-4">
+                <strong>Botiquín : </strong>
+                <%= form.radio_button :botiquin44, 0 %>
+                <label for="no">NO</label>
+                <%= form.radio_button :botiquin44, 1 %>
+                <label for="si">SI</label>
+            </div>        
+            <div class="col-sm-3">
+                <strong>Camilla portátil: </strong>
+                <%= form.radio_button :camilla_portatil44, 0 %>
+                <label for="no">NO</label>
+                <%= form.radio_button :camilla_portatil44, 1 %>
+                <label for="si">SI</label>
+            </div>        
+        </div>   
+        <br>
+        <div class="form-group">
+            <strong>EVALUACIÓN DE LA AMENAZA</strong>
+        </div>
+        <br>
+        <div class="col-sm-11">
+            ESPACIO PARA PONER ANÁLISIS DE AMENAZA
+            <%= form.text_field :analisis_amenazas,  class: "form-control" %>
+        </div>        
+        <br>
+        <div class="form-group">
+            <strong>RECURSOS EXTERNOS</strong>
+        </div>
+        <br>
+        <div class="col-sm-11">
+            Recursos externos:
+            <%= form.text_field :recursos_externos,  class: "form-control" %>
+        </div>        
+        <br>
+        <div class="form-group">
+            <strong>DIRECTORIO DE EMERGENCIAS</strong>
+        </div>
+        <br>
+        <div class="col-sm-11">
+            EMERGENCIAS MÉDICAS O ACCIDENTES DE TRABAJO:
+            <div class="row g-3">
+                <div class="col-sm-4">
+                    Entidad:
+                    <%= form.text_field :emer_medica_ent,  class: "form-control" %>
+                </div>        
+                <div class="col-sm-4">
+                    Teléfono:
+                    <%= form.text_field :emer_medica_tel,  class: "form-control" %>
+                </div>        
+                <div class="col-sm-3">
+                    Municipio
+                    <%= form.text_field :emer_medica_mun,  class: "form-control" %>
+                </div>        
+            </div>   
+        </div>        
+        <br>
+        <div class="col-sm-11">
+            INCENDIOS:
+            <div class="row g-3">
+                <div class="col-sm-4">
+                    Entidad:
+                    <%= form.text_field :emer_incen_ent,  class: "form-control" %>
+                </div>        
+                <div class="col-sm-4">
+                    Teléfono:
+                    <%= form.text_field :emer_incen_tel,  class: "form-control" %>
+                </div>        
+                <div class="col-sm-3">
+                    Municipio
+                    <%= form.text_field :emer_incen_mun,  class: "form-control" %>
+                </div>        
+            </div>   
+        </div>        
+        <br>
+        <div class="col-sm-11">
+            PRIMER RESPONDIENTE:
+            <div class="row g-3">
+                <div class="col-sm-4">
+                    Entidad:
+                    <%= form.text_field :emer_respon_ent,  class: "form-control" %>
+                </div>        
+                <div class="col-sm-4">
+                    Teléfono:
+                    <%= form.text_field :emer_respon_tel,  class: "form-control" %>
+                </div>        
+                <div class="col-sm-3">
+                    Municipio
+                    <%= form.text_field :emer_respon_mun,  class: "form-control" %>
+                </div>        
+            </div>   
+        </div>        
+        <br>
+        <div class="col-sm-11">
+            EMERGENCIAS NATURALES:
+            <div class="row g-3">
+                <div class="col-sm-4">
+                    Entidad:
+                    <%= form.text_field :emer_natur_ent,  class: "form-control" %>
+                </div>        
+                <div class="col-sm-4">
+                    Teléfono:
+                    <%= form.text_field :emer_natur_tel,  class: "form-control" %>
+                </div>        
+                <div class="col-sm-3">
+                    Municipio
+                    <%= form.text_field :emer_natur_mun,  class: "form-control" %>
+                </div>        
+            </div>   
+        </div>        
+        <br>
+        <div class="col-sm-11">
+            EMERGENCIA CIVIL:
+            <div class="row g-3">
+                <div class="col-sm-4">
+                    Entidad:
+                    <%= form.text_field :emer_civiluno_ent,  class: "form-control" %>
+                </div>        
+                <div class="col-sm-4">
+                    Teléfono:
+                    <%= form.text_field :emer_civiluno_tel,  class: "form-control" %>
+                </div>        
+                <div class="col-sm-3">
+                    Municipio
+                    <%= form.text_field :emer_civiluno_mun,  class: "form-control" %>
+                </div>        
+            </div>   
+        </div>        
+        <br>
+        <div class="col-sm-11">
+            EMERGENCIA CIVIL:
+            <div class="row g-3">
+                <div class="col-sm-4">
+                    Entidad:
+                    <%= form.text_field :emer_civildos_ent,  class: "form-control" %>
+                </div>        
+                <div class="col-sm-4">
+                    Teléfono:
+                    <%= form.text_field :emer_civildos_tel,  class: "form-control" %>
+                </div>        
+                <div class="col-sm-3">
+                    Municipio
+                    <%= form.text_field :emer_civildos_mun,  class: "form-control" %>
+                </div>        
+            </div>   
+        </div>        
+        <br>
+        <div class="col-sm-11">
+            EMERGENCIA CIVIL:
+            <div class="row g-3">
+                <div class="col-sm-4">
+                    Entidad:
+                    <%= form.text_field :emer_civiltres_ent,  class: "form-control" %>
+                </div>        
+                <div class="col-sm-4">
+                    Teléfono:
+                    <%= form.text_field :emer_civiltres_tel,  class: "form-control" %>
+                </div>        
+                <div class="col-sm-3">
+                    Municipio
+                    <%= form.text_field :emer_civiltres_mun,  class: "form-control" %>
+                </div>        
+            </div>   
+        </div>        
+        <br>
+        <div class="col-sm-11">
+            ESPECIFICAR HOSPITAL O CLÍNICA CERCANO:
+            <div class="row g-3">
+                <div class="col-sm-4">
+                    Entidad:
+                    <%= form.text_field :emer_hospital_ent,  class: "form-control" %>
+                </div>        
+                <div class="col-sm-4">
+                    Teléfono:
+                    <%= form.text_field :emer_hospital_tel,  class: "form-control" %>
+                </div>        
+                <div class="col-sm-3">
+                    Municipio
+                    <%= form.text_field :emer_hospital_mun,  class: "form-control" %>
+                </div>        
+            </div>   
+        </div>        
+        <br>
+        <div class="form-group">
+            <strong>Puntos de Encuentro</strong>
+        </div>
+        <br>
+        <div class="col-sm-11">
+            La edificación cuenta con ESPECIFICAR NÚMERO DE RUTAS DE EVACUACIÓN
+            <%= form.text_field :rutas_evacuacion,  class: "form-control" %>
+        </div>        
+        <br>
+        <div class="col-sm-11">
+            Punto de encuentro principal: ESPECIFICAR UBICACIÓN EXACTA DEL PUNTO DE ENCUENTRO.
+            <%= form.text_field :punto_encuentro,  class: "form-control" %>
+        </div>        
+        <br>
+        
+
+
+
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, events_path %>
+    <% end %>
+</div>
+<br>
+

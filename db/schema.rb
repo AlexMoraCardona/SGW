@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_29_203256) do
+ActiveRecord::Schema[7.0].define(version: 2024_08_02_165106) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -1014,6 +1014,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_29_203256) do
     t.bigint "cycle_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "periodicity", default: 0
+    t.string "formula"
+    t.string "interpretation"
+    t.integer "limit_one", default: 0
+    t.integer "limit_two", default: 0
+    t.string "information_source"
+    t.string "responsible_management"
     t.index ["cycle_id"], name: "index_indicators_on_cycle_id"
   end
 

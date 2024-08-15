@@ -328,6 +328,7 @@ Rails.application.routes.draw do
   get '/indicadores/resultado', to: 'indicadores#resultado', as: 'resultado' 
   post '/indicadores/resultado' => 'indicadores#consultar', as: 'consultar'
   get '/indicadores/graficos/:id', to: 'indicadores#graficos', as: 'graficos' 
+  get '/indicadores/graficos_pdf/:id', to: 'indicadores#graficos_pdf', as: 'graficos_pdf' 
   
   get '/indicadores/resultadompr', to: 'indicadores#resultadompr', as: 'resultadompr' 
   post '/indicadores/resultadompr' => 'indicadores#consultarmpr', as: 'consultarmpr'

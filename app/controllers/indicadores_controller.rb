@@ -85,6 +85,40 @@ class IndicadoresController < ApplicationController
 
     end
 
+    def graficos_pdf 
+        @year = Time.now.year  
+        @entity = Entity.find(params[:id])
+        @report_official = ReportOfficial.where('entity_id = ? and year = ?', @entity.id, @year).order("year desc,month desc") if @entity.present?
+        @events = Event.where('entity_id = ?', @entity.id) if @entity.present?
+        calculo_frecuencia_accidentalidad(@report_official)
+        calculo_severidad_accidentalidad(@report_official)
+        calculo_ausentismo(@report_official)
+        calculo_prevalencia(@report_official)
+        calculo_incidencia(@report_official)
+        calculo_proporcion(@report_official)
+        calculo_peligrosriesgos(@entity)
+        calculo_coberturacapacitaciones(@entity)
+        calculo_trabajadorescapacitados(@entity)
+        respond_to do |format| 
+            format.html
+            format.pdf {render  pdf: 'graficos_pdf',
+                margin: {top: 10, bottom: 10, left: 10, right: 10 },
+                disable_javascript: true,
+                page_size: 'letter',
+                javascript_delay: 3000,
+                image_quality: 100,
+                background: true,
+                disable_smart_shrinking: false,                
+                footer: {
+                    right: 'Página: [page] de [topage]'
+                   }                
+                       } 
+        end
+
+
+    end
+
+
     def graficosmpr
         @matrix_danger_risk = MatrixDangerRisk.find(params[:id]) if params[:id].present?
         @entity = Entity.find(@matrix_danger_risk.entity_id) if @matrix_danger_risk.present?
@@ -360,6 +394,7 @@ class IndicadoresController < ApplicationController
     end  
     
     def calculo_frecuencia_accidentalidad(report_official)
+        @indicador_frecuencia_accidentalidad = Indicator.find(1)
         @datos_frecuencia_accidentalidad = []
         report_official.each do |rep| 
             fecha = Calendar.label_month(rep.month).to_s  
@@ -369,6 +404,7 @@ class IndicadoresController < ApplicationController
     end
 
     def calculo_severidad_accidentalidad(report_official)
+        @indicador_severidad_accidentalidad = Indicator.find(2)
         @datos_severidad_accidentalidad = []
         report_official.each do |rep| 
             fecha = Calendar.label_month(rep.month).to_s 
@@ -377,6 +413,7 @@ class IndicadoresController < ApplicationController
     end
 
     def calculo_ausentismo(report_official)
+        @indicador_ausentismo = Indicator.find(6)
         @datos_ausentismo = []
         report_official.each do |rep| 
             fecha = Calendar.label_month(rep.month).to_s
@@ -385,6 +422,7 @@ class IndicadoresController < ApplicationController
     end
 
     def calculo_prevalencia(report_official)
+        @indicador_prevalencia = Indicator.find(4)
         @datos_prevalencia = []
         report_official.each do |rep| 
             fecha = Calendar.label_month(rep.month).to_s
@@ -393,6 +431,7 @@ class IndicadoresController < ApplicationController
     end
 
     def calculo_incidencia(report_official)
+        @indicador_incidencia = Indicator.find(5)
         @datos_incidencia = []
         report_official.each do |rep| 
             fecha = Calendar.label_month(rep.month).to_s
@@ -401,6 +440,7 @@ class IndicadoresController < ApplicationController
     end
 
     def calculo_proporcion(report_official)
+        @indicador_proporcion = Indicator.find(3)
         @datos_proporcion = []
         report_official.each do |rep| 
             fecha = Calendar.label_month(rep.month).to_s
@@ -409,6 +449,7 @@ class IndicadoresController < ApplicationController
     end
 
     def calculo_peligrosriesgos(entity)
+        @indicador_peligrosyriesgos = Indicator.find(7)
         @matrix_danger_risks = MatrixDangerRisk.find_by(entity_id: entity.id) if entity.present?
         @matrix_danger_items = MatrixDangerItem.where('matrix_danger_risk_id = ?', @matrix_danger_risks.id) if @matrix_danger_risks.present?
 
@@ -427,6 +468,7 @@ class IndicadoresController < ApplicationController
     end
 
     def calculo_coberturacapacitaciones(entity)
+        @indicador_coberturacapacitaciones = Indicator.find(8)
         año = Time.new.year 
         training = Training.find_by(year: año, entity_id: entity.id)
         training_items = TrainingItem.where("training_id = ?",training.id) if training.present?
@@ -442,6 +484,7 @@ class IndicadoresController < ApplicationController
     end
 
     def calculo_trabajadorescapacitados(entity)
+        @indicador_trabajadorescapacitados = Indicator.find(9)
         año = Time.new.year 
         training = Training.find_by(year: año, entity_id: entity.id)
         training_items = TrainingItem.where("training_id = ?",training.id) if training.present?

@@ -1,11 +1,19 @@
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <meta charset='utf-8' />
 
+    <%= wicked_pdf_javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag "https://www.google.com/jsapi" %>
+    <%= wicked_pdf_javascript_include_tag "chartkick" %>
+     <%= wicked_pdf_javascript_include_tag "application", "chartkick" %>
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+    <%= javascript_importmap_tags %>
+</head>
 
 <br>
 <div class="container col-11"> 
-    <div> 
-        <%= link_to "PDF", graficos_pdf_path(params[:id].to_i, format: 'pdf'), class: 'btn btn-sm btn-success' %>
-    </div>  
-    </br>
     <div class="row g-2">
         <h2 class="display-5">Frecuencia de Accidentalidad</h2>
 
@@ -23,7 +31,8 @@
     </br>
     <div class="row g-3">
         <div class="col-sm-5">
-            <%= column_chart  @datos_frecuencia_accidentalidad, title: "Frecuencia de accidentalidad", download: {filename: "FrecuenciaAccidentalidad"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", suffix: " Accidentes de trabajo" if @report_official.present? %>
+            <%= column_chart  @datos_frecuencia_accidentalidad, title: "Frecuencia de accidentalidad", download: {filename: "FrecuenciaAccidentalidad"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", suffix: " Accidentes de trabajo", discrete: true  %>
+            
         </div>
         <div class="col-sm-1">
         </div>

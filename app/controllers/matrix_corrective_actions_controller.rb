@@ -8,6 +8,8 @@ class MatrixCorrectiveActionsController < ApplicationController
             @ac = 0
             @am = 0
             @ap = 0
+            @cerrada = 0
+            @abierta = 0
             if @matrix_action_items.present?
                 @matrix_action_items.each do |item| 
                     @total_items += 1 
@@ -15,8 +17,14 @@ class MatrixCorrectiveActionsController < ApplicationController
                     elsif item.type_corrective.to_i == 1 ; @am += 1
                     elsif item.type_corrective.to_i == 2 ; @ac += 1
                     end
+                    @abierta += 1 if item.state_actions == 0
+                    @cerrada += 1 if item.state_actions == 1
                 end
-            end     
+            end  
+            @datos_estado_acciones = []
+            @datos_estado_acciones.push(["Abiertas", @abierta]) 
+            @datos_estado_acciones.push(["Cerradas", @cerrada]) 
+
         else    
             if  Current.user && Current.user.level == 1
                 @entities = Entity.all

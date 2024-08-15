@@ -26,7 +26,7 @@ class Entity < ApplicationRecord
    
     def self.label_pay(dato)
         if dato == 0 ; 'PILA MENSUAL'
-        elsif meets == 1 ; 'NÓMINA MENSUAL'
+        elsif dato == 1 ; 'NÓMINA MENSUAL'
         end 
     end  
 

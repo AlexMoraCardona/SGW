@@ -7,7 +7,7 @@
     <td><%= link_to t('common.item_action'), crear_item_matrix_corrective_actions_path(@matrix_corrective_action.id), class: 'btn btn-sm btn btn-warning' %></td>
     <td><%= link_to "PDF", resumen_pdf_matrix_corrective_actions_path(@matrix_corrective_action.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#instruDiligenciamiento">
+    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#instruDiligenciamiento">
       Instrucciones de diligenciamiento
     </button>
     
@@ -26,12 +26,12 @@
             <u>AP</u>: Acción preventiva con el número que le corresponda. <br>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cerrar</button>
           </div>
         </div>
       </div>
     </div>
-    <%= link_to t('common.indicator'), graficosacpm_path(@matrix_corrective_action.id), class: 'btn btn-xs btn btn-success' %>
+    <%= link_to t('common.indicator'), graficosacpm_path(@matrix_corrective_action.id), class: 'btn btn-sm btn btn-success' %>
 
     <div class="container col-12">
 
@@ -82,7 +82,7 @@
             </div>
             <div class="col-sm-3">
                 <% if @matrix_corrective_action.firm_legal_representative.to_i == 0 %>
-                    <%= link_to t('common.firmar'), firmar_rep_matrix_corrective_actions_path(@matrix_corrective_action.id, 1), class: 'btn btn-xs btn btn-warning' %>
+                    <%= link_to t('common.firmar'), firmar_rep_matrix_corrective_actions_path(@matrix_corrective_action.id, 1), class: 'btn btn-sm btn btn-warning' %>
                 <% end %>      
             </div>
         </div>
@@ -101,7 +101,7 @@
             </div>
             <div class="col-sm-3">
                 <% if @matrix_corrective_action.firm_adviser_sst.to_i == 0 %>
-                    <%= link_to t('common.firmar'), firmar_adv_matrix_corrective_actions_path(@matrix_corrective_action.id, 2), class: 'btn btn-xs btn btn-warning' %>
+                    <%= link_to t('common.firmar'), firmar_adv_matrix_corrective_actions_path(@matrix_corrective_action.id, 2), class: 'btn btn-sm btn btn-warning' %>
                 <% end %>      
             </div>
         </div>
@@ -121,7 +121,7 @@
             </div>
             <div class="col-sm-3">
                 <% if @matrix_corrective_action.firm_responsible_sst.to_i == 0 %>
-                    <%= link_to t('common.firmar'), firmar_res_matrix_corrective_actions_path(@matrix_corrective_action.id, 3), class: 'btn btn-xs btn btn-warning' %>
+                    <%= link_to t('common.firmar'), firmar_res_matrix_corrective_actions_path(@matrix_corrective_action.id, 3), class: 'btn btn-sm btn btn-warning' %>
                 <% end %>        
             </div>
         </div>
@@ -138,10 +138,6 @@
                 <th scope="col"><%= t('.user_legal_representative') %></th>
                 <th scope="col"><%= t('.user_adviser_sst') %></th>
                 <th scope="col"><%= t('.user_responsible_sst') %></th>
-                <th scope="col"><%= t('common.show_matrix_corrective_action') %></th>
-                <th scope="col"><%= t('common.create_items_matrix_corrective_action') %></th>
-                <th scope="col">Resumen PDF</th>
-
 
             </tr>
         </thead>
@@ -162,28 +158,64 @@
             <table class="table table-hover">
                 <tr>
                     <td>
-                        <a class="btn btn-primary" href="<%= total_items_matrix_corrective_actions_path(@matrix_corrective_action.id, 3)%>" role="button" >
+                        <a class="btn btn-sm btn-primary" href="<%= total_items_matrix_corrective_actions_path(@matrix_corrective_action.id, 3)%>" role="button" >
                             Total Acciones <span class="badge bg-secondary"><%= @total_items.to_i %></td> </span>
-                        </button>
+                        </button> 
                     </td> 
                     <td>
-                        <a class="btn btn-primary" href="<%= total_items_matrix_corrective_actions_path(@matrix_corrective_action.id, 0)%>" role="button" >
+                        <a class="btn btn-sm btn-primary" href="<%= total_items_matrix_corrective_actions_path(@matrix_corrective_action.id, 0)%>" role="button" >
                             Acciones Preventivas <span class="badge bg-success"><%= @ap.to_i %></td> </span>
                         </button>
                     </td>
                     <td>
-                        <a class="btn btn-primary" href="<%= total_items_matrix_corrective_actions_path(@matrix_corrective_action.id, 1)%>" role="button" >
+                        <a class="btn btn-sm btn-primary" href="<%= total_items_matrix_corrective_actions_path(@matrix_corrective_action.id, 1)%>" role="button" >
                             Acciones de Mejora <span class="badge bg-warning"><%= @am.to_i %></td> </span>
                         </button>
                     </td>
                     <td>
-                        <a class="btn btn-primary" href="<%= total_items_matrix_corrective_actions_path(@matrix_corrective_action.id, 2)%>" role="button" >
+                        <a class="btn btn-sm btn-primary" href="<%= total_items_matrix_corrective_actions_path(@matrix_corrective_action.id, 2)%>" role="button" >
                             Acciones Correctivas <span class="badge bg-danger"><%= @ac.to_i %></td> </span>
                         </button>
                     </td>
                 </tr>
-            </table>  
-        </div> 
+                </br>
+            </table>
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width: 50%;">
+                        <table class="table-light" style="width: 30%;text-align:center;">
+                            <tr class="table-light">
+                                <th class="table-light">
+                                    Estado de las Acciones 
+                                </th>
+                            </tr>
+                        </table> 
+                        <table class="table-light" style="width: 30%;">
+                            <tr class="table-success">
+                                <td class="table-success">
+                                    Cerradas:
+                                </td>
+                                <td class="table-success">
+                                    <%= @cerrada %>
+                                </td>
+                            </tr>
+                            <tr class="table-danger">
+                                <td class="table-danger">
+                                    Abiertas:
+                                </td>
+                                <td class="table-danger">
+                                    <%= @abierta %>    
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="width: 50%;">    
+                        <%= pie_chart  @datos_estado_acciones, download: {filename: "EstadoAcciones"}, download: {background: "#FFFFFF"}, xtitle: "Acciones Abiertas", ytitle: "Acciones Cerradas", prefix: "Cantidad: ", colors: ["#FF0000", "#008000"], width: "150px", height: "150px", donut: true, label: 'true', library: {plotOptions: { pie: { dataLabels: { enabled: true }}}} if @datos_estado_acciones.present? %>
+                    </td>                        
+                </tr>
+            </table>   
+
+        </div>  
 
 
 
@@ -231,7 +263,7 @@
     <hr> 
 <% else %>
     <div>
-        <%= link_to t('.create_matrix_corrective_action'), new_matrix_corrective_action_path(entity_id: @entity.id), class: 'btn btn-xs btn-primary'  %>
+        <%= link_to t('.create_matrix_corrective_action'), new_matrix_corrective_action_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
     </div>
 <% end %>
 

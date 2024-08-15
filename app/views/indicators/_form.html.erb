@@ -5,25 +5,57 @@
             <div class="alert alert-danger" role="alert">
                 <%= error%> <%= alert %>
             </div>
-        <% end %>    
-        <div class="form-group">    
-            <%= form.label :name, style: "display: block" %>
-            <%= form.text_field :name,  class: "form-control" %>
-        </div>
-
+        <% end %>   
+        
+        <div class="row g-2">
+            <div class="col-sm-6">
+                <%= form.label :name, style: "display: block" %>
+                <%= form.text_field :name,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-5">   
+                <%= form.label :cycle_id,  style: "display: block" %>
+                <%= form.collection_select :cycle_id, @cycles.order(id: :asc), :id,  :name, style: "width=50px" %>
+            </div>        
+        </div>   
+        <br>    
         <div class="form-group">    
             <%= form.label :description, style: "display: block" %>
             <%= form.text_field :description,  class: "form-control" %>
         </div>
-
-
+        <br>    
         <div class="form-group">    
-            <%= form.label :cycle_id, style: "display: block" %>
-            <%= form.text_field :cycle_id,  class: "form-control" %>
+            <%= form.label :formula, style: "display: block" %>
+            <%= form.text_field :formula,  class: "form-control" %>
         </div>
-        
-        
-
+        <br>    
+        <div class="form-group">    
+            <%= form.label :interpretation, style: "display: block" %>
+            <%= form.text_field :interpretation,  class: "form-control" %>
+        </div>
+        <div class="row g-3">
+            <div class="col-sm-4">
+                <%= form.label :periodicity,  style: "display: block" %>
+                <%= form.select(:periodicity, [['Mensual', 0], ['Bimestral', 1], ['Trimestral', 2], ['Semestral', 3], ['Anual', 4], ['Diaria', 5]]) %>
+            </div>        
+            <div class="col-sm-3"> 
+                <%= form.label :limit_one, style: "display: block" %>
+                <%= form.number_field :limit_one,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-3"> 
+                <%= form.label :limit_two, style: "display: block" %>
+                <%= form.number_field :limit_two,  class: "form-control" %>
+            </div>        
+        </div>   
+        <br>    
+        <div class="form-group">    
+            <%= form.label :information_source, style: "display: block" %>
+            <%= form.text_field :information_source,  class: "form-control" %>
+        </div>
+        <br>    
+        <div class="form-group">    
+            <%= form.label :responsible_management, style: "display: block" %>
+            <%= form.text_field :responsible_management,  class: "form-control" %>
+        </div>
         <br>    
         <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
         <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, indicators_path %>

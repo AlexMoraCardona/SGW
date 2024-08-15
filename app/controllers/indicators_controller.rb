@@ -8,7 +8,8 @@ class IndicatorsController < ApplicationController
     end    
 
     def new
-      @indicator = Indicator.new  
+      @indicator = Indicator.new 
+      @cycles = Cycle.all 
     end    
 
     def create
@@ -23,6 +24,7 @@ class IndicatorsController < ApplicationController
  
     def edit
         @indicator = Indicator.find(params[:id])
+        @cycles = Cycle.all 
     end
     
     def update
@@ -43,7 +45,8 @@ class IndicatorsController < ApplicationController
     private
 
     def indicator_params
-        params.require(:indicator).permit(:name, :description, :cycle_id)
+        params.require(:indicator).permit(:name, :description, :cycle_id, :periodicity, :formula, :interpretation, :limit_one, :limit_two, :information_source, :responsible_management)
     end 
 
 end    
+

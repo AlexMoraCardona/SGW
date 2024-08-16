@@ -7,6 +7,14 @@ class Evaluation < ApplicationRecord
     has_rich_text :observation
 
 
+    def self.ransackable_attributes(auth_object = nil)
+        ["meets", "standar_detail_item_id", "cycle", "item_nro"]
+    end 
+
+    def self.ransackable_associations(auth_object = nil)
+        []
+    end     
+
     
     def calculo_porcentaje_ciclo(id_evaluacion)
         eval = Evaluation.find(id_evaluacion)

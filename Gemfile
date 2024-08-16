@@ -92,5 +92,9 @@ gem 'bootstrap-will_paginate'
 
 #gemas para crear archivos xls
 gem 'rubyzip', '>= 1.2.1'
-gem 'axlsx'
-gem 'axlsx_rails'
+gem 'caxlsx'
+gem 'caxlsx_rails'
+
+#gemas para ordenar y paginar databables
+gem 'ransack'
+gem 'pagy'

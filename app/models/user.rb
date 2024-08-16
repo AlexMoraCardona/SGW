@@ -27,7 +27,16 @@ class User < ApplicationRecord
         name = entity.business_name if entity.present?
     end    
 
+    def self.ransackable_attributes(auth_object = nil)
+        ["name", "nro_document", "entity"]
+    end 
 
+    def label_state(dato)
+        if dato == 0 ; 'INACTIVO'
+        elsif  dato == 1 ; 'ACTIVO'
+        end 
+    end 
+        
     private
     def downcase_attributes
         self.username = username.downcase 

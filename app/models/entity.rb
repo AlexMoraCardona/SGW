@@ -35,5 +35,9 @@ class Entity < ApplicationRecord
         elsif dato == 1 ; 'SI'
         end 
     end 
+
+    def self.ransackable_attributes(auth_object = nil)
+        ["identification_number", "business_name"]
+    end 
    
 end

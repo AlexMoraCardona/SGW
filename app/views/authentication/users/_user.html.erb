@@ -1,12 +1,12 @@
 <tr>
-    <td><%= User.label_entity(user.entity) %></td>
-    <td><%= user.nro_document %></td>
-    <td><%= user.name %></td>
+    <td><%= highlight User.label_entity(user.entity), params.dig(:q, :entity_cont)  %></td>
+    <td><%= highlight user.nro_document, params.dig(:q, :nro_document_cont)  %></td>
+    <td><%= highlight user.name, params.dig(:q, :name_cont) %></td>
     <td><%= user.username %></td>
     <td><%= user.email %></td>
-    <td><%= user.label_state %></td>
+    <td><%= user.label_state(user.state) %></td>
     <td><%= user.level %></td>
-    <td><%= link_to t('common.edit'), edit_user_path(user), class: 'btn btn-xs btn-primary'  %></td>
+    <td><%= link_to t('common.edit'), edit_user_path(user), class: 'btn btn-sm btn-primary'  %></td>
     
 </tr>
 

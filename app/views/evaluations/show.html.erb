@@ -141,19 +141,20 @@
 
     <hr>
 </div> 
-
-
-
 <br>  
 
-<div class="container col-12"> 
+<div class="container col-12">  
+    <%== pagy_info(@pagy) %>
+    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+    </br>        
+
     <table class="table table-hover">
         <thead>
             <tr> 
-                <th scope="col">Ciclo</th>
+                <th scope="col"><%= sort_link(@q, :cycle, default_order: :desc)  %></th>
                 <th scope="col">Item</th>
                 <th scope="col">Descripción</th>
-                <th scope="col"><%= t('.meets') %></th>
+                <th scope="col"><%= sort_link(@q, :meets, default_order: :desc)  %></th>
                 <th scope="col">Puntaje</th>
                 <th scope="col">Criterio</th> 
                 <th scope="col">Ver</th> 
@@ -165,11 +166,15 @@
         </tbody>   
  
     </table>
-    <br>
+    </br>        
+    <%== pagy_info(@pagy) %>
+    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+    </br>        
 
     <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, evaluations_path %>
     
 </div>  
+<br> 
 
 
 

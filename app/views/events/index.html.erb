@@ -8,15 +8,31 @@
             </div> 
         </div>
         <hr>
+        <%= search_form_for @q do |f| %>
+            <%= f.label :date_new_eq %>
+            <%= f.date_field :date_new_eq %>
+            &nbsp;&nbsp;
+            <%= f.label :entity_id_eq %>
+            <%= f.select :entity_id_eq, Entity.pluck(:business_name, :id).uniq,  {include_blank: true}, style: "width: 200px;" %>
+            </br> 
+            <%= f.label :user_id_eq %>
+            <%= f.select :user_id_eq, User.pluck(:name, :id).uniq,  {include_blank: true}, style: "width: 200px;" %>
+            &nbsp;&nbsp;
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        <% end %>
+    </br>        
+    <%== pagy_info(@pagy) %>
+    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+
     <table class="table table-hover">
         <thead>
             <tr>
-                <th scope="col"><%= t('common.date_new') %></th>
-                <th scope="col"><%= t('common.usuario_id') %></th>
-                <th scope="col"><%= t('common.entity_id') %></th>
-                <th scope="col"><%= t('.work_accident') %></th>
-                <th scope="col"><%= t('.mortal_accident') %></th>
-                <th scope="col"><%= t('.occupational_disease') %></th>
+                <th scope="col"><%= sort_link(@q, :date_new, default_order: :desc) %></th>
+                <th scope="col"><%= sort_link(@q, :user_id, default_order: :desc) %></th>
+                <th scope="col"><%= sort_link(@q, :entity_id, default_order: :desc) %></th>
+                <th scope="col"><%= sort_link(@q, :work_accident, default_order: :desc) %></th>
+                <th scope="col"><%= sort_link(@q, :mortal_accident, default_order: :desc) %></th>
+                <th scope="col"><%= sort_link(@q, :occupational_disease, default_order: :desc) %></th>
                 <th scope="col"><%= t('common.show') %></th>
                 <th scope="col"><%= t('common.edit') %></th>
                 <th scope="col"><%= t('common.delete') %></th>                
@@ -26,7 +42,10 @@
             <%= render partial: 'event', collection: @events  %>  
         </tbody>      
     </table>
-
+    </br>        
+    <%== pagy_info(@pagy) %>
+    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+    </br>        
 </div>
 
 

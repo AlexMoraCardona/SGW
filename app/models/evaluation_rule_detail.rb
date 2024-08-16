@@ -2,6 +2,15 @@ class EvaluationRuleDetail < ApplicationRecord
     has_many_attached :files
     has_many :templates
 
+    def self.ransackable_attributes(auth_object = nil)
+        ["meets", "standar_detail_item_id", "cycle", "item_nro"]
+    end 
+
+    def self.ransackable_associations(auth_object = nil)
+        []
+    end     
+
+
     #has_one_attached :file
     include PgSearch::Model
     pg_search_scope :search_by_id, against: :evaluation_id

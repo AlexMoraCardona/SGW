@@ -9,4 +9,10 @@ class MeetingMinute < ApplicationRecord
     has_rich_text :Issues
     has_rich_text :miscellaneous_propositions
 
+    def self.ransackable_attributes(auth_object = nil)
+        ["date", "entity_id", "evaluation_id"]
+    end 
+
+ 
+
 end

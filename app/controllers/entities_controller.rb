@@ -1,7 +1,10 @@
 class EntitiesController < ApplicationController
     def index
         if  Current.user && Current.user.level == 1
-            @entities = Entity.all
+            #@entities = Entity.all
+            @q = Entity.ransack(params[:q])
+            @pagy, @entities = pagy(@q.result(id: :desc), items: 3)
+
          else
              redirect_to new_session_path, alert: t('common.not_logged_in')      
          end           

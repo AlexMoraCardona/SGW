@@ -3,7 +3,10 @@ class Authentication::UsersController < ApplicationController
 
     def index
         if  Current.user && Current.user.level == 1
-           @users = User.all.decorate
+           #@users = User.all.decorate
+           @q = User.ransack(params[:q])
+           @pagy, @users = pagy(@q.result(id: :desc), items: 3)
+
         else
             redirect_to new_session_path, alert: t('common.not_logged_in')      
         end    

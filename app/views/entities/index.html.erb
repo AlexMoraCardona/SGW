@@ -6,14 +6,26 @@
             </div>
         </div>
         <div>
-            <%= link_to t('.create_entity'), new_entity_path, class: 'btn btn-xs btn-primary' %>
+            <%= link_to t('.create_entity'), new_entity_path, class: 'btn btn-sm btn-primary' %>
         </div>
         <hr>
+        <%= search_form_for @q do |f| %>
+            <%= f.label :identification_number_eq %>
+            <%= f.number_field :identification_number_eq %>
+
+            <%= f.label :business_name_cont %>
+            <%= f.search_field :business_name_cont %>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        <% end %>
+    </br>        
+    <%== pagy_info(@pagy) %>
+    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+
     <table class="table table-hover">
-        <thead>
+        <thead> 
             <tr>
-                <th scope="col"><%= t('common.identification_number') %></th>
-                <th scope="col"><%= t('common.business_name') %></th>
+                <th scope="col"><%= sort_link(@q, :identification_number, default_order: :desc) %></th>
+                <th scope="col"><%= sort_link(@q, :business_name, default_order: :desc)  %></th>
                 <th scope="col"><%= t('common.first_name') %></th>
                 <th scope="col"><%= t('common.second_name') %></th>
                 <th scope="col"><%= t('common.surname') %></th>
@@ -25,6 +37,10 @@
             <%= render partial: 'entity', collection: @entities  %>  
         </tbody>      
     </table>
+    </br>        
+    <%== pagy_info(@pagy) %>
+    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+    </br> 
 </div>
 
 

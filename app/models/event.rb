@@ -8,4 +8,8 @@ class Event < ApplicationRecord
         end 
     end 
 
+    def self.ransackable_attributes(auth_object = nil)
+        ["date_new", "user_id", "entity_id", "work_accident", "mortal_accident", "occupational_disease",]
+    end 
+
 end

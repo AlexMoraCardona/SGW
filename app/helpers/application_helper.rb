@@ -1,4 +1,6 @@
 module ApplicationHelper
+    include Pagy::Frontend
+
     def image_tag(img , options={})
         if Rails.env.development? || Rails.env.test?
             assets_path = "#{Rails.root}/app/assets/images/#{img}"

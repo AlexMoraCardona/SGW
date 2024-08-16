@@ -7,12 +7,29 @@
             </div> 
         </div>
         <hr>
+        </br>
+        <%= search_form_for @q do |f| %> 
+            <%= f.label :entity_eq %>
+            <%= f.select :entity_eq, Entity.pluck(:business_name, :id).uniq,  {include_blank: true}, style: "width: 200px;" %>
+
+            &nbsp;&nbsp;<%= f.label :nro_document_cont %>
+            <%= f.number_field :nro_document_cont %>
+            </br>
+            <%= f.label :name_cont %> 
+            <%= f.search_field :name_cont %>
+            &nbsp;&nbsp;
+            <button type="submit" class="btn btn-sm btn-primary">Buscar</button>
+        <% end %>
+
+        <%== pagy_info(@pagy) %>
+        <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+        </br>         
     <table class="table table-hover">
         <thead>
             <tr>
-                <th scope="col">Empresa</th>
-                <th scope="col">Documento</th>
-                <th scope="col"><%= t('.name') %></th>
+                <th scope="col"><%= sort_link(@q, :entity, default_order: :desc) %></th>
+                <th scope="col"><%= sort_link(@q, :nro_document, default_order: :desc) %></th>
+                <th scope="col"><%= sort_link(@q, :name, default_order: :desc) %></th>
                 <th scope="col"><%= t('.username') %></th>
                 <th scope="col"><%= t('.email') %></th>
                 <th scope="col"><%= t('.state') %></th>
@@ -24,6 +41,10 @@
             <%= render partial: 'user', collection: @users  %>  
         </tbody>      
     </table>
+    </br>        
+    <%== pagy_info(@pagy) %>
+    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+    </br>     
 </div>
 
 

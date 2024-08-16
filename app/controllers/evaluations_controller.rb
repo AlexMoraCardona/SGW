@@ -58,8 +58,11 @@ class EvaluationsController < ApplicationController
     end    
  
     def show
-        @evaluation = Evaluation.find(params[:id]) 
-        @evaluation_items = EvaluationRuleDetail.where("evaluation_id = ? and apply = ?", @evaluation.id, 1).order(:order_nro).decorate
+        @evaluation = Evaluation.find(params[:id])  
+        #@evaluation_itemstotal = EvaluationRuleDetail.where("evaluation_id = ? and apply = ?", @evaluation.id, 1).order(:order_nro).decorate
+        @q = EvaluationRuleDetail.where("evaluation_id = ? and apply = ?", @evaluation.id, 1).ransack(params[:q])
+        @pagy, @evaluation_items = pagy(@q.result(id: :desc), items: 3)
+
         #Evaluation.calculo_score_evaluacion(@evaluation.id)  
         respond_to do |format|
             format.html

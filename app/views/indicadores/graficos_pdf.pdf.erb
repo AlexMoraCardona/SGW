@@ -2,14 +2,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
     <meta charset='utf-8' />
-
-    <%= wicked_pdf_javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag "https://www.google.com/jsapi" %>
     <%= wicked_pdf_javascript_include_tag "chartkick" %>
-     <%= wicked_pdf_javascript_include_tag "application", "chartkick" %>
-    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <%= wicked_pdf_javascript_include_tag "application", "chartkick" %>
+
+     <%= wicked_pdf_javascript_include_tag "number_pages" %>
     <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
     <%= javascript_importmap_tags %>
+
+    
 </head>
 
 <br>
@@ -31,8 +32,7 @@
     </br>
     <div class="row g-3">
         <div class="col-sm-5">
-            <%= column_chart  @datos_frecuencia_accidentalidad, title: "Frecuencia de accidentalidad", download: {filename: "FrecuenciaAccidentalidad"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", suffix: " Accidentes de trabajo", discrete: true  %>
-            
+                <%= column_chart  @datos_frecuencia_accidentalidad, title: "Frecuencia de accidentalidad", download: {filename: "FrecuenciaAccidentalidad"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", suffix: " Accidentes de trabajo"  %>
         </div>
         <div class="col-sm-1">
         </div>
@@ -45,7 +45,6 @@
                         <th scope="col">Nro.Accidentes</th>
                         <th scope="col">Nro.Funcionarios</th>
                         <th scope="col">Indicador</th>
-                        <th scope="col">Interpretación</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -57,9 +56,6 @@
                             <td style="text-align:center"><%= rep.total_officials %></td>
                             <td style="text-align:center">
                                 <%= rep.frecuencia_accidentalidad %>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="Por cada cien (100) funcionarios y contratistas que laboraron en el mes de <%= Calendar.label_month(rep.month)%>, se presentaron <%= rep.frecuencia_accidentalidad %> accidentes de trabajo."><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
                             </td>
                         </tr>    
                     <% end %>
@@ -100,7 +96,6 @@
                         <th scope="col">Nro.Día Incapacidad</th>
                         <th scope="col">Nro.Funcionarios</th>
                         <th scope="col">Indicador</th>
-                        <th scope="col">Interpretación</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -111,9 +106,6 @@
                             <td style="text-align:center"><%= rep.total_days_severidad_accidents %></td>
                             <td style="text-align:center"><%= rep.total_officials %></td>
                             <td style="text-align:center"><%= rep.severidad_accidentalidad %></td>
-                            <td style="text-align:center">
-                                <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="Por cada cien (100) funcionarios y contratistas que laboraron en el mes de <%= Calendar.label_month(rep.month)%>, se perdieron <%= rep.severidad_accidentalidad %> días por accidentes de trabajo."><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                            </td>
                         </tr>    
                     <% end %>
                 </tbody>
@@ -152,7 +144,6 @@
                     <th scope="col">Días de ausencia</th>
                     <th scope="col">Días de trabajo</th>
                     <th scope="col">Indicador</th>
-                    <th scope="col">Interpretación</th>
                 </tr>
             </thead>
             <tbody>
@@ -163,9 +154,6 @@
                         <td style="text-align:center"><%= rep.total_days_absenteeism %></td>
                         <td style="text-align:center"><%= (rep.working_days_month * rep.total_officials) %></td>
                         <td style="text-align:center"><%= rep.ausentismo_causa_medica %></td>
-                        <td style="text-align:center">
-                            <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="<%= rep.ausentismo_causa_medica %>% de días de ausentismo por incapacidad médicas laboral o común en el mes de <%= Calendar.label_month(rep.month)%>."><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                        </td>
                     </tr>    
                 <% end %>
             </tbody>
@@ -203,7 +191,6 @@
                         <th scope="col">Casos nuevos antiguos</th>
                         <th scope="col">Promedio funcionarios contratistas</th>
                         <th scope="col">Indicador</th>
-                        <th scope="col">Interpretación</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -214,9 +201,6 @@
                             <td style="text-align:center"><%= rep.total_occupational_disease %></td>
                             <td style="text-align:center"><%= rep.promedio_year_officials %></td>
                             <td style="text-align:center"><%= rep.prevalencia_enfermedad_laboral.to_i %></td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="Por cada 100.000 trabajadores existen <%= rep.prevalencia_enfermedad_laboral %> casos de enfermedad laboral en el periodo <%= Calendar.label_month(rep.month)%> - <%= rep.year %>."><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                            </td>
                         </tr>    
                     <% end %>
                 </tbody>
@@ -257,7 +241,6 @@
                         <th scope="col">Casos nuevos</th>
                         <th scope="col">Promedio funcionarios contratistas</th>
                         <th scope="col">Indicador</th>
-                        <th scope="col">Interpretación</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -270,9 +253,6 @@
                             <td style="text-align:center"><%= rep.total_occupational_disease_year %></td>
                             <td style="text-align:center"><%= rep.promedio_year_officials %></td>
                             <td style="text-align:center"><%= rep.incidencia_enfermedad_laboral.to_i %></td>
-                            <td style="text-align:center">
-                                <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="Por cada 100.000 trabajadores existen <%= rep.incidencia_enfermedad_laboral %> casos nuevos de enfermedad laboral en el periodo <%= Calendar.label_month(rep.month)%> - <%= rep.year %>."><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                            </td>
                         </tr>    
                     <% end %>
                 </tbody>
@@ -313,7 +293,6 @@
                         <th scope="col">Accidentes mortales en el año</th>
                         <th scope="col">Accidentes en el año</th>
                         <th scope="col">Indicador</th>
-                        <th scope="col">Interpretación</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -326,9 +305,6 @@
                             <td style="text-align:center"><%= rep.total_accidents_mortal_year %></td>
                             <td style="text-align:center"><%= rep.total_accidents_work_year %></td>
                             <td style="text-align:center"><%= rep.proporcion_accidentes_mortales %></td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="En el periodo <%= Calendar.label_month(rep.month)%> - <%= rep.year %> el <%= rep.proporcion_accidentes_mortales %>% de accidentes de trabajo fueron mortales."><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                            </td>
                         </tr>    
                     <% end %>
                 </tbody>
@@ -369,7 +345,6 @@
                         <th scope="col">Total de Peligros/Riesgos</th>
                         <th scope="col">Peligros/Riesgos gestionados</th>
                         <th scope="col">Indicador</th>
-                        <th scope="col">Interpretación</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -377,9 +352,6 @@
                             <td style="text-align:center"><%= @totalpeligrosriesgos %></td>
                             <td style="text-align:center"><%= @interpeligrosriesgos %></td>
                             <td style="text-align:center"><%= @indicador_peligrosriesgos %></td>
-                            <td style="text-align:center">
-                                <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="De <%= @totalpeligrosriesgos %> peligros/riesgos identificados se ha intervenido el <%= @indicador_peligrosriesgos %>% de peligros/riesgos. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                            </td>
                         </tr>    
                 </tbody>
             </table>
@@ -419,7 +391,6 @@
                         <th scope="col">Total de Capacitaciones/Actividades</th>
                         <th scope="col">Capacitaciones/Actividades realizadas</th>
                         <th scope="col">Indicador</th>
-                        <th scope="col">Interpretación</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -427,9 +398,6 @@
                             <td style="text-align:center"><%= @total_coberturacapacitaciones %></td>
                             <td style="text-align:center"><%= @datos_coberturacapacitaciones[0][0] %></td>
                             <td style="text-align:center"><%= @datos_coberturacapacitaciones[0][1] %></td>
-                            <td style="text-align:center">
-                                <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="Porcentaje de cobertura en capacitaciones del <%= @datos_coberturacapacitaciones[0][1] %>%"><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                            </td>
                         </tr>    
                 </tbody>
             </table>
@@ -469,7 +437,6 @@
                         <th scope="col">Total de Trabajadores</th>
                         <th scope="col">Trabajadores Capacitados</th>
                         <th scope="col">Indicador</th>
-                        <th scope="col">Interpretación</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -477,9 +444,6 @@
                             <td style="text-align:center"><%= @total_trabajadores %></td>
                             <td style="text-align:center"><%= @total_trabajadoresc %></td>
                             <td style="text-align:center"><%= @datos_trabajadorescapacitados[0][1] %></td>
-                            <td style="text-align:center">
-                                <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="Porcentaje de trabajadores capacitados del <%= @datos_trabajadorescapacitados[0][1] %>%"><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                            </td>
                         </tr>    
                 </tbody>
             </table>
@@ -535,7 +499,7 @@
                 <td style="border:1px solid black; text-align:center"><%= @report_official.suma_total_days_severidad_accidents(@report_official) if @report_official.present? %></td>
             </tr>
 
-            <tr>
+            <tr> 
                 <td style="border:1px solid black; width: 30%; text-align:center"><small>Número de días de ausencia en el mes (por causa común y laboral)</small></td>
                 <% for j in 1...13  %>
                     <td style="border:1px solid black; text-align:center"><%= @report_official.dato_total_days_absenteeism(@report_official, j) if @report_official.present? %></td>

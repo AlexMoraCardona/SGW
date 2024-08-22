@@ -1,0 +1,38 @@
+<div  class="container col-12">   <nav class="navbar navbar-light">
+      <div class="container">
+         <div align="right"; class="container col-1">
+            <a class="navbar-brand" href="/">
+               <%= image_tag 'LogoConesst202305232.png',:width => "130",  :height=>"130" %>
+            </a>
+         </div>
+
+         <div class="container col-6">
+            <h2> <%=  t('.title')%></h2>
+            <% if Current.user %>
+               <p> Bienvenido(a): <%= Current.user.name %></p>
+            <% end %>
+         </div>
+
+         <div margin-bottom: 10em; class="container col-3">
+            <%= link_to t('.login'), new_session_path unless Current.user %>
+            <%= link_to t('.register'), new_user_path unless Current.user %>
+            <%= link_to t('.logout'), session_path(Current.user), data: { turbo_method: :delete, turbo_confirm: t('common.confirm')} if Current.user %>         
+         </div> 
+
+         <div class="container col-1">
+            <% if Current.user %>
+               <% if Current.user.avatar.attached? %>
+                  <% if Current.user.avatar.image? %> 
+                       <%= image_tag Current.user.avatar, data: {previews_target: "preview"}, class: "avatar-mini" %>
+                  <% end %>
+               <% else %> 
+                  <%= image_tag("avatar.jpg", class: "avatar-mini") %>
+               <% end %>
+            <% end %>     
+         </div>
+
+      </div>
+   </nav>
+</div> 
+
+

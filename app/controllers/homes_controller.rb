@@ -3,6 +3,7 @@ class HomesController < ApplicationController
          @calendars =  Calendar.where("year = ? and month >= ?", Date.today.year, Date.today.month).order(:day) 
          @activities = Activity.all.order(:citation)
          @entity = Entity.find(Current.user.entity)
+         notificaciones
          calculo_porcentaje_general
          calculo_sex
          calculo_clasificacion_cargo
@@ -13,8 +14,106 @@ class HomesController < ApplicationController
          actos_inseguros
          peligros_riesgos
          capacitaciones
+
     end    
 
+    def notificaciones
+        @entity = Entity.find(Current.user.entity)
+        @cant_noti = 0
+        @noti = 0
+        @year_noti = Date.today.year
+        @month_noti = Date.today.month
+        @notificaciones= []
+        if Current.user.level == 1 || Current.user.level == 2 then
+            @annual_work_plans = AnnualWorkPlan.where("year = ?", @year_noti)
+            if  @annual_work_plans.present? then
+                @annual_work_plans.each do |annual_work_plan| 
+                    @annual_work_plan_items = AnnualWorkPlanItem.where("annual_work_plan_id = ? and earring = ? and month <= ?",annual_work_plan.id,0,@month_noti)
+                    if @annual_work_plan_items.present?
+                        @annual_work_plan_items.each do |item| 
+                            @notificaciones << ["Plan anual de trabajo", annual_work_plan.entity.business_name, item.activity, item.month]
+                        end    
+                    end
+                end   
+            end
+            @matrix_danger_risks = MatrixDangerRisk.all
+            if  @matrix_danger_risks.present? then
+                @matrix_danger_risks.each do |matrix_danger_risk| 
+                    @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and danger_intervened = ? and proposed_date <= ?",matrix_danger_risk.id,0,(Date.today + 30))
+                    if @matrix_danger_items.present?
+                        @matrix_danger_items.each do |item| 
+                            @notificaciones << ["Matriz de Peligros y Riesgos", matrix_danger_risk.entity.business_name, item.activity, item.proposed_date]
+                        end    
+                    end
+                end   
+            end
+            @matrix_corrective_actions = MatrixCorrectiveAction.all
+            if  @matrix_corrective_actions.present? then
+                @matrix_corrective_actions.each do |matrix_corrective_action| 
+                    @matrix_action_items = MatrixActionItem.where("matrix_corrective_action_id = ? and state_actions = ? and commitment_date <= ?",matrix_corrective_action.id,0,(Date.today + 30))
+                    if @matrix_action_items.present?
+                        @matrix_action_items.each do |item| 
+                            @notificaciones << ["Matriz ACPM", matrix_corrective_action.entity.business_name, item.description_action, item.commitment_date]
+                        end    
+                    end
+                end   
+            end
+            @matrix_conditions = MatrixCondition.all
+            if  @matrix_conditions.present? then
+                @matrix_conditions.each do |matrix_condition| 
+                    @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ? and state_unsafe = ?",matrix_condition.id,0)
+                    if @matrix_unsafe_items.present?
+                        @matrix_unsafe_items.each do |item| 
+                            @notificaciones << ["Matriz Actos y Condiciones Inseguras", matrix_condition.entity.business_name, item.description_usafe, item.date_item]
+                        end    
+                    end
+                end   
+            end
+
+            @cant_noti = @notificaciones.count if @notificaciones.present?
+        else
+            @annual_work_plan = AnnualWorkPlan.where("year = ? and entity_id = ?", @year_noti,@entity.id)
+            if  @annual_work_plan.present? then
+                    @annual_work_plan_items = AnnualWorkPlanItem.where("annual_work_plan_id = ? and earring = ? and month <= ?",@annual_work_plan.id,0,@month_noti)
+                    if @annual_work_plan_items.present?
+                        @annual_work_plan_items.each do |item| 
+                            @notificaciones << ["Plan anual de trabajo", @annual_work_plan.entity.business_name, item.activity, item.month]
+                        end    
+                    end
+            end
+            @matrix_danger_risk = MatrixDangerRisk.where("entity_id = ?",@entity)
+            if  @matrix_danger_risk.present? then
+                    @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and danger_intervened = ? and proposed_date <= ?",@matrix_danger_risk.id,0,(Date.today+30))
+                    if @matrix_danger_items.present?
+                        @matrix_danger_items.each do |item| 
+                            @notificaciones << ["Matriz de Peligros y Riesgos", @matrix_danger_risk.entity.business_name, item.activity, item.proposed_date]
+                        end    
+                    end
+            end
+            @matrix_corrective_action = MatrixCorrectiveAction.where("entity_id = ?",@entity)
+            if  @matrix_corrective_action.present? then
+                    @matrix_action_items = MatrixActionItem.where("matrix_corrective_action_id = ? and state_actions = ? and commitment_date <= ?",matrix_corrective_action.id,0,(Date.today + 30))
+                    if @matrix_action_items.present?
+                        @matrix_action_items.each do |item| 
+                            @notificaciones << ["Matriz ACPM", @matrix_corrective_action.entity.business_name, item.description_action, item.commitment_date]
+                        end    
+                    end
+            end
+            @matrix_condition = MatrixCondition.where("entity_id = ?",@entity)
+            if  @matrix_condition.present? then
+                    @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ? and state_unsafe = ?",@matrix_condition.id,0)
+                    if @matrix_unsafe_items.present?
+                        @matrix_unsafe_items.each do |item| 
+                            @notificaciones << ["Matriz Actos y Condiciones Inseguras", @matrix_condition.entity.business_name, item.description_usafe, item.date_item]
+                        end    
+                    end
+            end
+
+            @cant_noti = @notificaciones.count if @notificaciones.present?
+        end 
+        
+        
+    end    
 
     def calculo_porcentaje_general
             eval = Evaluation.where("entity_id = ?",@entity.id).last if @entity.present?
@@ -159,21 +258,23 @@ class HomesController < ApplicationController
         total = training_items.count if training_items.present?
 
         @datos_capacitacion = []
-        training_items.group_by(&:state_cap).each  do |niv, det|
-            cant = 0
-            det.each do |d|
-               cant += 1 
-            end  
-            por = ((cant.to_f / total.to_f) * 100).round(2).to_f if total.to_f > 0
+        if training_items.present?
+            training_items.group_by(&:state_cap).each  do |niv, det|
+                cant = 0
+                det.each do |d|
+                   cant += 1 
+                end  
+                por = ((cant.to_f / total.to_f) * 100).round(2).to_f if total.to_f > 0
 
-            pendientes = "Pendientes: " +  cant.to_s  if  niv.to_i == 0
-            realizadas = "Realizadas: " + cant.to_s if  niv.to_i == 1
-            canceladas = "Canceladas: " + cant.to_s if  niv.to_i == 2
+                pendientes = "Pendientes: " +  cant.to_s  if  niv.to_i == 0
+                realizadas = "Realizadas: " + cant.to_s if  niv.to_i == 1
+                canceladas = "Canceladas: " + cant.to_s if  niv.to_i == 2
 
-            @datos_capacitacion.push([pendientes, por.to_f]) if  niv.to_i == 0
-            @datos_capacitacion.push([realizadas, por.to_f]) if  niv.to_i == 1
-            @datos_capacitacion.push([canceladas, por.to_f]) if  niv.to_i == 2
-        end
+                @datos_capacitacion.push([pendientes, por.to_f]) if  niv.to_i == 0
+                @datos_capacitacion.push([realizadas, por.to_f]) if  niv.to_i == 1
+                @datos_capacitacion.push([canceladas, por.to_f]) if  niv.to_i == 2
+            end
+        end    
     end     
 
 

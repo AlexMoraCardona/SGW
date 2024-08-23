@@ -1,0 +1,21 @@
+<div class="container col-11">
+    <br>
+
+    <%= form_with model: @user do |form| %>
+        <% @user.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>
+
+        <div class="form-group">    
+            <%= form.label :entity,  style: "display: block" %>
+            <%= form.collection_select :entity, Entity.all.order(id: :asc), :id, :business_name %>
+        </div> 
+
+        <br>  
+        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, home_path %>
+
+    <% end %>
+</div>        

@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   namespace :authentication, path: '', as: ''  do
     resources :users
     resources :sessions, only: [:new, :create, :destroy]
+    get '/users/cambio_empresa/:id', to: 'users#cambio_empresa', as: 'cambio_empresa'
   end  
   
 

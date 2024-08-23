@@ -29,7 +29,59 @@
                <% else %> 
                   <%= image_tag("avatar.jpg", class: "avatar-mini") %>
                <% end %>
-            <% end %>     
+            <% end %> 
+            </br>
+            <div align="center"; >
+            </br>
+            <% if @cant_noti.present? %>
+            <!-- Button trigger modal -->
+            <button class="btn btn-sm btn-outline-primary position-relative" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+              Notificaciones
+               <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                 <%= @cant_noti %>+
+                 <span class="visually-hidden">unread messages</span>
+               </span>
+   
+            </button>
+            </div>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel"><strong>Notificaciones</strong></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                     <table>
+                        <tr>     
+                           <td style="border:0px solid black; width: 25%"><strong>Origen</strong></td>
+                           <td style="border:0px solid black; width: 25%"><strong>Empresa</strong></td>
+                           <td style="border:0px solid black; width: 35%"><strong>Actividad</strong></td>
+                           <td style="border:0px solid black; width: 15%"><strong>Fecha o Mes</strong></td>
+                        </tr>    
+                           
+
+                           <% i = 0 %>
+                           <% while i < @cant_noti %>
+                              <tr>    
+                                 <td style="border:0px solid black; width: 25%;padding: 5px;"><%= @notificaciones[i][0] %></td>
+                                 <td style="border:0px solid black; width: 25%;padding: 5px;"><%= @notificaciones[i][1] %></td>
+                                 <td style="border:0px solid black; width: 35%;padding: 5px;"><%= @notificaciones[i][2] %></td>
+                                 <td style="border:0px solid black; width: 15%;padding: 5px;"><%= @notificaciones[i][3] %></td>
+                              </tr>    
+                              <% i = i + 1 %>
+                           <%end%>
+                     </table>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% end %>
          </div>
 
       </div>

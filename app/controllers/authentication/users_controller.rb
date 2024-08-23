@@ -34,7 +34,7 @@ class Authentication::UsersController < ApplicationController
     def update
         @user = User.find(params[:id])
         if @user.update(user_params)
-            redirect_to users_path, notice: 'Usuario actualizado correctamente'
+            redirect_to home_path, notice: 'Actualizado correctamente'
         else
             render :edit, status: :unprocessable_entity
         end         
@@ -46,6 +46,10 @@ class Authentication::UsersController < ApplicationController
         redirect_to users_path, notice: 'Usuario borrado correctamente', user: :see_other
     end    
     
+    def cambio_empresa
+        @user = User.find(params[:id])
+
+    end    
 
     private
     def user_params

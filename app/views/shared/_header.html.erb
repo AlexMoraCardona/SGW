@@ -60,19 +60,65 @@
                            <td style="border:0px solid black; width: 25%"><strong>Empresa</strong></td>
                            <td style="border:0px solid black; width: 35%"><strong>Actividad</strong></td>
                            <td style="border:0px solid black; width: 15%"><strong>Fecha o Mes</strong></td>
+                           <td style="border:0px solid black; width: 15%"><strong>Ver</strong></td>
                         </tr>    
                            
 
                            <% i = 0 %>
                            <% while i < @cant_noti %>
-                              <tr>    
-                                 <td style="border:0px solid black; width: 25%;padding: 5px;"><%= @notificaciones[i][0] %></td>
-                                 <td style="border:0px solid black; width: 25%;padding: 5px;"><%= @notificaciones[i][1] %></td>
-                                 <td style="border:0px solid black; width: 35%;padding: 5px;"><%= @notificaciones[i][2] %></td>
-                                 <td style="border:0px solid black; width: 15%;padding: 5px;"><%= @notificaciones[i][3] %></td>
-                              </tr>    
+                              <% if @notificaciones[i][3] < Time.now %>
+                                 <tr>    
+                                    <td style="border:0px solid black; width: 25%;padding: 5px;color:#FF0000"><%= @notificaciones[i][0] %></td>
+                                    <td style="border:0px solid black; width: 25%;padding: 5px;color:#FF0000"><%= @notificaciones[i][1] %></td>
+                                    <td style="border:0px solid black; width: 35%;padding: 5px;color:#FF0000"><%= @notificaciones[i][2] %></td>
+                                    <td style="border:0px solid black; width: 15%;padding: 5px;color:#FF0000"><%= @notificaciones[i][3] %></td>
+                                    <% if @notificaciones[i][0] == "Plan anual de trabajo" %>
+                                       <td style="border:0px solid black"><%= link_to "Ver", edit_annual_work_plan_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td>
+                                    <% elsif @notificaciones[i][0] == "Matriz de Peligros y Riesgos" %>
+                                       <td style="border:0px solid black"><%= link_to "Ver", edit_matrix_danger_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
+                                    <% elsif @notificaciones[i][0] == "Matriz ACPM" %>
+                                       <td style="border:0px solid black"><%= link_to "Ver", edit_matrix_action_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
+                                    <% elsif @notificaciones[i][0] == "Matriz Actos y Condiciones Inseguras" %>
+                                       <td style="border:0px solid black"><%= link_to "Ver", edit_matrix_unsafe_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
+                                    <% end %>
+                                 </tr>
+                              <% end %>       
+                              <% if @notificaciones[i][3] == Time.now %>
+                                 <tr>    
+                                    <td style="border:0px solid black; width: 25%;padding: 5px;color:#FFF00"><%= @notificaciones[i][0] %></td>
+                                    <td style="border:0px solid black; width: 25%;padding: 5px;color:#FFF00"><%= @notificaciones[i][1] %></td>
+                                    <td style="border:0px solid black; width: 35%;padding: 5px;color:#FFF00"><%= @notificaciones[i][2] %></td>
+                                    <td style="border:0px solid black; width: 15%;padding: 5px;color:#FFF00"><%= @notificaciones[i][3] %></td>
+                                    <% if @notificaciones[i][0] == "Plan anual de trabajo" %>
+                                       <td style="border:0px solid black"><%= link_to "Ver", edit_annual_work_plan_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td>
+                                    <% elsif @notificaciones[i][0] == "Matriz de Peligros y Riesgos" %>
+                                       <td style="border:0px solid black"><%= link_to "Ver", edit_matrix_danger_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
+                                    <% elsif @notificaciones[i][0] == "Matriz ACPM" %>
+                                       <td style="border:0px solid black"><%= link_to "Ver", edit_matrix_action_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
+                                    <% elsif @notificaciones[i][0] == "Matriz Actos y Condiciones Inseguras" %>
+                                       <td style="border:0px solid black"><%= link_to "Ver", edit_matrix_unsafe_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
+                                    <% end %>
+                                 </tr>  
+                              <% end %>       
+                              <% if @notificaciones[i][3] > Time.now %>
+                                 <tr>    
+                                    <td style="border:0px solid black; width: 25%;padding: 5px;color:#008000"><%= @notificaciones[i][0] %></td>
+                                    <td style="border:0px solid black; width: 25%;padding: 5px;color:#008000"><%= @notificaciones[i][1] %></td>
+                                    <td style="border:0px solid black; width: 35%;padding: 5px;color:#008000"><%= @notificaciones[i][2] %></td>
+                                    <td style="border:0px solid black; width: 15%;padding: 5px;color:#008000"><%= @notificaciones[i][3] %></td>
+                                    <% if @notificaciones[i][0] == "Plan anual de trabajo" %>
+                                       <td style="border:0px solid black"><%= link_to "Ver", edit_annual_work_plan_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td>
+                                    <% elsif @notificaciones[i][0] == "Matriz de Peligros y Riesgos" %>
+                                       <td style="border:0px solid black"><%= link_to "Ver", edit_matrix_danger_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
+                                    <% elsif @notificaciones[i][0] == "Matriz ACPM" %>
+                                       <td style="border:0px solid black"><%= link_to "Ver", edit_matrix_action_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
+                                    <% elsif @notificaciones[i][0] == "Matriz Actos y Condiciones Inseguras" %>
+                                       <td style="border:0px solid black"><%= link_to "Ver", edit_matrix_unsafe_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
+                                    <% end %>
+                                 </tr>  
+                              <% end %>
                               <% i = i + 1 %>
-                           <%end%>
+                           <% end %>
                      </table>
                   </div>
                   <div class="modal-footer">

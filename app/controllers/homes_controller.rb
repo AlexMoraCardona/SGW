@@ -31,7 +31,8 @@ class HomesController < ApplicationController
                     @annual_work_plan_items = AnnualWorkPlanItem.where("annual_work_plan_id = ? and earring = ? and month <= ?",annual_work_plan.id,0,@month_noti)
                     if @annual_work_plan_items.present?
                         @annual_work_plan_items.each do |item| 
-                            @notificaciones << ["Plan anual de trabajo", annual_work_plan.entity.business_name, item.activity, item.month]
+                            fecha = @year_noti.to_s + '-' + item.month.to_s + '-01' 
+                            @notificaciones << ["Plan anual de trabajo", annual_work_plan.entity.business_name, item.activity, fecha.to_date, item.id]
                         end    
                     end
                 end   
@@ -42,7 +43,7 @@ class HomesController < ApplicationController
                     @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and danger_intervened = ? and proposed_date <= ?",matrix_danger_risk.id,0,(Date.today + 30))
                     if @matrix_danger_items.present?
                         @matrix_danger_items.each do |item| 
-                            @notificaciones << ["Matriz de Peligros y Riesgos", matrix_danger_risk.entity.business_name, item.activity, item.proposed_date]
+                            @notificaciones << ["Matriz de Peligros y Riesgos", matrix_danger_risk.entity.business_name, item.activity, item.proposed_date, item.id]
                         end    
                     end
                 end   
@@ -53,7 +54,7 @@ class HomesController < ApplicationController
                     @matrix_action_items = MatrixActionItem.where("matrix_corrective_action_id = ? and state_actions = ? and commitment_date <= ?",matrix_corrective_action.id,0,(Date.today + 30))
                     if @matrix_action_items.present?
                         @matrix_action_items.each do |item| 
-                            @notificaciones << ["Matriz ACPM", matrix_corrective_action.entity.business_name, item.description_action, item.commitment_date]
+                            @notificaciones << ["Matriz ACPM", matrix_corrective_action.entity.business_name, item.description_action, item.commitment_date, item.id]
                         end    
                     end
                 end   
@@ -64,7 +65,7 @@ class HomesController < ApplicationController
                     @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ? and state_unsafe = ?",matrix_condition.id,0)
                     if @matrix_unsafe_items.present?
                         @matrix_unsafe_items.each do |item| 
-                            @notificaciones << ["Matriz Actos y Condiciones Inseguras", matrix_condition.entity.business_name, item.description_usafe, item.date_item]
+                            @notificaciones << ["Matriz Actos y Condiciones Inseguras", matrix_condition.entity.business_name, item.description_usafe, item.date_item, item.id]
                         end    
                     end
                 end   
@@ -77,7 +78,8 @@ class HomesController < ApplicationController
                     @annual_work_plan_items = AnnualWorkPlanItem.where("annual_work_plan_id = ? and earring = ? and month <= ?",@annual_work_plan.id,0,@month_noti)
                     if @annual_work_plan_items.present?
                         @annual_work_plan_items.each do |item| 
-                            @notificaciones << ["Plan anual de trabajo", @annual_work_plan.entity.business_name, item.activity, item.month]
+                            fecha = @year_noti.to_s + '-' + item.month.to_s + '-01' 
+                            @notificaciones << ["Plan anual de trabajo", @annual_work_plan.entity.business_name, item.activity, fecha.to_date, item.id]
                         end    
                     end
             end
@@ -86,7 +88,7 @@ class HomesController < ApplicationController
                     @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and danger_intervened = ? and proposed_date <= ?",@matrix_danger_risk.id,0,(Date.today+30))
                     if @matrix_danger_items.present?
                         @matrix_danger_items.each do |item| 
-                            @notificaciones << ["Matriz de Peligros y Riesgos", @matrix_danger_risk.entity.business_name, item.activity, item.proposed_date]
+                            @notificaciones << ["Matriz de Peligros y Riesgos", @matrix_danger_risk.entity.business_name, item.activity, item.proposed_date, item.id]
                         end    
                     end
             end
@@ -95,7 +97,7 @@ class HomesController < ApplicationController
                     @matrix_action_items = MatrixActionItem.where("matrix_corrective_action_id = ? and state_actions = ? and commitment_date <= ?",matrix_corrective_action.id,0,(Date.today + 30))
                     if @matrix_action_items.present?
                         @matrix_action_items.each do |item| 
-                            @notificaciones << ["Matriz ACPM", @matrix_corrective_action.entity.business_name, item.description_action, item.commitment_date]
+                            @notificaciones << ["Matriz ACPM", @matrix_corrective_action.entity.business_name, item.description_action, item.commitment_date, item.id]
                         end    
                     end
             end
@@ -104,14 +106,13 @@ class HomesController < ApplicationController
                     @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ? and state_unsafe = ?",@matrix_condition.id,0)
                     if @matrix_unsafe_items.present?
                         @matrix_unsafe_items.each do |item| 
-                            @notificaciones << ["Matriz Actos y Condiciones Inseguras", @matrix_condition.entity.business_name, item.description_usafe, item.date_item]
+                            @notificaciones << ["Matriz Actos y Condiciones Inseguras", @matrix_condition.entity.business_name, item.description_usafe, item.date_item, item.id]
                         end    
                     end
             end
-
             @cant_noti = @notificaciones.count if @notificaciones.present?
         end 
-        
+        @notificaciones.sort_by { |a, b, c, d, e| b.size }
         
     end    
 

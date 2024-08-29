@@ -111,7 +111,8 @@ class EvaluationRuleDetailsController < ApplicationController
                 @evidence.template_id == 130 || @evidence.template_id == 131 || @evidence.template_id == 132 || @evidence.template_id == 133 || @evidence.template_id == 134 || @evidence.template_id == 135 || @evidence.template_id == 136 || @evidence.template_id == 137 || 
                 @evidence.template_id == 138 || @evidence.template_id == 142 || @evidence.template_id == 143 || @evidence.template_id == 144 || @evidence.template_id == 145 || @evidence.template_id == 146 || @evidence.template_id == 147 || @evidence.template_id == 148 || 
                 @evidence.template_id == 149 || @evidence.template_id == 150 || @evidence.template_id == 151 || @evidence.template_id == 152 || @evidence.template_id == 153 || @evidence.template_id == 154 || @evidence.template_id == 155 || @evidence.template_id == 156 || 
-                @evidence.template_id == 175 || @evidence.template_id == 176 || @evidence.template_id == 177 || @evidence.template_id == 187 || @evidence.template_id == 188 || @evidence.template_id == 189 || @evidence.template_id == 190 || @evidence.template_id == 191 || @evidence.template_id == 192)   then
+                @evidence.template_id == 175 || @evidence.template_id == 176 || @evidence.template_id == 177 || @evidence.template_id == 187 || @evidence.template_id == 188 || @evidence.template_id == 189 || @evidence.template_id == 190 || @evidence.template_id == 191 || 
+                @evidence.template_id == 192 || @evidence.template_id == 226 || @evidence.template_id == 227 || @evidence.template_id == 228)   then
                 @firma_nueva  = Firm.new
                 @firma_nueva.user_id = user_responsible.id
                 @firma_nueva.evidence_id = @evidence.id

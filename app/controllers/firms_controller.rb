@@ -41,7 +41,7 @@ class FirmsController < ApplicationController
                     @firm.date_authorize_firm = nil 
                     @firm.save
                 else
-                    @firm.date_authorize_firm = Time.now 
+                    @firm.date_authorize_firm = Time.now if @firm.date_authorize_firm == nil
                     @firm.save
                 end    
                 redirect_to crear_firma_evaluation_rule_detail_path(@firm.evidence_id), notice: 'Firma actualizada correctamente'

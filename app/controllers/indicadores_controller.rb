@@ -13,7 +13,8 @@ class IndicadoresController < ApplicationController
                 @entities = Entity.where(id: Current.user.entity)
                 @anos=[2025,2024,2023,2022,2021]
             else  
-                redirect_to new_session_path, alert: t('common.not_logged_in')       
+                redirect_to new_session_path, alert: t('common.not_logged_in')  
+                session.delete(:user_id)     
             end
         end        
     end  
@@ -25,7 +26,8 @@ class IndicadoresController < ApplicationController
             if Current.user && Current.user.level > 1
                 @entities = Entity.where(id: Current.user.entity)
             else  
-                redirect_to new_session_path, alert: t('common.not_logged_in')       
+                redirect_to new_session_path, alert: t('common.not_logged_in')  
+                session.delete(:user_id)     
             end
         end        
     end      
@@ -37,7 +39,8 @@ class IndicadoresController < ApplicationController
             if Current.user && Current.user.level > 1
                 @entities = Entity.where(id: Current.user.entity)
             else  
-                redirect_to new_session_path, alert: t('common.not_logged_in')       
+                redirect_to new_session_path, alert: t('common.not_logged_in')  
+                session.delete(:user_id)     
             end
         end        
     end      
@@ -49,7 +52,8 @@ class IndicadoresController < ApplicationController
             if Current.user && Current.user.level > 1
                 @entities = Entity.where(id: Current.user.entity)
             else  
-                redirect_to new_session_path, alert: t('common.not_logged_in')       
+                redirect_to new_session_path, alert: t('common.not_logged_in')    
+                session.delete(:user_id)   
             end
         end        
     end      
@@ -63,7 +67,8 @@ class IndicadoresController < ApplicationController
                 @entities = Entity.where(id: Current.user.entity)
                 @annual_work_plans = AnnualWorkPlan.where("entity_id = ?", params[:format].to_i )  if params[:format].present?
             else  
-                redirect_to new_session_path, alert: t('common.not_logged_in')       
+                redirect_to new_session_path, alert: t('common.not_logged_in')  
+                session.delete(:user_id)     
             end
         end  
     end      

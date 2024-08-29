@@ -4,6 +4,7 @@ class ParticipantsController < ApplicationController
             @participants = Participant.all.decorate
          else
              redirect_to new_session_path, alert: t('common.not_logged_in')      
+             session.delete(:user_id)
          end           
          
     end    

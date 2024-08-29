@@ -3,7 +3,8 @@ class AdministrativePoliticalDivisionsController < ApplicationController
         if  Current.user && Current.user.level == 1
             @administrative_political_divisions = AdministrativePoliticalDivision.all
          else
-             redirect_to new_session_path, alert: t('common.not_logged_in')      
+             redirect_to new_session_path, alert: t('common.not_logged_in') 
+             session.delete(:user_id)     
          end          
          
     end    

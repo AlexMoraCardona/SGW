@@ -7,7 +7,8 @@ class TemplatesController < ApplicationController
             @q = Template.ransack(params[:q])
             @pagy, @templates = pagy(@q.result(reference: :desc), items: 3)
          else
-             redirect_to new_session_path, alert: t('common.not_logged_in')      
+             redirect_to new_session_path, alert: t('common.not_logged_in')     
+             session.delete(:user_id) 
          end 
     end    
 

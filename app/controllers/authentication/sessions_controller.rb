@@ -13,6 +13,7 @@ class Authentication::SessionsController < ApplicationController
             redirect_to home_path, notice: t('.created')
         else
             redirect_to new_session_path, alert: t('.failed')
+            session.delete(:user_id)
         end     
     end  
     

@@ -8,8 +8,6 @@ class Entity < ApplicationRecord
     validates :email_entity, presence: true 
     validates :tax_regime, presence: true 
     validates :business_name, presence: true , if: :kind_person == 1
-    validates :first_name, presence: true , if: :kind_person == 0
-    validates :surname, presence: true , if: :kind_person == 0
     validates :economic_activity, presence: true
     validates :identification_number, presence: true , if: :kind_person == 1
     validates :verification_digit, presence: true , if: :kind_person == 1
@@ -27,6 +25,7 @@ class Entity < ApplicationRecord
     def self.label_pay(dato)
         if dato == 0 ; 'PILA MENSUAL'
         elsif dato == 1 ; 'NÓMINA MENSUAL'
+        elsif dato == 2 ; 'MIXTA'
         end 
     end  
 

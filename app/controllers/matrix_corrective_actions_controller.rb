@@ -30,7 +30,8 @@ class MatrixCorrectiveActionsController < ApplicationController
                 @entities = Entity.all
                 @matrix_corrective_actions = MatrixCorrectiveAction.all
             else
-                redirect_to new_session_path, alert: t('common.not_logged_in')      
+                redirect_to new_session_path, alert: t('common.not_logged_in')    
+                session.delete(:user_id)  
             end           
         end 
          

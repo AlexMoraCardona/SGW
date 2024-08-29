@@ -8,7 +8,8 @@ class ProfilesController < ApplicationController
                 @entities = Entity.all.order(id: :asc) if Current.user.level == 1
                 @entities = Entity.find(Current.user.entity) if Current.user.level != 1 
             else
-                redirect_to new_session_path, alert: t('common.not_logged_in')      
+                redirect_to new_session_path, alert: t('common.not_logged_in')   
+                session.delete(:user_id)   
             end           
         end
     end    
@@ -48,7 +49,8 @@ class ProfilesController < ApplicationController
                 @entities = Entity.all.order(id: :asc) if Current.user.level == 1
                 @entities = Entity.find(Current.user.entity) if Current.user.level != 1 
             else
-                redirect_to new_session_path, alert: t('common.not_logged_in')      
+                redirect_to new_session_path, alert: t('common.not_logged_in')   
+                session.delete(:user_id)   
             end           
         end
 

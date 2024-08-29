@@ -9,6 +9,8 @@ class Authentication::UsersController < ApplicationController
 
         else
             redirect_to new_session_path, alert: t('common.not_logged_in')      
+            session.delete(:user_id)
+
         end    
     end    
  
@@ -21,6 +23,7 @@ class Authentication::UsersController < ApplicationController
         @user = User.new(user_params)
         if @user.save 
             session[:user_id] = @user.id  
+            session.delete(:user_id)
             redirect_to levels_path, notice: 'Usuario creado correctamente'
         else
             render :new, status: :unprocessable_entity

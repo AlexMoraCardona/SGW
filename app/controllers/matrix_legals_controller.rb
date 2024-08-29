@@ -22,7 +22,8 @@ class MatrixLegalsController < ApplicationController
                 @entities = Entity.all
                 @matrix_legals = MatrixLegal.all
             else
-                redirect_to new_session_path, alert: t('common.not_logged_in')      
+                redirect_to new_session_path, alert: t('common.not_logged_in')  
+                session.delete(:user_id)    
             end           
         end 
     end  

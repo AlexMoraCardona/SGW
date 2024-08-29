@@ -15,7 +15,6 @@ class Evaluation < ApplicationRecord
         []
     end     
 
-    
     def calculo_porcentaje_ciclo(id_evaluacion)
         eval = Evaluation.find(id_evaluacion)
         details = EvaluationRuleDetail.where("evaluation_id = ? and apply = ?", eval.id, 1)
@@ -146,11 +145,10 @@ class Evaluation < ApplicationRecord
             @history_item.history_evaluation_id = @history_evaluation.id
             @history_item.save
         end    
-    end    
-
+    end     
     def calculo_porcentaje_general(id_evaluacion)
         eval = Evaluation.find(id_evaluacion)
-        details = EvaluationRuleDetail.where("evaluation_id = ? and apply = ?", eval.id, 1)
+        details = EvaluationRuleDetail.where("evaluation_id = ? and apply = ?", eval.id, 1) if eval.present?
         total = 0
         cumple = 0
         por = 0.0

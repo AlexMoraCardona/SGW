@@ -2,7 +2,7 @@ class HomesController < ApplicationController
     def index 
          @calendars =  Calendar.where("year = ? and month >= ?", Date.today.year, Date.today.month).order(:day) 
          @activities = Activity.all.order(:citation)
-         @entity = Entity.find(Current.user.entity)
+         @entity = Entity.find(Current.user.entity) if Current.user.entity > 0 
          notificaciones
          calculo_porcentaje_general
          calculo_sex
@@ -18,7 +18,7 @@ class HomesController < ApplicationController
     end    
 
     def notificaciones
-        @entity = Entity.find(Current.user.entity)
+        @entity = Entity.find(Current.user.entity) if Current.user.entity > 0
         @cant_noti = 0
         @noti = 0
         @year_noti = Date.today.year
@@ -73,7 +73,7 @@ class HomesController < ApplicationController
 
             @cant_noti = @notificaciones.count if @notificaciones.present?
         else
-            @annual_work_plan = AnnualWorkPlan.where("year = ? and entity_id = ?", @year_noti,@entity.id)
+            @annual_work_plan = AnnualWorkPlan.where("year = ? and entity_id = ?", @year_noti,@entity.id) if @entity.present? 
             if  @annual_work_plan.present? then
                     @annual_work_plan_items = AnnualWorkPlanItem.where("annual_work_plan_id = ? and earring = ? and month <= ?",@annual_work_plan.id,0,@month_noti)
                     if @annual_work_plan_items.present?
@@ -118,7 +118,7 @@ class HomesController < ApplicationController
 
     def calculo_porcentaje_general
             eval = Evaluation.where("entity_id = ?",@entity.id).last if @entity.present?
-            details = EvaluationRuleDetail.where("evaluation_id = ? and apply = ?", eval.id, 1)
+            details = EvaluationRuleDetail.where("evaluation_id = ? and apply = ?", eval.id, 1) if eval.present?
             total = 0
             cumple = 0
             por = 0.0
@@ -127,60 +127,66 @@ class HomesController < ApplicationController
             @result_eva = eval.result if eval.present?
 
             @datos_generales = []
-            details.each do |d|
-                total += 1
-                cumple += 1 if d.meets > 0 
+            if details.present?
+                details.each do |d|
+                    total += 1
+                    cumple += 1 if d.meets > 0 
                     
-            end
-            por = ((cumple.to_f / total.to_f) * 100).round(2).to_f if total.to_f > 0
+                end
+                por = ((cumple.to_f / total.to_f) * 100).round(2).to_f if total.to_f > 0
             
-            cumpli = "Cumplidos: " +  cumple.to_s
-            pendi = "Pendientes: " + (total.to_i - cumple.to_i).to_s
-            @datos_generales.push([cumpli, por.to_f]) if total.to_i > 0 
-            @datos_generales.push([pendi, (100 - por.to_f)]) if total.to_i > 0 
+                cumpli = "Cumplidos: " +  cumple.to_s
+                pendi = "Pendientes: " + (total.to_i - cumple.to_i).to_s
+                @datos_generales.push([cumpli, por.to_f]) if total.to_i > 0 
+                @datos_generales.push([pendi, (100 - por.to_f)]) if total.to_i > 0 
+            end    
     end 
     
     def calculo_sex
         users = User.where("entity = ? and state = ?", @entity.id, 1).order(:sex) if @entity.present?
         total = users.count if users.present?
         @datos_sex = []
-        users.group_by(&:sex).each  do |niv, det|
-            cant = 0
-            det.each do |d|
-               cant += 1 
-            end  
-            por = ((cant.to_f / total.to_f) * 100).round(2).to_f if total.to_f > 0
+        if users.present? then
+            users.group_by(&:sex).each  do |niv, det|
+                cant = 0
+                det.each do |d|
+                   cant += 1 
+                end  
+                por = ((cant.to_f / total.to_f) * 100).round(2).to_f if total.to_f > 0
 
-            hom = "Hombres: " +  cant.to_s  if  niv.to_i == 0
-            muj = "Mujeres: " + cant.to_s if  niv.to_i == 1
-            @datos_sex.push([hom, por.to_f]) if  niv.to_i == 0
-            @datos_sex.push([muj, por.to_f]) if  niv.to_i == 1
-        end
+                hom = "Hombres: " +  cant.to_s  if  niv.to_i == 0
+                muj = "Mujeres: " + cant.to_s if  niv.to_i == 1
+                @datos_sex.push([hom, por.to_f]) if  niv.to_i == 0
+                @datos_sex.push([muj, por.to_f]) if  niv.to_i == 1
+            end
+        end    
     end     
 
     def calculo_clasificacion_cargo
         users = User.where("entity = ? and state = ?", @entity.id, 1).order(:clasification_post) if @entity.present?
         @total_colaboradores = 0
         @datos_clasificacion_cargo = []
-        users.group_by(&:clasification_post).each  do |niv, det|
-            cant = 0
-            det.each do |d|
-                @total_colaboradores += 1 
-               cant += 1 
-            end  
-            adm = "Administrativos: " +  cant.to_s  if  niv.to_i == 0
-            ope = "Operarios: " + cant.to_s if  niv.to_i == 1
-            @datos_clasificacion_cargo.push([adm, cant]) if  niv.to_i == 0
-            @datos_clasificacion_cargo.push([ope, cant]) if  niv.to_i == 1
-        end
+        if users.present? then
+            users.group_by(&:clasification_post).each  do |niv, det|
+                cant = 0
+                det.each do |d|
+                    @total_colaboradores += 1 
+                   cant += 1 
+                end  
+                adm = "Administrativos: " +  cant.to_s  if  niv.to_i == 0
+                ope = "Operarios: " + cant.to_s if  niv.to_i == 1
+                @datos_clasificacion_cargo.push([adm, cant]) if  niv.to_i == 0
+                @datos_clasificacion_cargo.push([ope, cant]) if  niv.to_i == 1
+            end
+        end    
     end     
 
     def accidentes_mortales
         @accidentes_mortales = 0
         @accidentes_trabajo = 0
         año = Time.now.year
-        @entity = Entity.find(Current.user.entity)
-        @events = Event.where("entity_id = ? ", @entity.id)
+        @entity = Entity.find(Current.user.entity) if Current.user.entity > 0
+        @events = Event.where("entity_id = ? ", @entity.id) if @entity.present?
         if @events.present?
             @events.each  do |event| 
                 @accidentes_mortales += 1 if event.date_new.strftime("%Y").to_i == año && event.mortal_accident == 1   
@@ -190,19 +196,19 @@ class HomesController < ApplicationController
     end    
 
     def dias_incapacidad_accidentes
-        entity = Entity.find(Current.user.entity)
+        entity = Entity.find(Current.user.entity) if Current.user.entity > 0
         año = Time.new.year 
         @dias_incapacidad_accidentes = 0
-        report_official = ReportOfficial.where("entity_id = ? and year = ?", entity.id, año) 
+        report_official = ReportOfficial.where("entity_id = ? and year = ?", entity.id, año) if entity.present?
         @dias_incapacidad_accidentes =    report_official.sum("total_days_severidad_accidents") if report_official.present?
 
     end
 
     def enfermedad_laboral
-        entity = Entity.find(Current.user.entity)
+        entity = Entity.find(Current.user.entity) if Current.user.entity > 0
         año = Time.new.year 
         @enfermedad_laboral = 0
-        report_official = ReportOfficial.where("entity_id = ? and year = ?", entity.id, año).last 
+        report_official = ReportOfficial.where("entity_id = ? and year = ?", entity.id, año).last  if entity.present?
 
         @enfermedad_laboral =    report_official.total_occupational_disease_year if report_official.present?
 
@@ -210,15 +216,15 @@ class HomesController < ApplicationController
 
     
     def dias_comun_laboral
-        entity = Entity.find(Current.user.entity)
+        entity = Entity.find(Current.user.entity) if Current.user.entity > 0
         año = Time.new.year 
         @dias_comun_laboral = 0
-        report_official = ReportOfficial.where("entity_id = ? and year = ?", entity.id, año) 
+        report_official = ReportOfficial.where("entity_id = ? and year = ?", entity.id, año) if entity.present?
         @dias_comun_laboral =    report_official.sum("total_days_absenteeism") if report_official.present?
     end
 
     def actos_inseguros
-        entity = Entity.find(Current.user.entity)
+        entity = Entity.find(Current.user.entity) if Current.user.entity > 0
         @matrix_condition = MatrixCondition.find_by(entity_id: entity.id) if entity.present?
         @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", @matrix_condition.id) if @matrix_condition.present?
         @cantidad = 0
@@ -236,25 +242,28 @@ class HomesController < ApplicationController
     end
 
     def peligros_riesgos
-        entity = Entity.find(Current.user.entity)
+        entity = Entity.find(Current.user.entity) if Current.user.entity > 0
         @matrix_danger_risks = MatrixDangerRisk.find_by(entity_id: entity.id) if entity.present?
         @matrix_danger_items = MatrixDangerItem.where('matrix_danger_risk_id = ?', @matrix_danger_risks.id) if @matrix_danger_risks.present?
 
         @totalpeligrosinter = 0
         @totalpeligros = 0
         @datos_peligrosriesgos = []
-        @matrix_danger_items.each do |rep| 
-            @totalpeligros += 1
-            if rep.danger_intervened == 1 then
-                @totalpeligrosinter += 1
-            end    
-        end
+
+        if @matrix_danger_items.present? then 
+            @matrix_danger_items.each do |rep| 
+                @totalpeligros += 1
+                if rep.danger_intervened == 1 then
+                    @totalpeligrosinter += 1
+                end    
+            end
+        end    
     end
 
     def capacitaciones
-        entity = Entity.find(Current.user.entity)
+        entity = Entity.find(Current.user.entity) if Current.user.entity > 0
         año = Time.new.year 
-        training = Training.find_by(year: año, entity_id: entity.id)
+        training = Training.find_by(year: año, entity_id: entity.id) if entity.present?
         training_items = TrainingItem.where("training_id = ?",training.id) if training.present?
         total = training_items.count if training_items.present?
 

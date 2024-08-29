@@ -10,7 +10,7 @@
         <div class="row g-3">
             <div class="col-sm-3">
                 <%= form.label :email_entity,  style: "display: block" %>
-                <%= form.email_field :email_entity,  class: "form-control" %>
+                <%= form.email_field :email_entity,  class: "form-control", required: true %>
             </div>
             <div class="col-sm-3">
                 <%= form.label :kind_person,  style: "display: block" %>
@@ -32,7 +32,7 @@
     
         <div class="form-group">    
             <%= form.label :business_name,  style: "display: block" %>
-             <%= form.text_field :business_name,  class: "form-control" %>
+             <%= form.text_field :business_name,  class: "form-control", required: true %>
         </div>        
 
        
@@ -60,7 +60,7 @@
 
         <div class="form-group" >    
                 <%= form.label :economic_activity,  style: "display: block" %>
-                <%= form.collection_select :economic_activity, EconomicActivityCode.all.order(id: :asc), :id,  :economic_activity_description, style: "width=50px" %>
+                <%= form.collection_select :economic_activity, EconomicActivityCode.all.order(id: :asc), :id,  :economic_activity_description, style: "width=50px", required: true %>
         </div>  
 
 
@@ -68,26 +68,26 @@
         <div class="row g-3">
             <div class="col-sm-4">
                 <%= form.label :identification_number,  style: "display: block" %>
-                <%= form.number_field :identification_number,  class: "form-control" %>
+                <%= form.number_field :identification_number,  class: "form-control", required: true %>
             </div>        
             <div class="col-sm-2">
                 <%= form.label :verification_digit,  style: "display: block" %>
-                 <%= form.number_field :verification_digit,  class: "form-control" %>
+                 <%= form.number_field :verification_digit,  class: "form-control", required: true %>
             </div>        
             <div class="col-sm-6">
                 <%= form.label :email_legal_representative,  style: "display: block" %>
-                <%= form.email_field :email_legal_representative,  class: "form-control" %>
+                <%= form.email_field :email_legal_representative,  class: "form-control", required: true %>
             </div>        
         </div>        
 
         <div class="row g-3">
             <div class="col-sm-6">
                 <%= form.label :document_number_legal_representative,  style: "display: block" %>
-                <%= form.number_field :document_number_legal_representative,  class: "form-control" %>
+                <%= form.number_field :document_number_legal_representative,  class: "form-control", required: true %>
             </div>  
             <div class="col-sm-6">
                 <%= form.label :document_type_legal_representative,  style: "display: block" %>
-                <%= form.collection_select :document_type_legal_representative, Document.all.order(id: :asc), :id, :document_type %>
+                <%= form.collection_select :document_type_legal_representative, Document.all.order(id: :asc), :id, :document_type, required: true %>
             </div>  
         </div>        
 
@@ -95,7 +95,7 @@
         <div class="row g-3">
             <div class="col-sm-6">
                 <%= form.label :first_name_legal_representative,  style: "display: block" %>
-                 <%= form.text_field :first_name_legal_representative,  class: "form-control" %>
+                 <%= form.text_field :first_name_legal_representative,  class: "form-control", required: true %>
             </div>        
             <div class="col-sm-6">
                 <%= form.label :second_name_legal_representative,  style: "display: block" %>
@@ -106,7 +106,7 @@
         <div class="row g-3">
             <div class="col-sm-6">
                 <%= form.label :surname_legal_representative,  style: "display: block" %>
-                <%= form.text_field :surname_legal_representative,  class: "form-control" %>
+                <%= form.text_field :surname_legal_representative,  class: "form-control", required: true %>
             </div>        
             <div class="col-sm-6">
                 <%= form.label :second_surname_legal_representative,  style: "display: block" %>
@@ -130,7 +130,7 @@
         <div class="row g-3">
             <div class="col-sm-6">
                 <%= form.label :entity_address,  style: "display: block" %>
-                 <%= form.text_field :entity_address,  class: "form-control" %>
+                 <%= form.text_field :entity_address,  class: "form-control", required: true %>
             </div>        
             <div class="col-sm-6">
                 <%= form.label :entity_zone,  style: "display: block" %>
@@ -144,7 +144,7 @@
         <div class="row g-2">
             <div class="col-sm-8">
                 <%= form.label :entity_location_code,  style: "display: block" %>
-                <%= form.collection_select :entity_location_code, AdministrativePoliticalDivision.all.order(id: :asc), :id, :town_center_name %>
+                <%= form.collection_select :entity_location_code, AdministrativePoliticalDivision.all.order(id: :asc), :id, :town_center_name, required: true %>
             </div>  
             <div class="col-sm-4">
                 <%= form.label :agricultural_unit,  style: "display: block" %>
@@ -159,7 +159,7 @@
         <div class="row g-3">
             <div class="col-sm-6">
                 <%= form.label :entity_arl,  style: "display: block" %>
-                <%= form.collection_select :entity_arl, OccupationalRiskManager.all.order(id: :asc), :id, :name %>
+                <%= form.collection_select :entity_arl, OccupationalRiskManager.all.order(id: :asc), :id, :name, required: true %>
             </div>  
             <div class="col-sm-6">
                 <%= form.label :license,  style: "display: block" %>
@@ -171,7 +171,7 @@
         <div class="row g-3">
             <div class="col-sm-6">
                 <%= form.label :number_workers,  style: "display: block" %>
-                 <%= form.number_field :number_workers,  class: "form-control" %>
+                 <%= form.number_field :number_workers,  class: "form-control", required: true %>
             </div>        
             <div class="col-sm-6">
                 <%= form.label :risk_classification,  style: "display: block" %>
@@ -196,6 +196,8 @@
                 <label for="PILA">PILA MENSUAL</label></br>
                 <%= form.radio_button :pay_entity, 1 %>
                 <label for="NOMINA">NÓMINA MENSUAL</label></br>
+                <%= form.radio_button :pay_entity, 2 %>
+                <label for="NOMINA">MIXTA</label></br>
             </div>  
         <br>
 

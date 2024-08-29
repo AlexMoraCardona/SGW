@@ -7,7 +7,8 @@ class EvaluationsController < ApplicationController
                 @evaluations = Evaluation.all.order(date_evaluation: :desc)
             end  
          else
-             redirect_to new_session_path, alert: t('common.not_logged_in')      
+             redirect_to new_session_path, alert: t('common.not_logged_in')   
+             session.delete(:user_id)   
          end           
          
     end    
@@ -59,9 +60,9 @@ class EvaluationsController < ApplicationController
  
     def show
         @evaluation = Evaluation.find(params[:id])  
-        #@evaluation_itemstotal = EvaluationRuleDetail.where("evaluation_id = ? and apply = ?", @evaluation.id, 1).order(:order_nro).decorate
-        @q = EvaluationRuleDetail.where("evaluation_id = ? and apply = ?", @evaluation.id, 1).ransack(params[:q])
-        @pagy, @evaluation_items = pagy(@q.result(id: :desc), items: 3)
+        @evaluation_itemstotal = EvaluationRuleDetail.where("evaluation_id = ? and apply = ?", @evaluation.id, 1).order(:order_nro).decorate
+        #@q = EvaluationRuleDetail.where("evaluation_id = ? and apply = ?", @evaluation.id, 1).order(:id).ransack(params[:q])
+        #@pagy, @evaluation_items = pagy(@q.result(id: :desc), items: 3)
 
         #Evaluation.calculo_score_evaluacion(@evaluation.id)  
         respond_to do |format|

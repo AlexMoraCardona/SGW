@@ -3,7 +3,8 @@ class StandarDetailItemsController < ApplicationController
         if  Current.user && Current.user.level == 1
             @standar_detail_items = StandarDetailItem.where("aplica = ?", 1).order(:order_nro).decorate
          else
-             redirect_to new_session_path, alert: t('common.not_logged_in')      
+             redirect_to new_session_path, alert: t('common.not_logged_in')  
+             session.delete(:user_id)    
          end             
     end     
 

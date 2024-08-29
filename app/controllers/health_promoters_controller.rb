@@ -3,7 +3,8 @@ class HealthPromotersController < ApplicationController
         if  Current.user && Current.user.level == 1
             @health_promoters = HealthPromoter.all
          else
-             redirect_to new_session_path, alert: t('common.not_logged_in')      
+             redirect_to new_session_path, alert: t('common.not_logged_in')   
+             session.delete(:user_id)   
          end           
          
     end    

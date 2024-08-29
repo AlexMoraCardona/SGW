@@ -6,14 +6,14 @@ class User < ApplicationRecord
     belongs_to :document
     has_many :form_preventions
     
-    #validates :document, name, username, email, password_digest, state,  presence: true #Validar la presencia
+    #validates :document, name, username, email, password_digest,  presence: true #Validar la presencia
     validates :document,  presence: true #Validar la presencia
     validates :name, presence: true #Validar la presencia
     validates :username,  presence: true, length: { in: 3..15}, 
     format: { with: /\A[a-z0-9A-Z]+\z/, message: :invalid} #Validar la presencia
     validates :email,  presence: true #Validar la presencia
     validates :password_digest,  presence: true #Validar la presencia
-    #validates :document, uniqueness: true #Valor unico en bd
+    validates :nro_document, uniqueness: true #Valor unico en bd
     validates :username, uniqueness: true #Valor unico en bd
     validates :email, uniqueness: true #Valor unico en bd
 
@@ -23,8 +23,10 @@ class User < ApplicationRecord
 
 
     def self.label_entity(dato)
-        entity = Entity.find(dato)
-        name = entity.business_name if entity.present?
+        if dato > 0 then
+            entity = Entity.find(dato)
+            name = entity.business_name if entity.present?
+        end    
     end    
 
     def self.ransackable_attributes(auth_object = nil)

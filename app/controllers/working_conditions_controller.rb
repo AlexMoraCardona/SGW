@@ -9,7 +9,8 @@ class WorkingConditionsController < ApplicationController
                 @entities = Entity.all
                 @working_conditions = WorkingCondition.all
             else
-                redirect_to new_session_path, alert: t('common.not_logged_in')      
+                redirect_to new_session_path, alert: t('common.not_logged_in')  
+                session.delete(:user_id)    
             end           
         end 
     end 

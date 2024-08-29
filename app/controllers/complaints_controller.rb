@@ -6,7 +6,8 @@ class ComplaintsController < ApplicationController
         if  Current.user
             @complaint = Complaint.new  
          else
-             redirect_to new_session_path, alert: t('common.not_logged_in')      
+             redirect_to new_session_path, alert: t('common.not_logged_in')  
+             session.delete(:user_id)    
         end           
     end    
 
@@ -69,6 +70,7 @@ class ComplaintsController < ApplicationController
                     end    
                 else
                     redirect_to new_session_path, alert: 'Ingreso no permitido'
+                    session.delete(:user_id)
                 end
         end    
     end

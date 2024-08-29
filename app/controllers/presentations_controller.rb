@@ -1,9 +1,10 @@
 class PresentationsController < ApplicationController
     def index
         if  Current.user && Current.user.level == 1
-            @presentations = Presentation.all
+            @presentations = Presentation.all.order(:id)
          else
-             redirect_to new_session_path, alert: t('common.not_logged_in')      
+             redirect_to new_session_path, alert: t('common.not_logged_in')  
+             session.delete(:user_id)    
          end           
          
     end    
@@ -29,7 +30,7 @@ class PresentationsController < ApplicationController
     def update
         @presentation = Presentation.find(params[:id])
         if @presentation.update(presentation_params)
-            redirect_to presentations_path, notice: 'Ciclo actualizado correctamente'
+            redirect_to presentations_path, notice: 'Presentación actualizada correctamente'
         else
             render :edit, presentations: :unprocessable_entity
         end         
@@ -38,15 +39,15 @@ class PresentationsController < ApplicationController
     def destroy
         @presentation = Presentation.find(params[:id])
         @presentation.destroy
-        redirect_to presentations_path, notice: 'Norma borrada correctamente', presentation: :see_other
+        redirect_to presentations_path, notice: 'Presentación borrada correctamente', presentation: :see_other
     end  
     
     def listadopresentaciones
-        @presentations = Presentation.all
+        @presentations = Presentation.all.order(:id)
     end 
     
     def show
-        @presentations = Presentation.all
+        @presentations = Presentation.all.order(:id)
     end    
 
     private

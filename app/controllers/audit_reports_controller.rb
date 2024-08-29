@@ -9,7 +9,8 @@ class AuditReportsController < ApplicationController
                 @entities = Entity.all
                 @audit_reports = AuditReport.all
             else
-                redirect_to new_session_path, alert: t('common.not_logged_in')      
+                redirect_to new_session_path, alert: t('common.not_logged_in')  
+                session.delete(:user_id)    
             end           
         end 
     end  

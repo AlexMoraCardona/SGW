@@ -8,7 +8,60 @@
             <div class="alert alert-danger" role="alert">
                 <%= error%> <%= alert %>
             </div>
-        <% end %>    
+        <% end %>
+
+        <table>
+            <% if @evidence.template_id == 7 || @evidence.template_id == 8  || @evidence.template_id == 9 || @evidence.template_id == 13 || @evidence.template_id == 14 || @evidence.template_id == 15 || @evidence.template_id == 19 || @evidence.template_id == 20 || @evidence.template_id == 21 then %>
+                <tr>
+                    <td style="width:50%">
+                        <%= form.label :user_id,  style: "display: block" %>
+                        <%= form.collection_select :user_id, User.all.order(id: :asc), :id,  :name, style: "width=50px" %>
+                    </td> 
+                    <td style="width:50%">
+                        <%= form.label :collaborator,  style: "display: block" %>
+                        <%= form.radio_button :collaborator, 0 %>
+                        <label for="No">NO</label>
+                        <%= form.radio_button :collaborator, 1 %>
+                        <label for="Si">SI</label>
+                    </td>
+                </tr>
+            <% end %>
+
+            <% if @evidence.template_id == 31 || @evidence.template_id == 32  || @evidence.template_id == 33 then %>
+                <tr>
+                    <td style="width:50%">
+                        <%= form.label :arl_activity_report,  style: "display: block" %>
+                        <%= form.radio_button :arl_activity_report, 0 %>
+                        <label for="No">NO</label>
+                        <%= form.radio_button :arl_activity_report, 1 %>
+                        <label for="Si">SI</label>
+                    </td>
+                    <td style="width:50%">
+                        <%= form.label :quote_10_aditional_points,  style: "display: block" %>
+                        <%= form.radio_button :quote_10_aditional_points, 0 %>
+                        <label for="No">NO</label>
+                        <%= form.radio_button :quote_10_aditional_points, 1 %>
+                        <label for="Si">SI</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:50%">
+                        <%= form.label :employees_activity, style: "display: block" %>
+                        <%= form.text_field :employees_activity,  class: "form-control" %>
+                    </td>
+                    <td style="width:50%">
+                        <%= form.label :reported_activity, style: "display: block" %>
+                        <%= form.select(:reported_activity, [['Trabajos en minería con servicio en socavones o en subterráneos.', 'Trabajos en minería con servicio en socavones o en subterráneos.'], ['Trabajos con exposición a altas temperaturas.', 'Trabajos con exposición a altas temperaturas.'], ['Trabajos con exposición a radiaciones ionizantes.', 'Trabajos con exposición a radiaciones ionizantes.'], ['Trabajos con exposición a sustancias comprobadamente cancerígenas.', 'Trabajos con exposición a sustancias comprobadamente cancerígenas.'], ['Actividades de los técnicos aeronáuticos.', 'Actividades de los técnicos aeronáuticos.'], ['Cuerpos de Bomberos - Función específica en operaciones de extinción de incendios.', 'Cuerpos de Bomberos - Función específica en operaciones de extinción de incendios.'], ['INPEC - Actividad dedicada a la custodia y vigilancia de los internos.', 'INPEC - Actividad dedicada a la custodia y vigilancia de los internos.']]) %>
+                    </td>
+                </tr>
+            <% end %>
+            
+        </table>
+
+
+        <% if @evidence.template_id != 1024 then %>
+
+        aqui    
         <table>
             <tr>
                 <td style="width:50%">
@@ -217,7 +270,7 @@
             </tr>
             <hr>
         </table>
-
+        <% end %>    
         <%= form.hidden_field :evidence_id, :value => params[:id].to_s, class: "form-control" %>
 
         <br>    

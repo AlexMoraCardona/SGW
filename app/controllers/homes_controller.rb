@@ -25,6 +25,8 @@ class HomesController < ApplicationController
         @month_noti = Date.today.month
         @notificaciones= []
         if Current.user.level == 1 || Current.user.level == 2 then
+            @annual_work_plans = nil
+            @annual_work_plan_items = nil
             @annual_work_plans = AnnualWorkPlan.where("year = ?", @year_noti)
             if  @annual_work_plans.present? then
                 @annual_work_plans.each do |annual_work_plan| 
@@ -38,6 +40,7 @@ class HomesController < ApplicationController
                 end   
             end
             @matrix_danger_risks = MatrixDangerRisk.all
+            @matrix_danger_items = nil
             if  @matrix_danger_risks.present? then
                 @matrix_danger_risks.each do |matrix_danger_risk| 
                     @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and danger_intervened = ? and proposed_date <= ?",matrix_danger_risk.id,0,(Date.today + 30))
@@ -49,6 +52,7 @@ class HomesController < ApplicationController
                 end   
             end
             @matrix_corrective_actions = MatrixCorrectiveAction.all
+            @matrix_action_items = nil
             if  @matrix_corrective_actions.present? then
                 @matrix_corrective_actions.each do |matrix_corrective_action| 
                     @matrix_action_items = MatrixActionItem.where("matrix_corrective_action_id = ? and state_actions = ? and commitment_date <= ?",matrix_corrective_action.id,0,(Date.today + 30))
@@ -60,6 +64,7 @@ class HomesController < ApplicationController
                 end   
             end
             @matrix_conditions = MatrixCondition.all
+            @matrix_unsafe_items = nil
             if  @matrix_conditions.present? then
                 @matrix_conditions.each do |matrix_condition| 
                     @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ? and state_unsafe = ?",matrix_condition.id,0)
@@ -74,6 +79,7 @@ class HomesController < ApplicationController
             @cant_noti = @notificaciones.count if @notificaciones.present?
         else
             @annual_work_plan = AnnualWorkPlan.where("year = ? and entity_id = ?", @year_noti,@entity.id) if @entity.present? 
+            @annual_work_plan_items = nil
             if  @annual_work_plan.present? then
                     @annual_work_plan_items = AnnualWorkPlanItem.where("annual_work_plan_id = ? and earring = ? and month <= ?",@annual_work_plan.id,0,@month_noti)
                     if @annual_work_plan_items.present?
@@ -84,6 +90,7 @@ class HomesController < ApplicationController
                     end
             end
             @matrix_danger_risk = MatrixDangerRisk.where("entity_id = ?",@entity)
+            @matrix_danger_items = nil
             if  @matrix_danger_risk.present? then
                     @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and danger_intervened = ? and proposed_date <= ?",@matrix_danger_risk.id,0,(Date.today+30))
                     if @matrix_danger_items.present?
@@ -93,6 +100,7 @@ class HomesController < ApplicationController
                     end
             end
             @matrix_corrective_action = MatrixCorrectiveAction.where("entity_id = ?",@entity)
+            @matrix_action_items = nil
             if  @matrix_corrective_action.present? then
                     @matrix_action_items = MatrixActionItem.where("matrix_corrective_action_id = ? and state_actions = ? and commitment_date <= ?",matrix_corrective_action.id,0,(Date.today + 30))
                     if @matrix_action_items.present?
@@ -102,6 +110,7 @@ class HomesController < ApplicationController
                     end
             end
             @matrix_condition = MatrixCondition.where("entity_id = ?",@entity)
+            @matrix_unsafe_items = nil
             if  @matrix_condition.present? then
                     @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ? and state_unsafe = ?",@matrix_condition.id,0)
                     if @matrix_unsafe_items.present?
@@ -143,7 +152,7 @@ class HomesController < ApplicationController
     end 
     
     def calculo_sex
-        users = User.where("entity = ? and state = ?", @entity.id, 1).order(:sex) if @entity.present?
+        users = User.where("entity = ? and state = ? and level > ?", @entity.id, 1, 2).order(:sex) if @entity.present?
         total = users.count if users.present?
         @datos_sex = []
         if users.present? then
@@ -163,7 +172,7 @@ class HomesController < ApplicationController
     end     
 
     def calculo_clasificacion_cargo
-        users = User.where("entity = ? and state = ?", @entity.id, 1).order(:clasification_post) if @entity.present?
+        users = User.where("entity = ? and state = ? and level > ?", @entity.id, 1, 2).order(:clasification_post) if @entity.present?
         @total_colaboradores = 0
         @datos_clasificacion_cargo = []
         if users.present? then
@@ -226,6 +235,7 @@ class HomesController < ApplicationController
     def actos_inseguros
         entity = Entity.find(Current.user.entity) if Current.user.entity > 0
         @matrix_condition = MatrixCondition.find_by(entity_id: entity.id) if entity.present?
+        @matrix_unsafe_items = nil
         @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", @matrix_condition.id) if @matrix_condition.present?
         @cantidad = 0
         @cantidad = @matrix_unsafe_items.count if @matrix_unsafe_items.present?
@@ -238,11 +248,13 @@ class HomesController < ApplicationController
                 @totalactosinter += 1 if item.state_unsafe == 1
                 @totalactosnointer += 1 if item.state_unsafe == 0
             end    
-        end    
+        end  
+        
     end
 
     def peligros_riesgos
         entity = Entity.find(Current.user.entity) if Current.user.entity > 0
+        @matrix_danger_items = nil
         @matrix_danger_risks = MatrixDangerRisk.find_by(entity_id: entity.id) if entity.present?
         @matrix_danger_items = MatrixDangerItem.where('matrix_danger_risk_id = ?', @matrix_danger_risks.id) if @matrix_danger_risks.present?
 
@@ -263,6 +275,7 @@ class HomesController < ApplicationController
     def capacitaciones
         entity = Entity.find(Current.user.entity) if Current.user.entity > 0
         año = Time.new.year 
+        training_items = nil
         training = Training.find_by(year: año, entity_id: entity.id) if entity.present?
         training_items = TrainingItem.where("training_id = ?",training.id) if training.present?
         total = training_items.count if training_items.present?

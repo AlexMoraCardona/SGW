@@ -2,29 +2,26 @@
     <%= render 'encabezado' %>
     
     <div style="text-align:center"> 
-        <strong>ACTA N°</strong><%= @evidence.id if @evidence.present? %>
+        <strong>ACTA N°: </strong><%= @evidence.number_acta if @evidence.present? %>
     </div> 
     <div><br></div>
     <TABLE>
 	    <TR style="border:1px solid black;width: 100%;">
-		    <TD ROWSPAN=4 style="border:1px solid black; width: 30%;background-color: #00aae4;padding: 10px;" >OBJETIVO DE LA REUNIÓN</TD>
-	    	<TD style="border:1px solid black; width: 10%"></TD>
-            <TD style="border:1px solid black; width: 30%;background-color: #00aae4;padding: 10px;">FECHA:</TD> 
+		    <TD ROWSPAN=4 style="border:1px solid black; width: 20%;background-color: #00aae4;padding: 10px;" >OBJETIVO DE LA REUNIÓN</TD>
+	    	<TD ROWSPAN=4 style="border:1px solid black; width: 30%;padding: 10px;"></strong><%= @evidence.goals if @evidence.present? %></TD>
+            <TD style="border:1px solid black; width: 20%;background-color: #00aae4;padding: 10px;">FECHA:</TD> 
             <TD style="border:1px solid black; width: 30%;padding: 10px;"><%= @evidence.date if @evidence.present? %></TD>
 	    </TR>
 	    <TR>
-            <TD style="border:1px solid black; width: 10%"></TD>
-            <TD style="border:1px solid black; width: 30%;background-color: #00aae4;padding: 10px;">LUGAR:</TD> 
+            <TD style="border:1px solid black; width: 20%;background-color: #00aae4;padding: 10px;">LUGAR:</TD> 
             <TD style="border:1px solid black; width: 30%;padding: 10px;"><%= @evidence.place if @evidence.present? %></TD>
         </TR>
 	    <TR>
-            <TD style="border:1px solid black; width: 10%"></TD>
-            <TD style="border:1px solid black; width: 30%;background-color: #00aae4;padding: 10px;">HORA DE INICIO:</TD> 
+            <TD style="border:1px solid black; width: 20%;background-color: #00aae4;padding: 10px;">HORA DE INICIO:</TD> 
             <TD style="border:1px solid black; width: 30%;padding: 10px;"><%= @evidence.initial_time.strftime("%I:%M %p") if @evidence.initial_time.present? %></TD>
         </TR>
 	    <TR>
-            <TD style="border:1px solid black; width: 10%"></TD>
-            <TD style="border:1px solid black; width: 30%;background-color: #00aae4;padding: 10px;">HORA FINALIZACIÓN:</TD> 
+            <TD style="border:1px solid black; width: 20%;background-color: #00aae4;padding: 10px;">HORA FINALIZACIÓN:</TD> 
             <TD style="border:1px solid black; width: 30%;padding: 10px;"><%= @evidence.final_time.strftime("%I:%M %p") if @evidence.final_time.present? %></TD>
         </TR>
     </TABLE>
@@ -57,9 +54,8 @@
         <div><strong>DESARROLLO DE LA REUNIÓN</strong></div>
     </div>
     <div><br></div>
-    <div class="row text-center">
-        <div><strong>Se debe escribir cada desarrollo de las actividades del orden del día</strong></div>
-    </div>
+    <div>
+        <%= @evidence.compliances if @evidence.present? %>    </div>
     <div><br></div>
     <div><br></div>
     <TABLE style="width: 100%;>

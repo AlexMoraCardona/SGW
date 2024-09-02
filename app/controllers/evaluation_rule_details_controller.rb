@@ -198,6 +198,7 @@ class EvaluationRuleDetailsController < ApplicationController
         @participant = Participant.new  
         @participants = Participant.where("evidence_id = ?", params[:id]) if params[:id].present?
         @evidence = Evidence.find(params[:id])
+        @representante = User.find_by(entity: @evidence.entity_id, legal_representative: 1) if @evidence.present?
     end  
  
     def actualizar_evidencia

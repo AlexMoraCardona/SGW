@@ -10,15 +10,40 @@
             <%= link_to t('.create_administrative_political_division'), new_administrative_political_division_path, class: 'btn btn-sm btn-primary'  %>
         </div> 
         <hr>
+        <%= search_form_for @q do |f| %>
+            <%= f.label :department_code_eq %>
+            <%= f.search_field :department_code_eq %>
+
+            <%= f.label :department_name_cont %>
+            <%= f.search_field :department_name_cont %>
+
+            <%= f.label :municipality_code_eq %>
+            <%= f.search_field :municipality_code_eq %>
+
+            <%= f.label :municipality_name_cont %>
+            <%= f.search_field :municipality_name_cont %>
+
+            <%= f.label :town_center_code_eq %>
+            <%= f.search_field :town_center_code_eq %>
+
+            <%= f.label :town_center_name_cont %>
+            <%= f.search_field :town_center_name_cont %>
+
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        <% end %>
+    </br>        
+    <%== pagy_info(@pagy) %>
+    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+
     <table class="table table-hover">
         <thead> 
             <tr>
-                <th scope="col"><%= t('.department_code') %></th>
-                <th scope="col"><%= t('.department_name') %></th>
-                <th scope="col"><%= t('.municipality_code') %></th>
-                <th scope="col"><%= t('.municipality_name') %></th>
-                <th scope="col"><%= t('.town_center_name') %></th>
-                <th scope="col"><%= t('.town_center_code') %></th>
+                <th scope="col"><%= sort_link(@q, :department_code, default_order: :desc) %></th>
+                <th scope="col"><%= sort_link(@q, :department_name, default_order: :desc) %></th>
+                <th scope="col"><%= sort_link(@q, :municipality_code, default_order: :desc) %></th>
+                <th scope="col"><%= sort_link(@q, :municipality_name, default_order: :desc) %></th>
+                <th scope="col"><%= sort_link(@q, :town_center_name, default_order: :desc) %></th>
+                <th scope="col"><%= sort_link(@q, :town_center_code, default_order: :desc) %></th>
                 <th scope="col"><%= t('.classification') %></th>
                 <th scope="col"><%= t('common.edit') %></th>
             </tr>

@@ -60,9 +60,8 @@
 
         <div class="form-group" >    
                 <%= form.label :economic_activity,  style: "display: block" %>
-                <%= form.collection_select :economic_activity, EconomicActivityCode.all.order(id: :asc), :id,  :economic_activity_description, style: "width=50px", required: true %>
+                <%= form.collection_select :economic_activity, EconomicActivityCode.all.order(ciu_code: :asc), :id,  :names_with_initial, style: "width=50px", required: true %>
         </div>  
-
 
 
         <div class="row g-3">
@@ -142,10 +141,13 @@
         </div>        
 
         <div class="row g-2">
-            <div class="col-sm-8">
+            <div>
                 <%= form.label :entity_location_code,  style: "display: block" %>
-                <%= form.collection_select :entity_location_code, AdministrativePoliticalDivision.all.order(id: :asc), :id, :town_center_name, required: true %>
+                <%= form.collection_select :entity_location_code, AdministrativePoliticalDivision.all.order(town_center_name: :asc), :id, :name_with_initial, required: true %>
             </div>  
+        </div>  
+
+        <div class="row g-2">
             <div class="col-sm-4">
                 <%= form.label :agricultural_unit,  style: "display: block" %>
                 <%= form.radio_button :agricultural_unit, 0 %>
@@ -154,7 +156,6 @@
                 <label for="si">Si</label>&nbsp;&nbsp;   
             </div>  
         </div>  
-
 
         <div class="row g-3">
             <div class="col-sm-6">

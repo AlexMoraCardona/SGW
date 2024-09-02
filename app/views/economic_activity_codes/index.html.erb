@@ -10,11 +10,26 @@
             <%= link_to t('.create_economic_activity_code'), new_economic_activity_code_path, class: 'btn btn-sm btn-primary'  %>
         </div>
         <hr>
+        <%= search_form_for @q do |f| %>
+            <%= f.label :risk_class_eq %>
+            <%= f.search_field :risk_class_eq %>
+
+            <%= f.label :ciu_code_eq %>
+            <%= f.search_field :ciu_code_eq %>
+
+            <%= f.label :economic_activity_description_cont %>
+            <%= f.search_field :economic_activity_description_cont %>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        <% end %>
+    </br>        
+    <%== pagy_info(@pagy) %>
+    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+
     <table class="table table-hover">
         <thead>
             <tr>
-                <th scope="col"><%= t('.risk_class') %></th>
-                <th scope="col"><%= t('.ciu_code') %></th>
+                <th scope="col"><%= sort_link(@q, :risk_class, default_order: :desc) %></th>
+                <th scope="col"><%= sort_link(@q, :ciu_code, default_order: :desc) %></th>
                 <th scope="col"><%= t('.additional_digits') %></th>
                 <th scope="col"><%= t('.economic_activity_description') %></th>
                 <th scope="col"><%= t('common.edit') %></th>

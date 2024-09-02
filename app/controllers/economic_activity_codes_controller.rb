@@ -2,6 +2,8 @@ class EconomicActivityCodesController < ApplicationController
     def index
         if  Current.user && Current.user.level == 1
             @economic_activity_codes = EconomicActivityCode.all
+            @q = EconomicActivityCode.ransack(params[:q])
+            @pagy, @economic_activity_codes = pagy(@q.result(id: :desc), items: 3)
          else
              redirect_to new_session_path, alert: t('common.not_logged_in')    
              session.delete(:user_id)  

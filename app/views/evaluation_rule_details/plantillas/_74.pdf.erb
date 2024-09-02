@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+    <%= javascript_importmap_tags %>
+</head>
+
+<div style="text-align:center"> 
+<strong>ACTA N°: </strong><%= @evidence.number_acta if @evidence.present? %>
+</div> 
+<div><br></div>
+<TABLE>
+<TR style="border:1px solid black;width: 100%;">
+    <TD ROWSPAN=4 style="border:1px solid black; width: 20%;background-color: #00aae4;padding: 10px;" >OBJETIVO DE LA REUNIÓN</TD>
+    <TD ROWSPAN=4 style="border:1px solid black; width: 30%;padding: 10px;"></strong><%= @evidence.goals if @evidence.present? %></TD>
+    <TD style="border:1px solid black; width: 20%;background-color: #00aae4;padding: 10px;">FECHA:</TD> 
+    <TD style="border:1px solid black; width: 30%;padding: 10px;"><%= @evidence.date if @evidence.present? %></TD>
+</TR>
+<TR>
+    <TD style="border:1px solid black; width: 20%;background-color: #00aae4;padding: 10px;">LUGAR:</TD> 
+    <TD style="border:1px solid black; width: 30%;padding: 10px;"><%= @evidence.place if @evidence.present? %></TD>
+</TR>
+<TR>
+    <TD style="border:1px solid black; width: 20%;background-color: #00aae4;padding: 10px;">HORA DE INICIO:</TD> 
+    <TD style="border:1px solid black; width: 30%;padding: 10px;"><%= @evidence.initial_time.strftime("%I:%M %p") if @evidence.initial_time.present? %></TD>
+</TR>
+<TR>
+    <TD style="border:1px solid black; width: 20%;background-color: #00aae4;padding: 10px;">HORA FINALIZACIÓN:</TD> 
+    <TD style="border:1px solid black; width: 30%;padding: 10px;"><%= @evidence.final_time.strftime("%I:%M %p") if @evidence.final_time.present? %></TD>
+</TR>
+</TABLE>
+<div><br></div>
+<div class="row">
+<div><strong>ASISTENTES:</strong> En la presente acta se anexa el control de asistencia COPASST</div>
+</div>
+<div><br></div>
+<TABLE style="width: 100%;>
+<TR style="border:1px solid black;width: 100%;text-align:center;">
+    <TD style="border:1px solid black; width: 30%;text-align:center;background-color: #00aae4">ORDEN DEL DÍA</TD>
+</TR>
+<TR>
+    <TD style="border:1px solid black; width: 100%">
+        <p>
+            <ul>
+                <li>1. Verificación Quórum: Cumplimiento con el número de personas requeridas para dar inicio a la reunión ordinaria del COPASST (Debe ser la mitad más uno, para que sean válidas las decisiones y aceptada el acta de reunión).</li>
+                <li>2. Revisión de compromisos anteriores. </li>
+                <li>3. Temas a tratar.</li>
+                <li>4. Compromisos. </li>
+                <li>5. Programación de la siguiente reunión.</li>
+            </ul>
+        </p>
+    </TD>
+</TR>
+</TABLE>
+<div><br></div>
+<div><br></div>
+<div class="row text-center">
+<div><strong>DESARROLLO DE LA REUNIÓN</strong></div>
+</div>
+<div><br></div>
+<div>
+<%= @evidence.compliances if @evidence.present? %>    </div>
+<div><br></div>
+<div><br></div>
+<TABLE style="width: 100%;>
+<TR style="border:1px solid black;width: 100%;text-align:center;">
+    <TD style="border:1px solid black; width: 100%;text-align:center;background-color: #00aae4">COMPROMISOS</TD>
+</TR>
+</TABLE>
+<TABLE style="width: 100%;">
+<TR>
+    <TD style="border:1px solid black; width: 30%;padding: 20px;background-color: #00aae4">ACTIVIDAD</TD>
+    <TD style="border:1px solid black; width: 30%;padding: 20px;background-color: #00aae4">RESPONSABLE</TD>
+    <TD style="border:1px solid black; width: 20%;text-align:center;background-color: #00aae4">FECHA DE EJECUCIÓN</TD>
+    <TD style="border:1px solid black; width: 20%;text-align:center;background-color: #00aae4">ESTADO DE CUMPLIMIENTO</TD>
+</TR>
+</TABLE>
+<% if @commitments.present? %>
+<TABLE style="width: 100%;">
+    <% @commitments.each do |commitment| %>
+        <tr>
+            <td style="border:1px solid black; width: 30%;padding: 10px;">
+                <h6><%= commitment.activity %></h6>                
+            </td>
+            <td style="border:1px solid black; width: 30%;padding: 10px;">
+                <h6><%= commitment.user_responsible %></h6>                
+            </td>
+            <td style="border:1px solid black; width: 20%; text-align:center">
+                <h6><%= commitment.date_ejecution %></h6>                
+            </td>
+            <% if commitment.state_commitment == 0 %>
+                <td style="border:1px solid black; width: 20%; text-align:center">
+                    <h6>Pendiente</h6>                
+                </td>
+            <% else %>
+                 <td style="border:1px solid black; width: 25%; text-align:center">
+                    <h6>Ejecutado</h6>                
+                </td>
+            <% end %>
+        </tr>    
+    <% end %>
+</table %>
+<% end %>
+<div><br></div>
+<div><br></div>
+<% if @participants.present? %>
+<TABLE style="width: 100%;>
+    <TR style="border:1px solid black;width: 100%;text-align:center;">
+        <TD style="border:1px solid black; width: 100%;text-align:center;background-color: #00aae4">PARTICIPANTES</TD>
+    </TR>
+</TABLE>
+<TABLE style="width: 100%;">
+    <% @participants.each do |participant| %>
+        <tr>
+            <td style="border:1px solid black; width: 100%;padding: 10px;">
+                <h6><%= participant.user.name %></h6>                
+            </td>
+        </tr>    
+    <% end %>
+</table %>
+<% end %>
+<div><br></div>
+<div><br></div>
+<div class="row">
+<div>Siendo las <%= @evidence.final_time.strftime("%I:%M %p") if @evidence.final_time.present? %>. y cumplido el objetivo, se dio por terminada la reunión en constancia firman:</div>
+</div>
+<div><br></div>
+<div><br></div>
+<%= render 'firmaelabororesponsable' %>
+

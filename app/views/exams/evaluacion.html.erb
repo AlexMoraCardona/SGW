@@ -1,31 +1,31 @@
-<div id="carouselExample" class="carousel slide"  style="background-color: #EBEBEB;">
+<div id="carouselExample" class="carousel carousel-dark slide" >
   <div class="carousel-inner" data-bs-theme="dark">
     <div class="carousel-item active" data-bs-theme="dark">
       <div class="row g-3">
         <div class="col-sm-2">
         </div>
-        <div class="col-sm-7" style="text-align:center;"  data-bs-theme="Warning">
+        <div class="col-sm-7" style="text-align:center;">
           <% if @adm_exam.img_exam.present? then %>
             <%=  image_tag  @adm_exam.img_exam, class: "image_evaluacion" %>
           <% end %>  
-
-          <div class="carousel-caption d-none d-md-block">
-            <h1 style="color:#000000";><%= @entity.business_name if @entity.present? %></br> Nit: <%= @entity.identification_number if @entity.present? %></h1>
+          </br>
+          <div>
+            <h1 style="color:#000000";><%= @entity.business_name if @entity.present? %></br> </h1>
             <h1 style="color:#000000";><%= @adm_exam.description %></h1>
           </div>
-          
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next" data-bs-theme="Warning">
-          <span  class="carousel-control-next-icon" aria-hidden="false" data-bs-theme="Warning"></span>
-          <span  class="visually-hidden" data-bs-theme="Warning">Next</span>
-          </button>
-          
+          <div>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next" >
+              <span  class="carousel-control-next-icon" aria-hidden="true" ></span>
+              <span  class="visually-hidden" >Next</span>
+            </button>
+          </div>
         </div>  
         <div class="col-sm-2">
         </div>
       </div>
     </div>
     
-    <% if @exam_questions.present? %>
+    <% if @exam_questions.present? %> 
       <div class="carousel-item">
         <%= form_tag guardar_respuesta_path(@exam.id), method: :post do %>
 
@@ -44,7 +44,7 @@
                       <% @dato = @pre[0].to_s %>
                       <% @dato = @dato[2..-3] %>
                       <% if not  @dato.blank? %>
-                        <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[0]%>" id="vbtn-radio1<%= i %>" autocomplete="off">
+                        <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[0]%>" id="vbtn-radio1<%= i %>" autocomplete="off" required>
                         <label class="btn btn-outline-dark" for="vbtn-radio1<%= i %>"><%= @dato  %></label>
                       <% end %>  
                     <% end %> 
@@ -53,7 +53,7 @@
                       <% @dato = @pre[1].to_s %>
                       <% @dato = @dato[2..-3] %>
                       <% if not  @dato.blank? %>
-                        <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[1]%>" id="vbtn-radio2<%= i %>" autocomplete="off">
+                        <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[1]%>" id="vbtn-radio2<%= i %>" autocomplete="off" required>
                         <label class="btn btn-outline-dark" for="vbtn-radio2<%= i %>"><%= @dato %></label>
                       <% end %>  
                     <% end %>  
@@ -62,7 +62,7 @@
                       <% @dato = @pre[2].to_s %>
                       <% @dato = @dato[2..-3] %>
                       <% if not  @dato.blank? %>
-                        <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[2]%>" id="vbtn-radio3<%= i %>" autocomplete="off">
+                        <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[2]%>" id="vbtn-radio3<%= i %>" autocomplete="off" required>
                         <label class="btn btn-outline-dark" for="vbtn-radio3<%= i %>"><%= @dato %></label>
                       <% end %>  
                     <% end %>  
@@ -71,7 +71,7 @@
                       <% @dato = @pre[3].to_s %>
                       <% @dato = @dato[2..-3] %>
                       <% if not  @dato.blank? %>
-                        <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[3]%>" id="vbtn-radio4<%= i %>" autocomplete="off">
+                        <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[3]%>" id="vbtn-radio4<%= i %>" autocomplete="off" required>
                         <label class="btn btn-outline-dark" for="vbtn-radio4<%= i %>"><%= @dato %></label>
                       <% end %>  
                     <% end %>  
@@ -80,7 +80,7 @@
                       <% @dato = @pre[4].to_s %>
                       <% @dato = @dato[2..-3] %>
                       <% if not  @dato.blank? %>
-                        <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[4]%>" id="vbtn-radio5<%= i %>" autocomplete="off">
+                        <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[4]%>" id="vbtn-radio5<%= i %>" autocomplete="off" required>
                         <label class="btn btn-outline-dark" for="vbtn-radio5<%= i %>"><%= @dato %></label>
                       <% end %>  
                     <% end %>  
@@ -88,6 +88,8 @@
                   </div>
                 <% end %>  
                 <% i += 1 %>
+                <hr>
+
               <% end %> 
               <div>
                 <br> 

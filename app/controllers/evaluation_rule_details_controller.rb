@@ -120,7 +120,7 @@ class EvaluationRuleDetailsController < ApplicationController
                 @firma_nueva.save
             end 
             
-            if user_asesor_externo.present? && (@evidence.template_id == 10 || @evidence.template_id == 11 || @evidence.template_id == 12 || @evidence.template_id == 43 || @evidence.template_id == 44 || @evidence.template_id == 45)  then
+            if user_asesor_externo.present? && (@evidence.template_id == 10 || @evidence.template_id == 11 || @evidence.template_id == 12)  then
                 @firma_nueva  = Firm.new
                 @firma_nueva.user_id = user_asesor_externo.id
                 @firma_nueva.evidence_id = @evidence.id

@@ -64,8 +64,17 @@
         <p style="background-color: #00aae4;"><strong>Firma del Funcionario o Contratista:</strong></p>
         <% if @complaint.firm_complaint == 0  then %>
             <p>NO</p>
-        <% else %>
-            <p>SI  <strong>Fecha firma: </strong> <%= @complaint.date_firm_complaint %> </p>
+        <% else %> 
+                <% if @user.firm.attached? %>
+
+                   <% if @user.firm.attached? %>
+                      <% if @user.firm.image? %> 
+                           <%= image_tag @user.firm, class: "firma" %>
+                           <p>________________________________</p>
+                      <% end %>
+                    <% end %>
+                <% end %>
+            <p><strong>Fecha firma: </strong> <%= @complaint.date_firm_complaint %> </p>
         <% end %>
     </div> 
 

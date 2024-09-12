@@ -54,14 +54,14 @@ class Exam < ApplicationRecord
     end   
     
     def self.numero_empleados(entidad)
-        empleados = User.where("entity = ?",entidad.to_i)
+        empleados = User.where("entity = ? and state = ? and level > ?",entidad.to_i, 1, 2)
         cant = empleados.count
         return cant
     end    
 
     def self.realiza(entidad, adexa)
         @datos = []
-        empleados = User.where("entity = ?",entidad.to_i)
+        empleados = User.where("entity = ? and state = ? and level > ?",entidad.to_i, 1, 2)
         cantemp = 0
         cantemp = empleados.count
         cant = 0
@@ -71,7 +71,7 @@ class Exam < ApplicationRecord
         porrepro = 0
 
         empleados.each do |empleado|
-            id_exam = Exam.where("user_id = ? and adm_exam_id = ?", empleado.id.to_i, adexa.to_i).last
+            id_exam = Exam.where("user_id = ? and adm_exam_id = ?", empleado.id.to_i, adexa.to_i).order(:final_percentage).last
             if id_exam.present?
                 cant += 1  
                 apro += 1 if id_exam.resul == "Aprobado" 
@@ -86,10 +86,10 @@ class Exam < ApplicationRecord
    end     
 
    def self.detalle_realiza(entidad, adexa)
-        empleados = User.where("entity = ?",entidad.to_i)
+        empleados = User.where("entity = ? and state = ? and level > ?",entidad.to_i, 1, 2)
         @exams = []
         empleados.each do |empleado|
-            id_exam = Exam.where("user_id = ? and adm_exam_id = ?", empleado.id.to_i, adexa.to_i).last
+            id_exam = Exam.where("user_id = ? and adm_exam_id = ?", empleado.id.to_i, adexa.to_i).order(:final_percentage).last
             if id_exam.present?
                 @exams << id_exam
             end    

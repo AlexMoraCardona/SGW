@@ -30,6 +30,8 @@ class ComplaintsController < ApplicationController
  
     def edit
         @complaint = Complaint.find(params[:id])
+        @user = User.find(@complaint.user_complaint) if @complaint.present?
+
     end
     
     def update
@@ -77,6 +79,7 @@ class ComplaintsController < ApplicationController
 
     def informe
         @complaint = Complaint.find(params[:id])
+        @user = User.find(@complaint.user_complaint) if @complaint.present?
         @template = Template.find(55)
         @vista = 'complaints/informe/' 
         @footer = 'Nit: ' + @complaint.entity.identification_number.to_s + ', Dirección: ' + @complaint.entity.entity_address.to_s

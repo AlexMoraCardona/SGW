@@ -75,6 +75,18 @@ class HomesController < ApplicationController
                     end
                 end   
             end
+            @commitments = Commitment.where("state_commitment = ?",0)
+            if  @commitments.present? then
+                @commitments.each do |commitment| 
+                            @notificaciones << ["Compromiso Acta de Reunión COPASST - VIGÍA", commitment.evidence.entity.business_name, commitment.activity, commitment.date_ejecution, commitment.id]
+                end   
+            end
+            @complaints = Complaint.where("state_complaint = ?",0)
+            if  @complaints.present? then
+                @complaints.each do |complaint| 
+                            @notificaciones << ["Queja Comité de Convivencia Laboral", complaint.entity.business_name, "Queja CCL", complaint.date_complaint, complaint.id]
+                end   
+            end
 
             @cant_noti = @notificaciones.count if @notificaciones.present?
         else
@@ -89,7 +101,7 @@ class HomesController < ApplicationController
                         end    
                     end
             end
-            @matrix_danger_risk = MatrixDangerRisk.where("entity_id = ?",@entity)
+            @matrix_danger_risk = MatrixDangerRisk.where("entity_id = ?",@entity.id)
             @matrix_danger_items = nil
             if  @matrix_danger_risk.present? then
                     @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and danger_intervened = ? and proposed_date <= ?",@matrix_danger_risk.id,0,(Date.today+30))
@@ -99,7 +111,7 @@ class HomesController < ApplicationController
                         end    
                     end
             end
-            @matrix_corrective_action = MatrixCorrectiveAction.where("entity_id = ?",@entity)
+            @matrix_corrective_action = MatrixCorrectiveAction.where("entity_id = ?",@entity.id)
             @matrix_action_items = nil
             if  @matrix_corrective_action.present? then
                     @matrix_action_items = MatrixActionItem.where("matrix_corrective_action_id = ? and state_actions = ? and commitment_date <= ?",matrix_corrective_action.id,0,(Date.today + 30))
@@ -109,7 +121,7 @@ class HomesController < ApplicationController
                         end    
                     end
             end
-            @matrix_condition = MatrixCondition.where("entity_id = ?",@entity)
+            @matrix_condition = MatrixCondition.where("entity_id = ?",@entity.id)
             @matrix_unsafe_items = nil
             if  @matrix_condition.present? then
                     @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ? and state_unsafe = ?",@matrix_condition.id,0)
@@ -119,7 +131,22 @@ class HomesController < ApplicationController
                         end    
                     end
             end
+            @commitments = Commitment.where("state_commitment = ? and entity_id = ?",0,@entity.id)
+            if  @commitments.present? then
+                @commitments.each do |commitment| 
+                            @notificaciones << ["Compromiso Acta de Reunión COPASST - VIGÍA", commitment.evidence.entity.business_name, commitment.activity, commitment.date_ejecution, commitment.id]
+                end   
+            end
+            @complaints = Complaint.where("state_complaint = ? and entity_id = ?",0,@entity.id)
+            if  @complaints.present? then
+                @complaints.each do |complaint| 
+                            @notificaciones << ["Queja Comité de Convivencia Laboral", complaint.entity.business_name, "Queja CCL", complaint.date_complaint, complaint.id]
+                end   
+            end
+
+
             @cant_noti = @notificaciones.count if @notificaciones.present?
+            
         end 
         @notificaciones.sort_by { |a, b, c, d, e| b.size }
         

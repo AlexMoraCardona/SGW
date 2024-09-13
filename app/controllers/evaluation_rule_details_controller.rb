@@ -70,7 +70,7 @@ class EvaluationRuleDetailsController < ApplicationController
             user_secretario_copasst = User.find_by("entity = ? and secretary_copasst = ?", @evidence.entity_id.to_i, 1) 
             user_vigia = User.find_by("entity = ? and vigia_sgsst = ?", @evidence.entity_id.to_i, 1) 
 
-            if user_legal_representative.present? && @evidence.template_id != 19 && @evidence.template_id != 20 && @evidence.template_id != 21 && @evidence.template_id != 22 && @evidence.template_id != 23 && @evidence.template_id != 24 && @evidence.template_id != 13 && @evidence.template_id != 14 && @evidence.template_id != 15 && @evidence.template_id != 7 && @evidence.template_id != 8 && @evidence.template_id != 9 && @evidence.template_id != 52 && @evidence.template_id != 53 && @evidence.template_id != 54 && @evidence.template_id != 115 && @evidence.template_id != 116 && @evidence.template_id != 117 && @evidence.template_id != 199 && @evidence.template_id != 200 && @evidence.template_id != 201 && @evidence.template_id != 223 && @evidence.template_id != 224 && @evidence.template_id != 225 then
+            if user_legal_representative.present? && @evidence.template_id != 19 && @evidence.template_id != 20 && @evidence.template_id != 21 && @evidence.template_id != 22 && @evidence.template_id != 23 && @evidence.template_id != 24 && @evidence.template_id != 13 && @evidence.template_id != 14 && @evidence.template_id != 15 && @evidence.template_id != 7 && @evidence.template_id != 8 && @evidence.template_id != 9 && @evidence.template_id != 52 && @evidence.template_id != 53 && @evidence.template_id != 54 && @evidence.template_id != 115 && @evidence.template_id != 116 && @evidence.template_id != 117 && @evidence.template_id != 199 && @evidence.template_id != 200 && @evidence.template_id != 201 && @evidence.template_id != 223 && @evidence.template_id != 224 && @evidence.template_id != 225 && @evidence.template_id != 61 && @evidence.template_id != 62 && @evidence.template_id != 63 && @evidence.template_id != 58 && @evidence.template_id != 59 && @evidence.template_id != 60  then
                 @firma_nueva  = Firm.new
                 @firma_nueva.user_id = user_legal_representative.id
                 @firma_nueva.legal_representative = 1
@@ -120,7 +120,7 @@ class EvaluationRuleDetailsController < ApplicationController
                 @firma_nueva.save
             end 
             
-            if user_asesor_externo.present? && (@evidence.template_id == 10 || @evidence.template_id == 11 || @evidence.template_id == 12)  then
+            if user_asesor_externo.present? && (@evidence.template_id == 10 || @evidence.template_id == 11 || @evidence.template_id == 12 || @evidence.template_id == 61 || @evidence.template_id == 62 || @evidence.template_id == 63 || @evidence.template_id == 58 || @evidence.template_id == 59 || @evidence.template_id == 60)  then
                 @firma_nueva  = Firm.new
                 @firma_nueva.user_id = user_asesor_externo.id
                 @firma_nueva.evidence_id = @evidence.id
@@ -286,7 +286,7 @@ class EvaluationRuleDetailsController < ApplicationController
         if @evaluation_rule_detail.update(evaluation_rule_detail_params)
             EvaluationRuleDetail.calculo_variables(@evaluation_rule_detail.evaluation_id) if @evaluation_rule_detail.present? 
             if  params[:evaluation_rule_detail][:meets].present?
-                redirect_to evaluation_path(@evaluation_rule_detail.evaluation_id)     
+                flash[:notice] = "Actualización Estándares"
             else 
                 redirect_to edit_evaluation_rule_detail_path(@evaluation_rule_detail.id)
             end 

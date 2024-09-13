@@ -112,13 +112,22 @@
 
     <% @evaluation_rule_details.each do |evaluation_item| %> 
         <tbody>
-            <tr>   
-                <td><%= evaluation_item.standar_detail_item.standar_detail.standar.label_cycle(evaluation_item.standar_detail_item.standar_detail.standar.cycle) %></td>
-                <td><%= evaluation_item.standar_detail_item.standar_detail.description %></td>
-                <td><%= evaluation_item.standar_detail_item.item_nro %></td>
-                <td><%= evaluation_item.standar_detail_item.description%></td>
-                <td style="text-align:center"><%= EvaluationRuleDetail.label_meets(evaluation_item.meets) %></td>
-                <td style="text-align:center"><%= evaluation_item.score %></td>
+            <tr>
+                <% if evaluation_item.meets == 0  %>
+                        <td style="background-color: #EF9A9A;"><%= evaluation_item.standar_detail_item.standar_detail.standar.label_cycle(evaluation_item.standar_detail_item.standar_detail.standar.cycle) %></td>
+                        <td style="background-color: #EF9A9A;"><%= evaluation_item.standar_detail_item.standar_detail.description %></td>
+                        <td style="background-color: #EF9A9A;"><%= evaluation_item.standar_detail_item.item_nro %></td>
+                        <td style="background-color: #EF9A9A;"><%= evaluation_item.standar_detail_item.description%></td>
+                        <td style="text-align:center; background-color: #EF9A9A;" ><%= EvaluationRuleDetail.label_meets(evaluation_item.meets) %></td>
+                        <td style="text-align:center; background-color: #EF9A9A;"><%= evaluation_item.score %></td>
+                <% else %>
+                        <td><%= evaluation_item.standar_detail_item.standar_detail.standar.label_cycle(evaluation_item.standar_detail_item.standar_detail.standar.cycle) %></td>
+                        <td><%= evaluation_item.standar_detail_item.standar_detail.description %></td>
+                        <td><%= evaluation_item.standar_detail_item.item_nro %></td>
+                        <td><%= evaluation_item.standar_detail_item.description%></td>
+                        <td style="text-align:center"><%= EvaluationRuleDetail.label_meets(evaluation_item.meets) %></td>
+                        <td style="text-align:center"><%= evaluation_item.score %></td>
+                <% end  %>        
             </tr>  
         </tbody>   
     <% end %> 
@@ -212,7 +221,7 @@
                         </div>
                         <div class="col-11">
                             <div class="row">
-                                <h6><%= @user_representante.activity %></h6>
+                                Representante Legal
                             </div>
                         </div>
                         <div class="col-11">

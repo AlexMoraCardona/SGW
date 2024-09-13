@@ -100,7 +100,7 @@ class EvaluationsController < ApplicationController
     
     def ver_evaluation_pdf
         @evaluation = Evaluation.find(params[:id])
-        @evaluation_rule_details = EvaluationRuleDetail.where("evaluation_id = ?", @evaluation.id).order(:id)  if @evaluation.present?
+        @evaluation_rule_details = EvaluationRuleDetail.where("evaluation_id = ?", @evaluation.id).order(:order_nro)  if @evaluation.present?
         @entity = Entity.find(@evaluation.entity_id) if @evaluation.present?
         @user_responsible = User.find(@evaluation.user_responsible) if @evaluation.user_responsible > 0
         @user_representante = User.find(@evaluation.user_representante) if @evaluation.user_representante > 0

@@ -138,7 +138,7 @@
     <br>
     <h2 class="display-5"><%= t('.title_detail') %></h2> 
 
-
+    <input type="button" value="Actualizar Estándares" onClick="location.reload();" style="width: 200px; height: 30px; background: #6699FF; color: #ffffff; cursor: pointer; border: 0px;"/>
     <hr>
 </div> 
 <br>  
@@ -159,8 +159,38 @@
             </tr>
         </thead>  
         <tbody>
-            <%= render partial: 'evaluation_items', collection: @evaluation_itemstotal %>  
+                <% @evaluation_itemstotal.each do |evaluation_items| %> 
+            <%= form_with model: evaluation_items do |form| %> 
 
+                    <tr> 
+                        <td><%= evaluation_items.standar_detail_item.standar_detail.standar.label_cycle(evaluation_items.standar_detail_item.standar_detail.standar.cycle) %></td>
+                        <td><%= evaluation_items.standar_detail_item.item_nro %></td>
+                        <td><%= evaluation_items.standar_detail_item.description%></td>
+                        <td style="width:350px;">
+                                <%= form.radio_button :meets, 1, :onClick=>"javascript: this.form.submit.click();" %>
+                                <label for="si_cumple">SI</label>|&nbsp;   
+                                <%= form.radio_button :meets, 0, :onClick=>"javascript: this.form.submit.click();" %>
+                                <label for="no_cumple">NO</label>|&nbsp; 
+                                <%= form.radio_button :meets, 2, :onClick=>"javascript: this.form.submit.click();" %>
+                                <label for="na">NA</label>| 
+                                <div class="actions" style="display:none;">
+                                    <%= form.submit "", :name => "submit", :remote => "true" %>
+                                </div>                                 
+                        </td>
+                        <td><%= evaluation_items.score %></td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-light" 
+                                data-bs-toggle="popover"
+                                title="<%=evaluation_items.standar_detail_item.description%>"
+                                data-bs-content="CRITERIO: <%=evaluation_items.standar_detail_item.criterion%> 
+                                MODO DE VERIFICACIÓN:  <%= evaluation_items.standar_detail_item.verification_mode %>" ><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+    
+                        </td>
+    
+                        <td><%= link_to t('common.veritem'), edit_evaluation_rule_detail_path(evaluation_items), class: 'btn btn-sm btn-primary'  %></td>
+                    </tr>  
+                <% end %> 
+            <% end %> 
         </tbody>   
  
     </table>

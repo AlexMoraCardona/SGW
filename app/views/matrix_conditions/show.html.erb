@@ -10,7 +10,7 @@
                         <%=  image_tag  @matrix_condition.entity.logo, class: "image_peq" %>
                     <% end %> 
                 </td>
-                <td rowspan="4"; colspan="10"; style="text-align:center">
+                <td rowspan="4"; colspan="11"; style="text-align:center">
                     <div class="col-10"><h5>MATRIZ DE SEGUIMIENTO DE ACTOS Y CONDICIONES INSEGURAS</h5><h6><%= @matrix_condition.entity.business_name if @matrix_condition.present? %> Nit: <%= @matrix_condition.entity.identification_number if @matrix_condition.present? %> </h6></div>
                 </td>
                 <td rowspan="4";  style="text-align:center">
@@ -49,13 +49,14 @@
                 <td style="border:1px solid black; text-align:center">Sede del reporte</TD>
                 <td style="border:1px solid black; text-align:center">Ubicación  exacta de la condición /acto inseguro</TD>
                 <td style="border:1px solid black; text-align:center">Descripción de la condición / acto inseguro</TD>
-                <td style="border:1px solid black; text-align:center">TIPO DE ACCIÓN</TD>
-                <td style="border:1px solid black; text-align:center">ESTADO</TD>
-                <td style="border:1px solid black; text-align:center">FECHA DE INTERVENCIÓN</TD>
-                <td style="border:1px solid black; text-align:center">OBSERVACIONES</TD>
-                <td style="border:1px solid black; text-align:center">VER/EDITAR</TD>
+                <td style="border:1px solid black; text-align:center">Clasificación</TD>
+                <td style="border:1px solid black; text-align:center">Tipo de acción</TD>
+                <td style="border:1px solid black; text-align:center">Estado</TD>
+                <td style="border:1px solid black; text-align:center">Fecha de intervención</TD>
+                <td style="border:1px solid black; text-align:center">Observaciones</TD>
+                <td style="border:1px solid black; text-align:center">Ver/Editar</TD>
                 <td style="border:1px solid black; text-align:center">PDF</TD>
-                <td style="border:1px solid black; text-align:center">ELIMINAR</TD>
+                <td style="border:1px solid black; text-align:center">Eliminar</TD>
                 <td style="background-color: black;">&nbsp;</td>
              </tr>  
              
@@ -74,6 +75,7 @@
                     <td style="border:1px solid black"><%= item.sede %></td>
                     <td style="border:1px solid black"><%= item.exact_ubication %></td>
                     <td style="border:1px solid black"><%= item.description_usafe %></td>
+                    <td style="border:1px solid black"><%= MatrixUnsafeItem.clasificacion_accion(item.clasification_unsafe) %></td>
                     <td style="border:1px solid black"><%= MatrixUnsafeItem.tipo_accion(item.tip_action) %></td>
                     
                     <% if item.state_unsafe == 0  %>

@@ -105,7 +105,7 @@ class EvaluationRuleDetailsController < ApplicationController
 
             if user_responsible.present? && (@evidence.template_id == 22 || @evidence.template_id == 23 || @evidence.template_id == 24 || @evidence.template_id == 43 || @evidence.template_id == 44 || @evidence.template_id == 45 || @evidence.template_id == 58 || 
                 @evidence.template_id == 59 || @evidence.template_id == 60 || @evidence.template_id == 61 || @evidence.template_id == 62 || @evidence.template_id == 63 || @evidence.template_id == 70 || @evidence.template_id == 71 || @evidence.template_id == 72 || 
-                @evidence.template_id == 4 || @evidence.template_id == 5 || @evidence.template_id == 6 || @evidence.template_id == 73 || @evidence.template_id == 74 || @evidence.template_id == 75 || @evidence.template_id == 103 || @evidence.template_id == 104 || @evidence.template_id == 85 || @evidence.template_id == 86 || @evidence.template_id == 87 ||  
+                @evidence.template_id == 4 || @evidence.template_id == 5 || @evidence.template_id == 6 || @evidence.template_id == 103 || @evidence.template_id == 104 || @evidence.template_id == 85 || @evidence.template_id == 86 || @evidence.template_id == 87 ||  
                 @evidence.template_id == 105 || @evidence.template_id == 115 || @evidence.template_id == 116 || @evidence.template_id == 117 || @evidence.template_id == 118 || @evidence.template_id == 119 || @evidence.template_id == 120 || @evidence.template_id == 121 || 
                 @evidence.template_id == 122 || @evidence.template_id == 123 || @evidence.template_id == 124 || @evidence.template_id == 125 || @evidence.template_id == 126 || @evidence.template_id == 127 || @evidence.template_id == 128 || @evidence.template_id == 129 || 
                 @evidence.template_id == 130 || @evidence.template_id == 131 || @evidence.template_id == 132 || @evidence.template_id == 133 || @evidence.template_id == 134 || @evidence.template_id == 135 || @evidence.template_id == 136 || @evidence.template_id == 137 || 
@@ -120,7 +120,7 @@ class EvaluationRuleDetailsController < ApplicationController
                 @firma_nueva.save
             end 
             
-            if user_asesor_externo.present? && (@evidence.template_id == 10 || @evidence.template_id == 11 || @evidence.template_id == 12 || @evidence.template_id == 61 || @evidence.template_id == 62 || @evidence.template_id == 63 || @evidence.template_id == 58 || @evidence.template_id == 59 || @evidence.template_id == 60)  then
+            if user_asesor_externo.present? && (@evidence.template_id == 10 || @evidence.template_id == 11 || @evidence.template_id == 12 || @evidence.template_id == 61 || @evidence.template_id == 62 || @evidence.template_id == 63 || @evidence.template_id == 58 || @evidence.template_id == 59 || @evidence.template_id == 60 || @evidence.template_id == 73 || @evidence.template_id == 74 || @evidence.template_id == 75 || @evidence.template_id == 82 || @evidence.template_id == 83 || @evidence.template_id == 84 || @evidence.template_id == 76 || @evidence.template_id == 77 || @evidence.template_id == 78 || @evidence.template_id == 79 || @evidence.template_id == 80 || @evidence.template_id == 81)  then
                 @firma_nueva  = Firm.new
                 @firma_nueva.user_id = user_asesor_externo.id
                 @firma_nueva.evidence_id = @evidence.id

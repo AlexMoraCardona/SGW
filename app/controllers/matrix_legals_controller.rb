@@ -29,6 +29,7 @@ class MatrixLegalsController < ApplicationController
     end  
     
     def show
+        @template = Template.find(231)
         @matrix_legal = MatrixLegal.find(params[:id])
         @matrix_legal_items = MatrixLegalItem.where("matrix_legal_id = ?", @matrix_legal.id) if @matrix_legal.present?
         @entity = Entity.find(@matrix_legal.entity_id) if @matrix_legal.present?

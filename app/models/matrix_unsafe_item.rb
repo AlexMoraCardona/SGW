@@ -18,6 +18,12 @@ class MatrixUnsafeItem < ApplicationRecord
         end 
     end
 
+    def self.clasificacion_accion(dato)
+        if dato == 0 ; 'Condición'
+        elsif  dato == 1 ; 'Acto'
+        end 
+    end    
+
     def self.estado(dato)
         if dato == 0 ; 'Abierta'
         elsif  dato == 1 ; 'Cerrada'

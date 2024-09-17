@@ -119,22 +119,43 @@ class MatrixConditionsController < ApplicationController
   
     def indicador_matrix_condition(matrix_condition_id)
         @total_items = 0
-        @abierta = 0
-        @cerrada = 0
+        @abierta_conditions = 0
+        @cerrada_conditions = 0
+        @total_conditions = 0
+        @total_actos = 0
+        @abierta_actos = 0
+        @cerrada_actos = 0
+
 
         @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", matrix_condition_id) if matrix_condition_id.present?
         
         if @matrix_unsafe_items.present? 
             @matrix_unsafe_items.each do |item| 
-                @total_items += 1 
-                if item.state_unsafe == 0; @abierta += 1
-                else @cerrada += 1    
-                end
+                if item.clasification_unsafe == 0;
+                    @total_conditions += 1 
+                    if item.state_unsafe == 0; @abierta_conditions += 1
+                    else @cerrada_conditions += 1    
+                    end
+                end    
             end    
         end 
         @datos_matrix_conditions = []
-        @datos_matrix_conditions.push(['Cerradas', @cerrada ])
-        @datos_matrix_conditions.push(['Abiertas', @abierta ])
+        @datos_matrix_conditions.push(['Cerradas', @cerrada_conditions ])
+        @datos_matrix_conditions.push(['Abiertas', @abierta_conditions ])
+
+        if @matrix_unsafe_items.present? 
+            @matrix_unsafe_items.each do |item| 
+                if item.clasification_unsafe == 1;
+                    @total_actos += 1 
+                    if item.state_unsafe == 0; @abierta_actos += 1
+                    else @cerrada_actos += 1    
+                    end
+                end    
+            end    
+        end 
+        @datos_matrix_actos = []
+        @datos_matrix_actos.push(['Cerradas', @cerrada_actos ])
+        @datos_matrix_actos.push(['Abiertas', @abierta_actos ])
 
     end    
 

@@ -18,7 +18,6 @@ class UnsafeConditionsController < ApplicationController
       @unsafe_condition = UnsafeCondition.new 
       @entity = Entity.find(params[:entity_id].to_i) if params[:entity_id].present? 
       @asesor_recibe = User.find(@entity.responsible_sst) if @entity.responsible_sst > 0 
-      @asesor_recibe = User.find(@entity.external_consultant) if @entity.external_consultant > 0 
     end    
 
     def create

@@ -28,7 +28,7 @@
         </div> 
         <div class="row g-3">
             <div class="col-sm-5">
-                <%= pie_chart  @datos_matrix_conditions, title: "Matriz de Actos y Condiciones Inseguras", download: {filename: "GraficaCiclo"}, download: {background: "#FFFFFF"}, xtitle: "Cerrados", ytitle: "Abiertos", suffix: " Actos o Condiciones", colors: ["#008000", "#FF0000"], donut: true, label: 'true', width: "200px", height: "200px", legend: "bottom", loading: "Loading..."  if @datos_matrix_conditions.present? %>
+                <%= pie_chart  @datos_matrix_conditions, title: "Matriz de Condiciones Inseguras", download: {filename: "GraficaCiclo"}, download: {background: "#FFFFFF"}, xtitle: "Cerrados", ytitle: "Abiertos", suffix: "Condiciones", colors: ["#008000", "#FF0000"], donut: true, label: 'true', width: "200px", height: "200px", legend: "bottom", loading: "Loading..."  if @datos_matrix_conditions.present? %>
             </div>
             <div class="col-sm-1">
             </div>
@@ -37,16 +37,43 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">Total de Actos y Condiciones Inseguras</th>
+                            <th scope="col">Total de Condiciones Inseguras</th>
                             <th scope="col">Abiertas</th>
                             <th scope="col">Cerradas</th>
                         </tr>
                     </thead>
                     <tbody>
                             <tr>
-                                <td style="text-align:center"><%= @total_items %></td>
-                                <td style="text-align:center"><%= @abierta %></td>
-                                <td style="text-align:center"><%= @cerrada %></td>
+                                <td style="text-align:center"><%= @total_conditions %></td>
+                                <td style="text-align:center"><%= @abierta_conditions %></td>
+                                <td style="text-align:center"><%= @cerrada_conditions %></td>
+                            </tr>    
+                    </tbody>
+                </table>
+            </div>
+        </div>        
+
+        <div class="row g-3">
+            <div class="col-sm-5">
+                <%= pie_chart  @datos_matrix_actos, title: "Matriz de Actos Inseguros", download: {filename: "GraficaCiclo"}, download: {background: "#FFFFFF"}, xtitle: "Cerrados", ytitle: "Abiertos", suffix: "Actos", colors: ["#008000", "#FF0000"], donut: true, label: 'true', width: "200px", height: "200px", legend: "bottom", loading: "Loading..."  if @datos_matrix_actos.present? %>
+            </div>
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-5">
+                <br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Total de Actos Inseguros</th>
+                            <th scope="col">Abiertos</th>
+                            <th scope="col">Cerrados</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <tr>
+                                <td style="text-align:center"><%= @total_actos %></td>
+                                <td style="text-align:center"><%= @abierta_actos %></td>
+                                <td style="text-align:center"><%= @cerrada_actos %></td>
                             </tr>    
                     </tbody>
                 </table>

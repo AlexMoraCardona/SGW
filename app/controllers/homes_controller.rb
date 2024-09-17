@@ -90,7 +90,7 @@ class HomesController < ApplicationController
 
             @cant_noti = @notificaciones.count if @notificaciones.present?
         else
-            @annual_work_plan = AnnualWorkPlan.where("year = ? and entity_id = ?", @year_noti,@entity.id) if @entity.present? 
+            @annual_work_plan = AnnualWorkPlan.where("year = ? and entity_id = ?", @year_noti,@entity.id).last if @entity.present? 
             @annual_work_plan_items = nil
             if  @annual_work_plan.present? then
                     @annual_work_plan_items = AnnualWorkPlanItem.where("annual_work_plan_id = ? and earring = ? and month <= ?",@annual_work_plan.id,0,@month_noti)
@@ -121,7 +121,7 @@ class HomesController < ApplicationController
                         end    
                     end
             end
-            @matrix_condition = MatrixCondition.where("entity_id = ?",@entity.id)
+            @matrix_condition = MatrixCondition.where("entity_id = ?",@entity.id).last
             @matrix_unsafe_items = nil
             if  @matrix_condition.present? then
                     @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ? and state_unsafe = ?",@matrix_condition.id,0)
@@ -131,10 +131,12 @@ class HomesController < ApplicationController
                         end    
                     end
             end
-            @commitments = Commitment.where("state_commitment = ? and entity_id = ?",0,@entity.id)
+            @commitments = Commitment.where("state_commitment = ?",0)
             if  @commitments.present? then
-                @commitments.each do |commitment| 
+                @commitments.each do |commitment|
+                    if commitment.evidence.entity_id ==  @entity.id then
                             @notificaciones << ["Compromiso Acta de Reunión COPASST - VIGÍA", commitment.evidence.entity.business_name, commitment.activity, commitment.date_ejecution, commitment.id]
+                    end        
                 end   
             end
             @complaints = Complaint.where("state_complaint = ? and entity_id = ?",0,@entity.id)
@@ -269,11 +271,22 @@ class HomesController < ApplicationController
         @totalactosinter = 0
         @totalactos = 0
         @totalactosnointer = 0
-        if @cantidad > 0 then 
+        @totalcondicionesinter = 0
+        @totalcondiciones = 0
+        @totalcondicionesnointer = 0
+
+        if @cantidad > 0 then  
             @matrix_unsafe_items.each do |item|
-                @totalactos += 1
-                @totalactosinter += 1 if item.state_unsafe == 1
-                @totalactosnointer += 1 if item.state_unsafe == 0
+                if item.clasification_unsafe == 1 
+                    @totalactos += 1
+                    @totalactosinter += 1 if item.state_unsafe == 1
+                    @totalactosnointer += 1 if item.state_unsafe == 0
+                end    
+                if item.clasification_unsafe == 0 
+                    @totalcondiciones += 1
+                    @totalcondicionesinter += 1 if item.state_unsafe == 1
+                    @totalcondicionesnointer += 1 if item.state_unsafe == 0
+                end    
             end    
         end  
         

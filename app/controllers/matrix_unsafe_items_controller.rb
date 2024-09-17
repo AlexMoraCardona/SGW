@@ -64,7 +64,7 @@ class MatrixUnsafeItemsController < ApplicationController
     private
 
     def matrix_unsafe_item_params
-        params.require(:matrix_unsafe_item).permit(:date_item, :user_reporta, :cargo_reporta, :correo_reporta, :sede, :exact_ubication, :description_usafe, :solution_usafe, :tip_action, :state_unsafe, :observations, :user_recibe, :date_intervencion, :entity_id, :unsafe_condition_id, :matrix_condition_id, registros: [])
+        params.require(:matrix_unsafe_item).permit(:date_item, :user_reporta, :cargo_reporta, :correo_reporta, :sede, :exact_ubication, :description_usafe, :solution_usafe, :tip_action, :state_unsafe, :observations, :user_recibe, :date_intervencion, :entity_id, :unsafe_condition_id, :clasification_unsafe, :matrix_condition_id, registros: [])
     end 
 
 end 

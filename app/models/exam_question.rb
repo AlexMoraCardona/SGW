@@ -12,6 +12,10 @@ class ExamQuestion < ApplicationRecord
         @preguntas.push([@pregunta.good_answe]) if @pregunta.present?
         @preguntas.shuffle!
         return @preguntas
-    end    
-
+    end   
+    
+    def self.ransackable_attributes(auth_object = nil)
+        ["number", "question", "adm_exam_id" ]
+    end   
+    
 end

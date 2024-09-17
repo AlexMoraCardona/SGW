@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_02_164719) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_17_171454) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -645,6 +645,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_02_164719) do
     t.integer "responsible_sst", default: 0
     t.integer "external_consultant", default: 0
     t.integer "pay_entity", default: 0
+    t.string "objeto_entity"
     t.index ["email_entity"], name: "index_entities_on_email_entity", unique: true
   end
 
@@ -1343,6 +1344,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_02_164719) do
     t.bigint "entity_id"
     t.bigint "unsafe_condition_id"
     t.bigint "matrix_condition_id"
+    t.integer "clasification_unsafe", default: 0
     t.index ["entity_id"], name: "index_matrix_unsafe_items_on_entity_id"
     t.index ["matrix_condition_id"], name: "index_matrix_unsafe_items_on_matrix_condition_id"
     t.index ["unsafe_condition_id"], name: "index_matrix_unsafe_items_on_unsafe_condition_id"

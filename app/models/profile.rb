@@ -100,9 +100,10 @@ class Profile < ApplicationRecord
         end
         return  @datos 
     end
-
+ 
     def self.labelciudad(dato)
-        dato = AdministrativePoliticalDivision.find(dato).municipality_name
+        ubica = AdministrativePoliticalDivision.find(dato) 
+        dato = "#{ubica.town_center_name} - #{ubica.municipality_name} - #{ubica.department_name}"
     end 
 
     def self.vvivienda(dato)

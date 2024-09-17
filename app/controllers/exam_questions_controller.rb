@@ -1,7 +1,10 @@
 class ExamQuestionsController < ApplicationController
     def index
         if  Current.user && Current.user.level == 1
-            @exam_questions = ExamQuestion.all
+            #@exam_questions = ExamQuestion.all
+            @q = ExamQuestion.ransack(params[:q])
+            @pagy, @exam_questions = pagy(@q.result(id: :desc), items: 3)
+
          else
              redirect_to new_session_path, alert: t('common.not_logged_in')   
              session.delete(:user_id)   

@@ -59,7 +59,7 @@ class EntitiesController < ApplicationController
            :first_name_legal_representative, :second_name_legal_representative, :surname_legal_representative,
             :second_surname_legal_representative, :email_legal_representative, :phone_number_entity, :cell_entity,
              :entity_address, :entity_location_code, :entity_zone, :entity_arl, :number_workers, :risk_classification,
-              :license, :logo, :agricultural_unit, :responsible_sst, :external_consultant, :pay_entity)
+              :license, :logo, :agricultural_unit, :responsible_sst, :external_consultant, :pay_entity, :objeto_entity)
     end 
 
 end  

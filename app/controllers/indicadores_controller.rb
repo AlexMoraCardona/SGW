@@ -457,17 +457,19 @@ class IndicadoresController < ApplicationController
         @indicador_peligrosyriesgos = Indicator.find(7)
         @matrix_danger_risks = MatrixDangerRisk.find_by(entity_id: entity.id) if entity.present?
         @matrix_danger_items = MatrixDangerItem.where('matrix_danger_risk_id = ?', @matrix_danger_risks.id) if @matrix_danger_risks.present?
-
+        @indicador_peligrosriesgos = 0
         @totalpeligrosriesgos = 0
         @interpeligrosriesgos = 0
         @datos_peligrosriesgos = []
-        @matrix_danger_items.each do |rep| 
-            @totalpeligrosriesgos += 1
-            if rep.danger_intervened == 1 then
-                @interpeligrosriesgos += 1
-            end    
-        end
-        @indicador_peligrosriesgos = (@interpeligrosriesgos * 100)/ @totalpeligrosriesgos
+        if @matrix_danger_items.present? 
+            @matrix_danger_items.each do |rep| 
+                @totalpeligrosriesgos += 1
+                if rep.danger_intervened == 1 then
+                    @interpeligrosriesgos += 1
+                end    
+            end
+        end    
+        @indicador_peligrosriesgos = (@interpeligrosriesgos * 100)/ @totalpeligrosriesgos if @totalpeligrosriesgos > 0
         @datos_peligrosriesgos.push([@interpeligrosriesgos, @indicador_peligrosriesgos]) 
 
     end

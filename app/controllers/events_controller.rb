@@ -51,10 +51,10 @@ class EventsController < ApplicationController
 
     private
 
-    def event_params
+    def event_params 
         params.require(:event).permit(:date_new, :work_accident, :disability_start_date, 
         :disability_end_date, :mortal_accident, :occupational_disease, :laboral_inhability, 
-        :common_inhability, :days_absenteeism, :user_reports, :user_id, :entity_id )
+        :common_inhability, :days_absenteeism, :user_reports, :user_id, :entity_id, :affected_body, :type_injure, :accident_agent, :accident_mechanism, :name_disease)
     end 
 
 end 

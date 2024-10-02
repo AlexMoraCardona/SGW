@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_17_171454) do
+ActiveRecord::Schema[7.0].define(version: 2024_10_01_172653) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -726,6 +726,11 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_17_171454) do
     t.bigint "entity_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "affected_body", default: 0
+    t.integer "type_injure", default: 0
+    t.integer "accident_agent", default: 0
+    t.integer "accident_mechanism", default: 0
+    t.integer "name_disease", default: 0
     t.index ["entity_id"], name: "index_events_on_entity_id"
     t.index ["user_id"], name: "index_events_on_user_id"
   end

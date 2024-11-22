@@ -13,10 +13,10 @@ class MatrixDangerRisksController < ApplicationController
             if @matrix_danger_items.present? 
                 @matrix_danger_items.each do |item| 
                     @total_items += 1 
-                    if item.risk_level_interpretation.to_s == 'I' ; @uno += 1
-                    elsif item.risk_level_interpretation.to_s == 'II' ; @dos += 1
-                    elsif item.risk_level_interpretation.to_s == 'III' ; @tres += 1
-                    elsif item.risk_level_interpretation.to_s == 'IV' ; @cuatro += 1    
+                    if item.risk_level_interpretation.to_s == 'I No Aceptable' ; @uno += 1
+                    elsif item.risk_level_interpretation.to_s == 'II No Aceptable' ; @dos += 1
+                    elsif item.risk_level_interpretation.to_s == 'III Aceptable' ; @tres += 1
+                    elsif item.risk_level_interpretation.to_s == 'IV Aceptable' ; @cuatro += 1    
                     end
                 end    
             end 
@@ -97,6 +97,8 @@ class MatrixDangerRisksController < ApplicationController
     def show
         @matrix_danger_risk = MatrixDangerRisk.find_by(id: params[:id].to_i)
         @matrix_danger_items = MatrixDangerItem.where(matrix_danger_risk_id: params[:id].to_i).order(:consecutive)
+        @template = Template.find(94)
+        @entity = Entity.find(@matrix_danger_risk.entity_id) if @matrix_danger_risk.present?
     end
 
     def total_items
@@ -141,6 +143,8 @@ class MatrixDangerRisksController < ApplicationController
         @matrix_danger_risk = MatrixDangerRisk.find(params[:id])
         @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ?", @matrix_danger_risk.id).order(:consecutive) if @matrix_danger_risk.present?
         @entity = Entity.find(@matrix_danger_risk.entity_id)  if @matrix_danger_risk.present?
+        @template = Template.find(94)
+
         respond_to do |format| 
             format.html
             format.pdf {render  pdf: 'resumen_pdf',

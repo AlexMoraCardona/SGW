@@ -92,6 +92,8 @@ Rails.application.routes.draw do
   resources :brigadista_plans
   resources :res_int_plans
   resources :res_ext_plans
+  resources :table_diseases
+  resources :detail_diseases
 
   get '/emergency_plans/resources_ext_plan/:id', to: 'emergency_plans#resources_ext_plan', as: 'resources_ext_plan'
   get '/emergency_plans/resources_int_plan/:id', to: 'emergency_plans#resources_int_plan', as: 'resources_int_plan'

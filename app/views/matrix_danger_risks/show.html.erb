@@ -10,177 +10,139 @@
                         <%=  image_tag  @matrix_danger_risk.entity.logo, class: "image_peq" %>
                     <% end %>
                 </td>
-                <td rowspan="4"; colspan="36"; style="text-align:center">
-                    <div class="col-10"><h5>MATRIZ DE IDENTIFICACIÓN DE PELIGROS, EVALUACIÓN Y VALORACION DE LOS RIESGOS</h5><h6><%= @matrix_danger_risk.entity.business_name if @matrix_danger_risk.present? %> Nit: <%= @matrix_danger_risk.entity.identification_number if @matrix_danger_risk.present? %> </h6></div>
+                <td rowspan="4"; colspan="21"; style="text-align:center">
+                    <div class="col-8"><h5>MATRIZ DE IDENTIFICACIÓN DE PELIGROS, EVALUACIÓN Y VALORACION DE LOS RIESGOS</h5><h6><%= @matrix_danger_risk.entity.business_name if @matrix_danger_risk.present? %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %> </h6></div> 
                 </td>
                 <td rowspan="4";  style="text-align:center">
                 </td>
                 <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
 
-                <td style="border:1px solid black"><%= @matrix_danger_risk.date_create  if @matrix_danger_risk.present? %></td>
+                <td style="border:1px solid black"><%= @template.date if @template.present? %></td>
                 <td style="background-color: black;">&nbsp;</td>
             </tr>
             <tr> 
                 <td style="background-color: black;">&nbsp;</td>
                 <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
-                <td style="border:1px solid black"><%= @matrix_danger_risk.date_update if @matrix_danger_risk.present? %></td>
+                <td style="border:1px solid black"><%= @template.date_updated if @template.present? %></td>
                 <td style="background-color: black;">&nbsp;</td>
             </tr>
             <tr> 
                 <td style="background-color: black;">&nbsp;</td>
                 <td colspan="2"; style="border:1px solid black">Versión:</td>
-                <td style="border:1px solid black"><%= @matrix_danger_risk.version if @matrix_danger_risk.present? %></td>
+                <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
                 <td style="background-color: black;">&nbsp;</td>
             </tr>
             <tr> 
                 <td style="background-color: black;">&nbsp;</td>
                 <td colspan="2"; style="border:1px solid black">Código:</td>
-                <td style="border:1px solid black"><%= @matrix_danger_risk.code if @matrix_danger_risk.present? %></td>
+                <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
                 <td style="background-color: black;">&nbsp;</td>
             </tr>
 
 
             <tr>
                 <td style="background-color: black;">&nbsp;</td>
-                <td colspan="16"; style="border:1px solid black; text-align:center">&nbsp;</TD>
-                <td colspan="7"; style="border:1px solid black; text-align:center">EVALUACIÓN DEL RIESGO</td>
-                <td style="border:1px solid black; text-align:center">VALORACIÓN DEL RIESGO</td>
-                <td colspan="6"; style="border:1px solid black; text-align:center">CRITERIOS PARA ESTABLECER LOS CONTROLES</td>
-                <td colspan="11"; style="border:1px solid black; text-align:center">METODOS DE CONTROL DEL RIESGO</td>
+                <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>PROCESO</strong></TD>
+                <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>ZONA - LUGAR</strong></TD>
+                <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>ACTIVIDADES</strong></TD>
+                <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>TAREA</strong></TD>
+                <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>RUTINARIA: SI o NO</strong></TD>
+                <td colspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>PELIGRO</strong></TD>
+                <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>EFECTOS POSIBLES EN LA SALUD</strong></TD>
+                <td colspan="3"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>CONTROLES EXISTENTES</strong></TD>
+                <td colspan="7"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>EVALUACIÓN DEL RIESGO</strong></td>
+                <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>VALORACIÓN DEL RIESGO</strong></td>
+                <td colspan="5"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>MEDIDAS DE INTERVENCIÓN</strong></TD>
+                <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>OBSERVACIONES</strong></TD>
+                <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>EDITAR</strong></TD>
                 <td style="background-color: black;">&nbsp;</td>
             </tr>            
             <tr>
                 <td style="background-color: black;">&nbsp;</td>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">AÑO</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">Proceso</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">Zona - Lugar</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">Actividad</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">Tarea</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">Tipo de tarea</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">Clasificación de Peligro</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">Descripción de Peligro</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">Fuente</TD>
-                <td colspan="2"; style="border:1px solid black; text-align:center">Efectos Posibles</TD>
-                <td colspan="4"; style="border:1px solid black; text-align:center">Descripción del Control existente</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">NIVEL DE DEFICIENCIA (ND)</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">NIVEL DE EXPOSICIÓN (NE)</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">NIVEL DE PROBABILIDAD (ND*NE)</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">INTERPRETACIÓN DEL NIVEL DE PROBABILIDAD</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">NIVEL DE CONSECUENCIA</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">NIVEL DE RIESGO E INTERVENCIÓN (NR)</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">INTERPRETACIÓN DEL NIVEL DE RIESGO</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">ACEPTABILIDAD DEL RIESGO</TD>
-                <td colspan="3"; style="border:1px solid black; text-align:center">Expuestos</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">Horas de exposición</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">Peor Consecuencia</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">Existencia de requisito legal</TD>
-                <td colspan="5"; style="border:1px solid black; text-align:center">MEDIDAS DE INTERVENCIÓN</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">RESPONSABLE IMPLEMENTACIÓN</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">TIPO DE REGISTRO</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">FECHA PROPUESTA</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">FECHA DE IMPLEMENTACIÓN</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">FECHA DE SEGUIMIENTO</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">OBSERVACIONES</TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center">EDITAR</TD>
+                <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>DESCRIPCIÓN</strong></TD>
+                <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>CLASIFICACIÓN</strong></TD>
+                <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>FUENTE</strong></TD>
+                <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>MEDIO</strong></TD>
+                <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>INDIVIDUO</strong></TD>
+                <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>NIVEL DE DEFICIENCIA (ND)</strong></TD>
+                <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>NIVEL DE EXPOSICIÓN (NE)</strong></TD>
+                <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>NIVEL DE PROBABILIDAD (ND*NE)</strong></TD>
+                <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>INTERPRETACIÓN DEL NIVEL DE PROBABILIDAD</strong></TD>
+                <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>NIVEL DE CONSECUENCIA</strong></TD>
+                <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>NIVEL DE RIESGO E INTERVENCIÓN (NR)</strong></TD>
+                <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>INTERPRETACIÓN DEL NIVEL DE RIESGO</strong></TD>
+                <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>ACEPTABILIDAD DEL RIESGO</strong></TD>
+                <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>ELIMINACIÓN</strong></TD>
+                <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>SUSTITUCIÓN</strong></TD>
+                <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>CONTROL DE INGENIERÍA</strong></TD>
+                <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>CONTROLES ADMINISTRATIVAS, SEÑALIZACIÓN, ADVERTENCIA</strong></TD>
+                <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>EQUIPOS/ELEMENTOS DE PROTECCIÓN PERSONAL</strong></TD>
                 <td style="background-color: black;">&nbsp;</td>
             </tr>            
-            <tr>  
-                <td style="background-color: black;">&nbsp;</td>
-                <td style="border:1px solid black; text-align:center">Salud</TD>
-                <td style="border:1px solid black; text-align:center">Seguridad</TD>
-                <td style="border:1px solid black; text-align:center">Fuente</TD>
-                <td style="border:1px solid black; text-align:center">Medio</TD>
-                <td style="border:1px solid black; text-align:center">Persona</TD>
-                <td style="border:1px solid black; text-align:center">Observaciones</TD>
-                <td style="border:1px solid black; text-align:center">PLANTA O VINCULADOS</TD>
-                <td style="border:1px solid black; text-align:center">CONTRATISTAS</TD>
-                <td style="border:1px solid black; text-align:center">TOTAL</TD>
-                <td style="border:1px solid black; text-align:center">ELIMINACIÓN</TD>
-                <td style="border:1px solid black; text-align:center">SUSTITUCIÓN</TD>
-                <td style="border:1px solid black; text-align:center">CONTROL DE INGENIERÍA</TD>
-                <td style="border:1px solid black; text-align:center">CONTROLES ADMINISTRATIVAS, SEÑALIZACIÓN, ADVERTENCIA</TD>
-                <td style="border:1px solid black; text-align:center">EQUIPOS/ELEMENTOS DE PROTECCIÓN PERSONAL</TD>
-                <td style="background-color: black;">&nbsp;</td>
-             </tr>  
              
         </thead>
         <% @matrix_danger_items.each do |item| %>             
             <tbody>
                 <tr>
                     <td style="background-color: black;">&nbsp;</td>
-                    <td style="border:1px solid black"><%= item.year %></td>
                     <td style="border:1px solid black"><%= item.location.name_locate %></td>
-                    <td style="border:1px solid black"><%= item.source_information %></td>
+                    <td style="border:1px solid black"><%= item.origin %></td>
                     <td style="border:1px solid black"><%= item.activity %></td>
                     <td style="border:1px solid black"><%= item.task %></td>
                     <td style="border:1px solid black"><%= item.label_type_task(item.type_task) %></td>
-                    <td style="border:1px solid black"><%= item.clasification_danger.name if item.clasification_danger_id.present? && item.clasification_danger_id.to_i > 0 %></td>
                     <td style="border:1px solid black"><%= item.clasification_danger_detail.name if item.clasification_danger_detail_id.present? && item.clasification_danger_detail_id.to_i > 0 %></td>
-                    <td style="border:1px solid black"><%= item.origin %></td>
+                    <td style="border:1px solid black"><%= item.clasification_danger.name if item.clasification_danger_id.present? && item.clasification_danger_id.to_i > 0 %></td>
                     <td style="border:1px solid black"><%= item.possible_effects_health %></td>
-                    <td style="border:1px solid black"><%= item.possible_effects_security %></td>
+
+                   
                     <td style="border:1px solid black"><%= item.description_existing_control_origin  %></td>
                     <td style="border:1px solid black"><%= item.description_existing_control_medium  %></td>
                     <td style="border:1px solid black"><%= item.description_existing_control_person  %></td>
-                    <td style="border:1px solid black"><%= item.description_existing_control_observations  %></td>
                     <td style="border:1px solid black; text-align:center"><%= item.deficiency_level  %></td>
                     <td style="border:1px solid black; text-align:center"><%= item.exposure_level  %></td>
                     <td style="border:1px solid black; text-align:center"><%= item.probability_level  %></td>
                     <td style="border:1px solid black; text-align:center"><%= item.interpretation  %></td>
                     <td style="border:1px solid black; text-align:center"><%= item.consequence_level  %></td>
-                    <td style="border:1px solid black; text-align:center"><%= item.level_risk_intervention  %></td>
-                    <% if item.risk_level_interpretation.to_s == 'I'  %>
-                         <td style="border:1px solid black; text-align:center; background-color:#F03553"><%= item.risk_level_interpretation %></td>
+                    <% if item.risk_level_interpretation.to_s == 'I No Aceptable'  %>
+                         <td style="border:1px solid black; text-align:center; background-color:#F03553"><%= item.level_risk_intervention  %></td>
                     <% end  %>    
-                    <% if item.risk_level_interpretation.to_s == 'II'  %>
-                         <td style="border:1px solid black; text-align:center; background-color:#D98F3B"><%= item.risk_level_interpretation %></td>
-                    <% end  %>    
-
-                    <% if item.risk_level_interpretation.to_s == 'III'  %>
-                         <td style="border:1px solid black; text-align:center; background-color:#F0E835"><%= item.risk_level_interpretation %></td>
+                    <% if item.risk_level_interpretation.to_s == 'II No Aceptable'  %>
+                         <td style="border:1px solid black; text-align:center; background-color:#D98F3B"><%= item.level_risk_intervention  %></td>
                     <% end  %>    
 
-                    <% if item.risk_level_interpretation.to_s == 'IV'  %>
-                         <td style="border:1px solid black; text-align:center; background-color:#038018"><%= item.risk_level_interpretation %></td>
+                    <% if item.risk_level_interpretation.to_s == 'III Aceptable'  %>
+                         <td style="border:1px solid black; text-align:center; background-color:#F0E835"><%= item.level_risk_intervention  %></td>
                     <% end  %>    
-                   
+
+                    <% if item.risk_level_interpretation.to_s == 'IV Aceptable'  %>
+                         <td style="border:1px solid black; text-align:center; background-color:#038018"><%= item.level_risk_intervention  %></td>
+                    <% end  %>    
                     <td style="border:1px solid black"><%= item.risk_acceptability  %></td>
-                    <td style="border:1px solid black; text-align:center"><%= item.number_exposed  %></td>
-                    <td style="border:1px solid black; text-align:center"><%= item.number_exposed_contrators  %></td>
-                    <td style="border:1px solid black; text-align:center"><%= item.number_exposed_totals  %></td>
-                    <td style="border:1px solid black; text-align:center"><%= item.hours_exposure  %></td>
-                    <td style="border:1px solid black"><%= item.worst_consequence  %></td>
-                    <td style="border:1px solid black; text-align:center"><%= item.label_si_no(item.existence_legal_requirement)  %></td>
+                    <td style="border:1px solid black; text-align:center;"><%= item.risk_level_interpretation %></td>
+                   
                     <td style="border:1px solid black; text-align:center"><%= item.intervention_measures_elimination  %></td>
                     <td style="border:1px solid black; text-align:center""><%= item.intervention_measures_replacement  %></td>
                     <td style="border:1px solid black"><%= item.intervention_measures_engineering_control  %></td>
                     <td style="border:1px solid black"><%= item.intervention_measures_acsw  %></td>
                     <td style="border:1px solid black"><%= item.intervention_measures_ppee  %></td>
-                    <td style="border:1px solid black"><%= item.responsible_implementation  %></td>
-                    <td style="border:1px solid black"><%= item.type_register  %></td>
-                    <td style="border:1px solid black"><%= item.proposed_date  %></td>
-                    <td style="border:1px solid black"><%= item.implementation_date  %></td>
-                    <td style="border:1px solid black"><%= item.follow_date  %></td>
                     <td style="border:1px solid black"><%= item.observations  %></td>
                     <td style="border:1px solid black"><%= link_to t('common.edit'), edit_matrix_danger_item_path(item), class: 'btn btn-xs btn-primary'  %></td>
-
-
                     <td style="background-color: black;">&nbsp;</td>
                 </tr>
             </body>
         <% end %>
         <tr>
             <td style="background-color: black;">&nbsp;<br>&nbsp;<br>&nbsp;<br></td>
-            <td colspan="15"; style="border:1px solid black; text-align:center">&nbsp;</td>
-            <td colspan="14"; style="border:1px solid black; text-align:center">&nbsp;</td>
-            <td colspan="13"; style="border:1px solid black; text-align:center">&nbsp;</td>
+            <td colspan="8"; style="border:1px solid black; text-align:center">&nbsp;</td>
+            <td colspan="9"; style="border:1px solid black; text-align:center">&nbsp;</td>
+            <td colspan="9"; style="border:1px solid black; text-align:center">&nbsp;</td>
             <td style="background-color: black;">&nbsp;</td>
         </tr>
         <tr>
             <td style="background-color: black;">&nbsp;</td>
-            <td colspan="14"; style="border:1px solid black; text-align:center"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_legal_representative) %> - Representante Legal</td>
-            <td colspan="14"; style="border:1px solid black; text-align:center"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_adviser_sst) %> - Asesor SST</td>
-            <td colspan="13"; style="border:1px solid black; text-align:center"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_responsible_sst) %> - Responsable SST</td>
+            <td colspan="8"; style="border:1px solid black; text-align:center"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_legal_representative) %> - Representante Legal</td>
+            <td colspan="9"; style="border:1px solid black; text-align:center"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_adviser_sst) %> - Asesor SST</td>
+            <td colspan="9"; style="border:1px solid black; text-align:center"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_responsible_sst) %> - Responsable SST</td>
             <td style="background-color: black;">&nbsp;</td>
         </tr>
     </table>  

@@ -32,16 +32,16 @@ class MatrixDangerItem < ApplicationRecord
         
         item.level_risk_intervention = item.probability_level.to_f * item.consequence_level.to_f
 
-        if item.level_risk_intervention.to_f <= 20 ; item.risk_level_interpretation = 'IV'
-        elsif item.level_risk_intervention.to_f <= 120 ; item.risk_level_interpretation = 'III'
-        elsif item.level_risk_intervention.to_f <= 500 ; item.risk_level_interpretation = 'II'
-        elsif item.level_risk_intervention.to_f <= 4000 ; item.risk_level_interpretation = 'I'
+        if item.level_risk_intervention.to_f <= 20 ; item.risk_level_interpretation = 'IV Aceptable'
+        elsif item.level_risk_intervention.to_f <= 120 ; item.risk_level_interpretation = 'III Aceptable'
+        elsif item.level_risk_intervention.to_f <= 500 ; item.risk_level_interpretation = 'II No Aceptable'
+        elsif item.level_risk_intervention.to_f <= 4000 ; item.risk_level_interpretation = 'I No Aceptable'
         end             
-
-        if item.risk_level_interpretation == "I" ; item.risk_acceptability = 'No Aceptable situación critica, Suspender actividades hasta que el riesgo esté bajo control, la Intervención es urgente.'
-        elsif item.risk_level_interpretation == "II" ; item.risk_acceptability = 'Aceptable con controles Corregir y adoptar medidas de control inmediato, sin embargo se debe suspenda actividades si el nivel de consecuencia está por encima de 60.'
-        elsif item.risk_level_interpretation == "III" ; item.risk_acceptability = 'Mejorable Mejorar si es posible'
-        elsif item.risk_level_interpretation == "IV" ; item.risk_acceptability = 'Aceptable Mantener las medidas de control existentes, pero se deberían considerar soluciones o mejoras y se deben hacer comprobaciones periódicas para asegurar que el riesgo aún es tolerable'
+ 
+        if item.risk_level_interpretation == "I No Aceptable" ; item.risk_acceptability = 'I No Aceptable situación critica, Suspender actividades hasta que el riesgo esté bajo control, la Intervención es urgente.'
+        elsif item.risk_level_interpretation == "II No Aceptable" ; item.risk_acceptability = 'II No Aceptable Corregir y adoptar medidas de control inmediato, sin embargo se debe suspenda actividades si el nivel de consecuencia está por encima de 60.'
+        elsif item.risk_level_interpretation == "III Aceptable" ; item.risk_acceptability = 'III Aceptable Mejorar si es posible.  Sería conveniente justificar la intervención y su rentabilidad. '
+        elsif item.risk_level_interpretation == "IV Aceptable" ; item.risk_acceptability = 'IV Aceptable Mantener las medidas de control existentes, pero se deberían considerar soluciones o mejoras y se deben hacer comprobaciones periódicas para asegurar que el riesgo aún es tolerable'
         else  item.risk_acceptability = ""   
         end   
         

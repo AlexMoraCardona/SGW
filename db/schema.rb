@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_10_01_172653) do
+ActiveRecord::Schema[7.0].define(version: 2024_11_21_170921) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -380,6 +380,15 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_01_172653) do
     t.datetime "updated_at", null: false
     t.bigint "entity_id", null: false
     t.index ["entity_id"], name: "index_description_jobs_on_entity_id"
+  end
+
+  create_table "detail_diseases", force: :cascade do |t|
+    t.string "name"
+    t.string "code_disease"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "table_disease_id"
+    t.index ["table_disease_id"], name: "index_detail_diseases_on_table_disease_id"
   end
 
   create_table "direction_reviews", force: :cascade do |t|
@@ -1810,6 +1819,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_01_172653) do
     t.index ["entity_id"], name: "index_survey_profiles_on_entity_id"
   end
 
+  create_table "table_diseases", force: :cascade do |t|
+    t.string "clasification_disease"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "templates", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -2023,6 +2038,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_01_172653) do
   add_foreign_key "danger_detail_risks", "clasification_danger_details"
   add_foreign_key "danger_preventions", "clasification_danger_details"
   add_foreign_key "description_jobs", "entities"
+  add_foreign_key "detail_diseases", "table_diseases"
   add_foreign_key "direction_reviews", "entities"
   add_foreign_key "emergency_plans", "entities"
   add_foreign_key "equipement_used_plans", "emergency_plans"

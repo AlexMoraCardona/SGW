@@ -7,7 +7,7 @@
     <%= javascript_importmap_tags %>
 </head>
 
-<div>
+<div> 
     <br>
     <table class="table table-hover"> 
         <thead>
@@ -18,23 +18,23 @@
                     <% end %>
                 </td>
                 <td rowspan="4"; style="border:1px solid black;text-align:center">
-                    <div class="col-12"><h5>MATRIZ DE IDENTIFICACIÓN DE PELIGROS, EVALUACIÓN Y VALORACION DE LOS RIESGOS</h5><h6><%= @matrix_danger_risk.entity.business_name if @matrix_danger_risk.present? %> Nit: <%= @matrix_danger_risk.entity.identification_number if @matrix_danger_risk.present? %> </h6></div>
+                    <div class="col-12"><h5>MATRIZ DE IDENTIFICACIÓN DE PELIGROS, EVALUACIÓN Y VALORACION DE LOS RIESGOS</h5><h6><%= @matrix_danger_risk.entity.business_name if @matrix_danger_risk.present? %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h6></div>
                 </td>
                 <td style="border:1px solid black">Fecha de Creación:</td>
 
-                <td style="border:1px solid black"><%= @matrix_danger_risk.date_create  if @matrix_danger_risk.present? %></td>
+                <td style="border:1px solid black"><%= @template.date if @template.present? %></td>
             </tr>
             <tr>  
                 <td style="border:1px solid black">Fecha de Actualización:</td>
-                <td style="border:1px solid black"><%= @matrix_danger_risk.date_update if @matrix_danger_risk.present? %></td>
+                <td style="border:1px solid black"><%= @template.date_updated if @template.present? %></td>
             </tr>
             <tr> 
                 <td style="border:1px solid black">Versión:</td>
-                <td style="border:1px solid black"><%= @matrix_danger_risk.version if @matrix_danger_risk.present? %></td>
+                <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
             </tr>
             <tr> 
                 <td style="border:1px solid black">Código:</td>
-                <td style="border:1px solid black"><%= @matrix_danger_risk.code if @matrix_danger_risk.present? %></td>
+                <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
             </tr>
         </thead>
     </table> 
@@ -83,16 +83,16 @@
                 <td scope="col"><%= matrix_danger_item.proposed_date %></td>
                 <td scope="col"><%= matrix_danger_item.task %></td>  
                 <td scope="col"><%= matrix_danger_item.clasification_danger_detail.name if matrix_danger_item.clasification_danger_detail_id.present? && matrix_danger_item.clasification_danger_detail_id.to_i > 0 %></td>
-                <% if matrix_danger_item.risk_level_interpretation.to_s == 'I'  %>
+                <% if matrix_danger_item.risk_level_interpretation.to_s == 'I No Aceptable'  %>
                     <td style="border:1px solid black; text-align:center; background-color:#F03553"><%= matrix_danger_item.risk_level_interpretation %></td>
                 <% end  %>    
-                <% if matrix_danger_item.risk_level_interpretation.to_s == 'II'  %>
+                <% if matrix_danger_item.risk_level_interpretation.to_s == 'II No Aceptable'  %>
                     <td style="border:1px solid black; text-align:center; background-color:#D98F3B"><%= matrix_danger_item.risk_level_interpretation %></td>
                 <% end  %>    
-               <% if matrix_danger_item.risk_level_interpretation.to_s == 'III'  %>
+               <% if matrix_danger_item.risk_level_interpretation.to_s == 'III Aceptable'  %>
                     <td style="border:1px solid black; text-align:center; background-color:#F0E835"><%= matrix_danger_item.risk_level_interpretation %></td>
                 <% end  %>    
-               <% if matrix_danger_item.risk_level_interpretation.to_s == 'IV'  %>
+               <% if matrix_danger_item.risk_level_interpretation.to_s == 'IV Aceptable'  %>
                     <td style="border:1px solid black; text-align:center; background-color:#038018"><%= matrix_danger_item.risk_level_interpretation %></td>
                 <% end  %> 
                 <td scope="col"><%= matrix_danger_item.intervention_measures_engineering_control %></td>  

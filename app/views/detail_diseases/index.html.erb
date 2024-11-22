@@ -1,0 +1,40 @@
+<!-- render 'shared/header2' -->
+<br>
+<div class="container col-11">
+        <div class="d-flex">
+            <div class="container">
+               <h2 class="display-5"> <%= t('.title')%></h2>
+            </div> 
+        </div>
+        <div>
+            <%= link_to t('.create_detail_disease'), new_detail_disease_path, class: 'btn btn-xs btn-primary'  %>
+        </div>
+        <hr>
+        <%= search_form_for @q do |f| %>
+            <%= f.label :name_cont %>
+            <%= f.search_field :name_cont %>
+
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        <% end %>
+        </br>        
+        <%== pagy_info(@pagy) %>
+        <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+        <hr>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col"><%= sort_link(@q, :name, default_order: :desc) %></th>
+                <th scope="col"><%= t('.code_disease') %></th>
+                <th scope="col"><%= t('.table_disease_id') %></th>
+                <th scope="col"><%= t('common.edit') %></th>
+            </tr>
+        </thead>
+        <tbody>
+            <%= render partial: 'detail_disease', collection: @detail_diseases  %>  
+        </tbody>      
+    </table>
+    <div>
+        <%= link_to t('.create_detail_disease'), new_detail_disease_path, class: 'btn btn-xs btn-primary'  %>
+    </div>
+</div>
+<hr>

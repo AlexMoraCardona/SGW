@@ -117,12 +117,30 @@ class Evaluation < ApplicationRecord
         @history_evaluation.score  = evaluation.score
         @history_evaluation.percentage  = evaluation.percentage
         @history_evaluation.result  = evaluation.result
-        @history_evaluation.observation  = evaluation.observation
         @history_evaluation.rule_id  = evaluation.rule_id
         @history_evaluation.risk_level_id  = evaluation.risk_level_id
         @history_evaluation.evaluation_id  = evaluation.id
         @history_evaluation.entity_id  = evaluation.entity_id
         @history_evaluation.id_employee_contractor = 1
+        @history_evaluation.expected_goald = evaluation.expected_goald
+        @history_evaluation.id_employee_contractor = evaluation.user_representante
+        @history_evaluation.firm_employee_contractor = evaluation.firm_representante
+        @history_evaluation.date_firm_employee = evaluation.date_firm_representante
+        @history_evaluation.id_responsible_execution = evaluation.user_responsible
+        @history_evaluation.firm_responsible_execution = evaluation.firm_responsible
+        @history_evaluation.date_firm_responsible = evaluation.date_firm_responsible
+
+        if @history_evaluation.result == "CRÍTICO" then
+            @history_evaluation.observation = "Plan de Mejoramiento de inmediato a disposición de MinTrabajo.  Enviar a la ARL reporte de avances ( máx a los tres meses).  Seguimiento anual y Plan de Visita la empresa por parte del Ministerio."
+        end 
+        if @history_evaluation.result == "MODERADAMENTE ACEPTABLE" then
+            @history_evaluation.observation = "Plan de Mejoramiento a disposición de MinTrabajo.  Enviar a la ARL reporte de avances (max a los seis meses).  Plan de visita MinTrabajo."
+        end 
+
+        if @history_evaluation.result == "ACEPTABLE" then
+            @history_evaluation.observation = "Mantener la calificación y evidencias a disposición de MinTrabajo.  Incluir en el Plan de Anual de Trabajo las mejoras que se establezcan de acuerdo con la evaluación."
+        end 
+
         evaluation_items.each do |item|
             @history_evaluation.completed_items  += 1 if item.meets == 1
             @history_evaluation.unfulfilled_items  += 1 if item.meets == 0

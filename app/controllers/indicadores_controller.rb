@@ -87,7 +87,9 @@ class IndicadoresController < ApplicationController
         calculo_peligrosriesgos(@entity)
         calculo_coberturacapacitaciones(@entity)
         calculo_trabajadorescapacitados(@entity)
-
+        calculo_autoevaluacion(@entity)
+        calculo_peligroriesgoanual(@entity)
+        calculo_acapamanual(@entity)
     end
 
     def graficos_pdf 
@@ -104,6 +106,8 @@ class IndicadoresController < ApplicationController
         calculo_peligrosriesgos(@entity)
         calculo_coberturacapacitaciones(@entity)
         calculo_trabajadorescapacitados(@entity)
+        calculo_autoevaluacion(@entity)
+
         respond_to do |format| 
             format.html
             format.pdf {render  pdf: 'graficos_pdf',
@@ -507,5 +511,83 @@ class IndicadoresController < ApplicationController
 
         @datos_trabajadorescapacitados.push([@total_trabajadoresc, por.to_f])
     end
+
+    def calculo_autoevaluacion(entity)
+        @indicador_autoevaluacion = Indicator.find(10)
+        año = Time.new.year 
+        @cant_eva = 0
+        history_evaluations = HistoryEvaluation.where("entity_id = ?", entity.id) if entity.present?
+        @cant_eva =    history_evaluations.count if  history_evaluations.present?
+        
+        @datos_autoevaluaciones = []
+        @datos_evaluacion = []
+        history_evaluations.each  do |det|
+
+            @total_items = det.completed_items + det.unfulfilled_items + det.not_apply_items 
+            @inter = det.date_history_evaluation.to_s + ": En " + entity.business_name.to_s + " se cumplió con " + det.completed_items.to_s + " de " + @total_items.to_s + " estándares requeridos según la evaluación inicial."
+            @datos_autoevaluaciones.push([det.date_history_evaluation, @total_items, det.completed_items ,det.percentage, det.expected_goald, @inter ])
+            @datos_evaluacion.push([det.date_history_evaluation, det.percentage ])
+        end     
+    end
+
+    def calculo_peligroriesgoanual(entity)
+        @indicador_peligroriesgoanual = Indicator.find(11)
+        año = Time.new.year 
+        @cant_peligroriesgoanual = 0
+        matrix_danger_risks_anual = MatrixDangerRisk.find_by(entity_id: entity.id) if entity.present?
+        matrix_danger_risks_anual_items = MatrixDangerItem.where("matrix_danger_risk_id = ?", matrix_danger_risks_anual.id) if matrix_danger_risks_anual.present?
+        
+        @datos_matrizdangerriskitems = []
+        @datos_matrizdangerriskitemsgrafico = []
+        @total_matrizdangerriskitems = 0
+        if matrix_danger_risks_anual_items.present? then
+            matrix_danger_risks_anual_items.group_by(&:year).each  do |item, det|
+                cant = 0
+                cantg = 0
+                det.each do |d|
+                   cant += 1 
+                   cantg += 1 if d.danger_intervened == 1 
+                end 
+                @total_matrizdangerriskitems += 1  
+                por = ((cantg.to_f / cant.to_f) * 100).round(2) if cant > 0
+                @inter = "" 
+                @inter = item.to_s + ": En " + entity.business_name.to_s + " se intervinieron " + cantg.to_s + " peligros/riesgos de " + cant.to_s + " peligros/riesgos identificados."
+                @datos_matrizdangerriskitems.push([item, cant, cantg, por.to_s, @inter]) 
+                @datos_matrizdangerriskitemsgrafico.push([item, por]) 
+            end
+    
+        end    
+    end
+
+
+    def calculo_acapamanual(entity)
+        @indicador_acapamanual = Indicator.find(12)
+        año = Time.new.year 
+
+        matrix_corrective_action_anual = MatrixCorrectiveAction.find_by(entity_id: entity.id) if entity.present?
+        matrix_action_anual_items =  MatrixActionItem.where("matrix_corrective_action_id = ?", matrix_corrective_action_anual.id) if matrix_corrective_action_anual.present?
+        
+        @datos_matrizacapamanual = []
+        @datos_matrizacapamanualitemsgrafico = []
+        @total_matrizacapamanualitems = 0
+        if matrix_action_anual_items.present? then
+            matrix_action_anual_items.group_by(&:year).each  do |item, det|
+                cant = 0
+                cantg = 0
+                det.each do |d|
+                   cant += 1 
+                   cantg += 1 if d.state_actions == 1 
+                end 
+                @total_matrizacapamanualitems += 1  
+                por = ((cantg.to_f / cant.to_f) * 100).round(2) if cant > 0
+                @inter = "" 
+                @inter = item.to_s + ": En " + entity.business_name.to_s + " se ejecutaron " + cantg.to_s + " acciones (AP, AC, AM) de " + cant.to_s + " acciones identificadas."
+                @datos_matrizacapamanual.push([item, cant, cantg, por.to_s, @inter]) 
+                @datos_matrizacapamanualitemsgrafico.push([item, por]) 
+            end
+    
+        end    
+    end
+
 
 end 

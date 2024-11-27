@@ -157,7 +157,7 @@ Rails.application.routes.draw do
   get '/complaints/resumen/:id' => 'complaints#resumen', as: 'resumen'
   get '/evaluations/firmar_responsable_evaluation/:id', to: 'evaluations#firmar_responsable_evaluation', as: 'firmar_responsable_evaluation'
   get '/evaluations/firmar_representante_evaluation/:id', to: 'evaluations#firmar_representante_evaluation', as: 'firmar_representante_evaluation'
-
+  get '/history_evaluations/descargar_historia/:id', to: 'history_evaluations#descargar_historia', as: 'descargar_historia'
 
   resources :admin_extent_dangers do
     collection do
@@ -307,6 +307,7 @@ Rails.application.routes.draw do
       get '/provides_protections/firmar_responsable/:id', to: 'provides_protections#firmar_responsable', as: 'firmar_responsable'
     end
   end
+
 
   resources :evaluations do
     collection do

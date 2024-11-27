@@ -154,7 +154,7 @@ class EvaluationsController < ApplicationController
 
     def evaluation_params
         params.require(:evaluation).permit(:entity_id, :date_evaluation, :number_employees, :risk_level_id, :rule_id, :score,
-        :percentage, :result, :observation, :user_responsible, :date_firm_responsible, :firm_responsible, :user_representante, :date_firm_representante, :firm_representante)
+        :percentage, :result, :observation, :user_responsible, :date_firm_responsible, :firm_responsible, :user_representante, :date_firm_representante, :firm_representante, :expected_goald)
     end 
 end  
 

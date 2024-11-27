@@ -46,7 +46,7 @@ class IndicatorsController < ApplicationController
     private
 
     def indicator_params
-        params.require(:indicator).permit(:name, :description, :cycle_id, :periodicity, :formula, :interpretation, :limit_one, :limit_two, :information_source, :responsible_management)
+        params.require(:indicator).permit(:name, :description, :cycle_id, :periodicity, :formula, :interpretation, :limit_one, :limit_two, :information_source, :responsible_management, :person_result, :type_indicator)
     end 
 
 end    

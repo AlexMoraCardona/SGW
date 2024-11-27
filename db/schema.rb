@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_21_170921) do
+ActiveRecord::Schema[7.0].define(version: 2024_11_22_161443) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -715,6 +715,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_21_170921) do
     t.integer "user_representante", default: 0
     t.date "date_firm_representante"
     t.integer "firm_representante", default: 0
+    t.decimal "expected_goald", default: "0.0"
     t.index ["entity_id"], name: "index_evaluations_on_entity_id"
     t.index ["risk_level_id"], name: "index_evaluations_on_risk_level_id"
     t.index ["rule_id"], name: "index_evaluations_on_rule_id"
@@ -921,7 +922,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_21_170921) do
     t.date "date_create_evaluation"
     t.date "date_history_evaluation"
     t.integer "number_employees", default: 0
-    t.integer "score", default: 0
+    t.decimal "score", default: "0.0"
     t.decimal "percentage", default: "0.0"
     t.string "result", default: "0.0"
     t.string "observation"
@@ -940,6 +941,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_21_170921) do
     t.bigint "rule_id", null: false
     t.date "date_firm_employee"
     t.date "date_firm_responsible"
+    t.decimal "expected_goald", default: "0.0"
     t.index ["entity_id"], name: "index_history_evaluations_on_entity_id"
     t.index ["evaluation_id"], name: "index_history_evaluations_on_evaluation_id"
     t.index ["risk_level_id"], name: "index_history_evaluations_on_risk_level_id"
@@ -1040,6 +1042,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_21_170921) do
     t.integer "limit_two", default: 0
     t.string "information_source"
     t.string "responsible_management"
+    t.string "type_indicator"
+    t.string "person_result"
     t.index ["cycle_id"], name: "index_indicators_on_cycle_id"
   end
 

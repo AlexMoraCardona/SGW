@@ -76,11 +76,12 @@ class IndicadoresController < ApplicationController
     def graficos 
         @year = Time.now.year  
         @entity = Entity.find(params[:id])
-        @report_official = ReportOfficial.where('entity_id = ? and year = ?', @entity.id, @year).order("year desc,month desc") if @entity.present?
+        @report_official = ReportOfficial.where('entity_id = ? and year = ?', @entity.id, @year).order(:month) if @entity.present?
+        @report_officialtodo = ReportOfficial.where('entity_id = ?', @entity.id).order(:month) if @entity.present?
         @events = Event.where('entity_id = ?', @entity.id) if @entity.present?
-        calculo_frecuencia_accidentalidad(@report_official)
-        calculo_severidad_accidentalidad(@report_official)
-        calculo_ausentismo(@report_official)
+        calculo_frecuencia_accidentalidad(@report_official, @report_officialtodo)
+        calculo_severidad_accidentalidad(@report_official, @report_officialtodo)
+        calculo_ausentismo(@report_official, @report_officialtodo)
         calculo_prevalencia(@report_official)
         calculo_incidencia(@report_official)
         calculo_proporcion(@report_official)
@@ -90,6 +91,10 @@ class IndicadoresController < ApplicationController
         calculo_autoevaluacion(@entity)
         calculo_peligroriesgoanual(@entity)
         calculo_acapamanual(@entity)
+        calculo_cumlegalanual(@entity)
+        calculo_plantrabajoanual(@entity)
+        
+        
     end
 
     def graficos_pdf 
@@ -402,31 +407,108 @@ class IndicadoresController < ApplicationController
         end    
     end  
     
-    def calculo_frecuencia_accidentalidad(report_official)
+    def calculo_frecuencia_accidentalidad(report_official, report_officialtodo)
         @indicador_frecuencia_accidentalidad = Indicator.find(1)
+        @datos_frecuencia_accidentalidadañog = []
+        @datos_frecuencia_accidentalidadg = []
+        @datos_frecuencia_accidentalidadaño = []
         @datos_frecuencia_accidentalidad = []
-        report_official.each do |rep| 
-            fecha = Calendar.label_month(rep.month).to_s  
-            @datos_frecuencia_accidentalidad.push([fecha, rep.frecuencia_accidentalidad.to_f]) 
+        @datos_año_frecuencia_accidentalidad = 0
+        @datos_mes_frecuencia_accidentalidad = 0
+        inter = ""
+
+        if report_officialtodo.present?
+            report_officialtodo.group_by(&:year).each  do |item, det|
+                det.each do |d|
+                    if item == @year
+                        @datos_mes_frecuencia_accidentalidad += 1
+                        fecha = Calendar.label_month(d.month.to_i).to_s + " " + item.to_s  
+                        inter = fecha + ": Por cada 100 trabajadores en " + @entity.business_name + ", se presentan " + d.total_work_accidents.to_s + " Accidentes de Trabajo en el año."
+                        @datos_frecuencia_accidentalidad.push([@year, fecha, d.total_work_accidents.to_i, d.total_officials.to_i, d.frecuencia_accidentalidad, inter]) 
+                        @datos_frecuencia_accidentalidadg.push([fecha, d.frecuencia_accidentalidad.to_f]) 
+                    else
+                        if d.month == 12
+                            @datos_año_frecuencia_accidentalidad += 1
+                            fecha = Calendar.label_month(d.month.to_i).to_s + " " + item.to_s  
+                            inter = fecha + ": Por cada 100 trabajadores en " + @entity.business_name + ", se presentan " + d.total_work_accidents.to_s + " Accidentes de Trabajo en el año."
+                            @datos_frecuencia_accidentalidadaño.push([@year, fecha, d.total_work_accidents.to_i, d.total_officials.to_i, d.frecuencia_accidentalidad, inter]) 
+                            @datos_frecuencia_accidentalidadañog.push([item, d.frecuencia_accidentalidad.to_f]) 
+                        end    
+                    end    
+                end 
+            end
         end
-        @datos_frecuencia_accidentalidad.sort!
     end
 
-    def calculo_severidad_accidentalidad(report_official)
+    def calculo_severidad_accidentalidad(report_official, report_officialtodo)
         @indicador_severidad_accidentalidad = Indicator.find(2)
+        @datos_severidad_accidentalidadañog = []
+        @datos_severidad_accidentalidadg = []
+        @datos_severidad_accidentalidadaño = []
         @datos_severidad_accidentalidad = []
-        report_official.each do |rep| 
-            fecha = Calendar.label_month(rep.month).to_s 
-            @datos_severidad_accidentalidad.push([fecha, rep.severidad_accidentalidad.to_f]) 
+        @datos_año_severidad_accidentalidad = 0
+        @datos_mes_severidad_accidentalidad = 0
+        inter = ""
+
+        if report_officialtodo.present?
+            report_officialtodo.group_by(&:year).each  do |item, det|
+                det.each do |d|
+                    if item == @year
+                        @datos_mes_severidad_accidentalidad += 1
+                        fecha = Calendar.label_month(d.month.to_i).to_s + " " + item.to_s  
+                        inter = fecha + ": En " + @entity.business_name + ", por cada cien (100) trabajadores que laboran en el mes se perdieron " + d.total_days_severidad_accidents.to_s + " días por AT."
+                        @datos_severidad_accidentalidad.push([@year, fecha, d.total_days_severidad_accidents.to_i, d.total_officials.to_i, d.severidad_accidentalidad, inter]) 
+                        @datos_severidad_accidentalidadg.push([fecha, d.severidad_accidentalidad.to_f]) 
+                    else
+                        if d.month == 12
+                            @datos_año_severidad_accidentalidad += 1
+                            fecha = Calendar.label_month(d.month.to_i).to_s + " " + item.to_s  
+                            inter = fecha + ": En " + @entity.business_name + ", por cada cien (100) trabajadores que laboran en el mes se perdieron " + d.total_days_severidad_accidents.to_s + " días por AT."
+                            @datos_severidad_accidentalidadaño.push([@year, fecha, d.total_days_severidad_accidents.to_i, d.total_officials.to_i, d.severidad_accidentalidad, inter]) 
+                            @datos_severidad_accidentalidadañog.push([item, d.severidad_accidentalidad.to_f]) 
+                        end    
+                    end    
+                end 
+            end
         end
     end
 
-    def calculo_ausentismo(report_official)
+    def calculo_ausentismo(report_official, report_officialtodo)
         @indicador_ausentismo = Indicator.find(6)
+        @datos_ausentismoañog = []
+        @datos_ausentismog = []
+        @datos_ausentismoaño = []
         @datos_ausentismo = []
-        report_official.each do |rep| 
-            fecha = Calendar.label_month(rep.month).to_s
-            @datos_ausentismo.push([fecha, rep.ausentismo_causa_medica.to_f]) 
+        @datos_año_ausentismo = 0
+        @datos_mes_ausentismo = 0
+        inter = ""
+
+        if report_officialtodo.present?
+            report_officialtodo.group_by(&:year).each  do |item, det|
+                sumadiasincapacidad = 0
+                sumadiaslaborales = 0
+                det.each do |d|
+                    if item == @year
+                        @datos_mes_ausentismo += 1
+                        fecha = Calendar.label_month(d.month.to_i).to_s + " " + item.to_s  
+                        inter = fecha + ": En " + @entity.business_name + ", se presentó el " + d.ausentismo_causa_medica.to_s + "% de días de ausentismo por incapacidad médicas laboral o común."
+                        @datos_ausentismo.push([@year, fecha, d.total_days_absenteeism.to_i, (d.working_days_month * d.total_officials).to_i, d.ausentismo_causa_medica.to_f, inter]) 
+                        @datos_ausentismog.push([fecha, d.ausentismo_causa_medica.to_f]) 
+                    else
+                        sumadiasincapacidad +=  d.total_days_absenteeism
+                        sumadiaslaborales += (d.working_days_month * d.total_officials)
+                    end    
+                end 
+
+                if sumadiaslaborales > 0
+                    @datos_año_ausentismo += 1
+                    fecha = "Diciembre" + " " + item.to_s  
+                    inter = fecha + ": En " + @entity.business_name + ", se presentó el " + (((sumadiasincapacidad.to_f / sumadiaslaborales.to_f) * 100).round(2)).to_s + "% de días de ausentismo por incapacidad médicas laboral o común."
+                    @datos_ausentismoañog.push([item, (((sumadiasincapacidad.to_f / sumadiaslaborales.to_f) * 100)).round(2)]) 
+                    @datos_ausentismoaño.push([fecha, item, sumadiasincapacidad.to_i, sumadiaslaborales.to_i, (((sumadiasincapacidad.to_f / sumadiaslaborales.to_f) * 100)).round(2), inter]) 
+                end    
+
+            end
         end
     end
 
@@ -535,7 +617,7 @@ class IndicadoresController < ApplicationController
         año = Time.new.year 
         @cant_peligroriesgoanual = 0
         matrix_danger_risks_anual = MatrixDangerRisk.find_by(entity_id: entity.id) if entity.present?
-        matrix_danger_risks_anual_items = MatrixDangerItem.where("matrix_danger_risk_id = ?", matrix_danger_risks_anual.id) if matrix_danger_risks_anual.present?
+        matrix_danger_risks_anual_items = MatrixDangerItem.where("matrix_danger_risk_id = ?", matrix_danger_risks_anual.id).order(:year) if matrix_danger_risks_anual.present?
         
         @datos_matrizdangerriskitems = []
         @datos_matrizdangerriskitemsgrafico = []
@@ -565,7 +647,7 @@ class IndicadoresController < ApplicationController
         año = Time.new.year 
 
         matrix_corrective_action_anual = MatrixCorrectiveAction.find_by(entity_id: entity.id) if entity.present?
-        matrix_action_anual_items =  MatrixActionItem.where("matrix_corrective_action_id = ?", matrix_corrective_action_anual.id) if matrix_corrective_action_anual.present?
+        matrix_action_anual_items =  MatrixActionItem.where("matrix_corrective_action_id = ?", matrix_corrective_action_anual.id).order(:year) if matrix_corrective_action_anual.present?
         
         @datos_matrizacapamanual = []
         @datos_matrizacapamanualitemsgrafico = []
@@ -587,6 +669,63 @@ class IndicadoresController < ApplicationController
             end
     
         end    
+    end
+
+    def calculo_cumlegalanual(entity)
+        @indicador_cumlegalanual = Indicator.find(13)
+        año = Time.new.year 
+    
+        matrix_legal_anual = MatrixLegal.find_by(entity_id: entity.id) if entity.present?
+        matrix_legal_anual_items =  MatrixLegalItem.where("matrix_legal_id = ? and apply = ?", matrix_legal_anual.id, 1).order(:year) if matrix_legal_anual.present?
+        
+        @datos_matrizlegalanual = []
+        @datos_matrizalegalitemsgrafico = []
+        @total_matrizlegalanualitems = 0
+        if matrix_legal_anual_items.present? then
+            matrix_legal_anual_items.group_by(&:year).each  do |item, det|
+                cant = 0
+                cantg = 0
+                det.each do |d|
+                   cant += 1 
+                   cantg += 1 if d.meets == 2 
+                end 
+                @total_matrizlegalanualitems += 1  
+                por = ((cantg.to_f / cant.to_f) * 100).round(2) if cant > 0
+                @inter = "" 
+                @inter = item.to_s + ": En " + entity.business_name.to_s + " se cumplió con " + cantg.to_s + " requisitos legales, de " + cant.to_s + " requisitos aplicables."
+                @datos_matrizlegalanual.push([item, cant, cantg, por.to_s, @inter]) 
+                @datos_matrizalegalitemsgrafico.push([item, por]) 
+            end
+    
+        end    
+    end
+    
+    def calculo_plantrabajoanual(entity)
+        @indicador_plantrabajoanual = Indicator.find(14)
+        año = Time.new.year 
+        @cant_plan = 0
+        annual_work_plans = AnnualWorkPlan.where("entity_id = ?", entity.id).order(:year) if entity.present?
+        @cant_plan =    annual_work_plans.count if  annual_work_plans.present?
+        
+        @datos_plantrabajoanual = []
+        @datos_plantrabajoanualgrafico = []
+        annual_work_plans.each  do |det|
+            annual_work_plan_items = AnnualWorkPlanItem.where("annual_work_plan_id = ?", det.id) 
+            total_items = 0
+            cumple_items = 0
+            por = 0 
+            inter = ""
+            if annual_work_plan_items.present?
+                annual_work_plan_items.each do |item|
+                    total_items += 1
+                    cumple_items += 1 if item.earring == 1    
+                end    
+            end
+            por = ((cumple_items.to_f / total_items.to_f) * 100).round(2) if total_items > 0
+            inter = det.year.to_s + ": En " + entity.business_name.to_s + " se ejecutarón " + cumple_items.to_s + " de " + total_items.to_s + " actividades programadas en el plan anual de trabajo."
+            @datos_plantrabajoanual.push([det.year, total_items, cumple_items, por, inter])
+            @datos_plantrabajoanualgrafico.push([det.year, por ])
+        end     
     end
 
 

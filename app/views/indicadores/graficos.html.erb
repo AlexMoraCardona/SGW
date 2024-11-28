@@ -22,6 +22,8 @@
             <a class="list-group-item list-group-item-action" href="#list-item-11">Autoevaluación del SG-SST</a>
             <a class="list-group-item list-group-item-action" href="#list-item-12">Intervención de peligros y riesgos prioritarios</a>
             <a class="list-group-item list-group-item-action" href="#list-item-13">Ejecución de Acciones Preventivas AP, Acciones Correctivas AC, y de Mejora</a>
+            <a class="list-group-item list-group-item-action" href="#list-item-14">Cumplimiento legal</a>
+            <a class="list-group-item list-group-item-action" href="#list-item-15">Cumplimiento del plan de trabajo anual</a>
             
         </div>
     </div>
@@ -50,40 +52,55 @@
         </br>
         <div class="row g-3">
             <div class="col-sm-5">
-                <%= column_chart  @datos_frecuencia_accidentalidad, title: "Frecuencia de accidentalidad", download: {filename: "FrecuenciaAccidentalidad"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", suffix: " Accidentes de trabajo" if @report_official.present? %>
+                <%= column_chart  @datos_frecuencia_accidentalidadañog, title: "Frecuencia de accidentalidad anual", download: {filename: "FrecuenciaAccidentalidad"}, download: {background: "#FFFFFF"}, xtitle: "Período", ytitle: "Indicador", suffix: "% Accidentes de trabajo" if @datos_frecuencia_accidentalidadaño.present? %>
             </div>
             <div class="col-sm-1">
             </div>
             <div class="col-sm-5">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Año</th>
-                            <th scope="col">Mes</th>
-                            <th scope="col">Nro.Accidentes</th>
-                            <th scope="col">Nro.Funcionarios</th>
-                            <th scope="col">Indicador</th>
-                            <th scope="col">Interpretación</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <%  @report_official.each do |rep| %>
-                            <tr>
-                                <td style="text-align:center"><%= rep.year %></td>
-                                <td style="text-align:center"><%= rep.month %></td>
-                                <td style="text-align:center"><%= rep.total_work_accidents %></td>
-                                <td style="text-align:center"><%= rep.total_officials %></td>
-                                <td style="text-align:center">
-                                    <%= rep.frecuencia_accidentalidad %>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="Por cada cien (100) funcionarios y contratistas que laboraron en el mes de <%= Calendar.label_month(rep.month)%>, se presentaron <%= rep.frecuencia_accidentalidad %> accidentes de trabajo."><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                                </td>
-                            </tr>    
-                        <% end %>
-                    </tbody>
-                </table>
+                <%= column_chart  @datos_frecuencia_accidentalidadg, title: "Frecuencia de accidentalidad mensual", download: {filename: "FrecuenciaAccidentalidad"}, download: {background: "#FFFFFF"}, xtitle: "Período", ytitle: "Indicador", suffix: "% Accidentes de trabajo" if @datos_frecuencia_accidentalidad.present? %>
             </div>
+        </div>
+
+        <div class="col-sm-11">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Período</th>
+                        <th scope="col">Nro.Accidentes</th>
+                        <th scope="col">Nro.Funcionarios</th>
+                        <th scope="col">Valor Indicador</th>
+                        <th scope="col">Interpretación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <% if @datos_frecuencia_accidentalidadaño.present? %>
+                    <%  i = 0 %>
+                    <%  while i < @datos_año_frecuencia_accidentalidad %>
+                        <tr>
+                            <td style="text-align:left"><%= @datos_frecuencia_accidentalidadaño[i][1] %></td>
+                            <td style="text-align:center"><%= @datos_frecuencia_accidentalidadaño[i][2] %></td>
+                            <td style="text-align:center"><%= @datos_frecuencia_accidentalidadaño[i][3] %></td>
+                            <td style="text-align:center"><%= @datos_frecuencia_accidentalidadaño[i][4] %>%</td>
+                            <td style="text-align:justify"><%= @datos_frecuencia_accidentalidadaño[i][5] %></td>
+                        </tr>    
+                        <%  i = i + 1 %>
+                    <% end %>
+                <% end %>
+                <% if @datos_frecuencia_accidentalidad.present? %>
+                    <%  i = 0 %>
+                    <%  while i < @datos_mes_frecuencia_accidentalidad %>
+                        <tr>
+                            <td style="text-align:left"><%= @datos_frecuencia_accidentalidad[i][1] %></td>
+                            <td style="text-align:center"><%= @datos_frecuencia_accidentalidad[i][2] %></td>
+                            <td style="text-align:center"><%= @datos_frecuencia_accidentalidad[i][3] %></td>
+                            <td style="text-align:center"><%= @datos_frecuencia_accidentalidad[i][4] %>%</td>
+                            <td style="text-align:justify"><%= @datos_frecuencia_accidentalidad[i][5] %></td>
+                        </tr>    
+                        <%  i = i + 1 %>
+                    <% end %>
+                <% end %>
+                </tbody>
+            </table>
         </div>        
         <hr>
     
@@ -103,44 +120,59 @@
             <strong>Personas que deben conocer el resultado:</strong> <%= @indicador_severidad_accidentalidad.person_result if @indicador_severidad_accidentalidad.present? %> </br>
         </div>
         </br>
-
         <div class="row g-3">
             <div class="col-sm-5">
-                <%= column_chart  @datos_severidad_accidentalidad, title: "Severidad de accidentalidad", download: {filename: "SeveridadAccidentalidad"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", suffix: " días por accidentes de trabajo" if @report_official.present? %>
+                <%= column_chart  @datos_severidad_accidentalidadañog, title: "Severidad de accidentalidad anual", download: {filename: "SeveridadAccidentalidad"}, download: {background: "#FFFFFF"}, xtitle: "Período", ytitle: "Indicador", suffix: "% Accidentes de trabajo" if @datos_severidad_accidentalidadañog.present? %>
             </div>
             <div class="col-sm-1">
             </div>
             <div class="col-sm-5">
-                <br>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Año</th>
-                            <th scope="col">Mes</th>
-                            <th scope="col">Nro.Día Incapacidad</th>
-                            <th scope="col">Nro.Funcionarios</th>
-                            <th scope="col">Indicador</th>
-                            <th scope="col">Interpretación</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <%  @report_official.each do |rep| %>
-                            <tr>
-                                <td style="text-align:center"><%= rep.year %></td>
-                                <td style="text-align:center"><%= rep.month %></td>
-                                <td style="text-align:center"><%= rep.total_days_severidad_accidents %></td>
-                                <td style="text-align:center"><%= rep.total_officials %></td>
-                                <td style="text-align:center"><%= rep.severidad_accidentalidad %></td>
-                                <td style="text-align:center">
-                                    <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="Por cada cien (100) funcionarios y contratistas que laboraron en el mes de <%= Calendar.label_month(rep.month)%>, se perdieron <%= rep.severidad_accidentalidad %> días por accidentes de trabajo."><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                                </td>
-                            </tr>    
-                        <% end %>
-                    </tbody>
-                </table>
+                <%= column_chart  @datos_severidad_accidentalidadg, title: "Severidad de accidentalidad mensual", download: {filename: "SeveridadAccidentalidad"}, download: {background: "#FFFFFF"}, xtitle: "Período", ytitle: "Indicador", suffix: "% Accidentes de trabajo" if @datos_severidad_accidentalidadg.present? %>
             </div>
+        </div>
+        <div class="col-sm-11">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Período</th>
+                        <th scope="col">Nro.Día Incapacidad</th>
+                        <th scope="col">Nro.Funcionarios</th>
+                        <th scope="col">Valor Indicador</th>
+                        <th scope="col">Interpretación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <% if @datos_severidad_accidentalidadaño.present? %>
+                    <%  i = 0 %>
+                    <%  while i < @datos_año_severidad_accidentalidad %>
+                        <tr>
+                            <td style="text-align:left"><%= @datos_severidad_accidentalidadaño[i][1] %></td>
+                            <td style="text-align:center"><%= @datos_severidad_accidentalidadaño[i][2] %></td>
+                            <td style="text-align:center"><%= @datos_severidad_accidentalidadaño[i][3] %></td>
+                            <td style="text-align:center"><%= @datos_severidad_accidentalidadaño[i][4] %>%</td>
+                            <td style="text-align:justify"><%= @datos_severidad_accidentalidadaño[i][5] %></td>
+                        </tr>    
+                        <%  i = i + 1 %>
+                    <% end %>
+                <% end %>
+                <% if @datos_severidad_accidentalidad.present? %>
+                    <%  i = 0 %>
+                    <%  while i < @datos_mes_severidad_accidentalidad %>
+                        <tr>
+                            <td style="text-align:left"><%= @datos_severidad_accidentalidad[i][1] %></td>
+                            <td style="text-align:center"><%= @datos_severidad_accidentalidad[i][2] %></td>
+                            <td style="text-align:center"><%= @datos_severidad_accidentalidad[i][3] %></td>
+                            <td style="text-align:center"><%= @datos_severidad_accidentalidad[i][4] %>%</td>
+                            <td style="text-align:justify"><%= @datos_severidad_accidentalidad[i][5] %></td>
+                        </tr>    
+                        <%  i = i + 1 %>
+                    <% end %>
+                <% end %>
+                </tbody>
+            </table>
         </div>        
-                            
+        <hr>
+        
         <div class="row g-2" id="list-item-3">
             <h2 class="display-5">Ausentismo por causa médica</h2>
             <hr>
@@ -157,43 +189,58 @@
             <strong>Personas que deben conocer el resultado:</strong> <%= @indicador_ausentismo.person_result if @indicador_ausentismo.present? %> </br>
         </div>
         </br>
-
         <div class="row g-3">
             <div class="col-sm-5">
-                <%= column_chart  @datos_ausentismo, title: "Ausentismo", download: {filename: "Ausentismo"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", suffix: "% de días de ausentismo" if @report_official.present? %>
+                <%= column_chart  @datos_ausentismoañog, title: "Ausentismo anual", download: {filename: "Ausentismo"}, download: {background: "#FFFFFF"}, xtitle: "Período", ytitle: "Indicador", suffix: "% Ausentismo" if @datos_ausentismoañog.present? %>
             </div>
-        <div class="col-sm-1">
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-5">
+                <%= column_chart  @datos_ausentismog, title: "Ausentismo mensual", download: {filename: "Ausentismo"}, download: {background: "#FFFFFF"}, xtitle: "Período", ytitle: "Indicador", suffix: "% Ausentismo" if @datos_ausentismog.present? %>
+            </div>
         </div>
-        <div class="col-sm-5">
-            <br>
+        <div class="col-sm-11">
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">Año</th>
-                        <th scope="col">Mes</th>
+                        <th scope="col">Período</th>
                         <th scope="col">Días de ausencia</th>
                         <th scope="col">Días de trabajo</th>
-                        <th scope="col">Indicador</th>
+                        <th scope="col">Valor Indicador</th>
                         <th scope="col">Interpretación</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <%  @report_official.each do |rep| %>
+                <% if @datos_año_ausentismo.present? %>
+                    <%  i = 0 %>
+                    <%  while i < @datos_año_ausentismo %>
                         <tr>
-                            <td style="text-align:center"><%= rep.year %></td>
-                            <td style="text-align:center"><%= rep.month %></td>
-                            <td style="text-align:center"><%= rep.total_days_absenteeism %></td>
-                            <td style="text-align:center"><%= (rep.working_days_month * rep.total_officials) %></td>
-                            <td style="text-align:center"><%= rep.ausentismo_causa_medica %></td>
-                            <td style="text-align:center">
-                                <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="<%= rep.ausentismo_causa_medica %>% de días de ausentismo por incapacidad médicas laboral o común en el mes de <%= Calendar.label_month(rep.month)%>."><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                            </td>
+                            <td style="text-align:left"><%= @datos_ausentismoaño[i][1] %></td>
+                            <td style="text-align:center"><%= @datos_ausentismoaño[i][2] %></td>
+                            <td style="text-align:center"><%= @datos_ausentismoaño[i][3] %></td>
+                            <td style="text-align:center"><%= @datos_ausentismoaño[i][4] %>%</td>
+                            <td style="text-align:justify"><%= @datos_ausentismoaño[i][5] %></td>
                         </tr>    
+                        <%  i = i + 1 %>
                     <% end %>
+                <% end %>
+                <% if @datos_mes_ausentismo.present? %>
+                    <%  i = 0 %>
+                    <%  while i < @datos_mes_ausentismo %>
+                        <tr>
+                            <td style="text-align:left"><%= @datos_ausentismo[i][1] %></td>
+                            <td style="text-align:center"><%= @datos_ausentismo[i][2] %></td>
+                            <td style="text-align:center"><%= @datos_ausentismo[i][3] %></td>
+                            <td style="text-align:center"><%= @datos_ausentismo[i][4] %>%</td>
+                            <td style="text-align:justify"><%= @datos_ausentismo[i][5] %></td>
+                        </tr>    
+                        <%  i = i + 1 %>
+                    <% end %>
+                <% end %>
                 </tbody>
             </table>
-            <hr>
-        </div>
+        </div>        
+        <hr>
 
         <div class="row g-2" id="list-item-4">
             <h2 class="display-5">Prevalencia de enfermedad laboral</h2>
@@ -781,7 +828,7 @@
     <div class="col-sm-11">
         <strong>Definición:</strong> <%= @indicador_peligroriesgoanual.description if @indicador_peligroriesgoanual.present? %> </br>
         <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_peligroriesgoanual.periodicity) if @indicador_peligroriesgoanual.present? %> </br>
-        <strong>Límites:</strong> <%= @indicador_peligroriesgoanual.limit_one if @indicador_peligroriesgoanual.present? %>  - <%= @indicador_autoevaluacion.limit_two if @indicador_autoevaluacion.present? %> </br>
+        <strong>Límites:</strong> <%= @indicador_peligroriesgoanual.limit_one if @indicador_peligroriesgoanual.present? %>  - <%= @indicador_peligroriesgoanual.limit_two if @indicador_peligroriesgoanual.present? %> </br>
         <strong>Fórmula:</strong> <%= @indicador_peligroriesgoanual.formula if @indicador_peligroriesgoanual.present? %> </br>
         <strong>Interpretación:</strong> <%= @indicador_peligroriesgoanual.interpretation if @indicador_peligroriesgoanual.present? %> </br>
         <strong>Fuente de la información:</strong> <%= @indicador_peligroriesgoanual.information_source  if @indicador_peligroriesgoanual.present? %></br>
@@ -836,7 +883,7 @@
     <div class="col-sm-11">
         <strong>Definición:</strong> <%= @indicador_acapamanual.description if @indicador_acapamanual.present? %> </br>
         <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_acapamanual.periodicity) if @indicador_acapamanual.present? %> </br>
-        <strong>Límites:</strong> <%= @indicador_acapamanual.limit_one if @indicador_acapamanual.present? %>  - <%= @indicador_autoevaluacion.limit_two if @indicador_autoevaluacion.present? %> </br>
+        <strong>Límites:</strong> <%= @indicador_acapamanual.limit_one if @indicador_acapamanual.present? %>  - <%= @indicador_acapamanual.limit_two if @indicador_acapamanual.present? %> </br>
         <strong>Fórmula:</strong> <%= @indicador_acapamanual.formula if @indicador_acapamanual.present? %> </br>
         <strong>Interpretación:</strong> <%= @indicador_acapamanual.interpretation if @indicador_acapamanual.present? %> </br>
         <strong>Fuente de la información:</strong> <%= @indicador_acapamanual.information_source  if @indicador_acapamanual.present? %></br>
@@ -883,11 +930,123 @@
         <hr>
     </div>
 
+    <br>
+    <hr>                   
+    <div class="row g-2" id="list-item-14">
+        <h2 class="display-5">Cumplimiento legal</h2>
+        <hr>
+    </div> 
+    <div class="col-sm-11">
+        <strong>Definición:</strong> <%= @indicador_cumlegalanual.description if @indicador_cumlegalanual.present? %> </br>
+        <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_cumlegalanual.periodicity) if @indicador_cumlegalanual.present? %> </br>
+        <strong>Límites:</strong> <%= @indicador_cumlegalanual.limit_one if @indicador_cumlegalanual.present? %>  - <%= @indicador_cumlegalanual.limit_two if @indicador_cumlegalanual.present? %> </br>
+        <strong>Fórmula:</strong> <%= @indicador_cumlegalanual.formula if @indicador_cumlegalanual.present? %> </br>
+        <strong>Interpretación:</strong> <%= @indicador_cumlegalanual.interpretation if @indicador_cumlegalanual.present? %> </br>
+        <strong>Fuente de la información:</strong> <%= @indicador_cumlegalanual.information_source  if @indicador_cumlegalanual.present? %></br>
+        <strong>Responsable de la gestión:</strong> <%= @indicador_cumlegalanual.responsible_management if @indicador_cumlegalanual.present? %> </br>
+        <strong>Tipo de indicador:</strong> <%= @indicador_cumlegalanual.type_indicator if @indicador_cumlegalanual.present? %> </br>
+        <strong>Personas que deben conocer el resultado:</strong> <%= @indicador_cumlegalanual.person_result if @indicador_cumlegalanual.present? %> </br>
+    </div>
+    </br>
+
+    <div class="col-sm-11">
+        <div class="col-sm-5">
+            <%= column_chart  @datos_matrizalegalitemsgrafico, title: "Gráfico", download: {filename: "Gráficomatrizlegal"}, download: {background: "#FFFFFF"}, xtitle: "Año", ytitle: "Porcentaje cumplimiento", suffix: "% cumplimiento" if @datos_matrizalegalitemsgrafico.present? %>
+        </div>
+    </div>
+    <div class="col-sm-11">
+        <br>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Año</th>
+                    <th scope="col">Requisitos legales aplicables en SST que se cumplen</th>
+                    <th scope="col">Total de requisitos legales de SST aplicables</th>
+                    <th scope="col">Cumplimiento</th>
+                    <th scope="col">Interpretación</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%  i = 0 %>
+
+                <%  while i < @total_matrizlegalanualitems %>
+
+                    <tr>
+                        <td style="text-align:center"><%= @datos_matrizlegalanual[i][0] %></td>
+                        <td style="text-align:center"><%= @datos_matrizlegalanual[i][2] %></td>
+                        <td style="text-align:center"><%= @datos_matrizlegalanual[i][1] %></td>
+                        <td style="text-align:center"><%= @datos_matrizlegalanual[i][3] %>%</td>
+                        <td style="text-align:center"><%= @datos_matrizlegalanual[i][4] %></td>
+                    </tr>  
+                    <%  i = i + 1 %>
+                <%  end %>
+            </tbody>
+        </table>
+
+        <hr>
+    </div>
+
+    <br>
+    <hr>                   
+    <div class="row g-2" id="list-item-15">
+        <h2 class="display-5">Cumplimiento del plan de trabajo anual</h2>
+        <hr>
+    </div>
+    <div class="col-sm-11">
+        <strong>Definición:</strong> <%= @indicador_plantrabajoanual.description if @indicador_plantrabajoanual.present? %> </br>
+        <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_plantrabajoanual.periodicity) if @indicador_plantrabajoanual.present? %> </br>
+        <strong>Límites:</strong> <%= @indicador_plantrabajoanual.limit_one if @indicador_plantrabajoanual.present? %>  - <%= @indicador_plantrabajoanual.limit_two if @indicador_plantrabajoanual.present? %> </br>
+        <strong>Fórmula:</strong> <%= @indicador_plantrabajoanual.formula if @indicador_plantrabajoanual.present? %> </br>
+        <strong>Interpretación:</strong> <%= @indicador_plantrabajoanual.interpretation if @indicador_plantrabajoanual.present? %> </br>
+        <strong>Fuente de la información:</strong> <%= @indicador_plantrabajoanual.information_source  if @indicador_plantrabajoanual.present? %></br>
+        <strong>Responsable de la gestión:</strong> <%= @indicador_plantrabajoanual.responsible_management if @indicador_plantrabajoanual.present? %> </br>
+        <strong>Tipo de indicador:</strong> <%= @indicador_plantrabajoanual.type_indicator if @indicador_plantrabajoanual.present? %> </br>
+        <strong>Personas que deben conocer el resultado:</strong> <%= @indicador_plantrabajoanual.person_result if @indicador_plantrabajoanual.present? %> </br>
+    </div>
+    </br>
+
+    <div class="col-sm-11">
+        <div class="col-sm-5">
+            <%= column_chart  @datos_plantrabajoanualgrafico, title: "Gráfico", download: {filename: "Gráficoplananualtrabajo"}, download: {background: "#FFFFFF"}, xtitle: "Fecha Evaluación", ytitle: "Porcentaje cumplimiento", suffix: "% cumplimiento" if @datos_plantrabajoanualgrafico.present? %>
+        </div>
+    </div>
+    <div class="col-sm-11">
+        <br>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Número de actividades ejecutadas del plan de trabajo  </th>
+                    <th scope="col">Nº total de actividades programadas del plan de trabajo</th>
+                    <th scope="col">Cumplimiento</th>
+                    <th scope="col">Interpretación</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%  i = 0 %>
+
+                <%  while i < @cant_plan %>
+
+                    <tr>
+                        <td style="text-align:center"><%= @datos_plantrabajoanual[i][0] %></td>
+                        <td style="text-align:center"><%= @datos_plantrabajoanual[i][2] %></td>
+                        <td style="text-align:center"><%= @datos_plantrabajoanual[i][1] %></td>
+                        <td style="text-align:center"><%= @datos_plantrabajoanual[i][3] %>%</td>
+                        <td style="text-align:center"><%= @datos_plantrabajoanual[i][4] %>%</td>
+                        <td style="text-align:justify"><%= @datos_plantrabajoanual[i][5] %></td>
+                    </tr>  
+                    <%  i = i + 1 %>
+                <%  end %>
+            </tbody>
+        </table>
+
+        <hr>
+    </div>
+
+    
 </div>        
 <br>
 <hr>
 
 </div>  
-
-
 

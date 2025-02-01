@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_22_161443) do
+ActiveRecord::Schema[7.0].define(version: 2025_02_01_021927) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -826,7 +826,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_22_161443) do
     t.bigint "user_id"
     t.decimal "percentage_min"
     t.string "resul"
+    t.bigint "allow_exam_id", null: false
     t.index ["adm_exam_id"], name: "index_exams_on_adm_exam_id"
+    t.index ["allow_exam_id"], name: "index_exams_on_allow_exam_id"
     t.index ["user_id"], name: "index_exams_on_user_id"
   end
 
@@ -1970,6 +1972,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_22_161443) do
     t.string "phone"
     t.integer "clasification_post", default: 0
     t.integer "sex", default: 0
+    t.date "date_entry_company"
+    t.date "date_retirement_company"
     t.index ["document_id"], name: "index_users_on_document_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["nro_document"], name: "index_users_on_nro_document", unique: true
@@ -2058,6 +2062,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_22_161443) do
   add_foreign_key "exam_details", "exams"
   add_foreign_key "exam_questions", "adm_exams"
   add_foreign_key "exams", "adm_exams"
+  add_foreign_key "exams", "allow_exams"
   add_foreign_key "exams", "users"
   add_foreign_key "extinguishers", "adm_extinguishers"
   add_foreign_key "firms", "evidences"

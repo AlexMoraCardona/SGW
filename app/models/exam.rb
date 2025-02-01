@@ -1,6 +1,7 @@
 class Exam < ApplicationRecord
     belongs_to :user
     belongs_to :adm_exam
+    belongs_to :allow_exam
     has_many :exam_details
     
     def self.leerparametro(parametro, exam_details)
@@ -53,15 +54,16 @@ class Exam < ApplicationRecord
         @exam.save
     end   
     
-    def self.numero_empleados(entidad)
-        empleados = User.where("entity = ? and state = ? and level > ?",entidad.to_i, 1, 2)
+    def self.numero_empleados(entidad, date_initial, date_final)  
+        empleados = User.where("entity = ? and level > ? and (date_entry_company <= ? or date_entry_company is null) and (date_retirement_company >= ? or date_retirement_company is null)",entidad.to_i, 2, date_initial, date_final)
         cant = empleados.count
         return cant
     end    
 
-    def self.realiza(entidad, adexa)
+    def self.realiza(entidad, adexa, date_initial, date_final) 
         @datos = []
-        empleados = User.where("entity = ? and state = ? and level > ?",entidad.to_i, 1, 2)
+        empleados = User.where("entity = ? and level > ? and (date_entry_company <= ? or date_entry_company is null) and (date_retirement_company >= ? or date_retirement_company is null)",entidad.to_i, 2, date_initial, date_final)
+
         cantemp = 0
         cantemp = empleados.count
         cant = 0
@@ -71,7 +73,7 @@ class Exam < ApplicationRecord
         porrepro = 0
 
         empleados.each do |empleado|
-            id_exam = Exam.where("user_id = ? and adm_exam_id = ?", empleado.id.to_i, adexa.to_i).order(:final_percentage).last
+            id_exam = Exam.where("user_id = ? and allow_exam_id = ?", empleado.id.to_i, adexa.to_i).order(:final_percentage).last
             if id_exam.present?
                 cant += 1  
                 apro += 1 if id_exam.resul == "Aprobado" 
@@ -85,11 +87,13 @@ class Exam < ApplicationRecord
         return  @datos;
    end     
 
-   def self.detalle_realiza(entidad, adexa)
-        empleados = User.where("entity = ? and state = ? and level > ?",entidad.to_i, 1, 2)
-        @exams = []
+   def self.detalle_realiza(entidad, adexa) 
+        allow_exam = AllowExam.find(adexa)
+        empleados = User.where("entity = ? and level > ? and (date_entry_company <= ? or date_entry_company is null) and (date_retirement_company >= ? or date_retirement_company is null)",entidad.to_i, 2, allow_exam.date_initial, allow_exam.date_final)
+
+        @exams = [] 
         empleados.each do |empleado|
-            id_exam = Exam.where("user_id = ? and adm_exam_id = ?", empleado.id.to_i, adexa.to_i).order(:final_percentage).last
+            id_exam = Exam.where("user_id = ? and allow_exam_id = ?", empleado.id.to_i, adexa.to_i).order(:final_percentage).last
             if id_exam.present?
                 @exams << id_exam
             end    
@@ -97,10 +101,16 @@ class Exam < ApplicationRecord
        return  @exams;
     end     
 
-    def self.intentos(user, examen)
+    def self.intentos(user, allow_exam) 
         @can = 0 
-        exa = Exam.where("user_id = ? and adm_exam_id = ?", user.to_i, examen.to_i)
+        exa = Exam.where("user_id = ? and allow_exam_id = ?", user.to_i, allow_exam.to_i)
         @can = exa.count if exa.present?
         return @can;
+    end  
+    
+    def self.filtro_exams(allow_exam_id)
+        @can_filtro_exams = 0    
+        @can_filtro_exams = Exam.where("allow_exam_id = ?", allow_exam_id)
+        return @can_filtro_exams;
     end    
 end

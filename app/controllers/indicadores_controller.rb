@@ -102,9 +102,9 @@ class IndicadoresController < ApplicationController
         @entity = Entity.find(params[:id])
         @report_official = ReportOfficial.where('entity_id = ? and year = ?', @entity.id, @year).order("year desc,month desc") if @entity.present?
         @events = Event.where('entity_id = ?', @entity.id) if @entity.present?
-        calculo_frecuencia_accidentalidad(@report_official)
-        calculo_severidad_accidentalidad(@report_official)
-        calculo_ausentismo(@report_official)
+        calculo_frecuencia_accidentalidad(@report_official, @report_officialtodo)
+        calculo_severidad_accidentalidad(@report_official, @report_officialtodo)
+        calculo_ausentismo(@report_official, @report_officialtodo)
         calculo_prevalencia(@report_official)
         calculo_incidencia(@report_official)
         calculo_proporcion(@report_official)
@@ -568,9 +568,11 @@ class IndicadoresController < ApplicationController
         @total_coberturacapacitaciones = training_items.count if training_items.present?
         cant = 0
         @datos_coberturacapacitaciones = []
-        training_items.each  do |det|
-            cant += 1 if det.state_cap == 1
-        end     
+        if training_items.present?
+            training_items.each  do |det|
+                cant += 1 if det.state_cap == 1
+            end
+        end         
         por = ((cant.to_f / @total_coberturacapacitaciones.to_f) * 100).round(2).to_f if   @total_coberturacapacitaciones.to_f > 0
 
         @datos_coberturacapacitaciones.push([cant, por.to_f])
@@ -585,10 +587,12 @@ class IndicadoresController < ApplicationController
         @total_trabajadoresc = 0
 
         @datos_trabajadorescapacitados = []
-        training_items.each  do |det|
-            @total_trabajadores += det.cant_emple_cap if det.state_cap != 2
-            @total_trabajadoresc += det.cant_cap if det.state_cap == 1
-        end     
+        if training_items.present?
+            training_items.each  do |det|
+                @total_trabajadores += det.cant_emple_cap if det.state_cap != 2
+                @total_trabajadoresc += det.cant_cap if det.state_cap == 1
+            end     
+        end    
         por = ((@total_trabajadoresc.to_f / @total_trabajadores.to_f) * 100).round(2).to_f if   @total_trabajadores.to_f > 0
 
         @datos_trabajadorescapacitados.push([@total_trabajadoresc, por.to_f])

@@ -30,7 +30,7 @@ class ExamsController < ApplicationController
         end
     end    
     
-    def show
+    def show 
         if params[:entity_id].present? && Current.user 
             @entity = Entity.find(params[:entity_id].to_i)
             @adm_exams = AdmExam.all
@@ -82,12 +82,12 @@ class ExamsController < ApplicationController
         @exam.destroy
         redirect_to exams_path, notice: 'Evaluación borrado correctamente', exam: :see_other
     end    
-
+ 
     def repro
         @dets = Exam.detalle_realiza(params[:id].to_i, params[:format])
     end 
 
-    def apro
+    def apro   
         @dets = Exam.detalle_realiza(params[:id].to_i, params[:format])
     end 
     
@@ -96,17 +96,21 @@ class ExamsController < ApplicationController
     end    
 
     def evaluacion 
+        
         @int = 0
-        if params[:adm_exam_id].present? && params[:id].present?
-            @int = Exam.where("user_id = ? and adm_exam_id = ?", params[:id].to_i, params[:adm_exam_id].to_i).count
+        @allow_exam = AllowExam.find(params[:allow_exam_id].to_i) if params[:allow_exam_id].present?
+        @adm_exam = AdmExam.find(@allow_exam.adm_exam_id.to_i) if @allow_exam.present?
+
+        if @adm_exam.present? && params[:id].present? && @allow_exam.present?
+            @int = Exam.where("user_id = ? and adm_exam_id = ? and allow_exam_id = ?", params[:id].to_i, @adm_exam.id.to_i, @allow_exam.id.to_i).count
         end  
         @exam = Exam.new 
         @exam.user_id =  params[:id].to_i  if params[:id].present?
-        @exam.adm_exam_id =  params[:adm_exam_id].to_i  if params[:adm_exam_id].present?
+        @exam.adm_exam_id =  @adm_exam.id.to_i  if @adm_exam.present?
+        @exam.allow_exam_id =  @allow_exam.id.to_i  if @allow_exam.present?
 
         if @int < @exam.adm_exam.cant_attempts
             @exam.save
-            @adm_exam = AdmExam.find(params[:adm_exam_id].to_i) if params[:adm_exam_id].present?
             @exam_questions = ExamQuestion.where("adm_exam_id = ?", @exam.adm_exam_id ) if @exam.adm_exam_id.present?
             @user = User.find(params[:id].to_i) if params[:id].present?
             @entity = Entity.find(@user.entity) if @user.entity.present?
@@ -168,7 +172,7 @@ class ExamsController < ApplicationController
         end    
     end    
 
-    def ver_respuesta
+    def ver_respuesta 
         if  params[:id].present? 
             @exam = Exam.find(params[:id].to_i) if params[:id].present?
             @exam_details = ExamDetail.where("exam_id = ?", @exam.id) if @exam.present?
@@ -177,7 +181,7 @@ class ExamsController < ApplicationController
             @user = User.find(@exam.user_id.to_i) if @exam.present?
             @entity = Entity.find(@user.entity) if @user.entity.present?
             @can_intentos = 0
-            @intentos = Exam.where("user_id = ? and adm_exam_id = ?", @exam.user_id.to_i, @exam.adm_exam_id.to_i)
+            @intentos = Exam.where("user_id = ? and adm_exam_id = ? and allow_exam_id = ?", @exam.user_id.to_i, @exam.adm_exam_id.to_i, @exam.allow_exam_id.to_i).order(id: :desc)
             @can_intentos = @intentos.count
         else
             redirect_to new_session_path, alert: 'No se pudo mostrar el resultado'     
@@ -187,14 +191,15 @@ class ExamsController < ApplicationController
     end  
     
     def ver_detalle
-        @adm_exam = AdmExam.find(params[:id].to_i)
+        @allow_exam = AllowExam.find(params[:id].to_i) if params[:id].present?
+        @adm_exam =   AdmExam.find(@allow_exam.adm_exam_id.to_i) if @allow_exam.present?
     end  
 
     private
 
     def exam_params
         params.require(:exam).permit(:total_good, :total_bad, :final_percentage, 
-        :time_exam, :adm_exam_id, :user_id, :percentage_min, :resul)
+        :time_exam, :adm_exam_id, :user_id, :percentage_min, :resul, :allow_exam_id)
     end 
 
 end  

@@ -1,38 +1,48 @@
 <%= stylesheet_link_tag "calendar", "data-turbo-track": "reload" %>
 <div class="container">
-    <h2 class="display-5">Calendario   <%= @adm_calendar.year %></h2>
+    <h2 class="display-5">Calendario   <%= @adm_calendar.year if @adm_calendar.present? %></h2>
 </div> 
 <hr>
 <% m = 1 %> 
 <div class="container col-12 card p-5">
     <div class="row g-7">
         <div class="col-sm-2" >
-            <div style="background-color: #d41717;">Día festivo</div>
+            <div> 
+                <button type="button" class="btn btn-outline-danger">Día festivo</button>
+            </div>
         </div>
         <div class="col-sm-1" >
             <div></div>
         </div>
         <div class="col-sm-2" >
-            <div style="background-color: #d4d117;">Día con actividad</div>
+            <div> 
+                <button type="button" class="btn btn-outline-warning">Día con actividad</button>
+            </div>
         </div>
         <div class="col-sm-1" >
             <div></div>
         </div>
         <div class="col-sm-2" >
-            <div style="background-color: #9c9b97;">Día actual</div>
+            <div> 
+                <button type="button" class="btn btn-outline-secondary">Día actual</button>
+            </div>
         </div>
         <div class="col-sm-1" >
             <div></div>
         </div>
         <div class="col-sm-2" >
-            <div style="background-color: #0fa2f7;">Día sin actividad</div>
-        </div>
+            <div>
+                <button type="button" class="btn btn-outline-primary">Día sin actividad</button>
+            </div>
+        </div>        
         <div class="col-sm-1" >
             <div></div>
         </div>
     </div>      
     <br>
-
+        <div><br></div>
+    
+    
     <div class="row g-3">
         
             <% while m < 13 %> 
@@ -59,27 +69,29 @@
                             <li class="day-name">Vi</li>
                             <li class="day-name">Sá</li>
                             <li class="day-name">Do</li>
-        
-                            <% @calendars.where("month = ?", m).each do |calendar| %>  
-                                <% if calendar.day == 1 then %>
-                                    <% if calendar.festive == 1 then %>
-                                        <li style="grid-column-start: <%= calendar.diasem(calendar) %>;"><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-danger'  %></li>
-                                    <% elsif calendar.hoy(calendar) == 1 %>
-                                        <li style="grid-column-start: <%= calendar.diasem(calendar) %>;"><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-secondary'  %></li>
-                                    <% elsif calendar.event(calendar) == 1 %>
-                                        <li style="grid-column-start: <%= calendar.diasem(calendar) %>;"><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-warning'  %></li>
+
+                            <% if @calendars.present? %>  
+                                <% @calendars.where("month = ?", m).each do |calendar| %>  
+                                    <% if calendar.day == 1 then %>
+                                        <% if calendar.festive == 1 then %>
+                                            <li style="grid-column-start: <%= calendar.diasem(calendar) %>;"><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-danger'  %></li>
+                                        <% elsif calendar.hoy(calendar) == 1 %>
+                                            <li style="grid-column-start: <%= calendar.diasem(calendar) %>;"><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-secondary'  %></li>
+                                        <% elsif calendar.event(calendar) == 1 %>
+                                            <li style="grid-column-start: <%= calendar.diasem(calendar) %>;"><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-warning'  %></li>
+                                        <% else %>
+                                            <li style="grid-column-start: <%= calendar.diasem(calendar) %>;"><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-primary'  %></li>
+                                        <% end %>
                                     <% else %>
-                                        <li style="grid-column-start: <%= calendar.diasem(calendar) %>;"><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-primary'  %></li>
-                                    <% end %>
-                                <% else %>
-                                    <% if calendar.festive == 1 then %>
-                                        <li><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-danger'  %></li>
-                                    <% elsif calendar.hoy(calendar) == 1 %>
-                                        <li><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-secondary'  %></li>
-                                    <% elsif calendar.event(calendar) == 1 %>
-                                        <li><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-warning'  %></li>
-                                    <% else %>
-                                        <li><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-primary'  %></li>
+                                        <% if calendar.festive == 1 then %>
+                                            <li><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-danger'  %></li>
+                                        <% elsif calendar.hoy(calendar) == 1 %>
+                                            <li><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-secondary'  %></li>
+                                        <% elsif calendar.event(calendar) == 1 %>
+                                            <li><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-warning'  %></li>
+                                        <% else %>
+                                            <li><%= link_to calendar.day, detail_path(calendar.id), class: 'btn btn-outline-primary'  %></li>
+                                        <% end %>
                                     <% end %>
                                 <% end %>
                             <% end %>

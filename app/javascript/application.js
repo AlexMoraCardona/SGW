@@ -7,6 +7,7 @@ import "bootstrap"
 
 import "chartkick"
 import "Chart.bundle"
+import "chartkick/chart.js"
 
 //import "direct_uploads"
 require("trix")
@@ -18,6 +19,8 @@ setTimeout((function () {
         Chartkick.charts[key].redraw();
     });
 }), 3000);
+
+
 
 
 

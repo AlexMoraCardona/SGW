@@ -27,4 +27,5 @@ WickedPdf.config = {
   # 'xvfb-run' command, in order to simulate an X server.
   #
   # use_xvfb: true,
+  javascript_delay: 3000,
 }

@@ -120,6 +120,7 @@ class IndicadoresController < ApplicationController
                 disable_javascript: true,
                 page_size: 'letter',
                 javascript_delay: 3000,
+                window_status: "FLAG_FOR_PDF",
                 image_quality: 100,
                 background: true,
                 disable_smart_shrinking: false,                

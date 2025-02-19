@@ -17,12 +17,11 @@ class HomesController < ApplicationController
 
     end    
 
-    def notificaciones
+    def notificaciones 
         @entity = Entity.find(Current.user.entity) if Current.user.entity > 0
         @cant_noti = 0
         @noti = 0
         @year_noti = Date.today.year
-        @month_noti = Date.today.month
         @notificaciones= []
         if Current.user.level == 1 || Current.user.level == 2 then
             @annual_work_plans = nil
@@ -30,11 +29,11 @@ class HomesController < ApplicationController
             @annual_work_plans = AnnualWorkPlan.where("year = ?", @year_noti)
             if  @annual_work_plans.present? then
                 @annual_work_plans.each do |annual_work_plan| 
-                    @annual_work_plan_items = AnnualWorkPlanItem.where("annual_work_plan_id = ? and earring = ? and month <= ?",annual_work_plan.id,0,@month_noti)
+                    @annual_work_plan_items = AnnualWorkPlanItem.where("annual_work_plan_id = ? and earring = ?",annual_work_plan.id,0)
                     if @annual_work_plan_items.present?
                         @annual_work_plan_items.each do |item| 
-                            fecha = @year_noti.to_s + '-' + item.month.to_s + '-01' 
-                            @notificaciones << ["Plan anual de trabajo", annual_work_plan.entity.business_name, item.activity, fecha.to_date, item.id]
+                            fecha = item.date_realization.to_date 
+                            @notificaciones << ["Plan anual de trabajo", annual_work_plan.entity.business_name, item.activity, fecha, item.id]
                         end    
                     end
                 end   
@@ -84,24 +83,40 @@ class HomesController < ApplicationController
             @complaints = Complaint.where("state_complaint = ?",0)
             if  @complaints.present? then
                 @complaints.each do |complaint| 
-                            @notificaciones << ["Queja Comité de Convivencia Laboral", complaint.entity.business_name, "Queja CCL", complaint.date_complaint, complaint.id]
+                            @notificaciones << ["Comité de Convivencia Laboral", complaint.entity.business_name, "Queja CCL", complaint.date_complaint, complaint.id]
                 end   
             end
 
+            @occupational_exam = nil
+            @occupational_exam_items = nil
+            @occupational_exams = OccupationalExam.all
+            if  @occupational_exams.present? then
+                @occupational_exams.each do |occupational_exam| 
+                    @occupational_exam_items = OccupationalExamItem.where("occupational_exam_id = ? and state_exam = ?",occupational_exam.id,0)
+                    if @occupational_exam_items.present?
+                        @occupational_exam_items.each do |item| 
+                            fecha = item.fec_venc.to_date 
+                            @notificaciones << ["Exámenes Ocupacionales", occupational_exam.entity.business_name, item.name, fecha, item.id]
+                        end    
+                    end
+                end   
+            end
+
+
             @cant_noti = @notificaciones.count if @notificaciones.present?
         else
-            @annual_work_plan = AnnualWorkPlan.where("year = ? and entity_id = ?", @year_noti,@entity.id).last if @entity.present? 
+            @annual_work_plan = AnnualWorkPlan.find_by("year = ? and entity_id = ?", @year_noti,@entity.id) if @entity.present? 
             @annual_work_plan_items = nil
             if  @annual_work_plan.present? then
-                    @annual_work_plan_items = AnnualWorkPlanItem.where("annual_work_plan_id = ? and earring = ? and month <= ?",@annual_work_plan.id,0,@month_noti)
-                    if @annual_work_plan_items.present?
+                    @annual_work_plan_items = AnnualWorkPlanItem.where("annual_work_plan_id = ? and earring = ?",@annual_work_plan.id,0)
+                    if @annual_work_plan_items.presentAnnualWorkPlanItem?
                         @annual_work_plan_items.each do |item| 
-                            fecha = @year_noti.to_s + '-' + item.month.to_s + '-01' 
+                            fecha = item.date_realization 
                             @notificaciones << ["Plan anual de trabajo", @annual_work_plan.entity.business_name, item.activity, fecha.to_date, item.id]
                         end    
                     end
             end
-            @matrix_danger_risk = MatrixDangerRisk.where("entity_id = ?",@entity.id)
+            @matrix_danger_risk = MatrixDangerRisk.find_by(entity_id: @entity.id.to_i)
             @matrix_danger_items = nil
             if  @matrix_danger_risk.present? then
                     @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and danger_intervened = ? and proposed_date <= ?",@matrix_danger_risk.id,0,(Date.today+30))
@@ -111,10 +126,10 @@ class HomesController < ApplicationController
                         end    
                     end
             end
-            @matrix_corrective_action = MatrixCorrectiveAction.where("entity_id = ?",@entity.id)
+            @matrix_corrective_action = MatrixCorrectiveAction.find_by(entity_id: @entity.id)
             @matrix_action_items = nil
             if  @matrix_corrective_action.present? then
-                    @matrix_action_items = MatrixActionItem.where("matrix_corrective_action_id = ? and state_actions = ? and commitment_date <= ?",matrix_corrective_action.id,0,(Date.today + 30))
+                    @matrix_action_items = MatrixActionItem.where("matrix_corrective_action_id = ? and state_actions = ? and commitment_date <= ?",@matrix_corrective_action.id,0,(Date.today + 30))
                     if @matrix_action_items.present?
                         @matrix_action_items.each do |item| 
                             @notificaciones << ["Matriz ACPM", @matrix_corrective_action.entity.business_name, item.description_action, item.commitment_date, item.id]
@@ -142,15 +157,30 @@ class HomesController < ApplicationController
             @complaints = Complaint.where("state_complaint = ? and entity_id = ?",0,@entity.id)
             if  @complaints.present? then
                 @complaints.each do |complaint| 
-                            @notificaciones << ["Queja Comité de Convivencia Laboral", complaint.entity.business_name, "Queja CCL", complaint.date_complaint, complaint.id]
+                            @notificaciones << ["Comité de Convivencia Laboral", complaint.entity.business_name, "Queja CCL", complaint.date_complaint, complaint.id]
                 end   
+            end
+
+            @occupational_exams = OccupationalExam.where("entity_id = ?", @entity.id) if @entity.present? 
+            @occupational_exam_items = nil
+            if  @occupational_exams.present? then
+                @occupational_exams.each do |occupational_exam| 
+                    @occupational_exam_items = OccupationalExamItem.where("occupational_exam_id = ? and state_exam = ?",occupational_exam.id,0)
+                end    
+                if @occupational_exam_items.present?
+                    @occupational_exam_items.each do |item| 
+                        fecha = item.fec_venc 
+                        @notificaciones << ["Exámenes Ocupacionales", @entity.business_name, item.name, fecha, item.id]
+                    end    
+                end
             end
 
 
             @cant_noti = @notificaciones.count if @notificaciones.present?
             
         end 
-        @notificaciones.sort_by { |a, b, c, d, e| b.size }
+        @notificaciones
+    
         
     end    
 

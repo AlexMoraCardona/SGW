@@ -8,7 +8,8 @@ class Authentication::SessionsController < ApplicationController
     def create
         @user = User.find_by("(email = :login OR username = :login) AND state = 1 ", { login: params[:login]})
 
-        if @user&.authenticate(params[:password])
+        if @user&.authenticate(params[:password]) 
+            UserMailer.with(user: @user).ingreso.deliver_later 
             session[:user_id] = @user.id
             redirect_to home_path, notice: t('.created')
         else

@@ -46,7 +46,7 @@ class OccupationalExamItemsController < ApplicationController
     def occupational_exam_item_params
         params.require(:occupational_exam_item).permit(:consecutive, :fec_exam, :fec_venc, :exam_type, 
         :nro_identification, :name, :post, :concept, :addressing, :recommendations, :restrictions,
-         :sve, :action, :follow_up, :occupational_exam_id   )
+         :sve, :action, :follow_up, :occupational_exam_id, :state_exam)
     end  
 
 end  

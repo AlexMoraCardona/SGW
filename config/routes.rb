@@ -136,6 +136,7 @@ Rails.application.routes.draw do
   get '/form_preventions/informesuge/:id', to: 'form_preventions#informesuge', as: 'informesuge' 
   get '/form_preventions/encuestapre/:id', to: 'form_preventions#encuestapre', as: 'encuestapre' 
   get '/form_preventions/firmar_admin_extent/:id', to: 'form_preventions#firmar_admin_extent', as: 'firmar_admin_extent'
+  get '/form_preventions/actualizar_form_prevention/:id', to: 'form_preventions#actualizar_form_prevention', as: 'actualizar_form_prevention'
   get '/presentations/listadopresentaciones', to: 'presentations#listadopresentaciones', as: 'listadopresentaciones'
   get '/profiles/firma_aprobo/:id', to: 'profiles#firma_aprobo', as: 'firma_aprobo'
   get '/profiles/firma_elaboro/:id', to: 'profiles#firma_elaboro', as: 'firma_elaboro'

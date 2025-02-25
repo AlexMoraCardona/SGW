@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_02_18_220044) do
+ActiveRecord::Schema[7.0].define(version: 2025_02_25_142920) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -128,6 +128,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_02_18_220044) do
     t.date "date_firm_user"
     t.bigint "user_id"
     t.string "post"
+    t.integer "type_contract", default: 0
+    t.integer "received_training", default: 0
+    t.integer "suffered_accident", default: 0
     t.index ["entity_id"], name: "index_admin_extent_dangers_on_entity_id"
     t.index ["user_id"], name: "index_admin_extent_dangers_on_user_id"
   end
@@ -883,6 +886,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_02_18_220044) do
     t.integer "no_apply", default: 1
     t.bigint "clasification_danger_detail_id"
     t.bigint "clasification_danger_id"
+    t.integer "exposed", default: 0
     t.index ["admin_extent_danger_id"], name: "index_form_preventions_on_admin_extent_danger_id"
     t.index ["clasification_danger_detail_id"], name: "index_form_preventions_on_clasification_danger_detail_id"
     t.index ["clasification_danger_id"], name: "index_form_preventions_on_clasification_danger_id"

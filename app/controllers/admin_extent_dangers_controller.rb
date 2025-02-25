@@ -24,7 +24,8 @@ class AdminExtentDangersController < ApplicationController
         @admin_extent_danger = AdminExtentDanger.new(admin_extent_danger_params)
 
         if @admin_extent_danger.save then
-            redirect_to admin_extent_dangers_path, notice: 'Administración de medida creada correctamente', calendar: :see_other
+            crear_detalle(@admin_extent_danger)
+            redirect_to edit_form_prevention_path(@admin_extent_danger.id)
         else
             render :edit, status: :unprocessable_entity
         end    
@@ -51,15 +52,16 @@ class AdminExtentDangersController < ApplicationController
     end 
 
     def crear_admin_extent
-        @admin_extent_danger = AdminExtentDanger.new 
-        @admin_extent_danger.user_id = Current.user.id
-        @admin_extent_danger.entity_id = Current.user.entity
-        @admin_extent_danger.date_creation = Time.now
-        @admin_extent_danger.state_extent = 1
-        @admin_extent_danger.save
 
-        crear_detalle(@admin_extent_danger)
-        redirect_to form_preventions_path(entity_id: @admin_extent_danger.entity_id), notice: 'Por favor diligencie el nuevo formulario'
+        @admin_extent_danger = AdminExtentDanger.new 
+        @entity = Entity.find(Current.user.entity) if Current.user.present?
+
+        
+        #@admin_extent_danger.save
+
+        #crear_detalle(@admin_extent_danger)
+
+        #redirect_to form_preventions_path(entity_id: @admin_extent_danger.entity_id), notice: 'Por favor diligencie el nuevo formulario'
     end  
     
     def crear_detalle(admin)
@@ -108,7 +110,7 @@ class AdminExtentDangersController < ApplicationController
 
     def admin_extent_danger_params
         params.require(:admin_extent_danger).permit(:date_creation, :date_vencimiento, :state_extent, :entity_id, 
-        :firm_user, :date_firm_user, :user_id, :post)
+        :firm_user, :date_firm_user, :user_id, :post, :type_contract, :received_training, :suffered_accident)
     end 
 
 end  

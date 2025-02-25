@@ -1,18 +1,12 @@
-<div class="container col-10 card p-5">
+<div class="container col-5 card p-5 text-dark">
     <br>
 
-    <div class="col-sm-12 p-3 mb-4 bg-info text-dark"  >    
-        <div class="row text-center">
-            <h4>PELIGRO / RIESGO</h4> </br>
-            <h5><%= @form_prevention.clasification_danger.name if @form_prevention.present? %></h5>
+    <div>    
+        <div>
+            <p><b>PELIGRO / RIESGO</b> </br> <%= @form_prevention.clasification_danger.name if @form_prevention.present? %></p>
 
-            <h4>DESCRIPCIÓN PELIGRO / RIESGO</h4> </br>
-            <h5><%= @form_prevention.clasification_danger_detail.name if @form_prevention.present? %></h5>
-
-            <div>N/A: No Aplica   /   ELI: Eliminación / SUS: Sustitución / CI: Controles de Ingeniería / CA: Controles Administrativos / EPP: Elementos de Protección Personal</div>
-
+            <p><b>DESCRIPCIÓN PELIGRO / RIESGO</b> </br> <%= @form_prevention.clasification_danger_detail.name if @form_prevention.present? %></p>
         </div> 
-        <div></br></div>   
         <div>
             <%= form_with model: @form_prevention do |form| %>
                 <% @form_prevention.errors.full_messages.each do |error| %>
@@ -20,21 +14,12 @@
                         <%= error%> <%= alert %>
                     </div>
                 <% end %>  
-                        <div style="text-align:center;border:0px solid black;width: 100%;"> 
-                            <%= form.label :eli,  style: "display: block" %> 
-                            <%= form.radio_button :eli, 0 %>
-                            <label for="no_aplica">N/A</label>
-                            <%= form.radio_button :eli, 1 %>
-                            <label for="eliminacion">ELI</label>
-                            <%= form.radio_button :eli, 2 %>
-                            <label for="sustitucion">SUS</label>
-                            <%= form.radio_button :eli, 3 %>
-
-                            <label for="controlesingenieria">CI</label>
-                            <%= form.radio_button :eli, 4 %>
-                            <label for="controlesadiministrativos">CA</label>
-                            <%= form.radio_button :eli, 5 %>
-                            <label for="elementospp">EPP</label>
+                        <div style="border:0px solid black;width: 100%;"> 
+                            <b><%= form.label :exposed,  style: "display: block" %></b>
+                            <%= form.radio_button :exposed, 0, required: true, checked: false %>
+                            <label for="no">No</label></br>
+                            <%= form.radio_button :exposed, 1, required: true, checked: false %>
+                            <label for="si">Si</label></br>
                         </div>
                         <div></br></div>
                         <div style="text-align:center;"> 

@@ -1,0 +1,59 @@
+<div class="container col-4 card p-5">
+    <br>
+    <p><i><b>Encuesta identificación de peligros con participación de la organización</b></i></p>
+    <p><b>Empresa:</b></br> <%= @entity.business_name  if @entity.present? %> </p>
+    <p><b>Fecha:</b></br> <%= Time.now.strftime("%F") %> </p>
+    <p><b>Nombre completo:</b></br> <%= Current.user.name %> </p>
+    <p><b>Número de documento de identidad:</b></br> <%= Current.user.nro_document %> </p>
+
+    <%= form_with model: @admin_extent_danger do |form| %>
+        <% @admin_extent_danger.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+
+        <br> 
+        <div class="form-group"> 
+            <b><%= form.label :type_contract,  style: "display: block" %></b>
+            <%= form.radio_button :type_contract, 0, required: true, checked: false %>
+            <label for="vinculado">Vinculado</label></br>
+            <%= form.radio_button :type_contract, 1, required: true, checked: false %>
+            <label for="prestacion">Prestación de servicios</label></br>
+        </div>  
+        <br>
+        <div class="form-group">    
+            <b><%= form.label :post, style: "display: block" %></b>
+            <%= form.text_field :post,  class: "form-control", required: true %> 
+        </div>     
+        <br>
+        <div class="form-group"> 
+
+
+            <b><%= form.label :received_training,  style: "display: block" %></b>
+            <%= form.radio_button :received_training, 0, required: true, checked: false %>
+            <label for="no">No</label></br>
+            <%= form.radio_button :received_training, 1, required: true, checked: false %>
+            <label for="si">Si</label></br>
+        </div>  
+        <br>
+        <div class="form-group"> 
+            <b><%= form.label :suffered_accident,  style: "display: block" %></b>
+            <%= form.radio_button :suffered_accident, 0, required: true, checked: false %>
+            <label for="no">No</label></br>
+            <%= form.radio_button :suffered_accident, 1, required: true, checked: false %>
+            <label for="si">Si</label></br>
+        </div>  
+        <br>
+        
+        <%= form.hidden_field :entity_id, :value => @entity.id.to_i, class: "form-control" if @entity.present? %>
+        <%= form.hidden_field :user_id, :value => Current.user.id.to_i, class: "form-control" if Current.user.present? %>
+        <%= form.hidden_field :state_extent, :value => 1, class: "form-control" if Current.user.present? %>
+        <%= form.hidden_field :date_creation, :value => Time.now, class: "form-control" if Current.user.present? %>
+
+        <div><br> </div>    
+        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.initialsurvey')%></button> 
+        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, form_preventions_path(entity_id: @entity.id) %>
+    <% end %>
+</div>        
+<br>

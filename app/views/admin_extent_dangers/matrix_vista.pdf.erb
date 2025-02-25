@@ -7,7 +7,6 @@
     <%= javascript_importmap_tags %>
 </head>
 <br>
-<br>
 <div>
 
     <table class="table table-hover" style="border:1px solid black"> 
@@ -19,7 +18,7 @@
                         <%=  image_tag  @entity.logo, class: "image_peq" %>
                     <% end %>
                 </td>
-                <td rowspan="4"; colspan="6"; style="text-align:center; padding-bottom: 40px;">
+                <td rowspan="4"; colspan="7"; style="text-align:center; padding-bottom: 40px;">
                     <div class="col-12"><h5>MEDIDAS DE PREVENCIÓN Y CONTROL DE PELIGROS Y RIESGOS POR PARTE DE LOS TRABAJADORES</h5><h6><%= @entity.business_name if @entity.present? %> Nit: <%= @entity.identification_number if @entity.present? %> </h6></div>
                 </td>
                 <td rowspan="4";  style="text-align:center">
@@ -59,6 +58,7 @@
                     <th ROWSPAN=2 scope="col" style="border:1px solid black">DESCRIPCIÓN DEL PELIGRO</th>
                     <th ROWSPAN=2 scope="col" style="border:1px solid black">POSIBLE RIESGOS/CONSECUENCIAS</th>
                     <th ROWSPAN=2 scope="col" style="border:1px solid black">SUGERENCIA DE MEDIDAS DE PREVENCIÓN Y CONTROL</th>
+                    <th ROWSPAN=2 scope="col" style="border:1px solid black">EXPUESTO</th>
                     <th COLSPAN=6 scope="col" style="border:1px solid black;text-align:center;">JERARQUÍA DE CONTROLES</th>
                     <th style="background-color: black;">&nbsp;</th>
                 </tr>
@@ -83,6 +83,11 @@
                         <td style="border:1px solid black"><%= form_prevention.clasification_danger_detail.name %></td>
                         <td style="border:1px solid black"><%= DangerDetailRisk.label_risk(form_prevention.clasification_danger_detail.id) %></td>
                         <td style="border:1px solid black"><%= DangerPrevention.label_prevention(form_prevention.clasification_danger_detail.id) %></td>
+                        <% if form_prevention.exposed == 1 %>
+                            <td style="border:1px solid black;text-align:center;">X</td>
+                        <% else %>
+                            <td style="border:1px solid black;text-align:center;"></td>
+                        <% end %>
                         <% if form_prevention.eli == 0 %>
                             <td style="border:1px solid black;text-align:center;">X</td>
                         <% else %>
@@ -112,7 +117,7 @@
                             <td style="border:1px solid black;text-align:center;">X</td>
                         <% else %>
                             <td style="border:1px solid black;text-align:center;"></td>
-                        <% end %>
+                        <% end %> 
                         <td style="background-color: black;">&nbsp;</td>
                     </tr>
                 <% end %>           
@@ -143,5 +148,6 @@
     <div><br></div>
     <div><br></div>
 
-</div>    
+
+</div>  
 

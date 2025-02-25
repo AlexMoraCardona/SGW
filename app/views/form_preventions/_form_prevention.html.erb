@@ -15,11 +15,10 @@
                 <th style="border:1px solid black;" scope="col"><%= t('.state_extent') %></th>
                 <th style="border:1px solid black;" scope="col"><%= t('.entity_id') %></th>
                 <th style="border:1px solid black;" scope="col"><%= t('.user_id') %></th>
-                <th style="border:1px solid black;text-align:center;" scope="col"> Firmar</th>
-                <th style="border:1px solid black;text-align:center;" scope="col"><%= t('common.edit') %></th>
+                <th style="border:1px solid black;text-align:center;" scope="col"> Cargo</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody> 
             <% @admin_extent_dangers.each do |admin_extent_danger| %>
                 <tr>
                     <td style="border:1px solid black"><%= admin_extent_danger.id %></td>
@@ -27,14 +26,7 @@
                     <td style="border:1px solid black"><%= admin_extent_danger.label_state_extent(admin_extent_danger.state_extent) %></td>
                     <td style="border:1px solid black"><%= admin_extent_danger.entity.business_name %></td>
                     <td style="border:1px solid black"><%= admin_extent_danger.user.name %></td>
-                    <td style="border:1px solid black;text-align:center;">
-                        <% if admin_extent_danger.firm_user == 0 %>
-                            <%= link_to t('common.firmar'), firmar_admin_extent_path(admin_extent_danger.id), class: 'btn btn-sm btn-outline-primary' %>
-                        <% else %>
-                            <%= admin_extent_danger.date_firm_user %>    
-                        <% end %>           
-                    </td>
-                    <td style="border:1px solid black;text-align:center;"><%= link_to t('common.edit'), edit_form_prevention_path(admin_extent_danger), class: 'btn btn-sm btn-outline-primary'  %></td>
+                    <td style="border:1px solid black"><%= admin_extent_danger.post %></td>
                 </tr>
             <% end %>           
         </tbody>      

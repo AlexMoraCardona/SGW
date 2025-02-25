@@ -105,76 +105,77 @@ class HomesController < ApplicationController
 
             @cant_noti = @notificaciones.count if @notificaciones.present?
         else
-            @annual_work_plan = AnnualWorkPlan.find_by("year = ? and entity_id = ?", @year_noti,@entity.id) if @entity.present? 
-            @annual_work_plan_items = nil
-            if  @annual_work_plan.present? then
-                    @annual_work_plan_items = AnnualWorkPlanItem.where("annual_work_plan_id = ? and earring = ?",@annual_work_plan.id,0)
-                    if @annual_work_plan_items.presentAnnualWorkPlanItem?
-                        @annual_work_plan_items.each do |item| 
-                            fecha = item.date_realization 
-                            @notificaciones << ["Plan anual de trabajo", @annual_work_plan.entity.business_name, item.activity, fecha.to_date, item.id]
-                        end    
-                    end
-            end
-            @matrix_danger_risk = MatrixDangerRisk.find_by(entity_id: @entity.id.to_i)
-            @matrix_danger_items = nil
-            if  @matrix_danger_risk.present? then
-                    @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and danger_intervened = ? and proposed_date <= ?",@matrix_danger_risk.id,0,(Date.today+30))
-                    if @matrix_danger_items.present?
-                        @matrix_danger_items.each do |item| 
-                            @notificaciones << ["Matriz de Peligros y Riesgos", @matrix_danger_risk.entity.business_name, item.activity, item.proposed_date, item.id]
-                        end    
-                    end
-            end
-            @matrix_corrective_action = MatrixCorrectiveAction.find_by(entity_id: @entity.id)
-            @matrix_action_items = nil
-            if  @matrix_corrective_action.present? then
+            if Current.user.level == 3 then
+                @annual_work_plan = AnnualWorkPlan.find_by("year = ? and entity_id = ?", @year_noti,@entity.id) if @entity.present? 
+                @annual_work_plan_items = nil
+                if  @annual_work_plan.present? then
+                        @annual_work_plan_items = AnnualWorkPlanItem.where("annual_work_plan_id = ? and earring = ?",@annual_work_plan.id,0)
+                        if @annual_work_plan_items.present?
+                            @annual_work_plan_items.each do |item| 
+                                fecha = item.date_realization 
+                                @notificaciones << ["Plan anual de trabajo", @annual_work_plan.entity.business_name, item.activity, fecha.to_date, item.id]
+                            end    
+                        end
+                end
+                @matrix_danger_risk = MatrixDangerRisk.find_by(entity_id: @entity.id.to_i)
+                @matrix_danger_items = nil
+                if  @matrix_danger_risk.present? then
+                        @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and danger_intervened = ? and proposed_date <= ?",@matrix_danger_risk.id,0,(Date.today+30))
+                        if @matrix_danger_items.present?
+                            @matrix_danger_items.each do |item| 
+                                @notificaciones << ["Matriz de Peligros y Riesgos", @matrix_danger_risk.entity.business_name, item.activity, item.proposed_date, item.id]
+                            end    
+                        end
+                end
+                @matrix_corrective_action = MatrixCorrectiveAction.find_by(entity_id: @entity.id)
+                @matrix_action_items = nil
+                if  @matrix_corrective_action.present? then
                     @matrix_action_items = MatrixActionItem.where("matrix_corrective_action_id = ? and state_actions = ? and commitment_date <= ?",@matrix_corrective_action.id,0,(Date.today + 30))
                     if @matrix_action_items.present?
                         @matrix_action_items.each do |item| 
                             @notificaciones << ["Matriz ACPM", @matrix_corrective_action.entity.business_name, item.description_action, item.commitment_date, item.id]
                         end    
                     end
-            end
-            @matrix_condition = MatrixCondition.where("entity_id = ?",@entity.id).last
-            @matrix_unsafe_items = nil
-            if  @matrix_condition.present? then
-                    @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ? and state_unsafe = ?",@matrix_condition.id,0)
-                    if @matrix_unsafe_items.present?
-                        @matrix_unsafe_items.each do |item| 
-                            @notificaciones << ["Matriz Actos y Condiciones Inseguras", @matrix_condition.entity.business_name, item.description_usafe, item.date_item, item.id]
+                end
+                @matrix_condition = MatrixCondition.where("entity_id = ?",@entity.id).last
+                @matrix_unsafe_items = nil
+                if  @matrix_condition.present? then
+                        @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ? and state_unsafe = ?",@matrix_condition.id,0)
+                        if @matrix_unsafe_items.present?
+                         @matrix_unsafe_items.each do |item| 
+                             @notificaciones << ["Matriz Actos y Condiciones Inseguras", @matrix_condition.entity.business_name, item.description_usafe, item.date_item, item.id]
+                            end    
+                        end
+                end
+                @commitments = Commitment.where("state_commitment = ?",0)
+                if  @commitments.present? then
+                    @commitments.each do |commitment|
+                        if commitment.evidence.entity_id ==  @entity.id then
+                                @notificaciones << ["Compromiso Acta de Reunión COPASST - VIGÍA", commitment.evidence.entity.business_name, commitment.activity, commitment.date_ejecution, commitment.id]
+                        end        
+                    end   
+                end
+                @complaints = Complaint.where("state_complaint = ? and entity_id = ?",0,@entity.id)
+                if  @complaints.present? then
+                    @complaints.each do |complaint| 
+                                @notificaciones << ["Comité de Convivencia Laboral", complaint.entity.business_name, "Queja CCL", complaint.date_complaint, complaint.id]
+                    end   
+                end
+
+                @occupational_exams = OccupationalExam.where("entity_id = ?", @entity.id) if @entity.present? 
+                @occupational_exam_items = nil
+                if  @occupational_exams.present? then
+                    @occupational_exams.each do |occupational_exam| 
+                        @occupational_exam_items = OccupationalExamItem.where("occupational_exam_id = ? and state_exam = ?",occupational_exam.id,0)
+                    end    
+                    if @occupational_exam_items.present?
+                        @occupational_exam_items.each do |item| 
+                            fecha = item.fec_venc 
+                            @notificaciones << ["Exámenes Ocupacionales", @entity.business_name, item.name, fecha, item.id]
                         end    
                     end
-            end
-            @commitments = Commitment.where("state_commitment = ?",0)
-            if  @commitments.present? then
-                @commitments.each do |commitment|
-                    if commitment.evidence.entity_id ==  @entity.id then
-                            @notificaciones << ["Compromiso Acta de Reunión COPASST - VIGÍA", commitment.evidence.entity.business_name, commitment.activity, commitment.date_ejecution, commitment.id]
-                    end        
-                end   
-            end
-            @complaints = Complaint.where("state_complaint = ? and entity_id = ?",0,@entity.id)
-            if  @complaints.present? then
-                @complaints.each do |complaint| 
-                            @notificaciones << ["Comité de Convivencia Laboral", complaint.entity.business_name, "Queja CCL", complaint.date_complaint, complaint.id]
-                end   
-            end
-
-            @occupational_exams = OccupationalExam.where("entity_id = ?", @entity.id) if @entity.present? 
-            @occupational_exam_items = nil
-            if  @occupational_exams.present? then
-                @occupational_exams.each do |occupational_exam| 
-                    @occupational_exam_items = OccupationalExamItem.where("occupational_exam_id = ? and state_exam = ?",occupational_exam.id,0)
-                end    
-                if @occupational_exam_items.present?
-                    @occupational_exam_items.each do |item| 
-                        fecha = item.fec_venc 
-                        @notificaciones << ["Exámenes Ocupacionales", @entity.business_name, item.name, fecha, item.id]
-                    end    
                 end
             end
-
 
             @cant_noti = @notificaciones.count if @notificaciones.present?
             

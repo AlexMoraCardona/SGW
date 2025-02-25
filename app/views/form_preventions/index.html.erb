@@ -15,16 +15,16 @@
     <% else %>
         <%= form_with model: @entity, method: :get do |form| %>
             <div class="row g-2">
-                <div class="col-sm-7">
-                    <% if Current.user.level == 1 %>
+                <div class="col-sm-7"> 
+                    <% if Current.user.level == 1 %> 
                         <%= form.label :Entidad, style: "display: block" %>
                         <%= form.collection_select :entity_id, @entities, :id, :business_name, { prompt: '--Seleccionar Entidad--' },
                         { class: 'form-control input-sm select2' } %>
                     <% else %>
                         <div class="container">
-                            <h class="display-6"><%= @entities.business_name %></h>
+                            <h class="display-6"><%= @entitie.business_name %></h>
                         </div> 
-                        <%= form.hidden_field :entity_id, :value => @entities.id.to_i, class: "form-control" %>
+                        <%= form.hidden_field :entity_id, :value => @entitie.id.to_i, class: "form-control" %>
                     <% end %>
                 </div>
             </div>    

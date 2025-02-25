@@ -1,0 +1,79 @@
+<div class="container col-10 card p-5 text-dark">
+    <br>
+
+    <div>    
+        <div>
+            <p><b>PELIGRO / RIESGO</b> </br> <%= @form_prevention.clasification_danger.name if @form_prevention.present? %></p>
+
+            <p><b>DESCRIPCIÓN PELIGRO / RIESGO</b> </br> <%= @form_prevention.clasification_danger_detail.name if @form_prevention.present? %></p>
+        </div> 
+
+        <div>
+            <%= form_with model: @form_prevention do |form| %>
+                <% @form_prevention.errors.full_messages.each do |error| %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= error%> <%= alert %>
+                    </div>
+                <% end %>  
+                        <div style="border:0px solid black;width: 100%;"> 
+                            <b><%= form.label :exposed,  style: "display: block" %></b>
+                            <%= form.radio_button :exposed, 0 %>
+                            <label for="no">No</label></br>
+                            <%= form.radio_button :exposed, 1 %>
+                            <label for="si">Si</label></br>
+                        </div>
+                        <div></br></div>
+                        <div style="border:0px solid black;width: 100%;"> 
+                            <b>Eliminar: </b>
+                            <%= form.radio_button :eli, 0 %>
+                            <label for="no">No</label>
+                            <%= form.radio_button :eli, 1 %>
+                            <label for="si">Si</label></br>
+                        </div>
+                        <div style="border:0px solid black;width: 100%;"> 
+                            <b>Sustitución: </b>
+                            <%= form.radio_button :sus, 0 %>
+                            <label for="no">No</label>
+                            <%= form.radio_button :sus, 1 %>
+                            <label for="si">Si</label></br>
+                        </div>
+                        <div style="border:0px solid black;width: 100%;"> 
+                            <b>Controles de Ingeniería: </b>
+                            <%= form.radio_button :ci, 0 %>
+                            <label for="no">No</label>
+                            <%= form.radio_button :ci, 1 %>
+                            <label for="si">Si</label></br>
+                        </div>
+                        <div style="border:0px solid black;width: 100%;"> 
+                            <b>Controles Administrativos: </b>
+                            <%= form.radio_button :ca, 0 %>
+                            <label for="no">No</label>
+                            <%= form.radio_button :ca, 1 %>
+                            <label for="si">Si</label></br>
+                        </div>
+                        <div style="border:0px solid black;width: 100%;"> 
+                            <b>Elementos de Protección Personal: </b>
+                            <%= form.radio_button :epp, 0 %>
+                            <label for="no">No</label>
+                            <%= form.radio_button :epp, 1 %>
+                            <label for="si">Si</label></br>
+                        </div>
+                        <div style="border:0px solid black;width: 100%;"> 
+                            <b>No aplica: </b>
+                            <%= form.radio_button :no_apply, 0 %>
+                            <label for="no">No</label>
+                            <%= form.radio_button :no_apply, 1 %>
+                            <label for="si">Si</label></br>
+                        </div>
+
+                        <div></br></div>                        
+                        <div style="text-align:center;"> 
+                            <button type="submit" class="btn btn-sm btn-outline-dark"><%=t('common.submit')%></button> 
+                            <%= link_to '<button class="btn btn-sm btn-outline-dark" type="button">Retornar</button>'.html_safe, :back %>
+                        </div>
+            <% end %>    
+        </div>
+    </div>
+    <br>  
+</div>        
+<br>

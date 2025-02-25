@@ -7,6 +7,10 @@ Rails.application.routes.draw do
     resources :users
     resources :sessions, only: [:new, :create, :destroy]
     get '/users/cambio_empresa/:id', to: 'users#cambio_empresa', as: 'cambio_empresa'
+    get '/sessions/cambioclave/:id', to: 'sessions#cambioclave', as: 'cambioclave'
+    post '/sessions/generarclave/:id', to: 'sessions#generarclave', as: 'generarclave'
+    get '/users/cambiar_clave/:id', to: 'users#cambiar_clave', as: 'cambiar_clave'
+
   end  
   
 

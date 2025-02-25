@@ -9,7 +9,7 @@ class Authentication::SessionsController < ApplicationController
         @user = User.find_by("(email = :login OR username = :login) AND state = 1 ", { login: params[:login]})
 
         if @user&.authenticate(params[:password]) 
-            UserMailer.with(user: @user).ingreso.deliver_later 
+            
             session[:user_id] = @user.id
             redirect_to home_path, notice: t('.created')
         else
@@ -21,6 +21,36 @@ class Authentication::SessionsController < ApplicationController
     def destroy
         session.delete(:user_id)
         redirect_to new_session_path, notice: t('.destroyed')
-    end     
+    end 
+    
+    def cambioclave
+
+    end   
+
+    def generarclave
+        if params[:usu].present? &&  params[:usu].present? then
+            @user = User.find_by("username = ? AND nro_document = ? ", params[:usu], params[:doc] )
+            if @user.present? then
+                num_aleat = ''
+                6.times do
+                    numero = %w{ 0 1 2 3 4 5 6 7 8 9 A B C D E F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g h i j k l m n o p q r s t u v w x y z + - * /}
+                    num = rand(numero.length)
+                    num_aleat << numero[num].to_s
+                end
+                @user.password = num_aleat
+                if @user.save then 
+                    UserMailer.with(user: @user, clave: num_aleat).cambiocla.deliver_later 
+                    redirect_to new_session_path, notice: t('.correctocambio') 
+                else
+                    redirect_to new_session_path, alert: t('.errorcambio')
+                end
+            else
+                redirect_to new_session_path, alert: t('.errorcambio') 
+            end    
+        else
+            redirect_to new_session_path, alert: t('.errorcambio')  
+        end  
+
+    end   
     
 end     

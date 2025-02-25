@@ -13,4 +13,15 @@ class UserMailer < ApplicationMailer
     end  
     
   end
+
+  def cambiocla
+    @user = params[:user]
+    if @user.present?
+      @username = @user.name 
+      @clave = params[:clave]
+      mail to: @user.email
+    end  
+    
+  end
+
 end

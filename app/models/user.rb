@@ -17,7 +17,7 @@ class User < ApplicationRecord
     validates :username, uniqueness: true #Valor unico en bd
     validates :email, uniqueness: true #Valor unico en bd
 
-    validates :password_digest, length: {minimum: 4}
+    validates :password_digest, length: {minimum: 6}
 
     before_save :downcase_attributes
 

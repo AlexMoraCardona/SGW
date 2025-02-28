@@ -38,7 +38,17 @@ class User < ApplicationRecord
         elsif  dato == 1 ; 'ACTIVO'
         end 
     end 
-        
+    
+    def label_level(dato)
+        if dato == 0 ; 'Sin nivel'
+        elsif  dato == 1 ; 'Administrador'
+        elsif  dato == 2 ; 'Asesor'
+        elsif  dato == 3 ; 'Responsable SGSST'
+        elsif  dato == 4 ; 'Gerente / Representante Legal'
+        elsif  dato == 5 ; 'Empleado'
+        end 
+    end 
+
     private
     def downcase_attributes
         self.username = username.downcase 

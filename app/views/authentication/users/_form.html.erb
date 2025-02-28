@@ -68,9 +68,9 @@
         <br>
 
         <div class="form-group">    
-            <%= form.label :level, style: "display: block" %>
-            <%= form.number_field :level,  class: "form-control" %>
-        </div>
+            <%= form.label :level,  style: "display: block" %>
+            <%= form.collection_select :level, Level.all.order(id: :asc), :id, :name %>
+        </div> 
 
         <div class="form-group">    
             <%= form.label :entity,  style: "display: block" %>
@@ -157,17 +157,42 @@
             <%= form.label :password,  style: "display: block" %>
             <%= form.password_field :password,  class: "form-control" %>
         </div>
-
         <br>
-        <div class="form-group">    
-            <%= form.label :avatar,  style: "display: block" %> 
-            <%= form.file_field :avatar,  class: "form-control", accept:"image/*", capture:"environment" %>
-        </div>
-
-        <div class="form-group">    
-            <%= form.label :firm,  style: "display: block" %> 
-            <%= form.file_field :firm,  class: "form-control", accept:"image/*", capture:"environment" %>
-        </div>
+        <div class="row g-2">
+            <div class="col-sm-5">
+                <%= form.label :avatar,  style: "display: block" %> 
+                <%= form.file_field :avatar,  class: "form-control", accept:"image/*", capture:"environment" %>
+            </div>
+            <div class="col-sm-5">
+                <% if @user.present? %>
+                    <% if @user.avatar.attached? %>
+                        <% if @user.avatar.image? %> 
+                            <%= image_tag @user.avatar, data: {previews_target: "preview"}, class: "avatar-mini" %>
+                        <% end %>
+                    <% else %> 
+                        <%= image_tag("avatar.jpg", class: "avatar-mini") %>
+                    <% end %>
+                <% end %> 
+            </div>
+        </div>            
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-5">
+                <%= form.label :firm,  style: "display: block" %> 
+                <%= form.file_field :firm,  class: "form-control", accept:"image/*", capture:"environment" %>
+            </div>
+            <div class="col-sm-5">
+                <% if @user.present? %>
+                    <% if @user.firm.attached? %>
+                        <% if @user.firm.image? %> 
+                            <%= image_tag @user.firm, data: {previews_target: "preview"} %>
+                        <% end %>
+                    <% else %> 
+                        <%= image_tag("avatar.jpg", class: "avatar-mini") %>
+                    <% end %>
+                <% end %> 
+            </div>
+        </div>            
 
         
         <br> 

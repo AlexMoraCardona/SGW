@@ -8,8 +8,15 @@ class Calendar < ApplicationRecord
             @activity_user = ActivityUser.new
             @activity_user.activity_id = id.to_i
             @activity_user.user_id = vector[i].to_i
+            @user_cita = User.find(@activity_user.user_id) if @activity_user.user_id.present?
+            @actividad_cita = Activity.find(@activity_user.activity_id) if @activity_user.activity_id.present?
+            @calendario = Calendar.find(@actividad_cita.calendar_id) if @actividad_cita.calendar_id.present?
+            @convoca = User.find(@actividad_cita.user_id) if @actividad_cita.present?
             @activity_user.mandatory  = 1
             @activity_user.save
+ 
+            @mesnombre = Calendar.label_month(@calendario.month) if @calendario.present?
+            UserMailer.with(user: @user_cita, reunion: @actividad_cita.description, lugar: @actividad_cita.place, observaciones: @actividad_cita.observation, hora: @actividad_cita.citation, dia: @calendario.day, nombredia: @calendario.name_day, mes: @calendario.month, nombremes: @mesnombre, año: @calendario.year, convocanombre: @convoca.name, convocacargo: @convoca.cargo_rol).citacion.deliver_later
             i = i + 1
         end        
     end

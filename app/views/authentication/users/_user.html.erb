@@ -1,13 +1,22 @@
 <tr>
+    <td>
+        <% if user.present? %>
+            <% if user.avatar.attached? %>
+               <% if user.avatar.image? %> 
+                    <%= image_tag user.avatar, data: {previews_target: "preview"}, class: "avatar-mini" %>
+                <% end %>
+            <% else %> 
+               <%= image_tag("avatar.jpg", class: "avatar-mini") %>
+            <% end %>
+        <% end %> 
+    </td>
     <td><%= highlight User.label_entity(user.entity), params.dig(:q, :entity_cont) if user.entity.present?  %></td>
     <td><%= highlight user.nro_document, params.dig(:q, :nro_document_cont)  %></td>
     <td><%= highlight user.name, params.dig(:q, :name_cont) %></td>
     <td><%= user.username %></td>
     <td><%= user.email %></td>
     <td><%= user.label_state(user.state) %></td>
-    <td><%= user.date_entry_company %></td>
-    <td><%= user.date_retirement_company %></td>
-    <td><%= user.level %></td>
+    <td><%= user.label_level(user.level) %></td>
     <td><%= link_to t('common.edit'), edit_user_path(user), class: 'btn btn-sm btn-primary'  %></td>
     
 </tr>

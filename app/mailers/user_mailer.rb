@@ -21,7 +21,29 @@ class UserMailer < ApplicationMailer
       @clave = params[:clave]
       mail to: @user.email
     end  
-    
   end
+
+  def citacion
+    @user = params[:user]
+    @reunion = params[:reunion]
+    @lugar = params[:lugar] 
+    @observaciones = params[:observaciones]
+    @hora = params[:hora] 
+    @dia =params[:dia] 
+    @nombredia = params[:nombredia] 
+    @mes = params[:mes] 
+    @nombremes = params[:nombremes] 
+    @año = params[:año]
+    @convocanombre = params[:convocanombre]
+    @convocacargo = params[:convocacargo]
+
+
+    if @user.present?
+      @username = @user.name 
+      mail(to: @user.email, subject: "Citación")
+    end 
+
+  end
+
 
 end

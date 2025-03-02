@@ -513,5 +513,30 @@ class ReportOfficial < ApplicationRecord
         @report_official.save
     end    
 
+    def self.dias_incapacidad_accidentes(entity)
+        año = Time.new.year 
+        @dias_incapacidad_accidentes = 0
+        report_official = ReportOfficial.where("entity_id = ? and year = ?", entity.id, año) if entity.present?
+        @dias_incapacidad_accidentes =    report_official.sum("total_days_severidad_accidents") if report_official.present?
+        return @dias_incapacidad_accidentes
+    end
+
+    def self.enfermedad_laboral(entity)
+        año = Time.new.year 
+        @enfermedad_laboral = 0
+        report_official = ReportOfficial.where("entity_id = ? and year = ?", entity.id, año).last  if entity.present?
+
+        @enfermedad_laboral =    report_official.total_occupational_disease_year if report_official.present?
+        return @enfermedad_laboral
+    end 
+    
+    def self.dias_comun_laboral(entity)
+        año = Time.new.year 
+        @dias_comun_laboral = 0
+        report_official = ReportOfficial.where("entity_id = ? and year = ?", entity.id, año) if entity.present?
+        @dias_comun_laboral =    report_official.sum("total_days_absenteeism") if report_official.present?
+        return @dias_comun_laboral
+    end
+    
 
 end

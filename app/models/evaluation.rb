@@ -201,4 +201,29 @@ class Evaluation < ApplicationRecord
         end 
     end  
 
+    def self.calculo_porcentaje_general(eval) 
+        details = EvaluationRuleDetail.where("evaluation_id = ? and apply = ?", eval.id, 1) if eval.present?
+        total = 0
+        cumple = 0
+        por = 0.0
+
+        @datos_generales = []
+        if details.present?
+            details.each do |d|
+                total += 1
+                cumple += 1 if d.meets > 0 
+                
+            end
+            por = ((cumple.to_f / total.to_f) * 100).round(2).to_f if total.to_f > 0
+        
+            cumpli = "Cumplidos: " +  cumple.to_s
+            pendi = "Pendientes: " + (total.to_i - cumple.to_i).to_s
+            @datos_generales.push([cumpli, por.to_f]) if total.to_i > 0 
+            @datos_generales.push([pendi, (100 - por.to_f)]) if total.to_i > 0 
+            @datos_generales
+        end 
+        return @datos_generales  
+    end 
+
+
 end

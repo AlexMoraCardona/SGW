@@ -133,7 +133,7 @@ class ProfilesController < ApplicationController
         :sports_practice, :average_sports, :conveyance, :accept_processing_data, 
         :user_id, :survey_profile_id, :health_promoter_id, :pension_fund_id, 
         :occupational_risk_manager_id, :administrative_political_division_id, 
-        :Antiquity, :area_work, :cessation_fund_id)
+        :Antiquity, :area_work, :cessation_fund_id, :email_name)
     end 
 
 

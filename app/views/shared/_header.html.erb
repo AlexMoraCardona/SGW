@@ -14,9 +14,16 @@
             <% end %>
          </div>
 
-         <div margin-bottom: 10em; class="container col-3">
+         <div margin-bottom: 10em; class="container col-2">
             <%= link_to t('.login'), new_session_path unless Current.user %>
             <%= link_to t('.register'), new_user_path unless Current.user %>
+            <a class="nav-link active" aria-current="page" href="/users/cambiar_clave/path" style="color: #FFFFFF; " text-left data-bs-toggle="tooltip" data-bs-placement="top" title="Cambio de clave">
+               <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-key" viewBox="0 0 16 16">
+                   <path d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8m4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5"/>
+                  <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+               </svg>
+            </a>
+            </br>
             <%= link_to t('.logout'), session_path(Current.user), data: { turbo_method: :delete, turbo_confirm: t('common.confirm')} if Current.user %>         
          </div> 
 
@@ -82,6 +89,8 @@
                                        <td style="border:0px solid black"><%= link_to "Ver", edit_matrix_unsafe_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
                                     <% elsif @notificaciones[i][0] == "Compromiso Acta de Reunión COPASST - VIGÍA" %>
                                        <td style="border:0px solid black"><%= link_to "Ver", edit_commitment_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
+                                    <% elsif @notificaciones[i][0] == "Citación" %>
+                                       <td style="border:0px solid black"><%= link_to "Ver", activity_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
                                     <% end %>
                                  </tr>
                               <% end %>       
@@ -101,7 +110,8 @@
                                        <td style="border:0px solid black"><%= link_to "Ver", edit_matrix_unsafe_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
                                     <% elsif @notificaciones[i][0] == "Compromiso Acta de Reunión COPASST - VIGÍA" %>
                                        <td style="border:0px solid black"><%= link_to "Ver", edit_commitment_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-
+                                    <% elsif @notificaciones[i][0] == "Citación" %>
+                                       <td style="border:0px solid black"><%= link_to "Ver", activity_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
                                     <% end %>
                                  </tr>  
                               <% end %>       
@@ -121,7 +131,8 @@
                                        <td style="border:0px solid black"><%= link_to "Ver", edit_matrix_unsafe_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
                                     <% elsif @notificaciones[i][0] == "Compromiso Acta de Reunión COPASST - VIGÍA" %>
                                        <td style="border:0px solid black"><%= link_to "Ver", edit_commitment_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-
+                                    <% elsif @notificaciones[i][0] == "Citación" %>
+                                       <td style="border:0px solid black"><%= link_to "Ver", activity_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
                                     <% end %>
                                  </tr>  
                               <% end %>

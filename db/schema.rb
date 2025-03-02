@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_02_25_142920) do
+ActiveRecord::Schema[7.0].define(version: 2025_03_01_171224) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -1582,6 +1582,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_02_25_142920) do
     t.integer "Antiquity", default: 0
     t.integer "area_work", default: 0
     t.bigint "cessation_fund_id"
+    t.string "email_name"
     t.index ["administrative_political_division_id"], name: "index_profiles_on_administrative_political_division_id"
     t.index ["cessation_fund_id"], name: "index_profiles_on_cessation_fund_id"
     t.index ["health_promoter_id"], name: "index_profiles_on_health_promoter_id"

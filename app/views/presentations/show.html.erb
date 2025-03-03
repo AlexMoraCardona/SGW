@@ -4,7 +4,7 @@
     </a>
 </div>
 <div class="container col-11">
-    <div class="d-flex">
+    <div class="d-flex"> 
         <div class="container">
             <h2 class="display-5"> <%= t('.title')%></h2>
         </div> 
@@ -16,6 +16,7 @@
                 <th scope="col"><%= t('.id') %></th>
                 <th scope="col"><%= t('.name') %></th>
                 <th scope="col"><%= t('.archivo') %></th>
+                <th style="text-align:center;">Visto!</th>
             </tr>
         </thead>
 
@@ -37,10 +38,21 @@
                             <% elsif presentation.archivo.audio? %>
                                 <%= audio_tag(url_for(presentation.archivo), controls: "") %>          
                                 <%= link_to "Descargar Archivo", rails_blob_path(presentation.archivo, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                            <% else %>
-                                <%= link_to presentation.archivo.filename, url_for(presentation.archivo) %>          
+                            <% else %> 
+                                <%= link_to presentation.archivo.filename, url_for(presentation.archivo) %> &nbsp; &nbsp;          
                                 <%= link_to "Descargar Archivo", rails_blob_path(presentation.archivo, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
                             <% end %>
+                        </div>
+                    <% end %>
+                </td>
+                <td style="text-align:center;">
+                    <% if @vistas.find_by(presentation: presentation.id, type_presentation: 0).present?  %>
+                        <div> 
+                            <%= image_tag("caritafeliz.png", class: "carita-mini") %>
+                        </div> 
+                    <% else %>  
+                        <div>  
+                            <%= link_to "Registrar Vista", registrar_vista_path(id: presentation.id, type: 0), class: 'btn btn-sm btn-light' %>                        
                         </div>
                     <% end %>
                 </td>

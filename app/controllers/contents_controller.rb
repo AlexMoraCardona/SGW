@@ -3,6 +3,7 @@ class ContentsController < ApplicationController
 
         if  Current.user && Current.user.level == 1
             @contents = Content.where(state: 1).order(:clasification)
+            @vistas = ViewVideo.where(user_id: Current.user.id)
          else
              redirect_to new_session_path, alert: t('common.not_logged_in')  
              session.delete(:user_id)    

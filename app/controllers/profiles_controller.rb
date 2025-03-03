@@ -2,7 +2,7 @@ class ProfilesController < ApplicationController
     def index
         if params[:entity_id].present? && Current.user 
             @entity = Entity.find(params[:entity_id])
-            @survey_profiles = SurveyProfile.where("entity_id = ? and date_profile <= ? and date_vencimiento_profile >= ?", params[:entity_id].to_i, Date.today, Date.today)  
+            @survey_profiles = SurveyProfile.where("entity_id = ? and date_profile <= ? and date_vencimiento_profile >= ?", params[:entity_id].to_i, Date.today, Date.today)
         else    
             if  Current.user 
                 @entities = Entity.all.order(id: :asc) if Current.user.level == 1
@@ -43,7 +43,7 @@ class ProfilesController < ApplicationController
     def show
         if params[:entity_id].present? && Current.user 
             @entity = Entity.find(params[:entity_id])
-            @survey_profiles = SurveyProfile.where("entity_id = ?", params[:entity_id].to_i)  
+            @survey_profiles = SurveyProfile.where("entity_id = ?", params[:entity_id].to_i).order(date_profile: :desc)  
         else    
             if  Current.user 
                 @entities = Entity.all.order(id: :asc) if Current.user.level == 1
@@ -68,7 +68,8 @@ class ProfilesController < ApplicationController
         @claseriesgo = RiskLevel.find(@survey_profile.entity.risk_classification) if @survey_profile.entity.risk_classification.present?
         @user_elaboro = User.find(@survey_profile.user_elaboro) if @survey_profile.user_elaboro.present?
         @user_aprobo = User.find(@survey_profile.user_aprobo) if @survey_profile.user_aprobo.present?
-
+        
+        @datos_genero = Profile.vgenero(@survey_profile.id) if @survey_profile.present? 
     end
 
     def firma_elaboro
@@ -117,6 +118,17 @@ class ProfilesController < ApplicationController
          
         @cantprofiles = @profiles.count 
     end    
+
+    def detalles_profile
+        @survey_profile = SurveyProfile.find_by(id: params[:id].to_i)
+        @profiles = Profile.where(survey_profile_id: @survey_profile.id) if @survey_profile.present?
+        @entity = Entity.find(@survey_profile.entity_id) if @survey_profile.present?
+    end    
+
+    def encuesta_profile
+        @profile = Profile.find(params[:id])
+    end    
+
 
     private
 

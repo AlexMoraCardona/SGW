@@ -5,6 +5,7 @@ class User < ApplicationRecord
     has_one_attached :firm
     belongs_to :document
     has_many :form_preventions
+    has_many :view_videos
     
     #validates :document, name, username, email, password_digest,  presence: true #Validar la presencia
     validates :document,  presence: true #Validar la presencia

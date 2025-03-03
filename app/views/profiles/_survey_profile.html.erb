@@ -6,7 +6,6 @@
     <table class="table table-hover"> 
         <thead>
             <tr>
-                <th scope="col"><%= t('.id') %></th>
                 <th scope="col">Nit Entidad</th>
                 <th scope="col">Entidad</th>
                 <th scope="col"><%= t('.date_profile') %></th>
@@ -15,12 +14,12 @@
                 <th scope="col">Aprobó</th>
                 <th scope="col">Ficha Técnica</th>
                 <th scope="col"><%= t('common.show') %></th>
+                <th scope="col">Detalle</th>
             </tr>
         </thead>
 
         <% @survey_profiles.each do |survey_profile| %>
             <tr> 
-                <td><%= survey_profile.id %></td>
                 <td><%= survey_profile.entity.business_name %></td>
                 <td><%= survey_profile.entity.identification_number %></td>
                 <td><%= survey_profile.date_profile %></td>
@@ -37,6 +36,7 @@
                 <% end %>      
                 <td><%= link_to t('common.ficha'), fichatecnica_path(survey_profile), class: 'btn btn-sm btn-primary'  %></td>
                 <td><%= link_to t('common.show'), infoprofile_path(survey_profile), class: 'btn btn-sm btn-primary'  %></td>
+                <td><%= link_to t('common.detail'), detalles_profile_path(survey_profile), class: 'btn btn-sm btn-primary'  %></td>
             </tr>
         <% end %>  
         <hr>  

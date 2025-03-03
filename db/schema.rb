@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_03_01_171224) do
+ActiveRecord::Schema[7.0].define(version: 2025_03_02_185004) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -1530,6 +1530,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_01_171224) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "state", default: 0
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -1986,6 +1987,17 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_01_171224) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  create_table "view_videos", force: :cascade do |t|
+    t.string "name_view"
+    t.integer "presentation", default: 0
+    t.integer "type_presentation", default: 0
+    t.date "date_view"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_view_videos_on_user_id"
+  end
+
   create_table "working_condition_items", force: :cascade do |t|
     t.integer "exposed", default: 0
     t.string "observation"
@@ -2144,6 +2156,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_01_171224) do
   add_foreign_key "trainings", "entities"
   add_foreign_key "unsafe_conditions", "entities"
   add_foreign_key "users", "documents"
+  add_foreign_key "view_videos", "users"
   add_foreign_key "working_condition_items", "clasification_danger_details"
   add_foreign_key "working_condition_items", "clasification_dangers"
   add_foreign_key "working_condition_items", "working_conditions"

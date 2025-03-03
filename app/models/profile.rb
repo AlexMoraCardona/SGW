@@ -32,7 +32,14 @@ class Profile < ApplicationRecord
         elsif  dato == 2 ; 'No binario'
         elsif  dato == 3 ; 'Otro'
         end 
-    end    
+    end   
+    
+    def self.labelservicios(dato)
+        if dato == 0 ; 'Energía, acueducto, alcantarillado'
+        elsif  dato == 1 ; 'Energía, gas, acueducto, alcantarillado'
+        elsif  dato == 2 ; 'Energía, gas, acueducto, alcantarillado, internet'
+        end 
+    end     
 
     def self.vedad(dato)
         profiles = Profile.where("survey_profile_id = ?", dato.to_i)
@@ -91,6 +98,21 @@ class Profile < ApplicationRecord
         end 
     end 
 
+    def self.labelhijos(dato)
+        if dato == 0 ; 'Si'
+        elsif  dato == 1 ; 'No'
+        end 
+    end 
+
+    def self.labelnumerohijos(dato)
+        if dato == 0 ; 'Ninguno'
+        elsif  dato == 1 ; '1'
+        elsif  dato == 2 ; '2'
+        elsif  dato == 3 ; 'Más de 2'
+        end 
+    end     
+
+
     def self.vciudad(dato)
         profiles = Profile.where("survey_profile_id = ?", dato.to_i)
         @datos = []
@@ -103,7 +125,7 @@ class Profile < ApplicationRecord
  
     def self.labelciudad(dato)
         ubica = AdministrativePoliticalDivision.find(dato) 
-        dato = "#{ubica.town_center_name} - #{ubica.municipality_name} - #{ubica.department_name}"
+        dato = "#{ubica.town_center_name}"
     end 
 
     def self.vvivienda(dato)
@@ -133,11 +155,12 @@ class Profile < ApplicationRecord
     end
 
     def self.labelestrato(dato)
-        if dato == 0 ; '0-1'
+        if dato == 0 ; '1'
         elsif  dato == 1 ; '2'
         elsif  dato == 2 ; '3'
         elsif  dato == 3 ; '4'
-        elsif  dato == 4 ; '5-6'
+        elsif  dato == 4 ; '5'
+        elsif  dato == 5 ; '6'
         end 
     end 
     def self.vnivel(dato)
@@ -170,9 +193,9 @@ class Profile < ApplicationRecord
     end
 
     def self.labelsalario(dato)
-        if dato == 0 ; 'De 1 a menos de 3 SMLMV'
-        elsif  dato == 1 ; 'De 3 a menos de 5 SMLMV'
-        elsif  dato == 2 ; 'Mayor o igual a 5 SMLMV'
+        if dato == 0 ; 'De 1 a 2 SMLMV'
+        elsif  dato == 1 ; 'De 3 a 4 SMLMV'
+        elsif  dato == 2 ; 'Mas de 4 SMLMV'
         end 
     end 
 
@@ -195,6 +218,13 @@ class Profile < ApplicationRecord
         elsif  dato == 5 ; 'Contrato ocasional de trabajo'
         end 
     end  
+
+    def self.labelturno(dato)
+        if dato == 0 ; 'Diurno'
+        elsif  dato == 1 ; 'Nocturno'
+        elsif  dato == 2 ; 'Mixto'
+        end 
+    end      
     
     def self.veps(dato)
         profiles = Profile.where("survey_profile_id = ?", dato.to_i)
@@ -254,7 +284,36 @@ class Profile < ApplicationRecord
         elsif  dato == 2 ; 'Estudio'
         elsif  dato == 3 ; 'Otro'
         end 
-    end     
+    end  
+    
+    def self.labelbanco(dato)
+        if dato == 0 ; 'Banco de Bogotá'
+        elsif  dato == 1 ; 'Banco Popular'
+        elsif  dato == 2 ; 'Itaú Colombia'
+        elsif  dato == 3 ; 'Bancolombia'
+        elsif  dato == 4 ; 'Citibanck'
+        elsif  dato == 5 ; 'GNB Sudameris'
+        elsif  dato == 6 ; 'BBVA'
+        elsif  dato == 7 ; 'Banco de Occidente'
+        elsif  dato == 8 ; 'Banco Caja Social'
+        elsif  dato == 9 ; 'Davivienda'
+        elsif  dato == 10 ; 'Colpatria'
+        elsif  dato == 11 ; 'Banco Agrario'
+        elsif  dato == 12 ; 'Banco AV Villas'
+        elsif  dato == 13 ; 'Ban100'
+        elsif  dato == 14 ; 'Bancamia'
+        elsif  dato == 15 ; 'Banco W'
+        elsif  dato == 16 ; 'Coomeva'
+        elsif  dato == 17 ; 'Banco Falabella'
+        elsif  dato == 18 ; 'Banco Pichincha'
+        elsif  dato == 19 ; 'Banco Santander'
+        elsif  dato == 20 ; 'Banco Mundo Mujer'
+        elsif  dato == 21 ; 'Lulubank'
+        elsif  dato == 22 ; 'Nubank'
+        elsif  dato == 23 ; 'Otro'
+        end 
+    end 
+
     def self.venfermedad(dato)
         profiles = Profile.where("survey_profile_id = ?", dato.to_i)
         @datos = []
@@ -287,6 +346,23 @@ class Profile < ApplicationRecord
         end 
     end 
 
+    def self.labelcualcigarrillo(dato)
+        if dato == 0 ; 'N/A'
+        elsif  dato == 1 ; 'Cigarrillo'
+        elsif  dato == 2 ; 'Cigarrillo eléctronico'
+        end 
+    end  
+    
+    def self.labelpromediocigarrillo(dato)
+        if dato == 0 ; 'N/A'
+        elsif  dato == 1 ; 'Diario'
+        elsif  dato == 2 ; 'Semanal'
+        elsif  dato == 3 ; 'Quincenal'
+        elsif  dato == 4 ; 'Mensual'
+        elsif  dato == 5 ; 'Ocasional'
+        end 
+    end      
+
     def self.vbebida(dato)
         profiles = Profile.where("survey_profile_id = ?", dato.to_i)
         @datos = []
@@ -303,6 +379,16 @@ class Profile < ApplicationRecord
         end 
     end 
 
+    def self.labelpromediobebida(dato)
+        if dato == 0 ; 'N/A'
+        elsif  dato == 1 ; 'Diario'
+        elsif  dato == 2 ; 'Semanal'
+        elsif  dato == 3 ; 'Quincenal'
+        elsif  dato == 4 ; 'Mensual'
+        elsif  dato == 5 ; 'Ocasional'
+        end 
+    end      
+
     def self.vdeporte(dato)
         profiles = Profile.where("survey_profile_id = ?", dato.to_i)
         @datos = []
@@ -318,6 +404,17 @@ class Profile < ApplicationRecord
         elsif  dato == 1 ; 'No'
         end 
     end 
+
+    def self.labelpromediodeporte(dato)
+        if dato == 0 ; 'N/A'
+        elsif  dato == 1 ; 'Diario'
+        elsif  dato == 2 ; 'Semanal'
+        elsif  dato == 3 ; 'Quincenal'
+        elsif  dato == 4 ; 'Mensual'
+        elsif  dato == 5 ; 'Ocasional'
+        end 
+    end      
+
 
     def self.vsangre(dato)
         profiles = Profile.where("survey_profile_id = ?", dato.to_i)
@@ -357,6 +454,22 @@ class Profile < ApplicationRecord
         end 
     end 
     
+    def self.labeldiscapacitadas(dato)
+        if dato == 0 ; 'Si'
+        elsif  dato == 1 ; 'No'
+        end 
+    end 
+
+    def self.labeltipodiscapacitadas(dato)
+        if dato == 0 ; 'Visual'
+        elsif  dato == 1 ; 'Auditiva'
+        elsif  dato == 2 ; 'Física'
+        elsif  dato == 3 ; 'Mental'
+        elsif  dato == 4 ; 'Múltiple'
+        elsif  dato == 5 ; 'N/A'
+        end 
+    end     
+
     def self.vantiguedad(dato)
         profiles = Profile.where("survey_profile_id = ?", dato.to_i)
         @datos = []
@@ -388,5 +501,21 @@ class Profile < ApplicationRecord
     def self.labelcesantia(dato)
         dato = CessationFund.find(dato).name
     end    
+
+    def self.labelmediotransporte(dato)
+        if dato == 0 ; 'Moto'
+        elsif  dato == 1 ; 'Carro'
+        elsif  dato == 2 ; 'Bicicleta'
+        elsif  dato == 3 ; 'Servicio público'
+        elsif  dato == 4 ; 'A pie'
+        elsif  dato == 5 ; 'Otro'
+        end 
+    end  
+    
+    def self.labeltratamientodatos(dato)
+        if dato == 0 ; 'Si'
+        elsif  dato == 1 ; 'No'
+        end 
+    end     
     
 end

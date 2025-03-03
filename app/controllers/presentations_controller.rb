@@ -46,14 +46,15 @@ class PresentationsController < ApplicationController
         @presentations = Presentation.all.order(:id)
     end 
     
-    def show
-        @presentations = Presentation.all.order(:id)
+    def show 
+        @presentations = Presentation.where(state: 1).order(:id)
+        @vistas = ViewVideo.where(user_id: Current.user.id)
     end    
 
     private
 
     def presentation_params
-        params.require(:presentation).permit(:name, :archivo)
+        params.require(:presentation).permit(:name, :archivo, :state)
     end 
 
 end  

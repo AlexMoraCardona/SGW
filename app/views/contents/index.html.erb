@@ -18,6 +18,16 @@
                         <%= content.clasification %><br>
                         Título:<br>
                         <%= content.title %><br>
+                        Visto:<br>
+                        <% if @vistas.find_by(presentation: content.id, type_presentation: 1).present?  %>
+                            <div> 
+                                <%= image_tag("caritafeliz.png", class: "carita-mini") %>
+                            </div> 
+                        <% else %>  
+                            <div>  
+                                <%= link_to "Registrar Vista", registrar_vista_path(id: content.id, type: 1), class: 'btn btn-sm btn-light' %>                        
+                            </div>
+                        <% end %>
                     </td>
                     <td>    
                         <section class="video-embed" style="width:200px; height: 200px;" >

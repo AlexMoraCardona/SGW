@@ -98,6 +98,7 @@ Rails.application.routes.draw do
   resources :res_ext_plans
   resources :table_diseases
   resources :detail_diseases
+  resources :view_videos
 
   get '/emergency_plans/resources_ext_plan/:id', to: 'emergency_plans#resources_ext_plan', as: 'resources_ext_plan'
   get '/emergency_plans/resources_int_plan/:id', to: 'emergency_plans#resources_int_plan', as: 'resources_int_plan'
@@ -143,6 +144,8 @@ Rails.application.routes.draw do
   get '/profiles/encuesta/:id', to: 'profiles#encuesta', as: 'encuesta' 
   get '/profiles/informe/:id', to: 'profiles#informe', as: 'infoprofile' 
   get '/profiles/fichatecnica/:id', to: 'profiles#fichatecnica', as: 'fichatecnica' 
+  get '/profiles/detalles_profile/:id', to: 'profiles#detalles_profile', as: 'detalles_profile' 
+  get '/profiles/encuesta_profile/:id', to: 'profiles#encuesta_profile', as: 'encuesta_profile' 
   get '/adm_calendars/generar/:id', to: 'adm_calendars#generar', as: 'generar' 
   get '/adm_calendars/ver_calendario/:id', to: 'adm_calendars#ver_calendario', as: 'ver_calendario' 
   get '/calendars/detail/:id', to: 'calendars#detail', as: 'detail' 
@@ -163,6 +166,7 @@ Rails.application.routes.draw do
   get '/evaluations/firmar_responsable_evaluation/:id', to: 'evaluations#firmar_responsable_evaluation', as: 'firmar_responsable_evaluation'
   get '/evaluations/firmar_representante_evaluation/:id', to: 'evaluations#firmar_representante_evaluation', as: 'firmar_representante_evaluation'
   get '/history_evaluations/descargar_historia/:id', to: 'history_evaluations#descargar_historia', as: 'descargar_historia'
+  get '/view_videos/registrar_vista/:id', to: 'view_videos#registrar_vista', as: 'registrar_vista'
 
   resources :admin_extent_dangers do
     collection do

@@ -1,0 +1,46 @@
+<div align="left"; class="container col-12">
+    <a class="navbar-brand" href="/">
+        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+    </a>
+</div>
+<div class="container col-11">
+        <div class="d-flex">
+            <div class="container">
+               <h2 class="display-5"> <%= t('.title')%></h2>
+            </div>
+        </div>
+        <hr>
+
+        <%= search_form_for @q do |f| %>
+
+            <%= f.label :name_view_cont %>
+            <%= f.search_field :name_view_cont %>&nbsp;</br></br> 
+
+            <%= f.label :user_id_eq %>
+            <%= f.number_field :user_id_eq %>&nbsp; 
+
+            <button type="submit" class="btn btn-sm btn-primary">Buscar</button>
+        <% end %>
+    </br>        
+    <%== pagy_info(@pagy) %>
+    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+
+    <table class="table table-hover">
+        <thead> 
+            <tr>
+                <th scope="col"><%= sort_link(@q, :date_view, default_order: :desc) %></th>
+                <th scope="col"><%= sort_link(@q, :name_view, default_order: :desc) %></th>
+                <th scope="col">Usuario ID</th>
+                <th scope="col"><%= sort_link(@q, :user_id, default_order: :desc)  %></th>
+                <th scope="col"><%= sort_link(@q, :type_presentation, default_order: :desc) %></th>
+             </tr>
+        </thead>
+        <tbody>
+            <%= render partial: 'view_video', collection: @view_videos  %>  
+        </tbody>      
+    </table>
+    </br>        
+    <%== pagy_info(@pagy) %>
+    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+    </br>
+</div>

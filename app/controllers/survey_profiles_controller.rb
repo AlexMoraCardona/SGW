@@ -2,11 +2,11 @@ class SurveyProfilesController < ApplicationController
     def index
         if params[:entity_id].present?
             @entity = Entity.find(params[:entity_id])
-            @survey_profiles = SurveyProfile.where("entity_id = ?", params[:entity_id])
+            @survey_profiles = SurveyProfile.where("entity_id = ?", params[:entity_id]).order(date_profile: :desc)
         else    
-            if  Current.user && Current.user.level == 1
+            if  Current.user && (Current.user.level == 1 || Current.user.level == 2)
                 @entities = Entity.all
-                @survey_profiles = SurveyProfile.all
+                @survey_profiles = SurveyProfile.all.order(:date_profile)
             else
                 redirect_to new_session_path, alert: t('common.not_logged_in')      
                 session.delete(:user_id)

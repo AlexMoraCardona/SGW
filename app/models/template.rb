@@ -9,7 +9,7 @@ class Template < ApplicationRecord
     end  
 
     def self.ransackable_attributes(auth_object = nil)
-                ["name", "reference", "description", "standar_detail_item_id", "file", "date", "version", "state", "date_updated", "format_number", "filing"]
+                ["id", "name", "reference", "description", "standar_detail_item_id", "file", "date", "version", "state", "date_updated", "format_number", "filing"]
     end 
 
     def self.ransackable_associations(auth_object = nil)

@@ -32,7 +32,17 @@ class Profile < ApplicationRecord
         elsif  dato == 2 ; 'No binario'
         elsif  dato == 3 ; 'Otro'
         end 
-    end   
+    end  
+    
+    def self.cantidad_vector(datos)
+         cant = 0
+         datos.each do |dato| 
+            cant +=  dato[1].to_i 
+         end
+
+         return cant 
+    end                
+
     
     def self.labelservicios(dato)
         if dato == 0 ; 'Energía, acueducto, alcantarillado'
@@ -40,6 +50,16 @@ class Profile < ApplicationRecord
         elsif  dato == 2 ; 'Energía, gas, acueducto, alcantarillado, internet'
         end 
     end     
+
+    def self.vservicios(dato)
+        profiles = Profile.where("survey_profile_id = ?", dato.to_i)
+        @datos = []
+
+        profiles.group_by(&:basic_housing_services).each do |niv, det|
+            @datos.push([niv, det.count])
+        end
+        return  @datos 
+    end
 
     def self.vedad(dato)
         profiles = Profile.where("survey_profile_id = ?", dato.to_i)
@@ -98,6 +118,17 @@ class Profile < ApplicationRecord
         end 
     end 
 
+
+    def self.vhijos(dato)
+        profiles = Profile.where("survey_profile_id = ?", dato.to_i)
+        @datos = []
+
+        profiles.group_by(&:has_children).each do |niv, det|
+            @datos.push([niv, det.count])
+        end
+        return  @datos 
+    end
+
     def self.labelhijos(dato)
         if dato == 0 ; 'Si'
         elsif  dato == 1 ; 'No'
@@ -111,6 +142,16 @@ class Profile < ApplicationRecord
         elsif  dato == 3 ; 'Más de 2'
         end 
     end     
+
+    def self.vnumerohijos(dato)
+        profiles = Profile.where("survey_profile_id = ?", dato.to_i)
+        @datos = []
+
+        profiles.group_by(&:number_children).each do |niv, det|
+            @datos.push([niv, det.count])
+        end
+        return  @datos 
+    end
 
 
     def self.vciudad(dato)
@@ -225,7 +266,18 @@ class Profile < ApplicationRecord
         elsif  dato == 2 ; 'Mixto'
         end 
     end      
+
+    def self.vturnotrabajo(dato)
+        profiles = Profile.where("survey_profile_id = ?", dato.to_i)
+        @datos = []
+
+        profiles.group_by(&:Antiquity).each do |niv, det|
+            @datos.push([niv, det.count])
+        end
+        return  @datos 
+    end
     
+
     def self.veps(dato)
         profiles = Profile.where("survey_profile_id = ?", dato.to_i)
         @datos = []
@@ -314,6 +366,16 @@ class Profile < ApplicationRecord
         end 
     end 
 
+    def self.vbanco(dato)
+        profiles = Profile.where("survey_profile_id = ?", dato.to_i)
+        @datos = []
+
+        profiles.group_by(&:head_family).each do |niv, det|
+            @datos.push([niv, det.count])
+        end
+        return  @datos 
+    end
+
     def self.venfermedad(dato)
         profiles = Profile.where("survey_profile_id = ?", dato.to_i)
         @datos = []
@@ -352,6 +414,17 @@ class Profile < ApplicationRecord
         elsif  dato == 2 ; 'Cigarrillo eléctronico'
         end 
     end  
+
+    def self.vcualfuma(dato)
+        profiles = Profile.where("survey_profile_id = ?", dato.to_i)
+        @datos = []
+
+        profiles.group_by(&:population_group).each do |niv, det|
+            @datos.push([niv, det.count])
+        end
+        return  @datos 
+    end
+
     
     def self.labelpromediocigarrillo(dato)
         if dato == 0 ; 'N/A'
@@ -454,13 +527,23 @@ class Profile < ApplicationRecord
         end 
     end 
     
-    def self.labeldiscapacitadas(dato)
+    def self.labeldiscapacidad(dato)
         if dato == 0 ; 'Si'
         elsif  dato == 1 ; 'No'
         end 
     end 
 
-    def self.labeltipodiscapacitadas(dato)
+    def self.vdiscapacidad(dato)
+        profiles = Profile.where("survey_profile_id = ?", dato.to_i)
+        @datos = []
+
+        profiles.group_by(&:live_people_disability).each do |niv, det|
+            @datos.push([niv, det.count])
+        end
+        return  @datos 
+    end    
+
+    def self.labeltipodiscapacidad(dato)
         if dato == 0 ; 'Visual'
         elsif  dato == 1 ; 'Auditiva'
         elsif  dato == 2 ; 'Física'
@@ -468,7 +551,17 @@ class Profile < ApplicationRecord
         elsif  dato == 4 ; 'Múltiple'
         elsif  dato == 5 ; 'N/A'
         end 
-    end     
+    end  
+    
+    def self.vtipodiscapacidad(dato)
+        profiles = Profile.where("survey_profile_id = ?", dato.to_i)
+        @datos = []
+
+        profiles.group_by(&:type_disability).each do |niv, det|
+            @datos.push([niv, det.count])
+        end
+        return  @datos 
+    end       
 
     def self.vantiguedad(dato)
         profiles = Profile.where("survey_profile_id = ?", dato.to_i)
@@ -512,6 +605,16 @@ class Profile < ApplicationRecord
         end 
     end  
     
+    def self.vtransporte(dato)
+        profiles = Profile.where("survey_profile_id = ?", dato.to_i)
+        @datos = []
+
+        profiles.group_by(&:conveyance).each do |niv, det|
+            @datos.push([niv, det.count])
+        end
+        return  @datos 
+    end
+
     def self.labeltratamientodatos(dato)
         if dato == 0 ; 'Si'
         elsif  dato == 1 ; 'No'

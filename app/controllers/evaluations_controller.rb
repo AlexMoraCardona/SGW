@@ -61,6 +61,8 @@ class EvaluationsController < ApplicationController
     def show
         @evaluation = Evaluation.find(params[:id])  
         @evaluation_itemstotal = EvaluationRuleDetail.where("evaluation_id = ? and apply = ?", @evaluation.id, 1).order(:order_nro).decorate
+        @evaluation_itemstotalno = EvaluationRuleDetail.where("evaluation_id = ? and apply = ?", @evaluation.id, 0).order(:order_nro).decorate
+
         #@q = EvaluationRuleDetail.where("evaluation_id = ? and apply = ?", @evaluation.id, 1).order(:id).ransack(params[:q])
         #@pagy, @evaluation_items = pagy(@q.result(id: :desc), items: 3)
 
@@ -154,7 +156,7 @@ class EvaluationsController < ApplicationController
 
     def evaluation_params
         params.require(:evaluation).permit(:entity_id, :date_evaluation, :number_employees, :risk_level_id, :rule_id, :score,
-        :percentage, :result, :observation, :user_responsible, :date_firm_responsible, :firm_responsible, :user_representante, :date_firm_representante, :firm_representante, :expected_goald)
+        :percentage, :result, :observation, :user_responsible, :date_firm_responsible, :firm_responsible, :user_representante, :date_firm_representante, :firm_representante, :expected_goald, :score_int, :percentage_int)
     end 
 end  
 

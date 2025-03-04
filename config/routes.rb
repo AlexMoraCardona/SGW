@@ -167,6 +167,7 @@ Rails.application.routes.draw do
   get '/evaluations/firmar_representante_evaluation/:id', to: 'evaluations#firmar_representante_evaluation', as: 'firmar_representante_evaluation'
   get '/history_evaluations/descargar_historia/:id', to: 'history_evaluations#descargar_historia', as: 'descargar_historia'
   get '/view_videos/registrar_vista/:id', to: 'view_videos#registrar_vista', as: 'registrar_vista'
+  get '/survey_profiles/informe_estudio_socio/:id', to: 'survey_profiles#informe_estudio_socio', as: 'informe_estudio_socio'
 
   resources :admin_extent_dangers do
     collection do

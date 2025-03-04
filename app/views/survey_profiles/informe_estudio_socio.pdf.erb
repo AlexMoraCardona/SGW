@@ -1,6 +1,65 @@
-<div class="container col-11 card p-5"> 
-    <%= render 'encabezado' %>
-    
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+    <%= javascript_importmap_tags %>
+</head>
+<br>
+
+<table style="border:0px solid black; width: 100%">
+    <tr>
+        <td rowspan="2" style="border:1px solid black; width: 20%; text-align:center">
+            <% if @survey_profile.entity.logo.present? then %>
+                <%=  image_tag  @survey_profile.entity.logo, class: "image_peq" %>
+            <% end %>   
+        </td>
+        <td style="border:1px solid black; text-align:center">
+            <div class="col-10"><h6><%= @survey_profile.entity.business_name if @survey_profile.present? %></h6></div>
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; text-align:center">
+            <div class="col-10"><h6><%= @template.name if @template.present? %></h6></div>
+        </td>
+    </tr>
+</table>
+<table style="width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            <h6>CÓDIGO: </h6>                
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.reference if @template.present? %></small></h6>                
+        </td>
+
+        <td style="border:1px solid black; width: 25%">
+            <h6>VERSIÓN: </h6>                
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.version if @template.present? %></small></h6>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            <h6>FECHA DE ELABORACIÓN: </h6>                
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date if @template.present? %></small></h6>                
+        </td>
+
+        <td style="border:1px solid black; width: 25%">
+            <h6>FECHA DE ACTUALIZACIÓN: </h6>                
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date_updated if @template.present? %></small></h6>                
+        </td>
+    </tr>
+</table>
+
+<div> 
+   
     <div><br></div>
     <div><br></div>
     <div><br></div>
@@ -190,7 +249,7 @@
         </div>
     </div>
     <div><br></div>
-    <table>
+    <table style="width: 100%">
         <ul>
             <tr>
                 <td style="text-align:justify">
@@ -1745,5 +1804,82 @@
 
     <div><br></div>
     <div><br></div>
-    <%= render 'firmas' %>
+    <div class="row"><br></div>
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:0px solid black; width: 50%; text-align:center">
+                        <div class="row  text-center"> 
+                            <div class="col-11">
+                                <div>Elaboró:</div>
+                                <div>&nbsp;</div>
+                                <div>&nbsp;</div>
+                                <% if @survey_profile.firm_elaboro == 1 %>
+                                   <% if @user_elaboro.firm.attached? %>
+                                      <% if @user_elaboro.firm.image? %> 
+                                           <%= image_tag @user_elaboro.firm, class: "firma" %>
+                                            <p align="center">________________________________</p>
+                                      <% end %>
+                                    <% end %>
+                                <% else %>    
+                                    <p align="center">________________________________</p>
+                                 <% end %>     
+                            </div>
+                           <div class="col-11">
+                                <div class="row">
+                                    <h6><strong><%= @user_elaboro.name %></strong></h6>
+                                </div>
+                            </div>
+                            <div class="col-11">
+                                <div class="row">
+                                    <h6>Asesor SG-SST</h6>
+                                </div>
+                            </div>
+                            <div class="col-11">
+                                <div class="row">
+                                    <h6><%= @user_elaboro.document.abbreviation %>: <%= Firm.miles(@user_elaboro.nro_document) %></h6>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+            </td>
+            <td style="border:0px solid black; width: 50%; text-align:center">
+                        <div class="row  text-center"> 
+                            <div class="col-11">
+                                <div>Aprobó:</div>
+                                <div>&nbsp;</div>
+                                <div>&nbsp;</div>
+                                <% if  @survey_profile.firm_aprobo == 1 %>
+                                   <% if @user_aprobo.firm.attached? %>
+                                      <% if @user_aprobo.firm.image? %> 
+                                           <%= image_tag @user_aprobo.firm, class: "firma" %>
+                                            <p align="center">________________________________</p>
+                                      <% end %>
+                                    <% end %>
+                                <% else %>    
+                                    <p align="center">________________________________</p>
+                                 <% end %>     
+                            </div>
+                            <div class="col-11">
+                                <div class="row">
+                                    <h6><strong><%= @user_aprobo.name %></strong></h6>
+                                </div>
+                            </div>
+                            <div class="col-11">
+                                <div class="row">
+                                    <h6>Representante Legal</h6>
+                                </div>
+                            </div>
+                            <div class="col-11">
+                                <div class="row">
+                                    <h6><%= @user_aprobo.document.abbreviation %>: <%= Firm.miles(@user_aprobo.nro_document) %></h6>
+                                </div>
+                            </div>
+            
+                        </div>
+                        <br>
+            </td>
+        </tr>
+    </table>
+    
+
 </div>

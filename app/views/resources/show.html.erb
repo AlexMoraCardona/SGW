@@ -7,7 +7,6 @@
     <table class="table table-hover" style="border:1px solid black"> 
         <thead>
             <tr>
-                <td rowspan="4"; style="background-color: black;">&nbsp;</td>
                 <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
                     <% if @resource.entity.logo.present? then %>
                         <%=  image_tag  @resource.entity.logo, class: "image_peq" %>
@@ -21,27 +20,22 @@
                 <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
 
                 <td style="border:1px solid black"><%= @template.date if @template.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
 
             </tr>
             <tr> 
                 <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
                 <td style="border:1px solid black"><%= @template.date_updated if @template.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
             </tr>
             <tr> 
                 <td colspan="2"; style="border:1px solid black">Versión:</td>
                 <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
             </tr>
             <tr> 
                 <td colspan="2"; style="border:1px solid black">Código:</td>
                 <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
             </tr>
 
             <tr>
-                <td rowspan="2"; style="background-color: black;">&nbsp;</td>
                 <th rowspan="2"; style="border:1px solid black;text-align:center">Nro.</th>
                 <th rowspan="2"; style="border:1px solid black">Proceso</th>
                 <th rowspan="2"; style="border:1px solid black">Actividad</th>
@@ -52,7 +46,6 @@
                 <th style="border:1px solid black;text-align:center">Fecha de Aprobación </th>
                 <th rowspan="2"; style="border:1px solid black;text-align:center">Editar</th>
                 <th rowspan="2"; style="border:1px solid black;text-align:center">Eliminar</th>
-                <td style="background-color: black;">&nbsp;</td>
             </tr>   
 
             <tr>
@@ -61,7 +54,6 @@
                 <th style="border:1px solid black;text-align:center">SI</th>
                 <th style="border:1px solid black;text-align:center">NO</th>                
                 <th style="border:1px solid black;text-align:center">aaaa/mm/dd</th>
-                <td style="background-color: black;">&nbsp;</td>
             </tr>   
 
         </thead>
@@ -69,7 +61,6 @@
         <% @resource_items.each do |resource_item| %>             
             <tbody>
                 <tr>
-                    <td style="background-color: black;">&nbsp;</td>
                     <td style="border:1px solid black;text-align:center"><%= resource_item.consecutive %></td>
                     <td style="border:1px solid black;text-align:center"><%= resource_item.process %></td>
                     <td style="border:1px solid black;text-align:center"><%= resource_item.activity %></td>
@@ -82,12 +73,10 @@
                     <td style="border:1px solid black;text-align:center"><%= resource_item.date_approved  %></td>
                     <td style="border:1px solid black; text-align:center;"><%= link_to t('common.edit'), edit_resource_item_path(resource_item), class: 'btn btn-sm btn-primary'  %></td>
                     <td style="border:1px solid black; text-align:center;"><%= link_to t('common.delete'), resource_item_path(resource_item), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar la asignación de recurso?' }, class: 'btn btn-sm btn-danger' %></td>
-                    <td style="background-color: black;">&nbsp;</td>
                 </tr> 
             </body>
         <% end %>
         <tr style="border:1px solid black">
-            <td style="background-color: black;">&nbsp;</td>
             <td  colspan="4";style="border:1px solid black"><br>
                 <% if @resource.firm_legal_representative == 1 %>
                     <% if @rep.present? %>
@@ -121,14 +110,10 @@
                     <% end %>     
                 <% end %>     
             </td>
-            <td style="background-color: black;">&nbsp;</td>
         </tr> 
         <tr>
-            <td style="background-color: black;">&nbsp;</td>
             <td  colspan="4"><%= @resource.name_user(@resource.user_legal_representative) %> - Representante Legal</td>
-            <td  colspan="4"><%= @resource.name_user(@resource.user_adviser_sst) %> - Asesor SST</td>
-            <td  colspan="4"><%= @resource.name_user(@resource.user_responsible_sst) %> - Responsable SST</td>
-            <td style="background-color: black;">&nbsp;</td>
+            <td  colspan="8"></td>
         </tr>
     </table>
 </div>    

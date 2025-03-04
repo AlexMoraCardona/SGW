@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_03_02_185004) do
+ActiveRecord::Schema[7.0].define(version: 2025_03_03_230733) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -719,6 +719,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_02_185004) do
     t.date "date_firm_representante"
     t.integer "firm_representante", default: 0
     t.decimal "expected_goald", default: "0.0"
+    t.decimal "score_int", default: "0.0"
+    t.decimal "percentage_int", default: "0.0"
     t.index ["entity_id"], name: "index_evaluations_on_entity_id"
     t.index ["risk_level_id"], name: "index_evaluations_on_risk_level_id"
     t.index ["rule_id"], name: "index_evaluations_on_rule_id"
@@ -948,6 +950,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_02_185004) do
     t.date "date_firm_employee"
     t.date "date_firm_responsible"
     t.decimal "expected_goald", default: "0.0"
+    t.decimal "score_int", default: "0.0"
+    t.decimal "percentage_int", default: "0.0"
     t.index ["entity_id"], name: "index_history_evaluations_on_entity_id"
     t.index ["evaluation_id"], name: "index_history_evaluations_on_evaluation_id"
     t.index ["risk_level_id"], name: "index_history_evaluations_on_risk_level_id"
@@ -1851,6 +1855,17 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_02_185004) do
     t.date "date_updated"
     t.integer "format_number", default: 0
     t.string "filing"
+    t.integer "firm_representante", default: 0
+    t.integer "firm_responsable", default: 0
+    t.integer "firm_asesor", default: 0
+    t.integer "firm_presidente_copasst", default: 0
+    t.integer "firm_secretario_copasst", default: 0
+    t.integer "firm_vigia", default: 0
+    t.integer "participant_responsable", default: 0
+    t.integer "participant_representante", default: 0
+    t.integer "participant_asesor", default: 0
+    t.integer "participant_vigia", default: 0
+    t.integer "participant_colaborador", default: 0
     t.index ["standar_detail_item_id"], name: "index_templates_on_standar_detail_item_id"
   end
 

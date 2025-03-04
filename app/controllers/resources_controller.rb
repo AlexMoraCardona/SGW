@@ -2,7 +2,7 @@ class ResourcesController < ApplicationController
     def index 
         if params[:entity_id].present?
             @entity = Entity.find(params[:entity_id])
-            @resources = Resource.where("entity_id = ?", params[:entity_id])
+            @resources = Resource.where("entity_id = ?", params[:entity_id]).order(id: :desc)
         else    
             if  Current.user && Current.user.level < 3 && Current.user.level > 0
                 @entities = Entity.all

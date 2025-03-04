@@ -26,7 +26,7 @@ class HistoryEvaluationsController < ApplicationController
 
     def show
         @history_evaluation = HistoryEvaluation.find(params[:id])
-        @history_items = HistoryItem.where(history_evaluation_id: @history_evaluation.id).order(:cycle, :order_nro).decorate if @history_evaluation.present?
+        @history_items = HistoryItem.where(history_evaluation_id: @history_evaluation.id).order(apply: :desc).decorate if @history_evaluation.present?
         @user_responsible = User.find(@history_evaluation.id_responsible_execution) if @history_evaluation.id_responsible_execution > 0
         @user_representante = User.find(@history_evaluation.id_employee_contractor) if @history_evaluation.id_employee_contractor > 0
 
@@ -44,7 +44,7 @@ class HistoryEvaluationsController < ApplicationController
     
     def descargar_historia
         @history_evaluation = HistoryEvaluation.find(params[:id])
-        @history_items = HistoryItem.where(history_evaluation_id: @history_evaluation.id).order(:cycle, :order_nro).decorate if @history_evaluation.present?
+        @history_items = HistoryItem.where(history_evaluation_id: @history_evaluation.id).order(apply: :desc).decorate if @history_evaluation.present?
         @user_responsible = User.find(@history_evaluation.id_responsible_execution) if @history_evaluation.id_responsible_execution > 0
         @user_representante = User.find(@history_evaluation.id_employee_contractor) if @history_evaluation.id_employee_contractor > 0
 
@@ -89,6 +89,6 @@ class HistoryEvaluationsController < ApplicationController
         params.require(:history_evaluation).permit(:date_create_evaluation, :date_history_evaluation, 
         :number_employees, :score, :percentage, :result, :observation, :id_employee_contractor, :firm_employee_contractor,
         :date_firm_employee, :id_responsible_execution, :firm_responsible_execution, :date_firm_responsible, 
-        :completed_items, :unfulfilled_items, :not_apply_items, :rule_id, :risk_level_id, :evaluation_id, :entity_id, :expected_goald)
+        :completed_items, :unfulfilled_items, :not_apply_items, :rule_id, :risk_level_id, :evaluation_id, :entity_id, :expected_goald, :score_int, :percentage_int)
     end 
 end    

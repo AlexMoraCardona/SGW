@@ -89,7 +89,7 @@
         <div class="row g-3">
             <div class="col-sm-4">
                <strong><%= t('.score') %></strong>
-               <%= @evaluation.score %>
+               <%= @evaluation.score  %>
             </div>        
             <div class="col-sm-4">
                 <strong><%= t('.percentage') %></strong>
@@ -152,7 +152,7 @@
 <br>
 <div class="container col-12" 
     <br>
-    <h2 class="display-5"><%= t('.title_detail') %></h2> 
+    <h2 class="display-5"><%= t('.title_detail_apply') %></h2> 
 
     <input type="button" value="Actualizar Estándares" onClick="location.reload();" style="width: 200px; height: 30px; background: #6699FF; color: #ffffff; cursor: pointer; border: 0px;"/>
     <hr>
@@ -169,30 +169,30 @@
                 <th scope="col">Item</th>
                 <th scope="col">Descripción</th>
                 <th scope="col">Cumple</th>
+                <th scope="col">Aplica Norma</th>
                 <th scope="col">Puntaje</th>
                 <th scope="col">Criterio</th> 
                 <th scope="col">Ver</th> 
             </tr>
         </thead>  
-        <tbody>
-                <% @evaluation_itemstotal.each do |evaluation_items| %> 
-            <%= form_with model: evaluation_items do |form| %> 
+        <tbody> 
+            <% @evaluation_itemstotal.each do |evaluation_items| %> 
+                <%= form_with model: evaluation_items do |form| %> 
 
                     <tr> 
                         <td><%= evaluation_items.standar_detail_item.standar_detail.standar.label_cycle(evaluation_items.standar_detail_item.standar_detail.standar.cycle) %></td>
                         <td><%= evaluation_items.standar_detail_item.item_nro %></td>
                         <td><%= evaluation_items.standar_detail_item.description%></td>
-                        <td style="width:350px;">
+                        <td style="width:150px;">
                                 <%= form.radio_button :meets, 1, :onClick=>"javascript: this.form.submit.click();" %>
                                 <label for="si_cumple">SI</label>|&nbsp;   
                                 <%= form.radio_button :meets, 0, :onClick=>"javascript: this.form.submit.click();" %>
                                 <label for="no_cumple">NO</label>|&nbsp; 
-                                <%= form.radio_button :meets, 2, :onClick=>"javascript: this.form.submit.click();" %>
-                                <label for="na">NA</label>| 
                                 <div class="actions" style="display:none;">
                                     <%= form.submit "", :name => "submit", :remote => "true" %>
                                 </div>                                 
                         </td>
+                        <td><%= EvaluationRuleDetail.label_apply(evaluation_items.apply) %></td>
                         <td><%= evaluation_items.score %></td>
                         <td>
                             <button type="button" class="btn btn-sm btn-light" 
@@ -210,7 +210,84 @@
         </tbody>   
  
     </table>
-    </br>        
+    </br>  
+    <br>
+    <h2 class="display-5"><%= t('.title_detail_no_apply') %></h2> 
+    <hr>
+    <div class="row g-3">
+        <div class="col-sm-4">
+           <strong><%= t('.score_int') %>:</strong>
+           <%= @evaluation.score_int  %>%
+        </div>        
+        <div class="col-sm-4">
+            <strong><%= t('.percentage_int') %>:</strong>
+            <%= @evaluation.percentage_int %>%
+        </div>        
+        <div class="col-sm-4">
+            <strong>Estado:</strong>
+            <% if  @evaluation.score_int > 85.99  %>
+                <div style="color:#008000";>ACEPTABLE</div>
+            <% end  %>    
+            <% if @evaluation.score_int > 60.99 && @evaluation.score_int < 86  %>
+                <div style="color:#FFD200";>MODERADAMENTE ACEPTABLE</div>
+            <% end  %>    
+            <% if @evaluation.score_int < 61 %>
+                <div style="color:#FF0000";>CRÍTICO</div>
+            <% end  %>    
+        </div>        
+    </div>  
+
+    <table class="table table-hover">
+        <thead>
+            <tr>  
+                <th scope="col">Ciclo</th>
+                <th scope="col">Item</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Cumple</th>
+                <th scope="col">Aplica Norma</th>
+                <th scope="col">Puntaje</th>
+                <th scope="col">Criterio</th> 
+                <th scope="col">Ver</th> 
+            </tr>
+        </thead>  
+        <tbody> 
+            <% @evaluation_itemstotalno.each do |evaluation_items| %> 
+                <%= form_with model: evaluation_items do |form| %> 
+
+                    <tr> 
+                        <td><%= evaluation_items.standar_detail_item.standar_detail.standar.label_cycle(evaluation_items.standar_detail_item.standar_detail.standar.cycle) %></td>
+                        <td><%= evaluation_items.standar_detail_item.item_nro %></td>
+                        <td><%= evaluation_items.standar_detail_item.description%></td>
+                        <td style="width:150px;">
+                                <%= form.radio_button :meets, 1, :onClick=>"javascript: this.form.submit.click();" %>
+                                <label for="si_cumple">SI</label>|&nbsp;   
+                                <%= form.radio_button :meets, 0, :onClick=>"javascript: this.form.submit.click();" %>
+                                <label for="no_cumple">NO</label>|&nbsp; 
+                                <div class="actions" style="display:none;">
+                                    <%= form.submit "", :name => "submit", :remote => "true" %>
+                                </div>                                 
+                        </td>
+                        <td><%= EvaluationRuleDetail.label_apply(evaluation_items.apply) %></td>
+                        <td><%= evaluation_items.score %></td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-light" 
+                                data-bs-toggle="popover"
+                                title="<%=evaluation_items.standar_detail_item.description%>"
+                                data-bs-content="CRITERIO: <%=evaluation_items.standar_detail_item.criterion%> 
+                                MODO DE VERIFICACIÓN:  <%= evaluation_items.standar_detail_item.verification_mode %>" ><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+    
+                        </td>
+    
+                        <td><%= link_to t('common.veritem'), edit_evaluation_rule_detail_path(evaluation_items), class: 'btn btn-sm btn-primary'  %></td>
+                    </tr>  
+                <% end %> 
+            <% end %> 
+        </tbody>   
+ 
+    </table>
+    </br>  
+    
+    
 
     <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, evaluations_path %>
     

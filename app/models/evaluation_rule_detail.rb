@@ -28,39 +28,6 @@ class EvaluationRuleDetail < ApplicationRecord
         end 
     end
 
-    def self.calculo_variables(id_evaluacion)
-        eval = Evaluation.find(id_evaluacion)
-        details = EvaluationRuleDetail.where("evaluation_id = ?", eval.id)
-        total_score = 0
-        total_details = 0
-        total_details_cumplidos = 0
-        result = ''
-        @score_max_eval = 0
-        details.each do |detail| 
-            total_score += detail.score
-            @score_max_eval += detail.maximun_value 
-            total_details += 1
-            total_details_cumplidos += 1 if detail.meets > 0
-        end 
-        eval.score  = total_score
-        eval.percentage =  ((total_details_cumplidos.to_f / total_details.to_f) * 100).round(2) if total_details.to_f > 0
-
-        if eval.score < 61 then
-           eval.result = "CRÍTICO"
-           eval.observation = "<br>* Plan de Mejoramiento de inmediato a disposición de MinTrabajo.<br/> <br>* Enviar a la ARL reporte de avances ( máx a los tres meses).<br/> <br>* Seguimiento anual y Plan de Visita la empresa por parte del Ministerio.<br/>"
-        end 
-        if eval.score > 60.99 && eval.percentage < 86 then
-            eval.result = "MODERADAMENTE ACEPTABLE"
-            eval.observation = "<br>* Plan de Mejoramiento a disposición de MinTrabajo.<br/> <br>* Enviar a la ARL reporte de avances (max a los seis meses).<br/> <br>* Plan de visita MinTrabajo.<br/>"
-        end 
-      
-        if eval.score > 85.99 then
-            eval.result = "ACEPTABLE"
-            eval.observation = "<br>* Mantener la calificación y evidencias a disposición de MinTrabajo.<br/> <br>* Incluir en el Plan de Anual de Trabajo las mejoras que se establezcan de acuerdo con la evaluación.<br/>"
-        end 
-
-        eval.save  
-    end
     
     def self.miles(valor)
         cadena = valor.to_s
@@ -85,6 +52,12 @@ class EvaluationRuleDetail < ApplicationRecord
         if dato == 0 ; 'NO'
         elsif dato == 1 ; 'SI'
         elsif dato == 2 ; 'NA'
+        end 
+    end 
+
+    def self.label_apply(dato)
+        if dato == 0 ; 'NO'
+        elsif dato == 1 ; 'SI'
         end 
     end 
 

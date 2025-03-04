@@ -48,7 +48,10 @@ class TemplatesController < ApplicationController
     private
 
     def template_params
-        params.require(:template).permit(:name, :reference, :description, :standar_detail_item_id, :file, :date, :version, :state, :date_updated, :format_number, :filing)
+        params.require(:template).permit(:name, :reference, :description, :standar_detail_item_id, :file, 
+        :date, :version, :state, :date_updated, :format_number, :filing, :firm_representante, :firm_responsable,
+        :firm_asesor, :firm_presidente_copasst, :firm_secretario_copasst, :firm_vigia, :participant_responsable, 
+        :participant_representante, :participant_asesor, :participant_vigia, :participant_colaborador)
     end 
 
 end  

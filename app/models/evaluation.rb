@@ -99,7 +99,7 @@ class Evaluation < ApplicationRecord
             @item.evaluation_id = evaluation.id
             @item.standar_detail_item_id = item.id
             @item.apply = item.aplica
-            @item.meets = 2 if item.aplica == 0
+            @item.meets = 0
             @item.maximun_value = item.maximun_value
             @item.cycle = item.standar_detail.standar.cycle
             @item.score = @item.maximun_value if item.aplica == 0
@@ -116,6 +116,8 @@ class Evaluation < ApplicationRecord
         @history_evaluation.number_employees  = evaluation.number_employees
         @history_evaluation.score  = evaluation.score
         @history_evaluation.percentage  = evaluation.percentage
+        @history_evaluation.score_int  = evaluation.score_int
+        @history_evaluation.percentage_int  = evaluation.percentage_int
         @history_evaluation.result  = evaluation.result
         @history_evaluation.rule_id  = evaluation.rule_id
         @history_evaluation.risk_level_id  = evaluation.risk_level_id
@@ -144,7 +146,7 @@ class Evaluation < ApplicationRecord
         evaluation_items.each do |item|
             @history_evaluation.completed_items  += 1 if item.meets == 1
             @history_evaluation.unfulfilled_items  += 1 if item.meets == 0
-            @history_evaluation.not_apply_items += 1 if item.meets == 2
+            @history_evaluation.not_apply_items += 1 if item.apply == 0
         end    
         
         @history_evaluation.save 
@@ -224,6 +226,62 @@ class Evaluation < ApplicationRecord
         end 
         return @datos_generales  
     end 
+
+    def self.calculo_variables(id_evaluacion)
+        eval = Evaluation.find(id_evaluacion)
+        details = EvaluationRuleDetail.where("evaluation_id = ?", eval.id)
+        total_score = 0
+        total_details = 0
+        total_details_cumplidos = 0
+        result = ''
+        total_score_int = 0
+        total_details_cumplidos_int = 0
+
+        #@score_max_eval = 0
+        details.each do |detail| 
+
+            if detail.apply == 0
+                total_score += detail.maximun_value
+                total_details_cumplidos += 1 
+                total_score_int += detail.score  if detail.meets == 1
+                total_details_cumplidos_int += 1 if detail.meets == 1
+            end
+
+            if detail.apply == 1
+                total_score += detail.score  if detail.meets == 1   
+                total_details_cumplidos += 1 if detail.meets == 1
+                total_score_int += detail.score  if detail.meets == 1   
+                total_details_cumplidos_int += 1 if detail.meets == 1                
+            end
+            
+            #@score_max_eval += detail.maximun_value 
+            total_details += 1
+            
+        end 
+        eval.score  = total_score
+        eval.percentage =  ((total_details_cumplidos.to_f / total_details.to_f) * 100).round(2) if total_details.to_f > 0
+        eval.score_int  = total_score_int
+        eval.percentage_int =  ((total_details_cumplidos_int.to_f / total_details.to_f) * 100).round(2) if total_details.to_f > 0
+
+
+        if eval.score < 61 then
+           eval.result = "CRÍTICO"
+           eval.observation = "<br>* Plan de Mejoramiento de inmediato a disposición de MinTrabajo.<br/> <br>* Enviar a la ARL reporte de avances ( máx a los tres meses).<br/> <br>* Seguimiento anual y Plan de Visita la empresa por parte del Ministerio.<br/>"
+        end 
+        if eval.score > 60.99 && eval.percentage < 86 then
+            eval.result = "MODERADAMENTE ACEPTABLE"
+            eval.observation = "<br>* Plan de Mejoramiento a disposición de MinTrabajo.<br/> <br>* Enviar a la ARL reporte de avances (max a los seis meses).<br/> <br>* Plan de visita MinTrabajo.<br/>"
+        end 
+      
+        if eval.score > 85.99 then
+            eval.result = "ACEPTABLE"
+            eval.observation = "<br>* Mantener la calificación y evidencias a disposición de MinTrabajo.<br/> <br>* Incluir en el Plan de Anual de Trabajo las mejoras que se establezcan de acuerdo con la evaluación.<br/>"
+        end 
+        
+        eval.save
+            
+            
+    end
 
 
 end

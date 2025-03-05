@@ -5,7 +5,7 @@ class MatrixConditionsController < ApplicationController
             @matrix_condition = MatrixCondition.find_by(entity_id: params[:entity_id])
             indicador_matrix_condition(@matrix_condition.id) if @matrix_condition.present?
         else    
-            if  Current.user && Current.user.level == 1
+            if  Current.user && Current.user.level > 0 && Current.user.level < 4
                 @entities = Entity.all
                 @matrix_conditions = MatrixCondition.all
             else
@@ -20,7 +20,7 @@ class MatrixConditionsController < ApplicationController
     def show
         @matrix_condition = MatrixCondition.find(params[:id])
         @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", @matrix_condition.id) if @matrix_condition.present?
-        @template = Template.find(196)
+        @template = Template.where("format_number = ? and document_vigente = ?",65,1).last  
         respond_to do |format|
             format.html
             format.xlsx{ 
@@ -32,7 +32,7 @@ class MatrixConditionsController < ApplicationController
     def condition_pdf
         @matrix_condition = MatrixCondition.find(params[:id])
         @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", @matrix_condition.id) if @matrix_condition.present?
-        @template = Template.find(196)
+        @template = Template.where("format_number = ? and document_vigente = ?",65,1).last  
         respond_to do |format| 
             format.html
             format.pdf {render  pdf: 'ver_matrix_condition',
@@ -50,7 +50,7 @@ class MatrixConditionsController < ApplicationController
 
     def new
       @matrix_condition = MatrixCondition.new  
-      @template = Template.find(196)
+      @template = Template.where("format_number = ? and document_vigente = ?",65,1).last  
     end    
 
     def create

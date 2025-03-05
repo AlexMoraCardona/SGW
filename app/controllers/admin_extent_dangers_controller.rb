@@ -79,7 +79,7 @@ class AdminExtentDangersController < ApplicationController
     end    
 
     def matrix_prevention
-        @template = Template.find(169)
+        @template = Template.where("format_number = ? and document_vigente = ?",56,1).last  
         @admin_extent_danger = AdminExtentDanger.find(params[:id])
         @form_preventions = FormPrevention.where("admin_extent_danger_id = ?", @admin_extent_danger.id) if @admin_extent_danger.present?
         @entity = Entity.find(@admin_extent_danger.entity_id) if @admin_extent_danger.present?
@@ -87,7 +87,7 @@ class AdminExtentDangersController < ApplicationController
     end    
     
     def matrix_vista
-        @template = Template.find(169)
+        @template = Template.where("format_number = ? and document_vigente = ?",56,1).last  
         @admin_extent_danger = AdminExtentDanger.find(params[:id])
         @form_preventions = FormPrevention.where("admin_extent_danger_id = ?", @admin_extent_danger.id) if @admin_extent_danger.present?
         @entity = Entity.find(@admin_extent_danger.entity_id) if @admin_extent_danger.present?

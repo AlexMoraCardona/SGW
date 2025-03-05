@@ -2,7 +2,7 @@ class Authentication::UsersController < ApplicationController
     skip_before_action :protect_pages 
 
     def index
-        if  Current.user && Current.user.level == 1 || Current.user.level == 2
+        if  Current.user && Current.user.level > 0 && Current.user.level < 3
            #@users = User.all.decorate
            @q = User.ransack(params[:q])
            @pagy, @users = pagy(@q.result(id: :desc), items: 3)

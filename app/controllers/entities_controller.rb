@@ -1,6 +1,6 @@
 class EntitiesController < ApplicationController
     def index
-        if  Current.user && Current.user.level == 1
+        if  Current.user && Current.user.level > 0 && Current.user.level < 3
             #@entities = Entity.all
             @q = Entity.ransack(params[:q])
             @pagy, @entities = pagy(@q.result(id: :desc), items: 3)

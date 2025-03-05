@@ -1,6 +1,6 @@
 class EvaluationsController < ApplicationController
     def index
-        if  Current.user && Current.user.level == 1
+        if  Current.user && Current.user.level > 0 && Current.user.level < 5
             if params[:entity_id].present?
                     @evaluations = Evaluation.where(entity_id: params[:entity_id]).order(date_evaluation: :desc)
             else    

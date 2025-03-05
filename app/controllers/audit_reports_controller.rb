@@ -16,7 +16,7 @@ class AuditReportsController < ApplicationController
     end  
     
     def show 
-        @template = Template.find(211)
+        @template = Template.where("format_number = ? and document_vigente = ?",70,1).last  
         @audit_report = AuditReport.find(params[:id])
         @entity = Entity.find(@audit_report.entity_id) if @audit_report.present?
         @user_audit = User.find(@audit_report.user_audit)
@@ -34,7 +34,7 @@ class AuditReportsController < ApplicationController
     def ver_auditoria_interna_pdf
         @audit_report = AuditReport.find(params[:id])
         @audit_report_items = AuditReportItem.where("audit_report_id = ?", @audit_report.id) if @audit_report.present?
-        @template = Template.find(211)
+        @template = Template.where("format_number = ? and document_vigente = ?",70,1).last  
         @entity = Entity.find(@audit_report.entity_id) if @audit_report.present?
         @user_audit = User.find(@audit_report.user_audit)
         @user_representante = User.find(@audit_report.user_representante)
@@ -56,7 +56,7 @@ class AuditReportsController < ApplicationController
 
     def new
       @audit_report =  AuditReport.new
-      @template = Template.find(211)
+      @template = Template.where("format_number = ? and document_vigente = ?",70,1).last  
     end    
 
     def create

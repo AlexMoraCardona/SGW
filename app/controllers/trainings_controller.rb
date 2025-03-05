@@ -4,7 +4,7 @@ class TrainingsController < ApplicationController
             @entity = Entity.find(params[:entity_id])
             @trainings = Training.where("entity_id = ?", params[:entity_id])
         else    
-            if  Current.user && Current.user.level == 1
+            if  Current.user && Current.user.level > 0 && Current.user.level < 4
                 @entities = Entity.all
                 @trainings = Training.all
             else
@@ -53,7 +53,7 @@ class TrainingsController < ApplicationController
 
     def new
       @training =  Training.new
-      @template = Template.find(97)
+      @template = Template.where("format_number = ? and document_vigente = ?",32,1).last  
     end    
 
     def create

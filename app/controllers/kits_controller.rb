@@ -66,7 +66,7 @@ class KitsController < ApplicationController
 
     def show
         @kit = Kit.find(params[:id])
-        @template = Template.find(181)
+        @template = Template.where("format_number = ? and document_vigente = ?",60,1).last  
     end    
 
     def kit_adjunto
@@ -75,7 +75,7 @@ class KitsController < ApplicationController
 
     def kit_pdf
         @kit = Kit.find(params[:id])
-        @template = Template.find(181)        
+        @template = Template.where("format_number = ? and document_vigente = ?",60,1).last  
         respond_to do |format| 
             format.html
             format.pdf {render  pdf: 'kit_pdf',

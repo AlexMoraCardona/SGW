@@ -67,7 +67,7 @@ class UnsafeConditionsController < ApplicationController
     end    
 
     def show
-        @template = Template.find(193)
+        @template = Template.where("format_number = ? and document_vigente = ?",64,1).last  
         @unsafe_condition = UnsafeCondition.find(params[:id])
         @reporta = User.find(@unsafe_condition.user_reports) if  @unsafe_condition.user_reports.present? && @unsafe_condition.user_reports > 0
         @recibe = User.find(@unsafe_condition.user_receiving) if  @unsafe_condition.user_receiving.present? && @unsafe_condition.user_receiving > 0
@@ -108,7 +108,7 @@ class UnsafeConditionsController < ApplicationController
     end     
     
     def unsafe_condition_pdf
-        @template = Template.find(193)
+        @template = Template.where("format_number = ? and document_vigente = ?",64,1).last  
         @unsafe_condition = UnsafeCondition.find(params[:id])
         @reporta = User.find(@unsafe_condition.user_reports) if  @unsafe_condition.user_reports.present? && @unsafe_condition.user_reports > 0
         @recibe = User.find(@unsafe_condition.user_receiving) if  @unsafe_condition.user_receiving.present? && @unsafe_condition.user_receiving > 0

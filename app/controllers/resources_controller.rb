@@ -19,7 +19,7 @@ class ResourcesController < ApplicationController
         @rep = User.find(@resource.user_legal_representative) if  @resource.user_legal_representative.present? && @resource.user_legal_representative > 0
         @adv = User.find(@resource.user_adviser_sst) if  @resource.user_adviser_sst.present? && @resource.user_adviser_sst > 0
         @res = User.find(@resource.user_responsible_sst) if  @resource.user_responsible_sst.present? && @resource.user_responsible_sst > 0
-        @template = Template.find(91)
+        @template = Template.where("format_number = ? and document_vigente = ?",30,1).last  
 
         @resource_items = ResourceItem.where("resource_id = ?", @resource.id) if @resource.present?
         respond_to do |format|
@@ -54,7 +54,8 @@ class ResourcesController < ApplicationController
 
     def new
       @resource =  Resource.new
-      @template = Template.find(91)
+      @template = Template.where("format_number = ? and document_vigente = ?",30,1).last  
+
     end    
 
     def create

@@ -4,7 +4,7 @@ class MatrixProtectionsController < ApplicationController
             @entity = Entity.find(params[:entity_id])
             @matrix_protections = MatrixProtection.where("entity_id = ?", params[:entity_id])
         else    
-            if  Current.user && Current.user.level == 1
+            if  Current.user && Current.user.level > 0 && Current.user.level < 4
                 @entities = Entity.all
                 @matrix_protections = MatrixProtection.all
             else
@@ -45,7 +45,7 @@ class MatrixProtectionsController < ApplicationController
 
     def new
       @matrix_protection = MatrixProtection.new  
-      @template = Template.find(157)
+      @template = Template.where("format_number = ? and document_vigente = ?",52,1).last  
     end    
 
     def create

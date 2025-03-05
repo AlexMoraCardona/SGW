@@ -16,7 +16,7 @@ class WorkingConditionsController < ApplicationController
     end 
     
     def show
-        @template = Template.find(172)
+        @template = Template.where("format_number = ? and document_vigente = ?",57,1).last  
         @working_condition = WorkingCondition.find(params[:id])
         @working_condition_items = WorkingConditionItem.where("working_condition_id = ?", @working_condition.id).order(:clasification_danger_id) if @working_condition.present?
         @entity = Entity.find(@working_condition.entity_id)
@@ -50,7 +50,7 @@ class WorkingConditionsController < ApplicationController
       @working_condition = WorkingCondition.new  
       @user = User.find(Current.user.id) if Current.user.present?
       @entity = Entity.find(params[:entity_id]) if params[:entity_id]
-      @template = Template.find(172)
+      @template = Template.where("format_number = ? and document_vigente = ?",57,1).last  
     end    
 
     def create

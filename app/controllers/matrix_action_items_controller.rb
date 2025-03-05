@@ -33,7 +33,7 @@ class MatrixActionItemsController < ApplicationController
     def edit
         @matrix_action_item = MatrixActionItem.find(params[:id])
         @locations  = Location.where("entity_id = ?", @matrix_action_item.matrix_corrective_action.entity_id) if @matrix_action_item.present?
-        @template = Template.find(202)
+        @template = Template.where("format_number = ? and document_vigente = ?",67,1).last  
         @entity = Entity.find(@matrix_action_item.matrix_corrective_action.entity_id) if @matrix_action_item.present?
     end
     

@@ -49,7 +49,7 @@ class FormatActionsController < ApplicationController
     end    
 
     def show
-        @template = Template.find(205)
+        @template = Template.where("format_number = ? and document_vigente = ?",68,1).last  
         @format_action = FormatAction.find(params[:id])
         @entity  = Entity.find(@format_action.entity_id) if @format_action.present?
 
@@ -62,7 +62,7 @@ class FormatActionsController < ApplicationController
     end 
     
     def format_action_pdf
-        @template = Template.find(205)
+        @template = Template.where("format_number = ? and document_vigente = ?",68,1).last  
         @format_action = FormatAction.find(params[:id])
         @entity  = Entity.find(@format_action.entity_id) if @format_action.present?
 

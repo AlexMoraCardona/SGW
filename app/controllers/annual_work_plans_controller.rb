@@ -4,7 +4,7 @@ class AnnualWorkPlansController < ApplicationController
             @entity = Entity.find(params[:entity_id])
             @annual_work_plans = AnnualWorkPlan.where("entity_id = ?", params[:entity_id])
         else    
-            if  Current.user && Current.user.level == 1
+            if  Current.user && Current.user.level > 0 && Current.user.level < 4 
                 @entities = Entity.all
                 @annual_work_plans = AnnualWorkPlan.all
             else
@@ -15,7 +15,7 @@ class AnnualWorkPlansController < ApplicationController
     end  
     
     def show 
-        @template = Template.find(100)
+        @template = Template.where("format_number = ? and document_vigente = ?",33,1).last  
         @annual_work_plan = AnnualWorkPlan.find(params[:id])
         @annual_work_plan_items = AnnualWorkPlanItem.where("annual_work_plan_id = ?", @annual_work_plan.id) if @annual_work_plan.present?
         respond_to do |format|
@@ -31,7 +31,7 @@ class AnnualWorkPlansController < ApplicationController
     def ver_plan
         @annual_work_plan = AnnualWorkPlan.find(params[:id])
         @annual_work_plan_items = AnnualWorkPlanItem.where("annual_work_plan_id = ?", @annual_work_plan.id) if @annual_work_plan.present?
-        @template = Template.find(100)
+        @template = Template.where("format_number = ? and document_vigente = ?",33,1).last  
 
         respond_to do |format| 
             format.html
@@ -50,7 +50,7 @@ class AnnualWorkPlansController < ApplicationController
 
     def new
       @annual_work_plan =  AnnualWorkPlan.new
-      @template = Template.find(100)
+      @template = Template.where("format_number = ? and document_vigente = ?",33,1).last  
     end    
 
     def create

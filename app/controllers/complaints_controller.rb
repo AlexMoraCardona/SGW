@@ -80,7 +80,7 @@ class ComplaintsController < ApplicationController
     def informe
         @complaint = Complaint.find(params[:id])
         @user = User.find(@complaint.user_complaint) if @complaint.present?
-        @template = Template.find(55)
+        @template = Template.where("format_number = ? and document_vigente = ?",18,1).last  
         @vista = 'complaints/informe/' 
         @footer = 'Nit: ' + @complaint.entity.identification_number.to_s + ', Dirección: ' + @complaint.entity.entity_address.to_s
         respond_to do |format| 

@@ -22,7 +22,7 @@ class MatrixDangerRisksController < ApplicationController
             end 
 
         else    
-            if  Current.user && Current.user.level == 1
+            if  Current.user && Current.user.level > 0 && Current.user.level < 4
                 @entities = Entity.all
                 @matrix_danger_risks = MatrixDangerRisk.all
             else
@@ -35,7 +35,7 @@ class MatrixDangerRisksController < ApplicationController
 
     def new
       @matrix_danger_risk = MatrixDangerRisk.new  
-      @template = Template.find(94)
+      @template = Template.where("format_number = ? and document_vigente = ?",31,1).last  
     end    
 
     def create
@@ -97,7 +97,7 @@ class MatrixDangerRisksController < ApplicationController
     def show
         @matrix_danger_risk = MatrixDangerRisk.find_by(id: params[:id].to_i)
         @matrix_danger_items = MatrixDangerItem.where(matrix_danger_risk_id: params[:id].to_i).order(:consecutive)
-        @template = Template.find(94)
+        @template = Template.where("format_number = ? and document_vigente = ?",31,1).last  
         @entity = Entity.find(@matrix_danger_risk.entity_id) if @matrix_danger_risk.present?
     end
 
@@ -143,7 +143,7 @@ class MatrixDangerRisksController < ApplicationController
         @matrix_danger_risk = MatrixDangerRisk.find(params[:id])
         @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ?", @matrix_danger_risk.id).order(:consecutive) if @matrix_danger_risk.present?
         @entity = Entity.find(@matrix_danger_risk.entity_id)  if @matrix_danger_risk.present?
-        @template = Template.find(94)
+        @template = Template.where("format_number = ? and document_vigente = ?",31,1).last  
 
         respond_to do |format| 
             format.html

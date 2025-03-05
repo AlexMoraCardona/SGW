@@ -159,7 +159,7 @@ class EvaluationRuleDetailsController < ApplicationController
  
     def edit
         @evaluation_rule_detail = EvaluationRuleDetail.find(params[:id])
-        @templates = Template.where("standar_detail_item_id = ?", @evaluation_rule_detail.standar_detail_item_id)
+        @templates = Template.where("standar_detail_item_id = ?", @evaluation_rule_detail.standar_detail_item_id) if Current.user.level == 1 || Current.user.level == 2
         @evidences = Evidence.where("evaluation_rule_detail_id = ?", @evaluation_rule_detail.id).order(id: :desc)
     end
     

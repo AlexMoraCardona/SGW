@@ -20,7 +20,7 @@ class EmergencyPlansController < ApplicationController
     
     def show
         @emergency_plan = EmergencyPlan.find(params[:id])
-        @template = Template.find(163)
+        @template = Template.where("format_number = ? and document_vigente = ?",54,1).last  
         @user_responsable = User.find(@emergency_plan.user_responsible) if @emergency_plan.user_responsible > 0
         @entity = Entity.find(@emergency_plan.entity_id) if @emergency_plan.present?
         @equipement_used_plans = EquipementUsedPlan.where("emergency_plan_id = ?", @emergency_plan.id) if @emergency_plan.present?

@@ -39,7 +39,7 @@ class MatrixUnsafeItemsController < ApplicationController
     end   
     
     def matrix_unsafe_item_pdf
-        @template = Template.find(193)
+        @template = Template.where("format_number = ? and document_vigente = ?",64,1).last  
         @matrix_unsafe_item = MatrixUnsafeItem.find(params[:id])
         @unsafe_condition = UnsafeCondition.find(@matrix_unsafe_item.unsafe_condition_id) if @matrix_unsafe_item.present?
         

@@ -4,7 +4,7 @@ class OccupationalExamsController < ApplicationController
             @entity = Entity.find(params[:entity_id])
             @occupational_exams = OccupationalExam.where("entity_id = ?", params[:entity_id])
         else    
-            if  Current.user && Current.user.level == 1
+            if  Current.user && Current.user.level > 0 && Current.user.level < 4
                 @entities = Entity.all
                 @occupational_exams = OccupationalExam.all
             else
@@ -46,7 +46,7 @@ class OccupationalExamsController < ApplicationController
 
     def new
       @occupational_exam =  OccupationalExam.new
-      @template = Template.find(106)
+      @template = Template.where("format_number = ? and document_vigente = ?",35,1).last  
     end    
 
     def create

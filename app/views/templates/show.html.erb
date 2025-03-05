@@ -1,0 +1,75 @@
+<div align="left"; class="container col-12">
+    <a class="navbar-brand" href="/">
+        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+    </a>
+</div>
+<div>
+    <table class="table table-hover" style="border:1px solid black"> 
+        <thead>
+            <tr>
+                <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
+                    <% if @entity.logo.present? then %>
+                        <%=  image_tag  @entity.logo, class: "image_peq" %>
+                    <% end %>
+                </td>
+                <td rowspan="4"; colspan="6"; style="text-align:center; padding-bottom: 40px;">
+                    <div><h5> LISTADO MAESTRO DE DOCUMENTOS</h5><h6><%= @entity.business_name if @entity.present? %> Nit: <%= @entity.identification_number if @entity.present? %> </h6></div>
+                </td>
+                <td rowspan="4";  style="text-align:center"></td>
+
+                <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
+
+                <td style="border:1px solid black"><%= @template.date if @template.present? %></td>
+
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
+                <td style="border:1px solid black"><%= @template.date_updated if @template.present? %></td>
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Versión:</td>
+                <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Código:</td>
+                <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
+            </tr>
+
+            <tr>
+                <th rowspan="2"; style="border:1px solid black;text-align:center">PROCESO</th>
+                <th rowspan="2"; style="border:1px solid black">NOMBRE DEL DOCUMENTO</th>
+                <th rowspan="2"; style="border:1px solid black">TIPO DE DOCUMENTO</th>
+                <th rowspan="2"; style="border:1px solid black">CÓDIGO DEL DOCUMENTO</th>
+                <th rowspan="2"; style="border:1px solid black;text-align:center">TIPO DE SOPORTE</th>
+                <th rowspan="2"; style="border:1px solid black;text-align:center">FECHA VERSIÓN VIGENTE</th>
+                <th rowspan="2"; style="border:1px solid black;text-align:center">VERSIÓN</th>
+                <th rowspan="2"; style="border:1px solid black;text-align:center">ESTADO DEL DOCUMENTO</th>
+                <th rowspan="2"; style="border:1px solid black;text-align:center">OBSERVACIONES</th>
+                <th rowspan="2"; style="border:1px solid black;text-align:center">DEPENDENCIA ADMINISTRADORA DEL DOCUMENTO</th>
+                <th rowspan="2"; style="border:1px solid black;text-align:center">CAMBIOS VERSION</th>
+            </tr>   
+        </thead>
+        <% if @consultas.present? %>
+            <%  i = 0 %>
+            <%  while i < @valor %>
+                <tbody>
+                    <tr style="border:1px solid black;"> 
+                        <td style="border:1px solid black;text-align:center"><%= @consultas[i][0] %></td>
+                        <td style="border:1px solid black;text-align:center"><%= @consultas[i][1] %></td>
+                        <td style="border:1px solid black;text-align:center"><%= @consultas[i][2] %></td>
+                        <td style="border:1px solid black;text-align:center"><%= @consultas[i][3] %></td>
+                        <td style="border:1px solid black;text-align:center"><%= @consultas[i][4] %></td>
+                        <td style="border:1px solid black;text-align:center"><%= @consultas[i][5] %></td>
+                        <td style="border:1px solid black;text-align:center"><%= @consultas[i][6] %></td>
+                        <td style="border:1px solid black;text-align:center"><%= @consultas[i][7] %></td>
+                        <td style="border:1px solid black;text-align:center"><%= @consultas[i][8] %></td>
+                        <td style="border:1px solid black;text-align:center"><%= @consultas[i][9] %></td>
+                        <td style="border:1px solid black;text-align:center"><%= @consultas[i][10] %></td>
+                    </tr> 
+                </body>
+                <%  i = i + 1 %>
+            <% end %>
+        <% end %>
+    </table>
+</div>  
+<div></br><div>  

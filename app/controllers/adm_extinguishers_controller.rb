@@ -17,7 +17,7 @@ class AdmExtinguishersController < ApplicationController
     def show
         @adm_extinguisher = AdmExtinguisher.find(params[:id])
         @extinguishers = Extinguisher.where("adm_extinguisher_id = ?", @adm_extinguisher.id) if @adm_extinguisher.present?
-        @template = Template.find(184)
+        @template = Template.where("format_number = ? and document_vigente = ?",61,1).last  
         respond_to do |format|
             format.html
             format.xlsx{ 
@@ -29,7 +29,7 @@ class AdmExtinguishersController < ApplicationController
     def ver_extinguisher
         @adm_extinguisher = AdmExtinguisher.find(params[:id])
         @extinguishers = Extinguisher.where("adm_extinguisher_id = ?", @adm_extinguisher.id) if @adm_extinguisher.present?
-        @template = Template.find(184)
+        @template = Template.where("format_number = ? and document_vigente = ?",61,1).last  
 
         respond_to do |format| 
             format.html
@@ -48,7 +48,7 @@ class AdmExtinguishersController < ApplicationController
 
     def new
       @adm_extinguisher =  AdmExtinguisher.new
-      @template = Template.find(184)
+      @template = Template.where("format_number = ? and document_vigente = ?",61,1).last  
     end    
 
     def create

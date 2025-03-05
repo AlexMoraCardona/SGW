@@ -18,7 +18,7 @@ class MatrixLegalsController < ApplicationController
                 end
             end     
         else    
-            if  Current.user && Current.user.level == 1
+            if  Current.user && Current.user.level > 0 && Current.user.level < 4
                 @entities = Entity.all
                 @matrix_legals = MatrixLegal.all
             else
@@ -29,7 +29,7 @@ class MatrixLegalsController < ApplicationController
     end  
     
     def show
-        @template = Template.find(231)
+        @template = Template.where("format_number = ? and document_vigente = ?",76,1).last  
         @matrix_legal = MatrixLegal.find(params[:id])
         @matrix_legal_items = MatrixLegalItem.where("matrix_legal_id = ?", @matrix_legal.id) if @matrix_legal.present?
         @entity = Entity.find(@matrix_legal.entity_id) if @matrix_legal.present?

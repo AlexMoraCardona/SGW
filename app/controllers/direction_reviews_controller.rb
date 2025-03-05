@@ -15,7 +15,7 @@ class DirectionReviewsController < ApplicationController
     end  
     
     def show 
-        @template = Template.find(214)
+        @template = Template.where("format_number = ? and document_vigente = ?",71,1).last  
         @direction_review = DirectionReview.find(params[:id])
         @entity = Entity.find(@direction_review.entity_id) if @direction_review.present?
         @user_representante = User.find(@direction_review.user_representante)
@@ -30,7 +30,7 @@ class DirectionReviewsController < ApplicationController
     
     def ver_review_pdf
         @direction_review = DirectionReview.find(params[:id])
-        @template = Template.find(214)
+        @template = Template.where("format_number = ? and document_vigente = ?",71,1).last  
         @entity = Entity.find(@direction_review.entity_id) if @direction_review.present?
         @user_representante = User.find(@direction_review.user_representante)
 
@@ -51,7 +51,7 @@ class DirectionReviewsController < ApplicationController
 
     def new
       @direction_review =  DirectionReview.new
-      @template = Template.find(214)
+      @template = Template.where("format_number = ? and document_vigente = ?",71,1).last  
     end    
 
     def create

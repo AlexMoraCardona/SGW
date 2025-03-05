@@ -26,7 +26,7 @@ class MatrixCorrectiveActionsController < ApplicationController
             @datos_estado_acciones.push(["Cerradas", @cerrada]) 
 
         else    
-            if  Current.user && Current.user.level == 1
+            if  Current.user && Current.user.level > 0 && Current.user.level < 4
                 @entities = Entity.all
                 @matrix_corrective_actions = MatrixCorrectiveAction.all
             else
@@ -39,7 +39,7 @@ class MatrixCorrectiveActionsController < ApplicationController
 
     def new
       @matrix_corrective_action = MatrixCorrectiveAction.new  
-      @template = Template.find(208)
+      @template = Template.where("format_number = ? and document_vigente = ?",69,1).last  
     end    
 
     def create

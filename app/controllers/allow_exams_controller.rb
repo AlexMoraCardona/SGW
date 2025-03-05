@@ -1,6 +1,6 @@
 class AllowExamsController < ApplicationController
     def index
-        if  Current.user && Current.user.level == 1
+        if  Current.user && Current.user.level > 0 && Current.user.level < 3
             @allow_exams = AllowExam.all
          else
              redirect_to new_session_path, alert: t('common.not_logged_in')   

@@ -168,6 +168,7 @@ Rails.application.routes.draw do
   get '/history_evaluations/descargar_historia/:id', to: 'history_evaluations#descargar_historia', as: 'descargar_historia'
   get '/view_videos/registrar_vista/:id', to: 'view_videos#registrar_vista', as: 'registrar_vista'
   get '/survey_profiles/informe_estudio_socio/:id', to: 'survey_profiles#informe_estudio_socio', as: 'informe_estudio_socio'
+  get '/templates/matriz_documental/:id', to: 'templates#matriz_documental', as: 'matriz_documental'
 
   resources :admin_extent_dangers do
     collection do

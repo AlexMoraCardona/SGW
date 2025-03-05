@@ -17,7 +17,7 @@ class ImprovementPlansController < ApplicationController
     end  
     
     def show 
-        @template = Template.find(217)
+        @template = Template.where("format_number = ? and document_vigente = ?",72,1).last  
         @improvement_plan = ImprovementPlan.find(params[:id])
         @entity = Entity.find(@improvement_plan.entity_id) if @improvement_plan.present?
         @user_responsable = User.find(@improvement_plan.user_responsible)
@@ -35,7 +35,7 @@ class ImprovementPlansController < ApplicationController
     def ver_improvement_plan_pdf
         @improvement_plan = ImprovementPlan.find(params[:id])
         @improvement_items = ImprovementItem.where("improvement_plan_id = ?", @improvement_plan.id) if @improvement_plan.present?
-        @template = Template.find(217)
+        @template = Template.where("format_number = ? and document_vigente = ?",72,1).last  
         @entity = Entity.find(@improvement_plan.entity_id) if @improvement_plan.present?
         @user_responsable = User.find(@improvement_plan.user_responsible)
         @user_representante = User.find(@improvement_plan.user_representante)
@@ -57,7 +57,7 @@ class ImprovementPlansController < ApplicationController
 
     def new
       @improvement_plan =  ImprovementPlan.new
-      @template = Template.find(217)
+      @template = Template.where("format_number = ? and document_vigente = ?",72,1).last  
     end    
 
     def create

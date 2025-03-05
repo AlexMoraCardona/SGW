@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_03_03_230733) do
+ActiveRecord::Schema[7.0].define(version: 2025_03_04_185302) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -1866,6 +1866,15 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_03_230733) do
     t.integer "participant_asesor", default: 0
     t.integer "participant_vigia", default: 0
     t.integer "participant_colaborador", default: 0
+    t.integer "type_document", default: 0
+    t.integer "process_document", default: 0
+    t.integer "type_soport", default: 0
+    t.integer "name_dependence", default: 0
+    t.string "observations"
+    t.integer "dependence_admin", default: 0
+    t.string "control_changes"
+    t.date "not_current"
+    t.integer "document_vigente", default: 1
     t.index ["standar_detail_item_id"], name: "index_templates_on_standar_detail_item_id"
   end
 

@@ -59,7 +59,7 @@ class SurveyProfilesController < ApplicationController
     def informe_estudio_socio
         @survey_profile = SurveyProfile.find(params[:id])
         @profiles = Profile.where("survey_profile_id = ?",@survey_profile.id) if @survey_profile.present?
-        @template = Template.find(112)
+        @template = Template.where("format_number = ? and document_vigente = ?",37,1).last  
         @administrative_political_division = AdministrativePoliticalDivision.find(@survey_profile.entity.entity_location_code) if @survey_profile.entity.entity_location_code.present?
         @cantidadsedes = Location.where("entity_id = ?", @survey_profile.entity_id).count 
         @responsablesst = User.find(@survey_profile.entity.responsible_sst) if @survey_profile.entity.responsible_sst.present?

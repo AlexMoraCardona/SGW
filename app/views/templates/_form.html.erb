@@ -1,5 +1,4 @@
 <div class="container col-11 card p-5">
-    <br>
     <%= form_with model: @template do |form| %>
         <% @template.errors.full_messages.each do |error| %>
             <div class="alert alert-danger" role="alert">
@@ -8,37 +7,98 @@
         <% end %>    
         <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
         <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, templates_path %>
+        <div><br></div>
+        <div class="row g-3">
+            <div class="col-sm-4">
+                <%= form.label :document_vigente,  style: "display: block" %>
+                <%= form.radio_button :document_vigente, 0 %>
+                <label for="novigente">No</label>
+                <%= form.radio_button :document_vigente, 1 %>
+                <label for="sivigente">Si</label>
+            </div>
+            <div class="col-sm-4">
+            </div>
+            <div class="col-sm-3">
+            </div>
+        </div>    
 
-        <div class="form-group">    
-            <%= form.label :format_number, style: "display: block" %>
-            <%= form.number_field :format_number,  class: "form-control" %>
-        </div>
-     
-        
-        <div class="form-group">    
-            <%= form.label :date, style: "display: block" %>
-            <%= form.date_field :date,  class: "form-control" %>
-        </div>
-
-        <div class="form-group">    
-            <%= form.label :date_updated, style: "display: block" %>
-            <%= form.date_field :date_updated,  class: "form-control" %>
-        </div>
-
-        
-        <div class="form-group">    
-            <%= form.label :version, style: "display: block" %>
-            <%= form.number_field :version,  class: "form-control" %>
-        </div>
-
-        <div class="col-sm-3">
-            <%= form.label :state,  style: "display: block" %>
-            <%= form.radio_button :state, 0 %>
-            <label for="Inactivo"><%= t('common.inactivo') %></label>
-            <%= form.radio_button :state, 1 %>
-            <label for="Activo"><%= t('common.activo') %></label>
-        </div>
-
+        <br> 
+        <div class="row g-3">
+            <div class="col-sm-4">
+                <%= form.label :format_number, style: "display: block" %>
+                <%= form.number_field :format_number,  class: "form-control" %>
+            </div>
+            <div class="col-sm-4">
+                <%= form.label :version, style: "display: block" %>
+                <%= form.number_field :version,  class: "form-control" %>
+            </div>
+            <div class="col-sm-3">
+                <%= form.label :state,  style: "display: block" %>
+                <%= form.radio_button :state, 0 %>
+                <label for="noactivo">No activo</label>
+                <%= form.radio_button :state, 1 %>
+                <label for="activo">Activo</label>
+            </div>
+        </div>    
+        <br>
+        <div class="row g-3">
+            <div class="col-sm-4">
+                <%= form.label :date, style: "display: block" %>
+                <%= form.date_field :date,  class: "form-control" %>
+            </div>
+            <div class="col-sm-4">
+                <%= form.label :date_updated, style: "display: block" %>
+                <%= form.date_field :date_updated,  class: "form-control" %>
+            </div>
+            <div class="col-sm-3">
+                <%= form.label :not_current, style: "display: block" %>
+                <%= form.date_field :not_current,  class: "form-control" %>
+            </div>
+        </div>    
+        <br>
+        <div class="row g-3">
+            <div class="col-sm-4">
+                <%= form.label :reference, style: "display: block" %>
+                <%= form.text_field :reference,  class: "form-control" %>
+            </div>
+            <div class="col-sm-4">
+                <%= form.label :process_document,  style: "display: block" %>
+                <%= form.radio_button :process_document, 0 %>
+                <label for="sgsst">SG-SST</label>
+            </div>
+            <div class="col-sm-3">
+                <%= form.label :type_document,  style: "display: block" %>
+                <%= form.radio_button :type_document, 0 %>
+                <label for="acta">Acta</label>
+                <%= form.radio_button :type_document, 1 %>
+                <label for="informe">Informe</label>
+                <%= form.radio_button :type_document, 2 %>
+                <label for="encuesta">Encuesta</label>
+            </div>
+        </div>    
+        <br>
+        <div class="row g-3">
+            <div class="col-sm-4">
+                <%= form.label :type_soport,  style: "display: block" %>
+                <%= form.radio_button :type_soport, 0 %>
+                <label for="fisico">Físico</label>
+                <%= form.radio_button :type_soport, 1 %>
+                <label for="electronico">Electrónico</label>
+                <%= form.radio_button :type_soport, 2 %>
+                <label for="hibrido">Híbrido</label>
+            </div>
+            <div class="col-sm-4">
+                <%= form.label :name_dependence,  style: "display: block" %>
+                <%= form.radio_button :name_dependence, 0 %>
+                <label for="sgsstd">SG-SST</label>
+            </div>
+            <div class="col-sm-3">
+                <%= form.label :dependence_admin,  style: "display: block" %>
+                <%= form.radio_button :dependence_admin, 0 %>
+                <label for="sgssta">SG-SST</label>
+            </div>
+        </div>    
+        <br>
         <div class="form-group">    
             <%= form.label :name, style: "display: block" %>
             <%= form.text_field :name,  class: "form-control" %>
@@ -49,10 +109,6 @@
             <%= form.text_field :description,  class: "form-control" %>
         </div>
 
-        <div class="form-group">    
-            <%= form.label :reference, style: "display: block" %>
-            <%= form.text_field :reference,  class: "form-control" %>
-        </div>
 
         <div class="form-group">    
             <%= form.label :filing, style: "display: block" %>
@@ -64,6 +120,15 @@
             <%= form.collection_select :standar_detail_item_id, StandarDetailItem.all.order(id: :asc), :id, :description, { prompt: '--Seleccionar--' },
             { class: 'form-control input-sm select2' } %>
         </div> 
+        <div class="form-group">    
+            <%= form.label :observations, style: "display: block" %>
+            <%= form.text_field :observations,  class: "form-control" %>
+        </div>
+        <div class="form-group">    
+            <%= form.label :control_changes, style: "display: block" %>
+            <%= form.text_field :control_changes,  class: "form-control" %>
+        </div>
+        <br>    
         <br>    
         <div class="form-group">
                <h5>Ingresar las personas que firman el formato</h5>

@@ -4,7 +4,7 @@ class DescriptionJobsController < ApplicationController
             @entity = Entity.find(params[:entity_id])
             @description_jobs = DescriptionJob.where("entity_id = ?", params[:entity_id])
         else    
-            if  Current.user && Current.user.level == 1
+            if  Current.user && Current.user.level > 0 && Current.user.level < 3
                 @entities = Entity.all
                 @description_jobs = DescriptionJob.all
             else
@@ -36,7 +36,7 @@ class DescriptionJobsController < ApplicationController
     def show
         @description_job = DescriptionJob.find(params[:id])
         @entity = Entity.find(@description_job.entity_id) if @description_job.present?
-        @template = Template.find(109)
+        @template = Template.where("format_number = ? and document_vigente = ?",36,1).last  
         @ela = User.find(@description_job.user_elaboro) if  @description_job.user_elaboro.present? && @description_job.user_elaboro > 0
         @rev = User.find(@description_job.user_reviso) if  @description_job.user_reviso.present? && @description_job.user_reviso > 0
         @apr = User.find(@description_job.user_aprobo) if  @description_job.user_aprobo.present? && @description_job.user_aprobo > 0
@@ -93,7 +93,7 @@ class DescriptionJobsController < ApplicationController
     def pdf
         @description_job = DescriptionJob.find(params[:id])
         @entity = Entity.find(@description_job.entity_id) if @description_job.present?
-        @template = Template.find(109)
+        @template = Template.where("format_number = ? and document_vigente = ?",36,1).last  
         @ela = User.find(@description_job.user_elaboro) if  @description_job.user_elaboro.present? && @description_job.user_elaboro > 0
         @rev = User.find(@description_job.user_reviso) if  @description_job.user_reviso.present? && @description_job.user_reviso > 0
         @apr = User.find(@description_job.user_aprobo) if  @description_job.user_aprobo.present? && @description_job.user_aprobo > 0

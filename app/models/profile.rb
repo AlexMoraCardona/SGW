@@ -527,7 +527,7 @@ class Profile < ApplicationRecord
         end 
     end 
     
-    def self.labeldiscapacidad(dato)
+    def self.labeldiscapacitadas(dato)
         if dato == 0 ; 'Si'
         elsif  dato == 1 ; 'No'
         end 
@@ -543,7 +543,7 @@ class Profile < ApplicationRecord
         return  @datos 
     end    
 
-    def self.labeltipodiscapacidad(dato)
+    def self.labeltipodiscapacitadas(dato)
         if dato == 0 ; 'Visual'
         elsif  dato == 1 ; 'Auditiva'
         elsif  dato == 2 ; 'Física'

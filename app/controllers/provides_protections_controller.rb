@@ -50,7 +50,7 @@ class ProvidesProtectionsController < ApplicationController
 
     def new
       @provides_protection = ProvidesProtection.new  
-      @template = Template.find(160)
+      @template = Template.where("format_number = ? and document_vigente = ?",53,1).last  
     end    
 
     def create

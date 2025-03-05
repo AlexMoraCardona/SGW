@@ -17,7 +17,7 @@ class SafetyInspectionsController < ApplicationController
     end  
     
     def show 
-        @template = Template.find(220)
+        @template = Template.where("format_number = ? and document_vigente = ?",73,1).last  
         @safety_inspection = SafetyInspection.find(params[:id])
         @entity = Entity.find(@safety_inspection.entity_id) if @safety_inspection.present?
         @user_responsable = User.find(@safety_inspection.user_responsible)
@@ -34,7 +34,7 @@ class SafetyInspectionsController < ApplicationController
     def ver_inspeccion_pdf
         @safety_inspection = SafetyInspection.find(params[:id])
         @safety_inspection_items = SafetyInspectionItem.where("safety_inspection_id = ?", @safety_inspection.id) if @safety_inspection.present?
-        @template = Template.find(220)
+        @template = Template.where("format_number = ? and document_vigente = ?",73,1).last  
         @entity = Entity.find(@safety_inspection.entity_id) if @safety_inspection.present?
         @user_responsable = User.find(@safety_inspection.user_responsible) if @safety_inspection.present?
 
@@ -55,7 +55,7 @@ class SafetyInspectionsController < ApplicationController
 
     def new
       @safety_inspection =  SafetyInspection.new
-      @template = Template.find(220)
+      @template = Template.where("format_number = ? and document_vigente = ?",73,1).last  
     end    
 
     def create

@@ -1,0 +1,35 @@
+<div class="container col-3 card p-5">
+    <br>
+    <%= form_with model: @assistant do |form| %>
+        <% @assistant.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>
+
+        <table>
+            <tr>
+                <td>
+                    <h4>Nombre:</h4> 
+                    <%= @assistant.name %>
+                </td>
+            </tr>
+            <tr>
+                <td>  
+                    <h4>Firma autorizada</h4> 
+                    <%= form.radio_button :firm_assistant, 0 %>
+                    <label for="no">No</label>&nbsp;&nbsp; 
+                    <%= form.radio_button :firm_assistant, 1 %>
+                    <label for="si">Si</label>&nbsp;&nbsp;   
+                </td>
+            </tr>
+        </table>
+        <%= form.hidden_field :date_firm, :value => Time.now, class: "form-control" %>
+
+
+        <br>    
+        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, meeting_minutes_path %>
+    <% end %>
+</div>        
+<br>

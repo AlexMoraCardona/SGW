@@ -15,6 +15,9 @@ class AssistantsController < ApplicationController
 
     def create
         @assistant = Assistant.new(assistant_params)
+        @assistant.name = @assistant.user.name
+        @assistant.post = @assistant.user.activity
+
         if @assistant.save then
             redirect_back fallback_location: root_path, notice: t('.created') 
         else
@@ -29,7 +32,7 @@ class AssistantsController < ApplicationController
     def update
         @assistant = Assistant.find(params[:id])
         if @assistant.update(assistant_params)
-            redirect_back fallback_location: root_path, notice: 'Firma asistente actualizado correctamente'
+            redirect_to meeting_minutes_path, notice: 'Firma asistente actualizado correctamente'
         else
             render :edit, assistants: :unprocessable_entity
         end         
@@ -41,10 +44,15 @@ class AssistantsController < ApplicationController
         redirect_back fallback_location: root_path, notice: 'Firma asistente borrada correctamente', assistant: :see_other
     end    
 
+    def firmar_assistent
+        @assistant = Assistant.find(params[:id])
+    end    
+
+
     private  
        
     def assistant_params
-        params.require(:assistant).permit(:name, :post, :meeting_minute_id)
+        params.require(:assistant).permit(:name, :post, :meeting_minute_id, :user_id, :firm_assistant, :date_firm)
     end
 end    
 

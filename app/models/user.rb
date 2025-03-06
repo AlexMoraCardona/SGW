@@ -39,6 +39,15 @@ class User < ApplicationRecord
         elsif  dato == 1 ; 'ACTIVO'
         end 
     end 
+
+    def self.label_clasification_post(dato)
+        if dato == 0 ; 'Administrativa'
+        elsif  dato == 1 ; 'Operativa'
+        end 
+    end 
+
+
+    
     
     def label_level(dato)
         if dato == 0 ; 'Sin nivel'

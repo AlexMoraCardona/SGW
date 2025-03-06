@@ -14,9 +14,11 @@ class MeetingMinutesController < ApplicationController
     
     def show
         @meeting_minute = MeetingMinute.find(params[:id])
-        @meeting_attendees = MeetingAttendee.where("meeting_minute_id = ?",@meeting_minute.id)
-        @meeting_commitments = MeetingCommitment.where("meeting_minute_id = ?",@meeting_minute.id)
-        @assistants = Assistant.where("meeting_minute_id = ?",@meeting_minute.id)
+        @entity = Entity.find(@meeting_minute.entity_id) if @meeting_minute.present?
+        @meeting_attendees = MeetingAttendee.where("meeting_minute_id = ?",@meeting_minute.id) if @meeting_minute.present?
+        @meeting_commitments = MeetingCommitment.where("meeting_minute_id = ?",@meeting_minute.id) if @meeting_minute.present?
+        @assistants = Assistant.where("meeting_minute_id = ?",@meeting_minute.id) if @meeting_minute.present?
+        @template = Template.where("format_number = ? and document_vigente = ?",79,1).last  
 
         respond_to do |format|
             format.html
@@ -33,6 +35,18 @@ class MeetingMinutesController < ApplicationController
 
     def new
         @meeting_minute = MeetingMinute.new  
+        @template = Template.where("format_number = ? and document_vigente = ?",79,1).last  
+        @entity = Entity.find(Current.user.entity) if Current.present?
+        @evaluation = Evaluation.where("entity_id = ?",@entity.id).last if @entity.present?
+        @meeting_minutes = MeetingMinute.where("entity_id = ?",@entity) if @entity.present?
+        if @meeting_minutes.present?
+            @numero_acta = @meeting_minutes.count + 1
+        else
+            @numero_acta = 1
+        end 
+        
+        @meeting_minute.order_day = "<strong>Orden del Día:</strong> <br>1 Verificación de Quórum.<br/> <br>2 Lectura del Acta Anterior<br/> <br>3 Revisión de Compromisos Anteriores<br/> <br>4 Temas para esta Reunión<br/>"
+
     end    
 
     def crear_asistente
@@ -62,9 +76,11 @@ class MeetingMinutesController < ApplicationController
  
     def edit
         @meeting_minute = MeetingMinute.find(params[:id])
-        @meeting_attendees = MeetingAttendee.where("meeting_minute_id = ?",@meeting_minute.id)
-        @meeting_commitments = MeetingCommitment.where("meeting_minute_id = ?",@meeting_minute.id)
-        @assistants = Assistant.where("meeting_minute_id = ?",@meeting_minute.id)
+        @entity = Entity.find(@meeting_minute.entity_id) if @meeting_minute.present?
+        @meeting_attendees = MeetingAttendee.where("meeting_minute_id = ?",@meeting_minute.id) if @meeting_minute.present?
+        @meeting_commitments = MeetingCommitment.where("meeting_minute_id = ?",@meeting_minute.id) if @meeting_minute.present?
+        @assistants = Assistant.where("meeting_minute_id = ?",@meeting_minute.id) if @meeting_minute.present?
+        @template = Template.where("format_number = ? and document_vigente = ?",79,1).last  
 
     end
     

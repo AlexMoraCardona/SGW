@@ -7,23 +7,18 @@
             </div>
         <% end %>    
 
-        <div class="form-group">    
-            <%= form.label :name, style: "display: block" %>
-            <%= form.text_field :name,  class: "form-control" %>
-        </div>
-
-        <div class="form-group">    
-            <%= form.label :post, style: "display: block" %>
-            <%= form.text_field :post,  class: "form-control" %>
-        </div>
-
-        <%= form.hidden_field :meeting_minute_id, :value => params[:id].to_s, class: "form-control" %>
-
-        <br>    
+        <br>
+        <% if Current.user.level > 0 && Current.user.level < 4 %>
+            <div class="form-group" >    
+                <strong>Seleccionar usuario para firma del acta: </strong>
+                <%= form.collection_select :user_id, User.all.order(id: :asc), :id,  :name, style: "width=50px" %>
+            </div>  
+            <%= form.hidden_field :meeting_minute_id, :value => params[:id].to_s, class: "form-control" %>
+            <br>    
+        <% end %>        
         <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
     <% end %>
     <hr>
-    <br>
     <br>
     <div class="d-flex">
         <div class="container">
@@ -38,6 +33,8 @@
                 <th scope="col">Cargo</th>
                 <th scope="col">Editar</th>
                 <th scope="col">Eliminar</th>
+                <th scope="col">Firmar Acta</th>
+
             </tr>
         </thead>
         <tbody>
@@ -45,8 +42,15 @@
                 <tr>
                     <td><%= firma.name %></td>
                     <td><%= firma.post %></td>
-                    <td><%= link_to t('common.edit'), edit_assistant_path(firma), class: 'btn btn-xs btn-primary'  %></td>
-                    <td><%= link_to t('common.delete'), firma, data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar la firma?' }, class: 'btn btn-xs btn-danger' %></td>
+                    <td><%= link_to t('common.edit'), edit_assistant_path(firma), class: 'btn btn-sm btn-primary' if Current.user.level > 0 &&  Current.user.level < 3 %></td>
+                    <td><%= link_to t('common.delete'), firma, data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar la firma?' }, class: 'btn btn-sm btn-danger'  if Current.user.level > 0 &&  Current.user.level < 3 %></td>
+                    <td>
+                        <% if firma.firm_assistant == 0 %>
+                            <%= link_to t('common.firmar_acta'), firmar_assistent_path(firma.id), class: 'btn btn-sm btn-primary' if Current.user.id == firma.user_id %>
+                        <% else %>
+                            <%= firma.date_firm %>
+                        <% end %>
+                    </td>
                 </tr>
             <% end %>     
         </tbody>      

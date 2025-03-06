@@ -17,6 +17,10 @@ class MeetingAttendeesController < ApplicationController
 
     def create
         @meeting_attendee = MeetingAttendee.new(meeting_attendee_params)
+        @meeting_attendee.post = @meeting_attendee.user.activity
+        @meeting_attendee.process_area = User.label_clasification_post(@meeting_attendee.user.clasification_post) if @meeting_attendee.present?
+        @meeting_attendee.name = @meeting_attendee.user.name
+
         if @meeting_attendee.save then
             redirect_back fallback_location: root_path, notice: t('.created') 
         else
@@ -46,6 +50,6 @@ class MeetingAttendeesController < ApplicationController
 
     private     
     def meeting_attendee_params
-        params.require(:meeting_attendee).permit(:name, :post, :process_area, :meeting_minute_id)
+        params.require(:meeting_attendee).permit(:name, :post, :process_area, :meeting_minute_id, :user_id)
     end 
 end    

@@ -259,8 +259,13 @@ class Calendar < ApplicationRecord
                 end   
             end
 
-
-            @cant_noti = @notificaciones.count if @notificaciones.present?
+            @meeting_commitments = nil
+            @meeting_commitments = MeetingCommitment.where("user_id = ?", Current.user.id)
+            if  @meeting_commitments.present? then
+                @meeting_commitments.each do |meeting_commitment| 
+                    @notificaciones << ["Compromiso", meeting_commitment.meeting_minute.entity.business_name, meeting_commitment.commitment, meeting_commitment.date_commitment, meeting_commitment.id]
+                end   
+            end
         else
             if Current.user.level == 3 then
                 @annual_work_plan = AnnualWorkPlan.find_by("year = ? and entity_id = ?", @year_noti,@entity.id) if @entity.present? 
@@ -332,6 +337,15 @@ class Calendar < ApplicationRecord
                         end    
                     end
                 end
+
+                @meeting_commitments = nil
+                @meeting_commitments = MeetingCommitment.where("user_id = ?", Current.user.id)
+                if  @meeting_commitments.present? then
+                    @meeting_commitments.each do |meeting_commitment| 
+                        @notificaciones << ["Compromiso", meeting_commitment.meeting_minute.entity.business_name, meeting_commitment.commitment, meeting_commitment.date_commitment, meeting_commitment.id]
+                    end   
+                end
+    
             end
 
             @activity_users = nil
@@ -348,6 +362,7 @@ class Calendar < ApplicationRecord
             end
 
         end 
+        @cant_noti = @notificaciones.count if @notificaciones.present?
         return @notificaciones
 
     end    

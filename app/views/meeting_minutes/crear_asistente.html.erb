@@ -1,30 +1,18 @@
 <div class="container col-11 card p-5">
-    <br>
+    <br> 
     <%= form_with model: @meeting_attendee do |form| %>
         <% @meeting_attendee.errors.full_messages.each do |error| %>
             <div class="alert alert-danger" role="alert">
                 <%= error%> <%= alert %>
             </div>
-        <% end %>    
-
-        <div class="form-group">    
-            <%= form.label :name, style: "display: block" %>
-            <%= form.text_field :name,  class: "form-control" %>
-        </div>
-
-        <div class="form-group">    
-            <%= form.label :post, style: "display: block" %>
-            <%= form.text_field :post,  class: "form-control" %>
-        </div>
-
-        <div class="form-group">    
-            <%= form.label :process_area, style: "display: block" %>
-            <%= form.text_field :process_area,  class: "form-control" %>
-        </div>
-
-         
+        <% end %>  
+        <br>
+        <div class="form-group" >    
+                <%= form.label :user_id,  style: "display: block" %>
+                <%= form.collection_select :user_id, User.all.order(id: :asc), :id,  :name, style: "width=50px" %>
+        </div>  
+        <br>
         <%= form.hidden_field :meeting_minute_id, :value => params[:id].to_s, class: "form-control" %>
-
         <br>    
         <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
     <% end %>

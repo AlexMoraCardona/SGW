@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_03_04_185302) do
+ActiveRecord::Schema[7.0].define(version: 2025_03_05_163133) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -206,7 +206,11 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_04_185302) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "meeting_minute_id", null: false
+    t.bigint "user_id"
+    t.integer "firm_assistant", default: 0
+    t.date "date_firm"
     t.index ["meeting_minute_id"], name: "index_assistants_on_meeting_minute_id"
+    t.index ["user_id"], name: "index_assistants_on_user_id"
   end
 
   create_table "audit_report_items", force: :cascade do |t|
@@ -1399,7 +1403,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_04_185302) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "meeting_minute_id", null: false
+    t.bigint "user_id"
     t.index ["meeting_minute_id"], name: "index_meeting_attendees_on_meeting_minute_id"
+    t.index ["user_id"], name: "index_meeting_attendees_on_user_id"
   end
 
   create_table "meeting_commitments", force: :cascade do |t|
@@ -1411,7 +1417,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_04_185302) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "meeting_minute_id", null: false
+    t.bigint "user_id"
     t.index ["meeting_minute_id"], name: "index_meeting_commitments_on_meeting_minute_id"
+    t.index ["user_id"], name: "index_meeting_commitments_on_user_id"
   end
 
   create_table "meeting_minutes", force: :cascade do |t|
@@ -2077,6 +2085,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_04_185302) do
   add_foreign_key "annual_work_plan_items", "annual_work_plans"
   add_foreign_key "annual_work_plans", "entities"
   add_foreign_key "assistants", "meeting_minutes"
+  add_foreign_key "assistants", "users"
   add_foreign_key "audit_report_items", "audit_reports"
   add_foreign_key "audit_reports", "entities"
   add_foreign_key "brigadista_plans", "emergency_plans"
@@ -2145,7 +2154,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_04_185302) do
   add_foreign_key "matrix_unsafe_items", "unsafe_conditions"
   add_foreign_key "matrix_unsafes", "entities"
   add_foreign_key "meeting_attendees", "meeting_minutes"
+  add_foreign_key "meeting_attendees", "users"
   add_foreign_key "meeting_commitments", "meeting_minutes"
+  add_foreign_key "meeting_commitments", "users"
   add_foreign_key "meeting_minutes", "entities"
   add_foreign_key "meeting_minutes", "evaluations"
   add_foreign_key "meeting_minutes", "users"

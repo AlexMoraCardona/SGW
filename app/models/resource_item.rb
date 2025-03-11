@@ -1,4 +1,6 @@
 class ResourceItem < ApplicationRecord
+    belongs_to :user
+
     def label(dato)
         if dato == 0 ; 'NO'
         elsif  dato == 1 ; 'SI'

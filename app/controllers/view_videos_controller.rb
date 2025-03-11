@@ -1,15 +1,31 @@
 class ViewVideosController < ApplicationController
     def index
-        if  Current.user && (Current.user.level == 1 || Current.user.level == 2)
+        if  Current.user && (Current.user.level == 1 || Current.user.level == 2 || Current.user.level == 3)
             #@view_videos = ViewVideo.all
             @q = ViewVideo.ransack(params[:q])
             @pagy, @view_videos = pagy(@q.result(user_id: :desc), items: 3)
+
+
+            @template = Template.where("format_number = ? and document_vigente = ?",80,1).last  
+            @entity = Entity.find(Current.user.entity) if Current.user.present?
+            respond_to do |format|
+                format.html
+                format.pdf {render  pdf: 'Vista Videos',
+                    margin: {top: 10, bottom: 10, left: 10, right: 10 },
+                    disable_javascript: true,
+                    page_size: 'letter',
+                    footer: {
+                        right: 'Página: [page] de [topage]'
+                       }                
+                           } 
+            end            
 
          else
              redirect_to new_session_path, alert: t('common.not_logged_in')     
              session.delete(:user_id) 
          end           
-    end    
+    end 
+    
 
     def new
       @view_video = ViewVideo.new  
@@ -65,7 +81,8 @@ class ViewVideosController < ApplicationController
         else
             render :presentations/listadopresentaciones, status: :unprocessable_entity
         end    
-    end    
+    end 
+    
 
     private
 

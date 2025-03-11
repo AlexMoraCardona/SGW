@@ -22,7 +22,6 @@ class AdminExtentDangersController < ApplicationController
     
     def create
         @admin_extent_danger = AdminExtentDanger.new(admin_extent_danger_params)
-
         if @admin_extent_danger.save then
             crear_detalle(@admin_extent_danger)
             redirect_to edit_form_prevention_path(@admin_extent_danger.id)
@@ -110,8 +109,10 @@ class AdminExtentDangersController < ApplicationController
 
     def admin_extent_danger_params
         params.require(:admin_extent_danger).permit(:date_creation, :date_vencimiento, :state_extent, :entity_id, 
-        :firm_user, :date_firm_user, :user_id, :post, :type_contract, :received_training, :suffered_accident)
+        :firm_user, :date_firm_user, :user_id, :post, :type_contract, :received_training, :suffered_accident, 
+        :epp, :epp_cuales, :area, :equipment_operates, :control_proposal, :cual_suffered_accident)
     end 
 
 end  
 
+    

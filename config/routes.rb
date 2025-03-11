@@ -170,6 +170,7 @@ Rails.application.routes.draw do
   get '/survey_profiles/informe_estudio_socio/:id', to: 'survey_profiles#informe_estudio_socio', as: 'informe_estudio_socio'
   get '/templates/matriz_documental/:id', to: 'templates#matriz_documental', as: 'matriz_documental'
   get '/assistants/firmar_assistent/:id', to: 'assistants#firmar_assistent', as: 'firmar_assistent'
+  get '/templates/ver_documental/:id', to: 'templates#ver_documental', as: 'ver_documental'
 
   resources :admin_extent_dangers do
     collection do

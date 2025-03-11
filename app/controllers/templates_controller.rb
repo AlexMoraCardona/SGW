@@ -65,6 +65,39 @@ class TemplatesController < ApplicationController
             end  
             i += 1
         end  
+    end  
+    
+    def ver_documental
+        @template = Template.where("format_number = ? and document_vigente = ?",78,1).last  
+        @entity = Entity.find(params[:id])
+        @consultas = []
+        i = 1
+        @valor = 0
+        while i < 100
+            l = 1
+            while l < 5
+                consulta = Template.where("format_number = ? and version = ?",i,l).last
+                if consulta.present?
+                    @valor += 1
+                    @consultas.push([Template.label_proceso(consulta.process_document), consulta.name, Template.label_tipodocumento(consulta.type_document), consulta.reference, Template.label_tiposoporte(consulta.type_soport), consulta.date, consulta.version, Template.label_document_vigente(consulta.document_vigente), consulta.observations, Template.label_dependencia_admin(consulta.dependence_admin), consulta.control_changes]) 
+                end    
+                l += 1
+            end  
+            i += 1
+        end  
+
+        respond_to do |format| 
+            format.html
+            format.pdf {render  pdf: 'ver_documental',
+                margin: {top: 10, bottom: 10, left: 10, right: 10 },
+                disable_javascript: true,
+                page_size: 'letter',
+                footer: {
+                    right: 'Página: [page] de [topage]'
+                   }                
+                       } 
+        end
+
     end    
 
     private

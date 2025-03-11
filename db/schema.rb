@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_03_05_163133) do
+ActiveRecord::Schema[7.0].define(version: 2025_03_11_022226) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -131,6 +131,12 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_05_163133) do
     t.integer "type_contract", default: 0
     t.integer "received_training", default: 0
     t.integer "suffered_accident", default: 0
+    t.integer "epp", default: 0
+    t.string "epp_cuales"
+    t.string "area"
+    t.string "equipment_operates"
+    t.string "control_proposal"
+    t.string "cual_suffered_accident"
     t.index ["entity_id"], name: "index_admin_extent_dangers_on_entity_id"
     t.index ["user_id"], name: "index_admin_extent_dangers_on_user_id"
   end
@@ -302,7 +308,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_05_163133) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "evidence_id", null: false
+    t.bigint "user_id"
     t.index ["evidence_id"], name: "index_commitments_on_evidence_id"
+    t.index ["user_id"], name: "index_commitments_on_user_id"
   end
 
   create_table "complaints", force: :cascade do |t|
@@ -1717,7 +1725,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_05_163133) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "resource_id"
+    t.bigint "user_id"
     t.index ["resource_id"], name: "index_resource_items_on_resource_id"
+    t.index ["user_id"], name: "index_resource_items_on_user_id"
   end
 
   create_table "resources", force: :cascade do |t|
@@ -2093,6 +2103,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_05_163133) do
   add_foreign_key "calendars", "adm_calendars"
   add_foreign_key "clasification_danger_details", "clasification_dangers"
   add_foreign_key "commitments", "evidences"
+  add_foreign_key "commitments", "users"
   add_foreign_key "complaints", "entities"
   add_foreign_key "danger_detail_risks", "clasification_danger_details"
   add_foreign_key "danger_preventions", "clasification_danger_details"
@@ -2177,6 +2188,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_05_163133) do
   add_foreign_key "res_ext_plans", "emergency_plans"
   add_foreign_key "res_int_plans", "emergency_plans"
   add_foreign_key "resource_items", "resources"
+  add_foreign_key "resource_items", "users"
   add_foreign_key "resources", "entities"
   add_foreign_key "safety_inspection_items", "safety_inspections"
   add_foreign_key "safety_inspection_items", "situation_conditions"

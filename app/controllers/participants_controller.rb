@@ -13,10 +13,11 @@ class ParticipantsController < ApplicationController
       @participant = Participant.new   
     end    
 
-    def create
+    def create 
         @participant = Participant.new(participant_params)
 
         if @participant.save then
+            Firm.automatico_firma(@participant)
             redirect_to crear_participant_evaluation_rule_detail_path(@participant.evidence_id), notice: t('.created') 
         else
             render :edit, status: :unprocessable_entity

@@ -7,46 +7,50 @@
             </div>
         <% end %>    
 
-        <div class="form-group"> 
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar el proceso."><%= t('.process') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :process,  class: "form-control" %>
+        </br>
+        <div class="col-4">
+            <%= form.label :process,  style: "display: block" %>
+            <%= form.select(:process, [['Sin seleccionar', 'Sin seleccionar'], ['SG-SST', 'SG-SST']]) %>
         </div>
-
+        </br>
         <div class="form-group">    
             <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la actividad."><%= t('.activity') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
             <%= form.text_field :activity,  class: "form-control" %>
         </div>
-
+        </br>
         <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar los recursos."><%= t('.responsible') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :responsible,  class: "form-control" %>
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del usuario responsable.">Usuario responsable:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
         </div>
-
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar el valor presupuestado IVA incluido Año."><%= t('.value') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.number_field :value,  class: "form-control" %>
+        </br>
+        <div class="row">        
+            <div class="col-5">    
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar el valor presupuestado IVA incluido Año."><%= t('.value') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+                <%= form.number_field :value,  class: "form-control" %>
+            </div>
         </div>
-
-        <div class="form-group">    
-            <%= form.label :executed, style: "display: block" %>
-            <%= form.radio_button :executed, 0 %>
-            <label for="no_cumple">NO</label>&nbsp;&nbsp; 
-            <%= form.radio_button :executed, 1 %>
-            <label for="si_cumple">SI</label>&nbsp;&nbsp;   
+        </br>
+        <div class="row">        
+            <div class="col-4">    
+                <%= form.label :executed, style: "display: block" %>
+                <%= form.radio_button :executed, 0 %>
+                <label for="no_cumple">NO</label>&nbsp;&nbsp; 
+                <%= form.radio_button :executed, 1 %>
+                <label for="si_cumple">SI</label>&nbsp;&nbsp;   
+            </div>
+            <div class="col-4">    
+                <%= form.label :approved, style: "display: block" %>
+                <%= form.radio_button :approved, 0 %>
+                <label for="no_cumple">NO</label>&nbsp;&nbsp; 
+                <%= form.radio_button :approved, 1 %>
+                <label for="si_cumple">SI</label>&nbsp;&nbsp;   
+            </div>
+            <div class="col-4">    
+              <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar la fecha en que se aprobó."><%= t('.date_approved') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+              <%= form.date_field :date_approved,  class: "form-control" %>
+            </div>
         </div>
-
-        <div class="form-group">    
-            <%= form.label :approved, style: "display: block" %>
-            <%= form.radio_button :approved, 0 %>
-            <label for="no_cumple">NO</label>&nbsp;&nbsp; 
-            <%= form.radio_button :approved, 1 %>
-            <label for="si_cumple">SI</label>&nbsp;&nbsp;   
-        </div>
-
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar la fecha en que se aprobó."><%= t('.date_approved') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.date_field :date_approved,  class: "form-control" %>
-        </div>
+        </br>
 
         <br>  
         <div class="form-group">   

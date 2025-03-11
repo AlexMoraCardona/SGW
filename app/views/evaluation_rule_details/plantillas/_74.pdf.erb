@@ -33,10 +33,6 @@
 </TR>
 </TABLE>
 <div><br></div>
-<div class="row">
-<div><strong>ASISTENTES:</strong> En la presente acta se anexa el control de asistencia COPASST</div>
-</div>
-<div><br></div>
 <TABLE style="width: 100%;>
 <TR style="border:1px solid black;width: 100%;text-align:center;">
     <TD style="border:1px solid black; width: 30%;text-align:center;background-color: #00aae4">ORDEN DEL DÍA</TD>
@@ -86,7 +82,7 @@
                 <h6><%= commitment.activity %></h6>                
             </td>
             <td style="border:1px solid black; width: 30%;padding: 10px;">
-                <h6><%= commitment.user_responsible %></h6>                
+                <h6><%= commitment.user.name %></h6>                
             </td>
             <td style="border:1px solid black; width: 20%; text-align:center">
                 <h6><%= commitment.date_ejecution %></h6>                
@@ -129,5 +125,110 @@
 </div>
 <div><br></div>
 <div><br></div>
-<%= render 'firmaelabororesponsable' %>
-
+<% if @firms.present? %> 
+    <br>
+    <div class="row"><br></div>
+    <table>
+            <% cont = 0 %>
+            <% @firms.each do |firm| %>
+                <% cont = cont + 1 %>
+                <% if cont == 1 || cont == 3 || cont == 5 || cont ==7 || cont == 9 || cont == 11 || cont == 13  %>
+                    <tr> 
+                        <td style="border:0px solid black; width: 33%; text-align:center">
+                            <div class="row  text-center"> 
+                                <div class="col-11">
+                                    <div>&nbsp;</div>
+                                        <% if firm.authorize_firm == 1 %>
+                                            <% if firm.user.firm.attached? %>
+                                                <% if firm.user.firm.image? %> 
+                                                    <%= image_tag firm.user.firm, class: "firma" %>
+                                                    <p align="center">________________________________</p>
+                                                <% end %>
+                                            <% else %>
+                                                <div>&nbsp;</div>   
+                                                <div>&nbsp;</div>
+                                                <div>&nbsp;</div> 
+                                                <div>
+                                                    <p align="center">________________________________</p>
+                                                </div>    
+                                            <% end %>
+                                        <% else %>
+                                            <div>&nbsp;</div> 
+                                            <div>&nbsp;</div>
+                                            <div>&nbsp;</div>   
+                                            <div>
+                                                <p align="center">________________________________</p>
+                                            </div>    
+                                        <% end %>     
+                                    </div>    
+                                    <div class="col-11">
+                                        <div class="row">
+                                            <h6><strong><%= firm.user.name %></strong></h6>
+                                        </div>
+                                    </div>
+                                    <div class="col-11">
+                                        <div class="row">
+                                            <h6><%= firm.post %></h6>
+                                        </div>
+                                    </div>
+                                    <div class="col-11">
+                                        <div class="row">
+                                            <h6><%= firm.user.document.abbreviation %>: <%= Firm.miles(firm.user.nro_document) %></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                            </td>  
+                    <% else %>    
+                        <td style="border:0px solid black; width: 33%; text-align:center">
+                            <div class="row  text-center"> 
+                                <div class="col-11">
+                                        <div>&nbsp;</div>
+                                        <% if firm.authorize_firm == 1 %>
+                                            <% if firm.user.firm.attached? %>
+                                                <% if firm.user.firm.image? %> 
+                                                    <%= image_tag firm.user.firm, class: "firma" %>
+                                                    <p align="center">________________________________</p>
+                                                <% end %>
+                                            <% else %>    
+                                                <div>&nbsp;</div>
+                                                <div>&nbsp;</div>
+                                                <div>&nbsp;</div>
+                                                <div>
+                                                    <p align="center">________________________________</p>
+                                                </div>    
+                                            <% end %>
+                                        <% else %>
+                                            <div>&nbsp;</div>   
+                                            <div>&nbsp;</div>
+                                            <div>&nbsp;</div> 
+                                            <div>
+                                                <p align="center">________________________________</p>
+                                            </div>    
+                                        <% end %>     
+                                </div>    
+                                <div class="col-11">
+                                    <div class="row">
+                                        <h6><strong><%= firm.user.name %></strong></h6>
+                                    </div>
+                                </div>
+                                <div class="col-11">
+                                    <div class="row">
+                                        <h6><%= firm.post %></h6>
+                                    </div>
+                                </div>
+                                <div class="col-11">
+                                    <div class="row">
+                                        <h6><%= firm.user.document.abbreviation %>: <%= Firm.miles(firm.user.nro_document) %></h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                        </td>      
+                        </tr>
+                    <% end %>
+    
+            <% end %>
+        </table>
+    </div>
+<% end %>

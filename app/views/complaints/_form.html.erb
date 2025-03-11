@@ -8,14 +8,13 @@
         <% end %>   
         
         <div class="form-group">    
-            <button type="button" class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el colaborador que realiza la queja:">Colaborador: <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.collection_select :user_complaint, User.all.order(id: :asc), :id,  :name, style: "width=50px" %>
+            <p><strong>Colaborador: </p></strong><%=Current.user.name  %>
         </div>
 
         <br>
         <div class="form-group">    
-            <button type="button" class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione la persona contra quien se interpone la queja:">Persona contra quien se interpone la queja: <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.collection_select :user_interpose_complaint, User.all.order(id: :asc), :id,  :name, style: "width=50px" %>
+            <button type="button" class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione la persona contra quien se interpone la queja:"><strong>Persona contra quien se interpone la queja: </strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+            <%= form.collection_select :user_interpose_complaint, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
         </div>
         <br>
         <div class="form-group">    
@@ -51,6 +50,7 @@
         </div> 
         <hr>
         <%= form.hidden_field :date_complaint, :value => Time.now, class: "form-control" %>
+        <%= form.hidden_field :user_complaint, :value => Current.user.id, class: "form-control" %>
 
         <br>    
         <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>

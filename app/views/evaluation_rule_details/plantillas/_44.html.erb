@@ -140,104 +140,43 @@
     </div>
     <div><br></div>
     <div>
-        <strong>Relación entre condiciones de riesgo y antecedentes genéticos </strong>
+        <strong>Relación entre peligro y posible riesgo / consecuencia </strong>
     </div>
     <div><br></div>
-    <table> 
+    <table style="width: 100%;"> 
         <tr style="background-color: #00aae4;border:1px solid black;text-align:center%;">
             <td style="border:1px solid black;text-align:center;width: 50%;">
-                Condiciones de riesgo
+                Peligro
             </td>
             <td style="border:1px solid black;text-align:center;width: 50%;">
-                Antecedentes genéticos
+                Riesgo / Consecuencia
             </td>
         </tr>
     </table> 
-    <table> 
-        <tr style="background-color: #00aae4;border:1px solid black;text-align:center%;">
-            <td style="border:1px solid black;text-align:center;width: 100%;">
-                Físicos
-            </td>
-        </tr>
-    </table> 
-    <table> 
-        <tr style="1px solid black;text-align:center%;">
-            <td style="border:1px solid black;text-align:center;width: 50%;">
-                * Ruido </br> * Iluminación </br> * Ventilación </br> * Temperatura alta </br> * Temperatura baja </br>
-            </td>
-            <td style="border:1px solid black;text-align:center;width: 50%;">
-                * Trastornos de la visión </br> * Migrañas </br> * Enfermedades infecciosas </br>
-            </td>
-        </tr>
-    </table> 
-    <table> 
-        <tr style="background-color: #00aae4;border:1px solid black;text-align:center%;">
-            <td style="border:1px solid black;text-align:center;width: 100%;">
-                Químicos
-            </td>
-        </tr>
-    </table> 
-    <table> 
-        <tr style="1px solid black;text-align:center%;">
-            <td style="border:1px solid black;text-align:center;width: 50%;">
-                Sustancias:  </br> * Inhalatorias </br> * Dérmicos </br> * Cáusticos </br> * Formaldehidos </br>
-            </td>
-            <td style="border:1px solid black;text-align:center;width: 50%;">
-                * Asmas </br> * Enfermedades mentales </br> * Epilepsias </br> * Dermatitis </br>
-            </td>
-        </tr>
-    </table> 
-    <table> 
-        <tr style="background-color: #00aae4;border:1px solid black;text-align:center%;">
-            <td style="border:1px solid black;text-align:center;width: 100%;">
-                Biológicos
-            </td>
-        </tr>
-    </table> 
-    <table> 
-        <tr style="1px solid black;text-align:center%;">
-            <td style="border:1px solid black;text-align:center;width: 50%;">
-                * Hongos </br> * Protozoarios </br> * Bacterias </br> * Virus </br>
-            </td>
-            <td style="border:1px solid black;text-align:center;width: 50%;">
-                * Diabetes </br> * Gota </br> * Artritis reumatoidea </br> 
-            </td>
-        </tr>
-    </table> 
-    <table> 
-        <tr style="background-color: #00aae4;border:1px solid black;text-align:center%;">
-            <td style="border:1px solid black;text-align:center;width: 100%;">
-                Carga de trabajo física y mental
-            </td>
-        </tr>
-    </table> 
-    <table> 
-        <tr style="1px solid black;text-align:center%;">
-            <td style="border:1px solid black;text-align:center;width: 50%;">
-                Organización del trabajo:  </br> * Participación </br> * Estabilidad </br> * Relaciones interpersonales </br> 
-            </td>
-            <td style="border:1px solid black;text-align:center;width: 50%;">
-                * Enfermedades mentales </br> * Enfermedades autoinmunes </br> * Hipertensión arterial </br> * Estrés </br> * Artritis </br>
-            </td>
-        </tr>
-    </table> 
-    <table> 
-        <tr style="background-color: #00aae4;border:1px solid black;text-align:center%;">
-            <td style="border:1px solid black;text-align:center;width: 100%;">
-                Seguridad
-            </td>
-        </tr>
-    </table> 
-    <table> 
-        <tr style="1px solid black;text-align:center%;">
-            <td style="border:1px solid black;text-align:center;width: 50%;">
-                * Atentado </br> * Explosión </br> * Terremoto </br>  * Incendio </br>
-            </td>
-            <td style="border:1px solid black;text-align:center;width: 50%;">
-                
-            </td>
-        </tr>
-    </table> 
+    <% @clasification_dangers.each do |clasification_danger| %>
+        <table style="width: 100%;"> 
+            <tr style="background-color: #00aae4;border:1px solid black;text-align:center%;">
+                <td style="border:1px solid black;text-align:center;width: 100%;">
+                    <%= clasification_danger.name %>
+                </td>
+            </tr>
+        </table> 
+        <table style="width: 100%;"> 
+            <% @clasification_danger_details.where("clasification_danger_id = ?",clasification_danger.id).each do |clasification_danger_detail| %>
+                <tr style="1px solid black;text-align:center%;">
+                    <td style="border:1px solid black;text-align:center;width: 50%;">
+                        <%= clasification_danger_detail.name %>
+                    </td>
+                    <td style="border:1px solid black;text-align:center;width: 50%;">
+                        <% @danger_detail_risks.where("clasification_danger_detail_id = ?",clasification_danger_detail.id).each do |danger_detail_risk| %>
+                            <%= danger_detail_risk.name %></br>    
+                        <% end %>
+                    </td>
+                </tr>
+            <% end %>
+        </table>    
+    <% end %>
+    
     <div><br></div>    
     <div>
         <strong>Análisis del comportamiento</strong>

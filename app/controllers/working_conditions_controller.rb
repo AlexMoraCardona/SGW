@@ -5,7 +5,7 @@ class WorkingConditionsController < ApplicationController
             @working_conditions = WorkingCondition.where("entity_id = ?", params[:entity_id])
             @autorealizados = WorkingCondition.where("entity_id = ? and user_id = ?", params[:entity_id], Current.user.id)
         else    
-            if  Current.user && Current.user.level == 1
+            if  Current.user && Current.user.level > 0 && Current.user.level < 4
                 @entities = Entity.all
                 @working_conditions = WorkingCondition.all
             else

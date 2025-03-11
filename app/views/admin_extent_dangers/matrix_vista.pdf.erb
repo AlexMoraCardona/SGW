@@ -9,144 +9,87 @@
 <br>
 <div>
 
-    <table class="table table-hover" style="border:1px solid black"> 
-        <thead>
+<table class="table table-hover" style="border:1px solid black"> 
+<thead>
+    <tr>
+        <td style="background-color: black;">&nbsp;</td>
+        <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
+            <% if @entity.logo.present? then %>
+                <%=  image_tag  @entity.logo, class: "image_peq" %>
+            <% end %>
+        </td> 
+        <td rowspan="4"; colspan="3"; style="text-align:center; padding-bottom: 40px;">
+            <h5>MEDIDAS DE PREVENCIÓN Y CONTROL DE PELIGROS Y RIESGOS POR PARTE DE LOS TRABAJADORES</h5><h6><%= @entity.business_name if @entity.present? %> Nit: <%= @entity.identification_number if @entity.present? %> </h6>
+        </td>
+        <td rowspan="4";  style="text-align:center">
+        </td>
+        <td colspan="1"; style="border:1px solid black">Fecha de Creación:</td>
+
+        <td style="border:1px solid black"><%= @admin_extent_danger.date_creation  if @admin_extent_danger.present? %></td>
+        
+        <td style="background-color: black;">&nbsp;</td>
+    </tr>
+    <tr> 
+        <td style="background-color: black;">&nbsp;</td>
+        <td colspan="1"; style="border:1px solid black">Fecha de Actualización:</td>
+        <td style="border:1px solid black"><%= @admin_extent_danger.date_creation if @admin_extent_danger.present? %></td>
+        <td style="background-color: black;">&nbsp;</td>
+    </tr>
+    <tr> 
+        <td style="background-color: black;">&nbsp;</td>
+        <td colspan="1"; style="border:1px solid black">Versión:</td>
+        <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
+        <td style="background-color: black;">&nbsp;</td>
+    </tr>
+    <tr> 
+        <td style="background-color: black;">&nbsp;</td>
+        <td colspan="1"; style="border:1px solid black">Código:</td>
+        <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
+        <td style="background-color: black;">&nbsp;</td>
+    </tr>
+
+</thead>
+<% if @form_preventions.present? %>
+    <thead>
+        <tr>
+            <th  style="background-color: black;">&nbsp;</th>
+            <th  scope="col" style="border:1px solid black">No.</th>
+            <th  scope="col" style="border:1px solid black">TIPO DE PELIGRO</th>
+            <th  scope="col" style="border:1px solid black">DESCRIPCIÓN DEL PELIGRO</th>
+            <th  scope="col" style="border:1px solid black">POSIBLE RIESGOS/CONSECUENCIAS</th>
+            <th  scope="col" colspan="2"; style="border:1px solid black">SUGERENCIA DE MEDIDAS DE PREVENCIÓN Y CONTROL</th>
+            <th  scope="col" style="border:1px solid black">EXPUESTO</th>
+            <th style="background-color: black;">&nbsp;</th>
+        </tr>
+    </thead> 
+    <tbody>
+        <% @form_preventions.each do |form_prevention| %>
+            <% @cant = @cant + 1 %>
             <tr>
                 <td style="background-color: black;">&nbsp;</td>
-                <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
-                    <% if @entity.logo.present? then %>
-                        <%=  image_tag  @entity.logo, class: "image_peq" %>
-                    <% end %>
-                </td>
-                <td rowspan="4"; colspan="7"; style="text-align:center; padding-bottom: 40px;">
-                    <div class="col-12"><h5>MEDIDAS DE PREVENCIÓN Y CONTROL DE PELIGROS Y RIESGOS POR PARTE DE LOS TRABAJADORES</h5><h6><%= @entity.business_name if @entity.present? %> Nit: <%= @entity.identification_number if @entity.present? %> </h6></div>
-                </td>
-                <td rowspan="4";  style="text-align:center">
-                </td>
-                <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
-
-                <td style="border:1px solid black"><%= @admin_extent_danger.date_creation  if @admin_extent_danger.present? %></td>
-                
-                <td style="background-color: black;">&nbsp;</td>
-            </tr>
-            <tr> 
-                <td style="background-color: black;">&nbsp;</td>
-                <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
-                <td style="border:1px solid black"><%= @admin_extent_danger.date_creation if @admin_extent_danger.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
-            </tr>
-            <tr> 
-                <td style="background-color: black;">&nbsp;</td>
-                <td colspan="2"; style="border:1px solid black">Versión:</td>
-                <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
-            </tr>
-            <tr> 
-                <td style="background-color: black;">&nbsp;</td>
-                <td colspan="2"; style="border:1px solid black">Código:</td>
-                <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
-            </tr>
-
-        </thead>
-        <% if @form_preventions.present? %>
-            <thead>
-                <tr>
-                    <th ROWSPAN=2 style="background-color: black;">&nbsp;</th>
-                    <th ROWSPAN=2 scope="col" style="border:1px solid black">No.</th>
-                    <th ROWSPAN=2 scope="col" style="border:1px solid black">TIPO DE PELIGRO</th>
-                    <th ROWSPAN=2 scope="col" style="border:1px solid black">DESCRIPCIÓN DEL PELIGRO</th>
-                    <th ROWSPAN=2 scope="col" style="border:1px solid black">POSIBLE RIESGOS/CONSECUENCIAS</th>
-                    <th ROWSPAN=2 scope="col" style="border:1px solid black">SUGERENCIA DE MEDIDAS DE PREVENCIÓN Y CONTROL</th>
-                    <th ROWSPAN=2 scope="col" style="border:1px solid black">EXPUESTO</th>
-                    <th COLSPAN=6 scope="col" style="border:1px solid black;text-align:center;">JERARQUÍA DE CONTROLES</th>
-                    <th style="background-color: black;">&nbsp;</th>
-                </tr>
-                <tr>
-                    <th scope="col" style="border:1px solid black;text-align:center;">N/A</th>
-                    <th scope="col" style="border:1px solid black;text-align:center;">ELI</th>
-                    <th scope="col" style="border:1px solid black;text-align:center;">SUS</th>
-                    <th scope="col" style="border:1px solid black;text-align:center;">CI</th>
-                    <th scope="col" style="border:1px solid black;text-align:center;">CA</th>
-                    <th scope="col" style="border:1px solid black;text-align:center;">EPP</th>
-                    <th style="background-color: black;">&nbsp;</th>
-                </tr>
-
-            </thead> 
-            <tbody>
-                <% @form_preventions.each do |form_prevention| %>
-                    <% @cant = @cant + 1 %>
-                    <tr>
-                        <td style="background-color: black;">&nbsp;</td>
-                        <td style="border:1px solid black"><%= @cant %></td>
-                        <td style="border:1px solid black"><%= form_prevention.clasification_danger_detail.clasification_danger.name %></td>
-                        <td style="border:1px solid black"><%= form_prevention.clasification_danger_detail.name %></td>
-                        <td style="border:1px solid black"><%= DangerDetailRisk.label_risk(form_prevention.clasification_danger_detail.id) %></td>
-                        <td style="border:1px solid black"><%= DangerPrevention.label_prevention(form_prevention.clasification_danger_detail.id) %></td>
-                        <% if form_prevention.exposed == 1 %>
-                            <td style="border:1px solid black;text-align:center;">X</td>
-                        <% else %>
-                            <td style="border:1px solid black;text-align:center;"></td>
-                        <% end %>
-                        <% if form_prevention.eli == 0 %>
-                            <td style="border:1px solid black;text-align:center;">X</td>
-                        <% else %>
-                            <td style="border:1px solid black;text-align:center;"></td>
-                        <% end %>
-                        <% if form_prevention.eli == 1 %>
-                            <td style="border:1px solid black;text-align:center;">X</td>
-                        <% else %>
-                            <td style="border:1px solid black;text-align:center;"></td>
-                        <% end %>
-                        <% if form_prevention.eli == 2 %>
-                            <td style="border:1px solid black;text-align:center;">X</td>
-                        <% else %>
-                            <td style="border:1px solid black;text-align:center;"></td>
-                        <% end %>
-                        <% if form_prevention.eli == 3 %>
-                            <td style="border:1px solid black;text-align:center;">X</td>
-                        <% else %>
-                            <td style="border:1px solid black;text-align:center;"></td>
-                        <% end %>
-                        <% if form_prevention.eli == 4 %>
-                            <td style="border:1px solid black;text-align:center;">X</td>
-                        <% else %>
-                            <td style="border:1px solid black;text-align:center;"></td>
-                        <% end %>
-                        <% if form_prevention.eli == 5 %>
-                            <td style="border:1px solid black;text-align:center;">X</td>
-                        <% else %>
-                            <td style="border:1px solid black;text-align:center;"></td>
-                        <% end %> 
-                        <td style="background-color: black;">&nbsp;</td>
-                    </tr>
-                <% end %>           
-            </tbody>      
-        <% end %>     
-    </table>  
-    <div><br></div>
-    <div><br></div>
-
-    <div><u><%= @admin_extent_danger.user.name if @admin_extent_danger.present? %></u></div>
-    <div>Nombre del Usuario encargado de llenar el formulario</div>
-    <div>&nbsp;</div>
-        <% if @admin_extent_danger.firm_user == 1 %>
-            <div>
-                <% if @admin_extent_danger.user.firm.attached? %>
-                    <% if @admin_extent_danger.user.firm.image? %> 
-                        <strong>Firma:</strong>&nbsp;&nbsp;<%= image_tag @admin_extent_danger.user.firm, class: "firma" %>
-                    <% end %>
+                <td style="border:1px solid black"><%= @cant %></td>
+                <td style="border:1px solid black"><%= form_prevention.clasification_danger_detail.clasification_danger.name %></td>
+                <td style="border:1px solid black"><%= form_prevention.clasification_danger_detail.name %></td>
+                <td style="border:1px solid black"><%= DangerDetailRisk.label_risk(form_prevention.clasification_danger_detail.id) %></td>
+                <td colspan="2"; style="border:1px solid black"><%= DangerPrevention.label_prevention(form_prevention.clasification_danger_detail.id) %></td>
+                <% if form_prevention.exposed == 1 %>
+                    <td style="border:1px solid black;text-align:center;"><div style="background-color:#FF0000";>X</div></td>
+                <% else %>
+                    <td style="border:1px solid black;text-align:center;"></td>
                 <% end %>
-            </div>
-            <div>Cargo: <%= @admin_extent_danger.post if @admin_extent_danger.present? %></div>
-        <% else %>    
-            <div>Firma: ________________________________</div>
-            <div>Cargo: <%= @admin_extent_danger.post if @admin_extent_danger.present? %></div>
-        <% end %>     
-    </div>
-    <div><br></div>
-    <div><br></div>
-    <div><br></div>
+                <td style="background-color: black;">&nbsp;</td>
+            </tr>
+        <% end %>           
+    </tbody>      
+<% end %>     
+</table>  
+<div><br></div>
+<div><br></div>
+
+<div><u><%= @admin_extent_danger.user.name if @admin_extent_danger.present? %></u></div>
+<div>Nombre del Usuario encargado de llenar el formulario</div>
+<div>&nbsp;</div>
+<div><br></div>
 
 
 </div>  

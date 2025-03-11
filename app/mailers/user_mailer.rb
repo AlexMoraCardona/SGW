@@ -59,5 +59,17 @@ class UserMailer < ApplicationMailer
     end 
 
   end
+
+  def compromiso_acta
+    @user = params[:user]
+    @fechaacor = params[:fecha]
+    @compromiso = params[:actividad] 
+    
+    if @user.present?
+      @username = @user.name 
+      mail(to: @user.email, subject: "Compromiso acta de reunión")
+    end 
+
+  end
   
 end

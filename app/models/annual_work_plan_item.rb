@@ -3,9 +3,9 @@ class AnnualWorkPlanItem < ApplicationRecord
 
 
     def label_earring(dato)
-        result = 'Planeado'
+        result = 'P'
         if dato == 1 then
-            result = 'Ejecutado'
+            result = 'E'
         end    
         return  result 
     end    

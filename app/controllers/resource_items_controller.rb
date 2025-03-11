@@ -45,7 +45,7 @@ class ResourceItemsController < ApplicationController
 
     def resource_item_params
         params.require(:resource_item).permit(:consecutive, :process, :activity,
-        :responsible, :value, :executed, :approved, :date_approved, :resource_id )
+        :responsible, :value, :executed, :approved, :date_approved, :resource_id, :user_id)
     end  
 
 end  

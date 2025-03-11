@@ -15,8 +15,9 @@ class CommitmentsController < ApplicationController
 
     def create
         @commitment = Commitment.new(commitment_params)
-
+        @user = User.find(@commitment.user_id)
         if @commitment.save then
+            UserMailer.with(user: @user, fecha: @commitment.date_ejecution, actividad: @commitment.activity).compromiso_acta.deliver_later 
             redirect_back fallback_location: root_path, notice: t('.created') 
         else
             render :edit, status: :unprocessable_entity
@@ -45,7 +46,7 @@ class CommitmentsController < ApplicationController
     private
  
     def commitment_params 
-        params.require(:commitment).permit(:activity, :user_responsible, :date_ejecution, :state_commitment, :evidence_id)
+        params.require(:commitment).permit(:activity, :user_responsible, :date_ejecution, :state_commitment, :evidence_id, :user_id)
     end 
 
 end  

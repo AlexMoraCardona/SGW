@@ -98,7 +98,12 @@ class User < ApplicationRecord
             end
         end  
         return @datos_clasificacion_cargo  
-    end     
+    end  
+    
+    def self.usuarios_empresa
+        usuarios = User.where("entity = ?",Current.user.entity)
+        return usuarios if usuarios.present?
+    end    
 
 
     private

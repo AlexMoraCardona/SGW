@@ -258,7 +258,7 @@ class Calendar < ApplicationRecord
                     end
                 end   
             end
-
+ 
             @meeting_commitments = nil
             @meeting_commitments = MeetingCommitment.where("user_id = ?", Current.user.id)
             if  @meeting_commitments.present? then
@@ -266,7 +266,7 @@ class Calendar < ApplicationRecord
                     @notificaciones << ["Compromiso", meeting_commitment.meeting_minute.entity.business_name, meeting_commitment.commitment, meeting_commitment.date_commitment, meeting_commitment.id]
                 end   
             end
-        else
+        elsif
             if Current.user.level == 3 then
                 @annual_work_plan = AnnualWorkPlan.find_by("year = ? and entity_id = ?", @year_noti,@entity.id) if @entity.present? 
                 @annual_work_plan_items = nil
@@ -360,7 +360,15 @@ class Calendar < ApplicationRecord
                     end
                 end   
             end
-
+        elsif
+            if Current.user.level == 4 ||  Current.user.level == 5 then
+                @commitments = Commitment.where("state_commitment = ? and user_id = ?",0,Current.user.id)
+                if  @commitments.present? then
+                    @commitments.each do |commitment|
+                        @notificaciones << ["Compromiso Acta de Reunión COPASST - VIGÍA", commitment.evidence.entity.business_name, commitment.activity, commitment.date_ejecution, commitment.id]
+                    end   
+                end
+            end    
         end 
         @cant_noti = @notificaciones.count if @notificaciones.present?
         return @notificaciones

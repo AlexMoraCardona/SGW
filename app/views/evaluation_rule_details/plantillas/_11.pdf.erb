@@ -74,7 +74,7 @@
         </tr>
         <tr>
             <td style="text-align:justify">
-                <strong>6. </strong>Designación del Secretario por parte del Comité Paritario de Seguridad y Salud en el Trabajo. <br>
+                <strong>6. </strong>Designación del Secretario(a) por parte del Comité Paritario de Seguridad y Salud en el Trabajo. <br>
             </td>
         </tr>
         <tr>
@@ -199,7 +199,7 @@
         <tr><td><br></td></tr>                
         <tr>
             <td style="text-align:justify">
-                <strong>  2.4. Funciones del Secretario:</strong> <br>
+                <strong>  2.4. Funciones del Secretario(a):</strong> <br>
             </td>
         </tr>
         <tr><td><br></td></tr>                
@@ -269,24 +269,18 @@
             <td style="border:1px solid black; width: 10%; text-align:center">
                 <h6><strong>N°</strong></h6>                
             </td>
-            <td style="border:1px solid black; width: 45%; text-align:center">
-                <h6><strong>GRADO</strong></h6>                
-            </td>
-            <td style="border:1px solid black; width: 45%; text-align:center">
+            <td style="border:1px solid black; width: 20%; text-align:center">
                 <h6><strong>NOMBRE DE LOS POSTULADOS</strong></h6>                
             </td>
         </tr>
         <% if @participants.present? %>
             <% @contador = 0 %>
             <% @participants.each do |participant| %>
-                <% if participant.designating_by_legal_representative == 0 %>
+                <% if participant.company_representative == 0 && participant.candidate == 1 %>
                     <% @contador += 1 %>
                     <tr>
                         <td style="border:1px solid black; width: 10%; text-align:center">
                             <h6><%= @contador %></h6>                
-                        </td>
-                        <td style="border:1px solid black; width: 45%">
-                            <h6><%= participant.degree %></h6>                 
                         </td>
                         <td style="border:1px solid black; width: 45%">
                             <h6><%= participant.user.name %></h6>                
@@ -312,23 +306,17 @@
                 <h6><strong>N°</strong></h6>                
             </td>
             <td style="border:1px solid black; width: 45%; text-align:center">
-                <h6><strong>GRADO</strong></h6>                
-            </td>
-            <td style="border:1px solid black; width: 45%; text-align:center">
-                <h6><strong>NOMBRE DE LOS POSTULADOS</strong></h6>                
+                <h6><strong>NOMBRE</strong></h6>                
             </td>
         </tr>
         <% if @participants.present? %>
             <% @contador = 0 %>
             <% @participants.each do |participant| %>
-                <% if participant.designating_by_legal_representative == 1 %>
+                <% if participant.company_representative == 1 %>
                     <% @contador += 1 %>
                     <tr>
                         <td style="border:1px solid black; width: 10%; text-align:center">
                             <h6><%= @contador %></h6>                
-                        </td>
-                        <td style="border:1px solid black; width: 45%">
-                            <h6><%= participant.degree %></h6>                 
                         </td>
                         <td style="border:1px solid black; width: 45%">
                             <h6><%= participant.user.name %></h6>                
@@ -351,7 +339,7 @@
     <table>
         <tr>
             <td style="text-align:justify">
-                6.  El Comité Paritario de Seguridad y Salud en el Trabajo en pleno eligió como secretario a: <strong><%= @secretario_comite.name if @secretario_comite.present? %></strong>
+                6.  El Comité Paritario de Seguridad y Salud en el Trabajo en pleno eligió como secretario(a) a: <strong><%= @secretario_comite.name if @secretario_comite.present? %></strong>
                 <br>
             </td>
         </tr>
@@ -376,7 +364,7 @@
         </tr>
         <% if @participants.present? %>
             <% @participants.each do |participant| %>
-                <% unless participant.post_copasst.empty? %>
+                <% if participant.choose == 1 %>
                     <tr>
                         <td style="border:1px solid black; width: 60%">
                             <h6><%= participant.user.name %></h6>                 
@@ -395,8 +383,106 @@
 
     <div>Siendo las <%= @evidence.final_time.strftime("%I:%M %p") if @evidence.final_time.present? %>, se da por terminada la reunión, en constancia firman:</div>
 
-    <%= render 'firmanorepresentante' %>
-    <%= render 'firmarepresentante' %> 
-
+    <% if @firms.present? %> 
+        <br>
+        <div class="row"><br></div>
+           <table>
+                <% cont = 0 %>
+                <% @firms.each do |firm| %>
+                    <% cont = cont + 1 %>
+                    <% if cont == 1 || cont == 3 || cont == 5 || cont ==7 || cont == 9 || cont == 11 || cont == 13  %>
+                        <tr> 
+                            <td style="border:0px solid black; width: 33%; text-align:center">
+                                <div class="row  text-center"> 
+                                    <div class="col-11">
+                                        <div>&nbsp;</div>
+                                            <% if firm.authorize_firm == 1 %>
+                                                <% if firm.user.firm.attached? %>
+                                                    <% if firm.user.firm.image? %> 
+                                                        <%= image_tag firm.user.firm, class: "firma" %>
+                                                        <p align="center">________________________________</p>
+                                                    <% end %>
+                                                <% else %> 
+                                                    <div>&nbsp;</div>   
+                                                    <div>&nbsp;</div>
+                                                    <div>&nbsp;</div>
+                                                    <div>
+                                                        <p align="center">________________________________</p>
+                                                    </div>    
+                                                <% end %>
+                                            <% else %>
+                                                <div>&nbsp;</div>    
+                                                <div>&nbsp;</div>
+                                                <div>&nbsp;</div>
+                                                <div>
+                                                    <p align="center">________________________________</p>
+                                                </div>    
+                                            <% end %>     
+                                    </div>    
+                                    <div class="col-11">
+                                        <div class="row">
+                                            <h6><strong><%= firm.user.name %></strong></h6>
+                                        </div>
+                                    </div>
+                                    <div class="col-11">
+                                        <div class="row">
+                                            <h6><%= firm.post %></h6>
+                                        </div>
+                                    </div>
+                                    <div class="col-11">
+                                        <div class="row">
+                                            <h6><%= firm.user.document.abbreviation %>: <%= Firm.miles(firm.user.nro_document) %></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                            </td>  
+                    <% else %>    
+                        <td style="border:0px solid black; width: 33%; text-align:center">
+                            <div class="row  text-center"> 
+                                <div class="col-11">
+                                        <div>&nbsp;</div>
+                                        <% if firm.authorize_firm == 1 %>
+                                            <% if firm.user.firm.attached? %>
+                                                <% if firm.user.firm.image? %> 
+                                                    <%= image_tag firm.user.firm, class: "firma" %>
+                                                    <p align="center">________________________________</p>
+                                                <% end %>
+                                            <% else %>    
+                                                <div>
+                                                    <p align="center">________________________________</p>
+                                                </div>    
+                                            <% end %>
+                                        <% else %>    
+                                            <div>
+                                                <p align="center">________________________________</p>
+                                            </div>    
+                                        <% end %>     
+                                </div>    
+                                <div class="col-11">
+                                    <div class="row">
+                                        <h6><strong><%= firm.user.name %></strong></h6>
+                                    </div>
+                                </div>
+                                <div class="col-11">
+                                    <div class="row">
+                                        <h6><%= firm.post %></h6>
+                                    </div>
+                                </div>
+                                <div class="col-11">
+                                    <div class="row">
+                                        <h6><%= firm.user.document.abbreviation %>: <%= Firm.miles(firm.user.nro_document) %></h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                        </td>      
+                        </tr>
+                    <% end %>
+            
+                <% end %>
+            </table>
+        </div>
+    <% end %>
 </div>
 <br>

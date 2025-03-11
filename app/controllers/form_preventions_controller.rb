@@ -37,6 +37,7 @@ class FormPreventionsController < ApplicationController
     
     def update
             @form_prevention = FormPrevention.find(params[:id])
+            
             if @form_prevention.update(form_prevention_params)
                 if Current.user.level == 2 then  
                     redirect_to  matrix_prevention_admin_extent_dangers_path(@form_prevention.admin_extent_danger_id), notice: 'Actualizado correctamente'

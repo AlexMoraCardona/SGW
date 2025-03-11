@@ -82,5 +82,13 @@ class Firm < ApplicationRecord
             end 
             
         end    
+    end   
+    
+    def self.automatico_firma(participant)
+        firma_nueva  = Firm.new
+        firma_nueva.user_id = participant.user_id
+        firma_nueva.evidence_id = participant.evidence_id
+        firma_nueva.post = participant.user.cargo_rol  
+        firma_nueva.save
     end    
 end

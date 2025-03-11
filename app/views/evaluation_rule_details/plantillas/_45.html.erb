@@ -275,13 +275,39 @@
         </tr>
     </table> 
     <div><br></div>
-    <table> 
-        <tr>
-            <td style="text-align:center;width: 100%;">
-                <%=  image_tag('imgmv21.png', height: "800", width: "auto")  %>
+    <table style="width: 100%;"> 
+        <tr style="background-color: #00aae4;border:1px solid black;text-align:center%;">
+            <td style="border:1px solid black;text-align:center;width: 50%;">
+                Peligro
+            </td>
+            <td style="border:1px solid black;text-align:center;width: 50%;">
+                Riesgo / Consecuencia
             </td>
         </tr>
-    <table>     
+    </table> 
+    <% @clasification_dangers.each do |clasification_danger| %>
+        <table style="width: 100%;"> 
+            <tr style="background-color: #00aae4;border:1px solid black;text-align:center%;">
+                <td style="border:1px solid black;text-align:center;width: 100%;">
+                    <%= clasification_danger.name %>
+                </td>
+            </tr>
+        </table> 
+        <table style="width: 100%;"> 
+            <% @clasification_danger_details.where("clasification_danger_id = ?",clasification_danger.id).each do |clasification_danger_detail| %>
+                <tr style="1px solid black;text-align:center%;">
+                    <td style="border:1px solid black;text-align:center;width: 50%;">
+                        <%= clasification_danger_detail.name %>
+                    </td>
+                    <td style="border:1px solid black;text-align:center;width: 50%;">
+                        <% @danger_detail_risks.where("clasification_danger_detail_id = ?",clasification_danger_detail.id).each do |danger_detail_risk| %>
+                            <%= danger_detail_risk.name %></br>    
+                        <% end %>
+                    </td>
+                </tr>
+            <% end %>
+        </table>    
+    <% end %>
     <div><br></div>
     <table> 
         <tr>

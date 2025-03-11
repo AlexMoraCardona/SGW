@@ -1,4 +1,4 @@
-<div class="container col-12 card p-5">
+<div class="container col-11 card p-5">
     <div class="bg-info">
         <p><%=@evidence.template.filing if @evidence.present? %></p>
     </div>
@@ -13,7 +13,7 @@
             <tr>
                 <td style="width:40%">
                     <%= form.label :user_id,  style: "display: block" %>
-                    <%= form.collection_select :user_id, User.all.order(id: :asc), :id,  :name, style: "width=50px" %>
+                    <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
                 </td>
                 <td style="width:30%">
                     <%= form.label :legal_representative,  style: "display: block" %>
@@ -39,6 +39,8 @@
     <hr>
     <br>
     <br>
+</div>
+<div class="container col-11 card p-5">
     <div class="d-flex">
         <div class="container">
             <h class="display-6">Funcionarios que firman evidencia:</h>
@@ -49,7 +51,6 @@
         <thead>
             <tr>
                 <th scope="col">Fecha Evidencia</th>
-                <th scope="col">Nro.Evidencia</th>
                 <th scope="col">Nombre Evidencia</th>
                 <th scope="col">Funcionario</th>
                 <th scope="col">Representante Legal</th>
@@ -64,21 +65,19 @@
             <% @firms.each do |firma| %>
                 <tr>
                     <td><%= firma.evidence.date %></td> 
-                    <td><%= firma.evidence_id %></td>
                     <td><%= firma.evidence.template.name %></td>
                     <td><%= firma.user.name %></td>
                     <td><%= firma.label_legal_representative %></td> 
                     <td><%= firma.post %></td>
                     <td><%= firma.label_authorize_firm %></td>
                     <td><%= firma.date_authorize_firm %></td>
-                    <td><%= link_to t('common.edit'), edit_firm_path(firma), class: 'btn btn-xs btn-primary'  %></td>
-                    <td><%= link_to t('common.delete'), firma, data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar la firma?' }, class: 'btn btn-xs btn-danger' %></td>
+                    <td><%= link_to t('common.edit'), edit_firm_path(firma), class: 'btn btn-sm btn-primary'  %></td>
+                    <td><%= link_to t('common.delete'), firma, data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar la firma?' }, class: 'btn btn-sm btn-danger' %></td>
                 </tr>
             <% end %>     
         </tbody>      
     </table>
     <br>
-        
 </div>        
 <br>
 

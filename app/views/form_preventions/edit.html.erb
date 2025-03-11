@@ -8,19 +8,29 @@
             <p>A continuación, encontrará una lista de peligros y riesgos a los que se puede exponer un trabajador en su entorno laboral. Por favor seleccione los riesgos que aplican para su puesto de trabajo.</p>
         </div>          
         <div></br></div>
-        <table> 
+        <table>  
             <% @clasification_dangers.each do |clasification_danger| %> 
                 <tr>
                     <td style="border:0px solid black;"> <%= clasification_danger.name %></td> 
                 </tr>
-                <% @form_preventions.where("clasification_danger_id = ?", clasification_danger.id).each do |form_prevention| %> 
+                <% @form_preventions.where("clasification_danger_id = ?", clasification_danger.id).each do |preven| %> 
                     <tr>
-                        <td style="border:1px solid black;width: 70%;"> <%= form_prevention.clasification_danger_detail.name %></td> 
-                        <td style="text-align:center;border:1px solid black;width: 20%;"> 
-                            <% if form_prevention.exposed == 0 then %>No<% end %>
-                            <% if form_prevention.exposed == 1 then %>Si<% end %>
+                        <td style="border:1px solid black;width: 60%;"> <%= preven.clasification_danger_detail.name %></td> 
+                        <td style="text-align:center;border:1px solid black;width: 30%;"> 
+                            <%= form_with model: preven do |form| %>
+                                <div style="border:0px solid black;width: 100%;"> 
+                                    <b><%= form.label :Expuesto,  style: "display: block" %></b>
+                                    <%= form.radio_button :exposed, 0, checked: true, :onClick=>"javascript: this.form.submit.click();" %>
+                                    <label for="no">No</label></br>
+                                    <%= form.radio_button :exposed, 1, :onClick=>"javascript: this.form.submit.click();" %>
+                                    <label for="si">Si</label></br>
+                                </div>
+                                <div class="actions" style="display:none;">
+                                    <%= form.submit "", :name => "submit", :remote => "true" %>
+                                </div>                                 
+                            <% end %>     
+                        <div></br></div>
                         </td>
-                        <td style="text-align:center;border:1px solid black;width: 10%;"> <%= link_to  t('common.edit'), encuestapre_path(form_prevention.id), class: 'btn btn-sm btn-outline-dark'%></td>
                     </tr>
                 <% end %>  
                 <tr>

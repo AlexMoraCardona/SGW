@@ -1,22 +1,33 @@
 class MatrixProtectionsController < ApplicationController
     def index
-        if params[:entity_id].present?
-            @entity = Entity.find(params[:entity_id])
-            @matrix_protections = MatrixProtection.where("entity_id = ?", params[:entity_id])
-        else    
-            if  Current.user && Current.user.level > 0 && Current.user.level < 4
+
+        if  Current.user && Current.user.level > 0 && Current.user.level < 3
+            if params[:entity_id].present?
+                @entity = Entity.find(params[:entity_id])
+                @matrix_protections = MatrixProtection.where("entity_id = ?", params[:entity_id])
+            else 
                 @entities = Entity.all
-                @matrix_protections = MatrixProtection.all
-            else
-                redirect_to new_session_path, alert: t('common.not_logged_in')    
-                session.delete(:user_id)  
-            end           
-        end 
+            end    
+        elsif Current.user && Current.user.level > 2 
+            @entity = Entity.find(Current.user.entity)
+            @matrix_protections = MatrixProtection.where("entity_id = ?",Current.user.entity)
+        else
+            redirect_to new_session_path, alert: t('common.not_logged_in')    
+            session.delete(:user_id)  
+        end     
+
     end 
     
     def show
         @matrix_protection = MatrixProtection.find(params[:id])
         @matrix_protection_items = MatrixProtectionItem.where("matrix_protection_id = ?", @matrix_protection.id) if @matrix_protection.present?
+        @template = Template.where("format_number = ? and document_vigente = ?",52,1).last  
+        @entity = Entity.find(@matrix_protection.entity_id) if @matrix_protection.present?
+        @rep = User.find(@matrix_protection.user_legal_representative) if  @matrix_protection.user_legal_representative.present? && @matrix_protection.user_legal_representative > 0
+        @adv = User.find(@matrix_protection.user_adviser_sst) if  @matrix_protection.user_adviser_sst.present? && @matrix_protection.user_adviser_sst > 0
+        @res = User.find(@matrix_protection.user_responsible_sst) if  @matrix_protection.user_responsible_sst.present? && @matrix_protection.user_responsible_sst > 0
+
+
         respond_to do |format|
             format.html
             format.xlsx{ 
@@ -28,6 +39,12 @@ class MatrixProtectionsController < ApplicationController
     def ver_matrix_protection
         @matrix_protection = MatrixProtection.find(params[:id])
         @matrix_protection_items = MatrixProtectionItem.where("matrix_protection_id = ?", @matrix_protection.id) if @matrix_protection.present?
+        @template = Template.where("format_number = ? and document_vigente = ?",52,1).last  
+        @entity = Entity.find(@matrix_protection.entity_id) if @matrix_protection.present?
+        @rep = User.find(@matrix_protection.user_legal_representative) if  @matrix_protection.user_legal_representative.present? && @matrix_protection.user_legal_representative > 0
+        @adv = User.find(@matrix_protection.user_adviser_sst) if  @matrix_protection.user_adviser_sst.present? && @matrix_protection.user_adviser_sst > 0
+        @res = User.find(@matrix_protection.user_responsible_sst) if  @matrix_protection.user_responsible_sst.present? && @matrix_protection.user_responsible_sst > 0
+
         respond_to do |format| 
             format.html
             format.pdf {render  pdf: 'ver_matrix_protection',

@@ -2,87 +2,50 @@
     <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
 <% end %>
 
-
 <% if @provides_protections.present? %>
     <%= link_to t('common.create_provides_protection'), new_provides_protection_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+    <hr>
 
     <table class="table table-hover"> 
+        <thead> 
+            <tr>    
+                <th scope="col">Fecha de entrega</th>
+                <th scope="col">Colaborador</th>
+                <th scope="col">Firma Colaborador</th>
+                <th scope="col">Responsable entrega EPP</th>
+                <th scope="col">Firma Responsable</th>
+                <th scope="col">Adicionar EPP</th>
+                <th scope="col">Ver formato</th>
+                <th scope="col">PDF</th>
 
-        <% @provides_protections.each do |provides_protection| %> 
-            <hr>
-
-            <%= link_to t('common.create_item_provides_protection'), crear_item_provide_provides_protections_path(provides_protection.id), class: 'btn btn-sm btn-warning' %> &nbsp;
-            <%= link_to t('common.show_provides_protection'), provides_protection_path(provides_protection.id), class: 'btn btn-sm btn-warning' %> &nbsp;
-            <%= link_to "PDF", ver_info_provide_provides_protections_path(provides_protection.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;
-
-            <div class="container col-12">
-                <br>
-                <div class="row g-2">
-                    <div class="col-sm-3">
-                        <strong>Fecha de creación</strong><br>
-                        <%= provides_protection.created_at.strftime("%F") %> 
-                    </div>        
-                    <div class="col-sm-3">
-                        <strong>Última fecha de actualización</strong><br>
-                        <%= provides_protection.updated_at.strftime("%F") %> 
-                    </div>        
-                </div>
-
-                <div class="row g-4">
-                    <div class="col-sm-3">
-                        <strong><%= t('.code') %></strong><br>
-                        <%= provides_protection.code %> 
-                    </div>
-                    <div class="col-sm-3">
-                        <strong><%= t('.version') %></strong><br>
-                        <%= provides_protection.version %> 
-                    </div>
-                </div>
-                <br>
-
-                <div class="row g-4">
-                    <div class="col-sm-3">
-                        <strong><%= t('.user_colaborador') %></strong><br>
-                        <%= provides_protection.name_user(provides_protection.user_colaborador) %> 
-                    </div>        
-                    <div class="col-sm-3">
-                        <strong><%= t('.firm_colaborador') %></strong><br>
-                        <%= provides_protection.label_firm(provides_protection.firm_colaborador) %> 
-                    </div>        
-                    <div class="col-sm-3">
-                        <strong><%= t('.date_firm_colaborador') %></strong><br>
-                        <%= provides_protection.date_firm_colaborador %> 
-                    </div>
-                    <div class="col-sm-3">
+            </tr>
+        </thead>
+        <tbody>
+            <% @provides_protections.each do |provides_protection| %> 
+                <tr>
+                    <td><%= provides_protection.created_at.strftime("%F") %></td>
+                    <td><%= provides_protection.name_user(provides_protection.user_colaborador) %></td>
+                    <td>
                         <% if provides_protection.firm_colaborador.to_i == 0 %>
                             <%= link_to t('common.firmar'), firmar_colaborador_provides_protections_path(provides_protection.id, 2), class: 'btn btn-sm btn btn-warning' %>
+                        <% else %>
+                            <%= provides_protection.date_firm_colaborador %> 
                         <% end %>    
-                    </div>
-                </div>
-
-                <div class="row g-4">
-                    <div class="col-sm-3">
-                        <strong><%= t('.user_responsible') %></strong><br>
-                        <%= provides_protection.name_user(provides_protection.user_responsible) %> 
-                    </div>        
-                    <div class="col-sm-3">
-                        <strong><%= t('.firm_responsible') %></strong><br>
-                        <%= provides_protection.label_firm(provides_protection.firm_responsible) %> 
-                    </div>        
-                    <div class="col-sm-3">
-                        <strong><%= t('.date_firm_responsible') %></strong><br>
-                        <%= provides_protection.date_firm_responsible %> 
-                    </div>
-                    <div class="col-sm-3">
-                        <% if provides_protection.firm_responsible == 0 %>
+                    </td>
+                    <td><%= provides_protection.name_user(provides_protection.user_responsible) %></td>
+                    <td>
+                        <% if provides_protection.firm_responsible.to_i == 0 %>
                             <%= link_to t('common.firmar'), firmar_responsable_provides_protections_path(provides_protection.id, 3), class: 'btn btn-sm btn btn-warning' %>
-                        <% end %>           
-                    </div>
-                </div>
-
-            </div>           
-        <% end %>  
-        <hr>  
+                        <% else %>
+                            <%= provides_protection.date_firm_responsible %> 
+                        <% end %>    
+                    </td>
+                    <td><%= link_to t('common.create_item_provides_protection'), crear_item_provide_provides_protections_path(provides_protection.id), class: 'btn btn-sm btn-warning' %></td>
+                    <td><%= link_to t('common.show_provides_protection'), provides_protection_path(provides_protection.id), class: 'btn btn-sm btn-warning' %></td>
+                    <td><%= link_to "PDF", ver_info_provide_provides_protections_path(provides_protection.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
+                </tr>
+            <% end %> 
+        </tbody>      
     </table>  
     <br>
 <% else %>

@@ -2,7 +2,7 @@ class ProvidesProtectionsController < ApplicationController
     def index
         if params[:entity_id].present?
             @entity = Entity.find(params[:entity_id])
-            @provides_protections = ProvidesProtection.where("entity_id = ?", params[:entity_id])
+            @provides_protections = ProvidesProtection.where("entity_id = ?", params[:entity_id]).order(created_at: :desc)
         else    
             if  Current.user && Current.user.level == 1
                 @entities = Entity.all
@@ -15,10 +15,12 @@ class ProvidesProtectionsController < ApplicationController
     end 
     
     def show
+        @template = Template.where("format_number = ? and document_vigente = ?",53,1).last  
         @provides_protection = ProvidesProtection.find(params[:id])
         @provides_protection_items = ProvidesProtectionItem.where("provides_protection_id = ?", @provides_protection.id) if @provides_protection.present?
         @colaborador = User.find(@provides_protection.user_colaborador)  if    @provides_protection.user_colaborador.to_i > 0
         @responsable = User.find(@provides_protection.user_responsible)  if    @provides_protection.user_responsible.to_i > 0
+        @entity = Entity.find(@provides_protection.entity_id) if @provides_protection.present?
         respond_to do |format|
             format.html
             format.xlsx{ 
@@ -28,10 +30,12 @@ class ProvidesProtectionsController < ApplicationController
     end  
     
     def ver_info_provide
+        @template = Template.where("format_number = ? and document_vigente = ?",53,1).last  
         @provides_protection = ProvidesProtection.find(params[:id])
         @provides_protection_items = ProvidesProtectionItem.where("provides_protection_id = ?", @provides_protection.id) if @provides_protection.present?
         @colaborador = User.find(@provides_protection.user_colaborador)  if    @provides_protection.user_colaborador.to_i > 0
         @responsable = User.find(@provides_protection.user_responsible)  if    @provides_protection.user_responsible.to_i > 0
+        @entity = Entity.find(@provides_protection.entity_id) if @provides_protection.present?
 
         respond_to do |format| 
             format.html

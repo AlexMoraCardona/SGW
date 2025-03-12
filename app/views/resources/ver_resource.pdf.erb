@@ -24,19 +24,20 @@
 
         <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
 
-        <td style="border:1px solid black"><%= @resource.created_at.strftime("%F")  if @resource.present? %></td>
+        <td style="border:1px solid black"><%= @template.date if @template.present? %></td>
+
     </tr>
     <tr> 
         <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
-        <td style="border:1px solid black"><%= @resource.updated_at.strftime("%F")  if @resource.present? %></td>
+        <td style="border:1px solid black"><%= @template.date_updated if @template.present? %></td>
     </tr>
     <tr> 
         <td colspan="2"; style="border:1px solid black">Versión:</td>
-        <td style="border:1px solid black"><%= @resource.version if @resource.present? %></td>
+        <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
     </tr>
     <tr> 
         <td colspan="2"; style="border:1px solid black">Código:</td>
-        <td style="border:1px solid black"><%= @resource.code if @resource.present? %></td>
+        <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
     </tr>
 
     <tr>
@@ -76,44 +77,37 @@
         </tr> 
     </body>
 <% end %>
-<tr style="border:1px solid black">
-    <td  colspan="4";style="border:1px solid black"><br>
-        <% if @resource.firm_legal_representative == 1 %>
-            <% if @rep.present? %>
-                <% if @rep.firm.attached? %>
-                   <% if @rep.firm.image? %> 
-                        <%= image_tag @rep.firm, class: "firma" %>
-                    <% end %>
-                <% end %>
-            <% end %>     
-        <% end %>     
-    </td>
-    <td  colspan="3";style="border:1px solid black"><br>
-        <% if @resource.firm_adviser_sst == 1 %>
-            <% if @adv.present? %>
-                <% if @adv.firm.attached? %>
-                    <% if @adv.firm.image? %> 
-                        <%= image_tag @adv.firm, class: "firma" %>
-                    <% end %>
-                <% end %>
-            <% end %>     
-        <% end %>     
-    </td>
-    <td  colspan="3";style="border:1px solid black"><br>
-        <% if @resource.firm_responsible_sst == 1 %>
-            <% if @res.present? %>
-                <% if @res.firm.attached? %>
-                    <% if @res.firm.image? %> 
-                        <%= image_tag @res.firm, class: "firma" %>
-                    <% end %>
-                <% end %>
-            <% end %>     
-        <% end %>     
-    </td>
-</tr> 
-<tr>
-    <td  colspan="4"><%= @resource.name_user(@resource.user_legal_representative) %> - Representante Legal</td>
-    <td  colspan="6"></td>
-</tr>
-</table>
-</div>    
+        <tr style="border:1px solid black">
+            <td  colspan="3"; style="border:1px solid black"><br>
+                <% if @resource.firm_legal_representative == 1 %>
+                    <% if @rep.present? %>
+                        <% if @rep.firm.attached? %>
+                           <% if @rep.firm.image? %> 
+                                <%= image_tag @rep.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% end %>     
+            </td>
+            <td  colspan="3"; style="border:0px solid black"><br>
+                <% if @resource.firm_adviser_sst == 1 %>
+                    <% if @adv.present? %>
+                        <% if @adv.firm.attached? %>
+                            <% if @adv.firm.image? %> 
+                                <%= image_tag @adv.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% end %>     
+            </td>
+            <td  colspan="4"; style="border:0px solid black"><br>
+            </td>
+        </tr> 
+        <tr>
+            <td  colspan="3"; style="border:1px solid black"><%= @resource.name_user(@resource.user_legal_representative) %> - Representante Legal</td>
+            <td  colspan="3"; style="border:0px solid black"><%= @resource.name_user(@resource.user_adviser_sst) %> - Asesor SG-SST</td>
+            <td  colspan="4"; style="border:0px solid black"></td>
+        </tr>
+    </table>
+</div>  
+<div></br></div>  

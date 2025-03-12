@@ -8,43 +8,56 @@
 </head>
 <br>
 <div>
-
-    <table class="table table-hover" style="border:1px solid white"> 
-        <thead>
-            <tr>
-                <td rowspan="4"; style="background-color: white;">&nbsp;</td>
-                <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
-                    <% if @provides_protection.entity.logo.present? then %>
-                        <%=  image_tag  @provides_protection.entity.logo, class: "image_peq" %>
-                    <% end %>
-                </td>
-                <td rowspan="4"; colspan="10"; style="border:1px solid black;text-align:center; padding-bottom: 40px;">
-                    <div class="col-10"><h5>FORMATO  PARA ENTREGA DE ELEMENTOS DE PROTECCIÓN PERSONAL (EPP)</h5><h6><%= @provides_protection.entity.business_name if @provides_protection.present? %> Nit: <%= @provides_protection.entity.identification_number if @provides_protection.present? %> </h6></div>
-                </td>
-                <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
-
-                <td colspan="2"; style="border:1px solid black"><%= @provides_protection.created_at.strftime("%F")  if @provides_protection.present? %></td>
-                <td style="background-color: white;">&nbsp;</td>
-
-            </tr>
-            <tr> 
-                <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
-                <td colspan="2"; style="border:1px solid black"><%= @provides_protection.created_at.strftime("%F")  if @provides_protection.present? %></td>
-                <td style="background-color: white;">&nbsp;</td>
-            </tr>
-            <tr> 
-                <td colspan="2"; style="border:1px solid black">Versión:</td>
-                <td colspan="2"; style="border:1px solid black"><%= @provides_protection.version if @provides_protection.present? %></td>
-                <td style="background-color: white;">&nbsp;</td>
-            </tr>
-            <tr> 
-                <td colspan="2"; style="border:1px solid black">Código:</td>
-                <td colspan="2"; style="border:1px solid black"><%= @provides_protection.code if @provides_protection.present? %></td>
-                <td style="background-color: white;">&nbsp;</td>
-            </tr>
-        
-        </thead>
+    <table style="border:0px solid black;width: 100%;">
+        <tr>
+            <td rowspan="2" style="border:1px solid black; width: 20%; text-align:center">
+                <% if @entity.logo.present? then %>
+                    <%=  image_tag  @entity.logo, class: "image_peq" %>
+                <% end %>   
+            </td>
+            <td style="border:1px solid black; text-align:center">
+                <div class="col-10"><h6 style="text-transform:uppercase;"><%= @entity.business_name if @entity.present? %></h6></div>
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; text-align:center">
+                <div class="col-10"><h6><%= @template.name if @template.present? %></h6></div>
+            </td>
+        </tr>
     </table>
+    <table style="border:0px solid black;width: 100%;">
+        <tr>    
+            <td style="border:1px solid black; width: 25%">
+                <h6>CÓDIGO: </h6>                
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.reference if @template.present? %></small></h6>                
+            </td>
+
+            <td style="border:1px solid black; width: 25%">
+                <h6>VERSIÓN: </h6>                
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.version if @template.present? %></small></h6>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 25%">
+                <h6>FECHA DE ELABORACIÓN: </h6>                
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date if @template.present? %></small></h6>                
+            </td>
+
+            <td style="border:1px solid black; width: 25%">
+                <h6>FECHA DE ACTUALIZACIÓN: </h6>                
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date_updated if @template.present? %></small></h6>                
+            </td>
+        </tr>
+    </table>
+    <div></br></div>
     <table class="table table-hover" style="border:1px solid white"> 
         <tr>
             <td style="background-color: white;">&nbsp;</td>

@@ -1,17 +1,19 @@
 class ResourcesController < ApplicationController
     def index 
-        if params[:entity_id].present?
-            @entity = Entity.find(params[:entity_id])
-            @resources = Resource.where("entity_id = ?", params[:entity_id]).order(id: :desc)
-        else    
-            if  Current.user && Current.user.level < 3 && Current.user.level > 0
+        if  Current.user && Current.user.level > 0 && Current.user.level < 3
+            if params[:entity_id].present?
+                @entity = Entity.find(params[:entity_id])
+                @resources = Resource.where("entity_id = ?", params[:entity_id]).order(id: :desc)
+            else 
                 @entities = Entity.all
-                @resources = Resource.all
-            else
-                redirect_to new_session_path, alert: t('common.not_logged_in')  
-                session.delete(:user_id)    
-            end           
-        end 
+            end    
+        elsif Current.user && Current.user.level > 2 
+            @entity = Entity.find(Current.user.entity)
+            @resources = Resource.where("entity_id = ?",Current.user.entity)
+        else
+            redirect_to new_session_path, alert: t('common.not_logged_in')    
+            session.delete(:user_id)  
+        end     
     end  
     
     def show
@@ -36,6 +38,7 @@ class ResourcesController < ApplicationController
         @rep = User.find(@resource.user_legal_representative) if  @resource.user_legal_representative.present? && @resource.user_legal_representative > 0
         @adv = User.find(@resource.user_adviser_sst) if  @resource.user_adviser_sst.present? && @resource.user_adviser_sst > 0
         @res = User.find(@resource.user_responsible_sst) if  @resource.user_responsible_sst.present? && @resource.user_responsible_sst > 0
+        @template = Template.where("format_number = ? and document_vigente = ?",30,1).last  
 
         respond_to do |format| 
             format.html

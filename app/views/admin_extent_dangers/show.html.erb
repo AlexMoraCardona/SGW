@@ -1,0 +1,141 @@
+<div align="left"; class="container col-12">
+    <a class="navbar-brand" href="/">
+        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+    </a>
+</div>
+<div class="container col-11" 
+    <br>
+    <h2 class="display-5">Encuesta medidas de prevención y control de peligros y riesgos por parte de los trabajadores</h2>
+    <hr>
+    
+    <br>
+    <table style="border:0px solid black;width: 100%;"> 
+        <tr>
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <b>Empresa:</b>
+            </td> 
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <%= @entity.business_name  if @entity.present? %>
+            </td>
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <b>Fecha:</b>
+            </td> 
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <%= @admin_extent_danger.date_creation  if @admin_extent_danger.present? %>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <b>Nombre completo:</b>
+            </td> 
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <%= @admin_extent_danger.user.name if @admin_extent_danger.present? %>
+            </td>
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <b>Número de documento de identidad:</b>
+            </td> 
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <%= @admin_extent_danger.user.nro_document  if @admin_extent_danger.present? %>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <b>Tipo de contrato:</b>
+            </td> 
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <%= AdminExtentDanger.label_type_contract(@admin_extent_danger.type_contract) if @admin_extent_danger.present? %>
+            </td>
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <b>Cargo:</b>
+            </td> 
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <%= @admin_extent_danger.post  if @admin_extent_danger.present? %>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <b>Unidad/Área:</b>
+            </td> 
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <%= @admin_extent_danger.area if @admin_extent_danger.present? %>
+            </td>
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <b>Ha recibido capacitación de peligros y riesgos?</b>
+            </td> 
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <%= AdminExtentDanger.label_received_training(@admin_extent_danger.received_training)  if @admin_extent_danger.present? %>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <b>Ha sufrido algún incidente, accidente o enfermedad laboral?</b>
+            </td> 
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <%= AdminExtentDanger.label_suffered_accident(@admin_extent_danger.suffered_accident) if @admin_extent_danger.present? %>
+            </td>
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <b>Cual incidente, accidente o enfermedad laboral?</b>
+            </td> 
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <%= @admin_extent_danger.cual_suffered_accident  if @admin_extent_danger.present? %>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <b>Usa elementos de protección personal?</b>
+            </td> 
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <%= AdminExtentDanger.label_epp(@admin_extent_danger.epp) if @admin_extent_danger.present? %>
+            </td>
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <b>¿Cuáles?</b>
+            </td> 
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <%= @admin_extent_danger.epp_cuales  if @admin_extent_danger.present? %>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <b>¿Qué equipos opera?</b>
+            </td> 
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <%= @admin_extent_danger.equipment_operates if @admin_extent_danger.present? %>
+            </td>
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <b>Propuestas de control:</b>
+            </td> 
+            <td style="width: 25%;border:0px solid black;padding-bottom: 2px;">
+                <%= @admin_extent_danger.control_proposal  if @admin_extent_danger.present? %>
+            </td>
+        </tr>
+    </table> 
+    <br>
+    <h2 class="display-5">A continuación se muestran las respuesta que el Usuario identifica que esta expuesto:</h2>
+    <hr>
+    <% if @form_preventions.present? %>
+        <table style="border:0px solid black;width: 100%;"> 
+            <% @form_preventions.where("exposed = ?",1).each do |form_prevention| %>
+                <tr>
+                    <td style="width: 15%;border:0px solid black;padding-bottom: 2px;">
+                        <b>Peligro / Riesgo</b>
+                    </td> 
+                    <td style="width: 30%;border:0px solid black;padding-bottom: 2px;">
+                        <%= form_prevention.clasification_danger.name %>
+                    </td>
+                    <td style="width: 15%;border:0px solid black;padding-bottom: 2px;">
+                        <b>DescripciónPeligro/Riesgo:</b>
+                    </td> 
+                    <td style="width: 30%;border:0px solid black;padding-bottom: 2px;">
+                        <%= form_prevention.clasification_danger_detail.name %>
+                    </td>
+                    <td style="width: 10%;border:0px solid black;padding-bottom: 2px;">
+                        <%= FormPrevention.label_exposed(form_prevention.exposed) %>
+                    </td>
+                </tr>
+            <% end %>
+        </table> 
+    <% end %>
+    <div></br><div>            
+    <%= link_to t('common.return'), admin_extent_dangers_path, class: 'btn btn-sm btn-success' %></td>
+    <div></br><div>            
+</div>

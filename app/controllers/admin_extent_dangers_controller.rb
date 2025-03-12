@@ -34,6 +34,12 @@ class AdminExtentDangersController < ApplicationController
         @admin_extent_danger = AdminExtentDanger.find(params[:id])
         @entity = Entity.find(@admin_extent_danger.entity_id) if @admin_extent_danger.present?
     end
+
+    def show
+        @admin_extent_danger = AdminExtentDanger.find(params[:id])
+        @form_preventions = FormPrevention.where("admin_extent_danger_id = ?",@admin_extent_danger.id) if @admin_extent_danger.present?
+        @entity = Entity.find(@admin_extent_danger.entity_id) if @admin_extent_danger.present?
+    end    
     
     def update
         @admin_extent_danger = AdminExtentDanger.find(params[:id])

@@ -167,6 +167,8 @@ class Calendar < ApplicationRecord
         @noti = 0
         @year_noti = Date.today.year
         @notificaciones= [] 
+        @entity = Entity.find(Current.user.entity) if Current.user.entity > 0 
+
         if Current.user.level == 1 || Current.user.level == 2 then
             @annual_work_plans = nil
             @annual_work_plan_items = nil

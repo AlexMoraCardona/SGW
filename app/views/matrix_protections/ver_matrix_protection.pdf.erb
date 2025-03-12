@@ -9,44 +9,37 @@
 <br>
 <div>
 
-    <table class="table table-hover" style="border:1px solid black"> 
+    <table class="table table-hover" style="border:1px solid black;width:100%;"> 
         <thead>
             <tr>
-                <td rowspan="4"; style="background-color: black;">&nbsp;</td>
                 <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
-                    <% if @matrix_protection.entity.logo.present? then %>
-                        <%=  image_tag  @matrix_protection.entity.logo, class: "image_peq" %>
-                    <% end %>
+                    <% if @entity.logo.present? then %>
+                        <%=  image_tag  @entity.logo, class: "image_peq" %>
+                    <% end %> 
                 </td>
                 <td rowspan="4"; colspan="4"; style="text-align:center; padding-bottom: 40px;">
-                    <div class="col-12"><h5>MATRIZ  ELEMENTOS DE PROTECCIÓN PERSONAL</h5><h6><%= @matrix_protection.entity.business_name if @matrix_protection.present? %> Nit: <%= @matrix_protection.entity.identification_number if @matrix_protection.present? %> </h6></div>
+                    <div class="col-12"><h5><%= @template.name if @template.present? %></h5><h6><%= @entity.business_name if @entity.present? %> Nit: <%= @entity.identification_number if @entity.present? %> </h6></div>
                 </td>
                 <td rowspan="4";  style="text-align:center"></td>
 
                 <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
 
-                <td style="border:1px solid black"><%= @matrix_protection.date_create  if @matrix_protection.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
-
+                <td  style="border:1px solid black"><h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date if @template.present? %></small></h6></td>
             </tr>
             <tr> 
                 <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
-                <td style="border:1px solid black"><%= @matrix_protection.date_update  if @matrix_protection.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
+                <td style="border:1px solid black"><h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date_updated if @template.present? %></small></h6></td>
             </tr>
             <tr> 
                 <td colspan="2"; style="border:1px solid black">Versión:</td>
-                <td style="border:1px solid black"><%= @matrix_protection.version if @matrix_protection.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
+                <td style="border:1px solid black"><h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.version if @template.present? %></small></h6></td>
             </tr>
             <tr> 
                 <td colspan="2"; style="border:1px solid black">Código:</td>
-                <td style="border:1px solid black"><%= @matrix_protection.code if @matrix_protection.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
+                <td style="border:1px solid black"><h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.reference if @template.present? %></small></h6></td>
             </tr>
-        
+
             <tr>
-                <td style="background-color: black;">&nbsp;</td>
                 <th style="border:1px solid black">Área/Oficio</th>
                 <th style="border:1px solid black">Equipo de protección </th>
                 <th style="border:1px solid black">Parte de cuerpo a proteger </th>
@@ -56,7 +49,6 @@
                 <th style="border:1px solid black">Ficha Técnica</th>
                 <th style="border:1px solid black">Formato de Entrega</th>
                 <th style="border:1px solid black">Inducción al personal </th>
-                <td style="background-color: black;">&nbsp;</td>
             </tr>
 
         </thead> 
@@ -64,7 +56,6 @@
         <% @matrix_protection_items.each do |matrix_protection_item| %>             
             <tbody>
                 <tr>
-                    <td style="background-color: black;">&nbsp;</td> 
                     <td style="border:1px solid black"><%= MatrixProtectionItem.label_state_protection(matrix_protection_item.state_protection) %></td>
                     <td style="border:1px solid black"><%= matrix_protection_item.protection_element.name %></td>
                     <td style="border:1px solid black"><%= matrix_protection_item.protection_element.body_protect %></td>
@@ -82,9 +73,57 @@
                     <td style="border:1px solid black"><%= MatrixProtectionItem.label(matrix_protection_item.date_sheet) %></td>
                     <td style="border:1px solid black"><%= MatrixProtectionItem.label(matrix_protection_item.delivery_format) %></td>
                     <td style="border:1px solid black"><%= MatrixProtectionItem.label(matrix_protection_item.personal_induction) %></td>
-                    <td style="background-color: black;">&nbsp;</td>
                 </tr>
             </body>
         <% end %>
     </table>
-</div>    
+    <table style="width:100%;">
+        <tr style="border:1px solid black">
+            <td  style="border:1px solid black;width:30%;"><br>
+                <% if @matrix_protection.firm_legal_representative == 1 %>
+                    <% if @rep.present? %>
+                        <% if @rep.firm.attached? %>
+                           <% if @rep.firm.image? %> 
+                                <%= image_tag @rep.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %> 
+                <% else %>
+                   <div></br></div>         
+                <% end %>     
+            </td>
+            <td  style="border:1px solid black;width:30%;"><br>
+                <% if @matrix_protection.firm_adviser_sst == 1 %>
+                    <% if @adv.present? %>
+                        <% if @adv.firm.attached? %>
+                            <% if @adv.firm.image? %> 
+                                <%= image_tag @adv.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% else %>
+                    <div></br></div>         
+                <% end %>     
+            </td>
+            <td  style="border:1px solid black;width:30%;"><br>
+                <% if @matrix_protection.firm_responsible_sst == 1 %>
+                    <% if @res.present? %>
+                        <% if @res.firm.attached? %>
+                            <% if @res.firm.image? %> 
+                                <%= image_tag @res.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% else %>
+                    <div></br></div>         
+                <% end %>     
+            </td>
+        </tr> 
+        <tr>
+            <td  style="border:1px solid black;width:30%;"><%= @rep.name %> - Representante Legal</td>
+            <td  style="border:1px solid black;width:30%;"><%= @adv.name %> - Asesor SG-SST</td>
+            <td  style="border:1px solid black;width:40%;"><%= @res.name %> - Responsable SG-SST</td>
+        </tr>
+    </table>
+</div> 
+<div></br></div>   

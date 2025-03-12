@@ -16,7 +16,7 @@ class MatrixProtectionItemsController < ApplicationController
         @matrix_protection_item = MatrixProtectionItem.new(matrix_protection_item_params)
 
         if @matrix_protection_item.save then
-            redirect_back fallback_location: root_path, notice: t('.created') 
+            redirect_to crear_item_protection_matrix_protections_path(@matrix_protection_item.matrix_protection_id), notice: t('.created') 
         else
             render :edit, status: :unprocessable_entity
         end    

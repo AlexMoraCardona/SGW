@@ -1,0 +1,130 @@
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+    <%= javascript_importmap_tags %>
+</head>
+
+<br>
+<table class="table table-hover" style="border:1px solid black"> 
+<thead>
+    <tr>
+        <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
+            <% if @entity.logo.present? then %>
+                <%=  image_tag  @entity.logo, class: "image_peq" %>
+            <% end %>
+        </td>
+        <td rowspan="4"; colspan="8"; style="text-align:center; padding-bottom: 40px;">
+            <div class="col-9"><h5>MATRIZ LEGAL</h5><h6><%= @entity.business_name if @entity.present? %> Nit: <%= @entity.identification_number if @entity.present? %> </h6></div>
+        </td>
+        <td rowspan="4";  style="text-align:center">
+        </td>
+        <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
+
+        <td style="border:1px solid black"><%= @template.date if @template.present? %></td>
+        
+    </tr>
+    <tr> 
+        <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
+        <td style="border:1px solid black"><%= @template.date_updated if @template.present? %></td>
+    </tr>
+    <tr> 
+        <td colspan="2"; style="border:1px solid black">Versión:</td>
+        <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
+    </tr>
+    <tr> 
+        <td colspan="2"; style="border:1px solid black">Código:</td>
+        <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
+    </tr>
+
+</thead>
+<% if @matrix_legal_items.present? %>
+    <thead>
+        <tr>
+            <th scope="col" style="border:1px solid black"><%= t('.consecutive') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.year') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.risk_factor') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.issuing_entity') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.requirement') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.rule_name') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.applicable_article') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.apply') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.evidence_compliance') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.responsible') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.meets') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.description_compliance') %></th>
+            <th scope="col" style="border:1px solid black"><%= t('.attach_evidence') %></th>
+        </tr>
+    </thead> 
+    <tbody>
+        <% @matrix_legal_items.each do |matrix_legal_item| %>
+            <tr>
+                <td style="border:1px solid black"><%= matrix_legal_item.consecutive %></td>
+                <td style="border:1px solid black"><%= matrix_legal_item.year %></td>
+                <td style="border:1px solid black"><%= matrix_legal_item.risk_factor %></td>
+                <td style="border:1px solid black"><%= matrix_legal_item.issuing_entity %></td>
+                <td style="border:1px solid black"><%= matrix_legal_item.requirement %></td>
+                <td style="border:1px solid black"><%= matrix_legal_item.rule_name %></td>
+                <td style="border:1px solid black"><%= matrix_legal_item.applicable_article %></td>
+                <td style="border:1px solid black"><%= matrix_legal_item.label_apply(matrix_legal_item.apply) %></td>
+                <td style="border:1px solid black"><%= matrix_legal_item.evidence_compliance %></td>
+                <td style="border:1px solid black"><%= matrix_legal_item.responsible %></td>
+                <td style="border:1px solid black"><%= matrix_legal_item.label_meets(matrix_legal_item.meets) %></td>
+                <td style="border:1px solid black"><%= matrix_legal_item.description_compliance %></td>
+                <td style="border:1px solid black"><%= link_to "Descargar Archivo", rails_blob_path(matrix_legal_item.attach_evidence, disposition: 'attachment'), class: 'btn btn-sm btn-success' if matrix_legal_item.attach_evidence.attached? %></td>    
+            </tr>
+        <% end %>           
+    </tbody>      
+<% end %>     
+
+<tr>
+    <td colspan="5"; style="border:1px solid black; text-align:center">
+        <% if @matrix_legal.firm_legal_representative == 1 %>
+            <% if @rep.present? %>
+                <% if @rep.firm.attached? %>
+                   <% if @rep.firm.image? %> 
+                        <%= image_tag @rep.firm, class: "firma" %>
+                   <% end %>
+                <% end %>
+            <% end %> 
+        <% else %>
+           <div></br></div>         
+        <% end %>     
+    </td>
+    <td colspan="4"; style="border:1px solid black; text-align:center">
+        <% if @matrix_legal.firm_adviser_sst == 1 %>
+            <% if @adv.present? %>
+                <% if @adv.firm.attached? %>
+                    <% if @adv.firm.image? %> 
+                        <%= image_tag @adv.firm, class: "firma" %>
+                    <% end %>
+                <% end %>
+            <% end %>     
+        <% else %>
+            <div></br></div>         
+        <% end %>     
+    </td>
+    <td colspan="4"; style="border:1px solid black; text-align:center">
+        <% if @matrix_legal.firm_responsible_sst == 1 %>
+            <% if @res.present? %>
+                <% if @res.firm.attached? %>
+                    <% if @res.firm.image? %> 
+                        <%= image_tag @res.firm, class: "firma" %>
+                    <% end %>
+                <% end %>
+            <% end %>     
+        <% else %>
+            <div></br></div>         
+        <% end %>     
+    </td>
+</tr>
+<tr>
+    <td colspan="5"; style="border:1px solid black; text-align:center"><%= @matrix_legal.name_user(@matrix_legal.user_legal_representative) %> - Representante Legal</td>
+    <td colspan="4"; style="border:1px solid black; text-align:center"><%= @matrix_legal.name_user(@matrix_legal.user_adviser_sst) %> - Asesor SST</td>
+    <td colspan="4"; style="border:1px solid black; text-align:center"><%= @matrix_legal.name_user(@matrix_legal.user_responsible_sst) %> - Responsable SST</td>
+</tr>
+
+</table>  
+</div>  

@@ -228,9 +228,45 @@
         <% end %>
         <tr style="border:1px solid black">
             <td style="background-color: black;">&nbsp;</td>
-            <td  colspan="7"; style="border:1px solid black; text-align:center"><br><br></td>
-            <td  colspan="7"; style="border:1px solid black; text-align:center"><br><br></td>
-            <td  colspan="8"; style="border:1px solid black; text-align:center"><br><br></td>
+            <td  colspan="7"; style="border:1px solid black; text-align:center">
+                <% if @annual_work_plan.firm_legal_representative == 1 %>
+                    <% if @rep.present? %>
+                        <% if @rep.firm.attached? %>
+                           <% if @rep.firm.image? %> 
+                                <%= image_tag @rep.firm, class: "firma" %>
+                           <% end %>
+                        <% end %>
+                    <% end %> 
+                <% else %>
+                    <div></br></div>         
+                <% end %>     
+            </td>
+            <td  colspan="7"; style="border:1px solid black; text-align:center">
+                <% if @annual_work_plan.firm_adviser_sst == 1 %>
+                    <% if @adv.present? %>
+                        <% if @adv.firm.attached? %>
+                            <% if @adv.firm.image? %> 
+                                <%= image_tag @adv.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% else %>
+                    <div></br></div>         
+                <% end %>     
+            </td>
+            <td  colspan="8"; style="border:1px solid black; text-align:center">
+                <% if @annual_work_plan.firm_responsible_sst == 1 %>
+                    <% if @res.present? %>
+                        <% if @res.firm.attached? %>
+                            <% if @res.firm.image? %> 
+                                <%= image_tag @res.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% else %>
+                    <div></br></div>         
+                <% end %>     
+            </td>
             <td style="background-color: black;">&nbsp;</td>
         </tr>
         <tr>

@@ -8,7 +8,6 @@
     <table class="table table-hover" style="border:1px solid black"> 
         <thead>
             <tr>
-                <td rowspan="4"; style="background-color: black;">&nbsp;</td>
                 <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
                     <% if @occupational_exam.entity.logo.present? then %>
                         <%=  image_tag  @occupational_exam.entity.logo, class: "image_peq" %>
@@ -21,28 +20,23 @@
 
                 <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
 
-                <td style="border:1px solid black"><%= @occupational_exam.date_create  if @occupational_exam.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
+                <td style="border:1px solid black"><%= @template.date if @template.present? %></td>
 
             </tr>
             <tr> 
                 <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
-                <td style="border:1px solid black"><%= @occupational_exam.date_update  if @occupational_exam.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
+                <td style="border:1px solid black"><%= @template.date_updated if @template.present? %></td>
             </tr>
             <tr> 
                 <td colspan="2"; style="border:1px solid black">Versión:</td>
-                <td style="border:1px solid black"><%= @occupational_exam.version if @occupational_exam.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
+                <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
             </tr>
             <tr> 
                 <td colspan="2"; style="border:1px solid black">Código:</td>
-                <td style="border:1px solid black"><%= @occupational_exam.code if @occupational_exam.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
+                <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
             </tr>
         
             <tr>
-                <td style="background-color: black;">&nbsp;</td>
                 <th style="border:1px solid black">Nro</th>
                 <th style="border:1px solid black">FECHA EXAMEN</th>
                 <th style="border:1px solid black">FECHA DE VENCIMIENTO</th>
@@ -58,7 +52,6 @@
                 <th style="border:1px solid black">ACCIÓN  </th>
                 <th style="border:1px solid black">SEGUIMIENTO  </th>
                 <th style="border:1px solid black">EDITAR  </th>
-                <td style="background-color: black;">&nbsp;</td>
             </tr>
 
         </thead>
@@ -66,7 +59,6 @@
         <% @occupational_exam_items.each do |occupational_exam_item| %>             
             <tbody>
                 <tr>
-                    <td style="background-color: black;">&nbsp;</td>
                     <td style="border:1px solid black"><%= occupational_exam_item.consecutive %></td>
                     <td style="border:1px solid black"><%= occupational_exam_item.fec_exam %></td>
                     <td style="border:1px solid black"><%= occupational_exam_item.fec_venc %></td>
@@ -82,9 +74,9 @@
                     <td style="border:1px solid black"><%= occupational_exam_item.action %></td>
                     <td style="border:1px solid black"><%= occupational_exam_item.follow_up %></td>
                     <td style="border:1px solid black"><%= link_to t('common.edit'), edit_occupational_exam_item_path(occupational_exam_item), class: 'btn btn-xs btn-primary'  %></td>
-                    <td style="background-color: black;">&nbsp;</td>
                 </tr>
             </body>
         <% end %>
     </table>
-</div>    
+</div>  
+<div></br></div>  

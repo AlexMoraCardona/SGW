@@ -1,10 +1,33 @@
 class MatrixDangerRisksController < ApplicationController
     def index
-        if params[:entity_id].present?
-            @entity = Entity.find(params[:entity_id])
-            @matrix_danger_risk = MatrixDangerRisk.find_by(entity_id: params[:entity_id])
+        if  Current.user && Current.user.level > 0 && Current.user.level < 3
+            if params[:entity_id].present?
+                @entity = Entity.find(params[:entity_id])
+                @matrix_danger_risk = MatrixDangerRisk.find_by(entity_id: params[:entity_id])
+                @matrix_danger_items = MatrixDangerItem.where(matrix_danger_risk_id: @matrix_danger_risk.id).order(:consecutive) if @matrix_danger_risk.present?
+    
+                @total_items = 0
+                @uno = 0
+                @dos = 0
+                @tres = 0
+                @cuatro = 0
+                if @matrix_danger_items.present? 
+                    @matrix_danger_items.each do |item| 
+                        @total_items += 1 
+                        if item.risk_level_interpretation.to_s == 'I No Aceptable' ; @uno += 1
+                        elsif item.risk_level_interpretation.to_s == 'II No Aceptable' ; @dos += 1
+                        elsif item.risk_level_interpretation.to_s == 'III Aceptable' ; @tres += 1
+                        elsif item.risk_level_interpretation.to_s == 'IV Aceptable' ; @cuatro += 1    
+                        end
+                    end    
+                end 
+            else 
+                @entities = Entity.all
+            end    
+        elsif Current.user && Current.user.level > 2 
+            @entity = Entity.find(Current.user.entity)
+            @matrix_danger_risk = MatrixDangerRisk.find_by(entity_id: Current.user.entity.to_i)
             @matrix_danger_items = MatrixDangerItem.where(matrix_danger_risk_id: @matrix_danger_risk.id).order(:consecutive) if @matrix_danger_risk.present?
-
             @total_items = 0
             @uno = 0
             @dos = 0
@@ -20,17 +43,10 @@ class MatrixDangerRisksController < ApplicationController
                     end
                 end    
             end 
-
-        else    
-            if  Current.user && Current.user.level > 0 && Current.user.level < 4
-                @entities = Entity.all
-                @matrix_danger_risks = MatrixDangerRisk.all
-            else
-                redirect_to new_session_path, alert: t('common.not_logged_in')   
-                session.delete(:user_id)   
-            end           
-        end 
-         
+        else
+            redirect_to new_session_path, alert: t('common.not_logged_in')    
+            session.delete(:user_id)  
+        end     
     end    
 
     def new
@@ -55,20 +71,12 @@ class MatrixDangerRisksController < ApplicationController
     def update
         @matrix_danger_risk = MatrixDangerRisk.find(params[:id])
 
-        if (params[:matrix_danger_risk][:firm_legal_representative] != nil  && @matrix_danger_risk.user_legal_representative.to_i != Current.user.id.to_i )
-            redirect_to matrix_danger_risks_path, alert: "Su usuario no esta autorizado para actualizar la firma del Representante Legal."
-        elsif (params[:matrix_danger_risk][:firm_adviser_sst] != nil  && @matrix_danger_risk.user_adviser_sst.to_i != Current.user.id.to_i )
-            redirect_to matrix_danger_risks_path, alert: "Su usuario no esta autorizado para actualizar la firma del Asesor en SST."
-        elsif (params[:matrix_danger_risk][:firm_responsible_sst] != nil  && @matrix_danger_risk.user_responsible_sst.to_i != Current.user.id.to_i )
-            redirect_to matrix_danger_risks_path, alert: "Su usuario no esta autorizado para actualizar la firma del Responsable en SST."
-        else     
             if @matrix_danger_risk.update(matrix_danger_risk_params)
                 actualizar_fecha(@matrix_danger_risk.id)
                 redirect_to matrix_danger_risks_path, notice: 'Matriz actualizada correctamente'
             else
                 render :edit, matrix_danger_risks: :unprocessable_entity
             end 
-        end            
     end    
 
     def actualizar_fecha(id)
@@ -99,6 +107,9 @@ class MatrixDangerRisksController < ApplicationController
         @matrix_danger_items = MatrixDangerItem.where(matrix_danger_risk_id: params[:id].to_i).order(:consecutive)
         @template = Template.where("format_number = ? and document_vigente = ?",31,1).last  
         @entity = Entity.find(@matrix_danger_risk.entity_id) if @matrix_danger_risk.present?
+        @rep = User.find(@matrix_danger_risk.user_legal_representative) if  @matrix_danger_risk.user_legal_representative.present? && @matrix_danger_risk.user_legal_representative > 0
+        @adv = User.find(@matrix_danger_risk.user_adviser_sst) if  @matrix_danger_risk.user_adviser_sst.present? && @matrix_danger_risk.user_adviser_sst > 0
+        @res = User.find(@matrix_danger_risk.user_responsible_sst) if  @matrix_danger_risk.user_responsible_sst.present? && @matrix_danger_risk.user_responsible_sst > 0
     end
 
     def total_items
@@ -144,6 +155,10 @@ class MatrixDangerRisksController < ApplicationController
         @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ?", @matrix_danger_risk.id).order(:consecutive) if @matrix_danger_risk.present?
         @entity = Entity.find(@matrix_danger_risk.entity_id)  if @matrix_danger_risk.present?
         @template = Template.where("format_number = ? and document_vigente = ?",31,1).last  
+        @rep = User.find(@matrix_danger_risk.user_legal_representative) if  @matrix_danger_risk.user_legal_representative.present? && @matrix_danger_risk.user_legal_representative > 0
+        @adv = User.find(@matrix_danger_risk.user_adviser_sst) if  @matrix_danger_risk.user_adviser_sst.present? && @matrix_danger_risk.user_adviser_sst > 0
+        @res = User.find(@matrix_danger_risk.user_responsible_sst) if  @matrix_danger_risk.user_responsible_sst.present? && @matrix_danger_risk.user_responsible_sst > 0
+
 
         respond_to do |format| 
             format.html

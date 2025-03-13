@@ -1,8 +1,37 @@
 class MatrixCorrectiveActionsController < ApplicationController
     def index
-        if params[:entity_id].present?
-            @entity = Entity.find(params[:entity_id])
-            @matrix_corrective_action = MatrixCorrectiveAction.find_by(entity_id: params[:entity_id])
+        if  Current.user && Current.user.level > 0 && Current.user.level < 3
+            if params[:entity_id].present?
+                @entity = Entity.find(params[:entity_id])
+                @matrix_corrective_action = MatrixCorrectiveAction.find_by(entity_id: params[:entity_id])
+                @matrix_action_items = MatrixActionItem.where(matrix_corrective_action_id: @matrix_corrective_action.id).order(:consecutive) if @matrix_corrective_action.present?
+
+                @total_items = 0
+                @ac = 0
+                @am = 0
+                @ap = 0
+                @cerrada = 0
+                @abierta = 0
+                if @matrix_action_items.present?
+                    @matrix_action_items.each do |item| 
+                        @total_items += 1 
+                        if item.type_corrective.to_i == 0 ; @ap += 1
+                        elsif item.type_corrective.to_i == 1 ; @am += 1
+                        elsif item.type_corrective.to_i == 2 ; @ac += 1
+                        end
+                        @abierta += 1 if item.state_actions == 0
+                        @cerrada += 1 if item.state_actions == 1
+                    end
+                end  
+                @datos_estado_acciones = []
+                @datos_estado_acciones.push(["Abiertas", @abierta]) 
+                @datos_estado_acciones.push(["Cerradas", @cerrada]) 
+            else 
+                @entities = Entity.all
+            end    
+        elsif Current.user && Current.user.level > 2 
+            @entity = Entity.find(Current.user.entity)
+            @matrix_corrective_action = MatrixCorrectiveAction.find_by(entity_id: Current.user.entity.to_i)
             @matrix_action_items = MatrixActionItem.where(matrix_corrective_action_id: @matrix_corrective_action.id).order(:consecutive) if @matrix_corrective_action.present?
             @total_items = 0
             @ac = 0
@@ -24,17 +53,10 @@ class MatrixCorrectiveActionsController < ApplicationController
             @datos_estado_acciones = []
             @datos_estado_acciones.push(["Abiertas", @abierta]) 
             @datos_estado_acciones.push(["Cerradas", @cerrada]) 
-
-        else    
-            if  Current.user && Current.user.level > 0 && Current.user.level < 4
-                @entities = Entity.all
-                @matrix_corrective_actions = MatrixCorrectiveAction.all
-            else
-                redirect_to new_session_path, alert: t('common.not_logged_in')    
-                session.delete(:user_id)  
-            end           
-        end 
-         
+        else
+            redirect_to new_session_path, alert: t('common.not_logged_in')    
+            session.delete(:user_id)  
+        end     
     end     
 
     def new
@@ -89,6 +111,7 @@ class MatrixCorrectiveActionsController < ApplicationController
         @matrix_corrective_action = MatrixCorrectiveAction.find_by(id: params[:id].to_i)
         @matrix_action_items = MatrixActionItem.where(matrix_corrective_action_id: params[:id].to_i).order(:consecutive)
         @locations  = Location.where("entity_id = ?", @matrix_corrective_action.entity_id) if @matrix_corrective_action.present?
+        @template = Template.where("format_number = ? and document_vigente = ?",69,1).last  
 
     end
 
@@ -96,6 +119,8 @@ class MatrixCorrectiveActionsController < ApplicationController
         @matrix_corrective_action = MatrixCorrectiveAction.find(params[:id])
         @matrix_action_items = MatrixActionItem.where("matrix_corrective_action_id = ?", @matrix_corrective_action.id).order(:consecutive) if @matrix_corrective_action.present?
         @entity = Entity.find(@matrix_corrective_action.entity_id)  if @matrix_corrective_action.present?
+        @template = Template.where("format_number = ? and document_vigente = ?",69,1).last  
+
         respond_to do |format| 
             format.html
             format.pdf {render  pdf: 'resumen_pdf',

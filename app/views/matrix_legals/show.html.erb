@@ -8,7 +8,6 @@
     <table class="table table-hover" style="border:1px solid black"> 
         <thead>
             <tr>
-                <td style="background-color: black;">&nbsp;</td>
                 <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
                     <% if @entity.logo.present? then %>
                         <%=  image_tag  @entity.logo, class: "image_peq" %>
@@ -23,32 +22,24 @@
 
                 <td style="border:1px solid black"><%= @template.date if @template.present? %></td>
                 
-                <td style="background-color: black;">&nbsp;</td>
             </tr>
             <tr> 
-                <td style="background-color: black;">&nbsp;</td>
                 <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
                 <td style="border:1px solid black"><%= @template.date_updated if @template.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
             </tr>
             <tr> 
-                <td style="background-color: black;">&nbsp;</td>
                 <td colspan="2"; style="border:1px solid black">Versión:</td>
                 <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
             </tr>
             <tr> 
-                <td style="background-color: black;">&nbsp;</td>
                 <td colspan="2"; style="border:1px solid black">Código:</td>
                 <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
             </tr>
 
         </thead>
         <% if @matrix_legal_items.present? %>
             <thead>
                 <tr>
-                    <th style="background-color: black;">&nbsp;</th>
                     <th scope="col" style="border:1px solid black"><%= t('.consecutive') %></th>
                     <th scope="col" style="border:1px solid black"><%= t('.year') %></th>
                     <th scope="col" style="border:1px solid black"><%= t('.risk_factor') %></th>
@@ -64,13 +55,11 @@
                     <th scope="col" style="border:1px solid black"><%= t('.attach_evidence') %></th>
                     <th scope="col" style="border:1px solid black">Editar</th>
                     <th scope="col" style="border:1px solid black">Eliminar</th>
-                    <th style="background-color: black;">&nbsp;</th>
                 </tr>
             </thead> 
             <tbody>
                 <% @matrix_legal_items.each do |matrix_legal_item| %>
                     <tr>
-                        <td style="background-color: black;">&nbsp;</td>
                         <td style="border:1px solid black"><%= matrix_legal_item.consecutive %></td>
                         <td style="border:1px solid black"><%= matrix_legal_item.year %></td>
                         <td style="border:1px solid black"><%= matrix_legal_item.risk_factor %></td>
@@ -86,25 +75,56 @@
                         <td style="border:1px solid black"><%= link_to "Descargar Archivo", rails_blob_path(matrix_legal_item.attach_evidence, disposition: 'attachment'), class: 'btn btn-sm btn-success' if matrix_legal_item.attach_evidence.attached? %></td>    
                         <td style="border:1px solid black; text-align:center;"><%= link_to t('common.edit'), edit_matrix_legal_item_path(matrix_legal_item), class: 'btn btn-sm btn-primary'  %></td>
                         <td style="border:1px solid black; text-align:center;"><%= link_to t('common.delete'), matrix_legal_item_path(matrix_legal_item), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar?' }, class: 'btn btn-sm btn-danger' %></td>
-                        <td style="background-color: black;">&nbsp;</td>
                     </tr>
                 <% end %>           
             </tbody>      
         <% end %>     
 
         <tr>
-            <td style="background-color: black;">&nbsp;<br>&nbsp;<br>&nbsp;<br></td>
-            <td colspan="5"; style="border:1px solid black; text-align:center">&nbsp;</td>
-            <td colspan="5"; style="border:1px solid black; text-align:center">&nbsp;</td>
-            <td colspan="5"; style="border:1px solid black; text-align:center">&nbsp;</td>
-            <td style="background-color: black;">&nbsp;</td>
+            <td colspan="5"; style="border:1px solid black; text-align:center">
+                <% if @matrix_legal.firm_legal_representative == 1 %>
+                    <% if @rep.present? %>
+                        <% if @rep.firm.attached? %>
+                           <% if @rep.firm.image? %> 
+                                <%= image_tag @rep.firm, class: "firma" %>
+                           <% end %>
+                        <% end %>
+                    <% end %> 
+                <% else %>
+                   <div></br></div>         
+                <% end %>     
+            </td>
+            <td colspan="5"; style="border:1px solid black; text-align:center">
+                <% if @matrix_legal.firm_adviser_sst == 1 %>
+                    <% if @adv.present? %>
+                        <% if @adv.firm.attached? %>
+                            <% if @adv.firm.image? %> 
+                                <%= image_tag @adv.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% else %>
+                    <div></br></div>         
+                <% end %>     
+            </td>
+            <td colspan="5"; style="border:1px solid black; text-align:center">
+                <% if @matrix_legal.firm_responsible_sst == 1 %>
+                    <% if @res.present? %>
+                        <% if @res.firm.attached? %>
+                            <% if @res.firm.image? %> 
+                                <%= image_tag @res.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% else %>
+                    <div></br></div>         
+                <% end %>     
+            </td>
         </tr>
         <tr>
-            <td style="background-color: black;">&nbsp;</td>
             <td colspan="5"; style="border:1px solid black; text-align:center"><%= @matrix_legal.name_user(@matrix_legal.user_legal_representative) %> - Representante Legal</td>
             <td colspan="5"; style="border:1px solid black; text-align:center"><%= @matrix_legal.name_user(@matrix_legal.user_adviser_sst) %> - Asesor SST</td>
             <td colspan="5"; style="border:1px solid black; text-align:center"><%= @matrix_legal.name_user(@matrix_legal.user_responsible_sst) %> - Responsable SST</td>
-            <td style="background-color: black;">&nbsp;</td>
         </tr>
 
     </table>  

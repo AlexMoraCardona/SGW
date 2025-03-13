@@ -10,10 +10,9 @@
 <br>
 <div>
 
-    <table class="table table-hover" style="border:1px solid black"> 
+    <table style="border:1px solid black"> 
         <thead>
             <tr>
-                <td rowspan="4"; style="background-color: black;">&nbsp;</td>
                 <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
                     <% if @annual_work_plan.entity.logo.present? then %>
                         <%=  image_tag  @annual_work_plan.entity.logo, class: "image_peq" %>
@@ -27,27 +26,22 @@
                 <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
 
                 <td style="border:1px solid black"><%= @template.date if @template.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
 
             </tr>
             <tr> 
                 <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
                 <td style="border:1px solid black"><%= @template.date_updated if @template.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
             </tr>
             <tr> 
                 <td colspan="2"; style="border:1px solid black">Versión:</td>
                 <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
             </tr>
             <tr> 
                 <td colspan="2"; style="border:1px solid black">Código:</td>
                 <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
             </tr>
 
             <tr>
-                <td style="background-color: black;">&nbsp;</td>
                 <th style="border:1px solid black">Objetivo</th>
                 <th style="border:1px solid black">Meta</th>
                 <th style="border:1px solid black">Actividad</th>
@@ -60,10 +54,8 @@
                 <th colspan="3" style="border:1px solid black; text-align:center">Trimestre 4</th>
                 <th style="border:1px solid black">Evidencias</th>
                 <th style="border:1px solid black">Observaciones</th>
-                <td style="background-color: black;">&nbsp;</td>
             </tr>
             <tr>
-                <td style="background-color: black;">&nbsp;</td>
                 <th style="border:1px solid black">&nbsp;</th>
                 <th style="border:1px solid black">&nbsp;</th>
                 <th style="border:1px solid black">&nbsp;</th>
@@ -84,14 +76,12 @@
                 <th style="border:1px solid black">DIC</th>
                 <th style="border:1px solid black"></th>
                 <th style="border:1px solid black"></th>
-                <td style="background-color: black;">&nbsp;</td>
             </tr>   
         </thead>
 
         <% @annual_work_plan_items.each do |annual_work_plan_item| %>             
             <tbody>
                 <tr>
-                    <td style="background-color: black;">&nbsp;</td>
                     <td style="border:1px solid black"><%= annual_work_plan_item.aim %></td>
                     <td style="border:1px solid black"><%= annual_work_plan_item.goal %></td>
                     <td style="border:1px solid black"><%= annual_work_plan_item.activity %></td>
@@ -221,23 +211,54 @@
                     
                     <td style="border:1px solid black"><%= annual_work_plan_item.evidences_plan  %></td>
                     <td style="border:1px solid black"><%= annual_work_plan_item.observation  %></td>
-                    <td style="background-color: black;">&nbsp;</td>
                 </tr>
             </body>
         <% end %>
         <tr style="border:1px solid black">
-            <td style="background-color: black;">&nbsp;</td>
-            <td  colspan="6";style="border:1px solid black"><br><br></td>
-            <td  colspan="7";style="border:1px solid black"><br><br></td>
-            <td  colspan="7";style="border:1px solid black"><br><br></td>
-            <td style="background-color: black;">&nbsp;</td>
-        </tr> 
+            <td  colspan="6"; style="border:1px solid black; text-align:center">
+                <% if @annual_work_plan.firm_legal_representative == 1 %>
+                    <% if @rep.present? %>
+                        <% if @rep.firm.attached? %>
+                           <% if @rep.firm.image? %> 
+                                <%= image_tag @rep.firm, class: "firma" %>
+                           <% end %>
+                        <% end %>
+                    <% end %> 
+                <% else %>
+                    <div></br></div>         
+                <% end %>     
+            </td>
+            <td  colspan="7"; style="border:1px solid black; text-align:center">
+                <% if @annual_work_plan.firm_adviser_sst == 1 %>
+                    <% if @adv.present? %>
+                        <% if @adv.firm.attached? %>
+                            <% if @adv.firm.image? %> 
+                                <%= image_tag @adv.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% else %>
+                    <div></br></div>         
+                <% end %>     
+            </td>
+            <td  colspan="7"; style="border:1px solid black; text-align:center">
+                <% if @annual_work_plan.firm_responsible_sst == 1 %>
+                    <% if @res.present? %>
+                        <% if @res.firm.attached? %>
+                            <% if @res.firm.image? %> 
+                                <%= image_tag @res.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% else %>
+                    <div></br></div>         
+                <% end %>     
+            </td>
+        </tr>
         <tr>
-            <td style="background-color: black;">&nbsp;</td>
-            <td  colspan="6"><%= @annual_work_plan.name_user(@annual_work_plan.user_legal_representative) %> - Representante Legal</td>
-            <td  colspan="7"><%= @annual_work_plan.name_user(@annual_work_plan.user_adviser_sst) %> - Asesor SST</td>
-            <td  colspan="7"><%= @annual_work_plan.name_user(@annual_work_plan.user_responsible_sst) %> - Responsable SST</td>
-            <td style="background-color: black;">&nbsp;</td>
+            <td  colspan="6"; style="border:1px solid black"><%= @annual_work_plan.name_user(@annual_work_plan.user_legal_representative) %> - Representante Legal</td>
+            <td  colspan="7"; style="border:1px solid black"><%= @annual_work_plan.name_user(@annual_work_plan.user_adviser_sst) %> - Asesor SST</td>
+            <td  colspan="7"; style="border:1px solid black"><%= @annual_work_plan.name_user(@annual_work_plan.user_responsible_sst) %> - Responsable SST</td>
         </tr>
     </table>
 </div>    

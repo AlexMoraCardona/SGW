@@ -42,47 +42,45 @@
     <hr>
 
 <% if @matrix_danger_risk.present? %>
-    <table class="table table-hover"> 
+    <table style="border:1px solid black; width: 100%"> 
         <thead>
             <tr>
-                <th scope="col">Fecha creación</th>
-                <th scope="col">Fecha actualización</th>
-                <th scope="col">Representante legal</th>
-                <th scope="col">Asesor SST</th>
-                <th scope="col">Responsable SST</th>
+                <th scope="col"; style="border:1px solid black">Fecha creación</th>
+                <th scope="col"; style="border:1px solid black">Representante legal</th>
+                <th scope="col"; style="border:1px solid black">Asesor SST</th>
+                <th scope="col"; style="border:1px solid black">Responsable SST</th>
 
             </tr>
         </thead>
         <tr>  
-            <td scope="col"><%= @matrix_danger_risk.created_at %></td>   
-            <td scope="col"><%= @matrix_danger_risk.updated_at %></td>
-            <td scope="col"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_legal_representative) %></td>
-            <td scope="col"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_adviser_sst) %></td>
-            <td scope="col"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_responsible_sst) %></td> 
+            <td scope="col"; style="border:1px solid black"><%= @matrix_danger_risk.created_at.strftime("%F") %></td>   
+            <td scope="col"; style="border:1px solid black"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_legal_representative) %></td>
+            <td scope="col"; style="border:1px solid black"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_adviser_sst) %></td>
+            <td scope="col"; style="border:1px solid black"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_responsible_sst) %></td> 
         </tr>
     </table>  
     <br>
     <h2>Peligros y Riesgos</h2>
-    <table class="table table-hover"> 
+    <table style="border:1px solid black; width: 100%"> 
         <thead> 
             <tr>
-                <th scope="col">Nro.</th>
-                <th scope="col">Fecha propuesta</th>
-                <th scope="col">Tarea</th>
-                <th scope="col">Descripción de Peligro</th>
-                <th scope="col">Nivel de riesgo</th>
-                <th scope="col">Control de ingeniería</th>
-                <th scope="col">Controles administrativas, señalización advertencia</th>
-                <th scope="col">Equipos/Elementos de protección personal</th>
+                <th scope="col"; style="border:1px solid black">Nro.</th>
+                <th scope="col"; style="border:1px solid black">Fecha propuesta</th>
+                <th scope="col"; style="border:1px solid black">Tarea</th>
+                <th scope="col"; style="border:1px solid black">Descripción de Peligro</th>
+                <th scope="col"; style="border:1px solid black">Nivel de riesgo</th>
+                <th scope="col"; style="border:1px solid black">Control de ingeniería</th>
+                <th scope="col"; style="border:1px solid black">Controles administrativas, señalización advertencia</th>
+                <th scope="col"; style="border:1px solid black">Equipos/Elementos de protección personal</th>
             </tr>
         </thead>
 
         <% @matrix_danger_items.each do |matrix_danger_item| %>
             <tr> 
-                <td scope="col"><%= matrix_danger_item.consecutive %></td>  
-                <td scope="col"><%= matrix_danger_item.proposed_date %></td>
-                <td scope="col"><%= matrix_danger_item.task %></td>  
-                <td scope="col"><%= matrix_danger_item.clasification_danger_detail.name if matrix_danger_item.clasification_danger_detail_id.present? && matrix_danger_item.clasification_danger_detail_id.to_i > 0 %></td>
+                <td scope="col"; style="border:1px solid black"><%= matrix_danger_item.consecutive %></td>  
+                <td scope="col"; style="border:1px solid black"><%= matrix_danger_item.proposed_date %></td>
+                <td scope="col"; style="border:1px solid black"><%= matrix_danger_item.task %></td>  
+                <td scope="col"; style="border:1px solid black"><%= matrix_danger_item.clasification_danger_detail.name if matrix_danger_item.clasification_danger_detail_id.present? && matrix_danger_item.clasification_danger_detail_id.to_i > 0 %></td>
                 <% if matrix_danger_item.risk_level_interpretation.to_s == 'I No Aceptable'  %>
                     <td style="border:1px solid black; text-align:center; background-color:#F03553"><%= matrix_danger_item.risk_level_interpretation %></td>
                 <% end  %>    
@@ -95,11 +93,57 @@
                <% if matrix_danger_item.risk_level_interpretation.to_s == 'IV Aceptable'  %>
                     <td style="border:1px solid black; text-align:center; background-color:#038018"><%= matrix_danger_item.risk_level_interpretation %></td>
                 <% end  %> 
-                <td scope="col"><%= matrix_danger_item.intervention_measures_engineering_control %></td>  
-                <td scope="col"><%= matrix_danger_item.intervention_measures_acsw %></td>  
-                <td scope="col"><%= matrix_danger_item.intervention_measures_ppee %></td>  
+                <td scope="col"; style="border:1px solid black"><%= matrix_danger_item.intervention_measures_engineering_control %></td>  
+                <td scope="col"; style="border:1px solid black"><%= matrix_danger_item.intervention_measures_acsw %></td>  
+                <td scope="col"; style="border:1px solid black"><%= matrix_danger_item.intervention_measures_ppee %></td>  
             </tr>
-        <% end %>  
+        <% end %> 
+        <tr>
+            <td colspan="3"; style="border:1px solid black; text-align:center">&nbsp;
+                <% if @matrix_danger_risk.firm_legal_representative == 1 %>
+                    <% if @rep.present? %>
+                        <% if @rep.firm.attached? %>
+                           <% if @rep.firm.image? %> 
+                                <%= image_tag @rep.firm, class: "firma" %>
+                           <% end %>
+                        <% end %>
+                    <% end %> 
+                <% else %>
+                   <div></br></div>         
+                <% end %>     
+            </td>
+            <td colspan="3"; style="border:1px solid black; text-align:center">&nbsp;
+                <% if @matrix_danger_risk.firm_adviser_sst == 1 %>
+                    <% if @adv.present? %>
+                        <% if @adv.firm.attached? %>
+                            <% if @adv.firm.image? %> 
+                                <%= image_tag @adv.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% else %>
+                    <div></br></div>         
+                <% end %>     
+            </td>
+            <td colspan="3"; style="border:1px solid black; text-align:center">&nbsp;
+                <% if @matrix_danger_risk.firm_responsible_sst == 1 %>
+                    <% if @res.present? %>
+                        <% if @res.firm.attached? %>
+                            <% if @res.firm.image? %> 
+                                <%= image_tag @res.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% else %>
+                    <div></br></div>         
+                <% end %>     
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3"; style="border:1px solid black; text-align:center"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_legal_representative) %> - Representante Legal</td>
+            <td colspan="3"; style="border:1px solid black; text-align:center"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_adviser_sst) %> - Asesor SST</td>
+            <td colspan="3"; style="border:1px solid black; text-align:center"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_responsible_sst) %> - Responsable SST</td>
+        </tr>
     </table>  
     <br> 
     <hr> 

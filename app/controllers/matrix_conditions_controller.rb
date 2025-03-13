@@ -1,18 +1,21 @@
 class MatrixConditionsController < ApplicationController
     def index
-        if params[:entity_id].present?
-            @entity = Entity.find(params[:entity_id])
-            @matrix_condition = MatrixCondition.find_by(entity_id: params[:entity_id])
-            indicador_matrix_condition(@matrix_condition.id) if @matrix_condition.present?
-        else    
-            if  Current.user && Current.user.level > 0 && Current.user.level < 4
+        if  Current.user && Current.user.level > 0 && Current.user.level < 3
+            if params[:entity_id].present?
+                @entity = Entity.find(params[:entity_id].to_i)
+                @matrix_condition = MatrixCondition.find_by(entity_id: params[:entity_id].to_i)
+                indicador_matrix_condition(@matrix_condition.id) if @matrix_condition.present?
+            else 
                 @entities = Entity.all
-                @matrix_conditions = MatrixCondition.all
-            else
-                redirect_to new_session_path, alert: t('common.not_logged_in') 
-                session.delete(:user_id)     
-            end           
-        end 
+            end    
+        elsif Current.user && Current.user.level > 2 
+            @entity = Entity.find(Current.user.entity)
+            @matrix_condition = MatrixCondition.find_by(entity_id: Current.user.entity)
+            indicador_matrix_condition(@matrix_condition.id) if @matrix_condition.present?
+        else
+            redirect_to new_session_path, alert: t('common.not_logged_in')    
+            session.delete(:user_id)  
+        end     
     end 
 
 
@@ -163,7 +166,9 @@ class MatrixConditionsController < ApplicationController
     private
 
     def matrix_condition_params
-        params.require(:matrix_condition).permit(:date_unsafe, :user_representante, :user_responsible, :date_firm_representante, :date_firm_responsible, :firm_representante, :firm_responsible, :entity_id)
+        params.require(:matrix_condition).permit(:date_unsafe, :user_representante, :user_responsible, 
+                :date_firm_representante, :date_firm_responsible, :firm_representante, 
+                :firm_responsible, :entity_id)
     end 
 
 end 

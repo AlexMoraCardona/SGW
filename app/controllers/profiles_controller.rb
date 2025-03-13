@@ -1,17 +1,20 @@
 class ProfilesController < ApplicationController
     def index
-        if params[:entity_id].present? && Current.user 
-            @entity = Entity.find(params[:entity_id])
-            @survey_profiles = SurveyProfile.where("entity_id = ? and date_profile <= ? and date_vencimiento_profile >= ?", params[:entity_id].to_i, Date.today, Date.today)
-        else    
-            if  Current.user 
-                @entities = Entity.all.order(id: :asc) if Current.user.level == 1
-                @entities = Entity.find(Current.user.entity) if Current.user.level != 1 
-            else
-                redirect_to new_session_path, alert: t('common.not_logged_in')   
-                session.delete(:user_id)   
-            end           
-        end
+        if  Current.user && Current.user.level > 0 && Current.user.level < 3
+            if params[:entity_id].present?
+                @entity = Entity.find(params[:entity_id])
+                @survey_profiles = SurveyProfile.where("entity_id = ?", params[:entity_id]).order(id: :desc)
+            else 
+                @entities = Entity.all
+            end    
+        elsif Current.user && Current.user.level == 2 
+            @entity = Entity.find(Current.user.entity.to_i)
+            @survey_profiles = SurveyProfile.where("entity_id = ?",Current.user.entity.to_i)
+        else
+            redirect_to new_session_path, alert: t('common.not_logged_in')    
+            session.delete(:user_id)  
+        end     
+
     end    
 
     def create

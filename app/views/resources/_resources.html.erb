@@ -14,9 +14,8 @@
                 <h3>ASIGNACIÓN DE RECURSOS PARA EL SG-SST: <%= resource.year %> </h3>
             </div>        
 
-            <%= link_to t('common.create_item_resource'), crear_item_resource_resources_path(resource.id), class: 'btn btn-sm btn-warning' %> &nbsp;
+            <%= link_to t('common.create_item_resource'), crear_item_resource_resources_path(resource.id), class: 'btn btn-sm btn-warning'  if Current.user.level > 0 && Current.user.level < 4 %> &nbsp;
             <%= link_to t('common.show_resource'), resource_path(resource.id), class: 'btn btn-sm btn-warning' %> &nbsp;
-            <%= link_to 'Excel', resource_path(resource.id, format: :xlsx), class: 'btn btn-sm btn-success' %> &nbsp;
             <%= link_to "PDF", ver_resource_resources_path(resource.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;
 
             <div class="container col-12">

@@ -13,7 +13,6 @@
     <table class="table table-hover" style="border:1px solid black"> 
         <thead>
             <tr>
-                <td style="background-color: black;">&nbsp;</td>
                 <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
                     <% if @matrix_condition.entity.logo.present? then %>
                         <%=  image_tag  @matrix_condition.entity.logo, class: "image_peq" %>
@@ -26,30 +25,22 @@
                 </td>
                 <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
 
-                <td style="border:1px solid black"><%= @matrix_condition.date_unsafe  if @matrix_condition.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
+                <td style="border:1px solid black"><%= @template.date if @template.present? %></td>
             </tr>
             <tr> 
-                <td style="background-color: black;">&nbsp;</td>
                 <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
-                <td style="border:1px solid black"><%= @matrix_condition.date_unsafe if @matrix_condition.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
+                <td style="border:1px solid black"><%= @template.date_updated if @template.present? %></td>
             </tr>
             <tr> 
-                <td style="background-color: black;">&nbsp;</td>
                 <td colspan="2"; style="border:1px solid black">Versión:</td>
                 <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
             </tr>
             <tr> 
-                <td style="background-color: black;">&nbsp;</td>
                 <td colspan="2"; style="border:1px solid black">Código:</td>
                 <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
             </tr>
 
             <tr>  
-                <td style="background-color: black;">&nbsp;</td>
                 <td style="border:1px solid black; text-align:center">N°</TD>
                 <td style="border:1px solid black; text-align:center">Fecha reporte</TD>
                 <td style="border:1px solid black; text-align:center">Nombre  completo de quien reporta</TD>
@@ -61,7 +52,6 @@
                 <td style="border:1px solid black; text-align:center">TIPO DE ACCIÓN</TD>
                 <td style="border:1px solid black; text-align:center">ESTADO</TD>
                 <td style="border:1px solid black; text-align:center">OBSERVACIONES</TD>
-                <td style="background-color: black;">&nbsp;</td>
              </tr>  
              
         </thead>
@@ -70,7 +60,6 @@
             <% @numero += 1 %>          
             <tbody>
                 <tr>
-                    <td style="background-color: black;">&nbsp;</td>
                     <td style="border:1px solid black; text-align:center"><%= @numero %></td>
                     <td style="border:1px solid black"><%= item.date_item %></td>
                     <td style="border:1px solid black"><%= MatrixUnsafeItem.name_user(item.user_reporta) %></td>
@@ -82,7 +71,6 @@
                     <td style="border:1px solid black"><%= MatrixUnsafeItem.tipo_accion(item.tip_action) %></td>
                     <td style="border:1px solid black"><%= MatrixUnsafeItem.estado(item.state_unsafe) %></td>
                     <td style="border:1px solid black"><%= item.observations %></td>
-                    <td style="background-color: black;">&nbsp;</td>
                 </tr>
             </body>
         <% end %>

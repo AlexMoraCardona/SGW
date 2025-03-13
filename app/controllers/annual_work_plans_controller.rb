@@ -1,37 +1,44 @@
 class AnnualWorkPlansController < ApplicationController
     def index 
-        if params[:entity_id].present?
-            @entity = Entity.find(params[:entity_id])
-            @annual_work_plans = AnnualWorkPlan.where("entity_id = ?", params[:entity_id])
-        else    
-            if  Current.user && Current.user.level > 0 && Current.user.level < 4 
+        if  Current.user && Current.user.level > 0 && Current.user.level < 3
+            if params[:entity_id].present?
+                @entity = Entity.find(params[:entity_id])
+                @annual_work_plans = AnnualWorkPlan.where("entity_id = ?", params[:entity_id]).order(id: :desc)
+            else 
                 @entities = Entity.all
-                @annual_work_plans = AnnualWorkPlan.all
-            else
-                redirect_to new_session_path, alert: t('common.not_logged_in') 
-                session.delete(:user_id)     
-            end           
-        end 
+            end    
+        elsif Current.user && Current.user.level > 2 
+            @entity = Entity.find(Current.user.entity)
+            @annual_work_plans = AnnualWorkPlan.where("entity_id = ?",Current.user.entity)
+        else
+            redirect_to new_session_path, alert: t('common.not_logged_in')    
+            session.delete(:user_id)  
+        end     
     end  
     
     def show 
         @template = Template.where("format_number = ? and document_vigente = ?",33,1).last  
-        @annual_work_plan = AnnualWorkPlan.find(params[:id])
+        @annual_work_plan = AnnualWorkPlan.find(params[:id].to_i)
         @annual_work_plan_items = AnnualWorkPlanItem.where("annual_work_plan_id = ?", @annual_work_plan.id) if @annual_work_plan.present?
+        @rep = User.find(@annual_work_plan.user_legal_representative) if  @annual_work_plan.user_legal_representative.present? && @annual_work_plan.user_legal_representative > 0
+        @adv = User.find(@annual_work_plan.user_adviser_sst) if  @annual_work_plan.user_adviser_sst.present? && @annual_work_plan.user_adviser_sst > 0
+        @res = User.find(@annual_work_plan.user_responsible_sst) if  @annual_work_plan.user_responsible_sst.present? && @annual_work_plan.user_responsible_sst > 0
+
         respond_to do |format|
             format.html
             format.xlsx{ 
                 response.headers['Content-Disposition'] = 'attachment; filename="Evaluacion.xlsx"'
             }
         end    
-
-        pp
     end  
     
     def ver_plan
-        @annual_work_plan = AnnualWorkPlan.find(params[:id])
+        @annual_work_plan = AnnualWorkPlan.find(params[:id].to_i)
         @annual_work_plan_items = AnnualWorkPlanItem.where("annual_work_plan_id = ?", @annual_work_plan.id) if @annual_work_plan.present?
         @template = Template.where("format_number = ? and document_vigente = ?",33,1).last  
+        @rep = User.find(@annual_work_plan.user_legal_representative) if  @annual_work_plan.user_legal_representative.present? && @annual_work_plan.user_legal_representative > 0
+        @adv = User.find(@annual_work_plan.user_adviser_sst) if  @annual_work_plan.user_adviser_sst.present? && @annual_work_plan.user_adviser_sst > 0
+        @res = User.find(@annual_work_plan.user_responsible_sst) if  @annual_work_plan.user_responsible_sst.present? && @annual_work_plan.user_responsible_sst > 0
 
         respond_to do |format| 
             format.html

@@ -4,9 +4,10 @@
 <% end %>
 
 <% if @matrix_legal.present? %>
-    <%= link_to t('common.show_matrix_legal'), matrix_legal_path(@matrix_legal.id), class: 'btn btn-xs btn btn-warning' %>
-    <%= link_to t('common.factor'), crear_item_matrix_legals_path(@matrix_legal.id), class: 'btn btn-xs btn btn-warning' %>
-    <%= link_to t('common.indicator'), graficosml_path(@matrix_legal.id), class: 'btn btn-xs btn btn-success' %>
+    <%= link_to t('common.show_matrix_legal'), matrix_legal_path(@matrix_legal.id), class: 'btn btn-sm btn btn-warning' %>
+    <%= link_to t('common.factor'), crear_item_matrix_legals_path(@matrix_legal.id), class: 'btn btn-sm btn btn-warning' %>
+    <%= link_to t('common.indicator'), graficosml_path(@matrix_legal.id), class: 'btn btn-sm btn btn-success' %>
+    <%= link_to "PDF", ver_matrix_legal_path(@matrix_legal.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;
 
     <div class="container col-12">
         <br>
@@ -16,29 +17,9 @@
                 <%= @matrix_legal.created_at.strftime("%F") %> 
             </div>        
             <div class="col-sm-3">
-                <strong>Última fecha de actualización</strong><br>
-               <%= @matrix_legal.updated_at.strftime("%F") %> 
             </div>        
         </div>
 
-        <div class="row g-4">
-            <div class="col-sm-3">
-                <strong><%= t('.code') %></strong><br>
-                <%= @matrix_legal.code %> 
-            </div>
-            <div class="col-sm-3">
-               <strong><%= t('.version') %></strong><br>
-               <%= @matrix_legal.version %> 
-            </div>
-            <div class="col-sm-3">
-                <strong><%= t('.date_create') %></strong><br>
-                <%= @matrix_legal.date_create %> 
-            </div>        
-            <div class="col-sm-3">
-                <strong><%= t('.date_update') %></strong><br>
-               <%= @matrix_legal.date_update %> 
-            </div>        
-        </div>
         <hr>
 
         <div class="row g-4">
@@ -56,7 +37,7 @@
             </div>
             <div class="col-sm-3">
                 <% if @matrix_legal.firm_legal_representative.to_i == 0 %>
-                    <%= link_to t('common.firmar'), firmar_rep_matrix_legals_path(@matrix_legal.id, 1), class: 'btn btn-xs btn btn-warning' %>
+                    <%= link_to t('common.firmar'), firmar_rep_matrix_legals_path(@matrix_legal.id, 1), class: 'btn btn-sm btn btn-warning' %>
                 <% end %>    
             </div>
         </div>
@@ -75,7 +56,7 @@
             </div>
             <div class="col-sm-3">
                 <% if @matrix_legal.firm_adviser_sst.to_i == 0 %>
-                    <%= link_to t('common.firmar'), firmar_adv_matrix_legals_path(@matrix_legal.id, 2), class: 'btn btn-xs btn btn-warning' %>
+                    <%= link_to t('common.firmar'), firmar_adv_matrix_legals_path(@matrix_legal.id, 2), class: 'btn btn-sm btn btn-warning' %>
                 <% end %>    
             </div>
         </div>
@@ -95,7 +76,7 @@
             </div>
             <div class="col-sm-3">
                 <% if @matrix_legal.firm_responsible_sst == 0 %>
-                    <%= link_to t('common.firmar'), firmar_res_matrix_legals_path(@matrix_legal.id, 3), class: 'btn btn-xs btn btn-warning' %>
+                    <%= link_to t('common.firmar'), firmar_res_matrix_legals_path(@matrix_legal.id, 3), class: 'btn btn-sm btn btn-warning' %>
                 <% end %>     
             </div>
         </div>
@@ -115,22 +96,22 @@
             <table class="table table-hover">
                 <tr>
                     <td>
-                        <a class="btn btn-primary" href="<%= total_items_matrix_legals_path(@matrix_legal.id, 3)%>" role="button" >
+                        <a class="btn btn-sm btn-primary" href="<%= total_items_matrix_legals_path(@matrix_legal.id, 3)%>" role="button" >
                             Total Requisitos Legales <span class="badge bg-secondary"><%= @total_items.to_i %></td> </span>
                         </button>
                     </td> 
                     <td>
-                        <a class="btn btn-primary" href="<%= total_items_matrix_legals_path(@matrix_legal.id, 0)%>" role="button" >
+                        <a class="btn btn-sm btn-primary" href="<%= total_items_matrix_legals_path(@matrix_legal.id, 0)%>" role="button" >
                             No cumplidos <span class="badge bg-danger"><%= @no.to_i %></td> </span>
                         </button>
                     </td>
                     <td>
-                        <a class="btn btn-primary" href="<%= total_items_matrix_legals_path(@matrix_legal.id, 1)%>" role="button" >
+                        <a class="btn btn-sm btn-primary" href="<%= total_items_matrix_legals_path(@matrix_legal.id, 1)%>" role="button" >
                             Parcialmente cumplidos <span class="badge bg-warning"><%= @parcial.to_i %></td> </span>
                         </button>
                     </td>
                     <td>
-                        <a class="btn btn-primary" href="<%= total_items_matrix_legals_path(@matrix_legal.id, 2)%>" role="button" >
+                        <a class="btn btn-sm btn-primary" href="<%= total_items_matrix_legals_path(@matrix_legal.id, 2)%>" role="button" >
                             Cumplidos <span class="badge bg-success"><%= @si.to_i %></td> </span>
                         </button>
                     </td>
@@ -173,7 +154,7 @@
                         <td><%= matrix_legal_item.label_meets(matrix_legal_item.meets) %></td>
                         <td><%= matrix_legal_item.description_compliance %></td>
                         <td><%= link_to "Descargar Archivo", rails_blob_path(matrix_legal_item.attach_evidence, disposition: 'attachment'), class: 'btn btn-sm btn-success' if matrix_legal_item.attach_evidence.attached? %></td>    
-                        <td><%= link_to t('common.edit'), edit_matrix_legal_item_path(matrix_legal_item), class: 'btn btn-xs btn-primary'  %></td>
+                        <td><%= link_to t('common.edit'), edit_matrix_legal_item_path(matrix_legal_item), class: 'btn btn-sm btn-primary'  %></td>
                     </tr>
                 <% end %>           
             </tbody>      
@@ -181,7 +162,7 @@
     <% end %>     
 <% else %>
     <div>
-        <%= link_to t('.create_matrix_legal'), new_matrix_legal_path(entity_id: @entity.id), class: 'btn btn-xs btn-primary' if Current.user.level > 0 && Current.user.level < 3 %>
+        <%= link_to t('.create_matrix_legal'), new_matrix_legal_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level < 3 %>
     </div>
 <% end %>
 

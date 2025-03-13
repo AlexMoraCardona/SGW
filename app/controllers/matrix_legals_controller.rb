@@ -1,8 +1,30 @@
 class MatrixLegalsController < ApplicationController
     def index 
-        if params[:entity_id].present?
-            @entity = Entity.find(params[:entity_id])
-            @matrix_legal = MatrixLegal.find_by(entity_id: params[:entity_id])
+
+        if  Current.user && Current.user.level > 0 && Current.user.level < 3
+            if params[:entity_id].present?
+                @entity = Entity.find(params[:entity_id])
+                @matrix_legal = MatrixLegal.find_by(entity_id: params[:entity_id])
+                @matrix_legal_items = MatrixLegalItem.where(matrix_legal_id: @matrix_legal.id).order(:consecutive) if @matrix_legal.present?
+                @total_items = 0
+                @no = 0
+                @parcial = 0
+                @si = 0
+                if @matrix_legal_items.present?
+                    @matrix_legal_items.each do |item| 
+                        @total_items += 1 
+                        if item.meets.to_i == 0 ; @no += 1
+                        elsif item.meets.to_i == 1 ; @parcial += 1
+                        elsif item.meets.to_i == 2 ; @si += 1
+                        end
+                    end
+                end     
+            else 
+                @entities = Entity.all
+            end    
+        elsif Current.user && Current.user.level > 2 
+            @entity = Entity.find(Current.user.entity)
+            @matrix_legal = MatrixLegal.find_by(entity_id: Current.user.entity.to_i)
             @matrix_legal_items = MatrixLegalItem.where(matrix_legal_id: @matrix_legal.id).order(:consecutive) if @matrix_legal.present?
             @total_items = 0
             @no = 0
@@ -17,23 +39,46 @@ class MatrixLegalsController < ApplicationController
                     end
                 end
             end     
-        else    
-            if  Current.user && Current.user.level > 0 && Current.user.level < 4
-                @entities = Entity.all
-                @matrix_legals = MatrixLegal.all
-            else
-                redirect_to new_session_path, alert: t('common.not_logged_in')  
-                session.delete(:user_id)    
-            end           
-        end 
+        else
+            redirect_to new_session_path, alert: t('common.not_logged_in')    
+            session.delete(:user_id)  
+        end     
     end  
+
     
     def show
         @template = Template.where("format_number = ? and document_vigente = ?",76,1).last  
         @matrix_legal = MatrixLegal.find(params[:id])
         @matrix_legal_items = MatrixLegalItem.where("matrix_legal_id = ?", @matrix_legal.id) if @matrix_legal.present?
         @entity = Entity.find(@matrix_legal.entity_id) if @matrix_legal.present?
-    end      
+        @rep = User.find(@matrix_legal.user_legal_representative) if  @matrix_legal.user_legal_representative.present? && @matrix_legal.user_legal_representative > 0
+        @adv = User.find(@matrix_legal.user_adviser_sst) if  @matrix_legal.user_adviser_sst.present? && @matrix_legal.user_adviser_sst > 0
+        @res = User.find(@matrix_legal.user_responsible_sst) if  @matrix_legal.user_responsible_sst.present? && @matrix_legal.user_responsible_sst > 0
+
+
+    end  
+    
+    def ver_matrix_legal
+        @template = Template.where("format_number = ? and document_vigente = ?",76,1).last  
+        @matrix_legal = MatrixLegal.find(params[:id])
+        @matrix_legal_items = MatrixLegalItem.where("matrix_legal_id = ?", @matrix_legal.id) if @matrix_legal.present?
+        @entity = Entity.find(@matrix_legal.entity_id) if @matrix_legal.present?
+        @rep = User.find(@matrix_legal.user_legal_representative) if  @matrix_legal.user_legal_representative.present? && @matrix_legal.user_legal_representative > 0
+        @adv = User.find(@matrix_legal.user_adviser_sst) if  @matrix_legal.user_adviser_sst.present? && @matrix_legal.user_adviser_sst > 0
+        @res = User.find(@matrix_legal.user_responsible_sst) if  @matrix_legal.user_responsible_sst.present? && @matrix_legal.user_responsible_sst > 0
+
+        respond_to do |format| 
+            format.html
+            format.pdf {render  pdf: 'ver_matrix_legal',
+                margin: {top: 10, bottom: 10, left: 10, right: 10 },
+                disable_javascript: true,
+                page_size: 'letter',
+                footer: {
+                         right: 'Página: [page] de [topage]'
+                        }                
+                       } 
+        end
+    end    
 
     def total_items
         @matrix_legal_items = MatrixLegalItem.where(matrix_legal_id: params[:id]).order(:consecutive) if params[:id].present?
@@ -60,20 +105,12 @@ class MatrixLegalsController < ApplicationController
     def update
         @matrix_legal = MatrixLegal.find(params[:id])
 
-        if (params[:matrix_legal][:firm_legal_representative] != nil  && @matrix_legal.user_legal_representative.to_i != Current.user.id.to_i )
-            redirect_to matrix_legals_path, alert: "Su usuario no esta autorizado para actualizar la firma del Representante Legal."
-        elsif (params[:matrix_legal][:firm_adviser_sst] != nil  && @matrix_legal.user_adviser_sst.to_i != Current.user.id.to_i )
-            redirect_to matrix_legals_path, alert: "Su usuario no esta autorizado para actualizar la firma del Asesor en SST."
-        elsif (params[:matrix_legal][:firm_responsible_sst] != nil  && @matrix_legal.user_responsible_sst.to_i != Current.user.id.to_i )
-            redirect_to matrix_legals_path, alert: "Su usuario no esta autorizado para actualizar la firma del Responsable en SST."
+        if @matrix_legal.update(matrix_legal_params)
+            actualizar_fecha(@matrix_legal.id)
+            redirect_to matrix_legals_path, notice: 'Actualizado correctamente'
         else
-            if @matrix_legal.update(matrix_legal_params)
-                actualizar_fecha(@matrix_legal.id)
-                redirect_to matrix_legals_path, notice: 'Actualizado correctamente'
-            else
-                render :edit, matrix_legals: :unprocessable_entity
-            end         
-        end    
+            render :edit, matrix_legals: :unprocessable_entity
+        end         
     end 
     
     def actualizar_fecha(id)
@@ -113,9 +150,13 @@ class MatrixLegalsController < ApplicationController
     def firmar_rep
         @matrix_legal = MatrixLegal.find_by(id: params[:id].to_i)
         if params[:format].to_i == 1
+
             if  @matrix_legal.user_legal_representative.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
                 redirect_to firmar_rep_matrix_legals_path
             else
+
+                @dato =  Current.user.id
+                @dato2 =  Current.user.level
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Representante Legal."
             end    
         end

@@ -488,3 +488,33 @@
         </td>
     </tr>
 </table>
+<table style="width: 100%">
+    <tr style="border:1px solid black">
+            <td colspan="4"; style="border:1px solid black;text-align:center">
+                    <div>Responsable de la Inspección:</div>
+                    <div>&nbsp;</div>
+                    <div>&nbsp;</div>
+                    <% if @safety_inspection.firm_responsible == 1 %>
+                       <% if @user_responsable.firm.attached? %>
+                            <% if @user_responsable.firm.image? %> 
+                               <%= image_tag @user_responsable.firm, class: "firma" %>
+                               <p align="center">______________________</p>
+                            <% end %>
+                        <% end %>
+                    <% else %>    
+                            <p align="center">______________________</p>
+                    <% end %>
+                    <div class="row">
+                        <h6><strong><%= @user_responsable.name %></strong></h6>
+                    </div>
+                    <div class="row">
+                        <h6><%= @user_responsable.cargo_rol %></h6>
+                    </div>
+                    <div class="row  text-center">
+                        <h6><%= @user_responsable.document.abbreviation %>: <%= Firm.miles(@user_responsable.nro_document) %></h6>
+                    </div>
+                <br>
+            </td>      
+    </tr>  
+</table>
+

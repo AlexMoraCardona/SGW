@@ -1,19 +1,21 @@
 class SafetyInspectionsController < ApplicationController
     def index 
-        if params[:entity_id].present?
-            @entity = Entity.find(params[:entity_id])
-            @safety_inspections = SafetyInspection.where("entity_id = ?", params[:entity_id])
-            @safety_inspection_items = SafetyInspectionItem.all.order(:id)
-        else    
-            if  Current.user && Current.user.level == 1
+        if  Current.user && Current.user.level > 0 && Current.user.level < 3
+            if params[:entity_id].present?
+                @entity = Entity.find(params[:entity_id])
+                @safety_inspections = SafetyInspection.where("entity_id = ?", params[:entity_id]).order(id: :desc)
+                @safety_inspection_items = SafetyInspectionItem.all.order(:id)
+            else 
                 @entities = Entity.all
-                @safety_inspections = SafetyInspection.all
-                @safety_inspection_items = SafetyInspectionItem.all
-            else
-                redirect_to new_session_path, alert: t('common.not_logged_in') 
-                session.delete(:user_id)     
-            end           
-        end 
+            end    
+        elsif Current.user && Current.user.level == 3 
+            @entity = Entity.find(Current.user.entity)
+            @safety_inspections = SafetyInspection.where("entity_id = ?",Current.user.entity)
+            @safety_inspection_items = SafetyInspectionItem.all.order(:id)
+        else
+            redirect_to new_session_path, alert: t('common.not_logged_in')    
+            session.delete(:user_id)  
+        end     
     end  
     
     def show 

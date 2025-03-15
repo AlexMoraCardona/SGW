@@ -3,5 +3,12 @@ class DetailDisease < ApplicationRecord
 
     def self.ransackable_attributes(auth_object = nil)
         ["name"]
-    end     
+    end  
+    
+    def self.label_name_disease(dato)
+        nombre = DetailDisease.find(dato).name
+        return nombre;
+    end   
+    
+
 end

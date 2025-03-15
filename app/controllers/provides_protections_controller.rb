@@ -1,18 +1,23 @@
 class ProvidesProtectionsController < ApplicationController
     def index
-        if params[:entity_id].present?
-            @entity = Entity.find(params[:entity_id])
-            @provides_protections = ProvidesProtection.where("entity_id = ?", params[:entity_id]).order(created_at: :desc)
-        else    
-            if  Current.user && Current.user.level == 1
+        if  Current.user && Current.user.level > 0 && Current.user.level < 3
+            if params[:entity_id].present?
+                @entity = Entity.find(params[:entity_id])
+                @provides_protections = ProvidesProtection.where("entity_id = ?", params[:entity_id]).order(id: :desc)
+            else 
                 @entities = Entity.all
-                @provides_protections = ProvidesProtection.all
-            else
-                redirect_to new_session_path, alert: t('common.not_logged_in')  
-                session.delete(:user_id)    
-            end           
-        end 
-    end 
+            end    
+        elsif Current.user && Current.user.level == 3 
+            @entity = Entity.find(Current.user.entity)
+            @provides_protections = ProvidesProtection.where("entity_id = ?",Current.user.entity)
+        elsif Current.user && Current.user.level == 5 
+            @entity = Entity.find(Current.user.entity)
+            @provides_protections = ProvidesProtection.where("entity_id = ? and user_colaborador = ?",Current.user.entity, Current.user.id)
+        else
+            redirect_to new_session_path, alert: t('common.not_logged_in')    
+            session.delete(:user_id)  
+        end     
+    end  
     
     def show
         @template = Template.where("format_number = ? and document_vigente = ?",53,1).last  

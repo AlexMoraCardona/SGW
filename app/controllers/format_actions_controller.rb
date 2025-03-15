@@ -1,17 +1,19 @@
 class FormatActionsController < ApplicationController
     def index
-        if params[:entity_id].present?
-            @entity = Entity.find(params[:entity_id])
-            @format_actions = FormatAction.where(entity_id: @entity.id).order(:date_format) if @entity.id.present?
-        else    
-            if  Current.user && Current.user.level == 1
+        if  Current.user && Current.user.level > 0 && Current.user.level < 3
+            if params[:entity_id].present?
+                @entity = Entity.find(params[:entity_id])
+                @format_actions = FormatAction.where("entity_id = ?", params[:entity_id]).order(id: :desc)
+            else 
                 @entities = Entity.all
-                @format_actions = FormatAction.all
-            else
-                redirect_to new_session_path, alert: t('common.not_logged_in')  
-                session.delete(:user_id)    
-            end           
-        end 
+            end    
+        elsif Current.user && Current.user.level == 3 
+            @entity = Entity.find(Current.user.entity)
+            @format_actions = FormatAction.where("entity_id = ?",Current.user.entity)
+        else
+            redirect_to new_session_path, alert: t('common.not_logged_in')    
+            session.delete(:user_id)  
+        end     
     end    
 
     def new

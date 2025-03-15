@@ -31,6 +31,7 @@ class Template < ApplicationRecord
         if dato == 0 ; 'Acta'
         elsif dato == 1 ; 'Informe'
         elsif dato == 2 ; 'Encuesta'
+        elsif dato == 3 ; 'Documento'
         end 
     end  
 

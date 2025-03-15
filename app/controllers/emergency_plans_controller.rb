@@ -1,16 +1,15 @@
 class EmergencyPlansController < ApplicationController
     def index
-        if params[:entity_id].present?
-            @entity = Entity.find(params[:entity_id])
-            @emergency_plans = EmergencyPlan.where("entity_id = ?",params[:entity_id])
-        else    
-            if  Current.user && Current.user.level == 1
+        if  Current.user && Current.user.level > 0 && Current.user.level < 3
+            if params[:entity_id].present?
+                @entity = Entity.find(params[:entity_id])
+                @emergency_plans = EmergencyPlan.where("entity_id = ?", params[:entity_id]).order(id: :desc)
+            else 
                 @entities = Entity.all
-                @emergency_plans = EmergencyPlan.all
-            else
-                redirect_to new_session_path, alert: t('common.not_logged_in')     
-                session.delete(:user_id) 
-            end           
+            end    
+        else
+            redirect_to new_session_path, alert: t('common.not_logged_in')    
+            session.delete(:user_id)  
         end 
     end    
 

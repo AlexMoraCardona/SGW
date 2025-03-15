@@ -1,9 +1,15 @@
 class EventsController < ApplicationController
     def index
-        if  Current.user && Current.user.level == 1
+        if  Current.user && Current.user.level > 0 && Current.user.level < 4
             #@events = Event.all
-            @q = Event.ransack(params[:q])
-            @pagy, @events = pagy(@q.result(date: :desc), items: 3)
+            if Current.user.level == 1 || Current.user.level == 2  
+                @q = Event.ransack(params[:q]) 
+                @pagy, @events = pagy(@q.result(date: :desc), items: 3)
+            else 
+                @todos = Event.where("entity_id = ?",Current.user.entity)
+                @q = @todos.ransack(params[:q]) 
+                @pagy, @events = pagy(@q.result(date: :desc), items: 3)
+            end
 
          else
              redirect_to new_session_path, alert: t('common.not_logged_in')   

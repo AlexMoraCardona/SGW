@@ -6,11 +6,11 @@
 <div class="container col-11">
         <div class="d-flex">
             <div class="container">
-               <h2 class="display-5"> <%= t('.title')%></h2>
+               <h2> <%= t('.title')%></h2>
             </div> 
         </div>
         <div>
-            <%= link_to t('.create_indicator'), new_indicator_path, class: 'btn btn-xs btn-primary'  %>
+            <%= link_to t('.create_indicator'), new_indicator_path, class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level < 3 %>
         </div>
         <hr>
     <table class="table table-hover">
@@ -18,7 +18,8 @@
             <tr>
                 <th scope="col"><%= t('.name') %></th>
                 <th scope="col"><%= t('.description') %></th>
-                <th scope="col"><%= t('common.edit') %></th>
+                <th scope="col"><%= t('common.show') %></th>
+                <th scope="col"><%= t('common.edit') if Current.user.level > 0 && Current.user.level < 3  %></th>
             </tr>
         </thead>
         <tbody>

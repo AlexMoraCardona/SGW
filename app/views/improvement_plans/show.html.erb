@@ -14,7 +14,7 @@
                     <% end %> 
                 </td>
                 <td rowspan="4"; colspan="5"; style="text-align:center">
-                    <div class="col-10"><h6><%= @template.name if @template.present? %></h6></div>
+                    <div class="col-10"><h6><%= @template.name if @template.present? %></h6><h6><%= @improvement_plan.entity.business_name if @improvement_plan.present? %> Nit: <%= @improvement_plan.entity.identification_number if @improvement_plan.present? %> </h6></div>
                 </td>
                 <td rowspan="4";  style="text-align:center">
                 </td>
@@ -64,6 +64,28 @@
                 </tr>
             </body> 
         <% end %>
+        <tr style="border:1px solid black">
+            <td  colspan="4"; style="border:1px solid black"><br>
+                <% if @improvement_plan.firm_representante == 1 %>
+                    <% if @rep.present? %>
+                        <% if @rep.firm.attached? %>
+                           <% if @rep.firm.image? %> 
+                                <%= image_tag @rep.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% end %>     
+            </td>
+            <td  colspan="4"; style="border:0px solid black"><br>
+            </td>
+            <td  colspan="4"; style="border:0px solid black"><br>
+            </td>
+        </tr> 
+        <tr>
+            <td  colspan="4"; style="border:1px solid black"><%= @rep.name %> - Representante Legal</td>
+            <td  colspan="4"; style="border:0px solid black"></td>
+            <td  colspan="4"; style="border:0px solid black"></td>
+        </tr>
     </table>  
     </br>
 </div>    

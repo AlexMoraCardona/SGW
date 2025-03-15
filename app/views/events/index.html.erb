@@ -6,7 +6,7 @@
 <div class="container col-11">
         <div class="d-flex">
             <div class="container">
-               <h2 class="display-5"> <%= t('.title')%></h2>
+               <h2> <%= t('.title')%></h2>
                <%= link_to t('.create_event'), new_event_path, class: 'btn btn-sm btn-primary'  %>
             </div> 
         </div>
@@ -15,8 +15,10 @@
             <%= f.label :date_new_eq %>
             <%= f.date_field :date_new_eq %>
             &nbsp;&nbsp;
-            <%= f.label :entity_id_eq %>
-            <%= f.select :entity_id_eq, Entity.pluck(:business_name, :id).uniq,  {include_blank: true}, style: "width: 200px;" %>
+            <% if Current.user.level > 0 &&  Current.user.level < 3 %>
+                <%= f.label :entity_id_eq %>
+                <%= f.select :entity_id_eq, Entity.pluck(:business_name, :id).uniq,  {include_blank: true}, style: "width: 200px;" %>
+            <% end %>    
             </br> 
             <%= f.label :user_id_eq %>
             <%= f.select :user_id_eq, User.pluck(:name, :id).uniq,  {include_blank: true}, style: "width: 200px;" %>

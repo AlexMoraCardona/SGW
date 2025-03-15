@@ -4,7 +4,7 @@
 
 
 <% if @direction_reviews.present? %>
-    <%= link_to t('.create_direction_review'), new_direction_review_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+    <%= link_to t('.create_direction_review'), new_direction_review_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level <  3 %>
 
     <table class="table table-hover"> 
 
@@ -15,7 +15,7 @@
             </div>        
 
             <%= link_to t('common.show_review'), direction_review_path(direction_review.id), class: 'btn btn-sm btn-warning' %> &nbsp;
-            <%= link_to t('common.edit'), edit_direction_review_path(direction_review.id), class: 'btn btn-sm btn-warning' %> &nbsp;
+            <%= link_to t('common.edit'), edit_direction_review_path(direction_review.id), class: 'btn btn-sm btn-warning' if Current.user.level > 0 && Current.user.level <  3 %> &nbsp;
             <%= link_to "PDF", ver_review_pdf_path(direction_review.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;
 
             <div class="container col-12">

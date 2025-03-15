@@ -105,6 +105,10 @@ class User < ApplicationRecord
         return usuarios if usuarios.present?
     end    
 
+    def self.label_name(dato)
+        @nombre_usuario = User.find(dato).name
+        return @nombre_usuario
+    end  
 
     private
     def downcase_attributes

@@ -1,27 +1,28 @@
 class ImprovementPlansController < ApplicationController
     def index 
-        if params[:entity_id].present?
-            @entity = Entity.find(params[:entity_id])
-            @improvement_plans = ImprovementPlan.where("entity_id = ?", params[:entity_id])
-            @improvement_items = ImprovementItem.all
-        else    
-            if  Current.user && Current.user.level == 1
-                @entities = Entity.all
-                @improvement_plans = ImprovementPlan.all
+        if  Current.user && Current.user.level > 0 && Current.user.level < 3
+            if params[:entity_id].present?
+                @entity = Entity.find(params[:entity_id])
+                @improvement_plans = ImprovementPlan.where("entity_id = ?", params[:entity_id]).order(id: :desc)
                 @improvement_items = ImprovementItem.all
-            else
-                redirect_to new_session_path, alert: t('common.not_logged_in')     
-                session.delete(:user_id) 
-            end           
-        end 
+            else 
+                @entities = Entity.all
+            end    
+        elsif Current.user && Current.user.level == 3 
+            @entity = Entity.find(Current.user.entity)
+            @improvement_plans = ImprovementPlan.where("entity_id = ?",Current.user.entity)
+            @improvement_items = ImprovementItem.all
+        else
+            redirect_to new_session_path, alert: t('common.not_logged_in')    
+            session.delete(:user_id)  
+        end     
     end  
     
     def show 
         @template = Template.where("format_number = ? and document_vigente = ?",72,1).last  
         @improvement_plan = ImprovementPlan.find(params[:id])
         @entity = Entity.find(@improvement_plan.entity_id) if @improvement_plan.present?
-        @user_responsable = User.find(@improvement_plan.user_responsible)
-        @user_representante = User.find(@improvement_plan.user_representante)
+        @rep = User.find(@improvement_plan.user_representante)
 
         @improvement_items = ImprovementItem.where("improvement_plan_id = ?", @improvement_plan.id) if @improvement_plan.present?
         respond_to do |format|
@@ -37,9 +38,8 @@ class ImprovementPlansController < ApplicationController
         @improvement_items = ImprovementItem.where("improvement_plan_id = ?", @improvement_plan.id) if @improvement_plan.present?
         @template = Template.where("format_number = ? and document_vigente = ?",72,1).last  
         @entity = Entity.find(@improvement_plan.entity_id) if @improvement_plan.present?
-        @user_responsable = User.find(@improvement_plan.user_responsible)
-        @user_representante = User.find(@improvement_plan.user_representante)
-
+        @rep = User.find(@improvement_plan.user_representante)
+        
         respond_to do |format| 
             format.html
             format.pdf {render  pdf: 'ver_improvement_plan_pdf',

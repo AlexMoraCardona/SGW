@@ -1,11 +1,11 @@
 class IndicatorsController < ApplicationController
     def index
-        if  Current.user && Current.user.level == 1
-            @indicators = Indicator.all 
+        if  Current.user && Current.user.level > 0 && Current.user.level < 4
+                @indicators = Indicator.all.order(id: :desc)
         else
-             redirect_to new_session_path, alert: t('common.not_logged_in') 
-             session.delete(:user_id)     
-         end           
+            redirect_to new_session_path, alert: t('common.not_logged_in')    
+            session.delete(:user_id)  
+        end    
     end    
 
     def new
@@ -24,6 +24,11 @@ class IndicatorsController < ApplicationController
     end    
  
     def edit
+        @indicator = Indicator.find(params[:id])
+        @cycles = Cycle.all 
+    end
+
+    def show
         @indicator = Indicator.find(params[:id])
         @cycles = Cycle.all 
     end

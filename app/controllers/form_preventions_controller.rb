@@ -1,22 +1,22 @@
 class FormPreventionsController < ApplicationController
     def index
-        if params[:entity_id].present? && Current.user 
-            @entity = Entity.find(params[:entity_id])
-            if Current.user.level == 1 || Current.user.level == 2 then
-                @admin_extent_dangers = AdminExtentDanger.where("entity_id = ?", params[:entity_id].to_i).order(id: :desc)  
-            else
-                @admin_extent_dangers = AdminExtentDanger.where("entity_id = ? and user_id = ?", params[:entity_id].to_i, Current.user.id).order(id: :desc)  
-            end                    
-                
-        else     
-            if  Current.user  
-                @entities = Entity.all.order(id: :asc) if Current.user.level == 1
-                @entitie = Entity.find(Current.user.entity) if Current.user.level != 1 
-            else
-                redirect_to new_session_path, alert: t('common.not_logged_in')    
-                session.delete(:user_id)  
-            end           
-        end
+        if  Current.user && Current.user.level > 0 && Current.user.level < 3
+            if params[:entity_id].present?
+                @entity = Entity.find(params[:entity_id])
+                @admin_extent_dangers = AdminExtentDanger.where("entity_id = ?", params[:entity_id]).order(id: :desc)
+            else 
+                @entities = Entity.all
+            end    
+        elsif Current.user && Current.user.level == 3 
+            @entity = Entity.find(Current.user.entity)
+            @admin_extent_dangers = AdminExtentDanger.where("entity_id = ?",Current.user.entity)
+        elsif Current.user && Current.user.level == 5 
+            @entity = Entity.find(Current.user.entity)
+            @admin_extent_dangers = AdminExtentDanger.where("entity_id = ? and user_id = ?",Current.user.entity, Current.user.id)
+        else
+            redirect_to new_session_path, alert: t('common.not_logged_in')    
+            session.delete(:user_id)  
+        end     
     end    
 
     def create

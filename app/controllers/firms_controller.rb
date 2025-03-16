@@ -58,6 +58,24 @@ class FirmsController < ApplicationController
         evidence = @firm.evidence_id
         @firm.destroy
         redirect_to crear_firma_evaluation_rule_detail_path(evidence), notice: 'Firma borrada correctamente', firm: :see_other
+    end   
+    
+    def firma_fecha
+        @firm = Firm.find(params[:id])
+        @firm.date_authorize_firm =  Time.now
+        @firm.authorize_firm = 1
+        
+        if Current.user.id == @firm.user_id
+            if @firm.save then
+                redirect_to edit_evaluation_rule_detail_path(@firm.evidence.evaluation_rule_detail_id), notice: "Documento firmado correctamente!"
+            else
+                redirect_to edit_evaluation_rule_detail_path(@firm.evidence.evaluation_rule_detail_id), alert: "Se presento error en la firma del documento." 
+            end
+        else
+            redirect_to edit_evaluation_rule_detail_path(@firm.evidence.evaluation_rule_detail_id), alert: "Su usuario no corresponde con el nombre de la firma del documento." 
+        end    
+
+
     end    
 
     private

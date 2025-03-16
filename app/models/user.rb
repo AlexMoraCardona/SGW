@@ -60,9 +60,9 @@ class User < ApplicationRecord
     end 
 
     def self.calculo_sex(entity)
-        users = User.where("entity = ? and state = ? and level > ?", entity.id, 1, 2).order(:sex) if entity.present?
+        users = User.where("entity = ? and state = ? and level > ?", entity, 1, 2).order(:sex) if entity.present?
         total = users.count if users.present?
-        @datos_sex = []
+        datos_sex = []
         if users.present? then
             users.group_by(&:sex).each  do |niv, det|
                 cant = 0
@@ -73,31 +73,31 @@ class User < ApplicationRecord
 
                 hom = "Hombres: " +  cant.to_s  if  niv.to_i == 0
                 muj = "Mujeres: " + cant.to_s if  niv.to_i == 1
-                @datos_sex.push([hom, por.to_f]) if  niv.to_i == 0
-                @datos_sex.push([muj, por.to_f]) if  niv.to_i == 1
+                datos_sex.push([hom, por.to_f]) if  niv.to_i == 0
+                datos_sex.push([muj, por.to_f]) if  niv.to_i == 1
             end
         end  
-        return @datos_sex  
+        return datos_sex  
     end     
 
     def self.calculo_clasificacion_cargo(entity)
-        users = User.where("entity = ? and state = ? and level > ?", entity.id, 1, 2).order(:clasification_post) if entity.present?
-        @total_colaboradores = 0
-        @datos_clasificacion_cargo = []
+        users = User.where("entity = ? and state = ? and level > ?", entity, 1, 2).order(:clasification_post) if entity.present?
+        total_colaboradores = 0
+        datos_clasificacion_cargo = []
         if users.present? then
             users.group_by(&:clasification_post).each  do |niv, det|
                 cant = 0
                 det.each do |d|
-                    @total_colaboradores += 1 
+                    total_colaboradores += 1 
                    cant += 1 
                 end  
                 adm = "Administrativos: " +  cant.to_s  if  niv.to_i == 0
                 ope = "Operarios: " + cant.to_s if  niv.to_i == 1
-                @datos_clasificacion_cargo.push([adm, cant]) if  niv.to_i == 0
-                @datos_clasificacion_cargo.push([ope, cant]) if  niv.to_i == 1
+                datos_clasificacion_cargo.push([adm, cant]) if  niv.to_i == 0
+                datos_clasificacion_cargo.push([ope, cant]) if  niv.to_i == 1
             end
         end  
-        return @datos_clasificacion_cargo  
+        return datos_clasificacion_cargo  
     end  
     
     def self.usuarios_empresa

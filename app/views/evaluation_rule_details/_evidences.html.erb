@@ -2,41 +2,48 @@
     <br>
     <h5 class="table-success">Evidencias </h5>
     <hr>
-    <table class="table table-success table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Evidencia Nro.</th>
-                <th scope="col">Fecha</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Ver</th>
-                <th scope="col">Editar</th>
-                <th scope="col">Integrantes</th>
-                <th scope="col">Firmas</th>
-                <th scope="col">Compromisos</th>
-                <th scope="col">PDF</th>
-                <th scope="col">Ayuda</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% @evidences.each do |evidence| %> 
-                <tr>
-                    <td><%= evidence.id %></td>
-                    <td><%= evidence.date %></td>
-                    <td><%= evidence.template.name %></td> 
-                    <td><%= link_to "Ver", ver_evidencia_evaluation_rule_detail_path(evidence.id), class: 'btn btn-sm btn-success' %> </td>
-                    <td><%= link_to "Editar", edit_evidence_path(evidence), class: 'btn btn-sm btn-success' %> </td>
-                    <td><%= link_to "Integrantes", crear_participant_evaluation_rule_detail_path(evidence.id), class: 'btn btn-sm btn-success' %> </td>
-                    <td><%= link_to "Firmas", crear_firma_evaluation_rule_detail_path(evidence.id), class: 'btn btn-sm btn-success' %> </td>
-                    <td><%= link_to "Compromisos", crear_compromiso_evaluation_rule_detail_path(evidence.id), class: 'btn btn-sm btn-success' %> </td>
-                    <td><%= link_to "PDF", ver_evidencia_evaluation_rule_detail_path(evidence.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
-                    <td><button type="button" class: 'btn btn-sm btn-success' 
+    <% @evidences.each do |evidence| %> 
+        <div>
+                <strong><%= evidence.template.name %></strong></br> <%= evidence.date %>
+        </div>         
+        <div>
+                <%= link_to "Ver", ver_evidencia_evaluation_rule_detail_path(evidence.id), class: 'btn btn-sm btn-success' %> 
+                <%= link_to "Editar", edit_evidence_path(evidence), class: 'btn btn-sm btn-success' if Current.user.level > 0 && Current.user.level < 3 %> 
+                <%= link_to "Integrantes", crear_participant_evaluation_rule_detail_path(evidence.id), class: 'btn btn-sm btn-success' if Current.user.level > 0 && Current.user.level < 3 %> 
+                <%= link_to "Firmas", crear_firma_evaluation_rule_detail_path(evidence.id), class: 'btn btn-sm btn-success' if Current.user.level > 0 && Current.user.level < 3 %> 
+                <%= link_to "Compromisos", crear_compromiso_evaluation_rule_detail_path(evidence.id), class: 'btn btn-sm btn-success' if Current.user.level > 0 && Current.user.level < 3 %>
+                <%= link_to "PDF", ver_evidencia_evaluation_rule_detail_path(evidence.id, format: 'pdf'), class: 'btn btn-sm btn-success' %>
+                <button type="button" class: 'btn btn-sm btn-success' 
                     data-bs-toggle="popover"
                     title="Diligenciamiento de la evidencia"
-                    data-bs-content="<%=evidence.template.filing %>" >Ayuda</button></td>
-                </tr>
-            <% end %>
-        </tbody>      
-    </table>
+                    data-bs-content="<%=evidence.template.filing %>" >Ayuda</button>
+        </div>
+        <div></br></div>         
+        <div>
+            <div>
+                <strong>Funcionarios que firman evidencia:</strong>
+            </div> 
+            <table class="table table-hover">
+                <% @firms = Firm.firmas(evidence) %>
+                <% if @firms.present? %>
+                    <% @firms.each do |firma| %>
+                        <tr>
+                            <td><%= firma.user.name %></td>
+                            <td> 
+                                <% if firma.authorize_firm == 0 %>
+                                    <%= link_to t('common.firmar'), firma_fecha_path(firma), class: 'btn btn-sm btn btn-warning' %>
+                                <% else %>
+                                    <%= firma.date_authorize_firm %>
+                                <% end %>
+                            </td>
+                        </tr>
+                    <% end %>
+                <% end %>         
+            </table>
+            <br>
+        </div>  
+        <hr>      
+    <% end %>
 </div>   
 <br>
 

@@ -172,6 +172,7 @@ Rails.application.routes.draw do
   get '/assistants/firmar_assistent/:id', to: 'assistants#firmar_assistent', as: 'firmar_assistent'
   get '/templates/ver_documental/:id', to: 'templates#ver_documental', as: 'ver_documental'
   get '/matrix_legals/ver_matrix_legal/:id', to: 'matrix_legals#ver_matrix_legal', as: 'ver_matrix_legal'
+  get '/firms/firma_fecha/:id', to: 'firms#firma_fecha', as: 'firma_fecha'
 
   resources :admin_extent_dangers do
     collection do

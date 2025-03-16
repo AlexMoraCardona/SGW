@@ -25,11 +25,11 @@ class Training < ApplicationRecord
     def self.capacitaciones(entity)
         año = Time.new.year 
         training_items = nil
-        training = Training.find_by(year: año, entity_id: entity.id) if entity.present?
+        training = Training.find_by(year: año, entity_id: entity) if entity.present?
         training_items = TrainingItem.where("training_id = ?",training.id) if training.present?
         total = training_items.count if training_items.present?
 
-        @datos_capacitacion = []
+        datos_capacitacion = []
         if training_items.present?
             training_items.group_by(&:state_cap).each  do |niv, det|
                 cant = 0
@@ -42,12 +42,12 @@ class Training < ApplicationRecord
                 realizadas = "Realizadas: " + cant.to_s if  niv.to_i == 1
                 canceladas = "Canceladas: " + cant.to_s if  niv.to_i == 2
 
-                @datos_capacitacion.push([pendientes, por.to_f]) if  niv.to_i == 0
-                @datos_capacitacion.push([realizadas, por.to_f]) if  niv.to_i == 1
-                @datos_capacitacion.push([canceladas, por.to_f]) if  niv.to_i == 2
+                datos_capacitacion.push([pendientes, por.to_f]) if  niv.to_i == 0
+                datos_capacitacion.push([realizadas, por.to_f]) if  niv.to_i == 1
+                datos_capacitacion.push([canceladas, por.to_f]) if  niv.to_i == 2
             end
         end
-        return   @datos_capacitacion  
+        return   datos_capacitacion  
     end     
 
 end

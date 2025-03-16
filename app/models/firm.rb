@@ -2,6 +2,11 @@ class Firm < ApplicationRecord
     belongs_to :user
     belongs_to :evidence
 
+    def self.firmas(evidence)
+        @firms = Firm.where("evidence_id = ?", evidence)
+        return @firms;
+    end    
+
     def self.miles(valor) 
         cadena = valor.to_s
         n = cadena.length

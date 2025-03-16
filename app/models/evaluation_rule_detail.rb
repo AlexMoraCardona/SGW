@@ -231,7 +231,7 @@ class EvaluationRuleDetail < ApplicationRecord
         elsif dato == 57 ; 'Partes del cuerpo,  no identificadas en otra parte'
         elsif dato == 58 ; 'Sin clasificar (insuficiente información para identificar la parte afectada)'
         end 
-    end    
+    end  
 
-
+    
 end

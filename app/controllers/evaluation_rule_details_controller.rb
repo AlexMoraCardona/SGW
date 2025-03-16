@@ -21,44 +21,8 @@ class EvaluationRuleDetailsController < ApplicationController
     end 
     
     def crear_evidencia
-        @evidence = Evidence.new
-
-        @evidence.entity_id = params[:entity_id]
-        @evidence.evaluation_rule_detail_id = params[:evaluacion_rule_detail_id] 
-        @evidence.template_id = params[:template_id]   
-        @evidence.date = Time.now
-        @evidence.compliances = "<strong>METAS:</strong> <br>Enumerar cada una de las metas que se establecerán para el cumplimiento del programa de capacitación anual; ejemplo:<br/>  <br>* Capacitar al 100% de los trabajadores.<br/> <br>* Cumplir con el 80% de las actividades en el cronograma. <br/> <br>* Cumplir con lo establecido en el presupuesto. <br/> <br>* Cumplimiento de requisitos legales.<br/>  <br>* Obtener buenas respuestas en la evaluación de capacitación.<br/>    <br><strong>ESTRATEGIAS:</strong><br/> <br>Enumerar cada una de las estrategias que se establecerán para el cumplimiento del programa de capacitación anual; ejemplo:<br/>  <br>*  Evaluación de necesidades basado en matriz de peligros y riesgos.<br/> <br>* Realización de encuesta a trabajadores.<br/> <br>* Material didáctico.<br/> <br>* Modalidad de capacitación mixta: presencial y virtual.<br/> <br>* Canales de comunicación.<br/>" if @evidence.template_id == 58 || @evidence.template_id == 59 || @evidence.template_id == 60
-        @evidence.compliances = "<br>* Compromiso desde la Alta Dirección, en la implementación del Sistema de Gestión de Seguridad y Salud en el Trabajo, asignando los recursos humanos, tecnológicos y financieros, garantizando el cumplimiento de los objetivos.<br/> <br>*Prevenir accidentes y enfermedades laborales, como consecuencia a la exposición de los diferentes ambientes de trabajo de todos los empleados, contratistas, proveedores y visitantes.<br/> <br>*Dar cumplimiento a todas las disposiciones legales, Decretos, leyes, Resoluciones y demás normas que sean expedidas en materia de seguridad y salud en el trabajo; y a su vez, implementarlas y ejecutarlas al interior de la Organización.<br/> <br>*Establecer el principio de la mejora continua, en todos los procesos de aseguramiento de la Seguridad y Salud en el Trabajo.<br/> <br>*Fomentar el autocuidado y participación de todo el personal en materia de Seguridad y Salud en el trabajo.<br/> <br>*Promover la salud mental, con miras a que todos los empleados que integren la organización estén en ambientes de trabajo saludables.<br/> <br>*Compromiso con la mejora continua del SG-SST.<br/>" if @evidence.template_id == 64 || @evidence.template_id == 65 || @evidence.template_id == 66
-        @evidence.compliances = "<br>* Desarrollar plan de capacitación y entrenamiento para el personal incluyendo demás partes interesadas.<br/> <br>* Proporcionar los recursos necesarios para la implementación del sistema de gestión de seguridad y salud en el trabajo.<br/> <br>* Identificar los diferentes peligros y riesgos y establecer controles específicos.<br/> <br>* Investigar accidentes, incidentes.<br/> <br>* Identificar y realizar seguimiento a los requisitos legales y aplicables.<br/> <br>* Cumplir con el plan de trabajo anual según el Decreto 1072 de 2015 Y mejora continua de este.<br/>" if @evidence.template_id == 67 || @evidence.template_id == 68 || @evidence.template_id == 69
-        @evidence.compliances = "<br>* Examen médico ocupacional.<br/> <br>* Higiene postural.<br/> <br>* Pausas activas.<br/> <br>* Realización de pruebas complementarias.<br/> <br>* Remitir a EPS.<br/> <br>* Uso de elementos de protección personal.<br/> <br>* Continuar manejo médico<br/>" if @evidence.template_id == 115 || @evidence.template_id == 116 || @evidence.template_id == 117
-        @texto = "<br>" if @evidence.template_id == 154 || @evidence.template_id == 155 || @evidence.template_id == 156
-
-        if @evidence.template_id == 154 || @evidence.template_id == 155 || @evidence.template_id == 156 then
-            @safety_inspection = SafetyInspection.where("entity_id = ?",@evidence.entity_id).last if @evidence.entity_id.present?
-            @safety_inspection_items = SafetyInspectionItem.where("safety_inspection_id = ?", @safety_inspection.id) if @safety_inspection.present?
-            @safety_inspection_items.each do |safety_inspection_item|
-                if safety_inspection_item.state_compliance > 1
-                    @texto = @texto.to_s + "<br>"
-                    @texto = @texto.to_s + "<strong>" + safety_inspection_item.situation_condition.type_condition_inspection.name.to_s + "</strong>"
-                    @texto = @texto.to_s + "<br>"
-                    @texto = @texto.to_s + safety_inspection_item.situation_condition.name.to_s
-                    @texto = @texto.to_s + "<br>"
-                    @texto = @texto.to_s + "Observaciones: "
-                    @texto = @texto.to_s + safety_inspection_item.observation.to_s 
-                    @texto = @texto.to_s + "<br>"
-                end
-            end    
-        end
-
-        @evidence.compliances = @texto if @evidence.template_id == 154 || @evidence.template_id == 155 || @evidence.template_id == 156
-
-        if @evidence.save then
-            Firm.crear_firmas(@evidence.id)
-            Participant.crear_participantes(@evidence.id)
-            redirect_to edit_evaluation_rule_detail_path(params[:evaluacion_rule_detail_id]), notice: t('.created') 
-        else
-            render :edit, status: :unprocessable_entity
-        end    
+        Evidence.crear_evidencia(params[:evaluacion_rule_detail_id], params[:template_id], params[:entity_id])
+        redirect_to edit_evaluation_rule_detail_path(params[:evaluacion_rule_detail_id]), notice: t('.created') 
     end  
     
     def crear_compromiso
@@ -124,23 +88,23 @@ class EvaluationRuleDetailsController < ApplicationController
                
         @vista = 'evaluation_rule_details/plantillas/' + @evidence.template_id.to_s 
         @footer = 'Nit: ' + @evidence.entity.identification_number.to_s + ', Dirección: ' + @evidence.entity.entity_address.to_s
-        respond_to do |format| 
-            format.html
-            format.pdf {render  pdf: 'evidencia', 
-                disable_javascript: true,
-                margin: {top: 45, bottom: 25, left: 25, right: 25 },
-                page_size: 'Letter',
-                header: {
-                         html: { 
-                         template: 'evaluation_rule_details/headerformato'
-                         }},
-                footer: {
-                         right: 'Página: [page] de [topage]'
-                        }
+
+            respond_to do |format| 
+                format.html
+                format.pdf {render  pdf: 'evidencia', 
+                    disable_javascript: true,
+                    margin: {top: 45, bottom: 25, left: 25, right: 25 },
+                    page_size: 'Letter',
+                    header: {
+                             html: { 
+                             template: 'evaluation_rule_details/headerformato'
+                             }},
+                    footer: {
+                             right: 'Página: [page] de [topage]'
+                            }
                 
-                       } 
-        end
-      
+                           } 
+            end
     end
   
     def search

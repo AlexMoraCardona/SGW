@@ -916,12 +916,12 @@
                     <tr>    
                         <td>
                             <div><strong>Colaboradores</strong> <span class="badge text-bg-primary"><%=   @total_colaboradores  if @total_colaboradores.present? %></span>
-                                <%= pie_chart  @datos_clasificacion_cargo, download: {filename: "Sexo"}, download: {background: "#FFFFFF"}, xtitle: "Hombres", ytitle: "Mujeres", prefix: "Cant: ", colors: ["#FF0000", "#FFFF00"], donut: true, label: 'true', width: "150px", height: "100px", legend: "bottom", loading: "Loading..."  if @datos_clasificacion_cargo.present? %>
+                                <%= pie_chart  User.calculo_clasificacion_cargo(@entity.id), download: {filename: "Sexo"}, download: {background: "#FFFFFF"}, xtitle: "Hombres", ytitle: "Mujeres", prefix: "Cant: ", colors: ["#FF0000", "#FFFF00"], donut: true, label: 'true', width: "150px", height: "100px", legend: "bottom", loading: "Loading..."   %>
                             </div>    
                         </td>
                         <td>
                             <div>  
-                                <%=  image_tag('icoaccidentemortal.png', height: "50", width: "auto")  %>&nbsp;<span class="badge text-bg-primary"><%= @accidentes_mortales %></span>&nbsp;<strong>Accidentes mortales</strong>
+                                <%=  image_tag('icoaccidentemortal.png', height: "50", width: "auto")  %>&nbsp;<span class="badge text-bg-primary"><%= Event.accidentes_mortales(@entity.id) %></span>&nbsp;<strong>Accidentes mortales</strong>
                             </div>
                         </td>
                     </tr>    
@@ -929,12 +929,12 @@
                     <tr>    
                         <td>
                             <div>
-                                <%=  image_tag('icoaccidente.png', height: "50", width: "auto")  %>&nbsp;<span class="badge text-bg-primary"><%= @accidentes_trabajo %></span>&nbsp;<strong>Accidentes de trabajo</strong> 
+                                <%=  image_tag('icoaccidente.png', height: "50", width: "auto")  %>&nbsp;<span class="badge text-bg-primary"><%= Event.accidentes_trabajo(@entity.id) %></span>&nbsp;<strong>Accidentes de trabajo</strong> 
                             </div>    
                         </td>
                         <td>
                             <div>  
-                                <%=  image_tag('icosevaccidente.png', height: "50", width: "auto")  %>&nbsp;<span class="badge text-bg-primary"><%= @dias_incapacidad_accidentes %></span>&nbsp;<strong>Días de incapacidad por accidentes</strong>
+                                <%=  image_tag('icosevaccidente.png', height: "50", width: "auto")  %>&nbsp;<span class="badge text-bg-primary"><%= ReportOfficial.dias_incapacidad_accidentes(@entity.id) %></span>&nbsp;<strong>Días de incapacidad por accidentes</strong>
                             </div>
                         </td>
                     </tr>
@@ -942,12 +942,12 @@
                     <tr>    
                         <td>
                             <div>
-                                <%=  image_tag('icoenfermedadlaboral.png', height: "50", width: "auto")  %>&nbsp;<span class="badge text-bg-primary"><%= @enfermedad_laboral %></span>&nbsp;<strong>Enfermedad laboral</strong>
+                                <%=  image_tag('icoenfermedadlaboral.png', height: "50", width: "auto")  %>&nbsp;<span class="badge text-bg-primary"><%= ReportOfficial.enfermedad_laboral(@entity.id) %></span>&nbsp;<strong>Enfermedad laboral</strong>
                             </div>    
                         </td>
                         <td>
                             <div>  
-                                <%=  image_tag('icosevincapacitado.png', height: "50", width: "auto")  %>&nbsp;<span class="badge text-bg-primary"><%= @dias_comun_laboral %></span>&nbsp;<strong>Días ausencia por incapacidad común o laboral</strong>
+                                <%=  image_tag('icosevincapacitado.png', height: "50", width: "auto")  %>&nbsp;<span class="badge text-bg-primary"><%= ReportOfficial.dias_comun_laboral(@entity.id) %></span>&nbsp;<strong>Días ausencia por incapacidad común o laboral</strong>
                             </div>
                         </td>
                     </tr>
@@ -955,12 +955,12 @@
                     <tr>    
                         <td>
                             <div>
-                                <%=  image_tag('icoactosycondiciones.png', height: "50", width: "auto")  %>&nbsp;<span class="badge text-bg-primary"><%= @totalcondiciones%></span>&nbsp;<strong>Condiciones inseguras</strong>
+                                <%=  image_tag('icoactosycondiciones.png', height: "50", width: "auto")  %>&nbsp;<span class="badge text-bg-primary"><%= MatrixCondition.total_condiciones_inseguros(@entity.id) %></span>&nbsp;<strong>Condiciones inseguras</strong>
                             </div>    
                         </td>
                         <td>
                             <div>  
-                                <%=  image_tag('icointervencioninseguros.png', height: "50", width: "auto")  %>&nbsp;<span class="badge text-bg-primary"><%= @totalcondicionesinter %></span>&nbsp;<strong>Condiciones intervenidas</strong>
+                                <%=  image_tag('icointervencioninseguros.png', height: "50", width: "auto")  %>&nbsp;<span class="badge text-bg-primary"><%= MatrixCondition.si_condiciones_inseguros(@entity.id) %></span>&nbsp;<strong>Condiciones intervenidas</strong>
                             </div>
                         </td>
                     </tr>
@@ -968,12 +968,12 @@
                     <tr>    
                         <td>
                             <div>
-                                <%=  image_tag('icoactosycondiciones.png', height: "50", width: "auto")  %>&nbsp;<span class="badge text-bg-primary"><%= @totalactos%></span>&nbsp;<strong>Actos inseguros</strong>
+                                <%=  image_tag('icoactosycondiciones.png', height: "50", width: "auto")  %>&nbsp;<span class="badge text-bg-primary"><%= MatrixCondition.total_actos_inseguros(@entity.id)%></span>&nbsp;<strong>Actos inseguros</strong>
                             </div>    
                         </td>
                         <td>
                             <div>  
-                                <%=  image_tag('icointervencioninseguros.png', height: "50", width: "auto")  %>&nbsp;<span class="badge text-bg-primary"><%= @totalactosinter %></span>&nbsp;<strong>Actos intervenidos</strong>
+                                <%=  image_tag('icointervencioninseguros.png', height: "50", width: "auto")  %>&nbsp;<span class="badge text-bg-primary"><%= MatrixCondition.si_actos_inseguros(@entity.id) %></span>&nbsp;<strong>Actos intervenidos</strong>
                             </div>
                         </td>
                     </tr>
@@ -981,22 +981,22 @@
                     <tr>    
                         <td>
                             <div>
-                                <%=  image_tag('icopeligro.png', height: "50", width: "auto")  %>&nbsp;<span class="badge text-bg-primary"><%= @totalpeligros%></span>&nbsp;<strong>Total Peligros/Riesgos</strong>
+                                <%=  image_tag('icopeligro.png', height: "50", width: "auto")  %>&nbsp;<span class="badge text-bg-primary"><%= MatrixDangerRisk.total_peligros_riesgos(@entity.id)%></span>&nbsp;<strong>Total Peligros/Riesgos</strong>
                             </div>    
                         </td>
                         <td>
                             <div>  
-                                <%=  image_tag('icolistadopeligro.png', height: "50", width: "auto")  %>&nbsp;<span class="badge text-bg-primary"><%= @totalpeligrosinter %></span>&nbsp;<strong>Peligros/Riesgos Intervenidos</strong>
+                                <%=  image_tag('icolistadopeligro.png', height: "50", width: "auto")  %>&nbsp;<span class="badge text-bg-primary"><%= MatrixDangerRisk.inter_peligros_riesgos(@entity.id) %></span>&nbsp;<strong>Peligros/Riesgos Intervenidos</strong>
                             </div>
                         </td>
                     </tr>
                     <tr><td><hr></td><td><hr></td></tr>
                     <tr>    
                         <td> 
-                            <%= pie_chart  @datos_capacitacion, title: "Capacitaciones y Actividades", download: {filename: "GraficaCiclo"}, download: {background: "#FFFFFF"}, xtitle: "Cumplidos", ytitle: "Pendientes", prefix: "Porcentaje: ", suffix: "%", colors: ["#008000", "#FF0000", "#0077b6"], donut: true, label: 'true', width: "150px", height: "150px", legend: "bottom", loading: "Loading..."  if @datos_capacitacion.present? %>
+                            <%= pie_chart  Training.capacitaciones(@entity), title: "Capacitaciones y Actividades", download: {filename: "GraficaCiclo"}, download: {background: "#FFFFFF"}, xtitle: "Cumplidos", ytitle: "Pendientes", prefix: "Porcentaje: ", suffix: "%", colors: ["#008000", "#FF0000", "#0077b6"], donut: true, label: 'true', width: "150px", height: "150px", legend: "bottom", loading: "Loading..."   %>
                         </td>
                         <td>
-                            <%= pie_chart  @datos_sex, title: "Sexo", download: {filename: "Sexo"}, download: {background: "#FFFFFF"}, xtitle: "Hombres", ytitle: "Mujeres", prefix: "Porcentaje: ", suffix: "%", colors: ["#0000ff", "#FFC0CB"], donut: true, label: 'true', width: "150px", height: "150px", legend: "bottom", loading: "Loading..."  if @datos_sex.present? %>
+                            <%= pie_chart  User.calculo_sex(@entity.id), title: "Sexo", download: {filename: "Sexo"}, download: {background: "#FFFFFF"}, xtitle: "Hombres", ytitle: "Mujeres", prefix: "Porcentaje: ", suffix: "%", colors: ["#0000ff", "#FFC0CB"], donut: true, label: 'true', width: "150px", height: "150px", legend: "bottom", loading: "Loading..."  %>
                         </td>
                     </tr>
                     <tr><td><hr></td><td><hr></td></tr>

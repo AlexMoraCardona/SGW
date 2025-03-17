@@ -83,7 +83,7 @@ gem "pg_search", "~> 2.3"
 #Gemas para generar pdf produccion
 # graficar
 gem 'wicked_pdf'
-gem 'wkhtmltopdf-binary'
+gem 'wkhtmltopdf-binary', '0.12.3.1'
 gem 'chartkick', '~> 5.0', '>= 5.0.2'
 
 #gem 'wicked_pdf', '~> 2.1.0'

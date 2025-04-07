@@ -58,7 +58,8 @@ class FirmsController < ApplicationController
         evidence = @firm.evidence_id
         @firm.destroy
         redirect_to crear_firma_evaluation_rule_detail_path(evidence), notice: 'Firma borrada correctamente', firm: :see_other
-    end   
+    end  
+    
     
     def firma_fecha
         @firm = Firm.find(params[:id])

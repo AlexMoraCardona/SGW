@@ -7,6 +7,19 @@ class Evidence < ApplicationRecord
     has_rich_text :compliances
 
 
+    def self.buscar_ciclophva(ciclo)
+        entity = Entity.find(Current.user.entity.to_i)
+        evaluation = Evaluation.find_by(entity_id: entity.id)
+        @evaluacion_rule_details = EvaluationRuleDetail.where("evaluation_id = ? and cycle = ?",evaluation.id,ciclo).order(:standar_detail_item_id)
+        return @evaluacion_rule_details        
+    end
+    
+    def self.buscar_evidencias(item)
+        @evidencias = Evidence.where("evaluation_rule_detail_id = ?",item).order(date: :desc)
+        return @evidencias
+    end    
+
+
     def self.crear_evidencia(evaluacion_rule_detail_id,template_id, entity_id)
         @evidence = Evidence.new
 

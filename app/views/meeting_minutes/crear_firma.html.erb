@@ -16,7 +16,8 @@
             <%= form.hidden_field :meeting_minute_id, :value => params[:id].to_s, class: "form-control" %>
             <br>    
         <% end %>        
-        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
+        <%= link_to 'Retornar', meeting_minutes_path, class: 'btn btn-sm btn-primary'  %>
     <% end %>
     <hr>
     <br>
@@ -43,7 +44,7 @@
                     <td><%= firma.name %></td>
                     <td><%= firma.post %></td>
                     <td><%= link_to t('common.edit'), edit_assistant_path(firma), class: 'btn btn-sm btn-primary' if Current.user.level > 0 &&  Current.user.level < 3 %></td>
-                    <td><%= link_to t('common.delete'), firma, data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar la firma?' }, class: 'btn btn-sm btn-danger'  if Current.user.level > 0 &&  Current.user.level < 3 %></td>
+                    <td><%= button_to "Delete", firma, method: :delete, class:"btn btn-sm btn-danger" if Current.user.level > 0 &&  Current.user.level < 3 %></td>
                     <td>
                         <% if firma.firm_assistant == 0 %>
                             <%= link_to t('common.firmar_acta'), firmar_assistent_path(firma.id), class: 'btn btn-sm btn-primary' if Current.user.id == firma.user_id %>

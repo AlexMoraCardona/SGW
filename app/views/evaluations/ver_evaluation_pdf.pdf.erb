@@ -1,38 +1,55 @@
 <head>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
-<meta charset='utf-8' />
-<%= wicked_pdf_javascript_include_tag 'charts' %>
-<%= wicked_pdf_javascript_include_tag "number_pages" %>
-<%= wicked_pdf_stylesheet_link_tag 'pdf' %>
-<%= javascript_importmap_tags %>
+    <meta charset='utf-8' />
 </head>
 
 <br>
-<div class="row g-3">
-    <% datosvarios = @evaluation.calculo_porcentaje_general(@evaluation.id) %>          
-    <div class="col-sm-10"> 
-        <%= pie_chart  datosvarios, title: "Porcentaje de cumplimiento Estándares Mínimos", download: {filename: "GraficaCiclo"}, download: {background: "#FFFFFF"}, xtitle: "Estándares Cumplidos", ytitle: "Porcentaje", prefix: "Porcentaje: ", suffix: "%", colors: ["#008000", "#FF0000"], donut: true, label: 'true', library: {plotOptions: { pie: { dataLabels: { enabled: true }}}} if @evaluation.present? %>
-    </div> 
 
-</div>           
-
-<br>
-<table style="border:0px solid black;width: 100%;" >
+<table style="border:0px solid black;width: 100%">
     <tr>
         <td rowspan="2" style="border:1px solid black; width: 20%; text-align:center">
-            <% if @entity.logo.present? then %>
-                <%=  image_tag  @entity.logo, class: "image_peq" %>
+            <% if @entity.logo.present? %>
+                <%= image_tag(Evaluation.wicked_blob_path(@entity.logo),:width => "100",  :height=>"100") %>
             <% end %>   
         </td>
         <td style="border:1px solid black; text-align:center">
-            <div class="col-10"><h6><%= @entity.business_name if @entity.present? %></br>Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h6></div>
+            <div class="col-10" style="text-transform:uppercase;"><%= @entity.business_name if @entity.present? %></div>
         </td>
     </tr>
     <tr>    
         <td style="border:1px solid black; text-align:center">
-            <div class="col-10"><h6>RESOLUCIÓN 0312 DE 2019</br>
-            Aplicación de estándares</h6></div>
+            <div class="col-10"><%= @template.name if @template.present? %></div>
+        </td>
+    </tr>
+</table>
+<table style="border:0px solid black;width: 100%">
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            CÓDIGO:                 
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            &nbsp;&nbsp;<%= @template.reference if @template.present? %>                
+        </td>
+
+        <td style="border:1px solid black; width: 25%">
+            VERSIÓN:                 
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            &nbsp;&nbsp;<%= @template.version if @template.present? %>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            FECHA DE ELABORACIÓN:                 
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            &nbsp;&nbsp;<%= @template.date if @template.present? %>                
+        </td>
+
+        <td style="border:1px solid black; width: 25%">
+            FECHA DE ACTUALIZACIÓN:                 
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            &nbsp;&nbsp;<%= @template.date_updated if @template.present? %>                
         </td>
     </tr>
 </table>
@@ -108,39 +125,36 @@
 </div>  
 <br>  
 <div class="container col-12"> 
-<table class="table">
-    <thead>  
-        <tr> 
-            <td><strong>Ciclo</strong></td>
-            <td><strong>Estándar</strong></td>
-            <td><strong>Item</strong></td>
-            <td><strong>Item del estándar</strong></td>
-            <td><strong>Cumple</strong></td>
-            <td><strong>Puntaje</strong></td>
-        </tr>
-    </thead> 
-
-    <% @evaluation_rule_details.each do |evaluation_item| %> 
-        <tbody>
-            <tr>
-                <% if evaluation_item.meets == 0  %>
-                        <td style="background-color: #EF9A9A;"><%= evaluation_item.standar_detail_item.standar_detail.standar.label_cycle(evaluation_item.standar_detail_item.standar_detail.standar.cycle) %></td>
-                        <td style="background-color: #EF9A9A;"><%= evaluation_item.standar_detail_item.standar_detail.description %></td>
-                        <td style="background-color: #EF9A9A;"><%= evaluation_item.standar_detail_item.item_nro %></td>
-                        <td style="background-color: #EF9A9A;"><%= evaluation_item.standar_detail_item.description%></td>
-                        <td style="text-align:center; background-color: #EF9A9A;" ><%= EvaluationRuleDetail.label_meets(evaluation_item.meets) %></td>
-                        <td style="text-align:center; background-color: #EF9A9A;"><%= evaluation_item.score %></td>
-                <% else %>
+    <table class="table">
+            <tr> 
+                <td><strong>Ciclo</strong></td>
+                <td><strong>Estándar</strong></td>
+                <td><strong>Item</strong></td>
+                <td><strong>Item del estándar</strong></td>
+                <td><strong>Cumple</strong></td>
+                <td><strong>Puntaje</strong></td>
+            </tr>
+        <% @evaluation_rule_details.each do |evaluation_item| %> 
+            <tbody>
+                <tr>
+                    <% if evaluation_item.meets == 0  %>
+                        <td style="color: #f70202;"><%= evaluation_item.standar_detail_item.standar_detail.standar.label_cycle(evaluation_item.standar_detail_item.standar_detail.standar.cycle) %></td>
+                        <td style="color: #f70202;"><%= evaluation_item.standar_detail_item.standar_detail.description %></td>
+                        <td style="color: #f70202;"><%= evaluation_item.standar_detail_item.item_nro %></td>
+                        <td style="color: #f70202;"><%= evaluation_item.standar_detail_item.description%></td>
+                        <td style="text-align:center; color: #f70202;" ><%= EvaluationRuleDetail.label_meets(evaluation_item.meets) %></td>
+                        <td style="text-align:center; color: #f70202;"><%= evaluation_item.score %></td>
+                    <% else %>
                         <td><%= evaluation_item.standar_detail_item.standar_detail.standar.label_cycle(evaluation_item.standar_detail_item.standar_detail.standar.cycle) %></td>
                         <td><%= evaluation_item.standar_detail_item.standar_detail.description %></td>
                         <td><%= evaluation_item.standar_detail_item.item_nro %></td>
                         <td><%= evaluation_item.standar_detail_item.description%></td>
                         <td style="text-align:center"><%= EvaluationRuleDetail.label_meets(evaluation_item.meets) %></td>
                         <td style="text-align:center"><%= evaluation_item.score %></td>
-                <% end  %>        
-            </tr>  
-        </tbody>   
-    <% end %> 
+                    <% end  %>        
+                </tr>  
+            </tbody>   
+        <% end %> 
         <tr>   
             <td></td>
             <td></td>
@@ -159,12 +173,12 @@
                 <% end  %>    
             </td>
         </tr>  
-</table>
-<br> 
-<div class="row"><br></div>
-<table style="width: 100%">
-    <tr>    
-        <td style="border:0px solid black; width: 50%; text-align:center">
+    </table>
+    <br> 
+    <div class="row"><br></div>
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:0px solid black; width: 50%; text-align:center">
                 <% if @user_responsible.present? %>
                     <div class="row  text-center"> 
                         <div class="col-11">
@@ -172,41 +186,51 @@
                             <div>&nbsp;</div>
                             <div>&nbsp;</div>
                             <% if @evaluation.firm_responsible == 1 %>
-                               <% if @user_responsible.firm.attached? %>
-                                  <% if @user_responsible.firm.image? %> 
-                                       <%= image_tag @user_responsible.firm, class: "firma" %>
+                                <% if @user_responsible.firm.attached? && @user_responsible.firm.image?  %>
+                                        <%= image_tag(Evaluation.wicked_blob_path(@user_responsible.firm), class: "firma") %>
                                         <p align="center">________________________________</p>
-                                  <% end %>
+                                <% else %>    
+                                    <div>&nbsp;</div>
+                                    <div>&nbsp;</div>
+                                    <div>&nbsp;</div>
+                                    <div>&nbsp;</div>
+                                    <div>&nbsp;</div>
+                                    <p align="center">________________________________</p>
                                 <% end %>
                             <% else %>    
+                                <div>&nbsp;</div>
+                                <div>&nbsp;</div>
+                                <div>&nbsp;</div>
+                                <div>&nbsp;</div>
+                                <div>&nbsp;</div>
                                 <p align="center">________________________________</p>
-                             <% end %>     
+                            <% end %>     
                         </div>
                        <div class="col-11">
                             <div class="row">
-                                <h6><strong><%= @user_responsible.name %></strong></h6>
+                                <strong><%= @user_responsible.name %></strong>
                             </div>
                         </div>
                         <div class="col-11">
                             <div class="row">
-                                <h6><%= @user_responsible.activity %></h6>
+                                <%= @user_responsible.activity %>
                             </div>
                         </div>
                         <div class="col-11">
                             <div class="row">
-                                <h6><%= @user_responsible.document.abbreviation %>: <%= Firm.miles(@user_responsible.nro_document) %></h6>
+                                <%= @user_responsible.document.abbreviation %>: <%= Firm.miles(@user_responsible.nro_document) %>
                             </div>
                         </div>
                         <div class="col-11">
                             <div class="row">
-                                <h6>Fecha firma: <%= @evaluation.date_firm_responsible  if @evaluation.date_firm_responsible %></h6>
+                                Fecha firma: <%= @evaluation.date_firm_responsible  if @evaluation.date_firm_responsible %>
                             </div>
                         </div>
                     </div>
                     <br>
                 <% end %>    
-        </td>
-        <td style="border:0px solid black; width: 50%; text-align:center">
+            </td>
+            <td style="border:0px solid black; width: 50%; text-align:center">
                 <% if @user_representante.present? %>
                     <div class="row  text-center"> 
                         <div class="col-11">
@@ -214,19 +238,29 @@
                             <div>&nbsp;</div>
                             <div>&nbsp;</div>
                             <% if  @evaluation.firm_representante == 1 %>
-                               <% if @user_representante.firm.attached? %>
-                                  <% if @user_representante.firm.image? %> 
-                                       <%= image_tag @user_representante.firm, class: "firma" %>
-                                        <p align="center">________________________________</p>
-                                  <% end %>
+                               <% if @user_representante.firm.attached? &&  @user_representante.firm.image? %>
+                                    <%= image_tag(Evaluation.wicked_blob_path(@user_representante.firm), class: "firma") %>
+                                    <p align="center">________________________________</p>
+                                <% else %>    
+                                    <div>&nbsp;</div>
+                                    <div>&nbsp;</div>
+                                    <div>&nbsp;</div>
+                                    <div>&nbsp;</div>
+                                    <div>&nbsp;</div>
+                                    <p align="center">________________________________</p>
                                 <% end %>
                             <% else %>    
+                                <div>&nbsp;</div>
+                                <div>&nbsp;</div>
+                                <div>&nbsp;</div>
+                                <div>&nbsp;</div>
+                                <div>&nbsp;</div>
                                 <p align="center">________________________________</p>
                              <% end %>     
                         </div>
                         <div class="col-11">
                             <div class="row">
-                                <h6><strong><%= @user_representante.name %></strong></h6>
+                                <strong><%= @user_representante.name %></strong>
                             </div>
                         </div>
                         <div class="col-11">
@@ -236,21 +270,22 @@
                         </div>
                         <div class="col-11">
                             <div class="row">
-                                <h6><%= @user_representante.document.abbreviation %>: <%= Firm.miles(@user_representante.nro_document) %></h6>
+                                <%= @user_representante.document.abbreviation %>: <%= Firm.miles(@user_representante.nro_document) %>
                             </div>
                         </div>
                         <div class="col-11">
                             <div class="row">
-                                <h6>Fecha firma: <%= @evaluation.date_firm_representante  if @evaluation.date_firm_representante %></h6>
+                                Fecha firma: <%= @evaluation.date_firm_representante  if @evaluation.date_firm_representante %>
                             </div>
                         </div>
         
                     </div>
                     <br> 
                 <% end %>    
-        </td>
-    </tr>
-</table>
+            </td>
+        </tr>
+    </table>
+</div>     
 
 
 

@@ -8,14 +8,15 @@
             <div class="container">
                <h2 class="display-5"> <%= t('.title')%></h2>
             </div> 
-            <div class="container"> 
-                <%= form_with model: @evaluation, method: :get do |form| %>
-                    <h5 scope="col">Filtrar por Entidad: </h5>
-                    <%= form.collection_select :entity_id, Entity.all.order(id: :asc), :id, :business_name, { prompt: '--Seleccionar Entidad--' },
-                    { class: 'form-control input-sm select2' , onChange: 'this.form.requestSubmit()', value: params[:entity_id] }  %>
-                <% end %>      
-            </div>  
-
+            <% if Current.user.level > 0 &&  Current.user.level < 3 %>
+                <div class="container"> 
+                    <%= form_with model: @evaluation, method: :get do |form| %>
+                        <h5 scope="col">Filtrar por Entidad: </h5>
+                        <%= form.collection_select :entity_id, Entity.all, :id, :business_name, { prompt: '--Seleccionar Entidad--' },
+                        { class: 'form-control input-sm select2' , onChange: 'this.form.requestSubmit()', value: params[:entity_id] }  %>
+                    <% end %>      
+                </div>  
+            <% end %>
         </div>
         <div class="container">
             <%= link_to t('.create_evaluation'), new_evaluation_path, class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level < 3 %>

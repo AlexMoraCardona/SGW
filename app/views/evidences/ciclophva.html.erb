@@ -1,0 +1,91 @@
+
+<div align="left"; class="container col-12">
+    <a class="navbar-brand" href="/">
+        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+    </a>
+</div>
+
+<div class="container col-12">  
+
+    <h2 class="display-5"><%= @entity.business_name if @entity.present? %></h2>
+    <h2 class="display-5">Evidencias del ciclo <%= @nombre_ciclo if @nombre_ciclo.present? %></h2>
+
+    </br>  
+    <% datos = Evidence.buscar_ciclophva(params[:id]) %> 
+    <% if datos.present? %>
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+            <%  datos.each do |dato|  %>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target='#flush-collapse<%= dato.id %>' aria-expanded="false" aria-controls='flush-collapse<%= dato.id %>' >
+                            <%= dato.standar_detail_item.item_nro %> <%= dato.standar_detail_item.description %>
+                        </button>
+                    </h2>
+                    <div id='flush-collapse<%= dato.id %>' class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>  
+                                        <th scope="col">Fecha</th>
+                                        <th scope="col">Item</th>
+                                        <th scope="col">Nombre</th> 
+                                        <th scope="col">Ver</th> 
+                                    </tr>
+                                </thead> 
+                                <% evidencias = Evidence.buscar_evidencias(dato.id) %> 
+                                <% if evidencias.present? %>
+                                    <tbody>
+                                        <%  evidencias.each do |evidencia|  %>
+                                            <tr> 
+                                                <td><%= evidencia.date %></td>
+                                                <td><%= evidencia.evaluation_rule_detail.standar_detail_item.item_nro %></td>
+                                                <td><%= evidencia.evaluation_rule_detail.standar_detail_item.description %></td>
+                                                <td><%= link_to t('common.veritem'), ver_evidencia_evaluation_rule_detail_path(evidencia.id), class: 'btn btn-sm btn-primary'  %></td>
+                                            </tr> 
+                                        <% end %>
+                                    </tbody>
+                                <% end %>
+                            </table>
+                            </br>
+                            <h3>Archivos adjuntos:</h3>
+                            <% if dato.files.attached? %>
+                                <div data-controller="previews" >
+                                     <% dato.files.each do |file|%>
+                                        <br>
+                                        <% if file.image? %>
+                                             <div>
+                                                 <%= image_tag file, data: {previews_target: "preview"}, class: "image" %>
+                                                <%= link_to "Borrar Archivo", purge_attachment_path(file), method: :delete, class: 'btn btn-sm btn-danger' %> 
+                                                <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                            </div> 
+                                        <% elsif file.video? %>
+                                             <%= video_tag url_for(file), controls: "", width: "400px" %>          
+                                            <%= link_to "Borrar Archivo", purge_attachment_path(file), method: :delete, class: 'btn btn-sm btn-danger' %>
+                                            <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                        <% elsif file.audio? %>
+                                            <%= audio_tag(url_for(file), controls: "") %>          
+                                            <%= link_to "Borrar Archivo", purge_attachment_path(file), method: :delete, class: 'btn btn-sm btn-danger' %> 
+                                            <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                        <% else %>
+                                             <%= link_to file.filename, url_for(file) %>          
+                                            <%= link_to "Borrar Archivo", purge_attachment_path(file), method: :delete, class: 'btn btn-sm btn-danger' %>
+                                            <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                        <% end %>
+                                    <% end %>  
+                                </div>
+                            <% end %>  
+
+                        </div>
+                    </div>
+                </div>     
+            <% end %>     
+        </div>
+    <% end %> 
+    <br> 
+    <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, home_path %>
+</div>
+
+
+
+
+

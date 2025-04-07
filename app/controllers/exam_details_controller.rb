@@ -16,7 +16,7 @@ class ExamDetailsController < ApplicationController
     def create
         @exam_detail = ExamDetail.new(exam_detail_params)
         if @exam_detail.save then
-            notice: 'Respuesta guardada correctamente' 
+            redirect_to exam_details_path, notice: 'Respuesta guardada correctamente' 
         else
             render :edit, status: :unprocessable_entity
         end    

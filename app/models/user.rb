@@ -82,21 +82,22 @@ class User < ApplicationRecord
 
     def self.calculo_clasificacion_cargo(entity)
         users = User.where("entity = ? and state = ? and level > ?", entity, 1, 2).order(:clasification_post) if entity.present?
-        total_colaboradores = 0
+        total_colaboradores = users.count if users.present?
         datos_clasificacion_cargo = []
         if users.present? then
             users.group_by(&:clasification_post).each  do |niv, det|
                 cant = 0
                 det.each do |d|
-                    total_colaboradores += 1 
                    cant += 1 
                 end  
                 adm = "Administrativos: " +  cant.to_s  if  niv.to_i == 0
                 ope = "Operarios: " + cant.to_s if  niv.to_i == 1
-                datos_clasificacion_cargo.push([adm, cant]) if  niv.to_i == 0
-                datos_clasificacion_cargo.push([ope, cant]) if  niv.to_i == 1
+                por = 0
+                por = (cant.to_f / total_colaboradores.to_f) * 100 if total_colaboradores.present? 
+                datos_clasificacion_cargo.push([adm, por.to_f]) if  niv.to_i == 0
+                datos_clasificacion_cargo.push([ope, por.to_f]) if  niv.to_i == 1
             end
-        end  
+        end 
         return datos_clasificacion_cargo  
     end  
     

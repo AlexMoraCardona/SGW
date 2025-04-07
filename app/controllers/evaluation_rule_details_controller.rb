@@ -88,23 +88,22 @@ class EvaluationRuleDetailsController < ApplicationController
                
         @vista = 'evaluation_rule_details/plantillas/' + @evidence.template_id.to_s 
         @footer = 'Nit: ' + @evidence.entity.identification_number.to_s + ', Dirección: ' + @evidence.entity.entity_address.to_s
-
-            respond_to do |format| 
-                format.html
-                format.pdf {render  pdf: 'evidencia', 
+        nombre_evidencia = @template.reference.to_s + '.pdf'
+        respond_to do |format| 
+            format.html
+            format.pdf {
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('ver_evidencia'),
+                    header: { right: '[page] de [topage]' },
+                    margin: {top: 10, bottom: 10, left: 10, right: 10 },
                     disable_javascript: true,
-                    margin: {top: 45, bottom: 25, left: 25, right: 25 },
-                    page_size: 'Letter',
-                    header: {
-                             html: { 
-                             template: 'evaluation_rule_details/headerformato'
-                             }},
-                    footer: {
-                             right: 'Página: [page] de [topage]'
-                            }
-                
-                           } 
-            end
+                    enable_plugins: true,
+                    page_size: 'letter',
+
+                  )  
+                  send_data(pdf, filename: nombre_evidencia, disposition: 'attachment')      
+            }
+        end    
     end
   
     def search

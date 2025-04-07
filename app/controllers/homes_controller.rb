@@ -1,7 +1,7 @@
 class HomesController < ApplicationController
     def index  
          @calendars =  Calendar.where("year = ? and month >= ?", Date.today.year, Date.today.month).order(:day) 
-         @activities = Activity.all.order(:citation)
+         @activities = Activity.where("state = ?",0).order(:citation) 
          @entity = Entity.find(Current.user.entity) if Current.user.entity > 0 
          @notificaciones = Calendar.notificaciones
          @cant_noti = @notificaciones.count if @notificaciones.present?

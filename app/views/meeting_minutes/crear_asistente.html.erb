@@ -14,7 +14,9 @@
         <br>
         <%= form.hidden_field :meeting_minute_id, :value => params[:id].to_s, class: "form-control" %>
         <br>    
-        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
+        <%= link_to 'Retornar', meeting_minutes_path, class: 'btn btn-sm btn-primary'  %>
+
     <% end %>
     <hr>
     <br>
@@ -41,8 +43,8 @@
                     <td><%= meeting_attendee.name %></td>
                     <td><%= meeting_attendee.post %></td>
                     <td><%= meeting_attendee.process_area %></td>
-                    <td><%= link_to t('common.edit'), edit_meeting_attendee_path(meeting_attendee), class: 'btn btn-xs btn-primary'  %></td>
-                    <td><%= link_to t('common.delete'), meeting_attendee, data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el asistente a la reunión?' }, class: 'btn btn-xs btn-danger' %></td>
+                    <td><%= link_to t('common.edit'), edit_meeting_attendee_path(meeting_attendee), class: 'btn btn-sm btn-primary'  %></td>
+                    <td><%= button_to "Delete", meeting_attendee, method: :delete, class:"btn btn-sm btn-danger" %></td>
                 </tr>
             <% end %>     
         </tbody>      

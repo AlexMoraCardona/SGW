@@ -1,7 +1,7 @@
 class PresentationsController < ApplicationController
     def index
-        if  Current.user && Current.user.level == 1
-            @presentations = Presentation.all.order(:id)
+        if  Current.user
+            @presentations = Presentation.where(state: 1).order(:clasification)
          else
              redirect_to new_session_path, alert: t('common.not_logged_in')  
              session.delete(:user_id)    

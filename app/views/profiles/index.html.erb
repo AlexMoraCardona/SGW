@@ -5,31 +5,30 @@
 </div>
 <div class="container col-11" 
     <br>
-        <h class="display-5">Perfil Sociodemográfico</h>
+        <h2>Perfil Sociodemográfico</h2>
     <hr>
     
     <br>
- 
-    <% if params[:entity_id].present? %>
+  
+    <% if params[:entity_id].present? || @entity.present?%>
         <%= render 'profile' %> 
     <% else %>
         <%= form_with model: @entity, method: :get do |form| %>
             <div class="row g-2">
                 <div class="col-sm-7">
-                    <% if Current.user.level == 1 %>
-                        <%= form.label :Entidad, style: "display: block" %>
-                        <%= form.collection_select :entity_id, @entities, :id, :business_name, { prompt: '--Seleccionar Entidad--' },
-                        { class: 'form-control input-sm select2' } %>
-                    <% else %>
-                        <div class="container">
-                            <h class="display-6"><%= @entities.business_name %></h>
-                        </div> 
-                        <%= form.hidden_field :entity_id, :value => @entities.id.to_i, class: "form-control" %>
-                    <% end %>
-                </div>
-            </div>    
+                    <h3>Empresa:</h3>
+                        <% if @entities.present? %>
+                            <%= form.collection_select :entity_id, @entities.order(id: :asc), :id, :business_name, { prompt: '--Seleccionar Entidad--' },
+                            { class: 'form-control input-sm select2' } %>
+                        <% else %> 
+                            <%=  @entity.business_name %>
+                            <%= form.hidden_field :entity_id, :value => @entity.id, class: "form-control" %>
+                        <% end %>
+                    </div>
+                </div>    
             <br>    
             <button type="submit" class="btn btn-primary">Consultar</button>
         <% end %>
 
-    <% end %>     
+    <% end %>   
+</div>      

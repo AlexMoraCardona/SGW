@@ -1,7 +1,7 @@
 class ContentsController < ApplicationController
     def index
 
-        if  Current.user && Current.user.level == 1
+        if  Current.user
             @contents = Content.where(state: 1).order(:clasification)
             @vistas = ViewVideo.where(user_id: Current.user.id)
          else

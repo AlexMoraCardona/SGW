@@ -99,6 +99,15 @@ class MeetingMinutesController < ApplicationController
         redirect_to meeting_minutes_path, notice: 'Acta borrada correctamente', meeting_minute: :see_other
     end    
 
+    def crear_copia_acta
+        MeetingMinute.copiar_acta(params[:id])
+        nuevo = MeetingMinute.last
+        MeetingAttendee.copiar_asistentes(params[:id], nuevo.id)
+        MeetingCommitment.copiar_compromisos(params[:id], nuevo.id)
+        Assistant.copiar_firmas(params[:id], nuevo.id)
+        redirect_to meeting_minutes_path, notice: 'Acta copiadaa correctamente', meeting_minute: :see_other
+    end    
+
     private 
 
     def meeting_minute_params

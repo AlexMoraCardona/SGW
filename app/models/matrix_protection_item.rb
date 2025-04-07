@@ -7,6 +7,14 @@ class MatrixProtectionItem < ApplicationRecord
         elsif  dato == 1 ; 'Servicios Generales'
         elsif  dato == 2 ; 'Odontólogo / Auxiliar de Odontología'
         elsif  dato == 3 ; 'Operarios'
+        elsif  dato == 4 ; 'Taller Metalmecánica'
+        elsif  dato == 5 ; 'Metalmecánica (DUBBER)'
+        elsif  dato == 6 ; 'Producción'
+        elsif  dato == 7 ; 'Terminada'
+        elsif  dato == 8 ; 'Molino'
+        elsif  dato == 9 ; 'Mantenimiento'
+        elsif  dato == 10 ; 'Caucho'
+        elsif  dato == 11 ; 'Mensajero'
         end 
     end
 

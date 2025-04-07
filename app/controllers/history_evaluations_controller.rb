@@ -26,7 +26,7 @@ class HistoryEvaluationsController < ApplicationController
 
     def show
         @history_evaluation = HistoryEvaluation.find(params[:id])
-        @history_items = HistoryItem.where(history_evaluation_id: @history_evaluation.id).order(apply: :desc).decorate if @history_evaluation.present?
+        @history_items = HistoryItem.where(history_evaluation_id: @history_evaluation.id).order(apply: :desc) if @history_evaluation.present?
         @user_responsible = User.find(@history_evaluation.id_responsible_execution) if @history_evaluation.id_responsible_execution > 0
         @user_representante = User.find(@history_evaluation.id_employee_contractor) if @history_evaluation.id_employee_contractor > 0
 
@@ -44,7 +44,7 @@ class HistoryEvaluationsController < ApplicationController
     
     def descargar_historia
         @history_evaluation = HistoryEvaluation.find(params[:id])
-        @history_items = HistoryItem.where(history_evaluation_id: @history_evaluation.id).order(apply: :desc).decorate if @history_evaluation.present?
+        @history_items = HistoryItem.where(history_evaluation_id: @history_evaluation.id).order(apply: :desc) if @history_evaluation.present?
         @user_responsible = User.find(@history_evaluation.id_responsible_execution) if @history_evaluation.id_responsible_execution > 0
         @user_representante = User.find(@history_evaluation.id_employee_contractor) if @history_evaluation.id_employee_contractor > 0
 

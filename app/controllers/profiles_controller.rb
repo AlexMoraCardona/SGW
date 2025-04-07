@@ -7,13 +7,13 @@ class ProfilesController < ApplicationController
             else 
                 @entities = Entity.all
             end    
-        elsif Current.user && Current.user.level == 2 
+        elsif Current.user && Current.user.level > 2 
             @entity = Entity.find(Current.user.entity.to_i)
             @survey_profiles = SurveyProfile.where("entity_id = ?",Current.user.entity.to_i)
         else
             redirect_to new_session_path, alert: t('common.not_logged_in')    
             session.delete(:user_id)  
-        end     
+        end      
 
     end    
 

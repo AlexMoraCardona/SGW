@@ -6,6 +6,25 @@ class Evaluation < ApplicationRecord
     has_many :meeting_minutes
     has_rich_text :observation
 
+    def self.wicked_active_storage_asset(asset)
+        return unless asset.respond_to?(:blob)
+        save_path = Rails.root.join('tmp', asset.blob.key)
+        begin
+          require 'pathname'
+          some_path = Pathname(save_path)
+          some_path.dirname.mkpath
+          File.open(save_path, 'wb') do |file|
+            file << asset.blob.download
+          end
+        end unless File.exist?(save_path)
+        return save_path
+    end   
+    
+    def self.wicked_blob_path(file)
+        ActiveStorage::Blob.service.send(:path_for, file.blob.key)
+    end
+
+
 
     def self.ransackable_attributes(auth_object = nil)
         ["meets", "standar_detail_item_id", "cycle", "item_nro"]
@@ -183,7 +202,7 @@ class Evaluation < ApplicationRecord
         cumpli = "Estándares Cumplidos: " +  cumple.to_s
         pendi = "Estándares Pendientes: " + (total.to_i - cumple.to_i).to_s
         datos_generales.push([cumpli, por.to_f]) if total.to_i > 0 
-        datos_generales.push([pendi, (100 - por.to_f)]) if total.to_i > 0 
+        datos_generales.push([pendi, (100 - por.to_f).round(2).to_f]) if total.to_i > 0 
         return datos_generales 
     end 
 
@@ -221,7 +240,7 @@ class Evaluation < ApplicationRecord
             cumpli = "Cumplidos: " +  cumple.to_s
             pendi = "Pendientes: " + (total.to_i - cumple.to_i).to_s
             @datos_generales.push([cumpli, por.to_f]) if total.to_i > 0 
-            @datos_generales.push([pendi, (100 - por.to_f)]) if total.to_i > 0 
+            @datos_generales.push([pendi, (100 - por.to_f).round(2).to_f]) if total.to_i > 0 
             @datos_generales
         end 
         return @datos_generales  

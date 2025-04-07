@@ -10,8 +10,8 @@ import "Chart.bundle"
 import "chartkick/chart.js"
 
 //import "direct_uploads"
-require("trix")
-require("@rails/actiontext")
+import "trix"
+import "@rails/actiontext"
 
 setTimeout((function () {
     window.status = "FLAG_FOR_PDF";

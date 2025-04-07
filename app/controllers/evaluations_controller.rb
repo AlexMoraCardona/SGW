@@ -1,16 +1,19 @@
 class EvaluationsController < ApplicationController
     def index
-        if  Current.user && Current.user.level > 0 && Current.user.level < 5
+        if  Current.user && Current.user.level > 0 && Current.user.level < 3
             if params[:entity_id].present?
-                    @evaluations = Evaluation.where(entity_id: params[:entity_id]).order(date_evaluation: :desc)
-            else    
-                @evaluations = Evaluation.all.order(date_evaluation: :desc)
-            end  
-         else
-             redirect_to new_session_path, alert: t('common.not_logged_in')   
-             session.delete(:user_id)   
-         end           
-         
+                @entity = Entity.find(params[:entity_id].to_i)
+                @evaluations = Evaluation.where("entity_id = ?",params[:entity_id].to_i)
+            else 
+                @evaluations = Evaluation.all
+            end    
+        elsif Current.user && Current.user.level > 2 
+            @entity = Entity.find(Current.user.entity)
+            @evaluations = Evaluation.where("entity_id = ?", @entity.id)
+        else
+            redirect_to new_session_path, alert: t('common.not_logged_in')    
+            session.delete(:user_id)  
+        end     
     end    
 
     def crear_evaluacion 
@@ -98,28 +101,34 @@ class EvaluationsController < ApplicationController
         @evaluation = Evaluation.find(params[:id]) 
         @evaluation.destroy
         redirect_to evaluations_path, notice: 'Evaluación borrada correctamente', status: :see_other
-    end    
+    end   
     
+   
     def ver_evaluation_pdf
         @evaluation = Evaluation.find(params[:id])
         @evaluation_rule_details = EvaluationRuleDetail.where("evaluation_id = ?", @evaluation.id).order(:order_nro)  if @evaluation.present?
         @entity = Entity.find(@evaluation.entity_id) if @evaluation.present?
         @user_responsible = User.find(@evaluation.user_responsible) if @evaluation.user_responsible > 0
         @user_representante = User.find(@evaluation.user_representante) if @evaluation.user_representante > 0
+        @template = Template.where("format_number = ? and document_vigente = ?",82,1).last  
+
 
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'ver_evaluation_pdf',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
+            format.pdf {
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('ver_evaluation_pdf'),
+                    header: { right: '[page] de [topage]' },
+                    margin: {top: 10, bottom: 10, left: 10, right: 10 },
+                    disable_javascript: true,
+                    enable_plugins: true,
+                    page_size: 'letter',
 
-    end     
+                  )  
+                  send_data(pdf, filename: 'evaluacion.pdf', disposition: 'attachment')      
+            }
+        end    
+    end  
 
     def actualizar_fecha(id)
         @evaluation = Evaluation.find(id)

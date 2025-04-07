@@ -40,6 +40,12 @@ class EvidencesController < ApplicationController
         @evidence = Evidence.find(params[:id])
         @evidence.destroy
         redirect_to evidences_path, notice: 'Evidencia borrada correctamente', evidence: :see_other
+    end  
+    
+
+    def ciclophva
+        @nombre_ciclo = Cycle.find(params[:id]).name
+
     end    
 
     private

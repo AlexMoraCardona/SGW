@@ -100,6 +100,7 @@ Rails.application.routes.draw do
   resources :detail_diseases
   resources :view_videos
 
+  get '/attachments/purge/:id', to: 'attachments#purge', as: 'purge_attachment'
   get '/emergency_plans/resources_ext_plan/:id', to: 'emergency_plans#resources_ext_plan', as: 'resources_ext_plan'
   get '/emergency_plans/resources_int_plan/:id', to: 'emergency_plans#resources_int_plan', as: 'resources_int_plan'
   get '/emergency_plans/brigadistas_plan/:id', to: 'emergency_plans#brigadistas_plan', as: 'brigadistas_plan'
@@ -173,6 +174,7 @@ Rails.application.routes.draw do
   get '/templates/ver_documental/:id', to: 'templates#ver_documental', as: 'ver_documental'
   get '/matrix_legals/ver_matrix_legal/:id', to: 'matrix_legals#ver_matrix_legal', as: 'ver_matrix_legal'
   get '/firms/firma_fecha/:id', to: 'firms#firma_fecha', as: 'firma_fecha'
+  get '/evidences/ciclophva/:id', to: 'evidences#ciclophva', as: 'ciclophva'
 
   resources :admin_extent_dangers do
     collection do
@@ -280,6 +282,7 @@ Rails.application.routes.draw do
       get '/meeting_minutes/crear_asistente/:id', to: 'meeting_minutes#crear_asistente', as: 'crear_asistente'
       get '/meeting_minutes/crear_compromiso/:id', to: 'meeting_minutes#crear_compromiso', as: 'crear_compromiso'
       get '/meeting_minutes/crear_firma/:id', to: 'meeting_minutes#crear_firma', as: 'crear_firma'
+      get '/meeting_minutes/crear_copia_acta/:id', to: 'meeting_minutes#crear_copia_acta', as: 'crear_copia_acta'
     end
   end
  
@@ -342,7 +345,6 @@ Rails.application.routes.draw do
     end  
   end
 
-  delete "attachments/:id/purge", to: "attachments#purge", as: "purge_attachment"
 
   get '/indicadores/resultado', to: 'indicadores#resultado', as: 'resultado' 
   post '/indicadores/resultado' => 'indicadores#consultar', as: 'consultar'

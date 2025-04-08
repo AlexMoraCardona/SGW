@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_03_11_022226) do
+ActiveRecord::Schema[7.0].define(version: 2025_04_08_180642) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -1624,6 +1624,13 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_11_022226) do
     t.integer "state_protection", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "cost_element", default: 0
+    t.integer "cant_person_use", default: 0
+    t.string "prom_person_use"
+    t.integer "total_anual_person", default: 0
+    t.integer "stok_min", default: 0
+    t.string "proveedor_element"
+    t.string "technical_sheet"
   end
 
   create_table "provides_protection_items", force: :cascade do |t|
@@ -1772,6 +1779,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_11_022226) do
     t.datetime "updated_at", null: false
     t.bigint "safety_inspection_id"
     t.bigint "situation_condition_id"
+    t.string "recommendations"
+    t.string "proposed_intervention"
     t.index ["safety_inspection_id"], name: "index_safety_inspection_items_on_safety_inspection_id"
     t.index ["situation_condition_id"], name: "index_safety_inspection_items_on_situation_condition_id"
   end

@@ -31,7 +31,7 @@ class SafetyInspectionItemsController < ApplicationController
         @safety_inspection = SafetyInspection.find(@safety_inspection_item.safety_inspection_id) if @safety_inspection_item.present?
 
         if @safety_inspection_item.update(safety_inspection_item_params)
-            redirect_to safety_inspections_path(entity_id: @safety_inspection.entity_id), notice: t('.created')
+            #redirect_to safety_inspections_path(entity_id: @safety_inspection.entity_id), notice: t('.created')
         else
             render :edit, audit_reports: :unprocessable_entity
         end         
@@ -46,7 +46,8 @@ class SafetyInspectionItemsController < ApplicationController
     private
 
     def safety_inspection_item_params
-        params.require(:safety_inspection_item).permit(:state_compliance, :observation, :safety_inspection_id, :situation_condition_id, inspection_evidences: [])
+        params.require(:safety_inspection_item).permit(:state_compliance, :observation, :safety_inspection_id, :situation_condition_id, 
+                        :recommendations, :proposed_intervention, inspection_evidences: [])
     end  
 end  
 

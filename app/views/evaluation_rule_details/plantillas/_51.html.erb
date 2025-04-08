@@ -254,11 +254,63 @@
         </tr>
     </table> 
     <div><br></div>    
+    
+    <div>
+        <% if @hallazgos.present? %>
+            <% @hallazgos.each do |hallazgo| %>
+                <div>
+                    <strong><%= hallazgo.situation_condition.type_condition_inspection.name %></strong></br>
+                    <%= hallazgo.situation_condition.name %>
+                </div>
+                <% if hallazgo.observation.present? %>    
+                    <div>
+                        <strong>Hallazgos</strong>
+                    </div> 
+                    <div>
+                        * <%= hallazgo.observation %>
+                    </div> 
+                <% end %>
+                <div><br></div>    
+                <% if hallazgo.recommendations.present? %>    
+                    <div>
+                        * <strong>Recomendaciones</strong>
+                    </div> 
+                    <%= hallazgo.recommendations if hallazgo.recommendations.present? %>      
+                <% end %>
+                <div><br></div>    
+                <% if hallazgo.inspection_evidences.attached? %>
+                        <div>
+                            <strong>Registro fotográfico</strong>
+                        </div> 
+                        <div data-controller="previews" >
+                            <% hallazgo.inspection_evidences.each do |file|%>
+                                <br>
+                                <% if file.image? %>
+                                    <div>
+                                        <%= image_tag file, data: {previews_target: "preview"}, class: "image" %>
+                                        <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                    </div>
+                                <% elsif file.video? %>
+                                    <%= video_tag url_for(file), controls: "", width: "400px" %>          
+                                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                <% elsif file.audio? %>
+                                    <%= audio_tag(url_for(file), controls: "") %>          
+                                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                <% else %>
+                                    <%= link_to file.filename, url_for(file) %>          
+                                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                <% end %>
+                            <% end %>  
+                        </div>
+                <% end %>
+            <% end %>
+        <% end %>
+    </div> 
+    <div><br></div>    
     <div>
         <%= @evidence.compliances if @evidence.present? %>
     </div> 
-
-
+    <div><br></div>
     <div class="row text-center">
         <strong>SEGUIMIENTO A LA GESTIÓN</strong>
     </div> 
@@ -266,11 +318,11 @@
     <table> 
         <tr>
             <td style="text-align:justify">
-                <p>El seguimiento pretende verificar la ejecución de acciones correctivas y recomendaciones dadas en la Inspección realizada.</p>
-                <p>El éxito de un esquema de inspecciones en la empresa depende en gran parte de la colaboración y apoyo de la alta dirección de la empresa.</p>
-                <p>Es importante asegurarse de que las medidas correctivas a las situaciones encontradas se cumplan en el tiempo fijado para tal fin, buscando de esta manera la efectividad de dichas inspecciones.</p>
-                <p>Los aspectos mencionados en el presente informe se garantizan bajo las condiciones encontradas el día <strong><%= @evidence.date.day if @evidence.date.present? %></strong> del mes de <strong><%= localize @evidence.date, format: "%B" if @evidence.date.present? %></strong> del año <strong><%= @evidence.date.year if @evidence.date.present? %></strong>.</p>
-                <p>La responsabilidad de las decisiones que se tomen con base en este informe, radica únicamente en la alta dirección de la empresa.</p>
+                <p>* El seguimiento pretende verificar la ejecución de acciones correctivas y recomendaciones dadas en la Inspección realizada.</p>
+                <p>* El éxito de un esquema de inspecciones en la empresa depende en gran parte de la colaboración y apoyo de la alta dirección de la empresa.</p>
+                <p>* Es importante asegurarse de que las medidas correctivas a las situaciones encontradas se cumplan en el tiempo fijado para tal fin, buscando de esta manera la efectividad de dichas inspecciones.</p>
+                <p>* Los aspectos mencionados en el presente informe se garantizan bajo las condiciones encontradas el día <strong><%= @evidence.date.day if @evidence.date.present? %></strong> del mes de <strong><%= localize @evidence.date, format: "%B" if @evidence.date.present? %></strong> del año <strong><%= @evidence.date.year if @evidence.date.present? %></strong>.</p>
+                <p>* La responsabilidad de las decisiones que se tomen con base en este informe, radica únicamente en la alta dirección de la empresa.</p>
             </td>
         </tr>
     </table> 

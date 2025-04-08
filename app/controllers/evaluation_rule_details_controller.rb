@@ -71,6 +71,11 @@ class EvaluationRuleDetailsController < ApplicationController
 
         end
 
+        if @template.format_number == 51 
+            safety_inspection = SafetyInspection.where("entity_id = ?",@evidence.entity.id).last
+            @hallazgos = SafetyInspectionItem.where("safety_inspection_id = ? and state_compliance > ?",safety_inspection.id, 1) if safety_inspection.present?
+        end
+
         @firms.each do |firm| 
             @representante_legal = User.find(firm.user_id) if firm.legal_representative == 1 
         end  

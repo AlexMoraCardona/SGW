@@ -1,7 +1,7 @@
 # Single server example
-role :app, %w{sgw@ec2-18-209-150-90.compute-1.amazonaws.com}
-role :web, %w{sgw@ec2-18-209-150-90.compute-1.amazonaws.com}
-role :db,  %w{sgw@ec2-18-209-150-90.compute-1.amazonaws.com}
+role :app, %w{ubuntu@ec2-18-209-150-90.compute-1.amazonaws.com}
+role :web, %w{ubuntu@ec2-18-209-150-90.compute-1.amazonaws.com}
+role :db,  %w{ubuntu@ec2-18-209-150-90.compute-1.amazonaws.com}
 
 # server-based syntax
 # ======================
@@ -49,7 +49,7 @@ role :db,  %w{sgw@ec2-18-209-150-90.compute-1.amazonaws.com}
   set :ssh_options, {
     keys: %w(/home/alex/Escritorio/Proyectos/clave_conesst_ec2.pem),
     forward_agent: true,
-    auth_methods: %w(password)
+    auth_methods: %w(publickey password)
   }
 #
 # The server-based syntax can be used to override options:

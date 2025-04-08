@@ -31,26 +31,19 @@ class Evidence < ApplicationRecord
         @evidence.compliances = "<br>* Compromiso desde la Alta Dirección, en la implementación del Sistema de Gestión de Seguridad y Salud en el Trabajo, asignando los recursos humanos, tecnológicos y financieros, garantizando el cumplimiento de los objetivos.<br/> <br>*Prevenir accidentes y enfermedades laborales, como consecuencia a la exposición de los diferentes ambientes de trabajo de todos los empleados, contratistas, proveedores y visitantes.<br/> <br>*Dar cumplimiento a todas las disposiciones legales, Decretos, leyes, Resoluciones y demás normas que sean expedidas en materia de seguridad y salud en el trabajo; y a su vez, implementarlas y ejecutarlas al interior de la Organización.<br/> <br>*Establecer el principio de la mejora continua, en todos los procesos de aseguramiento de la Seguridad y Salud en el Trabajo.<br/> <br>*Fomentar el autocuidado y participación de todo el personal en materia de Seguridad y Salud en el trabajo.<br/> <br>*Promover la salud mental, con miras a que todos los empleados que integren la organización estén en ambientes de trabajo saludables.<br/> <br>*Compromiso con la mejora continua del SG-SST.<br/>" if @evidence.template_id == 64 || @evidence.template_id == 65 || @evidence.template_id == 66
         @evidence.compliances = "<br>* Desarrollar plan de capacitación y entrenamiento para el personal incluyendo demás partes interesadas.<br/> <br>* Proporcionar los recursos necesarios para la implementación del sistema de gestión de seguridad y salud en el trabajo.<br/> <br>* Identificar los diferentes peligros y riesgos y establecer controles específicos.<br/> <br>* Investigar accidentes, incidentes.<br/> <br>* Identificar y realizar seguimiento a los requisitos legales y aplicables.<br/> <br>* Cumplir con el plan de trabajo anual según el Decreto 1072 de 2015 Y mejora continua de este.<br/>" if @evidence.template_id == 67 || @evidence.template_id == 68 || @evidence.template_id == 69
         @evidence.compliances = "<br>* Examen médico ocupacional.<br/> <br>* Higiene postural.<br/> <br>* Pausas activas.<br/> <br>* Realización de pruebas complementarias.<br/> <br>* Remitir a EPS.<br/> <br>* Uso de elementos de protección personal.<br/> <br>* Continuar manejo médico<br/>" if @evidence.template_id == 115 || @evidence.template_id == 116 || @evidence.template_id == 117
-        @texto = "<br>" if @evidence.template_id == 154 || @evidence.template_id == 155 || @evidence.template_id == 156
-
-        if @evidence.template_id == 154 || @evidence.template_id == 155 || @evidence.template_id == 156 then
-            @safety_inspection = SafetyInspection.where("entity_id = ?",@evidence.entity_id).last if @evidence.entity_id.present?
-            @safety_inspection_items = SafetyInspectionItem.where("safety_inspection_id = ?", @safety_inspection.id) if @safety_inspection.present?
-            @safety_inspection_items.each do |safety_inspection_item|
-                if safety_inspection_item.state_compliance > 1
+  
+        if @evidence.template.format_number == 51 then
                     @texto = @texto.to_s + "<br>"
-                    @texto = @texto.to_s + "<strong>" + safety_inspection_item.situation_condition.type_condition_inspection.name.to_s + "</strong>"
+                    @texto = @texto.to_s + '<div class="row text-center"><strong>PROPUESTAS GENERALES DE INTERVENCIÓN</strong></div>'
                     @texto = @texto.to_s + "<br>"
-                    @texto = @texto.to_s + safety_inspection_item.situation_condition.name.to_s
+                    @texto = @texto.to_s + "Las propuestas de intervención están orientadas a brindar recomendaciones
+sobre las condiciones de seguridad que se deben tener en relación con todos los
+aspectos por mejorar, observados en el recorrido de inspección."
                     @texto = @texto.to_s + "<br>"
-                    @texto = @texto.to_s + "Observaciones: "
-                    @texto = @texto.to_s + safety_inspection_item.observation.to_s 
-                    @texto = @texto.to_s + "<br>"
-                end
-            end    
+                    @texto = @texto.to_s + "Adicional a la propuesta emitida en cada uno de los hallazgos, se dan recomendaciones generales para tener en cuenta con la finalidad de mejorar espacios de trabajo y propiciar la ejecución de tareas de manera segura."
+                    @evidence.compliances = @texto
         end
 
-        @evidence.compliances = @texto if @evidence.template_id == 154 || @evidence.template_id == 155 || @evidence.template_id == 156
 
         if @evidence.save then
             Firm.crear_firmas(@evidence.id)

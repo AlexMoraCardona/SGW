@@ -14,14 +14,9 @@
         </div>        
         </br>
 
-        <div class="col-sm-3">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la durabilidad."><%= t('.durability') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :durability,  class: "form-control" %>
-        </div>
-        </br>
         <div class="row g-2">
             <div class="col-sm-3">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar inducción personal."><%= t('.state_protection') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la zona de uso."><%= t('.state_protection') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
                 <%= form.select(:state_protection, [['N/A', 0], ['Servicios Generales', 1], ['Odontólogo / Auxiliar de Odontología', 2], ['Operarios', 3], ['Taller Metalmecánica', 4], ['Metalmecánica (DUBBER)', 5], ['Producción', 6], ['Terminada', 7], ['Molino', 8], ['Mantenimiento', 9], ['Caucho', 10], ['Mensajero', 11]]) %>
             </div>  
             <div class="col-sm-2">
@@ -70,7 +65,6 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th scope="col">ID DEL ELEMENTO</th>
                     <th scope="col">ELEMENTO DE PROTECCIÓN</th>
                     <th scope="col">IMAGEN</th>
                     <th scope="col">Editar</th>
@@ -80,7 +74,6 @@
             <tbody>
                 <% @matrix_protection_items.each do |matrix_protection_item| %>
                     <tr>
-                        <td><%= matrix_protection_item.protection_element.id %></td>
                         <td><%= matrix_protection_item.protection_element.name %></td>
                         <td>
                             <% if matrix_protection_item.present? %>
@@ -93,7 +86,7 @@
                                 <% end %>
                             <% end %>     
                         </td> 
-                        <td><%= link_to t('common.edit'), edit_matrix_protection_item_path(matrix_protection_item), class: 'btn btn-xs btn-primary'  %></td>
+                        <td><%= link_to t('common.edit'), edit_matrix_protection_item_path(matrix_protection_item), class: 'btn btn-sm btn-primary'  %></td>
                         <td><%= button_to "Delete", matrix_protection_item, method: :delete, class:"btn btn-sm btn-danger" %></td>
                     </tr>
                 <% end %>     

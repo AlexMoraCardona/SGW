@@ -31,7 +31,7 @@ class SafetyInspectionItemsController < ApplicationController
         @safety_inspection = SafetyInspection.find(@safety_inspection_item.safety_inspection_id) if @safety_inspection_item.present?
 
         if @safety_inspection_item.update(safety_inspection_item_params)
-            #redirect_to safety_inspections_path(entity_id: @safety_inspection.entity_id), notice: t('.created')
+           
         else
             render :edit, audit_reports: :unprocessable_entity
         end         

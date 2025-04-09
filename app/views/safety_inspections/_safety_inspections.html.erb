@@ -64,30 +64,30 @@
                                         </thead>
                                         <tbody>
                                             <% @safety_inspection_items.where("safety_inspection_id = ?", safety_inspection.id).each do |safety_inspection_item| %>
-                                                <%= form_with model: safety_inspection_item do |form| %> 
                                                     <tr>
                                                         <td><%= safety_inspection_item.situation_condition.name %></td>
                                                         <td style="width:300px;">
-                                                            <%= form.radio_button :state_compliance, 0, :onClick=>"javascript: this.form.submit.click();" %>
-                                                            <label for="noaplica">N/A</label></br>   
-                                                            <%= form.radio_button :state_compliance, 1, :onClick=>"javascript: this.form.submit.click();" %>
-                                                            <label for="si">SI</label></br>
-                                                            <%= form.radio_button :state_compliance, 2, :onClick=>"javascript: this.form.submit.click();" %>
-                                                            <label for="no">NO</label></br>
-                                                            <%= form.radio_button :state_compliance, 3, :onClick=>"javascript: this.form.submit.click();" %>
-                                                            <label for="parcial">PARCIAL</label>&nbsp;
-                                                            <div class="actions" style="display:none;">
-                                                                <%= form.submit "", :name => "submit", :remote => "true" %>
-                                                            </div>                                 
+                                                            <%= form_with model: safety_inspection_item do |form| %> 
+                                                               <%= form.radio_button :state_compliance, 0, :onClick=>"javascript: this.form.submit.click();" %>
+                                                                <label for="noaplica">N/A</label></br>   
+                                                                <%= form.radio_button :state_compliance, 1, :onClick=>"javascript: this.form.submit.click();" %>
+                                                                <label for="si">SI</label></br>
+                                                                <%= form.radio_button :state_compliance, 2, :onClick=>"javascript: this.form.submit.click();" %>
+                                                                <label for="no">NO</label></br>
+                                                                <%= form.radio_button :state_compliance, 3, :onClick=>"javascript: this.form.submit.click();" %>
+                                                                <label for="parcial">PARCIAL</label>&nbsp;
+                                                                <div class="actions" style="display:none;">
+                                                                    <%= form.submit "", :name => "submit", :remote => "true" %>
+                                                                </div>  
+                                                            <% end %>                                    
                                                         </td>
                                                         <td>
                                                             <div class="d-grid gap-2 col-1 mx-auto">
                                                                 <%= link_to t('common.edit'), edit_safety_inspection_item_path(safety_inspection_item), class: 'btn btn-sm btn-primary'  %>
-                                                                <%= button_to "Eliminar", safety_inspection_item, method: :delete, class:"btn btn-sm btn-danger" %>
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                <% end %>    
+                                                   
                                             <% end %>     
                                         </tbody>      
                                     </table>

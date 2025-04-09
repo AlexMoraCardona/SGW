@@ -1,5 +1,15 @@
 <tr>
-    <td><%= protection_element.id %></td>
+    <td>
+        <% if protection_element.present? %>
+            <% if protection_element.img_elem.attached? %>
+                <% if protection_element.img_elem.image? %> 
+                    <%= image_tag protection_element.img_elem, data: {previews_target: "preview"}, class: "image_peq" %>
+                <% end %>
+            <% else %> 
+                <%= image_tag("avatar.jpg", class: "avatar-mini") %>
+            <% end %>
+        <% end %>     
+    </td>
     <td><%= protection_element.name %></td> 
     <td><%= ProtectionElement.label_state_protection(protection_element.state_protection) %></td>
     <td><%= link_to t('common.edit'), edit_protection_element_path(protection_element), class: 'btn btn-sm btn-primary'  %></td>

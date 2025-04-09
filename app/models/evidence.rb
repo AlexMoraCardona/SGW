@@ -20,6 +20,11 @@ class Evidence < ApplicationRecord
     end    
 
 
+    def self.buscar_evidencias_externas(item)
+        evaluacion_rule_detail = EvaluationRuleDetail.find(item)
+    end    
+
+
     def self.crear_evidencia(evaluacion_rule_detail_id,template_id, entity_id)
         @evidence = Evidence.new
 

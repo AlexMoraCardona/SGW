@@ -115,6 +115,23 @@ class SafetyInspectionsController < ApplicationController
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Responsable."
             end    
         end
+    end  
+    
+    def ver_informe_inspeccion 
+            @safety_inspection = SafetyInspection.find(params[:id].to_i)
+            @hallazgos = SafetyInspectionItem.where("safety_inspection_id = ? and state_compliance > ?",@safety_inspection.id, 1) if @safety_inspection.present?
+            @template = Template.where("format_number = ? and document_vigente = ?",51,1).last  
+            @entity = Entity.find(@safety_inspection.entity_id) if @safety_inspection.present?
+            @res = User.find(@safety_inspection.user_responsible) if  @safety_inspection.user_responsible.present? &&  @safety_inspection.user_responsible > 0
+            @administrative_political_division = AdministrativePoliticalDivision.find(@entity.entity_location_code) if @entity.entity_location_code.present?
+            @economic_activity = EconomicActivityCode.find(@entity.economic_activity)
+            @arl = OccupationalRiskManager.find(@entity.entity_arl)
+            @claseriesgo = RiskLevel.find(@entity.risk_classification) if @entity.risk_classification.present?
+    
+    end    
+
+    def pdf_informe_inspeccion
+
     end    
 
     private

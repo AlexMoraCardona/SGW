@@ -71,10 +71,6 @@ class EvaluationRuleDetailsController < ApplicationController
 
         end
 
-        if @template.format_number == 51 
-            safety_inspection = SafetyInspection.where("entity_id = ?",@evidence.entity.id).last
-            @hallazgos = SafetyInspectionItem.where("safety_inspection_id = ? and state_compliance > ?",safety_inspection.id, 1) if safety_inspection.present?
-        end
 
         @firms.each do |firm| 
             @representante_legal = User.find(firm.user_id) if firm.legal_representative == 1 
@@ -94,17 +90,21 @@ class EvaluationRuleDetailsController < ApplicationController
         @vista = 'evaluation_rule_details/plantillas/' + @evidence.template_id.to_s 
         @footer = 'Nit: ' + @evidence.entity.identification_number.to_s + ', Dirección: ' + @evidence.entity.entity_address.to_s
         nombre_evidencia = @template.reference.to_s + '.pdf'
+
+
         respond_to do |format| 
             format.html
             format.pdf {
+                header_html = render_to_string( partial: 'evaluation_rule_details/header')
                 pdf = WickedPdf.new.pdf_from_string(
                     render_to_string('ver_evidencia'),
-                    header: { right: '[page] de [topage]' },
-                    margin: {top: 10, bottom: 10, left: 10, right: 10 },
                     disable_javascript: true,
-                    enable_plugins: true,
+                    margin: {top: 50, bottom: 20, left: 10, right: 10 },
                     page_size: 'letter',
-
+                    header: {spacing: 5,
+                            content: header_html},
+                    footer: {right: '[page] de [topage]'}
+                    
                   )  
                   send_data(pdf, filename: nombre_evidencia, disposition: 'attachment')      
             }

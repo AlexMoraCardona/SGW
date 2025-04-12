@@ -62,6 +62,7 @@ class EvaluationRuleDetailsController < ApplicationController
         @clasification_danger_details = ClasificationDangerDetail.all.order(clasification_danger_id: :desc) 
         @clasification_dangers = ClasificationDanger.all.order(id: :desc) 
         @danger_detail_risks = DangerDetailRisk.all.order(id: :desc) 
+        @entity= Entity.find(@evidence.entity_id)
 
         if @template.format_number == 77 
             @at = EvaluationRuleDetail.calculoat(@evidence.year_initial, @evidence.entity_id)
@@ -99,7 +100,7 @@ class EvaluationRuleDetailsController < ApplicationController
                 pdf = WickedPdf.new.pdf_from_string(
                     render_to_string('ver_evidencia'),
                     disable_javascript: true,
-                    margin: {top: 50, bottom: 20, left: 10, right: 10 },
+                    margin: {top: 50, bottom: 15, left: 15, right: 15 },
                     page_size: 'letter',
                     header: {spacing: 5,
                             content: header_html},

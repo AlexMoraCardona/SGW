@@ -14,7 +14,7 @@
                         <%=  image_tag  @matrix_danger_risk.entity.logo, class: "image_peq" %>
                     <% end %>
                 </td>
-                <td rowspan="4"; colspan="21"; style="text-align:center">
+                <td rowspan="4"; colspan="20"; style="text-align:center">
                     <div class="col-8"><h5>MATRIZ DE IDENTIFICACIÓN DE PELIGROS, EVALUACIÓN Y VALORACION DE LOS RIESGOS</h5><h6><%= @matrix_danger_risk.entity.business_name if @matrix_danger_risk.present? %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %> </h6></div> 
                 </td>
                 <td rowspan="4";  style="text-align:center">
@@ -47,9 +47,9 @@
             <tr>
                 <td style="background-color: black;">&nbsp;</td>
                 <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>PROCESO</strong></TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>ZONA - LUGAR</strong></TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>ACTIVIDADES</strong></TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>TAREA</strong></TD>
+                <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>ZONA/LUGAR</strong></TD>
+                <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>ACTIVIDAD</strong></TD>
+                <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>TAREAS</strong></TD>
                 <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>RUTINARIA: SI o NO</strong></TD>
                 <td colspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>PELIGRO</strong></TD>
                 <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>EFECTOS POSIBLES EN LA SALUD</strong></TD>
@@ -57,14 +57,13 @@
                 <td colspan="7"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>EVALUACIÓN DEL RIESGO</strong></td>
                 <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>VALORACIÓN DEL RIESGO</strong></td>
                 <td colspan="5"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>MEDIDAS DE INTERVENCIÓN</strong></TD>
-                <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>OBSERVACIONES</strong></TD>
                 <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>EDITAR</strong></TD>
                 <td style="background-color: black;">&nbsp;</td>
             </tr>            
             <tr>
                 <td style="background-color: black;">&nbsp;</td>
-                <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>DESCRIPCIÓN</strong></TD>
                 <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>CLASIFICACIÓN</strong></TD>
+                <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>DESCRIPCIÓN</strong></TD>
                 <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>FUENTE</strong></TD>
                 <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>MEDIO</strong></TD>
                 <td style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>INDIVIDUO</strong></TD>
@@ -89,47 +88,97 @@
             <tbody>
                 <tr>
                     <td style="background-color: black;">&nbsp;</td>
-                    <td style="border:1px solid black"><%= item.location.name_locate %></td>
+                    <td style="border:1px solid black"><%= item.source_information %></td>
                     <td style="border:1px solid black"><%= item.origin %></td>
                     <td style="border:1px solid black"><%= item.activity %></td>
                     <td style="border:1px solid black"><%= item.task %></td>
                     <td style="border:1px solid black"><%= item.label_type_task(item.type_task) %></td>
+                    <td style="border:1px solid black"><%= item.clasification_danger_detail.clasification_danger.name if item.clasification_danger_detail_id.to_i > 0  %></td>
                     <td style="border:1px solid black"><%= item.clasification_danger_detail.name if item.clasification_danger_detail_id.present? && item.clasification_danger_detail_id.to_i > 0 %></td>
-                    <td style="border:1px solid black"><%= item.clasification_danger.name if item.clasification_danger_id.present? && item.clasification_danger_id.to_i > 0 %></td>
                     <td style="border:1px solid black"><%= item.possible_effects_health %></td>
 
                    
                     <td style="border:1px solid black"><%= item.description_existing_control_origin  %></td>
                     <td style="border:1px solid black"><%= item.description_existing_control_medium  %></td>
                     <td style="border:1px solid black"><%= item.description_existing_control_person  %></td>
-                    <td style="border:1px solid black; text-align:center"><%= item.deficiency_level  %></td>
-                    <td style="border:1px solid black; text-align:center"><%= item.exposure_level  %></td>
-                    <td style="border:1px solid black; text-align:center"><%= item.probability_level  %></td>
-                    <td style="border:1px solid black; text-align:center"><%= item.interpretation  %></td>
-                    <td style="border:1px solid black; text-align:center"><%= item.consequence_level  %></td>
+                    <% if item.deficiency_level == 10  %>
+                         <td style="border:1px solid black; text-align:center; background-color:#F03553">Muy Alto - <%= item.deficiency_level  %></td>
+                    <% end  %>    
+                    <% if item.deficiency_level == 6  %>
+                         <td style="border:1px solid black; text-align:center; background-color:#D98F3B">Alto - <%= item.deficiency_level  %></td>
+                    <% end  %>    
+                    <% if item.deficiency_level == 2  %>
+                         <td style="border:1px solid black; text-align:center; background-color:#F0E835">Medio - <%= item.deficiency_level  %></td>
+                    <% end  %>    
+                    <% if item.deficiency_level < 2  %>
+                         <td style="border:1px solid black; text-align:center; background-color:#038018">Bajo - <%= item.deficiency_level  %></td>
+                    <% end  %>    
+                    <% if item.exposure_level == 4  %>
+                         <td style="border:1px solid black; text-align:center; background-color:#F03553">Continua - <%= item.exposure_level  %></td>
+                    <% end  %>    
+                    <% if item.exposure_level == 3  %>
+                         <td style="border:1px solid black; text-align:center; background-color:#D98F3B">Frecuente - <%= item.exposure_level  %></td>
+                    <% end  %>    
+                    <% if item.exposure_level == 2  %>
+                         <td style="border:1px solid black; text-align:center; background-color:#F0E835">Ocasional - <%= item.exposure_level  %></td>
+                    <% end  %>    
+                    <% if item.exposure_level < 2  %>
+                         <td style="border:1px solid black; text-align:center; background-color:#038018">Esporádica - <%= item.exposure_level  %></td>
+                    <% end  %> 
+                    <% if item.interpretation == 'MUY ALTO'  %>
+                        <td style="border:1px solid black; text-align:center; background-color:#F03553"><%= item.probability_level  %></td>
+                        <td style="border:1px solid black; text-align:center; background-color:#F03553"><%= item.interpretation  %></td>
+                    <% end  %> 
+                    <% if item.interpretation == 'ALTO'  %>
+                        <td style="border:1px solid black; text-align:center; background-color:#D98F3B"><%= item.probability_level  %></td>
+                        <td style="border:1px solid black; text-align:center; background-color:#D98F3B"><%= item.interpretation  %></td>
+                    <% end  %> 
+                    <% if item.interpretation == 'MEDIO'  %>
+                        <td style="border:1px solid black; text-align:center; background-color:#F0E835"><%= item.probability_level  %></td>
+                        <td style="border:1px solid black; text-align:center; background-color:#F0E835"><%= item.interpretation  %></td>
+                    <% end  %> 
+                    <% if item.interpretation == 'BAJO'  %>
+                        <td style="border:1px solid black; text-align:center; background-color:#038018"><%= item.probability_level  %></td>
+                        <td style="border:1px solid black; text-align:center; background-color:#038018"><%= item.interpretation  %></td>
+                    <% end  %> 
+                    <% if item.consequence_level == 100  %>
+                         <td style="border:1px solid black; text-align:center; background-color:#F03553">Mortal o Catastrófico - <%= item.consequence_level  %></td>
+                    <% end  %>    
+                    <% if item.consequence_level == 60  %>
+                         <td style="border:1px solid black; text-align:center; background-color:#D98F3B">Muy Grave - <%= item.consequence_level  %></td>
+                    <% end  %>    
+                    <% if item.consequence_level == 25  %>
+                         <td style="border:1px solid black; text-align:center; background-color:#F0E835">Grave - <%= item.consequence_level  %></td>
+                    <% end  %>    
+                    <% if item.consequence_level < 25  %>
+                         <td style="border:1px solid black; text-align:center; background-color:#038018">Leve - <%= item.consequence_level  %></td>
+                    <% end  %>    
                     <% if item.risk_level_interpretation.to_s == 'I No Aceptable'  %>
                          <td style="border:1px solid black; text-align:center; background-color:#F03553"><%= item.level_risk_intervention  %></td>
+                         <td style="border:1px solid black; background-color:#F03553"><%= item.risk_acceptability  %></td>
+                         <td style="border:1px solid black; text-align:center;background-color:#F03553"><%= item.risk_level_interpretation %></td>
                     <% end  %>    
                     <% if item.risk_level_interpretation.to_s == 'II No Aceptable'  %>
                          <td style="border:1px solid black; text-align:center; background-color:#D98F3B"><%= item.level_risk_intervention  %></td>
+                         <td style="border:1px solid black; background-color:#D98F3B"><%= item.risk_acceptability  %></td>
+                         <td style="border:1px solid black; text-align:center; background-color:#D98F3B;"><%= item.risk_level_interpretation %></td>
                     <% end  %>    
 
                     <% if item.risk_level_interpretation.to_s == 'III Aceptable'  %>
                          <td style="border:1px solid black; text-align:center; background-color:#F0E835"><%= item.level_risk_intervention  %></td>
+                         <td style="border:1px solid black; background-color:#F0E835"><%= item.risk_acceptability  %></td>
+                         <td style="border:1px solid black; text-align:center;; background-color:#F0E835"><%= item.risk_level_interpretation %></td>
                     <% end  %>    
-
                     <% if item.risk_level_interpretation.to_s == 'IV Aceptable'  %>
                          <td style="border:1px solid black; text-align:center; background-color:#038018"><%= item.level_risk_intervention  %></td>
-                    <% end  %>    
-                    <td style="border:1px solid black"><%= item.risk_acceptability  %></td>
-                    <td style="border:1px solid black; text-align:center;"><%= item.risk_level_interpretation %></td>
-                   
+                         <td style="border:1px solid black; background-color:#038018"><%= item.risk_acceptability  %></td>
+                         <td style="border:1px solid black; text-align:center; background-color:#038018;"><%= item.risk_level_interpretation %></td>
+                    <% end  %>  
                     <td style="border:1px solid black; text-align:center"><%= item.intervention_measures_elimination  %></td>
                     <td style="border:1px solid black; text-align:center""><%= item.intervention_measures_replacement  %></td>
                     <td style="border:1px solid black"><%= item.intervention_measures_engineering_control  %></td>
                     <td style="border:1px solid black"><%= item.intervention_measures_acsw  %></td>
                     <td style="border:1px solid black"><%= item.intervention_measures_ppee  %></td>
-                    <td style="border:1px solid black"><%= item.observations  %></td>
                     <td style="border:1px solid black"><%= link_to t('common.edit'), edit_matrix_danger_item_path(item), class: 'btn btn-xs btn-primary'  %></td>
                     <td style="background-color: black;">&nbsp;</td>
                 </tr>
@@ -150,7 +199,7 @@
                    <div></br></div>         
                 <% end %>     
             </td>
-            <td colspan="9"; style="border:1px solid black; text-align:center">&nbsp;
+            <td colspan="8"; style="border:1px solid black; text-align:center">&nbsp;
                 <% if @matrix_danger_risk.firm_adviser_sst == 1 %>
                     <% if @adv.present? %>
                         <% if @adv.firm.attached? %>
@@ -181,7 +230,7 @@
         <tr>
             <td style="background-color: black;">&nbsp;</td>
             <td colspan="8"; style="border:1px solid black; text-align:center"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_legal_representative) %> - Representante Legal</td>
-            <td colspan="9"; style="border:1px solid black; text-align:center"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_adviser_sst) %> - Asesor SST</td>
+            <td colspan="8"; style="border:1px solid black; text-align:center"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_adviser_sst) %> - Asesor SST</td>
             <td colspan="9"; style="border:1px solid black; text-align:center"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_responsible_sst) %> - Responsable SST</td>
             <td style="background-color: black;">&nbsp;</td>
         </tr>

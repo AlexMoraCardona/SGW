@@ -184,18 +184,18 @@ class Calendar < ApplicationRecord
                     end
                 end   
             end
-            @matrix_danger_risks = MatrixDangerRisk.all
-            @matrix_danger_items = nil
-            if  @matrix_danger_risks.present? then
-                @matrix_danger_risks.each do |matrix_danger_risk| 
-                    @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and danger_intervened = ? and proposed_date <= ?",matrix_danger_risk.id,0,(Date.today + 30))
-                    if @matrix_danger_items.present?
-                        @matrix_danger_items.each do |item| 
-                            @notificaciones << ["Matriz de Peligros y Riesgos", matrix_danger_risk.entity.business_name, item.activity, item.proposed_date, item.id]
-                        end    
-                    end
-                end   
-            end
+            #@matrix_danger_risks = MatrixDangerRisk.all
+            #@matrix_danger_items = nil
+            #if  @matrix_danger_risks.present? then
+            #    @matrix_danger_risks.each do |matrix_danger_risk| 
+            #        @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and danger_intervened = ? and proposed_date <= ?",matrix_danger_risk.id,0,(Date.today + 30))
+            #        if @matrix_danger_items.present?
+            #            @matrix_danger_items.each do |item| 
+            #                @notificaciones << ["Matriz de Peligros y Riesgos", matrix_danger_risk.entity.business_name, item.activity, item.proposed_date, item.id]
+            #            end    
+            #        end
+            #    end   
+            #end
             @matrix_corrective_actions = MatrixCorrectiveAction.all
             @matrix_action_items = nil
             if  @matrix_corrective_actions.present? then
@@ -281,16 +281,16 @@ class Calendar < ApplicationRecord
                             end    
                         end
                 end
-                @matrix_danger_risk = MatrixDangerRisk.find_by(entity_id: @entity.id.to_i)
-                @matrix_danger_items = nil
-                if  @matrix_danger_risk.present? then
-                        @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and danger_intervened = ? and proposed_date <= ?",@matrix_danger_risk.id,0,(Date.today+30))
-                        if @matrix_danger_items.present?
-                            @matrix_danger_items.each do |item| 
-                                @notificaciones << ["Matriz de Peligros y Riesgos", @matrix_danger_risk.entity.business_name, item.activity, item.proposed_date, item.id]
-                            end    
-                        end
-                end
+                #@matrix_danger_risk = MatrixDangerRisk.find_by(entity_id: @entity.id.to_i)
+                #@matrix_danger_items = nil
+                #if  @matrix_danger_risk.present? then
+                #        @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and danger_intervened = ? and proposed_date <= ?",@matrix_danger_risk.id,0,(Date.today+30))
+                #        if @matrix_danger_items.present?
+                #            @matrix_danger_items.each do |item| 
+                #                @notificaciones << ["Matriz de Peligros y Riesgos", @matrix_danger_risk.entity.business_name, item.activity, item.proposed_date, item.id]
+                #            end    
+                #        end
+                #end
                 @matrix_corrective_action = MatrixCorrectiveAction.find_by(entity_id: @entity.id)
                 @matrix_action_items = nil
                 if  @matrix_corrective_action.present? then

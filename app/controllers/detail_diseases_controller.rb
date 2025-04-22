@@ -2,9 +2,10 @@ class DetailDiseasesController < ApplicationController
     def index
         if  Current.user && Current.user.level == 1
             if params[:format].present?
-                @detail_diseases = DetailDisease.where("table_disease_id = ?", params[:format])
-                @q = DetailDisease.ransack(params[:q])
-                @pagy, @detail_diseases = pagy(@q.result(id: :desc), items: 3)
+                @detail_diseases = DetailDisease.where("table_disease_id = ?", params[:format].to_i)
+
+                @q = @detail_diseases.ransack(params[:q])
+                @pagy, @detail_diseases = pagy(@q.result(table_disease_id: :desc), items: 3)
             else
                 @detail_diseases = DetailDisease.all
                 @q = DetailDisease.ransack(params[:q])
@@ -32,11 +33,11 @@ class DetailDiseasesController < ApplicationController
     end    
  
     def edit
-        @detail_disease = DetailDisease.find(params[:id])
+        @detail_disease = DetailDisease.find(params[:id].to_i)
     end
     
     def update
-        @detail_disease = DetailDisease.find(params[:id])
+        @detail_disease = DetailDisease.find(params[:id].to_i)
         if @detail_disease.update(detail_disease_params)
             redirect_to detail_diseases_path(@detail_disease.table_disease_id), notice: 'Enfermedad actualizada correctamente'
         else
@@ -45,7 +46,7 @@ class DetailDiseasesController < ApplicationController
     end    
 
     def destroy
-        @detail_disease = DetailDisease.find(params[:id])
+        @detail_disease = DetailDisease.find(params[:id].to_i)
         @detail_disease.destroy
         redirect_to detail_diseases_path, notice: 'Enfermedad borrada correctamente', detail_disease: :see_other
     end    

@@ -133,6 +133,9 @@ class EvaluationRuleDetailsController < ApplicationController
         @evaluation_rule_detail = EvaluationRuleDetail.find(params[:id])
         @templates = Template.where("standar_detail_item_id = ?", @evaluation_rule_detail.standar_detail_item_id) if Current.user.level == 1 || Current.user.level == 2
         @evidences = Evidence.where("evaluation_rule_detail_id = ?", @evaluation_rule_detail.id).order(id: :desc)
+        if @evaluation_rule_detail.standar_detail_item_id == 47 || @evaluation_rule_detail.standar_detail_item_id == 115 || @evaluation_rule_detail.standar_detail_item_id == 175
+            @evidencias_total = Evidence.where("entity_id = ?",@evaluation_rule_detail.evaluation.entity_id)
+        end    
     end
     
     def update  

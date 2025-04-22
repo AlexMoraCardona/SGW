@@ -6,6 +6,8 @@ import "bootstrap"
 import "chartkick"
 import "Chart.bundle"
 
+//= require chartkick
+//= require Chart.bundle
 
 //import "direct_uploads"
 require("trix")

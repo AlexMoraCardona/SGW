@@ -122,6 +122,7 @@ class SafetyInspectionsController < ApplicationController
             @hallazgos = SafetyInspectionItem.where("safety_inspection_id = ? and state_compliance > ?",@safety_inspection.id, 1) if @safety_inspection.present?
             @template = Template.where("format_number = ? and document_vigente = ?",51,1).last  
             @entity = Entity.find(@safety_inspection.entity_id) if @safety_inspection.present?
+            @resposable_sst = User.find(@entity.responsible_sst) if  @entity.responsible_sst.present? &&  @entity.responsible_sst > 0
             @res = User.find(@safety_inspection.user_responsible) if  @safety_inspection.user_responsible.present? &&  @safety_inspection.user_responsible > 0
             @administrative_political_division = AdministrativePoliticalDivision.find(@entity.entity_location_code) if @entity.entity_location_code.present?
             @economic_activity = EconomicActivityCode.find(@entity.economic_activity)
@@ -135,6 +136,7 @@ class SafetyInspectionsController < ApplicationController
         @hallazgos = SafetyInspectionItem.where("safety_inspection_id = ? and state_compliance > ?",@safety_inspection.id, 1) if @safety_inspection.present?
         @template = Template.where("format_number = ? and document_vigente = ?",51,1).last  
         @entity = Entity.find(@safety_inspection.entity_id) if @safety_inspection.present?
+        @resposable_sst = User.find(@entity.responsible_sst) if  @entity.responsible_sst.present? &&  @entity.responsible_sst > 0
         @res = User.find(@safety_inspection.user_responsible) if  @safety_inspection.user_responsible.present? &&  @safety_inspection.user_responsible > 0
         @administrative_political_division = AdministrativePoliticalDivision.find(@entity.entity_location_code) if @entity.entity_location_code.present?
         @economic_activity = EconomicActivityCode.find(@entity.economic_activity)

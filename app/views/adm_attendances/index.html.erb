@@ -1,0 +1,33 @@
+<div align="left"; class="container col-12">
+    <a class="navbar-brand" href="/">
+        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+    </a>
+</div>
+<div class="container col-11">
+        <div class="d-flex">
+            <div class="container">
+               <h2 class="display-5"> <%= t('.title')%></h2>
+            </div> 
+        </div>
+        <div class="container">
+            <%= link_to t('common.create_adm_attendance'), new_adm_attendance_path, class: 'btn btn-sm btn-primary' %>
+        </div>
+        <hr>
+    <table class="table table-hover">
+        <thead> 
+            <tr>    
+                <th scope="col"><%= t('.date_attendance') %></th>
+                <th scope="col"><%= t('.entity_id') %></th>
+                <th scope="col"><%= t('.description') %></th>
+                <th scope="col"><%= t('common.edit') %></th>
+                <th scope="col">PDF</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if @adm_attendances.present? %>
+                <%= render partial: 'adm_attendance', collection: @adm_attendances  %>  
+            <% end %>    
+        </tbody>      
+    </table>
+</div>
+

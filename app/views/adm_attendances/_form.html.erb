@@ -1,0 +1,37 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @adm_attendance do |form| %>
+        <% @adm_attendance.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+        <br>    
+        <div class="row g-3">
+            <div class="col-sm-4">
+                <%= form.label :date_attendance , style: "display: block" %>
+                <%= form.date_field :date_attendance,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-4">
+                <%= form.label :time_initial, style: "display: block" %>
+                <%= form.time_field :time_initial,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-4">
+                <%= form.label :time_final, style: "display: block" %>
+                <%= form.time_field :time_final,  class: "form-control" %>
+            </div>        
+        </div>  
+        <br>
+        <div class="form-group">    
+            <%= form.label :description, style: "display: block" %>
+            <%= form.text_field :description,  class: "form-control" %>
+        </div>
+        <br>    
+        <%= form.hidden_field :entity_id, :value => Current.user.entity.to_i, class: "form-control" %>
+        <%= form.hidden_field :user_id, :value => Current.user.id.to_i, class: "form-control" %>
+
+        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, adm_attendances_path %>
+    <% end %>
+</div>        
+<br>

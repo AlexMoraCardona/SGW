@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_04_08_180642) do
+ActiveRecord::Schema[7.0].define(version: 2025_04_24_000947) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -81,6 +81,19 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_08_180642) do
     t.bigint "user_id", null: false
     t.index ["activity_id"], name: "index_activity_users_on_activity_id"
     t.index ["user_id"], name: "index_activity_users_on_user_id"
+  end
+
+  create_table "adm_attendances", force: :cascade do |t|
+    t.date "date_attendance"
+    t.string "description"
+    t.time "time_initial"
+    t.time "time_final"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.bigint "user_id"
+    t.index ["entity_id"], name: "index_adm_attendances_on_entity_id"
+    t.index ["user_id"], name: "index_adm_attendances_on_user_id"
   end
 
   create_table "adm_calendars", force: :cascade do |t|
@@ -219,6 +232,17 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_08_180642) do
     t.index ["user_id"], name: "index_assistants_on_user_id"
   end
 
+  create_table "attendances", force: :cascade do |t|
+    t.date "date_attendance"
+    t.integer "confirm_attendance", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "adm_attendance_id"
+    t.bigint "user_id"
+    t.index ["adm_attendance_id"], name: "index_attendances_on_adm_attendance_id"
+    t.index ["user_id"], name: "index_attendances_on_user_id"
+  end
+
   create_table "audit_report_items", force: :cascade do |t|
     t.string "process"
     t.string "finding"
@@ -313,6 +337,22 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_08_180642) do
     t.index ["user_id"], name: "index_commitments_on_user_id"
   end
 
+  create_table "company_areas", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_company_areas_on_entity_id"
+  end
+
+  create_table "company_positions", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_company_positions_on_entity_id"
+  end
+
   create_table "complaints", force: :cascade do |t|
     t.integer "user_complaint", default: 0
     t.integer "user_interpose_complaint", default: 0
@@ -400,8 +440,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_08_180642) do
   create_table "detail_diseases", force: :cascade do |t|
     t.string "name"
     t.string "code_disease"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.bigint "table_disease_id"
     t.index ["table_disease_id"], name: "index_detail_diseases_on_table_disease_id"
   end
@@ -1142,6 +1182,20 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_08_180642) do
     t.index ["user_id"], name: "index_kits_on_user_id"
   end
 
+  create_table "legal_rules", force: :cascade do |t|
+    t.string "risk_factor"
+    t.string "requirement"
+    t.string "rule_name"
+    t.string "fecha_norma"
+    t.string "issuing_entity"
+    t.string "applicable_article"
+    t.string "description_compliance"
+    t.integer "state_norma", default: 0
+    t.integer "clasification_norma", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "levels", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -1307,6 +1361,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_08_180642) do
     t.datetime "updated_at", null: false
     t.bigint "matrix_legal_id"
     t.integer "year", default: 1900
+    t.string "fecha_norma"
+    t.bigint "legal_rule_id"
+    t.index ["legal_rule_id"], name: "index_matrix_legal_items_on_legal_rule_id"
     t.index ["matrix_legal_id"], name: "index_matrix_legal_items_on_matrix_legal_id"
   end
 
@@ -1631,6 +1688,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_08_180642) do
     t.integer "stok_min", default: 0
     t.string "proveedor_element"
     t.string "technical_sheet"
+    t.integer "entity", default: 0
   end
 
   create_table "provides_protection_items", force: :cascade do |t|
@@ -1797,6 +1855,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_08_180642) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
+    t.integer "number_employees", default: 0
     t.index ["entity_id"], name: "index_safety_inspections_on_entity_id"
   end
 
@@ -2032,6 +2091,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_08_180642) do
     t.integer "sex", default: 0
     t.date "date_entry_company"
     t.date "date_retirement_company"
+    t.date "date_nacimiento"
+    t.string "area_employee"
     t.index ["document_id"], name: "index_users_on_document_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["nro_document"], name: "index_users_on_nro_document", unique: true
@@ -2094,6 +2155,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_08_180642) do
   add_foreign_key "activities", "users"
   add_foreign_key "activity_users", "activities"
   add_foreign_key "activity_users", "users"
+  add_foreign_key "adm_attendances", "entities"
+  add_foreign_key "adm_attendances", "users"
   add_foreign_key "adm_extinguishers", "entities"
   add_foreign_key "adm_extinguishers", "users"
   add_foreign_key "admin_extent_dangers", "entities"
@@ -2105,6 +2168,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_08_180642) do
   add_foreign_key "annual_work_plans", "entities"
   add_foreign_key "assistants", "meeting_minutes"
   add_foreign_key "assistants", "users"
+  add_foreign_key "attendances", "adm_attendances"
+  add_foreign_key "attendances", "users"
   add_foreign_key "audit_report_items", "audit_reports"
   add_foreign_key "audit_reports", "entities"
   add_foreign_key "brigadista_plans", "emergency_plans"
@@ -2113,11 +2178,12 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_08_180642) do
   add_foreign_key "clasification_danger_details", "clasification_dangers"
   add_foreign_key "commitments", "evidences"
   add_foreign_key "commitments", "users"
+  add_foreign_key "company_areas", "entities"
+  add_foreign_key "company_positions", "entities"
   add_foreign_key "complaints", "entities"
   add_foreign_key "danger_detail_risks", "clasification_danger_details"
   add_foreign_key "danger_preventions", "clasification_danger_details"
   add_foreign_key "description_jobs", "entities"
-  add_foreign_key "detail_diseases", "table_diseases"
   add_foreign_key "direction_reviews", "entities"
   add_foreign_key "emergency_plans", "entities"
   add_foreign_key "equipement_used_plans", "emergency_plans"
@@ -2164,6 +2230,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_08_180642) do
   add_foreign_key "matrix_danger_items", "locations"
   add_foreign_key "matrix_danger_items", "matrix_danger_risks"
   add_foreign_key "matrix_danger_risks", "entities"
+  add_foreign_key "matrix_legal_items", "legal_rules"
   add_foreign_key "matrix_legal_items", "matrix_legals"
   add_foreign_key "matrix_legals", "entities"
   add_foreign_key "matrix_protection_items", "matrix_protections"

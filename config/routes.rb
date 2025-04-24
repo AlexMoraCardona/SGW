@@ -99,7 +99,15 @@ Rails.application.routes.draw do
   resources :table_diseases
   resources :detail_diseases
   resources :view_videos
+  resources :company_positions
+  resources :company_areas
+  resources :legal_rules
+  resources :adm_attendances
+  resources :attendances
 
+  
+  get '/adm_attendances/adm_attendance_pdf/:id', to: 'adm_attendances#adm_attendance_pdf', as: 'adm_attendance_pdf'
+  get '/attendances/registrar_asistencia/:id', to: 'attendances#registrar_asistencia', as: 'registrar_asistencia'
   get '/attachments/purge/:id', to: 'attachments#purge', as: 'purge_attachment'
   get '/emergency_plans/resources_ext_plan/:id', to: 'emergency_plans#resources_ext_plan', as: 'resources_ext_plan'
   get '/emergency_plans/resources_int_plan/:id', to: 'emergency_plans#resources_int_plan', as: 'resources_int_plan'

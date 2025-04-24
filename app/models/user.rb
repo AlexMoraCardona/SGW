@@ -111,6 +111,17 @@ class User < ApplicationRecord
         return @nombre_usuario
     end  
 
+
+    def self.label_activity(dato)
+        nombre = CompanyPosition.find(dato).name
+        return nombre
+    end  
+
+    def self.label_area_employee (dato)
+        nombre = CompanyArea.find(dato).name
+        return nombre
+    end  
+
     private
     def downcase_attributes
         self.username = username.downcase 

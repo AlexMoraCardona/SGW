@@ -1,0 +1,2 @@
+class LegalRule < ApplicationRecord
+end

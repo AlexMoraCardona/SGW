@@ -1,0 +1,44 @@
+<div align="left"; class="container col-12">
+    <a class="navbar-brand" href="/">
+        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+    </a>
+</div>
+<div class="container col-11">
+        <div class="d-flex">
+            <div class="container">
+               <h2 class="display-5"> <%= t('.title')%></h2>
+            </div> 
+        </div>
+    <table class="table table-hover">
+        <thead> 
+            <tr> 
+                <th scope="col">Fecha</th>
+                <th scope="col">Capacitación</th>
+                <th scope="col">Asistió</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if   @adm_attendances.present? %>
+                <%    @adm_attendances.each do |adm_attendance| %>
+                    <tr>
+                        <td><%= adm_attendance.date_attendance %></td>
+                        <td><%= adm_attendance.description %></td>
+                        <td>
+                            <%  buscar =  Attendance.asistio(adm_attendance.id) %>
+                            <%  if buscar == 1 %>
+                                <div> 
+                                    <%= image_tag("caritafeliz.png", class: "carita-mini") %>
+                                </div> 
+                            <%  else %> 
+                                <div>  
+                                    <%= link_to "Registrar Asistencia", registrar_asistencia_path(id: adm_attendance.id), class: 'btn btn-sm btn-light' %>                        
+                                </div>
+                            <%  end%>
+                        </td>
+                    </tr>
+                <% end %>        
+            <% end %>
+
+        </tbody>      
+    </table>
+</div>

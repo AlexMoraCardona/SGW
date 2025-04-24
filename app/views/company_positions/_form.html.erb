@@ -1,0 +1,23 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @company_position do |form| %>
+        <% @company_position.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+        <div class="form-group">    
+            <%= form.label :name, style: "display: block" %>
+            <%= form.text_field :name,  class: "form-control" %>
+        </div>
+        <br>    
+        <div class="form-group">    
+            <%= form.label :entity_id,  style: "display: block" %>
+            <%= form.collection_select :entity_id, Entity.all.order(id: :asc), :id, :business_name %>
+        </div>
+        <br>    
+        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, company_positions_path %>
+    <% end %>
+</div>        
+<br>

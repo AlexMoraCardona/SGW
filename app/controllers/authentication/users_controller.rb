@@ -32,6 +32,8 @@ class Authentication::UsersController < ApplicationController
     
     def edit
         @user = User.find(params[:id])
+        @company_positions = CompanyPosition.where("entity_id = ?",Current.user.entity.to_i)
+        @company_areas = CompanyArea.where("entity_id = ?",Current.user.entity.to_i)
     end
     
     def update
@@ -69,6 +71,6 @@ class Authentication::UsersController < ApplicationController
     def user_params
         params.require(:user).permit(:nro_document, :name, :username, :email, :password, :state, :level, :entity, :activity, :avatar, :firm, :document_id, 
         :legal_representative, :copasst, :ccl, :collaborator, :president_copasst, :secretary_copasst, :vigia_sgsst, 
-        :cargo_rol, :brigade, :cel, :phone, :clasification_post, :sex, :date_entry_company, :date_retirement_company)
+        :cargo_rol, :brigade, :cel, :phone, :clasification_post, :sex, :date_entry_company, :date_retirement_company, :date_nacimiento, :area_employee)
     end    
 end    

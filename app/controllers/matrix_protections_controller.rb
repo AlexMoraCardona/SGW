@@ -104,7 +104,7 @@ class MatrixProtectionsController < ApplicationController
     end    
 
     def crear_item_protection
-        @protection_elements = ProtectionElement.all
+        @protection_elements = ProtectionElement.where("(entity = ? or entity = ?) and state_protection = ?",0,Current.user.entity,1)
         @matrix_protection_item = MatrixProtectionItem.new  
         @cant = 0
         @matrix_protection_items = MatrixProtectionItem.where("matrix_protection_id = ?", params[:id]) if params[:id].present?

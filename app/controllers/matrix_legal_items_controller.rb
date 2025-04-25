@@ -46,7 +46,7 @@ class MatrixLegalItemsController < ApplicationController
     def matrix_legal_item_params
         params.require(:matrix_legal_item).permit(:consecutive, :risk_factor, :issuing_entity,
         :requirement, :rule_name, :applicable_article, :apply, :evidence_compliance, 
-        :responsible, :meets, :description_compliance, :matrix_legal_id, :attach_evidence, :year )
+        :responsible, :meets, :description_compliance, :matrix_legal_id, :attach_evidence, :year, :fecha_norma, :legal_rule_id)
     end  
 
 end  

@@ -13,6 +13,9 @@ class FormPreventionsController < ApplicationController
         elsif Current.user && Current.user.level == 5 
             @entity = Entity.find(Current.user.entity)
             @admin_extent_dangers = AdminExtentDanger.where("entity_id = ? and user_id = ?",Current.user.entity, Current.user.id)
+        elsif Current.user && Current.user.level == 4 
+            @entity = Entity.find(Current.user.entity)
+            @admin_extent_dangers = AdminExtentDanger.where("entity_id = ? and user_id = ?",Current.user.entity, Current.user.id)
         else
             redirect_to new_session_path, alert: t('common.not_logged_in')    
             session.delete(:user_id)  

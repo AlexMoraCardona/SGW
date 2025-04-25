@@ -77,7 +77,7 @@ class Exam < ApplicationRecord
             if id_exam.present?
                 cant += 1  
                 apro += 1 if id_exam.resul == "Aprobado" 
-                repro += 1 if id_exam.resul == "Reprobado" 
+                repro += 1 if id_exam.resul == "Reprobado" || id_exam.resul.blank?  
             end    
         end
 

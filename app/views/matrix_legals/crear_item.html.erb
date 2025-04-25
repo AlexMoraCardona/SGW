@@ -47,8 +47,19 @@
             <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Realizar una breve descripción de la evidencia de cumplimiento. "><%= t('.description_compliance') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
             <%= form.text_field :description_compliance,  class: "form-control" %>
         </div>
-
-        <div class="row g-3">
+        </br>    
+        <div class="row g-2">
+            <div class="col-sm-4">
+                <%= form.label :fecha_norma,  style: "display: block" %>
+                <%= form.text_field :fecha_norma,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-4">
+                <%= form.label :year,  style: "display: block" %>
+                <%= form.number_field :year,  class: "form-control" %>
+            </div>        
+        </div>        
+        </br>
+        <div class="row g-2">
             <div class="col-sm-4">
                 <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar si aplica o no aplica "><%= t('.apply') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button> <br>
                 <%= form.radio_button :apply, 0 %>
@@ -66,10 +77,6 @@
                 <%= form.radio_button :meets, 2 %>
                 <label for="na">SI (100%)</label> 
             </div> 
-            <div class="col-sm-4">    
-                <%= form.label :year,  style: "display: block" %>
-                <%= form.number_field :year,  class: "form-control" %>
-            </div>                   
         </div>   
 
         <%= form.hidden_field :consecutive, :value => @cant.to_i, class: "form-control" %>

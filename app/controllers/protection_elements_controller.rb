@@ -44,7 +44,9 @@ class ProtectionElementsController < ApplicationController
     private
 
     def protection_element_params
-        params.require(:protection_element).permit(:name, :body_protect, :rule_protection, :durability, :date_sheet, :delivery_format, :personal_induction, :state_protection, :img_elem, :cost_element, :cant_person_use, :prom_person_use, :total_anual_person, :stok_min, :proveedor_element, :technical_sheet)
+        params.require(:protection_element).permit(:name, :body_protect, :rule_protection, :durability, 
+        :date_sheet, :delivery_format, :personal_induction, :state_protection, :img_elem, :cost_element, 
+        :cant_person_use, :prom_person_use, :total_anual_person, :stok_min, :proveedor_element, :technical_sheet, :entity)
     end 
 
 end    

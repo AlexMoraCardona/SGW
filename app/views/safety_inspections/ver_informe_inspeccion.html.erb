@@ -161,8 +161,8 @@
     <table> 
         <tr>
             <td style="text-align:justify">
-                <p>Se realizó la inspección de puestos de trabajo y condiciones locativas en general de <strong><%= @entity.business_name if @entity.present? %></strong> en su sede ubicada en <strong><%= @entity.entity_address if @entity.present? %></strong>, en donde se tiene un total de <strong><%= @evidence.number_officials if @evidence.present? %></strong> empleados.</p>
-                <p>Se recurre a la observación directa y toma de datos para determinar los factores de carga de trabajo que pueden estar provocando efectos tanto para los colaboradores como para la empresa (cuando estos son inadecuados). Estos efectos pueden ser leves hasta críticos y pueden afectar la salud del trabajador ocasionándole fatiga y con el tiempo, de no intervenirse y controlarse, pueden generar enfermedades laborales, lo cual se verá reflejado en el nivel de productividad del Consultorio.</p>
+                <p>Se realizó la inspección de puestos de trabajo y condiciones locativas en general de <strong><%= @entity.business_name if @entity.present? %></strong> en su sede ubicada en <strong><%= @entity.entity_address if @entity.present? %></strong>, en donde se tiene un total de <strong><%= @safety_inspection.number_employees if @safety_inspection.present? %></strong> empleados.</p>
+                <p>Se recurre a la observación directa y toma de datos para determinar los factores de carga de trabajo que pueden estar provocando efectos tanto para los colaboradores como para la empresa (cuando estos son inadecuados). Estos efectos pueden ser leves hasta críticos y pueden afectar la salud del trabajador ocasionándole fatiga y con el tiempo, de no intervenirse y controlarse, pueden generar enfermedades laborales, lo cual se verá reflejado en el nivel de productividad de la Empresa.</p>
             </td>
         </tr>
     </table> 
@@ -339,9 +339,9 @@
                         <div data-controller="previews" >
                             <% hallazgo.inspection_evidences.each do |file|%>
                                 <br>
-                                <% if file.image? %>
+                                <% if file.image? %> 
                                     <div>
-                                        <%= image_tag Evaluation.wicked_blob_path(file), data: {previews_target: "preview"}, class: "image" %>
+                                        <%=  image_tag  file,:width => "200",  :height=>"200" %>
                                         <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
                                     </div>
                                 <% elsif file.video? %>

@@ -12,6 +12,10 @@ class SafetyInspection < ApplicationRecord
         if firm == 0 ; 'NO'
         elsif  firm == 1 ; 'SI'
         end 
-    end      
+    end   
+    
+    def  self.buscar_safetys(entity)
+        @safety_inspections =  SafetyInspection.where("entity_id = ?",entity)
+    end   
     
 end

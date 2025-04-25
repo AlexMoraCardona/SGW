@@ -136,6 +136,9 @@ class EvaluationRuleDetailsController < ApplicationController
         if @evaluation_rule_detail.standar_detail_item_id == 47 || @evaluation_rule_detail.standar_detail_item_id == 115 || @evaluation_rule_detail.standar_detail_item_id == 175
             @evidencias_total = Evidence.where("entity_id = ?",@evaluation_rule_detail.evaluation.entity_id)
         end    
+        if @evaluation_rule_detail.standar_detail_item_id == 48 || @evaluation_rule_detail.standar_detail_item_id == 116 || @evaluation_rule_detail.standar_detail_item_id == 176
+            @safety_inspections =  SafetyInspection.where("entity_id = ?",@evaluation_rule_detail.evaluation.entity_id)
+        end    
     end
     
     def update  

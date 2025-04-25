@@ -10,7 +10,7 @@ class User < ApplicationRecord
     #validates :document, name, username, email, password_digest,  presence: true #Validar la presencia
     validates :document,  presence: true #Validar la presencia
     validates :name, presence: true #Validar la presencia
-    validates :username,  presence: true, length: { in: 3..15}, 
+    validates :username,  presence: true, length: { in: 3..20}, 
     format: { with: /\A[a-z0-9A-Z]+\z/, message: :invalid} #Validar la presencia
     validates :email,  presence: true #Validar la presencia
     validates :password_digest,  presence: true #Validar la presencia
@@ -94,8 +94,8 @@ class User < ApplicationRecord
                 ope = "Operarios: " + cant.to_s if  niv.to_i == 1
                 por = 0
                 por = (cant.to_f / total_colaboradores.to_f) * 100 if total_colaboradores.present? 
-                datos_clasificacion_cargo.push([adm, por.to_f]) if  niv.to_i == 0
-                datos_clasificacion_cargo.push([ope, por.to_f]) if  niv.to_i == 1
+                datos_clasificacion_cargo.push([adm, por.round(2).to_f]) if  niv.to_i == 0
+                datos_clasificacion_cargo.push([ope, por.round(2).to_f]) if  niv.to_i == 1
             end
         end 
         return datos_clasificacion_cargo  

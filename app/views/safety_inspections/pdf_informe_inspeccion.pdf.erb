@@ -114,9 +114,9 @@
             <div><br></div>
             <table> 
                 <tr>
-                    <td style="font-size: 16px;">
-                        <p>Se realizó la inspección de puestos de trabajo y condiciones locativas en general de <strong><%= @evidence.entity.business_name if @evidence.present? %></strong> en su sede ubicada en <strong><%= @evidence.entity.entity_address if @evidence.present? %></strong>, en donde se tiene un total de <strong><%= @evidence.number_officials if @evidence.present? %></strong> empleados.</p>
-                        <p>Se recurre a la observación directa y toma de datos para determinar los factores de carga de trabajo que pueden estar provocando efectos tanto para los colaboradores como para la empresa (cuando estos son inadecuados). Estos efectos pueden ser leves hasta críticos y pueden afectar la salud del trabajador ocasionándole fatiga y con el tiempo, de no intervenirse y controlarse, pueden generar enfermedades laborales, lo cual se verá reflejado en el nivel de productividad del Consultorio.</p>
+                    <td style="text-align:justify;font-size: 16px;">
+                        <p>Se realizó la inspección de puestos de trabajo y condiciones locativas en general de <strong><%= @entity.business_name if @entity.present? %></strong> en su sede ubicada en <strong><%= @entity.entity_address if @entity.present? %></strong>, en donde se tiene un total de <strong><%= @safety_inspection.number_employees if @safety_inspection.present? %></strong> empleados.</p>
+                        <p>Se recurre a la observación directa y toma de datos para determinar los factores de carga de trabajo que pueden estar provocando efectos tanto para los colaboradores como para la empresa (cuando estos son inadecuados). Estos efectos pueden ser leves hasta críticos y pueden afectar la salud del trabajador ocasionándole fatiga y con el tiempo, de no intervenirse y controlarse, pueden generar enfermedades laborales, lo cual se verá reflejado en el nivel de productividad de la Empresa.</p>
                     </td>
                 </tr>
             </table> 
@@ -343,12 +343,48 @@
                     </td>
                 </tr>
             </table> 
-            <div><br></div>   
-            <div><br></div>   
-            <div><br></div>    
             <div><br></div>
-            <div><br></div>
-            <div><br></div>
+            <div class="row"><br></div>
+            <table>
+                <tr>    
+                    <td style="border:0px solid black; width: 40%; text-align:center">
+                        <% if @res.present? %>
+                                <div class="row  text-center"> 
+                                    <div class="col-11">
+                                        <div>Elaboró:</div>
+                                        <div>&nbsp;</div>
+                                        <% if @safety_inspection.firm_responsible == 1 %>
+                                           <% if @res.firm.attached? %>
+                                              <% if @res.firm.image? %> 
+                                                    <%= image_tag(Evaluation.wicked_blob_path(@res.firm),:width => "120",  :height=>"80") %>
+                                                    <p align="center">________________________________</p>
+                                              <% end %>
+                                            <% end %>
+                                        <% else %>    
+                                            <p align="center">________________________________</p>
+                                         <% end %>     
+                                    </div>
+                                   <div class="col-11">
+                                        <div class="row">
+                                            <strong><%= @res.name %></strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-11">
+                                        <div class="row">
+                                            <%= @res.activity %>
+                                        </div>
+                                    </div>
+                                    <div class="col-11">
+                                        <div class="row">
+                                            <%= @res.document.abbreviation %>: <%= Firm.miles(@res.nro_document) %>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                        <% end %>
+                    </td>
+                </tr>
+            </table>
         </div>
     </body>
 </html>            

@@ -52,7 +52,6 @@ class AdmAttendancesController < ApplicationController
         @template = Template.where("format_number = ? and document_vigente = ?",95,1).last
         nombre_evidencia = 'Listado Asistencia ' + @adm_attendance.description.to_s + @adm_attendance.date_attendance.to_s + '.pdf'
 
-
         respond_to do |format| 
             format.html
             format.pdf {

@@ -143,7 +143,7 @@ class SafetyInspectionsController < ApplicationController
         @arl = OccupationalRiskManager.find(@entity.entity_arl)
         @claseriesgo = RiskLevel.find(@entity.risk_classification) if @entity.risk_classification.present?
 
-        nombre_evidencia = @template.reference.to_s + '.pdf'
+        nombre_evidencia = @template.reference.to_s + @safety_inspection.area_inspection.to_s + @safety_inspection.date_inspection.to_s  + '.pdf'
 
 
         respond_to do |format| 
@@ -170,7 +170,7 @@ class SafetyInspectionsController < ApplicationController
 
     def safety_inspection_params
         params.require(:safety_inspection).permit(:date_inspection,:place_inspection, :area_inspection, :productivity_affectation, 
-                        :user_responsible, :date_firm_responsible, :firm_responsible, :post_responsible, :entity_id)
+                        :user_responsible, :date_firm_responsible, :firm_responsible, :post_responsible, :entity_id, :number_employees)
     end 
 end 
 

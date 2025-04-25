@@ -1,0 +1,30 @@
+<div class="container col-11 card p-5">
+    <br>
+    <h5 class="table-success">Informes Inspección de Seguridad </h5>
+    <hr>
+    <table class="table table-Light table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Fecha.</th>
+                <th scope="col">Área</th>
+                <th scope="col">Lugar</th>
+                <th scope="col">Ver</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if @safety_inspections.present? %>
+                <% @safety_inspections.each do |safety| %> 
+                        <tr>
+                            <td><%= safety.date_inspection %></td>
+                            <td><%= safety.area_inspection %></td>
+                            <td><%= safety.place_inspection %></td>
+                            <td><%= link_to "Ver informe PDF", pdf_informe_inspeccion_path(safety.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;</td>
+                        </tr>
+                <% end %>
+            <% end %>    
+        </tbody>      
+    </table>
+</div>  
+<br>
+
+

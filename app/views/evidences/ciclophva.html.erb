@@ -33,6 +33,9 @@
                                     </tr>
                                 </thead> 
                                 <% evidencias = Evidence.buscar_evidencias(dato.id) %> 
+                                <% if dato.standar_detail_item.item_nro == "4.2.4" %>
+                                    <% safetys = SafetyInspection.buscar_safetys(dato.evaluation.entity_id) %> 
+                                <% end %>
                                 <% if evidencias.present? %>
                                     <tbody>
                                         <%  evidencias.each do |evidencia|  %>
@@ -41,6 +44,18 @@
                                                 <td><%= evidencia.evaluation_rule_detail.standar_detail_item.item_nro %></td>
                                                 <td><%= evidencia.evaluation_rule_detail.standar_detail_item.description %></td>
                                                 <td><%= link_to t('common.veritem'), ver_evidencia_evaluation_rule_detail_path(evidencia.id), class: 'btn btn-sm btn-primary'  %></td>
+                                            </tr> 
+                                        <% end %>
+                                    </tbody>
+                                <% end %>
+                                <% if safetys.present? %>
+                                    <tbody>
+                                        <%  safetys.each do |safety|  %>
+                                            <tr> 
+                                                <td><%= safety.date_inspection %></td>
+                                                <td>Informe Inspección de Seguridad</td>
+                                                <td><%= safety.area_inspection %> -- <%= safety.place_inspection %></td>
+                                                <td><%= link_to t('common.veritem'), pdf_informe_inspeccion_path(safety.id, format: 'pdf'), class: 'btn btn-sm btn-primary' %> &nbsp;</td>
                                             </tr> 
                                         <% end %>
                                     </tbody>

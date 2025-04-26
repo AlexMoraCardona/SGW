@@ -10,4 +10,10 @@ class AdmAttendance < ApplicationRecord
         return  cant 
     end
 
+    def self.asistentes(dato)
+        adm_attendance =  AdmAttendance.find(dato)
+        @attendances = Attendance.where("adm_attendance_id = ?",adm_attendance.id) if adm_attendance.present?
+    end    
+
+
 end

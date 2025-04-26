@@ -113,12 +113,22 @@ class User < ApplicationRecord
 
 
     def self.label_activity(dato)
-        nombre = CompanyPosition.find(dato).name
+        busqueda = CompanyPosition.find_by(id: dato.to_i)
+        if busqueda.present?
+            nombre = busqueda.name
+        else
+            nombre = 'No encontrada'
+        end  
         return nombre
     end  
 
     def self.label_area_employee (dato)
-        nombre = CompanyArea.find(dato).name
+        busqueda = CompanyArea.find_by(id: dato.to_i)
+        if busqueda.present?
+            nombre = busqueda.name
+        else
+            nombre = 'No encontrada'
+        end    
         return nombre
     end  
 

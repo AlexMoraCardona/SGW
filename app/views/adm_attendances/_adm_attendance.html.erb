@@ -6,17 +6,54 @@
     <td><%= link_to t('common.edit'), edit_adm_attendance_path(adm_attendance), class: 'btn btn-sm btn-primary'  %></td>
     <td><%= link_to "PDF", adm_attendance_pdf_path(adm_attendance.id, format: 'pdf'), class: 'btn btn-sm btn-outline-primary'  %></td>
     <td>
-        <%  @cant_reg =  AdmAttendance.contador(adm_attendance.id) %>
+        <% @cant_reg =  AdmAttendance.contador(adm_attendance.id) %>
+        <% @attendances = AdmAttendance.asistentes(adm_attendance.id) %>
+
         <% if @cant_reg.present? %>
             <!-- Button trigger modal --> 
-            <button class="btn btn-sm btn-outline-primary position-relative" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+            <button class="btn btn-sm btn-outline-primary position-relative" data-bs-toggle="modal" data-bs-target="#exampleModal<%= adm_attendance.id %>" >
                 Registrados
                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                       <%= @cant_reg %>+
                      <span class="visually-hidden">unread messages</span>
                 </span>
             </button>
+            <div class="row" >  
+                <div align="right"; class="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+              
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal<%= adm_attendance.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel"><strong>Asistencia</strong></h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <table>
+                                        <tr>     
+                                            <td style="width: 15%;"><strong>Documento</strong></td>
+                                            <td style="width: 30%;"><strong>Nombre</strong></td>
+                                        </tr>    
+                                        <% if  @attendances.present? %>
+                                            <%  @attendances.each do |attendance| %>
+                                                <tr>
+                                                    <td style="width: 15%;"><h5></br><%= attendance.user.nro_document %></h5></td>
+                                                    <td style="width: 30%;"><h5></br><%= attendance.user.name %></h5></td>
+                                                </tr>
+                                            <% end %>
+                                        <% end %>        
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         <% end %>
     </td>
-  
 </tr>
+

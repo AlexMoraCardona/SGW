@@ -26,5 +26,33 @@
     </table>
 </div>  
 <br>
+<div class="container col-11 card p-5">
+    <br>
+    <h5 class="table-success">Programas </h5>
+    <hr>
+    <table class="table table-Light table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Fecha.</th>
+                <th scope="col">Evidencia</th>
+                <th scope="col">Ver</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if @evidencias_total.present? %>
+                <% @evidencias_total.each do |evi| %> 
+                    <% if evi.template.type_document == 8 && evi.evaluation_rule_detail.evaluation_id == @evaluation_rule_detail.evaluation_id %>
+                        <tr>
+                            <td><%= evi.date %></td>
+                            <td><%= evi.template.name %></td>
+                            <td><%= link_to "Ver", ver_evidencia_evaluation_rule_detail_path(evi.id), class: 'btn btn-sm btn-success' %></td> 
+                        </tr>
+                    <% end %>    
+                <% end %>
+            <% end %>    
+        </tbody>      
+    </table>
+</div>  
+<br>
 
 

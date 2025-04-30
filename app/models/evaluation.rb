@@ -55,7 +55,7 @@ class Evaluation < ApplicationRecord
                 
             por = ((cumple.to_f / total.to_f) * 100).round(2).to_f if total.to_f > 0
             
-            datos_generales.push(["Planificar", por.to_f]) if total.to_i > 0 && ciclo.to_i == 1
+            datos_generales.push(["Planear", por.to_f]) if total.to_i > 0 && ciclo.to_i == 1
             datos_generales.push(["Hacer", por.to_f]) if total.to_i > 0 && ciclo.to_i == 2
             datos_generales.push(["Verificar", por.to_f]) if total.to_i > 0 && ciclo.to_i == 3
             datos_generales.push(["Actuar", por.to_f]) if total.to_i > 0 && ciclo.to_i == 4
@@ -78,7 +78,7 @@ class Evaluation < ApplicationRecord
                ciclo = cic  
             end    
                 
-            datos_pendientes.push(["Planificar", pendientes]) if  ciclo.to_i == 1
+            datos_pendientes.push(["Planear", pendientes]) if  ciclo.to_i == 1
             datos_pendientes.push(["Hacer", pendientes]) if  ciclo == 2.to_i
             datos_pendientes.push(["Verificar", pendientes]) if  ciclo.to_i == 3
             datos_pendientes.push(["Actuar", pendientes]) if  ciclo.to_i == 4
@@ -101,7 +101,7 @@ class Evaluation < ApplicationRecord
                ciclo = cic  
             end     
                 
-            datos_cumplidos.push(["Planificar", cumplidos.to_i]) if  ciclo.to_i == 1
+            datos_cumplidos.push(["Planear", cumplidos.to_i]) if  ciclo.to_i == 1
             datos_cumplidos.push(["Hacer", cumplidos.to_i]) if  ciclo.to_i == 2
             datos_cumplidos.push(["Verificar", cumplidos.to_i]) if  ciclo.to_i == 3
             datos_cumplidos.push(["Actuar", cumplidos.to_i]) if  ciclo.to_i == 4

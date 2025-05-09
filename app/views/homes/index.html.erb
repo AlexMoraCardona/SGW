@@ -1,3 +1,8 @@
+<%= javascript_include_tag "https://www.google.com/jsapi" %>
+<%= wicked_pdf_javascript_include_tag "chartkick" %>
+<%= wicked_pdf_javascript_include_tag "application", "chartkick" %>
+
+
 <%= render 'shared/header' %>
 
 <!-- render 'shared/header2' -->
@@ -1044,19 +1049,8 @@
                     <tr>    
                         <td> 
                             <div><strong>Estándares Mínimos</strong><br/> 
-                                </br>
                                 <% if @datos_generales.present? %>
-                                    <a data-bs-toggle="tooltip" title=<%= @datos_generales[0][0] %> >
-                                        <div  title=<%= @datos_generales[0][0] %> class="progress" role="progressbar" aria-label="Success example" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="height: 20px" >
-                                            <div class="progress-bar overflow-visible bg-success text-dark" style="width: <%= @datos_generales[0][1] %>%"><%= @datos_generales[0][0]%> - <%= @datos_generales[0][1] %>%</div>
-                                        </div>
-                                    </a>
-                                    </br>
-                                    <a data-bs-toggle="tooltip" title=<%= @datos_generales[1][0] %> >
-                                        <div  title=<%= @datos_generales[1][0] %> class="progress" role="progressbar" aria-label="Success example" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="height: 20px" >
-                                            <div class="progress-bar overflow-visible bg-danger text-dark" style="width: <%= @datos_generales[1][1] %>%"><%= @datos_generales[1][0]%> - <%= @datos_generales[1][1] %>%</div>
-                                        </div>
-                                    </a>
+                                    <%= pie_chart  @datos_generales, download: {filename: "GraficaCiclo"}, download: {background: "#FFFFFF"}, xtitle: "Cumplidos", ytitle: "Porcentaje", prefix: "Porcentaje: ", suffix: "%", colors: ["#008000", "#FF0000"], donut: true, label: 'true', width: "150px", height: "150px", legend: "bottom", loading: "Loading..."  if @datos_generales.present? %>
                                 <% end %>    
                             </div>    
                         </td>
@@ -1080,25 +1074,8 @@
                     <tr><td><hr></td><td><hr></td></tr>
                     <tr>    
                         <td>
-                            <% @clasificacion_cargo =  User.calculo_clasificacion_cargo(@entity.id)  %> 
                             <div><strong>Colaboradores</strong><br/> 
-                                <% if @clasificacion_cargo.present? %>
-                                    <% if @clasificacion_cargo[0].present? %>
-                                        <a data-bs-toggle="tooltip" title=<%= @clasificacion_cargo[0][0] %> >
-                                            <div  title=<%= @clasificacion_cargo[0][0] %> class="progress" role="progressbar" aria-label="Success example" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="height: 20px" >
-                                                <div class="progress-bar overflow-visible bg-danger text-dark" style="width: <%= @clasificacion_cargo[0][1] %>%"><%= @clasificacion_cargo[0][0]%> - <%= @clasificacion_cargo[0][1] %>%</div>
-                                            </div>
-                                        </a>
-                                    <% end %>        
-                                    </br>
-                                    <% if @clasificacion_cargo[1].present? %>
-                                        <a data-bs-toggle="tooltip" title=<%= @clasificacion_cargo[1][0] %> >
-                                            <div  title=<%= @clasificacion_cargo[1][0] %> class="progress" role="progressbar" aria-label="Success example" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="height: 20px" >
-                                                <div class="progress-bar overflow-visible bg-warning text-dark" style="width: <%= @clasificacion_cargo[1][1] %>%"><%= @clasificacion_cargo[1][0]%> - <%= @clasificacion_cargo[1][1] %>%</div>
-                                            </div>
-                                        </a>
-                                    <% end %>    
-                                <% end %>    
+                                <%= pie_chart  @datos_clasificacion_cargo, download: {filename: "Sexo"}, download: {background: "#FFFFFF"}, xtitle: "Hombres", ytitle: "Mujeres", prefix: "Cant: ", colors: ["#FF0000", "#FFFF00"], donut: true, label: 'true', width: "150px", height: "100px", legend: "bottom", loading: "Loading..."  if @datos_clasificacion_cargo.present? %>
                             </div>    
                         </td>
                         <td>
@@ -1206,25 +1183,7 @@
                         </td>
                         <td>
                             <div><strong>Clasificación por Género</strong><br/> 
-
-                                <% @clasificacion_sexo =  User.calculo_sex(@entity.id)  %> 
-                                <% if @clasificacion_sexo.present? %>
-                                    <% if @clasificacion_sexo[0].present? %>
-                                        <a data-bs-toggle="tooltip" title=<%= @clasificacion_sexo[0][0] %> >
-                                            <div  title=<%= @clasificacion_sexo[0][0] %> class="progress" role="progressbar" aria-label="Success example" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="height: 20px" >
-                                                <div class="progress-bar overflow-visible bg-info text-dark" style="width: <%= @clasificacion_sexo[0][1] %>%"><%= @clasificacion_sexo[0][0]%> - <%= @clasificacion_sexo[0][1] %>%</div>
-                                            </div>
-                                        </a>
-                                    <% end %>
-                                    </br>
-                                    <% if @clasificacion_sexo[1].present? %>
-                                        <a data-bs-toggle="tooltip" title=<%= @clasificacion_sexo[1][0] %> >
-                                            <div  title=<%= @clasificacion_sexo[1][0] %> class="progress" role="progressbar" aria-label="Success example" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="height: 20px" >
-                                            <div class="progress-bar overflow-visible bg-danger text-dark" style="width: <%= @clasificacion_sexo[1][1] %>%"><%= @clasificacion_sexo[1][0]%> - <%= @clasificacion_sexo[1][1] %>%</div>
-                                            </div>
-                                        </a>
-                                    <% end %>    
-                                <% end %>  
+                                    <%= pie_chart  @datos_sex, download: {filename: "Sexo"}, download: {background: "#FFFFFF"}, xtitle: "Hombres", ytitle: "Mujeres", prefix: "Cant: ", colors: ["#0000ff", "#FFC0CB"], donut: true, label: 'true', width: "150px", height: "150px", legend: "bottom", loading: "Loading..."  if @datos_sex.present? %>
                             </div>
                         </td>
                     </tr>

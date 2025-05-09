@@ -4,7 +4,7 @@ class MatrixDangerRisksController < ApplicationController
             if params[:entity_id].present?
                 @entity = Entity.find(params[:entity_id])
                 @matrix_danger_risk = MatrixDangerRisk.find_by(entity_id: params[:entity_id])
-                @matrix_danger_items = MatrixDangerItem.where(matrix_danger_risk_id: @matrix_danger_risk.id).order(:consecutive) if @matrix_danger_risk.present?
+                @matrix_danger_items = MatrixDangerItem.where(matrix_danger_risk_id: @matrix_danger_risk.id).order(:id) if @matrix_danger_risk.present?
     
                 @total_items = 0
                 @uno = 0
@@ -27,7 +27,7 @@ class MatrixDangerRisksController < ApplicationController
         elsif Current.user && Current.user.level > 2 
             @entity = Entity.find(Current.user.entity)
             @matrix_danger_risk = MatrixDangerRisk.find_by(entity_id: Current.user.entity.to_i)
-            @matrix_danger_items = MatrixDangerItem.where(matrix_danger_risk_id: @matrix_danger_risk.id).order(:consecutive) if @matrix_danger_risk.present?
+            @matrix_danger_items = MatrixDangerItem.where(matrix_danger_risk_id: @matrix_danger_risk.id).order(:id) if @matrix_danger_risk.present?
             @total_items = 0
             @uno = 0
             @dos = 0
@@ -66,6 +66,7 @@ class MatrixDangerRisksController < ApplicationController
  
     def edit
         @matrix_danger_risk = MatrixDangerRisk.find(params[:id])
+        @template = Template.where("format_number = ? and document_vigente = ?",31,1).last  
     end
     
     def update
@@ -97,14 +98,71 @@ class MatrixDangerRisksController < ApplicationController
     def crear_item 
         @matrix_danger_item = MatrixDangerItem.new  
         @cant = 0
-        @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ?", params[:id]) if params[:id].present?
+        @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ?", params[:id]).order(:id) if params[:id].present?
         @cant = @matrix_danger_items.count if @matrix_danger_items.present?
         @cant = @cant + 1 
+    end   
+    
+    def duplicar_item
+        @matrix_danger_item = MatrixDangerItem.find(params[:id].to_i) if params[:id].present?
+        @nuevo_matrix_danger_item = MatrixDangerItem.new  
+        @cant = 0
+        @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ?", @matrix_danger_item.matrix_danger_risk_id).order(:id) if @matrix_danger_item.present?
+        @cant = @matrix_danger_items.count if @matrix_danger_items.present?
+        @cant = @cant + 1 
+        
+
+        @nuevo_matrix_danger_item.consecutive = @cant 
+        @nuevo_matrix_danger_item.year = @matrix_danger_item.year = 
+        @nuevo_matrix_danger_item.source_information =  @matrix_danger_item.source_information = 
+        @nuevo_matrix_danger_item.activity = @matrix_danger_item.activity 
+        @nuevo_matrix_danger_item.task = @matrix_danger_item.task
+        @nuevo_matrix_danger_item.type_task = @matrix_danger_item.type_task
+        @nuevo_matrix_danger_item.origin = @matrix_danger_item.origin
+        @nuevo_matrix_danger_item.possible_effects_health = @matrix_danger_item.possible_effects_health
+        @nuevo_matrix_danger_item.possible_effects_security = @matrix_danger_item.possible_effects_security
+        @nuevo_matrix_danger_item.description_existing_control_origin = @matrix_danger_item.description_existing_control_origin
+        @nuevo_matrix_danger_item.description_existing_control_medium = @matrix_danger_item.description_existing_control_medium 
+        @nuevo_matrix_danger_item.description_existing_control_person = @matrix_danger_item.description_existing_control_person
+        @nuevo_matrix_danger_item.description_existing_control_observations = @matrix_danger_item.description_existing_control_observations 
+        @nuevo_matrix_danger_item.deficiency_level = @matrix_danger_item.deficiency_level
+        @nuevo_matrix_danger_item.exposure_level = @matrix_danger_item.exposure_level 
+        @nuevo_matrix_danger_item.probability_level = @matrix_danger_item.probability_level 
+        @nuevo_matrix_danger_item.interpretation = @matrix_danger_item.interpretation 
+        @nuevo_matrix_danger_item.consequence_level = @matrix_danger_item.consequence_level 
+        @nuevo_matrix_danger_item.level_risk_intervention = @matrix_danger_item.level_risk_intervention 
+        @nuevo_matrix_danger_item.risk_level_interpretation = @matrix_danger_item.risk_level_interpretation 
+        @nuevo_matrix_danger_item.risk_acceptability = @matrix_danger_item.risk_acceptability 
+        @nuevo_matrix_danger_item.number_exposed = @matrix_danger_item.number_exposed 
+        @nuevo_matrix_danger_item.hours_exposure = @matrix_danger_item.hours_exposure 
+        @nuevo_matrix_danger_item.worst_consequence = @matrix_danger_item.worst_consequence  
+        @nuevo_matrix_danger_item.existence_legal_requirement = @matrix_danger_item.existence_legal_requirement 
+        @nuevo_matrix_danger_item.intervention_measures_elimination = @matrix_danger_item.intervention_measures_elimination 
+        @nuevo_matrix_danger_item.intervention_measures_replacement = @matrix_danger_item.intervention_measures_replacement 
+        @nuevo_matrix_danger_item.intervention_measures_engineering_control = @matrix_danger_item.intervention_measures_engineering_control 
+        @nuevo_matrix_danger_item.intervention_measures_acsw = @matrix_danger_item.intervention_measures_acsw 
+        @nuevo_matrix_danger_item.intervention_measures_ppee = @matrix_danger_item.intervention_measures_ppee 
+        @nuevo_matrix_danger_item.responsible_implementation = @matrix_danger_item.responsible_implementation 
+        @nuevo_matrix_danger_item.type_register = @matrix_danger_item.type_register  
+        @nuevo_matrix_danger_item.proposed_date = @matrix_danger_item.proposed_date 
+        @nuevo_matrix_danger_item.implementation_date = @matrix_danger_item.implementation_date 
+        @nuevo_matrix_danger_item.follow_date = @matrix_danger_item.follow_date 
+        @nuevo_matrix_danger_item.observations =  @matrix_danger_item.observations
+        @nuevo_matrix_danger_item.clasification_danger_id = @matrix_danger_item.clasification_danger_id 
+        @nuevo_matrix_danger_item.clasification_danger_detail_id =  @matrix_danger_item.clasification_danger_detail_id
+        @nuevo_matrix_danger_item.matrix_danger_risk_id = @matrix_danger_item.matrix_danger_risk_id 
+        @nuevo_matrix_danger_item.location_id = @matrix_danger_item.location_id 
+        @nuevo_matrix_danger_item.number_exposed_contrators = @matrix_danger_item.number_exposed_contrators  
+        @nuevo_matrix_danger_item.number_exposed_totals = @matrix_danger_item.number_exposed_totals 
+        @nuevo_matrix_danger_item.danger_intervened = @matrix_danger_item.danger_intervened
+        @nuevo_matrix_danger_item.save
+        redirect_to matrix_danger_risks_path(entity_id: @nuevo_matrix_danger_item.matrix_danger_risk.entity_id), notice: 'Peligro/Riesgo duplicado correctamente'
+
     end    
 
     def show
         @matrix_danger_risk = MatrixDangerRisk.find_by(id: params[:id].to_i)
-        @matrix_danger_items = MatrixDangerItem.where(matrix_danger_risk_id: params[:id].to_i).order(:consecutive)
+        @matrix_danger_items = MatrixDangerItem.where(matrix_danger_risk_id: params[:id].to_i).order(:id)
         @template = Template.where("format_number = ? and document_vigente = ?",31,1).last  
         @entity = Entity.find(@matrix_danger_risk.entity_id) if @matrix_danger_risk.present?
         @rep = User.find(@matrix_danger_risk.user_legal_representative) if  @matrix_danger_risk.user_legal_representative.present? && @matrix_danger_risk.user_legal_representative > 0
@@ -113,7 +171,7 @@ class MatrixDangerRisksController < ApplicationController
     end
 
     def total_items
-        @matrix_danger_items = MatrixDangerItem.where(matrix_danger_risk_id: params[:id]).order(:consecutive) if params[:id].present?
+        @matrix_danger_items = MatrixDangerItem.where(matrix_danger_risk_id: params[:id]).order(:id) if params[:id].present?
     end    
 
     def firmar_rep 
@@ -152,7 +210,7 @@ class MatrixDangerRisksController < ApplicationController
 
     def resumen_pdf
         @matrix_danger_risk = MatrixDangerRisk.find(params[:id])
-        @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ?", @matrix_danger_risk.id).order(:consecutive) if @matrix_danger_risk.present?
+        @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ?", @matrix_danger_risk.id).order(:id) if @matrix_danger_risk.present?
         @entity = Entity.find(@matrix_danger_risk.entity_id)  if @matrix_danger_risk.present?
         @template = Template.where("format_number = ? and document_vigente = ?",31,1).last  
         @rep = User.find(@matrix_danger_risk.user_legal_representative) if  @matrix_danger_risk.user_legal_representative.present? && @matrix_danger_risk.user_legal_representative > 0

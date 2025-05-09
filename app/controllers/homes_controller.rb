@@ -5,9 +5,10 @@ class HomesController < ApplicationController
          @entity = Entity.find(Current.user.entity) if Current.user.entity > 0 
          @notificaciones = Calendar.notificaciones
          @cant_noti = @notificaciones.count if @notificaciones.present?
-         
          @eval = Evaluation.where("entity_id = ?",@entity.id).last if @entity.present?
          @datos_generales = Evaluation.calculo_porcentaje_general(@eval)
+         @datos_clasificacion_cargo = User.calculo_clasificacion_cargo(@entity.id)  if @entity.present?
+         @datos_sex = User.calculo_sex(@entity.id)  if @entity.present?
          @puntaje_eva = @eval.score if @eval.present?
          @porcentaje_eva = @eval.percentage if @eval.present?
          @result_eva = @eval.result if @eval.present?

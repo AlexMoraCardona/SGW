@@ -4,6 +4,7 @@
  
 <% if @matrix_danger_risk.present? %>
     <td><%= link_to t('common.show_matrix_danger_risk'), matrix_danger_risk_path(@matrix_danger_risk.id), class: 'btn btn-sm btn btn-warning' %></td>
+    <td><%= link_to t('common.edit_matrix_danger_risk'), edit_matrix_danger_risk_path(@matrix_danger_risk.id), class: 'btn btn-sm btn btn-warning'  if Current.user.level > 0 && Current.user.level < 3 %></td>
     <td><%= link_to t('common.danger'), crear_item_matrix_danger_risks_path(@matrix_danger_risk.id), class: 'btn btn-sm btn btn-warning' %></td>
     <td><%= link_to "PDF", resumen_pdf_matrix_danger_risks_path(@matrix_danger_risk.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
     <!-- Button trigger modal -->
@@ -166,14 +167,19 @@ Instrucciones de diligenciamiento
                 <th scope="col">Clasificación</th>
                 <th scope="col">Descripción</th>
                 <th scope="col">Nivel de riesgo</th>
-
+                <th scope="col">Intervenido</th>
                 <th scope="col">Ver/Editar</th>
+                <th scope="col">Eliminar</th>
+                <th scope="col">Duplicar</th>
             </tr>
         </thead>
 
+        <% @nro = 0 %>
+
         <% @matrix_danger_items.each do |matrix_danger_item| %>
+            <% @nro += 1 %>    
             <tr> 
-                <td scope="col"><%= matrix_danger_item.consecutive %></td>  
+                <td scope="col"><%= @nro %></td>  
                 <td scope="col"><%= matrix_danger_item.task %></td>  
                 <td scope="col"><%= matrix_danger_item.clasification_danger_detail.clasification_danger.name if matrix_danger_item.clasification_danger_detail_id.present? && matrix_danger_item.clasification_danger_detail_id.to_i > 0 %></td>
                 <td scope="col"><%= matrix_danger_item.clasification_danger_detail.name if matrix_danger_item.clasification_danger_detail_id.present? && matrix_danger_item.clasification_danger_detail_id.to_i > 0 %></td>
@@ -189,7 +195,14 @@ Instrucciones de diligenciamiento
                <% if matrix_danger_item.risk_level_interpretation.to_s == 'IV Aceptable'  %>
                     <td style="border:1px solid black; text-align:center; background-color:#038018"><%= matrix_danger_item.risk_level_interpretation %></td>
                 <% end  %>    
+               <% if matrix_danger_item.danger_intervened == 0  %>
+                    <td style="text-align:center;">NO</td>
+                <% else  %>    
+                    <td style="text-align:center;">SI</td>
+                <% end  %>    
                 <td><%= link_to t('common.update_matrix_danger_item'), edit_matrix_danger_item_path(matrix_danger_item.id), class: 'btn btn-sm btn-warning' %></td>
+                <td><%= button_to 'Delete', matrix_danger_item, method: :delete, class:'btn btn-sm btn-danger' %></td>
+                <td><%= button_to 'Duplicar',  duplicar_item_matrix_danger_risks_path(matrix_danger_item.id), class:'btn btn-sm btn-warning' %></td>
             </tr>
         <% end %>  
     </table>  

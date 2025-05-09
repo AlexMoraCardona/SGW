@@ -207,6 +207,7 @@ Rails.application.routes.draw do
   resources :matrix_danger_risks do
     collection do
       get '/matrix_danger_risks/crear_item/:id', to: 'matrix_danger_risks#crear_item', as: 'crear_item'
+      post '/matrix_danger_risks/duplicar_item/:id', to: 'matrix_danger_risks#duplicar_item', as: 'duplicar_item'
       get '/matrix_danger_risks/resumen_pdf/:id', to: 'matrix_danger_risks#resumen_pdf', as: 'resumen_pdf'
       get '/matrix_danger_risks/total_items/:id', to: 'matrix_danger_risks#total_items', as: 'total_items'
       get '/matrix_danger_risks/firmar_rep/:id', to: 'matrix_danger_risks#firmar_rep', as: 'firmar_rep'

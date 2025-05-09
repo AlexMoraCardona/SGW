@@ -16,7 +16,7 @@ class MeetingMinutesController < ApplicationController
         @meeting_minute = MeetingMinute.find(params[:id])
         @entity = Entity.find(@meeting_minute.entity_id) if @meeting_minute.present?
         @meeting_attendees = MeetingAttendee.where("meeting_minute_id = ?",@meeting_minute.id) if @meeting_minute.present?
-        @meeting_commitments = MeetingCommitment.where("meeting_minute_id = ?",@meeting_minute.id) if @meeting_minute.present?
+        @meeting_commitments = MeetingCommitment.where("meeting_minute_id = ?",@meeting_minute.id).order(:id) if @meeting_minute.present?
         @assistants = Assistant.where("meeting_minute_id = ?",@meeting_minute.id) if @meeting_minute.present?
         @template = Template.where("format_number = ? and document_vigente = ?",79,1).last  
 
@@ -56,7 +56,7 @@ class MeetingMinutesController < ApplicationController
 
     def crear_compromiso
         @meeting_commitment = MeetingCommitment.new  
-        @meeting_commitments = MeetingCommitment.where("meeting_minute_id = ?", params[:id]) if params[:id].present?
+        @meeting_commitments = MeetingCommitment.where("meeting_minute_id = ?", params[:id]).order(:id) if params[:id].present?
     end    
 
     def crear_firma
@@ -78,7 +78,7 @@ class MeetingMinutesController < ApplicationController
         @meeting_minute = MeetingMinute.find(params[:id])
         @entity = Entity.find(@meeting_minute.entity_id) if @meeting_minute.present?
         @meeting_attendees = MeetingAttendee.where("meeting_minute_id = ?",@meeting_minute.id) if @meeting_minute.present?
-        @meeting_commitments = MeetingCommitment.where("meeting_minute_id = ?",@meeting_minute.id) if @meeting_minute.present?
+        @meeting_commitments = MeetingCommitment.where("meeting_minute_id = ?",@meeting_minute.id).order(:id) if @meeting_minute.present?
         @assistants = Assistant.where("meeting_minute_id = ?",@meeting_minute.id) if @meeting_minute.present?
         @template = Template.where("format_number = ? and document_vigente = ?",79,1).last  
 

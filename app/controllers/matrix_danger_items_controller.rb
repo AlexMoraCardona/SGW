@@ -29,7 +29,7 @@ class MatrixDangerItemsController < ApplicationController
         @matrix_danger_item.clasification_danger_id = ClasificationDangerDetail.find(@matrix_danger_item.clasification_danger_detail_id).clasification_danger_id if @matrix_danger_item.clasification_danger_detail_id.present? 
         if @matrix_danger_item.update(matrix_danger_item_params)
             MatrixDangerItem.calculos(@matrix_danger_item.id) if @matrix_danger_item.present?
-            redirect_to matrix_danger_risks_path, notice: 'Item actualizado correctamente'
+            redirect_to matrix_danger_risks_path(entity_id: @matrix_danger_item.matrix_danger_risk.entity_id), notice: 'Item actualizado correctamente'
         else
             render :edit, status: :unprocessable_entity
         end         
@@ -38,7 +38,7 @@ class MatrixDangerItemsController < ApplicationController
     def destroy
         @matrix_danger_item = MatrixDangerItem.find(params[:id])
         @matrix_danger_item.destroy
-        redirect_to matrix_danger_risks_path, notice: 'Item borrado correctamente', matrix_danger_item: :see_other
+        redirect_to matrix_danger_risks_path(entity_id: @matrix_danger_item.matrix_danger_risk.entity_id), notice: 'Item borrado correctamente', matrix_danger_item: :see_other
     end    
 
     private

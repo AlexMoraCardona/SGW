@@ -6,7 +6,16 @@ class DetailDisease < ApplicationRecord
     end  
     
     def self.label_name_disease(dato)
-        nombre = DetailDisease.find(dato).name
+        if dato == 0
+            nombre = 'Sin clasificar'
+        else    
+            detaildisease = DetailDisease.find_by(id: dato)
+            if detaildisease.present?
+               nombre = detaildisease.name
+            else
+               nombre = 'Sin clasificar'
+            end        
+        end    
         return nombre;
     end   
     

@@ -18,19 +18,19 @@ class Event < ApplicationRecord
         events = Event.where("entity_id = ? ", entity) if entity.present?
         if events.present?
             events.each  do |event| 
-                accidentes_mortales += 1 if event.date_new.strftime("%Y").to_i == año && event.mortal_accident == 1   
+                accidentes_mortales += 1 if event.date_new.present? && event.date_new.strftime("%Y").to_i == año && event.mortal_accident == 1   
             end
         end
         return accidentes_mortales
     end    
-
+ 
     def self.accidentes_trabajo(entity)
         accidentes_trabajo = 0
         año = Time.now.year
         events = Event.where("entity_id = ? ", entity) if entity.present?
         if events.present?
             events.each  do |event| 
-                accidentes_trabajo += 1 if event.date_new.strftime("%Y").to_i == año  && event.work_accident == 1
+                accidentes_trabajo += 1 if event.date_new.present? && event.date_new.strftime("%Y").to_i == año  && event.work_accident == 1
             end
         end
         return accidentes_trabajo

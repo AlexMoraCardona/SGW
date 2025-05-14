@@ -10,14 +10,15 @@
             </div> 
         </div>
         <div>
-            <%= link_to t('.create_detail_disease'), new_detail_disease_path, class: 'btn btn-xs btn-primary'  %>
+            <%= link_to t('.create_detail_disease'), new_detail_disease_path, class: 'btn btn-sm btn-primary'  if Current.user.level > 0 &&  Current.user.level < 2 %>
+             <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, new_event_path %>
         </div>
         <hr>
         <%= search_form_for @q do |f| %>
             <%= f.label :name_cont %>
             <%= f.search_field :name_cont %>
 
-            <button type="submit" class="btn btn-primary">Buscar</button>
+            <button type="submit" class="btn btn-sm btn-primary">Buscar</button>
         <% end %>
         </br>        
         <%== pagy_info(@pagy) %>
@@ -26,8 +27,8 @@
     <table class="table table-hover">
         <thead>
             <tr>
+                <th scope="col"><%= t('.id') %></th>
                 <th scope="col"><%= sort_link(@q, :name, default_order: :desc) %></th>
-                <th scope="col"><%= t('.code_disease') %></th>
                 <th scope="col"><%= t('.table_disease_id') %></th>
                 <th scope="col"><%= t('common.edit') %></th>
             </tr>
@@ -37,7 +38,7 @@
         </tbody>      
     </table>
     <div>
-        <%= link_to t('.create_detail_disease'), new_detail_disease_path, class: 'btn btn-xs btn-primary'  %>
+        <%= link_to t('.create_detail_disease'), new_detail_disease_path, class: 'btn btn-sm btn-primary' if Current.user.level > 0 &&  Current.user.level < 2 %>
     </div>
 </div>
 <hr>

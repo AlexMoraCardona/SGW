@@ -424,14 +424,14 @@ class IndicadoresController < ApplicationController
                     if item == @year
                         @datos_mes_frecuencia_accidentalidad += 1
                         fecha = Calendar.label_month(d.month.to_i).to_s + " " + item.to_s  
-                        inter = fecha + ": Por cada 100 trabajadores en " + @entity.business_name + ", se presentan " + d.total_work_accidents.to_s + " Accidentes de Trabajo en el año."
+                        inter = fecha + ": Por cada 100 trabajadores en " + @entity.business_name + ", se presentaron " + d.total_work_accidents.to_s + " Accidentes de Trabajo en el año."
                         @datos_frecuencia_accidentalidad.push([@year, fecha, d.total_work_accidents.to_i, d.total_officials.to_i, d.frecuencia_accidentalidad, inter]) 
                         @datos_frecuencia_accidentalidadg.push([fecha, d.frecuencia_accidentalidad.to_f]) 
                     else
                         if d.month == 12
                             @datos_año_frecuencia_accidentalidad += 1
                             fecha = Calendar.label_month(d.month.to_i).to_s + " " + item.to_s  
-                            inter = fecha + ": Por cada 100 trabajadores en " + @entity.business_name + ", se presentan " + d.total_work_accidents.to_s + " Accidentes de Trabajo en el año."
+                            inter = fecha + ": Por cada 100 trabajadores en " + @entity.business_name + ", se presentaron " + d.total_work_accidents.to_s + " Accidentes de Trabajo en el año."
                             @datos_frecuencia_accidentalidadaño.push([@year, fecha, d.total_work_accidents.to_i, d.total_officials.to_i, d.frecuencia_accidentalidad, inter]) 
                             @datos_frecuencia_accidentalidadañog.push([item, d.frecuencia_accidentalidad.to_f]) 
                         end    

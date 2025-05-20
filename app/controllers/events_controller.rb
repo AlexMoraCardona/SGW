@@ -3,10 +3,11 @@ class EventsController < ApplicationController
         if  Current.user && Current.user.level > 0 && Current.user.level < 4
             #@events = Event.all
             if Current.user.level == 1 || Current.user.level == 2  
-                @q = Event.ransack(params[:q]) 
+                @todos = Event.all.order(date_new: :desc)
+                @q = @todos.ransack(params[:q]) 
                 @pagy, @events = pagy(@q.result(date: :desc), items: 3)
             else 
-                @todos = Event.where("entity_id = ?",Current.user.entity)
+                @todos = Event.where("entity_id = ?",Current.user.entity).order(date_new: :desc)
                 @q = @todos.ransack(params[:q]) 
                 @pagy, @events = pagy(@q.result(date: :desc), items: 3)
             end

@@ -1,0 +1,30 @@
+<tr>
+    <td><%= route_control.date_control %></td>
+    <td>
+        <%  if  route_control.time_initial_control.present? %>
+            <div> 
+                <%= route_control.time_initial_control.strftime("%I:%M %p") %>
+            </div> 
+        <%  else %>  
+            <div>  
+                <%= link_to "Registrar Hora de inicio", control_hora_inicio_path(id: route_control.id), class: 'btn btn-sm btn-primary' %>                        
+            </div>
+        <%  end%>
+    </td>
+    <td>
+        <%  if  route_control.time_final_control.present? %>
+            <div> 
+                <%= route_control.time_final_control.strftime("%I:%M %p") %>
+            </div> 
+        <%  else %>  
+            <div>  
+                <%= link_to "Registrar Hora final", control_hora_final_path(id: route_control.id), class: 'btn btn-sm btn-primary' %>                        
+            </div>
+        <%  end%>
+    </td>
+    <td><%= highlight route_control.user.name, params.dig(:q, :user_id_cont) %></td>
+    <td><%= highlight route_control.place, params.dig(:q, :place_cont) %></td>
+    <td><%= link_to t('common.edit'), edit_route_control_path(route_control), class: 'btn btn-sm btn-primary'  %></td>
+    <td><%= link_to "Ver", route_control_path(route_control.id), class: 'btn btn-sm btn-warning' %> &nbsp;</td>
+    <td><%= link_to "PDF", pdf_informe_route_control_path(route_control.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;</td>
+</tr>

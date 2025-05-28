@@ -157,12 +157,36 @@ Instrucciones de diligenciamiento
     </div> 
     <hr>
 
+    <div class="row g-2">
+        <div class="col-sm-5">
+            <% if @matrix_danger_risk.present? %> 
+                <%= form_with url: "/matrix_danger_risks", method: :get do |form| %>
+                    <h5 scope="col">Filtrar por Cargo: </h5>
+                    <%= form.collection_select :id, @cargos, :id, :name, { prompt: '--Seleccionar Cargo--' },
+                    { class: 'form-control input-sm select2' , onChange: 'this.form.requestSubmit()', value: params[:id] } if @cargos.present? %>
+                    <%= form.hidden_field :entity_id, :value => @matrix_danger_risk.entity_id, class: "form-control" if @matrix_danger_risk.present? %>
+                <% end %> 
+            <% end %>     
+        </div>  
+        <div class="col-sm-5">
+            <% if @matrix_danger_risk.present? %> 
+                <%= form_with url: "/matrix_danger_risks", method: :get do |form| %>
+                    <h5 scope="col">Filtrar Peligro Riesgo Intervenido: </h5>
+                    <%= form.select :danger_intervened,[['NO'], ['SI'], ['TODOS']],{ prompt: '--Seleccionar--' },
+                    { class: 'form-control input-sm select2' , onChange: 'this.form.requestSubmit()', value: params[:danger_intervened] } if @cargos.present? %>
+                    <%= form.hidden_field :entity_id, :value => @matrix_danger_risk.entity_id, class: "form-control" if @matrix_danger_risk.present? %>
+                <% end %> 
+            <% end %>     
+        </div>  
+    </div>  
+
     <br>
     <h2>Peligros y Riesgos</h2>
     <table class="table table-hover"> 
         <thead> 
             <tr>
                 <th scope="col">Nro.</th>
+                <th scope="col">Cargo</th>
                 <th scope="col">Tarea</th>
                 <th scope="col">Clasificación</th>
                 <th scope="col">Descripción</th>
@@ -180,6 +204,7 @@ Instrucciones de diligenciamiento
             <% @nro += 1 %>    
             <tr> 
                 <td scope="col"><%= @nro %></td>  
+                <td scope="col"><%= CompanyPosition.name_cargo(matrix_danger_item.type_cargo) %></td>
                 <td scope="col"><%= matrix_danger_item.task %></td>  
                 <td scope="col"><%= matrix_danger_item.clasification_danger_detail.clasification_danger.name if matrix_danger_item.clasification_danger_detail_id.present? && matrix_danger_item.clasification_danger_detail_id.to_i > 0 %></td>
                 <td scope="col"><%= matrix_danger_item.clasification_danger_detail.name if matrix_danger_item.clasification_danger_detail_id.present? && matrix_danger_item.clasification_danger_detail_id.to_i > 0 %></td>

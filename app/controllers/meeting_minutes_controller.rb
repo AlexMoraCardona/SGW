@@ -1,8 +1,8 @@
 class MeetingMinutesController < ApplicationController
     def index
         if  Current.user && Current.user.level > 0 && Current.user.level < 4 
-            #@meeting_minutes = MeetingMinute.all
-            @q = MeetingMinute.ransack(params[:q])
+            @meetings = MeetingMinute.all.order(id: :desc)
+            @q = @meetings.ransack(params[:q])
             @pagy, @meeting_minutes = pagy(@q.result(date: :desc), items: 3)
 
          else

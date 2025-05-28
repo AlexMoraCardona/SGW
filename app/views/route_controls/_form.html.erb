@@ -1,0 +1,41 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @route_control do |form| %>
+        <% @route_control.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>
+        <br>
+        <div class="row g-3">
+            <div class="col-sm-4">
+                <%= form.label :vehicle_type,  style: "display: block" %>
+                <%= form.radio_button :vehicle_type, 0 %>
+                <label for="moto">Moto</label>
+                <%= form.radio_button :vehicle_type, 1 %>
+                <label for="carro">Carro</label>
+            </div>
+            <div class="col-sm-4">
+            </div>
+            <div class="col-sm-3">
+            </div>
+        </div>    
+        <br> 
+        <div class="form-group">    
+            <%= form.label :place, style: "display: block" %>
+            <%= form.text_field :place,  class: "form-control" %>
+        </div>
+        <br/>    
+        <div class="form-group">    
+            <%= form.label :observation, style: "display: block" %>
+            <%= form.text_field :observation,  class: "form-control" %>
+        </div>
+        <br/>    
+        <%= form.hidden_field :user_id, :value => Current.user.id, class: "form-control" %>
+        <%= form.hidden_field :date_control, :value => Time.now, class: "form-control" %>
+
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, route_controls_path %>
+    <% end %>
+</div>        
+<br>

@@ -1,0 +1,503 @@
+<div align="left"; class="container col-12">
+    <table style="border:0px solid black;width: 100%">
+        <tr style="padding: 20px;">
+            <td rowspan="2" style="border:1px solid black; width: 20%; text-align:center">
+                <% if @entity.logo.present? then %>
+                    <%=  image_tag  @entity.logo, class: "image_peq" %>
+                <% end %>   
+            </td>
+            <td style="border:1px solid black; text-align:center">
+                <div class="col-10"><h6><%= @entity.business_name if @entity.present? %></h6></div>
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; text-align:center">
+                <div class="col-10"><h6><%= @template.name if @template.present? %></h6></div>
+            </td>
+        </tr>
+    </table>
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:1px solid black; width: 25%">
+                <h6>CÓDIGO: </h6>                
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.reference if @template.present? %></small></h6>                
+            </td>
+
+            <td style="border:1px solid black; width: 25%">
+                <h6>VERSIÓN: </h6>                
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.version if @template.present? %></small></h6>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 25%">
+                <h6>FECHA DE ELABORACIÓN: </h6>                 
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date if @template.present? %></small></h6>                
+            </td>
+
+            <td style="border:1px solid black; width: 25%">
+                <h6>FECHA DE ACTUALIZACIÓN: </h6>                
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date_updated if @template.present? %></small></h6>                
+            </td>
+        </tr>
+    </table>
+    </BR>
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:0px solid black; width: 100%;padding: 2px;text-align:center">
+                <p><b>FORMATO LISTA DE CHEQUEO AUTOMÓVIL</b></p>                
+            </td>
+        </tr>
+    </table>    
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:0px solid black; width: 100%;padding: 5px;text-align:justify">
+                <p>Los prechequeos operacionales son una herramienta útil para revisar tu vehículo antes de salir para evitar varadas, o accidentes que pongan en riesgo tu vida o la de los demás, por esto en SURA queremos proporcionarte este formato para apoyarte en realizar un trayecto más seguro y tener toda la información cumpliendo lo estipulado en el <b>Plan Estratégico de Seguridad Vial (PESV)</b>.</p>                
+            </td>
+        </tr>
+    </table>    
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:0px solid black; width: 100%;padding: 5px;text-align:justify;background-color:#00aae4">
+                <p><b>1. INFORMACIÓN GENERAL DEL USUARIO Y DEL AUTOMÓVIL</b></p>                
+            </td>
+        </tr>
+    </table>    
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:0px solid black; width: 60%;padding: 5px;text-align:justify">
+                <p><b>Nombre del conductor:</b> <%= @car_checklist.user.name if @car_checklist.present? %></p>                
+            </td>
+            <td style="border:0px solid black; width: 40%;padding: 5px;text-align:justify">
+                <p><b>Documento identidad:</b> <%= @car_checklist.user.nro_document if @car_checklist.present? %></p>                
+            </td>
+        </tr>
+    </table>    
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:0px solid black; width: 25%;padding: 5px;text-align:justify">
+                <p><b>Fecha:</b> <%= @car_checklist.date_list if @car_checklist.present? %></p>                
+            </td>
+            <td style="border:0px solid black; width: 25%;padding: 5px;text-align:justify">
+                <p><b>Hora:</b> <%= @car_checklist.time_list.strftime("%I:%M %p") if @car_checklist.present? %></p>                
+            </td>
+            <td style="border:0px solid black; width: 25%;padding: 5px;text-align:justify">
+                <p><b>Placa:</b> <%= @car_checklist.plate_car if @car_checklist.present? %></p>                
+            </td>
+            <td style="border:0px solid black; width: 25%;padding: 5px;text-align:justify">
+                <p><b>Kilometraje:</b> <%= @car_checklist.mileage if @car_checklist.present? %></p>                
+            </td>
+        </tr>
+    </table>    
+    <div></br></div>
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:0px solid black; width: 100%;padding: 5px;text-align:justify;background-color:#00aae4">
+                <p><b>2. CONDICIONES DEL USUARIO</b></p>                
+            </td>
+        </tr>
+    </table>    
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:0px solid black; width: 100%;padding: 5px;text-align:justify">
+                <p>Para garantizar una movilidad segura, es necesario revisar tu estado de salud para conducir en condiciones óptimas.</b>.</p>                
+            </td>
+        </tr>
+    </table>    
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:1px solid black; width: 50%;padding: 5px;text-align:center;color:#00aae4">
+                <p><b>CONDICIÓN</b></p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 5px;text-align:center;color:#00aae4">
+                <p><b>CUMPLE</b></p>                
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 5px;text-align:justify;color:#00aae4">
+                <p><b>OBSERVACIONES / HALLAZGOS</b></p>                
+            </td>
+        </tr>
+    </table>    
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:1px solid black; width: 50%;padding: 5px;text-align:justify">
+                <p>¿Estás en condiciones de salud y descanso para usar el vehículo (sin malestar, mareos, fiebre, sueño u otros síntomas)?</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 5px;text-align:center">
+                <% if @car_checklist.health_conditions == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 5px;text-align:justify">
+                <p><%= @car_checklist.health_conditions_obs %></p>                
+            </td>
+        </tr>
+    </table>  
+    <div></br></div>  
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:0px solid black; width: 100%;padding: 5px;text-align:justify;background-color:#00aae4">
+                <p><b>3. CONDICIONES DEL VEHÍCULO</b></p>                
+            </td>
+        </tr>
+    </table>    
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:0px solid black; width: 100%;padding: 5px;text-align:justify">
+                <p>Conocer el estado de las condiciones principales de los vehículos que conduces se vuelve fundamental para evitar un incidente. En caso de que algún elemento descrito dentro de la lista de chequeo no cumpla, deberás informarlo al encargado o administrador de la flota en tu empresa, quien deberá definir si el vehículo se podrá movilizar.</p>                
+            </td>
+        </tr>
+    </table>    
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:1px solid black; width: 50%;padding: 5px;text-align:center;color:#00aae4">
+                <p><b>CONDICIÓN</b></p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 5px;text-align:center;color:#00aae4">
+                <p><b>CUMPLE</b></p>                
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 5px;text-align:justify;color:#00aae4">
+                <p><b>OBSERVACIONES / HALLAZGOS</b></p>                
+            </td>
+        </tr>
+    </table>    
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:1px solid black; width: 20%;padding: 5px;text-align:justify">
+                <p>Estado de llantas</p>                
+            </td>
+            <td style="border:1px solid black; width: 30%;padding: 5px;text-align:justify">
+                <p>Verifica la profundidad del labrado, presión, cortaduras o protuberancias.</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 5px;text-align:center">
+                <% if @car_checklist.tire_condition == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 5px;text-align:justify">
+                <p><%= @car_checklist.tire_condition_obs %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 20%;padding: 5px;text-align:justify">
+                <p>Luces</p>                
+            </td>
+            <td style="border:1px solid black; width: 30%;padding: 5px;text-align:justify">
+                <p>Verifica el funcionamiento correcto de luces altas y bajas, posición, direccionales, freno, reversa y estacionarias.</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 5px;text-align:center">
+                <% if @car_checklist.lights_condition == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 5px;text-align:justify">
+                <p><%= @car_checklist.lights_condition_obs %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 20%;padding: 5px;text-align:justify">
+                <p>Bocina</p>                
+            </td>
+            <td style="border:1px solid black; width: 30%;padding: 5px;text-align:justify">
+                <p>Verifica su funcionamiento.</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 5px;text-align:center">
+                <% if @car_checklist.horn_condition == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 5px;text-align:justify">
+                <p><%= @car_checklist.horn_condition_obs %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 20%;padding: 5px;text-align:justify">
+                <p>Espejos</p>                
+            </td>
+            <td style="border:1px solid black; width: 30%;padding: 5px;text-align:justify">
+                <p>Revisa y posiciona correctamente los espejos laterales y centrales.</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 5px;text-align:center">
+                <% if @car_checklist.mirrors_condition == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 5px;text-align:justify">
+                <p><%= @car_checklist.mirrors_condition_obs %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 20%;padding: 5px;text-align:justify">
+                <p>Niveles de líquidos</p>                
+            </td>
+            <td style="border:1px solid black; width: 30%;padding: 5px;text-align:justify">
+                <p>Verifica el aceite, líquido de frenos, limpiaparabrisas, refrigerante, y dirección hidráulica (si aplica).</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 5px;text-align:center">
+                <% if @car_checklist.liquids_condition == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 5px;text-align:justify">
+                <p><%= @car_checklist.liquids_condition_obs %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 20%;padding: 5px;text-align:justify">
+                <p>Fugas de fluidos</p>                
+            </td>
+            <td style="border:1px solid black; width: 30%;padding: 5px;text-align:justify">
+                <p>Verifica que no existan fugas ni humedades en el habitáculo del motor y en el piso donde parqueas.</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 5px;text-align:center">
+                <% if @car_checklist.fluids_condition == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 5px;text-align:justify">
+                <p><%= @car_checklist.fluids_condition_obs %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 20%;padding: 5px;text-align:justify">
+                <p>Estado de frenos</p>                
+            </td>
+            <td style="border:1px solid black; width: 30%;padding: 5px;text-align:justify">
+                <p>Verifica el estado de las pastillas y una óptima tensión del pedal y del freno de parqueo.</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 5px;text-align:center">
+                <% if @car_checklist.brakes_condition == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 5px;text-align:justify">
+                <p><%= @car_checklist.brakes_condition_obs %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 20%;padding: 5px;text-align:justify">
+                <p>Parabrisas</p>                
+            </td>
+            <td style="border:1px solid black; width: 30%;padding: 5px;text-align:justify">
+                <p>Verifica que no esté fisurado y el funcionamiento de las plumillas.</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 5px;text-align:center">
+                <% if @car_checklist.windshield_condition == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 5px;text-align:justify">
+                <p><%= @car_checklist.windshield_condition_obs %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 20%;padding: 5px;text-align:justify">
+                <p>Elementos de retención</p>                
+            </td>
+            <td style="border:1px solid black; width: 30%;padding: 5px;text-align:justify">
+                <p>Revisa el estado del cinturón de seguridad y el anclaje de las sillas.</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 5px;text-align:center">
+                <% if @car_checklist.retention_condition == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 5px;text-align:justify">
+                <p><%= @car_checklist.retention_condition_obs %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 20%;padding: 5px;text-align:justify">
+                <p>Documentos</p>                
+            </td>
+            <td style="border:1px solid black; width: 30%;padding: 5px;text-align:justify">
+                <p>Verifica la tarjeta de propiedad, SOAT y revisión técnico mecánica (si aplica).</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 5px;text-align:center">
+                <% if @car_checklist.documents_condition == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 5px;text-align:justify">
+                <p><%= @car_checklist.documents_condition_obs %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 20%;padding: 5px;text-align:justify">
+                <p>Equipos de prevención</p>                
+            </td>
+            <td style="border:1px solid black; width: 30%;padding: 5px;text-align:justify">
+                <p>Revisa la caja de herramientas, extintor, botiquín, conos, tacos, linterna, llanta de repuesto, gato, cruceta y chaleco reflectivo.</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 5px;text-align:center">
+                <% if @car_checklist.prevention_condition == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 5px;text-align:justify">
+                <p><%= @car_checklist.prevention_condition_obs %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 20%;padding: 5px;text-align:justify">
+                <p>Luces de tablero y testigos</p>                
+            </td>
+            <td style="border:1px solid black; width: 30%;padding: 5px;text-align:justify">
+                <p>Antes de iniciar la marcha, verifica que todos los testigos, excepto el de parqueo, estén apagados.</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 5px;text-align:center">
+                <% if @car_checklist.witnesses_condition == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 5px;text-align:justify">
+                <p><%= @car_checklist.witnesses_condition_obs %></p>                
+            </td>
+        </tr>
+
+    </table>  
+    <div></br></div>
+    
+    <div class="container col-11 card p-5">
+
+        <br>
+        <div class="form-group"><h5>Archivos adjuntos:</h5></div>         
+        <hr>
+        <% if @car_checklist.car_files.attached? %>
+            <div data-controller="previews" >
+                <% @car_checklist.car_files.each do |file|%>
+                    <br>
+                    <% if file.image? %>
+                        <div>
+                            <%= image_tag file, data: {previews_target: "preview"}, class: "image" %>
+                            <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                        </div> 
+                    <% elsif file.video? %>
+                        <%= video_tag url_for(file), controls: "", width: "400px" %>          
+                        <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                    <% elsif file.audio? %>
+                        <%= audio_tag(url_for(file), controls: "") %>          
+                        <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                    <% else %>
+                        <%= link_to file.filename, url_for(file) %>          
+                        <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                    <% end %>
+                <% end %>  
+            </div>
+        <% end %>  
+    </div>
+
+
+    <div></br></div>
+    <table style="width: 100%;">
+        <tr>    
+            <td style="border:0px solid black; width: 50%; text-align:center;">
+                    <div class="row  text-center" > 
+                        <div class="col-11">
+                            <div>&nbsp;</div>
+                            <div>&nbsp;</div>
+                            <% if @car_checklist.firm_user == 1 %>
+                                <div style="height: 100px;">
+                                    <% if @user_responsable.firm.attached? %>
+                                        <% if @user_responsable.firm.image? %> 
+                                            <%= image_tag @user_responsable.firm, class: "firma" %>
+                                        <% end %>
+                                    <% end %>
+                                </div>  
+                                <p align="center">________________________________</p>       
+                            <% else %>    
+                                <div style="height: 100px;"></div>
+                                <p align="center">________________________________</p>         
+                            <% end %>     
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <h6><strong><%= @user_responsable.name %></strong></h6>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <h6><%= User.label_activity(@user_responsable.activity)  %></h6>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <h6><%= @user_responsable.document.abbreviation %>: <%= Firm.miles(@user_responsable.nro_document) %></h6>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+            </td>
+            <td style="border:0px solid black; width: 50%; text-align:center;">
+                    <div class="row  text-center" > 
+                        <div class="col-11">
+                            <div>&nbsp;</div>
+                            <div>&nbsp;</div>
+                            <% if @car_checklist.user_autoriza_firm == 1 && @user_autoriza.present? %>
+                                <div style="height: 100px;">
+                                    <% if @user_autoriza.firm.attached? %>
+                                        <% if @user_autoriza.firm.image? %> 
+                                            <%= image_tag @user_autoriza.firm, class: "firma" %>
+                                        <% end %>
+                                    <% end %>
+                                </div>  
+                                <p align="center">________________________________</p>       
+                            <% else %>    
+                                <div style="height: 100px;"></div>
+                                <p align="center">________________________________</p>         
+                            <% end %>     
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <h6><strong><%= @user_autoriza.name if @user_autoriza.present? %></strong></h6>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <h6>Responsable SG-SST</h6>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <h6><%= @user_autoriza.document.abbreviation if @user_autoriza.present? %>: <%= Firm.miles(@user_autoriza.nro_document) if @user_autoriza.present? %></h6>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+            </td>
+        </tr>
+    </table>
+</div>
+

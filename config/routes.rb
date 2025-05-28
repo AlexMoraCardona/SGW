@@ -104,6 +104,10 @@ Rails.application.routes.draw do
   resources :legal_rules
   resources :adm_attendances
   resources :attendances
+  resources :route_controls
+  resources :moto_checklists
+  resources :car_checklists
+
 
   
   get '/adm_attendances/adm_attendance_pdf/:id', to: 'adm_attendances#adm_attendance_pdf', as: 'adm_attendance_pdf'
@@ -185,6 +189,17 @@ Rails.application.routes.draw do
   get '/matrix_legals/ver_matrix_legal/:id', to: 'matrix_legals#ver_matrix_legal', as: 'ver_matrix_legal'
   get '/firms/firma_fecha/:id', to: 'firms#firma_fecha', as: 'firma_fecha'
   get '/evidences/ciclophva/:id', to: 'evidences#ciclophva', as: 'ciclophva'
+  get '/route_controls/control_hora_inicio/:id', to: 'route_controls#control_hora_inicio', as: 'control_hora_inicio'
+  get '/route_controls/control_hora_final/:id', to: 'route_controls#control_hora_final', as: 'control_hora_final'
+  get '/route_controls/pdf_informe_route_control/:id', to: 'route_controls#pdf_informe_route_control', as: 'pdf_informe_route_control'
+  get '/moto_checklists/firmar_responsable_checklist_moto/:id', to: 'moto_checklists#firmar_responsable_checklist_moto', as: 'firmar_responsable_checklist_moto'
+  get '/moto_checklists/firmar_autorizado_checklist_moto/:id', to: 'moto_checklists#firmar_autorizado_checklist_moto', as: 'firmar_autorizado_checklist_moto'
+  get '/moto_checklists/ver_checklist_moto_pdf/:id', to: 'moto_checklists#ver_checklist_moto_pdf', as: 'ver_checklist_moto_pdf'
+  get '/moto_checklists/adjuntar_checklist_moto/:id', to: 'moto_checklists#adjuntar_checklist_moto', as: 'adjuntar_checklist_moto'
+  get '/car_checklists/firmar_responsable_checklist_car/:id', to: 'car_checklists#firmar_responsable_checklist_car', as: 'firmar_responsable_checklist_car'
+  get '/car_checklists/firmar_autorizado_checklist_car/:id', to: 'car_checklists#firmar_autorizado_checklist_car', as: 'firmar_autorizado_checklist_car'
+  get '/car_checklists/ver_checklist_car_pdf/:id', to: 'car_checklists#ver_checklist_car_pdf', as: 'ver_checklist_car_pdf'
+  get '/car_checklists/adjuntar_checklist_car/:id', to: 'car_checklists#adjuntar_checklist_car', as: 'adjuntar_checklist_car'
 
   resources :admin_extent_dangers do
     collection do

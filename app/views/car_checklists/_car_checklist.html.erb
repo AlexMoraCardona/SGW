@@ -1,0 +1,52 @@
+<tr>
+    <td><%= car_checklist.date_list %></td> 
+    <td>
+        <% @dato_eve = CarChecklist.cant_eve(car_checklist) %>
+        <% if @dato_eve == 0 %>
+            <button class="btn btn-sm btn-outline-success position-relative" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+              <%= highlight car_checklist.plate_car, params.dig(:q, :plate_car_cont) %> 
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+                      <%= @dato_eve %>+
+                    <span class="visually-hidden">unread messages</span>
+                </span>
+            </button>
+        <%  else %>
+            <button class="btn btn-sm btn-outline-primary position-relative" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+              <%= highlight car_checklist.plate_car, params.dig(:q, :plate_car_cont) %> 
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                      <%= @dato_eve %>+
+                    <span class="visually-hidden">unread messages</span>
+                </span>
+            </button>
+        <%  end%>
+    </td>
+    <td><%= highlight car_checklist.user.name, params.dig(:q, :user_id_cont) %></td>
+    <td>
+        <%  if  car_checklist.firm_user == 1 %>
+            <div> 
+                <%= car_checklist.date_firm_user.strftime("%F") if  car_checklist.date_firm_user.present? %>
+            </div> 
+        <%  else %>  
+            <div>  
+                <%= link_to "Firmar", firmar_responsable_checklist_car_path(car_checklist.id, 2), class: 'btn btn-sm btn-primary' %>                        
+            </div>
+        <%  end%>
+    </td>
+    <td><%= User.label_name(car_checklist.user_autoriza) %></td>
+    <td>
+        <%  if  car_checklist.user_autoriza_firm == 1 %>
+            <div> 
+                <%= car_checklist.user_autoriza_date.strftime("%F") if  car_checklist.user_autoriza_date.present? %>
+            </div> 
+        <%  else %>  
+            <div>  
+                <%= link_to "Firmar", firmar_autorizado_checklist_car_path(car_checklist.id, 1), class: 'btn btn-sm btn-primary' %>                        
+            </div>
+        <%  end%>
+    </td> 
+    <td><%= link_to "Adjuntar", adjuntar_checklist_car_path(car_checklist.id), class: 'btn btn-sm btn-warning' %> &nbsp;</td>
+    <td>
+        <%= link_to "Ver", car_checklist_path(car_checklist.id), class: 'btn btn-sm btn-warning' %> &nbsp;
+    </td>
+    <td><%= link_to "PDF", ver_checklist_car_pdf_path(car_checklist.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;</td>
+</tr>

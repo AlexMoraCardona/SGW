@@ -107,7 +107,11 @@ class User < ApplicationRecord
     end    
 
     def self.label_name(dato)
-        @nombre_usuario = User.find(dato).name
+        if dato == 0
+            @nombre_usuario = 'Usuario no encontrado'
+        else    
+           @nombre_usuario = User.find(dato).name
+        end   
         return @nombre_usuario
     end  
 

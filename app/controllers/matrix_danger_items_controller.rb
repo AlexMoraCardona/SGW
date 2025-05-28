@@ -53,7 +53,7 @@ class MatrixDangerItemsController < ApplicationController
         :intervention_measures_replacement, :intervention_measures_engineering_control, 
         :intervention_measures_acsw, :intervention_measures_ppee, :responsible_implementation, 
         :type_register, :proposed_date, :implementation_date, :follow_date, :observations, :clasification_danger_id, 
-        :clasification_danger_detail_id, :matrix_danger_risk_id, :location_id, :number_exposed_contrators, :number_exposed_totals, :danger_intervened)
+        :clasification_danger_detail_id, :matrix_danger_risk_id, :location_id, :number_exposed_contrators, :number_exposed_totals, :danger_intervened, :type_cargo)
     end 
 
 end 

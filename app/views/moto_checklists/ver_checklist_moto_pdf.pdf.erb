@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+    <%= javascript_importmap_tags %>
+</head>
+<div align="left"; class="container col-12">
+    <table style="border:0px solid black;width: 100%">
+        <tr style="padding: 20px;">
+            <td rowspan="2" style="border:1px solid black; width: 20%; text-align:center">
+                <% if @entity.logo.present? then %>
+                    <%=  image_tag  @entity.logo, class: "image_peq" %>
+                <% end %>   
+            </td>
+            <td style="border:1px solid black; text-align:center">
+                <div class="col-10"><%= @entity.business_name if @entity.present? %></div>
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; text-align:center">
+                <div class="col-10"><%= @template.name if @template.present? %></div>
+            </td>
+        </tr>
+    </table>
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:1px solid black; width: 25%">
+                CÓDIGO:                 
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                &nbsp;&nbsp;<small class="text-muted"><%= @template.reference if @template.present? %></small>                
+            </td>
+
+            <td style="border:1px solid black; width: 25%">
+                VERSIÓN:                 
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                &nbsp;&nbsp;<small class="text-muted"><%= @template.version if @template.present? %></small>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 25%">
+                FECHA DE ELABORACIÓN:                  
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                &nbsp;&nbsp;<small class="text-muted"><%= @template.date if @template.present? %></small>                
+            </td>
+
+            <td style="border:1px solid black; width: 25%">
+                FECHA DE ACTUALIZACIÓN:                 
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                &nbsp;&nbsp;<small class="text-muted"><%= @template.date_updated if @template.present? %></small>                
+            </td>
+        </tr>
+    </table>
+    </BR>
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:0px solid black; width: 100%;padding: 2px;text-align:center">
+                <p><b>FORMATO LISTA DE CHEQUEO MOTO</b></p>                
+            </td>
+        </tr>
+    </table>    
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:0px solid black; width: 100%;padding: 2px;text-align:justify">
+                <p>Los prechequeos operacionales son una herramienta útil para revisar tu vehículo antes de salir para evitar varadas, o accidentes que pongan en riesgo tu vida o la de los demás, por esto en SURA queremos proporcionarte este formato para apoyarte en realizar un trayecto más seguro y tener toda la información cumpliendo lo estipulado en el <b>Plan Estratégico de Seguridad Vial (PESV)</b>.</p>                
+            </td>
+        </tr>
+    </table>    
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:0px solid black; width: 100%;padding: 2px;text-align:justify;background-color:#00aae4">
+                <p><b>1. INFORMACIÓN GENERAL DEL USUARIO Y DE LA MOTO</b></p>                
+            </td>
+        </tr>
+    </table>    
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:0px solid black; width: 60%;padding: 2px;text-align:justify">
+                <p><b>Nombre del conductor:</b> <%= @moto_checklist.user.name if @moto_checklist.present? %></p>                
+            </td>
+            <td style="border:0px solid black; width: 40%;padding: 2px;text-align:justify">
+                <p><b>Documento identidad:</b> <%= @moto_checklist.user.nro_document if @moto_checklist.present? %></p>                
+            </td>
+        </tr>
+    </table>    
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:0px solid black; width: 25%;padding: 2px;text-align:justify">
+                <p><b>Fecha:</b> <%= @moto_checklist.date_list if @moto_checklist.present? %></p>                
+            </td>
+            <td style="border:0px solid black; width: 25%;padding: 2px;text-align:justify">
+                <p><b>Hora:</b> <%= @moto_checklist.time_list.strftime("%I:%M %p") if @moto_checklist.present? %></p>                
+            </td>
+            <td style="border:0px solid black; width: 25%;padding: 2px;text-align:justify">
+                <p><b>Placa:</b> <%= @moto_checklist.plate_moto if @moto_checklist.present? %></p>                
+            </td>
+            <td style="border:0px solid black; width: 25%;padding: 2px;text-align:justify">
+                <p><b>Kilometraje:</b> <%= @moto_checklist.mileage if @moto_checklist.present? %></p>                
+            </td>
+        </tr>
+    </table>    
+    <div></br></div>
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:0px solid black; width: 100%;padding: 2px;text-align:justify;background-color:#00aae4">
+                <p><b>2. CONDICIONES DEL USUARIO</b></p>                
+            </td>
+        </tr>
+    </table>    
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:0px solid black; width: 100%;padding: 2px;text-align:justify">
+                <p>Para garantizar una movilidad segura, es necesario revisar tu estado de salud para conducir en condiciones óptimas y revisar que lleves contigo todos los <b>Elementos de Protección Personal.</b>.</p>                
+            </td>
+        </tr>
+    </table>    
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:1px solid black; width: 50%;padding: 2px;text-align:center;color:#00aae4">
+                <p><b>CONDICIÓN</b></p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 2px;text-align:center;color:#00aae4">
+                <p><b>CUMPLE</b></p>                
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 2px;text-align:justify;color:#00aae4">
+                <p><b>OBSERVACIONES / HALLAZGOS</b></p>                
+            </td>
+        </tr>
+    </table>    
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:1px solid black; width: 50%;padding: 2px;text-align:justify">
+                <p>¿Estás en condiciones de salud y descanso para usar el vehículo (sin malestar, mareos, fiebre, sueño u otros síntomas)?</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 2px;text-align:center">
+                <% if @moto_checklist.health_conditions == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 2px;text-align:justify">
+                <p><%= @moto_checklist.health_conditions_obs %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 50%;padding: 2px;text-align:justify">
+                <p>¿Llevas el equipo de protección personal requerido (casco reglamentario, prendas con reflectivos ubicados en el casco, piernas, brazos y espalda)? En lo posible, complementa tu protección usando chaqueta y botas de motociclista, rodilleras y guantes.?</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 2px;text-align:center">
+                <% if @moto_checklist.protective_equipment == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 2px;text-align:justify">
+                <p><%= @moto_checklist.protective_equipment_obs %> </p>                
+            </td>
+        </tr>
+    </table>  
+    <div></br></div>  
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:0px solid black; width: 100%;padding: 2px;text-align:justify;background-color:#00aae4">
+                <p><b>3. CONDICIONES DEL VEHÍCULO</b></p>                
+            </td>
+        </tr>
+    </table>    
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:0px solid black; width: 100%;padding: 2px;text-align:justify">
+                <p>Conocer el estado de las condiciones principales de los vehículos que conduces se vuelve fundamental para evitar un incidente. En caso de que algún elemento descrito dentro de la lista de chequeo no cumpla, deberás informarlo al encargado o administrador de la flota en tu empresa, quien deberá definir si el vehículo se podrá movilizar.</p>                
+            </td>
+        </tr>
+    </table>    
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:1px solid black; width: 50%;padding: 2px;text-align:center;color:#00aae4">
+                <p><b>CONDICIÓN</b></p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 2px;text-align:center;color:#00aae4">
+                <p><b>CUMPLE</b></p>                
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 2px;text-align:justify;color:#00aae4">
+                <p><b>OBSERVACIONES / HALLAZGOS</b></p>                
+            </td>
+        </tr>
+    </table>    
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:1px solid black; width: 20%;padding: 2px;text-align:justify">
+                <p>Estado de llantas</p>                
+            </td>
+            <td style="border:1px solid black; width: 30%;padding: 2px;text-align:justify">
+                <p>Verifica la profundidad del labrado, presión, cortaduras o protuberancia.</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 2px;text-align:center">
+                <% if @moto_checklist.tire_condition == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 2px;text-align:justify">
+                <p><%= @moto_checklist.tire_condition_obs %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 20%;padding: 2px;text-align:justify">
+                <p>Luces</p>                
+            </td>
+            <td style="border:1px solid black; width: 30%;padding: 2px;text-align:justify">
+                <p>Verifica el funcionamiento correcto de luces altas y bajas, posición, direccionales y freno.</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 2px;text-align:center">
+                <% if @moto_checklist.lights_condition == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 2px;text-align:justify">
+                <p><%= @moto_checklist.lights_condition_obs %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 20%;padding: 2px;text-align:justify">
+                <p>Bocina</p>                
+            </td>
+            <td style="border:1px solid black; width: 30%;padding: 2px;text-align:justify">
+                <p>Verifica su funcionamiento.</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 2px;text-align:center">
+                <% if @moto_checklist.horn_condition == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 2px;text-align:justify">
+                <p><%= @moto_checklist.horn_condition_obs %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 20%;padding: 2px;text-align:justify">
+                <p>Espejos</p>                
+            </td>
+            <td style="border:1px solid black; width: 30%;padding: 2px;text-align:justify">
+                <p>Revisa y posiciona correctamente los espejos.</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 2px;text-align:center">
+                <% if @moto_checklist.mirrors_condition == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 2px;text-align:justify">
+                <p><%= @moto_checklist.mirrors_condition_obs %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 20%;padding: 2px;text-align:justify">
+                <p>Niveles de líquidos</p>                
+            </td>
+            <td style="border:1px solid black; width: 30%;padding: 2px;text-align:justify">
+                <p>Revisa los niveles de aceite, líquido de frenos y refrigerante (si aplica).</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 2px;text-align:center">
+                <% if @moto_checklist.liquids_condition == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 2px;text-align:justify">
+                <p><%= @moto_checklist.liquids_condition_obs %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 20%;padding: 2px;text-align:justify">
+                <p>Fugas de fluidos</p>                
+            </td>
+            <td style="border:1px solid black; width: 30%;padding: 2px;text-align:justify">
+                <p>Revisa que no existan fugas ni humedades en el motor, suspensión, frenos y líquido refrigerante (si aplica).</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 2px;text-align:center">
+                <% if @moto_checklist.fluids_condition == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 2px;text-align:justify">
+                <p><%= @moto_checklist.fluids_condition_obs %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 20%;padding: 2px;text-align:justify">
+                <p>Estado de frenos</p>                
+            </td>
+            <td style="border:1px solid black; width: 30%;padding: 2px;text-align:justify">
+                <p>Verifica la tensión del pedal y el estado de las pastillas.</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 2px;text-align:center">
+                <% if @moto_checklist.brakes_condition == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 2px;text-align:justify">
+                <p><%= @moto_checklist.brakes_condition_obs %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 20%;padding: 2px;text-align:justify">
+                <p>Transmisión</p>                
+            </td>
+            <td style="border:1px solid black; width: 30%;padding: 2px;text-align:justify">
+                <p>Verifica la tensión de la cadena y lubricación.</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 2px;text-align:center">
+                <% if @moto_checklist.transmission_condition == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 2px;text-align:justify">
+                <p><%= @moto_checklist.transmission_condition_obs %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 20%;padding: 2px;text-align:justify">
+                <p>Documentos</p>                
+            </td>
+            <td style="border:1px solid black; width: 30%;padding: 2px;text-align:justify">
+                <p>Verifica la tarjeta de propiedad, SOAT y revisión técnico mecánica (si aplica).</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 2px;text-align:center">
+                <% if @moto_checklist.documents_condition == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 2px;text-align:justify">
+                <p><%= @moto_checklist.documents_condition_obs %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 20%;padding: 2px;text-align:justify">
+                <p>Kit de prevención</p>                
+            </td>
+            <td style="border:1px solid black; width: 30%;padding: 2px;text-align:justify">
+                <p>Revisa las herramientas y el impermeable.</p>                
+            </td>
+            <td style="border:1px solid black; width: 10%;padding: 2px;text-align:center">
+                <% if @moto_checklist.kit_condition == 0 then %>
+                    <p>SI</p>
+                <% else %>
+                    <p>NO</p>
+                <% end %>
+            </td>
+            <td style="border:1px solid black; width: 40%;padding: 2px;text-align:justify">
+                <p><%= @moto_checklist.kit_condition_obs %></p>                
+            </td>
+        </tr>
+
+    </table>    
+    <div></br></div>
+    <div class="container col-11 card p-5">
+
+        <br>
+        <div class="form-group"><h5>Archivos adjuntos:</h5></div>         
+        <hr>
+        <% if @moto_checklist.moto_files.attached? %>
+            <div data-controller="previews" >
+                <% @moto_checklist.moto_files.each do |file|%>
+                    <br>
+                    <% if file.image? %>
+                        <div>
+                            <%= image_tag file, data: {previews_target: "preview"}, class: "image" %>
+                        </div> 
+                    <% elsif file.video? %>
+                        <%= video_tag url_for(file), controls: "", width: "400px" %>          
+                    <% elsif file.audio? %>
+                        <%= audio_tag(url_for(file), controls: "") %>          
+                    <% else %>
+                        <%= link_to file.filename, url_for(file) %>          
+                    <% end %>
+                <% end %>  
+            </div>
+        <% end %>  
+    </div>
+    <div></br></div>
+    <table style="width: 100%;">
+        <tr>    
+            <td style="border:0px solid black; width: 50%; text-align:center;">
+                    <div class="row  text-center" > 
+                        <div class="col-11">
+                            <div>&nbsp;</div>
+                            <div>&nbsp;</div>
+                            <% if @moto_checklist.firm_user == 1 %>
+                                <div style="height: 100px;">
+                                    <% if @user_responsable.firm.attached? %>
+                                        <% if @user_responsable.firm.image? %> 
+                                            <%= image_tag(Evaluation.wicked_blob_path(@user_responsable.firm), class: "firmapdf")%>
+                                        <% end %>
+                                    <% end %>
+                                </div>  
+                                <p align="center">________________________________</p>       
+                            <% else %>    
+                                <div style="height: 100px;"></div>
+                                <p align="center">________________________________</p>         
+                            <% end %>     
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <strong><%= @user_responsable.name %></strong>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <%= User.label_activity(@user_responsable.activity)  %>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <%= @user_responsable.document.abbreviation %>: <%= Firm.miles(@user_responsable.nro_document) %>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+            </td>
+            <td style="border:0px solid black; width: 50%; text-align:center;">
+                    <div class="row  text-center" > 
+                        <div class="col-11">
+                            <div>&nbsp;</div>
+                            <div>&nbsp;</div>
+                            <% if @moto_checklist.user_autoriza_firm == 1 && @user_autoriza.present? %>
+                                <div style="height: 100px;">
+                                    <% if @user_autoriza.firm.attached? %>
+                                        <% if @user_autoriza.firm.image? %> 
+                                            <%= image_tag(Evaluation.wicked_blob_path(@user_autoriza.firm), class: "firmapdf")%>
+                                        <% end %>
+                                    <% end %>
+                                </div>  
+                                <p align="center">________________________________</p>       
+                            <% else %>    
+                                <div style="height: 100px;"></div>
+                                <p align="center">________________________________</p>         
+                            <% end %>     
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <strong><%= @user_autoriza.name if @user_autoriza.present? %></strong>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                Responsable SG-SST
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <%= @user_autoriza.document.abbreviation if @user_autoriza.present? %>: <%= Firm.miles(@user_autoriza.nro_document) if @user_autoriza.present? %>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+            </td>
+        </tr>
+    </table>
+</div>
+

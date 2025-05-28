@@ -16,7 +16,7 @@
         <%= form.hidden_field :consecutive, :value => @cant.to_i, class: "form-control" %>
         <%= form.hidden_field :matrix_danger_risk_id, :value => params[:id].to_i, class: "form-control" %>
         
-        <div class="row g-3">
+        <div class="row g-3"> 
             <div class="col-sm-2"> 
                 <%= form.label :source_information,  style: "display: block" %></br>
                 <%= form.select(:source_information, [['Administrativo', 'Administrativo'], ['Operativo', 'Operativo']]) %>
@@ -36,6 +36,14 @@
             <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Describir la actividad General ejemplo permanecia en puesto, jefe, asistente, etc."><%= t('.activity') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
             <%= form.text_area :activity,  class: "form-control" %>
         </div>
+        <br>
+        <div class="row g-3">
+            <div class="col-sm-3">     
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Cargo."><%= t('.type_cargo') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                <%= form.collection_select :type_cargo, CompanyPosition.where("entity_id = ?", Current.user.entity.to_i), :id, :name, { prompt: '--Seleccionar Cargo--' },
+                { class: 'form-control input-sm select2'  }  if @matrix_danger_item.present? %>
+            </div>
+        </div>    
         <br>
         <div class="form-group">
             <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Descripción paso a paso de la actividad a realizar en los puestos de trabajo."><%= t('.task') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>

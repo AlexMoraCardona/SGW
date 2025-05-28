@@ -1,0 +1,52 @@
+<tr>
+    <td><%= moto_checklist.date_list %></td> 
+    <td>
+        <% @dato_eve = MotoChecklist.cant_eve(moto_checklist) %>
+        <% if @dato_eve == 0 %>
+            <button class="btn btn-sm btn-outline-success position-relative" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+              <%= highlight moto_checklist.plate_moto, params.dig(:q, :plate_moto_cont) %> 
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+                      <%= @dato_eve %>+
+                    <span class="visually-hidden">unread messages</span>
+                </span>
+            </button>
+        <%  else %>
+            <button class="btn btn-sm btn-outline-primary position-relative" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+              <%= highlight moto_checklist.plate_moto, params.dig(:q, :plate_moto_cont) %> 
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                      <%= @dato_eve %>+
+                    <span class="visually-hidden">unread messages</span>
+                </span>
+            </button>
+        <%  end%>
+    </td>
+    <td><%= highlight moto_checklist.user.name, params.dig(:q, :user_id_cont) %></td>
+    <td>
+        <%  if  moto_checklist.firm_user == 1 %>
+            <div> 
+                <%= moto_checklist.date_firm_user.strftime("%F") if  moto_checklist.date_firm_user.present? %>
+            </div> 
+        <%  else %>  
+            <div>  
+                <%= link_to "Firmar", firmar_responsable_checklist_moto_path(moto_checklist.id, 2), class: 'btn btn-sm btn-primary' %>                        
+            </div>
+        <%  end%>
+    </td>
+    <td><%= User.label_name(moto_checklist.user_autoriza) %></td>
+    <td>
+        <%  if  moto_checklist.user_autoriza_firm == 1 %>
+            <div> 
+                <%= moto_checklist.user_autoriza_date.strftime("%F") if  moto_checklist.user_autoriza_date.present? %>
+            </div> 
+        <%  else %>  
+            <div>  
+                <%= link_to "Firmar", firmar_autorizado_checklist_moto_path(moto_checklist.id, 1), class: 'btn btn-sm btn-primary' %>                        
+            </div>
+        <%  end%>
+    </td> 
+    <td><%= link_to "Adjuntar", adjuntar_checklist_moto_path(moto_checklist.id), class: 'btn btn-sm btn-warning' %> &nbsp;</td>
+    <td>
+        <%= link_to "Ver", moto_checklist_path(moto_checklist.id), class: 'btn btn-sm btn-warning' %> &nbsp;
+    </td>
+    <td><%= link_to "PDF", ver_checklist_moto_pdf_path(moto_checklist.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;</td>
+</tr>

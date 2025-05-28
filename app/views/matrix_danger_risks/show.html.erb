@@ -14,7 +14,7 @@
                         <%=  image_tag  @matrix_danger_risk.entity.logo, class: "image_peq" %>
                     <% end %>
                 </td>
-                <td rowspan="4"; colspan="21"; style="text-align:center">
+                <td rowspan="4"; colspan="22"; style="text-align:center">
                     <div class="col-8"><h5>MATRIZ DE IDENTIFICACIÓN DE PELIGROS, EVALUACIÓN Y VALORACION DE LOS RIESGOS</h5><h6><%= @matrix_danger_risk.entity.business_name if @matrix_danger_risk.present? %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %> </h6></div> 
                 </td>
                 <td rowspan="4";  style="text-align:center">
@@ -48,6 +48,7 @@
                 <td style="background-color: black;">&nbsp;</td>
                 <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>Nro</strong></TD>
                 <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>PROCESO</strong></TD>
+                <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>CARGO</strong></TD>
                 <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>ZONA/LUGAR</strong></TD>
                 <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>ACTIVIDAD</strong></TD>
                 <td rowspan="2"; style="border:1px solid black; text-align:center; background-color:#00aae4"><strong>TAREAS</strong></TD>
@@ -93,6 +94,7 @@
                     <td style="background-color: black;">&nbsp;</td>
                     <td style="border:1px solid black;text-align:center;"><%= @nro %></td>
                     <td style="border:1px solid black"><%= item.source_information %></td>
+                    <td style="border:1px solid black"><%=  CompanyPosition.name_cargo(item.type_cargo)  %></td>
                     <td style="border:1px solid black"><%= item.origin %></td>
                     <td style="border:1px solid black"><%= item.activity %></td>
                     <td style="border:1px solid black"><%= item.task %></td>
@@ -203,7 +205,7 @@
                    <div></br></div>         
                 <% end %>     
             </td>
-            <td colspan="8"; style="border:1px solid black; text-align:center">&nbsp;
+            <td colspan="9"; style="border:1px solid black; text-align:center">&nbsp;
                 <% if @matrix_danger_risk.firm_adviser_sst == 1 %>
                     <% if @adv.present? %>
                         <% if @adv.firm.attached? %>
@@ -234,7 +236,7 @@
         <tr>
             <td style="background-color: black;">&nbsp;</td>
             <td colspan="9"; style="border:1px solid black; text-align:center"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_legal_representative) %> - Representante Legal</td>
-            <td colspan="8"; style="border:1px solid black; text-align:center"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_adviser_sst) %> - Asesor SST</td>
+            <td colspan="9"; style="border:1px solid black; text-align:center"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_adviser_sst) %> - Asesor SST</td>
             <td colspan="9"; style="border:1px solid black; text-align:center"><%= @matrix_danger_risk.name_user(@matrix_danger_risk.user_responsible_sst) %> - Responsable SST</td>
             <td style="background-color: black;">&nbsp;</td>
         </tr>

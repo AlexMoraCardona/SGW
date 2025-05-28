@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_04_24_000947) do
+ActiveRecord::Schema[7.0].define(version: 2025_05_27_190805) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -300,6 +300,50 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_24_000947) do
     t.datetime "updated_at", null: false
     t.bigint "adm_calendar_id", null: false
     t.index ["adm_calendar_id"], name: "index_calendars_on_adm_calendar_id"
+  end
+
+  create_table "car_checklists", force: :cascade do |t|
+    t.date "date_list"
+    t.time "time_list"
+    t.string "plate_car"
+    t.integer "mileage", default: 0
+    t.integer "health_conditions", default: 0
+    t.string "health_conditions_obs"
+    t.integer "tire_condition", default: 0
+    t.string "tire_condition_obs"
+    t.integer "lights_condition", default: 0
+    t.string "lights_condition_obs"
+    t.integer "horn_condition", default: 0
+    t.string "horn_condition_obs"
+    t.integer "mirrors_condition", default: 0
+    t.string "mirrors_condition_obs"
+    t.integer "liquids_condition", default: 0
+    t.string "liquids_condition_obs"
+    t.integer "fluids_condition", default: 0
+    t.string "fluids_condition_obs"
+    t.integer "brakes_condition", default: 0
+    t.string "brakes_condition_obs"
+    t.integer "windshield_condition", default: 0
+    t.string "windshield_condition_obs"
+    t.integer "retention_condition", default: 0
+    t.string "retention_condition_obs"
+    t.integer "documents_condition", default: 0
+    t.string "documents_condition_obs"
+    t.integer "prevention_condition", default: 0
+    t.string "prevention_condition_obs"
+    t.integer "witnesses_condition", default: 0
+    t.string "witnesses_condition_obs"
+    t.integer "firm_user", default: 0
+    t.date "date_firm_user"
+    t.integer "user_autoriza", default: 0
+    t.integer "user_autoriza_firm", default: 0
+    t.date "user_autoriza_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_car_checklists_on_entity_id"
+    t.index ["user_id"], name: "index_car_checklists_on_user_id"
   end
 
   create_table "cessation_funds", force: :cascade do |t|
@@ -1319,6 +1363,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_24_000947) do
     t.integer "number_exposed_totals"
     t.bigint "location_id", null: false
     t.integer "danger_intervened", default: 0
+    t.integer "type_cargo", default: 0
     t.index ["clasification_danger_detail_id"], name: "index_matrix_danger_items_on_clasification_danger_detail_id"
     t.index ["clasification_danger_id"], name: "index_matrix_danger_items_on_clasification_danger_id"
     t.index ["location_id"], name: "index_matrix_danger_items_on_location_id"
@@ -1510,6 +1555,48 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_24_000947) do
     t.index ["entity_id"], name: "index_meeting_minutes_on_entity_id"
     t.index ["evaluation_id"], name: "index_meeting_minutes_on_evaluation_id"
     t.index ["user_id"], name: "index_meeting_minutes_on_user_id"
+  end
+
+  create_table "moto_checklists", force: :cascade do |t|
+    t.date "date_list"
+    t.time "time_list"
+    t.string "plate_moto"
+    t.integer "mileage", default: 0
+    t.integer "health_conditions", default: 0
+    t.string "health_conditions_obs"
+    t.integer "protective_equipment", default: 0
+    t.string "protective_equipment_obs"
+    t.integer "tire_condition", default: 0
+    t.string "tire_condition_obs"
+    t.integer "lights_condition", default: 0
+    t.string "lights_condition_obs"
+    t.integer "horn_condition", default: 0
+    t.string "horn_condition_obs"
+    t.integer "mirrors_condition", default: 0
+    t.string "mirrors_condition_obs"
+    t.integer "liquids_condition", default: 0
+    t.string "liquids_condition_obs"
+    t.integer "fluids_condition", default: 0
+    t.string "fluids_condition_obs"
+    t.integer "brakes_condition", default: 0
+    t.string "brakes_condition_obs"
+    t.integer "transmission_condition", default: 0
+    t.string "transmission_condition_obs"
+    t.integer "documents_condition", default: 0
+    t.string "documents_condition_obs"
+    t.integer "kit_condition", default: 0
+    t.string "kit_condition_obs"
+    t.integer "firm_user", default: 0
+    t.date "date_firm_user"
+    t.integer "user_autoriza", default: 0
+    t.integer "user_autoriza_firm", default: 0
+    t.date "user_autoriza_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_moto_checklists_on_entity_id"
+    t.index ["user_id"], name: "index_moto_checklists_on_user_id"
   end
 
   create_table "occupational_exam_items", force: :cascade do |t|
@@ -1819,6 +1906,19 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_24_000947) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "route_controls", force: :cascade do |t|
+    t.date "date_control"
+    t.string "observation"
+    t.time "time_initial_control"
+    t.time "time_final_control"
+    t.string "place"
+    t.integer "vehicle_type", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_route_controls_on_user_id"
   end
 
   create_table "rules", force: :cascade do |t|
@@ -2175,6 +2275,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_24_000947) do
   add_foreign_key "brigadista_plans", "emergency_plans"
   add_foreign_key "business_days", "entities"
   add_foreign_key "calendars", "adm_calendars"
+  add_foreign_key "car_checklists", "entities"
+  add_foreign_key "car_checklists", "users"
   add_foreign_key "clasification_danger_details", "clasification_dangers"
   add_foreign_key "commitments", "evidences"
   add_foreign_key "commitments", "users"
@@ -2247,6 +2349,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_24_000947) do
   add_foreign_key "meeting_minutes", "entities"
   add_foreign_key "meeting_minutes", "evaluations"
   add_foreign_key "meeting_minutes", "users"
+  add_foreign_key "moto_checklists", "entities"
+  add_foreign_key "moto_checklists", "users"
   add_foreign_key "occupational_exam_items", "occupational_exams"
   add_foreign_key "occupational_exams", "entities"
   add_foreign_key "participants", "evidences"
@@ -2266,6 +2370,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_24_000947) do
   add_foreign_key "resource_items", "resources"
   add_foreign_key "resource_items", "users"
   add_foreign_key "resources", "entities"
+  add_foreign_key "route_controls", "users"
   add_foreign_key "safety_inspection_items", "safety_inspections"
   add_foreign_key "safety_inspection_items", "situation_conditions"
   add_foreign_key "safety_inspections", "entities"

@@ -1,0 +1,229 @@
+<div class="container col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
+    <br>
+    <p><i><b>Formato lista de chequeo AUTOMÓVIL</b></i></p>
+    <p>Los prechequeos operacionales son una herramienta útil para revisar tu vehículo antes de salir para evitar varadas, o accidentes que pongan en riesgo tu vida o la de los demás, por esto en SURA queremos proporcionarte este formato para apoyarte en realizar un trayecto más seguro y tener toda la información cumpliendo lo estipulado en el <b>Plan Estratégico de Seguridad Vial (PESV)</b>.</p>
+    <p></p>
+    <p><b>1. INFORMACIÓN GENERAL DEL USUARIO Y DEL AUTOMÓVIL</b></br></p>
+    <p><b>Nombre del conductor:</b></br> <%= @user.name %> </p>
+    <p><b>Número de documento de identidad:</b></br> <%= @user.nro_document %> </p>
+
+    <%= form_with model: @car_checklist do |form| %>
+        <% @car_checklist.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+        <div class="form-group">    
+            <b><%= form.label :plate_car, style: "display: block" %></b>
+            <%= form.text_field :plate_car,  class: "form-control", required: true %> 
+        </div>     
+        <br>
+        <div class="form-group">    
+            <b><%= form.label :mileage, style: "display: block" %></b>
+            <%= form.text_field :mileage,  class: "form-control", required: true %> 
+        </div>     
+        <br>
+        <p><b>2. CONDICIONES DEL USUARIO</b></br></p>
+        <p>Para garantizar una movilidad segura, es necesario revisar tu estado de salud para conducir en condiciones óptimas.</p>
+        <br> 
+        <div class="form-group"> 
+            <p>¿Estás en condiciones de salud y descanso para usar el vehículo (sin malestar, mareos, fiebre, sueño u otros síntomas)?</br></p>
+            <%= form.radio_button :health_conditions, 0, required: true, checked: false %>
+            <label for="si">SI</label></br>
+            <%= form.radio_button :health_conditions, 1, required: true, checked: false %>
+            <label for="no">NO</label></br>
+        </div>  
+        <br>
+        <div class="form-group">    
+            <p><b>Observaciones / hallazgos</b></br></p>
+            <%= form.text_field :health_conditions_obs,  class: "form-control", required: false %> 
+        </div>     
+        <br>
+        <p><b>3. CONDICIONES DEL VEHÍCULO</b></br></p>
+        <p>Conocer el estado de las condiciones principales de los vehículos que conduces se vuelve fundamental para evitar un incidente. En caso de que algún elemento descrito dentro de la lista de chequeo no cumpla, deberás informarlo al encargado o administrador de la flota en tu empresa, quien deberá definir si el vehículo se podrá movilizar.</p>
+        <br> 
+        <div class="form-group"> 
+            <p>Estado de llantas</br></p>
+            <p>Verifica la profundidad del labrado, presión, cortaduras o protuberancias.</br></p>
+            <%= form.radio_button :tire_condition, 0, required: true, checked: false %>
+            <label for="si">SI</label></br>
+            <%= form.radio_button :tire_condition, 1, required: true, checked: false %>
+            <label for="no">NO</label></br>
+        </div>  
+        <br>
+        <div class="form-group">    
+            <p><b>Observaciones / hallazgos</b></br></p>
+            <%= form.text_field :tire_condition_obs,  class: "form-control", required: false %> 
+        </div>     
+        <br>
+        <div class="form-group"> 
+            <p>Luces</br></p>
+            <p>Verifica el funcionamiento correcto de luces altas y bajas, posición, direccionales, freno, reversa y estacionarias.</br></p>
+            <%= form.radio_button :lights_condition, 0, required: true, checked: false %>
+            <label for="si">SI</label></br>
+            <%= form.radio_button :lights_condition, 1, required: true, checked: false %>
+            <label for="no">NO</label></br>
+        </div>  
+        <br>
+        <div class="form-group">    
+            <p><b>Observaciones / hallazgos</b></br></p>
+            <%= form.text_field :lights_condition_obs,  class: "form-control", required: false %> 
+        </div>     
+        <br>
+        <div class="form-group"> 
+            <p>Bocina</br></p>
+            <p>Verifica su funcionamiento.</br></p>
+            <%= form.radio_button :horn_condition, 0, required: true, checked: false %>
+            <label for="si">SI</label></br>
+            <%= form.radio_button :horn_condition, 1, required: true, checked: false %>
+            <label for="no">NO</label></br>
+        </div>  
+        <br>
+        <div class="form-group">    
+            <p><b>Observaciones / hallazgos</b></br></p>
+            <%= form.text_field :horn_condition_obs,  class: "form-control", required: false %> 
+        </div>     
+        <br>
+        <div class="form-group"> 
+            <p>Espejos</br></p>
+            <p>Revisa y posiciona correctamente los espejos laterales y centrales.</br></p>
+            <%= form.radio_button :mirrors_condition, 0, required: true, checked: false %>
+            <label for="si">SI</label></br>
+            <%= form.radio_button :mirrors_condition, 1, required: true, checked: false %>
+            <label for="no">NO</label></br>
+        </div>  
+        <br>
+        <div class="form-group">    
+            <p><b>Observaciones / hallazgos</b></br></p>
+            <%= form.text_field :mirrors_condition_obs,  class: "form-control", required: false %> 
+        </div>     
+        <br>
+        <div class="form-group"> 
+            <p>Niveles de líquidos</br></p>
+            <p>Verifica el aceite, líquido de frenos, limpiaparabrisas, refrigerante, y dirección hidráulica (si aplica).</br></p>
+            <%= form.radio_button :liquids_condition, 0, required: true, checked: false %>
+            <label for="si">SI</label></br>
+            <%= form.radio_button :liquids_condition, 1, required: true, checked: false %>
+            <label for="no">NO</label></br>
+        </div>  
+        <br>
+        <div class="form-group">    
+            <p><b>Observaciones / hallazgos</b></br></p>
+            <%= form.text_field :liquids_condition_obs,  class: "form-control", required: false %> 
+        </div>     
+        <br>
+        <div class="form-group"> 
+            <p>Fugas de fluidos</br></p>
+            <p>Verifica que no existan fugas ni humedades en el habitáculo del motor y en el piso donde parqueas.</br></p>
+            <%= form.radio_button :fluids_condition, 0, required: true, checked: false %>
+            <label for="si">SI</label></br>
+            <%= form.radio_button :fluids_condition, 1, required: true, checked: false %>
+            <label for="no">NO</label></br>
+        </div>  
+        <br>
+        <div class="form-group">    
+            <p><b>Observaciones / hallazgos</b></br></p>
+            <%= form.text_field :fluids_condition_obs,  class: "form-control", required: false %> 
+        </div>     
+        <br>
+        <div class="form-group"> 
+            <p>Estado de frenos</br></p>
+            <p>Verifica el estado de las pastillas y una óptima tensión del pedal y del freno de parqueo.</br></p>
+            <%= form.radio_button :brakes_condition, 0, required: true, checked: false %>
+            <label for="si">SI</label></br>
+            <%= form.radio_button :brakes_condition, 1, required: true, checked: false %>
+            <label for="no">NO</label></br>
+        </div>  
+        <br>
+        <div class="form-group">    
+            <p><b>Observaciones / hallazgos</b></br></p>
+            <%= form.text_field :brakes_condition_obs,  class: "form-control", required: false %> 
+        </div>     
+        <br>
+        <div class="form-group"> 
+            <p>Parabrisas</br></p>
+            <p>Verifica que no esté fisurado y el funcionamiento de las plumillas.</br></p>
+            <%= form.radio_button :windshield_condition, 0, required: true, checked: false %>
+            <label for="si">SI</label></br>
+            <%= form.radio_button :windshield_condition, 1, required: true, checked: false %>
+            <label for="no">NO</label></br>
+        </div>  
+        <br>
+        <div class="form-group">    
+            <p><b>Observaciones / hallazgos</b></br></p>
+            <%= form.text_field :windshield_condition_obs,  class: "form-control", required: false %> 
+        </div>     
+        <br>
+        <div class="form-group"> 
+            <p>Elementos de retención</br></p>
+            <p>Revisa el estado del cinturón de seguridad y el anclaje de las sillas.</br></p>
+            <%= form.radio_button :retention_condition, 0, required: true, checked: false %>
+            <label for="si">SI</label></br>
+            <%= form.radio_button :retention_condition, 1, required: true, checked: false %>
+            <label for="no">NO</label></br>
+        </div>  
+        <br>
+        <div class="form-group">    
+            <p><b>Observaciones / hallazgos</b></br></p>
+            <%= form.text_field :retention_condition_obs,  class: "form-control", required: false %> 
+        </div>     
+        <br>
+        <div class="form-group"> 
+            <p>Documentos</br></p>
+            <p>Verifica la tarjeta de propiedad, SOAT y revisión técnico mecánica (si aplica).</br></p>
+            <%= form.radio_button :documents_condition, 0, required: true, checked: false %>
+            <label for="si">SI</label></br>
+            <%= form.radio_button :documents_condition, 1, required: true, checked: false %>
+            <label for="no">NO</label></br>
+        </div>  
+        <br>
+        <div class="form-group">    
+            <p><b>Observaciones / hallazgos</b></br></p>
+            <%= form.text_field :documents_condition_obs,  class: "form-control", required: false %> 
+        </div>     
+        <br>
+        <div class="form-group"> 
+            <p>Equipos de prevención</br></p>
+            <p>Revisa la caja de herramientas, extintor, botiquín, conos, tacos, linterna, llanta de repuesto, gato, cruceta y chaleco reflectivo.</br></p>
+            <%= form.radio_button :prevention_condition, 0, required: true, checked: false %>
+            <label for="si">SI</label></br>
+            <%= form.radio_button :prevention_condition, 1, required: true, checked: false %>
+            <label for="no">NO</label></br>
+        </div>  
+        <br>
+        <div class="form-group">    
+            <p><b>Observaciones / hallazgos</b></br></p>
+            <%= form.text_field :prevention_condition_obs,  class: "form-control", required: false %> 
+        </div>     
+        <br>
+        <div class="form-group"> 
+            <p>Luces de tablero y testigos</br></p>
+            <p>Antes de iniciar la marcha, verifica que todos los testigos, excepto el de parqueo, estén apagados.</br></p>
+            <%= form.radio_button :witnesses_condition, 0, required: true, checked: false %>
+            <label for="si">SI</label></br>
+            <%= form.radio_button :witnesses_condition, 1, required: true, checked: false %>
+            <label for="no">NO</label></br>
+        </div>  
+        <br>
+        <div class="form-group">    
+            <p><b>Observaciones / hallazgos</b></br></p>
+            <%= form.text_field :witnesses_condition_obs,  class: "form-control", required: false %> 
+        </div>     
+        <br>
+
+
+        </br>
+        
+        <%= form.hidden_field :entity_id, :value => @entity.id.to_i, class: "form-control" if @entity.present? %>
+        <%= form.hidden_field :user_id, :value => @user.id.to_i, class: "form-control" if @user.present? %>
+        <%= form.hidden_field :date_list, :value => Time.now, class: "form-control" if Current.user.present? %>
+        <%= form.hidden_field :time_list, :value => Time.now, class: "form-control" if Current.user.present? %>
+        <%= form.hidden_field :user_autoriza, :value => @user_autoriza.id.to_i, class: "form-control" if @user_autoriza.present? %>
+
+        
+        <div><br> </div>    
+        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button> 
+        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, car_checklists_path %>
+    <% end %>
+</div>        
+<br>

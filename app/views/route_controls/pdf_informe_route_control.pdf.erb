@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+    <%= javascript_importmap_tags %>
+</head>
+
+<div align="left"; class="container col-12">
+    <table style="border:0px solid black;width: 100%">
+        <tr style="padding: 20px;">
+            <td rowspan="2" style="border:1px solid black; width: 20%; text-align:center">
+                <% if @entity.logo.present? then %>
+                    <%=  image_tag  @entity.logo, class: "image_peq" %>
+                <% end %>   
+            </td>
+            <td style="border:1px solid black; text-align:center">
+                <div class="col-10"><%= @entity.business_name if @entity.present? %></div>
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; text-align:center">
+                <div class="col-10"><%= @template.name if @template.present? %></div>
+            </td>
+        </tr>
+    </table>
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:1px solid black; width: 25%">
+                CÓDIGO:                 
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                &nbsp;&nbsp;<small class="text-muted"><%= @template.reference if @template.present? %></small>                
+            </td>
+
+            <td style="border:1px solid black; width: 25%">
+                VERSIÓN:                 
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                &nbsp;&nbsp;<small class="text-muted"><%= @template.version if @template.present? %></small>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 25%">
+                FECHA DE ELABORACIÓN:                  
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                &nbsp;&nbsp;<small class="text-muted"><%= @template.date if @template.present? %></small>                
+            </td>
+
+            <td style="border:1px solid black; width: 25%">
+                FECHA DE ACTUALIZACIÓN:                 
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                &nbsp;&nbsp;<small class="text-muted"><%= @template.date_updated if @template.present? %></small>                
+            </td>
+        </tr>
+    </table>
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:1px solid black; width: 25%;padding: 2px;">
+                <p><strong>Empresa: </strong></p>                
+            </td>
+            <td style="border:1px solid black; width: 75%;padding: 2px;">
+                <p><%= @entity.business_name if @entity.present? %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 25%;padding: 2px;">
+                <p><strong>Fecha: </strong></p>                
+            </td>
+            <td style="border:1px solid black; width: 75%;padding: 2px;">
+                <p><%= @route_control.date_control if @route_control.present? %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 25%;padding: 2px;">
+                <p><strong>Usuario: </strong></p>                
+            </td>
+            <td style="border:1px solid black; width: 75%;padding: 2px;">
+                <p><%= @route_control.user.name if @route_control.present? %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 25%;padding: 2px;">
+                <p><strong>Documento: </strong></p>                
+            </td>
+            <td style="border:1px solid black; width: 75%;padding: 2px;">
+                <p><%= @route_control.user.nro_document if @route_control.present? %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 25%;padding: 2px;">
+                <p><strong>Cargo: </strong></p>                
+            </td>
+            <td style="border:1px solid black; width: 75%;padding: 2px;">
+                <p><%=  User.label_activity(@route_control.user.activity)  if @route_control.present? %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 25%;padding: 2px;">
+                <p><strong>Tipo de Vehículo: </strong></p>                
+            </td>
+            <td style="border:1px solid black; width: 75%;padding: 2px;">
+                <p><%=  RouteControl.label_tipo_vehiculo(@route_control.vehicle_type)  if @route_control.present? %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 25%;padding: 2px;">
+                <p><strong>lugar: </strong></p>                
+            </td>
+            <td style="border:1px solid black; width: 75%;padding: 2px;">
+                <p><%= @route_control.place if @route_control.present? %></p>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 25%;padding: 2px;">
+                <p><strong>Observaciones: </strong></p>                
+            </td>
+            <td style="border:1px solid black; width: 75%;padding: 2px;">
+                <p><%= @route_control.observation if @route_control.present? %></p>                
+            </td>
+        </tr>
+
+    </table>
+    <div></br></div>
+</div>

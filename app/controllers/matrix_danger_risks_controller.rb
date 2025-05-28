@@ -2,17 +2,34 @@ class MatrixDangerRisksController < ApplicationController
     def index
         if  Current.user && Current.user.level > 0 && Current.user.level < 3
             if params[:entity_id].present?
-                @entity = Entity.find(params[:entity_id])
+                @entity = Entity.find(params[:entity_id]) 
                 @matrix_danger_risk = MatrixDangerRisk.find_by(entity_id: params[:entity_id])
-                @matrix_danger_items = MatrixDangerItem.where(matrix_danger_risk_id: @matrix_danger_risk.id).order(:id) if @matrix_danger_risk.present?
-    
+                @matrix_danger_items_total = MatrixDangerItem.where(matrix_danger_risk_id: @matrix_danger_risk.id).order(:id) if @matrix_danger_risk.present?
+                @cargos = CompanyPosition.listar_cargo(params[:entity_id])
+                if params[:id].present?
+                    if params[:id].to_i == 1
+                       @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ?",@matrix_danger_risk.id).order(:id) if params[:id].present? 
+                    else
+                       @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and type_cargo = ?",@matrix_danger_risk.id,params[:id]).order(:id) if params[:id].present?      
+                    end   
+                elsif params[:danger_intervened].present?
+                    if params[:danger_intervened].to_s == 'NO'
+                       @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and danger_intervened = ?",@matrix_danger_risk.id,0).order(:id) if params[:danger_intervened].present?      
+                    elsif params[:danger_intervened].to_s == 'SI'
+                       @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and danger_intervened = ?",@matrix_danger_risk.id,1).order(:id) if params[:danger_intervened].present?       
+                    else
+                        @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ?",@matrix_danger_risk.id).order(:id) if params[:danger_intervened].present?          
+                    end    
+                else   
+                   @matrix_danger_items = MatrixDangerItem.where(matrix_danger_risk_id: @matrix_danger_risk.id).order(:id) if @matrix_danger_risk.present?
+                end    
                 @total_items = 0
                 @uno = 0
                 @dos = 0
                 @tres = 0
                 @cuatro = 0
-                if @matrix_danger_items.present? 
-                    @matrix_danger_items.each do |item| 
+                if @matrix_danger_items_total.present? 
+                    @matrix_danger_items_total.each do |item| 
                         @total_items += 1 
                         if item.risk_level_interpretation.to_s == 'I No Aceptable' ; @uno += 1
                         elsif item.risk_level_interpretation.to_s == 'II No Aceptable' ; @dos += 1
@@ -27,14 +44,33 @@ class MatrixDangerRisksController < ApplicationController
         elsif Current.user && Current.user.level > 2 
             @entity = Entity.find(Current.user.entity)
             @matrix_danger_risk = MatrixDangerRisk.find_by(entity_id: Current.user.entity.to_i)
-            @matrix_danger_items = MatrixDangerItem.where(matrix_danger_risk_id: @matrix_danger_risk.id).order(:id) if @matrix_danger_risk.present?
+            @matrix_danger_items_total = MatrixDangerItem.where(matrix_danger_risk_id: @matrix_danger_risk.id).order(:id) if @matrix_danger_risk.present?
             @total_items = 0
             @uno = 0
             @dos = 0
             @tres = 0
             @cuatro = 0
-            if @matrix_danger_items.present? 
-                @matrix_danger_items.each do |item| 
+            @cargos = CompanyPosition.listar_cargo(params[:entity_id])
+            if params[:id].present?
+                if params[:id].to_i == 1
+                   @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ?",@matrix_danger_risk.id).order(:id) if params[:id].present? 
+                else
+                   @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and type_cargo = ?",@matrix_danger_risk.id,params[:id]).order(:id) if params[:id].present?      
+                end   
+            elsif params[:danger_intervened].present?
+                if params[:danger_intervened].to_s == 'NO'
+                   @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and danger_intervened = ?",@matrix_danger_risk.id,0).order(:id) if params[:danger_intervened].present?      
+                elsif params[:danger_intervened].to_s == 'SI'
+                   @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and danger_intervened = ?",@matrix_danger_risk.id,1).order(:id) if params[:danger_intervened].present?       
+                else
+                    @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ?",@matrix_danger_risk.id).order(:id) if params[:danger_intervened].present?          
+               end    
+            else   
+               @matrix_danger_items = MatrixDangerItem.where(matrix_danger_risk_id: @matrix_danger_risk.id).order(:id) if @matrix_danger_risk.present?
+            end    
+
+            if @matrix_danger_items_total.present? 
+                @matrix_danger_items_total.each do |item| 
                     @total_items += 1 
                     if item.risk_level_interpretation.to_s == 'I No Aceptable' ; @uno += 1
                     elsif item.risk_level_interpretation.to_s == 'II No Aceptable' ; @dos += 1
@@ -155,6 +191,8 @@ class MatrixDangerRisksController < ApplicationController
         @nuevo_matrix_danger_item.number_exposed_contrators = @matrix_danger_item.number_exposed_contrators  
         @nuevo_matrix_danger_item.number_exposed_totals = @matrix_danger_item.number_exposed_totals 
         @nuevo_matrix_danger_item.danger_intervened = @matrix_danger_item.danger_intervened
+        @nuevo_matrix_danger_item.type_cargo = @matrix_danger_item.type_cargo
+        
         @nuevo_matrix_danger_item.save
         redirect_to matrix_danger_risks_path(entity_id: @nuevo_matrix_danger_item.matrix_danger_risk.entity_id), notice: 'Peligro/Riesgo duplicado correctamente'
 

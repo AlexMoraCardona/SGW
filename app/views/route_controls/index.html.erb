@@ -1,0 +1,53 @@
+<div align="left"; class="container col-12">
+    <a class="navbar-brand" href="/">
+        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+    </a>
+</div>
+<div class="container col-11">
+        <div class="d-flex">
+            <div class="container">
+               <h2 class="display-5"> <%= t('.title')%></h2>
+            </div>
+        </div>
+        <div class="container">
+            <%= link_to t('.create_route_control'), new_route_control_path, class: 'btn btn-sm btn-primary'  %> 
+        </div>
+        </br>        
+
+        <%= search_form_for @q do |f| %>
+            <%= f.label :date_control %>
+            <%= f.date_field :date_control_eq %>
+
+            <%= f.label :user_id %>
+            <%= f.select :user_id_eq, @users.pluck(:name, :id).uniq,  {include_blank: true}, style: "width: 200px;" %>
+            
+            <%= f.label :place %>
+            <%= f.search_field :place_cont %>
+
+            <button type="submit" class="btn btn-sm btn-primary">Buscar</button>
+        <% end %>
+        </br>  
+        <%== pagy_info(@pagy) %>
+        <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+
+
+        <hr>
+    <table class="table table-hover">
+        <thead> 
+            <tr>
+                <th scope="col"><%= sort_link(@q, :date_control, default_order: :desc) %></th>
+                <th scope="col"><%= t('.time_initial_control') %></th>
+                <th scope="col"><%= t('.time_final_control') %></th>
+                <th scope="col"><%= sort_link(@q, :user_id, default_order: :desc) %></th>
+                <th scope="col"><%= sort_link(@q, :place, default_order: :desc) %></th>
+                <th scope="col"><%= t('common.edit') %></th>
+                <th scope="col"><%= t('common.show') %></th>
+                <th scope="col">PDF</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <%= render partial: 'route_control', collection: @route_controls  %>  
+        </tbody>      
+    </table>
+</div>

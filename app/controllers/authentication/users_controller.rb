@@ -32,8 +32,8 @@ class Authentication::UsersController < ApplicationController
     
     def edit
         @user = User.find(params[:id])
-        @company_positions = CompanyPosition.where("entity_id = ?",Current.user.entity.to_i)
-        @company_areas = CompanyArea.where("entity_id = ?",Current.user.entity.to_i)
+        @company_positions = CompanyPosition.where("entity_id = ?",@user.entity.to_i) if @user.entity.present?
+        @company_areas = CompanyArea.where("entity_id = ?",@user.entity.to_i) if @user.entity.present?
     end
     
     def update

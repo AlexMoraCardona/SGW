@@ -31,6 +31,9 @@ module SGW
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
+    config.active_record.default_timezone = :local
+    config.time_zone = "America/Bogota"
+
     #available languages
     config.i18n.available_locales = [:en, :es]
     #lenguage by default

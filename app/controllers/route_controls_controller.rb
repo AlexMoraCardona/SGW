@@ -86,8 +86,7 @@ class RouteControlsController < ApplicationController
     def control_hora_inicio
         @route_control = RouteControl.find(params[:id]) if params[:id].present?
         if @route_control.present?
-            @route_control.time_initial_control = Time.now.utc
-
+            @route_control.time_initial_control = Time.now
             if @route_control.save then
                     redirect_to route_controls_path, notice: t('.created') 
             else
@@ -101,7 +100,7 @@ class RouteControlsController < ApplicationController
     def control_hora_final
         @route_control = RouteControl.find(params[:id]) if params[:id].present?
         if @route_control.present?
-            @route_control.time_final_control = Time.now.utc
+            @route_control.time_final_control = Time.now
 
             if @route_control.save then
                     redirect_to route_controls_path, notice: t('.created') 

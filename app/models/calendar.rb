@@ -269,28 +269,6 @@ class Calendar < ApplicationRecord
                 end   
             end
 
-                @moto_checklists =  MotoChecklist.where("entity_id = ?", @entity.id) if @entity.present? 
-                if @moto_checklists.present?
-                    @moto_checklists.each do |moto_checklist| 
-                        if moto_checklist.health_conditions == 1 || moto_checklist.protective_equipment == 1 || moto_checklist.tire_condition == 1 || moto_checklist.lights_condition == 1 || moto_checklist.horn_condition == 1 || moto_checklist.mirrors_condition == 1 || moto_checklist.liquids_condition == 1 || moto_checklist.fluids_condition == 1 || moto_checklist.brakes_condition == 1 || moto_checklist.transmission_condition == 1 || moto_checklist.documents_condition == 1 || moto_checklist.kit_condition == 1
-                            if  moto_checklist.date_list >= (Date.today - 15) 
-                               @notificaciones << ["Lista Chequeo Moto", @entity.business_name, moto_checklist.user.name, moto_checklist.date_list.to_s, moto_checklist.id]
-                            end   
-                        end
-                    end    
-                end
-
-                @car_checklists =  CarChecklist.where("entity_id = ?", @entity.id) if @entity.present? 
-                if @car_checklists.present?
-                    @car_checklists.each do |car_checklist| 
-                        if car_checklist.health_conditions == 1 || car_checklist.tire_condition == 1 || car_checklist.lights_condition == 1 || car_checklist.horn_condition == 1 || car_checklist.mirrors_condition == 1 || car_checklist.liquids_condition == 1 || car_checklist.fluids_condition == 1 || car_checklist.brakes_condition == 1 || car_checklist.windshield_condition == 1 || car_checklist.retention_condition == 1 ||  car_checklist.documents_condition == 1 || car_checklist.prevention_condition == 1 || car_checklist.witnesses_condition == 1 || car_checklist.documents_condition == 1 || car_checklist.documents_condition == 1
-                            if  car_checklist.date_list >= (Date.today - 15) 
-                               @notificaciones << ["Lista Chequeo Automóvil", @entity.business_name, car_checklist.user.name, car_checklist.date_list.to_s, car_checklist.id]
-                            end   
-                        end
-                    end    
-                end
-
         elsif
             if Current.user.level == 3 then
                 @annual_work_plan = AnnualWorkPlan.find_by("year = ? and entity_id = ?", @year_noti,@entity.id) if @entity.present? 

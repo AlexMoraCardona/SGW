@@ -108,8 +108,8 @@ Rails.application.routes.draw do
   resources :moto_checklists
   resources :car_checklists
 
-
-  
+  get '/firms/penfirma/:id', to: 'firms#penfirma', as: 'penfirma'
+  get '/firms/firma_pendiente/:id', to: 'firms#firma_pendiente', as: 'firma_pendiente'
   get '/adm_attendances/adm_attendance_pdf/:id', to: 'adm_attendances#adm_attendance_pdf', as: 'adm_attendance_pdf'
   get '/attendances/registrar_asistencia/:id', to: 'attendances#registrar_asistencia', as: 'registrar_asistencia'
   get '/attachments/purge/:id', to: 'attachments#purge', as: 'purge_attachment'

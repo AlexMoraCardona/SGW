@@ -5,7 +5,7 @@ class MatrixLegalsController < ApplicationController
             if params[:entity_id].present?
                 @entity = Entity.find(params[:entity_id])
                 @matrix_legal = MatrixLegal.find_by(entity_id: params[:entity_id])
-                @matrix_legal_items = MatrixLegalItem.where(matrix_legal_id: @matrix_legal.id).order(:consecutive) if @matrix_legal.present?
+                @matrix_legal_items = MatrixLegalItem.where(matrix_legal_id: @matrix_legal.id).order(id: :desc) if @matrix_legal.present?
                 @total_items = 0
                 @no = 0
                 @parcial = 0
@@ -25,7 +25,7 @@ class MatrixLegalsController < ApplicationController
         elsif Current.user && Current.user.level > 2 
             @entity = Entity.find(Current.user.entity)
             @matrix_legal = MatrixLegal.find_by(entity_id: Current.user.entity.to_i)
-            @matrix_legal_items = MatrixLegalItem.where(matrix_legal_id: @matrix_legal.id).order(:consecutive) if @matrix_legal.present?
+            @matrix_legal_items = MatrixLegalItem.where(matrix_legal_id: @matrix_legal.id).order(id: :desc) if @matrix_legal.present?
             @total_items = 0
             @no = 0
             @parcial = 0
@@ -81,17 +81,18 @@ class MatrixLegalsController < ApplicationController
     end    
 
     def total_items
-        @matrix_legal_items = MatrixLegalItem.where(matrix_legal_id: params[:id]).order(:consecutive) if params[:id].present?
+        @matrix_legal_items = MatrixLegalItem.where(matrix_legal_id: params[:id]).order(id: :desc) if params[:id].present?
     end    
     def new
       @matrix_legal =  MatrixLegal.new
     end    
 
-    def create
+    def create 
         @matrix_legal = MatrixLegal.new(matrix_legal_params)
         @matrix_legal.date_create = Time.now
         @matrix_legal.date_update = Time.now
         if @matrix_legal.save then
+            MatrixLegalItem.crear_normas(@matrix_legal.id)
             redirect_to matrix_legals_path, notice: t('.created') 
         else
             render :edit, status: :unprocessable_entity
@@ -128,11 +129,10 @@ class MatrixLegalsController < ApplicationController
     end  
     
     def crear_item 
-        @matrix_legal_item = MatrixLegalItem.new  
-        @cant = 0
-        @matrix_legal_items = MatrixLegalItem.where("matrix_legal_id = ?", params[:id]) if params[:id].present?
-        @cant = @matrix_legal_items.count if @matrix_legal_items.present?
-        @cant = @cant + 1 
+        @legal_rules = LegalRule.where("clasification_norma = ? and state_norma = ?",1,0)
+        @norma =  LegalRule.find_by(id:  params[:norm]) if params[:norm].present?
+        @matrix_legal = MatrixLegal.find_by(id: params[:mat]) if params[:mat].present?
+        @matrix_legal_item = MatrixLegalItem.new 
     end    
 
     def crear_historia 

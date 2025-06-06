@@ -4,7 +4,7 @@ class CompanyPosition < ApplicationRecord
 
     def self.name_cargo(dato)
         name = 'No encontrado'
-        name = CompanyPosition.find_by(id: dato).name if dato.to_i > 0
+        name = CompanyPosition.find_by(id: dato).name if dato.to_i > 1
         return name 
     end
 

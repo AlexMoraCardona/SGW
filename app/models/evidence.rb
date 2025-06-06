@@ -58,6 +58,9 @@ aspectos por mejorar, observados en el recorrido de inspección."
         end    
     end  
 
-
+    def self.buscar_una_evidencia(item)
+        @evidencia = Evidence.find_by(id: item.to_i)
+        return @evidencia
+    end 
 
 end

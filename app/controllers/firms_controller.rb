@@ -61,7 +61,7 @@ class FirmsController < ApplicationController
     end  
     
     
-    def firma_fecha
+    def firma_fecha 
         @firm = Firm.find(params[:id])
         @firm.date_authorize_firm =  Time.now
         @firm.authorize_firm = 1
@@ -77,6 +77,31 @@ class FirmsController < ApplicationController
         end    
 
 
+    end  
+
+
+    def firma_pendiente 
+        @firm = Firm.find(params[:id])
+        @firm.date_authorize_firm =  Time.now
+        @firm.authorize_firm = 1
+        
+        if Current.user.id == @firm.user_id
+            if @firm.save then
+                redirect_to penfirma_path(1), notice: "Documento firmado correctamente!"
+            else
+                redirect_to penfirma_path(1), alert: "Se produjo un error en la firma del documento." 
+            end
+        else
+            redirect_to  penfirma_path(1), alert: "Su usuario no corresponde con el nombre de la firma del documento." 
+        end    
+
+
+    end  
+
+
+
+    def penfirma
+        @firmas_pendientes  =  Firm.where("user_id = ? and authorize_firm = ?",Current.user.id,0)
     end    
 
     private

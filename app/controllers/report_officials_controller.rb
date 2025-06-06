@@ -61,9 +61,15 @@ class ReportOfficialsController < ApplicationController
          :number_oficial_cooperative, :number_oficial_other, :total_officials, :total_work_accidents, :total_mortal_accident,
          :total_occupational_disease, :total_laboral_inhability, :total_common_inhability, :total_days_absenteeism, 
          :total_days_severidad_accidents, :total_accidents_mortal_year, :total_accidents_work_year,
-         :promedio_year_officials, :total_occupational_disease_year)
+         :promedio_year_officials, :total_occupational_disease_year, :risk_danger_gestion, :risk_danger_total, 
+         :risk_danger_ges, :per_training_coverage, :training_total, :training_ges, :per_scheduled_workers, 
+         :scheduled_workers, :trained_workers, :per_autoevaluation, :items_autoevaluation_total, 
+         :items_autoevaluation_cumple, :per_acpm, :acpm_total, :acpm_cumple, :compliance_legal, 
+         :compliance_legal_total, :compliance_legal_cumple, :compliance_work_plan, :compliance_work_plan_total, 
+         :compliance_work_plan_cumple, :per_activity_plan, :activity_plan_intervenida, :activity_plan_total, 
+         :per_perfil_sociodemo, :perfil_sociodemo_total, :perfil_sociodemo_encuestados)
     end 
 
 end 
 
-
+    

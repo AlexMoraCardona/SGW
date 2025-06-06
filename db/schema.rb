@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_05_27_190805) do
+ActiveRecord::Schema[7.0].define(version: 2025_06_06_020830) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -1238,6 +1238,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_05_27_190805) do
     t.integer "clasification_norma", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "fec_norma"
+    t.integer "year", default: 0
   end
 
   create_table "levels", force: :cascade do |t|
@@ -1390,6 +1392,35 @@ ActiveRecord::Schema[7.0].define(version: 2025_05_27_190805) do
     t.index ["entity_id"], name: "index_matrix_danger_risks_on_entity_id"
   end
 
+  create_table "matrix_goal_items", force: :cascade do |t|
+    t.string "objetives"
+    t.decimal "meta", default: "0.0"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "matrix_goal_id"
+    t.bigint "indicator_id"
+    t.index ["indicator_id"], name: "index_matrix_goal_items_on_indicator_id"
+    t.index ["matrix_goal_id"], name: "index_matrix_goal_items_on_matrix_goal_id"
+  end
+
+  create_table "matrix_goals", force: :cascade do |t|
+    t.date "date_unsafe"
+    t.integer "user_representante", default: 0
+    t.integer "user_responsible", default: 0
+    t.integer "user_asesor", default: 0
+    t.date "date_firm_representante"
+    t.date "date_firm_responsible"
+    t.date "date_firm_asesor"
+    t.integer "firm_representante", default: 0
+    t.integer "firm_responsible", default: 0
+    t.integer "firm_asesor", default: 0
+    t.integer "year", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_matrix_goals_on_entity_id"
+  end
+
   create_table "matrix_legal_items", force: :cascade do |t|
     t.integer "consecutive"
     t.string "risk_factor"
@@ -1408,6 +1439,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_05_27_190805) do
     t.integer "year", default: 1900
     t.string "fecha_norma"
     t.bigint "legal_rule_id"
+    t.date "fec_norma"
     t.index ["legal_rule_id"], name: "index_matrix_legal_items_on_legal_rule_id"
     t.index ["matrix_legal_id"], name: "index_matrix_legal_items_on_matrix_legal_id"
   end
@@ -1840,6 +1872,33 @@ ActiveRecord::Schema[7.0].define(version: 2025_05_27_190805) do
     t.integer "total_accidents_work_year", default: 0
     t.integer "promedio_year_officials", default: 0
     t.integer "total_occupational_disease_year", default: 0
+    t.decimal "risk_danger_gestion", default: "0.0"
+    t.integer "risk_danger_total", default: 0
+    t.integer "risk_danger_ges", default: 0
+    t.decimal "per_training_coverage", default: "0.0"
+    t.integer "training_total", default: 0
+    t.integer "training_ges", default: 0
+    t.decimal "per_scheduled_workers", default: "0.0"
+    t.integer "scheduled_workers", default: 0
+    t.integer "trained_workers", default: 0
+    t.decimal "per_autoevaluation", default: "0.0"
+    t.integer "items_autoevaluation_total", default: 0
+    t.integer "items_autoevaluation_cumple", default: 0
+    t.decimal "per_acpm", default: "0.0"
+    t.integer "acpm_total", default: 0
+    t.integer "acpm_cumple", default: 0
+    t.decimal "compliance_legal", default: "0.0"
+    t.integer "compliance_legal_total", default: 0
+    t.integer "compliance_legal_cumple", default: 0
+    t.decimal "compliance_work_plan", default: "0.0"
+    t.integer "compliance_work_plan_total", default: 0
+    t.integer "compliance_work_plan_cumple", default: 0
+    t.decimal "per_activity_plan", default: "0.0"
+    t.integer "activity_plan_intervenida", default: 0
+    t.integer "activity_plan_total", default: 0
+    t.decimal "per_perfil_sociodemo", default: "0.0"
+    t.integer "perfil_sociodemo_total", default: 0
+    t.integer "perfil_sociodemo_encuestados", default: 0
     t.index ["entity_id"], name: "index_report_officials_on_entity_id"
   end
 
@@ -2332,6 +2391,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_05_27_190805) do
   add_foreign_key "matrix_danger_items", "locations"
   add_foreign_key "matrix_danger_items", "matrix_danger_risks"
   add_foreign_key "matrix_danger_risks", "entities"
+  add_foreign_key "matrix_goal_items", "indicators"
+  add_foreign_key "matrix_goal_items", "matrix_goals"
+  add_foreign_key "matrix_goals", "entities"
   add_foreign_key "matrix_legal_items", "legal_rules"
   add_foreign_key "matrix_legal_items", "matrix_legals"
   add_foreign_key "matrix_legals", "entities"

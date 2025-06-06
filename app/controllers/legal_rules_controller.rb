@@ -47,7 +47,7 @@ class LegalRulesController < ApplicationController
     def legal_rule_params
         params.require(:legal_rule).permit(:risk_factor, :requirement, :rule_name, 
         :fecha_norma, :issuing_entity, :applicable_article, :description_compliance, 
-        :state_norma, :clasification_norma)
+        :state_norma, :clasification_norma, :fec_norma, :year)
     end 
 
 end  

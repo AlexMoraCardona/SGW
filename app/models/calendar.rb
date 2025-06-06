@@ -262,7 +262,8 @@ class Calendar < ApplicationRecord
             end
  
             @meeting_commitments = nil
-            @meeting_commitments = MeetingCommitment.where("user_id = ?", Current.user.id)
+            @meeting_minute = MeetingMinute.where("entity_id = ?",@entity.id).last
+            @meeting_commitments = MeetingCommitment.where("user_id = ? and meeting_minute_id = ?", Current.user.id, @meeting_minute.id) if @meeting_minute.present?
             if  @meeting_commitments.present? then
                 @meeting_commitments.each do |meeting_commitment| 
                     @notificaciones << ["Compromiso", meeting_commitment.meeting_minute.entity.business_name, meeting_commitment.commitment, meeting_commitment.date_commitment, meeting_commitment.id]
@@ -342,7 +343,8 @@ class Calendar < ApplicationRecord
                 end
 
                 @meeting_commitments = nil
-                @meeting_commitments = MeetingCommitment.where("user_id = ?", Current.user.id)
+                @meeting_minute = MeetingMinute.where("entity_id = ?",@entity.id).last
+                @meeting_commitments = MeetingCommitment.where("user_id = ? and meeting_minute_id = ?", Current.user.id, @meeting_minute.id) if @meeting_minute.present?
                 if  @meeting_commitments.present? then
                     @meeting_commitments.each do |meeting_commitment| 
                         @notificaciones << ["Compromiso", meeting_commitment.meeting_minute.entity.business_name, meeting_commitment.commitment, meeting_commitment.date_commitment, meeting_commitment.id]
@@ -397,6 +399,16 @@ class Calendar < ApplicationRecord
                         @notificaciones << ["Compromiso Acta de Reunión COPASST - VIGÍA", commitment.evidence.entity.business_name, commitment.activity, commitment.date_ejecution, commitment.id]
                     end   
                 end
+
+                @meeting_commitments = nil
+                @meeting_minute = MeetingMinute.where("entity_id = ?",@entity.id).last
+                @meeting_commitments = MeetingCommitment.where("user_id = ? and meeting_minute_id = ?", Current.user.id, @meeting_minute.id) if @meeting_minute.present?
+                if  @meeting_commitments.present? then
+                    @meeting_commitments.each do |meeting_commitment| 
+                        @notificaciones << ["Compromiso", meeting_commitment.meeting_minute.entity.business_name, meeting_commitment.commitment, meeting_commitment.date_commitment, meeting_commitment.id]
+                    end   
+                end
+
             end    
         end 
         @cant_noti = @notificaciones.count if @notificaciones.present?

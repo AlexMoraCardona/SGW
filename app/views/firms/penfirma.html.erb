@@ -1,0 +1,52 @@
+<div align="left"; class="container col-12">
+    <a class="navbar-brand" href="/">
+        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+    </a>
+</div>
+<div class="container col-11" 
+    <br>
+        <h2>EVIDENCIAS PENDIENTES POR FIRMAR</h2>
+    <hr>
+    
+    <br>
+ 
+    <% if @firmas_pendientes.present?   %>
+            <table class="table table-hover">
+                <thead>
+                    <tr>  
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Evidencia</th>
+                        <th scope="col">Ver</th> 
+                        <th scope="col">Firmar</th> 
+                    </tr>
+                </thead>  
+                <tbody> 
+                    <% @firmas_pendientes.each do |firm| %>
+                        <% @evidencia =  Evidence.buscar_una_evidencia(firm.evidence_id) %>
+                        <% if @evidencia.present?   %>
+                            <tr> 
+                                <td><%= @evidencia.date %></td>
+                                <td><%= @evidencia.template.name %></td>
+                                <td><%= link_to t('common.veritem'), ver_evidencia_evaluation_rule_detail_path(@evidencia.id), class: 'btn btn-sm btn-primary'  %></td>
+                                <td> 
+                                    <% if firm.authorize_firm == 0 %>
+                                        <%= link_to t('common.firmar'), firma_pendiente_path(firm), class: 'btn btn-sm btn btn-warning' %>
+                                    <% else %>
+                                        <%= firm.date_authorize_firm %>
+                                    <% end %>
+                                </td>
+                            </tr>  
+                        <% end %> 
+                    <% end %> 
+                </tbody>   
+            </table>
+            </br>  
+    <% else %>
+        <br>
+            <h2>No se encontraron evidencias pendientes por firma!</h2>
+        <hr>
+    
+        <br>
+
+    <% end %>     
+</div>

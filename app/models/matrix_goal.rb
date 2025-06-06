@@ -1,0 +1,2 @@
+class MatrixGoal < ApplicationRecord
+end

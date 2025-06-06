@@ -1,90 +1,55 @@
 <div class="container col-11 card p-5">
     <br>
-
-    <%= form_with model: @matrix_legal_item do |form| %> 
-        <% @matrix_legal_item.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
+        <div class="col-sm-5">
+            <% if @matrix_legal_item.present? %> 
+                <%= form_with url: "crear_item_matrix_legals_path", method: :get do |form| %>
+                    <h5 scope="col">Seleccionar Norma: </h5>
+                    <%= form.collection_select :norm, @legal_rules, :id, :risk_factor, { prompt: '--Seleccionar Norma--' },
+                    { class: 'form-control input-sm select2' , onChange: 'this.form.requestSubmit()', value: params[:id] } if @legal_rules.present? %>
+                    <%= form.hidden_field :mat, :value =>   @matrix_legal.id, class: "form-control" if  @matrix_legal.present? %>
+                    <%= form.hidden_field :mat, :value =>   params[:id], class: "form-control" if  params[:id].present? %>
+                <% end %> 
+            <% end %>     
+        </div>  
+        <% if @norma.present? %> 
+            </br>
+            <div class="form-group">    
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar con que tema del SG-SST se relaciona la norma, ejemplo: plan de emergencias, trabajo en alturas, riesgo psicosocial."><%= t('.risk_factor') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button></br>
+                <%= @norma.risk_factor %>
             </div>
-        <% end %>    
-            
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar con que tema del SG-SST se relaciona la norma, ejemplo: plan de emergencias, trabajo en alturas, riesgo psicosocial."><%= t('.risk_factor') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.text_field :risk_factor,  class: "form-control" %>
-        </div>
+            <div class="form-group">    
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title=""><%= t('.description_compliance') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button></br>
+                <%= @norma.description_compliance %>
+            </div>
+        <% end %>
 
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la entidad que emite la norma, ejemplo: Congreso de la República, Ministerio del Trabajo, Presidencia de la República."><%= t('.issuing_entity') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.text_field :issuing_entity,  class: "form-control" %>
-        </div>
+    <div></br></div>
+    
+    <% if @norma.present? %>
+        <%= form_with model: @matrix_legal_item do |form| %> 
+            <% @matrix_legal_item.errors.full_messages.each do |error| %>
+                <div class="alert alert-danger" role="alert">
+                    <%= error%> <%= alert %>
+                </div>
+            <% end %>    
+            <%= form.hidden_field :risk_factor, :value => @norma.risk_factor, class: "form-control" %>
+            <%= form.hidden_field :issuing_entity, :value => @norma.issuing_entity, class: "form-control" %>
+            <%= form.hidden_field :requirement, :value => @norma.requirement, class: "form-control" %>
+            <%= form.hidden_field :rule_name, :value => @norma.rule_name, class: "form-control" %>
+            <%= form.hidden_field :applicable_article, :value => @norma.applicable_article, class: "form-control" %>
+            <%= form.hidden_field :description_compliance, :value => @norma.description_compliance, class: "form-control" %>
+            <%= form.hidden_field :fec_norma, :value => @norma.fec_norma, class: "form-control" %>
+            <%= form.hidden_field :year, :value => @norma.year, class: "form-control" %>
+            <%= form.hidden_field :matrix_legal_id, :value =>   @matrix_legal.id, class: "form-control" if  @matrix_legal.id.present? %>
+            <%= form.hidden_field :legal_rule_id, :value => @norma.id.to_i, class: "form-control" %>
+            <%= form.hidden_field :meets, :value => 0, class: "form-control" %>
+            <%= form.hidden_field :apply, :value => 0, class: "form-control" %>
 
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar una descripción general de la norma."><%= t('.requirement') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.text_field :requirement,  class: "form-control" %>
-        </div>
-
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar si es ley, decreto, resolución y nombre de la norma. "><%= t('.rule_name') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.text_field :rule_name,  class: "form-control" %>
-        </div>
-
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar los numerales de artículos aplicables o especificar: “Todos”. "><%= t('.applicable_article') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.text_field :applicable_article,  class: "form-control" %>
-        </div>
-
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar el formato, documento, registro que demuestre que la empresa cumple con dicho requisito legal. "><%= t('.evidence_compliance') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.text_field :evidence_compliance,  class: "form-control" %>
-        </div>
-
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar la persona responsable de presentar la evidencia de cumplimiento del requisito legal. "><%= t('.responsible') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.text_field :responsible,  class: "form-control" %>
-        </div>
-
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Realizar una breve descripción de la evidencia de cumplimiento. "><%= t('.description_compliance') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.text_field :description_compliance,  class: "form-control" %>
-        </div>
-        </br>    
-        <div class="row g-2">
-            <div class="col-sm-4">
-                <%= form.label :fecha_norma,  style: "display: block" %>
-                <%= form.text_field :fecha_norma,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <%= form.label :year,  style: "display: block" %>
-                <%= form.number_field :year,  class: "form-control" %>
-            </div>        
-        </div>        
-        </br>
-        <div class="row g-2">
-            <div class="col-sm-4">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar si aplica o no aplica "><%= t('.apply') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button> <br>
-                <%= form.radio_button :apply, 0 %>
-                <label for="no_cumple">NO APLICA</label>&nbsp;&nbsp; 
-                <%= form.radio_button :apply, 1 %>
-                <label for="si_cumple">SI APLICA</label>&nbsp;&nbsp;   
-                
-            </div>        
-            <div class="col-sm-4">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar si cumple con el 100%,  el 50% o no cumple con el requisito legal. "><%= t('.meets') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button> <br>
-                <%= form.radio_button :meets, 0 %>
-                <label for="no_cumple">NO (0%)</label>&nbsp;&nbsp; 
-                <%= form.radio_button :meets, 1 %>
-                <label for="si_cumple">PARCIAL (50%)</label>&nbsp;&nbsp;   
-                <%= form.radio_button :meets, 2 %>
-                <label for="na">SI (100%)</label> 
-            </div> 
-        </div>   
-
-        <%= form.hidden_field :consecutive, :value => @cant.to_i, class: "form-control" %>
-        <%= form.hidden_field :matrix_legal_id, :value => params[:id].to_i, class: "form-control" %>
-
-        <br>    
-        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+            <br>    
+            <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <% end %>
+        <div></br></div>
+            <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
     <% end %>
 </div>        
 <br>

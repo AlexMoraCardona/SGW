@@ -1,0 +1,22 @@
+<% if @firms.present? %> 
+    <% @firms.each do |firm| %>
+        <div class="col-11">
+            <% if firm.authorize_firm == 1 %>
+                <% if firm.user.firm.attached? %>
+                    <% if firm.user.firm.image? %> 
+                        <table> 
+                            <tr>
+                                <td style="width: 10%"><strong>Firma:</strong></td>
+                                <td><%= image_tag(Evaluation.wicked_blob_path(firm.user.firm), class: "firmapdf")%>________________________________</td>
+                                <td style="width: 10%"><strong>Fecha:</strong></td>
+                                <td style="width: 20%"><strong><%= firm.date_authorize_firm %></strong></td>
+                            </tr>
+                        </table>
+                    <% end %>
+                <% end %>
+            <% else %>    
+                    <p><strong>Firma: ________________________________&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha:&nbsp;__________</strong></p>
+            <% end %>     
+        </div>
+    <% end %>    
+<% end %>

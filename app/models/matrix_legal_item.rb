@@ -1,4 +1,5 @@
 class MatrixLegalItem < ApplicationRecord
+    belongs_to :matrix_legal
     has_one_attached :attach_evidence
 
     def label_apply(apply)

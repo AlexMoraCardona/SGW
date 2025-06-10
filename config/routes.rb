@@ -107,6 +107,8 @@ Rails.application.routes.draw do
   resources :route_controls
   resources :moto_checklists
   resources :car_checklists
+  resources :matrix_goals
+  resources :matrix_goal_items
 
   get '/firms/penfirma/:id', to: 'firms#penfirma', as: 'penfirma'
   get '/firms/firma_pendiente/:id', to: 'firms#firma_pendiente', as: 'firma_pendiente'
@@ -200,6 +202,12 @@ Rails.application.routes.draw do
   get '/car_checklists/firmar_autorizado_checklist_car/:id', to: 'car_checklists#firmar_autorizado_checklist_car', as: 'firmar_autorizado_checklist_car'
   get '/car_checklists/ver_checklist_car_pdf/:id', to: 'car_checklists#ver_checklist_car_pdf', as: 'ver_checklist_car_pdf'
   get '/car_checklists/adjuntar_checklist_car/:id', to: 'car_checklists#adjuntar_checklist_car', as: 'adjuntar_checklist_car'
+  get '/matrix_goals/crear_item_goal/:id', to: 'matrix_goals#crear_item_goal', as: 'crear_item_goal'
+  get '/matrix_goals/ver_matrix_goal/:id', to: 'matrix_goals#ver_matrix_goal', as: 'ver_matrix_goal'
+  get '/matrix_goals/firmar_rep_goal/:id', to: 'matrix_goals#firmar_rep_goal', as: 'firmar_rep_goal'
+  get '/matrix_goals/firmar_adv_goal/:id', to: 'matrix_goals#firmar_adv_goal', as: 'firmar_adv_goal'
+  get '/matrix_goals/firmar_res_goal/:id', to: 'matrix_goals#firmar_res_goal', as: 'firmar_res_goal'
+
 
   resources :admin_extent_dangers do
     collection do

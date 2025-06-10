@@ -1,0 +1,41 @@
+<div align="left"; class="container col-12">
+    <a class="navbar-brand" href="/">
+        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+    </a>
+</div>
+
+<div class="container col-12 card p-5">
+    <br>
+    <%= form_with model: @matrix_goal_item do |form| %>
+        <% @matrix_goal_item.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>   
+        </br>
+
+        <div class="row g-2">
+            <div class="col-sm-4">
+                Seleccionar Indicador:
+                <%= form.collection_select :indicator_id, Indicator.all.order(id: :asc), :id, :name, { prompt: '--Seleccionar Indicador--' },
+                { class: 'form-control input-sm select2' } %>
+            </div>        
+            <div class="col-sm-3">
+                Meta:
+                <%= form.number_field :meta, in: 0.00..100.0, step: 0.01,  class: "form-control" %>
+            </div>
+        </div>      
+        </br>
+        <div class="form-group">
+            Objetivos generales:
+            <%= form.text_area :objetives,  class: "form-control" %>
+        </div>
+        </br>
+        <%= form.hidden_field :matrix_goal_id, :value => params[:id].to_i, class: "form-control" %>
+
+        <br>    
+        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, matrix_goals_path(entity_id: Current.user.entity) %>
+    <% end %>
+</div>
+<br>

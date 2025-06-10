@@ -1,0 +1,119 @@
+
+<head>
+    <meta charset='utf-8' />
+</head>
+
+<div align="left"; class="container col-12">
+
+    <table class="table table-hover" style="border:1px solid black;width:100%;"> 
+        <thead>
+            <tr>
+                <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
+                    <% if @entity.logo.present? then %>
+                        <%=  image_tag  @entity.logo, :width => "100",  :height=>"100" %>
+                    <% end %> 
+                </td>
+                <td rowspan="4"; colspan="4"; style="text-align:center; padding-bottom: 40px;">
+                    <div class="col-10"><%= @template.name if @template.present? %> Año: <%=@matrix_goal.year%> <%= @entity.business_name if @entity.present? %> Nit: <%= @entity.identification_number if @entity.present? %> </div>
+                </td>
+                <td rowspan="4";  style="text-align:center"></td>
+
+                <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
+
+                <td style="border:1px solid black">&nbsp;&nbsp;<small class="text-muted"><%= @template.date if @template.present? %></small></td>
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
+                <td style="border:1px solid black">&nbsp;&nbsp;<small class="text-muted"><%= @template.date_updated if @template.present? %></small></td>
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Versión:</td>
+                <td style="border:1px solid black">&nbsp;&nbsp;<small class="text-muted"><%= @template.version if @template.present? %></small></td>
+            </tr>
+            <tr> 
+                <td colspan="2"; style="border:1px solid black">Código:</td>
+                <td style="border:1px solid black">&nbsp;&nbsp;<small class="text-muted"><%= @template.reference if @template.present? %></small></td>
+            </tr>
+        
+            <tr>
+                <th style="border:1px solid black;text-align:center">No.</th>
+                <th style="border:1px solid black">OBJETIVOS GENERALES </th>
+                <th style="border:1px solid black">META </th>
+                <th style="border:1px solid black">NOMBRE INDICADOR</th>
+                <th style="border:1px solid black">FORMULA DEL INDICADOR</th>
+                <th style="border:1px solid black">ANÁLISIS</th>
+                <th style="border:1px solid black">RESPONSABLE</th>
+                <th style="border:1px solid black">FRECUENCIA DE ANÁLISIS</th>
+                <th style="border:1px solid black">INDICADOR</th>
+            </tr>
+
+        </thead>
+        <% cant = 0 %>             
+        <% @matrix_goal_items.each do |matrix_goal_item| %>             
+            <% cant += 1 %>
+            <tbody>
+                <tr>
+                    <td style="border:1px solid black;text-align:center"><%= cant %></td>
+                    <td style="border:1px solid black"><%= matrix_goal_item.objetives %></td>
+                    <td style="border:1px solid black"><%= matrix_goal_item.meta %>%</td>
+                    <td style="border:1px solid black"><%= matrix_goal_item.indicator.name %></td>
+                    <td style="border:1px solid black"><%= matrix_goal_item.indicator.formula %></td>
+                    <td style="border:1px solid black"><%= matrix_goal_item.indicator.interpretation %></td>
+                    <td style="border:1px solid black"><%= matrix_goal_item.indicator.responsible_management %></td>
+                    <td style="border:1px solid black"><%= Indicator.label_periodicidad(matrix_goal_item.indicator.periodicity) %></td>
+                    <td style="border:1px solid black;text-align:center"><%= MatrixGoal.label_dato(matrix_goal_item.indicator_id, @report_official) if @report_official.present? %>%</td>
+                </tr>
+            </body>
+        <% end %>
+    </table>
+    <table style="width:100%;">
+        <tr style="border:1px solid black">
+            <td  style="border:1px solid black;width:30%;"><br>
+                <% if @matrix_goal.firm_representante == 1 %>
+                    <% if @rep.present? %>
+                        <% if @rep.firm.attached? %>
+                           <% if @rep.firm.image? %> 
+                                <%= image_tag @rep.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %> 
+                <% else %>
+                   <div></br></div>         
+                <% end %>     
+            </td>
+            <td  style="border:1px solid black;width:30%;"><br>
+                <% if @matrix_goal.firm_asesor == 1 %>
+                    <% if @adv.present? %>
+                        <% if @adv.firm.attached? %>
+                            <% if @adv.firm.image? %> 
+                                <%= image_tag @adv.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% else %>
+                    <div></br></div>         
+                <% end %>     
+            </td>
+            <td  style="border:1px solid black;width:30%;"><br>
+                <% if @matrix_goal.firm_responsible == 1 %>
+                    <% if @res.present? %>
+                        <% if @res.firm.attached? %>
+                            <% if @res.firm.image? %> 
+                                <%= image_tag @res.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% else %>
+                    <div></br></div>         
+                <% end %>     
+            </td>
+        </tr> 
+        <tr>
+            <td  style="border:1px solid black;width:30%;"><%= @rep.name %> - Representante Legal</td>
+            <td  style="border:1px solid black;width:30%;"><%= @adv.name %> - Asesor SG-SST</td>
+            <td  style="border:1px solid black;width:40%;"><%= @res.name %> - Responsable SG-SST</td>
+        </tr>
+    </table>
+</div> 
+<div></br></div>
+

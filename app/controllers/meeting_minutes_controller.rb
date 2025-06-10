@@ -67,6 +67,16 @@ class MeetingMinutesController < ApplicationController
     
     def create
         @meeting_minute = MeetingMinute.new(meeting_minute_params)
+        @meeting_minute.version =  0 if  @meeting_minute.version.blank?
+        @meeting_minutes = MeetingMinute.where("entity_id = ? and version = ?",@meeting_minute.entity_id,@meeting_minute.version) if @meeting_minute.present?
+               
+        if @meeting_minutes.present?
+            @meeting_minute.record_number = @meeting_minutes.count + 1
+        else
+            @meeting_minute.record_number = 1
+        end 
+
+
         if @meeting_minute.save then
             redirect_to meeting_minutes_path, notice: t('.created') 
         else

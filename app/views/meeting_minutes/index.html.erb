@@ -15,12 +15,15 @@
             <%= f.label :date_eq %>
             <%= f.date_field :date_eq %>
             &nbsp;&nbsp;
-            <%= f.label :evaluation_id_eq %>
-            <%= f.number_field :evaluation_id_eq %>
-            </br> 
+            
             <%= f.label :entity_id_eq %>
             <%= f.select :entity_id_eq, Entity.pluck(:business_name, :id).uniq,  {include_blank: true}, style: "width: 200px;" %>
             &nbsp;&nbsp;
+
+            <%= f.label :version_eq %>
+            <%= f.select :version_eq,  [['Acta de Asesoría', 0], ['Acta del COPASST', 1], ['Acta de la Brigada de Emergencia', 2], ['Acta del Comité de Convivencia', 3]],  {include_blank: true}, style: "width: 200px;" %>
+            &nbsp;&nbsp;
+
             <button type="submit" class="btn btn-primary">Buscar</button>
         <% end %>
     </br>        
@@ -32,7 +35,8 @@
             <tr>
                 <th scope="col"><%= sort_link(@q, :date, default_order: :desc)  %></th>
                 <th scope="col"><%= sort_link(@q, :entity_id, default_order: :desc) %></th>
-                <th scope="col">Nro.Acta</th>
+                <th scope="col"><%= sort_link(@q, :record_number, default_order: :desc) %></th>
+                <th scope="col"><%= sort_link(@q, :version, default_order: :desc)  %></th>
                 <th scope="col"><%= t('common.show') %></th>
                 <th scope="col"><%= t('common.edit') %></th>
                 <th scope="col"><%= t('common.delete') %></th>

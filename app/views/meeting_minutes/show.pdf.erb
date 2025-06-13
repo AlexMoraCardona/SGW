@@ -183,30 +183,32 @@
         <br/>
         <% if @assistants.present? %> 
             <br>
-
-            <div class="row"><br></div>
-               <table>
+ 
+            <div align="left"; class="container col-12">
+                <br> 
+                <table>
                     <% cont = 0 %>
                     <% @assistants.each do |firm| %>
                         <% cont = cont + 1 %>
                         <% if cont == 1 || cont == 3 || cont == 5 || cont ==7 || cont == 9  %>
                             <tr> 
                                 <td style="border:0px solid black; width: 33%; text-align:center">
-        
-                                    <div class="row  text-center"> 
+
+                                <div class="row  text-center"> 
                                         <div class="col-11">
                                             <div>&nbsp;</div>
                                             <div>&nbsp;</div>
                                             <% if firm.firm_assistant == 1 %>
                                                 <% if firm.user.firm.attached? %>
                                                     <% if firm.user.firm.image? %> 
-                                                        <%= image_tag firm.user.firm, class: "firma" %>
+                                                        <div  style="padding: 0;height: 70px;display: flex;justify-content: center;align-items: flex-end;"><%= image_tag(Evaluation.wicked_blob_path(firm.user.firm), class: "firmapdf")%></div>
                                                         <p align="center">______________________</p>
                                                     <% end %>
                                                 <% end %>
-                                            <% else %>    
+                                            <% else %>
+                                                <div  style="padding: 0;height: 70px;display: flex;justify-content: center;align-items: flex-end;"></div>    
                                                 <p align="center">______________________</p>
-                                            <% end %>     
+                                            <% end %>       
                                         </div>
                                         <div class="col-11">
                                             <div class="row">
@@ -226,10 +228,10 @@
                                     </div>
                                     <br>
                                 </td>      
-                            
+
                         <% else %>    
                             <td style="border:0px solid black; width: 33%; text-align:center">
-        
+
                                 <div class="row  text-center"> 
                                     <div class="col-11">
                                         <div>&nbsp;</div>
@@ -237,11 +239,12 @@
                                         <% if firm.firm_assistant == 1 %>
                                             <% if firm.user.firm.attached? %>
                                                 <% if firm.user.firm.image? %> 
-                                                    <%= image_tag firm.user.firm, class: "firma" %>
+                                                    <div  style="padding: 0;height: 70px;display: flex;justify-content: center;align-items: flex-end;"><%= image_tag(Evaluation.wicked_blob_path(firm.user.firm), class: "firmapdf")%></div>
                                                     <p align="center">______________________</p>
                                                 <% end %>
                                             <% end %>
-                                        <% else %>    
+                                        <% else %>  
+                                            <div  style="padding: 0;height: 70px;display: flex;justify-content: center;align-items: flex-end;"></div>  
                                             <p align="center">______________________</p>
                                         <% end %>     
                                     </div>
@@ -262,8 +265,8 @@
                                     </div>
                                 </div>
                                 <br>
-                            </td>      
-
+                            </td>     
+                
                             </tr>
                         <% end %>    
                     <% end %>
@@ -271,9 +274,8 @@
                         </tr>
                     <% end %>
                 </table>   
-            
             </div>
-         
+          
         <% end %>
         <br> 
         <div class="row">

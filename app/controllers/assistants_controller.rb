@@ -16,7 +16,7 @@ class AssistantsController < ApplicationController
     def create
         @assistant = Assistant.new(assistant_params)
         @assistant.name = @assistant.user.name
-        @assistant.post = @assistant.user.activity
+        @assistant.post = CompanyPosition.name_cargo(@assistant.user.activity)
 
         if @assistant.save then
             redirect_back fallback_location: root_path, notice: t('.created') 

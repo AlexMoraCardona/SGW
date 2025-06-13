@@ -19,7 +19,7 @@ class MeetingMinutesController < ApplicationController
         @meeting_commitments = MeetingCommitment.where("meeting_minute_id = ?",@meeting_minute.id).order(:id) if @meeting_minute.present?
         @assistants = Assistant.where("meeting_minute_id = ?",@meeting_minute.id) if @meeting_minute.present?
         @template = Template.where("format_number = ? and document_vigente = ?",79,1).last  
-
+        
         respond_to do |format|
             format.html
             format.pdf {render  pdf: 'Acta',

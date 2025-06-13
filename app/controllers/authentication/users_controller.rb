@@ -32,8 +32,13 @@ class Authentication::UsersController < ApplicationController
     
     def edit
         @user = User.find(params[:id])
-        @company_positions = CompanyPosition.where("entity_id = ?",@user.entity.to_i) if @user.entity.present?
-        @company_areas = CompanyArea.where("entity_id = ?",@user.entity.to_i) if @user.entity.present?
+        if @user.level == 1 ||  @user.level == 2
+            @company_positions = CompanyPosition.all if @user.entity.present?
+            @company_areas = CompanyArea.all if @user.entity.present?
+        else    
+            @company_positions = CompanyPosition.where("entity_id = ?",@user.entity.to_i) if @user.entity.present?
+            @company_areas = CompanyArea.where("entity_id = ?",@user.entity.to_i) if @user.entity.present?
+        end    
     end
     
     def update

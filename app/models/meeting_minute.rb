@@ -52,4 +52,11 @@ class MeetingMinute < ApplicationRecord
         elsif  dato == 3 ; 'Acta del Comité de Convivencia'
         end 
     end  
+
+    def self.buscar_una_acta(item)
+        @meeting_minute = MeetingMinute.find_by(id: item.to_i)
+        return @meeting_minute
+    end 
+
+
 end

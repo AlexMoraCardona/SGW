@@ -158,7 +158,7 @@ Instrucciones de diligenciamiento
     <hr>
 
     <div class="row g-2">
-        <div class="col-sm-5">
+        <div class="col-sm-4">
             <% if @matrix_danger_risk.present? %> 
                 <%= form_with url: "/matrix_danger_risks", method: :get do |form| %>
                     <h5 scope="col">Filtrar por Cargo: </h5>
@@ -168,16 +168,27 @@ Instrucciones de diligenciamiento
                 <% end %> 
             <% end %>     
         </div>  
-        <div class="col-sm-5">
+        <div class="col-sm-3">
             <% if @matrix_danger_risk.present? %> 
                 <%= form_with url: "/matrix_danger_risks", method: :get do |form| %>
-                    <h5 scope="col">Filtrar Peligro Riesgo Intervenido: </h5>
+                    <h5 scope="col">Filtrar Intervenido: </h5>
                     <%= form.select :danger_intervened,[['NO'], ['SI'], ['TODOS']],{ prompt: '--Seleccionar--' },
                     { class: 'form-control input-sm select2' , onChange: 'this.form.requestSubmit()', value: params[:danger_intervened] } if @cargos.present? %>
                     <%= form.hidden_field :entity_id, :value => @matrix_danger_risk.entity_id, class: "form-control" if @matrix_danger_risk.present? %>
                 <% end %> 
             <% end %>     
         </div>  
+        <div class="col-sm-4">
+            <% if @matrix_danger_risk.present? %> 
+                <%= form_with url: "/matrix_danger_risks", method: :get do |form| %>
+                    <h5 scope="col">Filtrar Nivel de Riesgo:</h5>
+                    <%= form.select :risk_level_interpretation,[['I No Aceptable'], ['II No Aceptable'], ['III Aceptable'], ['IV Aceptable'],['TODOS']],{ prompt: '--Seleccionar--' },
+                    { class: 'form-control input-sm select2' , onChange: 'this.form.requestSubmit()', value: params[:risk_level_interpretation] } if @cargos.present? %>
+                    <%= form.hidden_field :entity_id, :value => @matrix_danger_risk.entity_id, class: "form-control" if @matrix_danger_risk.present? %>
+                <% end %> 
+            <% end %>     
+        </div>  
+
     </div>  
 
     <br>
@@ -205,8 +216,8 @@ Instrucciones de diligenciamiento
             <tr> 
                 <td scope="col"><%= @nro %></td>  
                 <td scope="col"><%= CompanyPosition.name_cargo(matrix_danger_item.type_cargo) %></td>
-                <td scope="col"><%= matrix_danger_item.task %></td>  
-                <td scope="col"><%= matrix_danger_item.clasification_danger_detail.clasification_danger.name if matrix_danger_item.clasification_danger_detail_id.present? && matrix_danger_item.clasification_danger_detail_id.to_i > 0 %></td>
+                <td scope="col"><button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="<%= matrix_danger_item.task %>"><%= matrix_danger_item.task.slice(0, 20) %>...</button></td>
+                <td scope="col"><%= matrix_danger_item.clasification_danger_detail.clasification_danger.name if matrix_danger_item.clasification_danger_detail_id.present? && matrix_danger_item.clasific2ation_danger_detail_id.to_i > 0 %></td>
                 <td scope="col"><%= matrix_danger_item.clasification_danger_detail.name if matrix_danger_item.clasification_danger_detail_id.present? && matrix_danger_item.clasification_danger_detail_id.to_i > 0 %></td>
                 <% if matrix_danger_item.risk_level_interpretation.to_s == 'I No Aceptable'  %>
                     <td style="border:1px solid black; text-align:center; background-color:#F03553"><%= matrix_danger_item.risk_level_interpretation %></td>

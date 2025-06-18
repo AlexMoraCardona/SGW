@@ -110,6 +110,7 @@ Rails.application.routes.draw do
   resources :matrix_goals
   resources :matrix_goal_items
 
+  get '/assistants/firma_pendiente_acta/:id', to: 'assistants#firma_pendiente_acta', as: 'firma_pendiente_acta'
   get '/firms/penfirma/:id', to: 'firms#penfirma', as: 'penfirma'
   get '/firms/firma_pendiente/:id', to: 'firms#firma_pendiente', as: 'firma_pendiente'
   get '/adm_attendances/adm_attendance_pdf/:id', to: 'adm_attendances#adm_attendance_pdf', as: 'adm_attendance_pdf'

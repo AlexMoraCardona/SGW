@@ -48,5 +48,54 @@
     
         <br>
 
+    <% end %>  
+    
+     <br>
+        <h2>ACTAS PENDIENTES POR FIRMAR</h2>
+    <hr>
+    
+    <br>
+ 
+    <% if @actas_pendientes.present?   %>
+            <table class="table table-hover">
+                <thead>
+                    <tr>  
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Acta Número</th>
+                        <th scope="col">Clasificación Acta</th>
+                        <th scope="col">Ver</th> 
+                        <th scope="col">Firmar</th> 
+                    </tr>
+                </thead>  
+                <tbody> 
+                    <% @actas_pendientes.each do |acta| %>
+                        <% @meeting_minute =  MeetingMinute.buscar_una_acta(acta.meeting_minute_id) %>
+                        <% if @meeting_minute.present?   %>
+                            <tr> 
+                                <td><%= @meeting_minute.date %></td>
+                                <td><%= @meeting_minute.record_number %></td>
+                                <td><%= MeetingMinute.label_clasificacion(@meeting_minute.version) %></td>
+                                <td><%= link_to t('common.veritem'),  meeting_minute_path(@meeting_minute.id), class: 'btn btn-sm btn-primary'  %></td>
+                                <td> 
+                                    <% if acta.firm_assistant == 0 %>
+                                        <%= link_to t('common.firmar'), firma_pendiente_acta_path(acta), class: 'btn btn-sm btn btn-warning' %>
+                                    <% else %>
+                                        <%= acta.date_firm %>
+                                    <% end %>
+                                </td>
+                            </tr>  
+                        <% end %> 
+                    <% end %> 
+                </tbody>   
+            </table>
+            </br>  
+    <% else %>
+        <br>
+            <h2>No se encontraron actas pendientes por firma!</h2>
+        <hr>
+    
+        <br>
+
     <% end %>     
+   
 </div>

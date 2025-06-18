@@ -162,11 +162,10 @@ class IndicadoresController < ApplicationController
                cant += 1 
                nivel = niv  
             end    
-                
-            datos_nivel_riesgo.push(["No aceptable", cant]) if  niv.to_s == 'I'
-            datos_nivel_riesgo.push(["Aceptable con controles", cant]) if  niv.to_s == 'II'
-            datos_nivel_riesgo.push(["Mejorable", cant]) if  niv.to_s == 'III'
-            datos_nivel_riesgo.push(["Aceptable", cant]) if  niv.to_s == 'IV'
+            datos_nivel_riesgo.push(["No aceptable", cant]) if  niv.to_s == 'I No Aceptable'
+            datos_nivel_riesgo.push(["Aceptable con controles", cant]) if  niv.to_s == 'II No Aceptable'
+            datos_nivel_riesgo.push(["Mejorable", cant]) if  niv.to_s == 'III Aceptable'
+            datos_nivel_riesgo.push(["Aceptable", cant]) if  niv.to_s == 'IV Aceptable'
 
         end
         @datos_nivel_riesgo =   datos_nivel_riesgo 

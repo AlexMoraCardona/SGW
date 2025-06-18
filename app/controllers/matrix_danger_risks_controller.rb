@@ -1,5 +1,5 @@
 class MatrixDangerRisksController < ApplicationController
-    def index
+    def index  
         if  Current.user && Current.user.level > 0 && Current.user.level < 3
             if params[:entity_id].present?
                 @entity = Entity.find(params[:entity_id]) 
@@ -19,6 +19,18 @@ class MatrixDangerRisksController < ApplicationController
                        @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and danger_intervened = ?",@matrix_danger_risk.id,1).order(:id) if params[:danger_intervened].present?       
                     else
                         @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ?",@matrix_danger_risk.id).order(:id) if params[:danger_intervened].present?          
+                    end    
+                elsif params[:risk_level_interpretation].present?
+                    if params[:risk_level_interpretation].to_s == 'I No Aceptable'
+                       @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and risk_level_interpretation = ?",@matrix_danger_risk.id,'I No Aceptable').order(:id) if params[:risk_level_interpretation].present?      
+                    elsif params[:risk_level_interpretation].to_s == 'II No Aceptable'
+                       @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and risk_level_interpretation = ?",@matrix_danger_risk.id,'II No Aceptable').order(:id) if params[:risk_level_interpretation].present?       
+                    elsif params[:risk_level_interpretation].to_s == 'III Aceptable'
+                       @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and risk_level_interpretation = ?",@matrix_danger_risk.id,'III Aceptable').order(:id) if params[:risk_level_interpretation].present?       
+                    elsif params[:risk_level_interpretation].to_s == 'IV Aceptable'
+                       @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and risk_level_interpretation = ?",@matrix_danger_risk.id,'IV Aceptable').order(:id) if params[:risk_level_interpretation].present?       
+                    else
+                        @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ?",@matrix_danger_risk.id).order(:id) if params[:risk_level_interpretation].present?          
                     end    
                 else   
                    @matrix_danger_items = MatrixDangerItem.where(matrix_danger_risk_id: @matrix_danger_risk.id).order(:id) if @matrix_danger_risk.present?
@@ -64,7 +76,19 @@ class MatrixDangerRisksController < ApplicationController
                    @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and danger_intervened = ?",@matrix_danger_risk.id,1).order(:id) if params[:danger_intervened].present?       
                 else
                     @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ?",@matrix_danger_risk.id).order(:id) if params[:danger_intervened].present?          
-               end    
+               end 
+            elsif params[:risk_level_interpretation].present?
+                if params[:risk_level_interpretation].to_s == 'I No Aceptable'
+                   @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and risk_level_interpretation = ?",@matrix_danger_risk.id,'I No Aceptable').order(:id) if params[:risk_level_interpretation].present?      
+                elsif params[:risk_level_interpretation].to_s == 'II No Aceptable'
+                   @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and risk_level_interpretation = ?",@matrix_danger_risk.id,'II No Aceptable').order(:id) if params[:risk_level_interpretation].present?       
+                elsif params[:risk_level_interpretation].to_s == 'III Aceptable'
+                   @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and risk_level_interpretation = ?",@matrix_danger_risk.id,'III Aceptable').order(:id) if params[:risk_level_interpretation].present?       
+                elsif params[:risk_level_interpretation].to_s == 'IV Aceptable'
+                   @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ? and risk_level_interpretation = ?",@matrix_danger_risk.id,'IV Aceptable').order(:id) if params[:risk_level_interpretation].present?       
+                else
+                    @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ?",@matrix_danger_risk.id).order(:id) if params[:risk_level_interpretation].present?          
+                end    
             else   
                @matrix_danger_items = MatrixDangerItem.where(matrix_danger_risk_id: @matrix_danger_risk.id).order(:id) if @matrix_danger_risk.present?
             end    

@@ -48,6 +48,24 @@ class AssistantsController < ApplicationController
         @assistant = Assistant.find(params[:id])
     end    
 
+    def firma_pendiente_acta 
+        @assistant = Assistant.find(params[:id])
+        @assistant.date_firm =  Time.now
+        @assistant.firm_assistant = 1
+        
+        if Current.user.id == @assistant.user_id
+            if @assistant.save then
+                redirect_to penfirma_path(1), notice: "Acta firmada correctamente!"
+            else
+                redirect_to penfirma_path(1), alert: "Se produjo un error en la firma del acta." 
+            end
+        else
+            redirect_to  penfirma_path(1), alert: "Su usuario no corresponde con el nombre de la firma del acta." 
+        end    
+
+
+    end  
+
 
     private  
        

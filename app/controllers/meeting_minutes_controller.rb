@@ -1,7 +1,11 @@
 class MeetingMinutesController < ApplicationController
     def index
-        if  Current.user && Current.user.level > 0 && Current.user.level < 4 
+        if  Current.user && Current.user.level > 0 && Current.user.level < 3 
             @meetings = MeetingMinute.all.order(id: :desc)
+            @q = @meetings.ransack(params[:q])
+            @pagy, @meeting_minutes = pagy(@q.result(date: :desc), items: 3)
+        elsif  Current.user && Current.user.level == 3 
+            @meetings = MeetingMinute.where("entity_id = ?",Current.user.entity).order(id: :desc)
             @q = @meetings.ransack(params[:q])
             @pagy, @meeting_minutes = pagy(@q.result(date: :desc), items: 3)
 
@@ -116,7 +120,7 @@ class MeetingMinutesController < ApplicationController
         MeetingCommitment.copiar_compromisos(params[:id], nuevo.id)
         Assistant.copiar_firmas(params[:id], nuevo.id)
         redirect_to meeting_minutes_path, notice: 'Acta copiadaa correctamente', meeting_minute: :see_other
-    end    
+    end  
 
     private 
 

@@ -36,7 +36,7 @@ class SurveyProfilesController < ApplicationController
     def update
         @survey_profile = SurveyProfile.find(params[:id])
         if @survey_profile.update(survey_profile_params)
-            actualizar_fecha(@survey_profile_id)
+            actualizar_fecha(@survey_profile.id)
             redirect_to survey_profiles_path, notice: 'Encuesta Sociodemográfica actualizada correctamente'
         else
             render :edit, survey_profiles: :unprocessable_entity

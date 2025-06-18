@@ -102,6 +102,7 @@ class FirmsController < ApplicationController
 
     def penfirma
         @firmas_pendientes  =  Firm.where("user_id = ? and authorize_firm = ?",Current.user.id,0)
+        @actas_pendientes = Assistant.where("user_id = ? and firm_assistant = ?",Current.user.id,0)  
     end    
 
     private

@@ -48,8 +48,8 @@ class Evaluation < ApplicationRecord
             cumple = 0
             por = 0
             det.each do |d|
-               total += 1
-               cumple += 1 if d.meets > 0 
+               total += d.maximun_value
+               cumple += d.maximun_value if d.meets > 0 
                ciclo = cic  
             end    
                 
@@ -193,14 +193,14 @@ class Evaluation < ApplicationRecord
         por = 0.0
         datos_generales = []
         details.each do |d|
-            total += 1
-            cumple += 1 if d.meets > 0 
+            total += d.maximun_value
+            cumple += d.maximun_value if d.meets > 0 
                 
         end
         por = ((cumple.to_f / total.to_f) * 100).round(2).to_f if total.to_f > 0
         
-        cumpli = "Estándares Cumplidos: " +  cumple.to_s
-        pendi = "Estándares Pendientes: " + (total.to_i - cumple.to_i).to_s
+        cumpli = "Puntaje Estándares Cumplidos: " +  cumple.to_s
+        pendi = "Puntaje Estándares Pendientes: " + (total.to_i - cumple.to_i).to_s
         datos_generales.push([cumpli, por.to_f]) if total.to_i > 0 
         datos_generales.push([pendi, (100 - por.to_f).round(2).to_f]) if total.to_i > 0 
         return datos_generales 
@@ -231,14 +231,14 @@ class Evaluation < ApplicationRecord
         @datos_generales = []
         if details.present?
             details.each do |d|
-                total += 1
-                cumple += 1 if d.meets > 0 
+                total += d.maximun_value
+                cumple += d.maximun_value if d.meets > 0 
                 
             end
             por = ((cumple.to_f / total.to_f) * 100).round(2).to_f if total.to_f > 0
         
-            cumpli = "Cumplidos: " +  cumple.to_s
-            pendi = "Pendientes: " + (total.to_i - cumple.to_i).to_s
+            cumpli = "Cumplidos: " 
+            pendi = "Pendientes: " 
             @datos_generales.push([cumpli, por.to_f]) if total.to_i > 0 
             @datos_generales.push([pendi, (100 - por.to_f).round(2).to_f]) if total.to_i > 0 
             @datos_generales
@@ -251,6 +251,7 @@ class Evaluation < ApplicationRecord
         details = EvaluationRuleDetail.where("evaluation_id = ?", eval.id)
         total_score = 0
         total_details = 0
+        total_details_apply = 0
         total_details_cumplidos = 0
         result = ''
         total_score_int = 0
@@ -261,27 +262,26 @@ class Evaluation < ApplicationRecord
 
             if detail.apply == 0
                 total_score += detail.maximun_value
-                total_details_cumplidos += 1 
-                total_score_int += detail.score  if detail.meets == 1
-                total_details_cumplidos_int += 1 if detail.meets == 1
+                total_score_int += detail.maximun_value  if detail.meets == 1
+                total_details_cumplidos_int += detail.maximun_value if detail.meets == 1
             end
 
             if detail.apply == 1
-                total_score += detail.score  if detail.meets == 1   
-                total_details_cumplidos += 1 if detail.meets == 1
-                total_score_int += detail.score  if detail.meets == 1   
-                total_details_cumplidos_int += 1 if detail.meets == 1                
+                total_score += detail.maximun_value  if detail.meets == 1   
+                total_details_cumplidos += detail.maximun_value if detail.meets == 1
+                total_score_int += detail.maximun_value  if detail.meets == 1   
+                total_details_cumplidos_int += detail.maximun_value if detail.meets == 1   
+                total_details_apply += detail.maximun_value              
             end
             
             #@score_max_eval += detail.maximun_value 
-            total_details += 1
+            total_details += detail.maximun_value
             
         end 
         eval.score  = total_score
-        eval.percentage =  ((total_details_cumplidos.to_f / total_details.to_f) * 100).round(2) if total_details.to_f > 0
+        eval.percentage =  ((total_details_cumplidos.to_f / total_details_apply.to_f) * 100).round(2) if total_details.to_f > 0
         eval.score_int  = total_score_int
         eval.percentage_int =  ((total_details_cumplidos_int.to_f / total_details.to_f) * 100).round(2) if total_details.to_f > 0
-
 
         if eval.score < 61 then
            eval.result = "CRÍTICO"

@@ -197,15 +197,15 @@ Instrucciones de diligenciamiento
         <thead> 
             <tr>
                 <th scope="col">Nro.</th>
+                <th scope="col">Fecha Creación</th>
+                <th scope="col">Fecha Modificación</th>
                 <th scope="col">Cargo</th>
                 <th scope="col">Tarea</th>
                 <th scope="col">Clasificación</th>
                 <th scope="col">Descripción</th>
                 <th scope="col">Nivel de riesgo</th>
                 <th scope="col">Intervenido</th>
-                <th scope="col">Ver/Editar</th>
-                <th scope="col">Eliminar</th>
-                <th scope="col">Duplicar</th>
+                <th scope="col"></th>
             </tr>
         </thead>
 
@@ -214,10 +214,12 @@ Instrucciones de diligenciamiento
         <% @matrix_danger_items.each do |matrix_danger_item| %>
             <% @nro += 1 %>    
             <tr> 
-                <td scope="col"><%= @nro %></td>  
+                <td scope="col"><%= @nro %></td>
+                <td scope="col"><%= matrix_danger_item.created_at.strftime("%F")  %></td>  
+                <td scope="col"><%= matrix_danger_item.updated_at.strftime("%F")  %></td>  
                 <td scope="col"><%= CompanyPosition.name_cargo(matrix_danger_item.type_cargo) %></td>
                 <td scope="col"><button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="<%= matrix_danger_item.task %>"><%= matrix_danger_item.task.slice(0, 20) %>...</button></td>
-                <td scope="col"><%= matrix_danger_item.clasification_danger_detail.clasification_danger.name if matrix_danger_item.clasification_danger_detail_id.present? && matrix_danger_item.clasific2ation_danger_detail_id.to_i > 0 %></td>
+                <td scope="col"><%= matrix_danger_item.clasification_danger_detail.clasification_danger.name if matrix_danger_item.clasification_danger_detail_id.present? && matrix_danger_item.clasification_danger_detail_id.to_i > 0 %></td>
                 <td scope="col"><%= matrix_danger_item.clasification_danger_detail.name if matrix_danger_item.clasification_danger_detail_id.present? && matrix_danger_item.clasification_danger_detail_id.to_i > 0 %></td>
                 <% if matrix_danger_item.risk_level_interpretation.to_s == 'I No Aceptable'  %>
                     <td style="border:1px solid black; text-align:center; background-color:#F03553"><%= matrix_danger_item.risk_level_interpretation %></td>
@@ -236,9 +238,9 @@ Instrucciones de diligenciamiento
                 <% else  %>    
                     <td style="text-align:center;">SI</td>
                 <% end  %>    
-                <td><%= link_to t('common.update_matrix_danger_item'), edit_matrix_danger_item_path(matrix_danger_item.id), class: 'btn btn-sm btn-warning' %></td>
-                <td><%= button_to 'Delete', matrix_danger_item, method: :delete, class:'btn btn-sm btn-danger' %></td>
-                <td><%= button_to 'Duplicar',  duplicar_item_matrix_danger_risks_path(matrix_danger_item.id), class:'btn btn-sm btn-warning' %></td>
+                <td><%= link_to t('common.update_matrix_danger_item'), edit_matrix_danger_item_path(matrix_danger_item.id), class: 'btn btn-sm btn-warning' %></br>
+                    <%= button_to 'Duplicar',  duplicar_item_matrix_danger_risks_path(matrix_danger_item.id), class:'btn btn-sm btn-warning' %></br>  
+                    <%= button_to 'Delete', matrix_danger_item, method: :delete, class:'btn btn-sm btn-danger' %></td>
             </tr>
         <% end %>  
     </table>  

@@ -4,7 +4,7 @@ class CompanyArea < ApplicationRecord
 
     def self.name_area(dato)
         name = 'No encontrado'
-        name = CompanyArea.find_by(id: dato).name if dato.to_i > 1
+        name = CompanyArea.find_by(id: dato).name if dato.to_i > 0
         return name 
     end
 

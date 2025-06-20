@@ -3,7 +3,7 @@ class Standar < ApplicationRecord
     belongs_to :rule
 
 
-    def label_cycle(cycle)
+    def self.label_cycle(cycle)
         if cycle == 1 ; 'Planear'
         elsif cycle == 2 ; 'Hacer'
         elsif cycle == 3 ; 'Verificar'

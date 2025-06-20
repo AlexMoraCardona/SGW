@@ -134,7 +134,7 @@
         <br>
         <div class="row g-3">
             <div class="col-sm-10"> 
-                <%= pie_chart  @evaluation.calculo_porcentaje_general(@evaluation.id), title: "Porcentaje de cumplimiento Estándares Mínimos", download: {filename: "GraficaCiclo"}, download: {background: "#FFFFFF"}, xtitle: "Estándares Cumplidos", ytitle: "Porcentaje", prefix: "Porcentaje: ", suffix: "%", colors: ["#008000", "#FF0000"], donut: true, label: 'true', library: {plotOptions: { pie: { dataLabels: { enabled: true }}}} if @evaluation.present? %>
+                <%= pie_chart  @evaluation.calculo_porcentaje_general(@evaluation.id), title: "Puntaje Estándares Aplicables", download: {filename: "GraficaCiclo"}, download: {background: "#FFFFFF"}, xtitle: "Estándares Cumplidos", ytitle: "Porcentaje", prefix: "Porcentaje: ", suffix: "%", colors: ["#008000", "#FF0000"], donut: true, label: 'true', library: {plotOptions: { pie: { dataLabels: { enabled: true }}}} if @evaluation.present? %>
             </div>           
         </div>           
 
@@ -185,7 +185,7 @@
                 <%= form_with model: evaluation_items do |form| %> 
 
                     <tr> 
-                        <td><%= evaluation_items.standar_detail_item.standar_detail.standar.label_cycle(evaluation_items.standar_detail_item.standar_detail.standar.cycle) %></td>
+                        <td><%= Standar.label_cycle(evaluation_items.standar_detail_item.standar_detail.standar.cycle) %></td>
                         <td><%= evaluation_items.standar_detail_item.item_nro %></td>
                         <td><%= evaluation_items.standar_detail_item.description%></td>
                         <td style="width:150px;">
@@ -225,10 +225,6 @@
            <%= @evaluation.score_int  %>%
         </div>        
         <div class="col-sm-4">
-            <strong><%= t('.percentage_int') %>:</strong>
-            <%= @evaluation.percentage_int %>%
-        </div>        
-        <div class="col-sm-4">
             <strong>Estado:</strong>
             <% if  @evaluation.score_int > 85.99  %>
                 <div style="color:#008000";>ACEPTABLE</div>
@@ -260,7 +256,7 @@
                 <%= form_with model: evaluation_items do |form| %> 
 
                     <tr> 
-                        <td><%= evaluation_items.standar_detail_item.standar_detail.standar.label_cycle(evaluation_items.standar_detail_item.standar_detail.standar.cycle) %></td>
+                        <td><%= Standar.label_cycle(evaluation_items.standar_detail_item.standar_detail.standar.cycle) %></td>
                         <td><%= evaluation_items.standar_detail_item.item_nro %></td>
                         <td><%= evaluation_items.standar_detail_item.description%></td>
                         <td style="width:150px;">

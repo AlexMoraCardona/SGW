@@ -99,14 +99,15 @@ class AuditReportsController < ApplicationController
     end      
      
     def crear_item_auditoria_interna 
-        @audit_report_item = AuditReportItem.new  
+        @audit_report_item = AuditReportItem.new   
         @audit_report_items = AuditReportItem.where("audit_report_id = ?", params[:id]) if params[:id].present?
+        @standar_detail_items = StandarDetailItem.all.order(:item_nro)
     end    
 
     def firmar_representante 
         @audit_report = AuditReport.find_by(id: params[:id].to_i)
         if params[:format].to_i == 1
-            if  @audit_report.user_representante.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @audit_report.user_representante.to_i == Current.user.id.to_i
                 redirect_to firmar_representante_audi_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Representante Legal."
@@ -117,7 +118,7 @@ class AuditReportsController < ApplicationController
     def firmar_auditor
         @audit_report = AuditReport.find_by(id: params[:id].to_i)
         if params[:format].to_i == 2
-            if  @audit_report.user_audit.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @audit_report.user_audit.to_i == Current.user.id.to_i
                 redirect_to firmar_auditor_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Auditor."

@@ -24,6 +24,7 @@ class AuditReportItemsController < ApplicationController
  
     def edit
         @audit_report_item = AuditReportItem.find(params[:id])
+        @standar_detail_items = StandarDetailItem.all.order(:item_nro)
     end
     
     def update
@@ -40,7 +41,7 @@ class AuditReportItemsController < ApplicationController
     def destroy
         @audit_report_item = AuditReportItem.find(params[:id])
         @audit_report_item.destroy
-        redirect_to audit_report_items_path, notice: 'Hallazgo borrado correctamente', audit_report_item: :see_other
+        redirect_to audit_reports_path(entity_id: Current.user.entity), notice: 'Hallazgo borrado correctamente', audit_report: :see_other
     end    
 
     private

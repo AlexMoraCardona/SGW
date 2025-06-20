@@ -58,14 +58,12 @@
         <td style="border:1px solid black; width: 25%">
             </br>
             <p><strong>OBJETIVO DE LA AUDITORÍA: </strong>Verificar el cumplimiento de la Resolución 0312 de 2019</p>                
-            </br>
         </td>
     </tr>
     <tr>    
         <td style="border:1px solid black; width: 25%">
             </br>
             <p><strong>ALCANCE DE LA AUDITORÍA: </strong>Evaluar la planificación, desarrollo y aplicación del Sistema de Gestión de la Seguridad y Salud en el Trabajo (SG-SST);</p>                
-            </br>
         </td>
     </tr>
     <tr>    
@@ -78,7 +76,6 @@
                 <p>Plan de Capacitación </p>                
                 <p>Matriz de Peligros y riesgos</p>                
                 <p>Plan de preparación y atención de emergencias</p>                
-            </br>
         </td>
     </tr>
     <tr>    
@@ -86,7 +83,6 @@
             </br>
                 <p><strong>EQUIPO AUDITOR: </strong></p>   
                 <p><%= @user_audit.name if @user_audit.present? %></p>                
-            </br>
         </td>
     </tr>
     <tr>    
@@ -94,7 +90,6 @@
             </br>
                 <p><strong>FECHA DE AUDITORIA: </strong></p>   
                 <p><%= @audit_report.date_audit if @audit_report.present? %></p>                
-            </br>
         </td>
     </tr>
     <tr>    
@@ -105,22 +100,22 @@
 </table>
 <table style="width: 100%">
     <tr>    
-        <td style="text-align:center;border:1px solid black; width: 15%">
+        <td style="text-align:center;border:1px solid black; width: 15%;padding: 5px;">
             </br>
             <p><strong>PROCESO</strong></p>                
             </br>
         </td>
-        <td style="text-align:center;border:1px solid black; width: 15%">
+        <td style="text-align:center;border:1px solid black; width: 15%;padding: 5px;">
             </br>
             <p><strong>TIPO DE HALLAZGO</strong></p>                
             </br>
         </td>
-        <td style="text-align:center;border:1px solid black; width: 15%">
+        <td style="text-align:center;border:1px solid black; width: 15%;padding: 5px;">
             </br>
             <p><strong>TIPO DE ACCIÓN</strong></p>                
             </br>
         </td>
-        <td style="text-align:center;border:1px solid black; width: 55%">
+        <td style="text-align:center;border:1px solid black; width: 55%;padding: 5px;">
             </br>
             <p><strong>HALLAZGO</strong></p>                
             </br>
@@ -129,16 +124,16 @@
     <% if @audit_report_items.present? then %>
         <% @audit_report_items.each do |audit_report_item| %>
             <tr>    
-                <td style="border:1px solid black; width: 15%">
+                <td style="border:1px solid black; width: 15%;padding: 5px;">
                     <p><%= audit_report_item.process %></p>                
                 </td>
-                <td style="border:1px solid black; width: 15%">
+                <td style="border:1px solid black; width: 15%;padding: 5px;">
                     <p><%= AuditReportItem.label_type_finding(audit_report_item.type_finding) %></p>                
                 </td>
-                <td style="text-align:center;border:1px solid black; width: 15%">
+                <td style="text-align:center;border:1px solid black; width: 15%;padding: 5px;">
                     <p><%= AuditReportItem.label_type_action(audit_report_item.type_action) %></p>                
                 </td>
-                <td style="border:1px solid black; width: 55%">
+                <td style="border:1px solid black; width: 55%;padding: 5px;">
                     <p><%= audit_report_item.finding %></p>                
                 </td>
             </tr>
@@ -147,7 +142,7 @@
 </table>
 <table style="width: 100%">
     <tr>    
-        <td style="border:1px solid black; width: 100%">
+        <td style="border:1px solid black; width: 100%;padding: 5px;">
             </br>
                 <p><strong>CONCLUSIONES: </strong></p>                
                 <p><%= @audit_report.conclusions %></p>                
@@ -157,7 +152,7 @@
 </table>
 <table style="width: 100%">
     <tr>    
-        <td style="border:1px solid black; width: 100%">
+        <td style="border:1px solid black; width: 100%;padding: 5px;">
             </br>
                 <p><strong>OBSERVACIONES GENERALES Y OPORTUNIDADES DE MEJORA: </strong></p>                
                 <p><%= @audit_report.observations %></p>                
@@ -167,7 +162,7 @@
 </table>
 <table style="width: 100%">
     <tr>    
-        <td style="border:1px solid black; width: 100%">
+        <td style="border:1px solid black; width: 100%;padding: 5px;">
             </br>
                 <p><strong>ARCHIVOS ADJUNTO: </strong></p>                
             </br>
@@ -205,7 +200,8 @@
         </td>
     </tr>
 </table>
-<div class="row"><br></div>
+<div><br></div>
+<div><br></div>
 <table style="width: 100%">
     <tr>    
         <td style="border:0px solid black; width: 50%; text-align:center">
@@ -233,7 +229,7 @@
                         </div>
                         <div class="col-11">
                             <div class="row">
-                                <h6><%= @user_audit.activity %></h6>
+                                <h6><%= CompanyPosition.name_cargo(@user_audit.activity) %></h6>
                             </div>
                         </div>
                         <div class="col-11">
@@ -275,7 +271,7 @@
                         </div>
                         <div class="col-11">
                             <div class="row">
-                                <h6><%= @user_representante.activity %></h6>
+                                <h6><%= CompanyPosition.name_cargo(@user_representante.activity) %></h6>
                             </div>
                         </div>
                         <div class="col-11">

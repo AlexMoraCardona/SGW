@@ -17,7 +17,7 @@ class MeetingAttendeesController < ApplicationController
 
     def create
         @meeting_attendee = MeetingAttendee.new(meeting_attendee_params)
-        @meeting_attendee.post = @meeting_attendee.user.activity
+        @meeting_attendee.post = CompanyPosition.name_cargo(@meeting_attendee.user.activity)
         @meeting_attendee.process_area = User.label_clasification_post(@meeting_attendee.user.clasification_post) if @meeting_attendee.present?
         @meeting_attendee.name = @meeting_attendee.user.name
 

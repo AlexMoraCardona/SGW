@@ -1,5 +1,8 @@
-<div class="container col-12 card p-5">
-    <br> 
+<div align="left"; class="container col-12">
+    <a class="navbar-brand" href="/">
+        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+    </a>
+    </br> 
     <%= form_with model: @audit_report_item do |form| %>
         <% @audit_report_item.errors.full_messages.each do |error| %>
             <div class="alert alert-danger" role="alert">
@@ -21,6 +24,8 @@
                 <label for="correctiva">Correctiva</label>&nbsp;&nbsp;   
                 <%= form.radio_button :type_action, 2 %>
                 <label for="mejora">Mejora</label>&nbsp;&nbsp;   
+                <%= form.radio_button :type_action, 3 %>
+                <label for="noaplica">No aplica</label>&nbsp;&nbsp;   
             </div>        
         </div>   
 
@@ -37,7 +42,52 @@
 
         <br>    
         <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, audit_reports_path(entity_id: Current.user.entity) %>
     <% end %>
 
 </div>
 <br>
+<div align="left"; class="container col-12">
+    <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Consulta estándares
+            </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <% if @standar_detail_items.present? %>
+                        <table>
+                            <tr>     
+                                <td style="width: 15%;"><strong>Ciclo</strong></td>
+                                <td style="width: 15%;"><strong>Item</strong></td>
+                                <td style="width: 60%;"><strong>Descripción</strong></td>
+                                <td style="width: 10%;"><strong>Criterio/Modo Verificación</strong></td>
+                            </tr>    
+                            <%  @standar_detail_items.each do |standar_detail_item| %>
+                                <% if standar_detail_item.standar_detail.standar.rule_id == 3 %>    
+                                    <tr>
+                                        <td style="width: 15%;"><%= Standar.label_cycle(standar_detail_item.standar_detail.standar.cycle) %></td>
+                                        <td style="width: 15%;"><%= standar_detail_item.item_nro %></td>
+                                        <td style="width: 60%;"><%= standar_detail_item.description %></td>
+                                        <td style="width: 10%;">
+                                            <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover"
+                                            title="<%=standar_detail_item.description%>"
+                                            data-bs-content="CRITERIO: <%= standar_detail_item.criterion%> 
+                                            MODO DE VERIFICACIÓN:  <%= standar_detail_item.verification_mode %>" ><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                                        </td>
+                                    </tr>
+                                <% end %>    
+                            <% end %>
+                        <table>
+                    
+                    <% end %>              
+                </div>
+            </div>
+        </div>
+    </div>
+    </br>
+</div>
+<div></br></div>
+<div></br></div>

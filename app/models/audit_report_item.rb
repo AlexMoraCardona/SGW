@@ -13,6 +13,7 @@ class AuditReportItem < ApplicationRecord
         if dato == 0 ; 'Preventiva'
         elsif  dato == 1 ; 'Correctiva'
         elsif  dato == 2 ; 'Mejora'
+        elsif  dato == 3 ; 'No aplica'
         end 
     end     
 

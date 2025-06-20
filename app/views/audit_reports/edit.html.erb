@@ -4,4 +4,32 @@
     <h2 class="display-5"><%= t('.title') %></h2>
     <hr>
 </div>    
-<%= render 'form' %> 
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @audit_report do |form| %>
+        <% @audit_report.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>
+
+        <%= form.hidden_field :entity_id, :value => params[:entity_id].to_i, class: "form-control" if params[:entity_id].present? %>
+        <br>
+        <div class="form-group">    
+            <%= form.label :conclusions,  style: "display: block" %>
+            <%= form.text_area :conclusions,  class: "form-control" %>
+        </div>
+        <br>    
+        <div class="form-group">    
+            <%= form.label :observations,  style: "display: block" %>
+            <%= form.text_area :observations,  class: "form-control" %>
+        </div>
+        <br>    
+
+
+        <br>    
+        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    <% end %>
+</div>        
+<br>

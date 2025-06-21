@@ -241,8 +241,10 @@ class Calendar < ApplicationRecord
                     @occupational_exam_items = OccupationalExamItem.where("occupational_exam_id = ? and state_exam = ?",occupational_exam.id,0)
                     if @occupational_exam_items.present?
                         @occupational_exam_items.each do |item| 
-                            fecha = item.fec_venc.to_date 
-                            @notificaciones << ["Exámenes Ocupacionales", occupational_exam.entity.business_name, item.name, fecha, item.id]
+                            if item.fec_venc.present?
+                                fecha = item.fec_venc.to_date 
+                                @notificaciones << ["Exámenes Ocupacionales", occupational_exam.entity.business_name, item.name, fecha, item.id]
+                            end    
                         end    
                     end
                 end   
@@ -336,8 +338,10 @@ class Calendar < ApplicationRecord
                     end    
                     if @occupational_exam_items.present?
                         @occupational_exam_items.each do |item| 
-                            fecha = item.fec_venc 
-                            @notificaciones << ["Exámenes Ocupacionales", @entity.business_name, item.name, fecha, item.id]
+                            if item.fec_venc.present?
+                                fecha = item.fec_venc.to_date 
+                                @notificaciones << ["Exámenes Ocupacionales", @entity.business_name, item.name, fecha, item.id]
+                            end    
                         end    
                     end
                 end

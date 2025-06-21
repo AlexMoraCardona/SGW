@@ -36,6 +36,22 @@
                                 <% if dato.standar_detail_item.item_nro == "4.2.4" %>
                                     <% safetys = SafetyInspection.buscar_safetys(dato.evaluation.entity_id) %> 
                                 <% end %>
+                                <% if dato.standar_detail_item.item_nro == "4.1.1" %>
+                                    <% matrix_danger_risk = MatrixDangerRisk.buscar_matrix_danger_risk(dato.evaluation.entity_id) %> 
+                                <% end %>
+                                <% if dato.standar_detail_item.item_nro == "1.1.3" %>
+                                    <% resources = Resource.buscar_matrix_resources(dato.evaluation.entity_id) %> 
+                                <% end %>
+                                <% if dato.standar_detail_item.item_nro == "1.2.1" %>
+                                    <% trainings = Training.buscar_cronograma(dato.evaluation.entity_id) %> 
+                                <% end %>
+                                <% if dato.standar_detail_item.item_nro == "2.4.1" %>
+                                    <% annual_work_plans = AnnualWorkPlan.buscar_plan_trabajo_anual(dato.evaluation.entity_id) %> 
+                                <% end %>
+                                <% if dato.standar_detail_item.item_nro == "3.1.4" %>
+                                    <% examenes_ocupacionales = OccupationalExam.buscar_examenes_ocupacionales(dato.evaluation.entity_id) %> 
+                                <% end %>
+
                                 <% if evidencias.present? %>
                                     <tbody>
                                         <%  evidencias.each do |evidencia|  %>
@@ -60,6 +76,86 @@
                                         <% end %>
                                     </tbody>
                                 <% end %>
+                                <% if matrix_danger_risk.present? %>
+                                    <tbody>
+                                            <tr> 
+                                                <td><%= matrix_danger_risk.date_create %></td>
+                                                <td>4.1.1</td>
+                                                <td>Matriz de identificación de peligros, evaluación y valoración de los riesgos</td>
+                                                <td><%= link_to t('common.veritem'), matrix_danger_risk_path(matrix_danger_risk.id), class: 'btn btn-sm btn-primary' %> &nbsp;</td>
+                                            </tr> 
+                                    </tbody>
+                                <% end %>
+                                <% if resources.present? %>
+                                    <tbody>
+                                        <%  resources.each do |resource|  %>
+                                            <tr> 
+                                                <td><%= resource.year %></td>
+                                                <td>1.1.3</td>
+                                                <td>Matriz asignación de recursos</td>
+                                                <td><%= link_to t('common.veritem'), resource_path(resource.id), class: 'btn btn-sm btn-primary' %> &nbsp;</td>
+                                            </tr> 
+                                        <% end %>
+                                    </tbody>
+                                <% end %>
+                                <% if trainings.present? %>
+                                    <tbody>
+                                        <%  trainings.each do |training|  %>
+                                            <tr> 
+                                                <td><%= training.year %></td>
+                                                <td>1.2.1</td>
+                                                <td>Cronograma de capacitaciones y actividades</td>
+                                                <td><%= link_to t('common.veritem'), training_path(training.id), class: 'btn btn-sm btn-primary' %> &nbsp;</td>
+                                            </tr> 
+                                        <% end %>
+                                    </tbody>
+                                <% end %>
+                                <% if annual_work_plans.present? %>
+                                    <tbody>
+                                        <%  annual_work_plans.each do |annual_work_plan|  %>
+                                            <tr> 
+                                                <td><%= annual_work_plan.year %></td>
+                                                <td>2.4.1</td>
+                                                <td>Matriz plan anual de seguridad y salud en el trabajo</td>
+                                                <td><%= link_to t('common.veritem'), annual_work_plan_path(annual_work_plan.id), class: 'btn btn-sm btn-primary' %> &nbsp;</td>
+                                            </tr> 
+                                        <% end %>
+                                    </tbody>
+                                <% end %>
+                                <% if dato.standar_detail_item.item_nro == "2.5.1" %>
+                                    <tbody>
+                                            <tr> 
+                                                <td></td>
+                                                <td>2.5.1</td>
+                                                <td>Matriz administración documental</td>
+                                                <td><%= link_to t('common.veritem'),  href="/templates/matriz_documental", class: 'btn btn-sm btn-primary' %> &nbsp;</td>
+                                            </tr> 
+                                    </tbody>
+                                <% end %>
+                                <% if dato.standar_detail_item.item_nro == "3.1.2" %>
+                                    <tbody>
+                                            <tr> 
+                                                <td></td>
+                                                <td>3.1.2</td>
+                                                <td>Asistencias a reuniones capacitaciones</td>
+                                                <td><%= link_to t('common.veritem'),  href="/adm_attendances/", class: 'btn btn-sm btn-primary' %> &nbsp;</td>
+                                            </tr> 
+                                    </tbody>
+                                <% end %>
+                                <% if examenes_ocupacionales.present? %>
+                                    <tbody>
+                                        <%  examenes_ocupacionales.each do |examenes_ocupacional|  %>
+                                            <tr> 
+                                                <td><%= examenes_ocupacional.date_create %></td>
+                                                <td>3.1.4</td>
+                                                <td>Matriz de seguimiento exámenes ocupacionales</td>
+                                                <td><%= link_to t('common.veritem'), occupational_exam_path(examenes_ocupacional.id), class: 'btn btn-sm btn-primary' %> &nbsp;</td>
+                                            </tr> 
+                                        <% end %>
+                                    </tbody>
+                                <% end %>
+
+
                             </table>
                             </br>
                             <h3>Archivos adjuntos:</h3>

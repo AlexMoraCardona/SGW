@@ -14,5 +14,11 @@ class OccupationalExam < ApplicationRecord
         elsif  firm == 1 ; 'SI'
         end 
     end  
+
+    def self.buscar_examenes_ocupacionales(entity)
+        examenes_ocupacionales  =  OccupationalExam.where("entity_id = ?",entity) if entity.present?
+        return  examenes_ocupacionales   
+    end
+
     
 end

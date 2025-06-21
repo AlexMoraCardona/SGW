@@ -10,7 +10,7 @@ class ProvidesProtectionsController < ApplicationController
         elsif Current.user && Current.user.level == 3 
             @entity = Entity.find(Current.user.entity)
             @provides_protections = ProvidesProtection.where("entity_id = ?",Current.user.entity)
-        elsif Current.user && Current.user.level == 5 
+        elsif Current.user && Current.user.level > 3 
             @entity = Entity.find(Current.user.entity)
             @provides_protections = ProvidesProtection.where("entity_id = ? and user_colaborador = ?",Current.user.entity, Current.user.id)
         else
@@ -64,9 +64,12 @@ class ProvidesProtectionsController < ApplicationController
 
     def create
         @provides_protection = ProvidesProtection.new(provides_protection_params)
+        @user_colaborador  = User.find(@provides_protection.user_colaborador.to_i) if @provides_protection.user_colaborador.present?
+        @provides_protection.post_colaborador = User.label_activity(@user_colaborador.activity) if @user_colaborador.present?
+        @provides_protection.unit_colaborador = User.label_area_employee(@user_colaborador.area_employee) if @user_colaborador.present?
 
         if @provides_protection.save then
-            redirect_to provides_protections_path, notice: t('.created') 
+            redirect_to provides_protections_path(entity_id: Current.user.entity.to_i), notice: t('.created') 
         else
             render :new, provides_protections: :unprocessable_entity
         end    
@@ -80,7 +83,7 @@ class ProvidesProtectionsController < ApplicationController
         @provides_protection = ProvidesProtection.find(params[:id])
         if @provides_protection.update(provides_protection_params)
             actualizar_fecha(@provides_protection.id)
-            redirect_to provides_protections_path, notice: 'Formato  actualizado correctamente'
+            redirect_to provides_protections_path(entity_id: Current.user.entity.to_i), notice: 'Formato  actualizado correctamente'
         else
             render :edit, status: :unprocessable_entity
         end         
@@ -113,7 +116,7 @@ class ProvidesProtectionsController < ApplicationController
     def firmar_colaborador
         @provides_protection = ProvidesProtection.find_by(id: params[:id].to_i)
         if params[:format].to_i == 2
-            if  @provides_protection.user_colaborador.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @provides_protection.user_colaborador.to_i == Current.user.id.to_i 
                 redirect_to firmar_colaborador_provides_protections_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Colaborador en SST."
@@ -124,7 +127,7 @@ class ProvidesProtectionsController < ApplicationController
     def firmar_responsable
         @provides_protection = ProvidesProtection.find_by(id: params[:id].to_i)
         if params[:format].to_i == 3
-            if  @provides_protection.user_responsible.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @provides_protection.user_responsible.to_i == Current.user.id.to_i
                 redirect_to firmar_responsable_provides_protections_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Responsable en SST."

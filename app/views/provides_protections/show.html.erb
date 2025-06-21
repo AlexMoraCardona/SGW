@@ -12,7 +12,7 @@
             <th style="border:1px solid black">NOMBRE Y APELLIDO</th>
             <th style="border:1px solid black">N° DE DOCUMENTO</th>
             <th style="border:1px solid black">CARGO</th>
-            <th style="border:1px solid black">UNIDAD DE GESTIÓN A LA QUE PERTENECE:</th>
+            <th style="border:1px solid black">ÁREA</th>
             <td style="background-color: white;">&nbsp;</td>
         </tr>
         <tr>
@@ -74,22 +74,18 @@
     </table>
     <table class="table table-hover" style="border:1px solid white"> 
         <tr>
-            <td style="background-color: white;">&nbsp;</td>
             <th style="border:1px solid black;text-align:center">ITEM</th>
             <th style="border:1px solid black">DESCRIPCIÓN</th>
             <th style="border:1px solid black;text-align:center">CANTIDAD</th>
-            <th style="border:1px solid black;text-align:center">FECHA</th>
-            <td style="background-color: white;">&nbsp;</td>
+            <th style="border:1px solid black;text-align:center">FECHA DE ENTREGA</th>
         </tr>
         <% @provides_protection_items.each do |provides_protection_item| %>             
             <tbody>
                 <tr>
-                    <td style="background-color: white;">&nbsp;</td>
                     <td style="border:1px solid black;text-align:center"><%= provides_protection_item.num %></td>
                     <td style="border:1px solid black"><%= provides_protection_item.protection_element.name %></td>
                     <td style="border:1px solid black;text-align:center"><%= provides_protection_item.cant %></td>
                     <td style="border:1px solid black;text-align:center"><%= provides_protection_item.date_entrega %></td>
-                    <td style="background-color: white;">&nbsp;</td>
                 </tr>
             </body>
         <% end %>
@@ -99,28 +95,23 @@
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <td style="background-color: white;">&nbsp;</td>
             <td style="border:1px solid white;text-align:center">
                 <strong>DATOS DEL RESPONSABLE DE LA ENTREGA DE LOS ELEMENTOS</strong>
             </td>
-            <td style="background-color: white;">&nbsp;</td>
         </tr>
     </table>
     <table class="table table-hover" style="border:1px solid white"> 
         <tr>
-            <td style="background-color: white;">&nbsp;</td>
             <th style="border:1px solid black">NOMBRE Y APELLIDOS</th>
             <th style="border:1px solid black">CÉDULA</th>
             <th style="border:1px solid black">CARGO</th>
             <th style="border:1px solid black">FECHA FIRMA</th>
             <th style="border:1px solid black">FIRMA</th>
-            <td style="background-color: white;">&nbsp;</td>
         </tr>
         <tr>
-            <td style="background-color: white;">&nbsp;</td>
             <td style="border:1px solid black"><%= @responsable.name %></td>
             <td style="border:1px solid black"><%= @responsable.nro_document %></td>
-            <td style="border:1px solid black"><%= @responsable.activity %></td>
+            <td style="border:1px solid black"><%= User.label_activity(@responsable.activity) %></td>
             <td style="border:1px solid black"><%= @provides_protection.date_firm_responsible %></td>
             <td style="border:1px solid black">
                 <% if @provides_protection.firm_responsible == 1 %>
@@ -132,31 +123,24 @@
                     <% end %>
                 <% end %>    
             </td>
-            <td style="background-color: white;">&nbsp;</td>
-                </tr>
-            </body>
-    </table>
-    <table class="table table-hover" style="border:1px solid white"> 
-        <tr>
-            <td style="background-color: white;">&nbsp;</td>
-            <td style="border:1px solid white;text-align:center">
-                <strong>DATOS DEL COLABORADOR</strong>
-            </td>
-            <td style="background-color: white;">&nbsp;</td>
         </tr>
     </table>
     <table class="table table-hover" style="border:1px solid white"> 
         <tr>
-            <td style="background-color: white;">&nbsp;</td>
+            <td style="border:1px solid white;text-align:center">
+                <strong>DATOS DEL COLABORADOR</strong>
+            </td>
+        </tr>
+    </table>
+    <table class="table table-hover" style="border:1px solid white"> 
+        <tr>
             <th style="border:1px solid black">NOMBRE Y APELLIDOS</th>
             <th style="border:1px solid black">CÉDULA</th>
             <th style="border:1px solid black">CARGO</th>
             <th style="border:1px solid black">FECHA FIRMA</th>
             <th style="border:1px solid black">FIRMA</th>
-            <td style="background-color: white;">&nbsp;</td>
         </tr>
         <tr>
-            <td style="background-color: white;">&nbsp;</td>
             <td style="border:1px solid black"><%= @colaborador.name %></td>
             <td style="border:1px solid black"><%= @colaborador.nro_document %></td>
             <td style="border:1px solid black"><%= @provides_protection.post_colaborador %></td>
@@ -171,7 +155,6 @@
                     <% end %>
                 <% end %>    
             </td>
-            <td style="background-color: white;">&nbsp;</td>
         </tr>
         <tr>
             <td>&nbsp;</td>

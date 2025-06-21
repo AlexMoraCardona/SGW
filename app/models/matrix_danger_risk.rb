@@ -62,4 +62,10 @@ class MatrixDangerRisk < ApplicationRecord
     end
 
 
+    def self.buscar_matrix_danger_risk(entity)
+        matrix_danger_risk = MatrixDangerRisk.find_by(entity_id: entity) if entity.present?
+        return  matrix_danger_risk   
+    end
+
+
 end

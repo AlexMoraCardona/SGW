@@ -14,5 +14,10 @@ class AnnualWorkPlan < ApplicationRecord
         elsif  firm == 1 ; 'SI'
         end 
     end  
-    
+
+    def self.buscar_plan_trabajo_anual(entity)
+        annual_work_plans  =  AnnualWorkPlan.where("entity_id = ?",entity) if entity.present?
+        return  annual_work_plans   
+    end
+  
 end

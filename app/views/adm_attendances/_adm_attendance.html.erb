@@ -55,5 +55,56 @@
             </div>
         <% end %>
     </td>
+    <td>
+        <% @ca =  AdmAttendance.pendientes(adm_attendance.id) %>
+        <% @cant = 0 %>
+        <% @cant = @ca.count if @ca.present? %>
+
+        <% if @cant_reg.present? %>
+            <!-- Button trigger modal --> 
+            <button class="btn btn-sm btn-outline-danger position-relative" data-bs-toggle="modal" data-bs-target="#exampleModalp<%= adm_attendance.id %>" >
+                Pendientes
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                      <%= @cant %>-
+                     <span class="visually-hidden">unread messages</span>
+                </span>
+            </button>
+            <div class="row" >  
+                <div align="right"; class="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+              
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModalp<%= adm_attendance.id %>" tabindex="-1" aria-labelledby="exampleModalLabelp" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabelp"><strong>Pendientes</strong></h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <table>
+                                        <tr>     
+                                            <td style="width: 30%;"><strong>Nombre</strong></td>
+                                        </tr>    
+                                        <% if  @ca.present? %>
+                                            <%  i = 0 %>
+                                            <%  while i <  @cant %> 
+                                                <tr>
+                                                    <td style="width: 15%;"><h5></br><%= @ca[i] %></h5></td>
+                                                </tr>
+                                                <%  i = i + 1 %>
+                                            <% end %>
+                                        <% end %>        
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% end %>
+    </td>
 </tr>
 

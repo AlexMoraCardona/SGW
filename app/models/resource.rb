@@ -34,6 +34,12 @@ class Resource < ApplicationRecord
         end 
     end 
 
+    def self.buscar_matrix_resources(entity)
+        resources =  Resource.where("entity_id = ?",entity) if entity.present?
+        return  resources   
+    end
+
+
 
     
 end

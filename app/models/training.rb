@@ -48,6 +48,12 @@ class Training < ApplicationRecord
             end
         end
         return   datos_capacitacion  
-    end     
+    end  
+    
+    def self.buscar_cronograma(entity)
+        trainings =  Training.where("entity_id = ?",entity) if entity.present?
+        return  trainings   
+    end
+
 
 end

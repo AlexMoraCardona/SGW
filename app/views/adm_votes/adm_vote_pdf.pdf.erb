@@ -1,0 +1,117 @@
+<head>
+    <meta charset='utf-8' />
+</head>
+<div align="left"; class="container col-12">
+    <table style="border:0px solid black;width: 100%">
+        <tr style="padding: 20px;">
+            <td rowspan="2" style="border:1px solid black; width: 20%; text-align:center">
+                <% if @entity.logo.present? then %>
+                    <%=  image_tag  @entity.logo, class: "image_peq" %>
+                <% end %>   
+            </td>
+            <td style="border:1px solid black; text-align:center">
+                <div class="col-10"><%= @entity.business_name if @entity.present? %></div>
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; text-align:center">
+                <div class="col-10"><%= @template.name if @template.present? %></div>
+            </td>
+        </tr>
+    </table>
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:1px solid black; width: 25%">
+                CÓDIGO:                 
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                &nbsp;&nbsp;<small class="text-muted"><%= @template.reference if @template.present? %></small>                
+            </td>
+
+            <td style="border:1px solid black; width: 25%">
+                VERSIÓN:                 
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                &nbsp;&nbsp;<small class="text-muted"><%= @template.version if @template.present? %></small>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 25%">
+                FECHA DE ELABORACIÓN:                  
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                &nbsp;&nbsp;<small class="text-muted"><%= @template.date if @template.present? %></small>                
+            </td>
+
+            <td style="border:1px solid black; width: 25%">
+                FECHA DE ACTUALIZACIÓN:                 
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                &nbsp;&nbsp;<small class="text-muted"><%= @template.date_updated if @template.present? %></small>                
+            </td>
+        </tr>
+    </table>
+    <table style="width: 100%">
+        <tr>    
+            <td style="border:1px solid black; width: 50%">
+                </br>
+                <p><strong><%= @adm_vote.titulo_vote %></strong></p>                
+                </br>
+            </td>
+        </tr>
+    </table>
+
+
+
+     <table style="width: 100%">
+        <tr>    
+            <td style="border:1px solid black; width: 100%;background-color: #00aae4;text-align:center;">
+                    <p><strong>Resultado votaciones<strong></p>                
+            </td>
+        </tr>
+    </table>
+    <table style="width: 100%">
+        <% if @candidate_votes.present? then %>
+                    <tr style="padding: 10px;">    
+                        <td style="border:1px solid black; width: 40%;background-color: #00aae4;">
+                            <p>Nombre candidato</p>                
+                        </td>
+                        <td style="border:1px solid black; width: 20%;background-color: #00aae4;text-align:center;">
+                            <p>Cantidad de votos</p>                
+                        </td>
+                    </tr>
+            <% @candidate_votes.each do |candidato| %>
+                    <tr style="padding: 10px;">    
+                        <td style="border:1px solid black; width: 40%">
+                            <p><%= candidato.user.name %></p>                
+                        </td>
+                        <td style="border:1px solid black; width: 20%;text-align:center;">
+                            <p><%= Vote.conteo(candidato.id, @adm_vote.id)  %></p>                
+                        </td>
+                    </tr>
+            <% end %>       
+        <% end %>   
+    </table>
+   
+    </br>
+    <table style="width: 100%">
+        <tr style="padding: 10px;">    
+            <td style="border:1px solid black; width: 40%">
+                    <p><strong>Total de empleados hábiles:</p>                
+            </td>
+            <td style="border:1px solid black; width: 20%;text-align:center;">
+                    <strong><%= Vote.totalhabiles(@adm_vote.id) %></p>                
+            </td>
+        </tr>
+        <tr style="padding: 10px;">    
+            <td style="border:1px solid black; width: 40%">
+                    <p><strong>Total de empleados que votaron:</p>                
+            </td>
+            <td style="border:1px solid black; width: 20%;text-align:center;">
+                    <strong><%= Vote.totalvotaron(@adm_vote.id) %></p>                
+            </td>
+        </tr>
+    </table>
+</div>
+</br>
+</br>

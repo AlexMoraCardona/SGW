@@ -37,8 +37,9 @@ class OccupationalExamsController < ApplicationController
         respond_to do |format| 
             format.html
             format.pdf {render  pdf: 'ver_occupational',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
+                margin: {top: 10, bottom: 10, left: 5, right: 5 },
                 disable_javascript: true,
+                orientation: 'Landscape',
                 page_size: 'letter',
                 footer: {
                     right: 'Página: [page] de [topage]'

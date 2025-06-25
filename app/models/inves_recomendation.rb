@@ -1,0 +1,2 @@
+class InvesRecomendation < ApplicationRecord
+end

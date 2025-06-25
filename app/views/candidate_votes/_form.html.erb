@@ -1,0 +1,41 @@
+<div class="container col-12 card p-5">
+    <br>
+    <%= form_with model: @candidate_vote do |form| %>
+        <% @candidate_vote.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>  
+        <br>
+        <div class="form-group">    
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el candidato.">Candidato:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
+        </div>
+        </br>
+        <div class="form-group">    
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Observaciones."><%= t('.observations') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+            <%= form.text_field :observations,  class: "form-control" %>
+        </div>
+        <br>
+        <div class="row g-2">
+            <div class="col-sm-5">
+                <%= form.label :avatar_candidate,  style: "display: block" %> 
+                <%= form.file_field :avatar_candidate,  class: "form-control", accept:"image/*", capture:"environment" %>
+            </div>
+            <div class="col-sm-5">
+                <% if @candidate_vote.present? %>
+                    <% if @candidate_vote.avatar_candidate.attached? %>
+                        <% if @candidate_vote.avatar_candidate.image? %> 
+                            <%= image_tag @candidate_vote.avatar_candidate, data: {previews_target: "preview"}, class: "avatar-mini" %>
+                        <% end %>
+                    <% else %> 
+                        <%= image_tag("avatar.jpg", class: "avatar-mini") %>
+                    <% end %>
+                <% end %> 
+            </div>
+        </div>            
+        <br> 
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, adm_votes_path(entity_id: @candidate_vote.adm_vote.entity_id) %>
+    <% end %>
+</div>        

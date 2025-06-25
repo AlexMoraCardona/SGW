@@ -109,7 +109,17 @@ Rails.application.routes.draw do
   resources :car_checklists
   resources :matrix_goals
   resources :matrix_goal_items
+  resources :adm_votes
+  resources :candidate_votes
+  resources :habil_votes
+  resources :votes
 
+  get '/votes/validar_votacion/:id', to: 'votes#validar_votacion', as: 'validar_votacion'
+  get '/adm_votes/ver_votacion/:id', to: 'adm_votes#ver_votacion', as: 'ver_votacion'
+  get '/votes/seleccionar_voto/:id', to: 'votes#seleccionar_voto', as: 'seleccionar_voto'
+  get '/adm_votes/crear_candidato/:id', to: 'adm_votes#crear_candidato', as: 'crear_candidato'
+  get '/adm_votes/ver_habiles/:id', to: 'adm_votes#ver_habiles', as: 'ver_habiles'
+  get '/adm_votes/adm_vote_pdf/:id', to: 'adm_votes#adm_vote_pdf', as: 'adm_vote_pdf'
   get '/assistants/firma_pendiente_acta/:id', to: 'assistants#firma_pendiente_acta', as: 'firma_pendiente_acta'
   get '/firms/penfirma/:id', to: 'firms#penfirma', as: 'penfirma'
   get '/firms/firma_pendiente/:id', to: 'firms#firma_pendiente', as: 'firma_pendiente'
@@ -262,6 +272,7 @@ Rails.application.routes.draw do
   resources :matrix_legals do
     collection do
       get '/matrix_legals/crear_item/:id', to: 'matrix_legals#crear_item', as: 'crear_item'
+      get '/matrix_legals/grabar_rule/:id', to: 'matrix_legals#grabar_rule', as: 'grabar_rule'
       get :crear_historia
       get '/ver_history/:id', to: 'matrix_legals#ver_history', as: 'ver_history' 
       get '/show_history/:id', to: 'matrix_legals#show_history', as: 'show_history' 

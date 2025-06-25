@@ -6,33 +6,20 @@
                 <%= error%> <%= alert %>
             </div>
         <% end %>    
-        
-        <div class="form-group"> 
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la actividad."><%= t('.activity_plan') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :activity_plan,  class: "form-control" %>
-        </div>
-        <br/>
-        <div class="form-group"> 
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingresar la acción de mejoramiento correctiva."><%= t('.action_improvement') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :action_improvement,  class: "form-control" %>
-        </div>
-        <br/>
+        <%= form.hidden_field :improvement_plan_id, :value => params[:id].to_i, class: "form-control" %>
+
+        <br>    
         <div class="row g-2">
-            <div class="col-sm-4">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la fecha en que inicia la actividad."><%= t('.date_initial') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-                <%= form.date_field :date_initial,  class: "form-control" %>
+            <div class="col-sm-2">
+                <%= form.label :action_improvement,  style: "display: block" %>
+                <%= form.collection_select :action_improvement, @standar_detail_items.order(item_nro: :asc), :item_nro, :item_nro, { prompt: '--Seleccionar Estándar--' },
+                        { class: 'form-control input-sm select2' } %>            
+
             </div>  
             <div class="col-sm-4">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la fecha en que termina la actividad."><%= t('.date_fin') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-                <%= form.date_field :date_fin,  class: "form-control" %>
             </div>  
         </div>   
-        <br/>
-        <div class="form-group"> 
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar el objetivo."><%= t('.aim_improvement') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :aim_improvement,  class: "form-control" %>
-        </div>
-        <br/>
+        <br>    
         <div class="form-group"> 
             <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar los recursos."><%= t('.resources_improvement') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
             <%= form.text_field :resources_improvement,  class: "form-control" %>
@@ -41,11 +28,22 @@
         <div class="row g-2">
             <div class="col-sm-7">
                 <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar el responsable del proceso."><%= t('.responsible_action') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-                <%= form.text_field :responsible_action,  class: "form-control" %>
+                <%= form.collection_select :responsible_action, User.usuarios_empresa.order(id: :asc), :name,  :name, style: "width=50px" %>
             </div>  
             <div class="col-sm-4">
                 <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar cual es el porcentaje de cumplimiento de la actividad."><%= t('.percentage_compliance') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
                 <%= form.number_field :percentage_compliance,  class: "form-control" %>
+            </div>  
+        </div>   
+        <br/>
+        <div class="row g-2">
+            <div class="col-sm-4">
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la fecha en que inicia la actividad."><%= t('.date_initial') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+                <%= form.date_field :date_initial,  class: "form-control", required: true %>
+            </div>  
+            <div class="col-sm-4">
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la fecha en que termina la actividad."><%= t('.date_fin') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+                <%= form.date_field :date_fin,  class: "form-control" %>
             </div>  
         </div>   
         <br/>

@@ -1,56 +1,35 @@
-<div class="container col-11 card p-5">
-    <br>
-        <div class="col-sm-5">
-            <% if @matrix_legal_item.present? %> 
-                <%= form_with url: "crear_item_matrix_legals_path", method: :get do |form| %>
-                    <h5 scope="col">Seleccionar Norma: </h5>
-                    <%= form.collection_select :norm, @legal_rules, :id, :risk_factor, { prompt: '--Seleccionar Norma--' },
-                    { class: 'form-control input-sm select2' , onChange: 'this.form.requestSubmit()', value: params[:id] } if @legal_rules.present? %>
-                    <%= form.hidden_field :mat, :value =>   @matrix_legal.id, class: "form-control" if  @matrix_legal.present? %>
-                    <%= form.hidden_field :mat, :value =>   params[:id], class: "form-control" if  params[:id].present? %>
-                <% end %> 
-            <% end %>     
-        </div>  
-        <% if @norma.present? %> 
-            </br>
-            <div class="form-group">    
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar con que tema del SG-SST se relaciona la norma, ejemplo: plan de emergencias, trabajo en alturas, riesgo psicosocial."><%= t('.risk_factor') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button></br>
-                <%= @norma.risk_factor %>
-            </div>
-            <div class="form-group">    
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title=""><%= t('.description_compliance') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button></br>
-                <%= @norma.description_compliance %>
-            </div>
-        <% end %>
+<div align="left"; class="container col-12">
+    <a class="navbar-brand" href="/">
+        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+    </a>
+</div>
+<div class="container col-11" 
+        <br>
+        <h2>Normas Legales</h2>
+        <hr>
 
-    <div></br></div>
-    
-    <% if @norma.present? %>
-        <%= form_with model: @matrix_legal_item do |form| %> 
-            <% @matrix_legal_item.errors.full_messages.each do |error| %>
-                <div class="alert alert-danger" role="alert">
-                    <%= error%> <%= alert %>
-                </div>
+        <br>
+        <table style="border:1px solid black;width: 100%;">
+            <thead>
+                <tr>
+                    <th scope="col" style="border:1px solid black"><%= t('.risk_factor') %></th>
+                    <th scope="col" style="border:1px solid black"><%= t('.description_compliance') %></th>
+                    <th scope="col" style="border:1px solid black">Crear</th>
+                </tr>
+            </thead> 
+
+            <% if @legal_rules.present? %>
+                <tbody>
+                    <% @legal_rules.each do |legal_rule| %>
+                        <tr>
+                            <td style="border:1px solid black"><%= legal_rule.risk_factor %></td>
+                            <td style="border:1px solid black"><%= legal_rule.description_compliance %></td>
+                            <td style="border:1px solid black"><%= link_to "Crear requisito legal", grabar_rule_matrix_legals_path(legal_rule: legal_rule.id, matrix_legal: params[:id]), class: 'btn btn-sm btn-primary' %></td>
+                        </tr>
+                    <% end %>           
+                </tbody>      
             <% end %>    
-            <%= form.hidden_field :risk_factor, :value => @norma.risk_factor, class: "form-control" %>
-            <%= form.hidden_field :issuing_entity, :value => @norma.issuing_entity, class: "form-control" %>
-            <%= form.hidden_field :requirement, :value => @norma.requirement, class: "form-control" %>
-            <%= form.hidden_field :rule_name, :value => @norma.rule_name, class: "form-control" %>
-            <%= form.hidden_field :applicable_article, :value => @norma.applicable_article, class: "form-control" %>
-            <%= form.hidden_field :description_compliance, :value => @norma.description_compliance, class: "form-control" %>
-            <%= form.hidden_field :fec_norma, :value => @norma.fec_norma, class: "form-control" %>
-            <%= form.hidden_field :year, :value => @norma.year, class: "form-control" %>
-            <%= form.hidden_field :matrix_legal_id, :value =>   @matrix_legal.id, class: "form-control" if  @matrix_legal.id.present? %>
-            <%= form.hidden_field :legal_rule_id, :value => @norma.id.to_i, class: "form-control" %>
-            <%= form.hidden_field :meets, :value => 0, class: "form-control" %>
-            <%= form.hidden_field :apply, :value => 0, class: "form-control" %>
-
-            <br>    
-            <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
-        <% end %>
-        <div></br></div>
-            <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
-    <% end %>
+        </table>
 </div>        
 <br>
 

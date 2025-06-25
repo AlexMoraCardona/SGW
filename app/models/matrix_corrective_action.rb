@@ -14,5 +14,11 @@ class MatrixCorrectiveAction < ApplicationRecord
         elsif  firm == 1 ; 'SI'
         end 
     end  
+
+    def self.buscar_matrix_corrective_action(entity)
+        matrix_danger_risk = MatrixCorrectiveAction.find_by(entity_id: entity) if entity.present?
+        return  matrix_danger_risk   
+    end
+
     
 end

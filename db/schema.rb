@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_06_06_020830) do
+ActiveRecord::Schema[7.0].define(version: 2025_06_25_203416) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -128,6 +128,19 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_06_020830) do
     t.string "post"
     t.index ["entity_id"], name: "index_adm_extinguishers_on_entity_id"
     t.index ["user_id"], name: "index_adm_extinguishers_on_user_id"
+  end
+
+  create_table "adm_votes", force: :cascade do |t|
+    t.date "date_initial"
+    t.date "date_final"
+    t.integer "total_candidates", default: 0
+    t.integer "votes_max", default: 0
+    t.string "titulo_vote"
+    t.string "observation"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_adm_votes_on_entity_id"
   end
 
   create_table "admin_extent_dangers", force: :cascade do |t|
@@ -300,6 +313,17 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_06_020830) do
     t.datetime "updated_at", null: false
     t.bigint "adm_calendar_id", null: false
     t.index ["adm_calendar_id"], name: "index_calendars_on_adm_calendar_id"
+  end
+
+  create_table "candidate_votes", force: :cascade do |t|
+    t.string "activity"
+    t.string "observations"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "adm_vote_id"
+    t.bigint "user_id"
+    t.index ["adm_vote_id"], name: "index_candidate_votes_on_adm_vote_id"
+    t.index ["user_id"], name: "index_candidate_votes_on_user_id"
   end
 
   create_table "car_checklists", force: :cascade do |t|
@@ -1013,6 +1037,16 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_06_020830) do
     t.index ["entity_id"], name: "index_format_actions_on_entity_id"
   end
 
+  create_table "habil_votes", force: :cascade do |t|
+    t.integer "vote", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.bigint "adm_vote_id"
+    t.index ["adm_vote_id"], name: "index_habil_votes_on_adm_vote_id"
+    t.index ["user_id"], name: "index_habil_votes_on_user_id"
+  end
+
   create_table "health_promoters", force: :cascade do |t|
     t.string "name_entity"
     t.string "code_entity"
@@ -1151,6 +1185,84 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_06_020830) do
     t.string "type_indicator"
     t.string "person_result"
     t.index ["cycle_id"], name: "index_indicators_on_cycle_id"
+  end
+
+  create_table "inves_recomendations", force: :cascade do |t|
+    t.string "recomendation"
+    t.integer "apply", default: 0
+    t.date "date_implementation"
+    t.integer "responsible_implementation", default: 0
+    t.date "date_verification"
+    t.integer "responsible_verification", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "investigation_id"
+    t.index ["investigation_id"], name: "index_inves_recomendations_on_investigation_id"
+  end
+
+  create_table "inves_users", force: :cascade do |t|
+    t.integer "user_id", default: 0
+    t.string "name"
+    t.string "post"
+    t.integer "firm", default: 0
+    t.string "date_firm"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "investigation_id"
+    t.index ["investigation_id"], name: "index_inves_users_on_investigation_id"
+  end
+
+  create_table "investigations", force: :cascade do |t|
+    t.date "date_investigation"
+    t.integer "type_event", default: 0
+    t.integer "accident_usual", default: 0
+    t.string "obs_accident_usual"
+    t.string "type_labor_connection"
+    t.integer "age", default: 0
+    t.string "job_experience"
+    t.date "date_income"
+    t.string "area"
+    t.integer "phone", default: 0
+    t.date "date_accident"
+    t.time "time_accident"
+    t.string "place"
+    t.integer "inform_prompt", default: 0
+    t.string "obs_inform_prompt"
+    t.string "task_moment_accident"
+    t.string "descript"
+    t.text "event_description"
+    t.text "version_work"
+    t.text "version_witness"
+    t.integer "similar_events", default: 0
+    t.string "obs_similar_events"
+    t.text "complementary_data"
+    t.text "photographic_record"
+    t.string "immediate_cause1"
+    t.string "immediate_cause2"
+    t.string "immediate_cause3"
+    t.string "cause_basic1"
+    t.string "cause_basic2"
+    t.string "cause_basic3"
+    t.text "plan_action"
+    t.text "unsafe_acts"
+    t.text "unsafe_conditions"
+    t.text "personal_factors"
+    t.text "adm_factors"
+    t.string "affected_part"
+    t.string "type_injury"
+    t.string "accident_mechanism"
+    t.integer "disability_days", default: 0
+    t.integer "usr_profesional", default: 0
+    t.string "name_profesional"
+    t.integer "firm_profesional", default: 0
+    t.date "date_firm_profesional"
+    t.string "license"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.bigint "user_id"
+    t.index ["entity_id"], name: "index_investigations_on_entity_id"
+    t.index ["user_id"], name: "index_investigations_on_user_id"
   end
 
   create_table "kits", force: :cascade do |t|
@@ -1899,6 +2011,12 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_06_020830) do
     t.decimal "per_perfil_sociodemo", default: "0.0"
     t.integer "perfil_sociodemo_total", default: 0
     t.integer "perfil_sociodemo_encuestados", default: 0
+    t.integer "resources_allocated", default: 0
+    t.integer "resources_planned", default: 0
+    t.decimal "per_resources", default: "0.0"
+    t.integer "investigation_total", default: 0
+    t.integer "investigation_investigated", default: 0
+    t.decimal "per_investigation", default: "0.0"
     t.index ["entity_id"], name: "index_report_officials_on_entity_id"
   end
 
@@ -2252,6 +2370,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_06_020830) do
     t.date "date_retirement_company"
     t.date "date_nacimiento"
     t.string "area_employee"
+    t.integer "authorization_police", default: 0
+    t.date "authorization_date"
+    t.string "license"
     t.index ["document_id"], name: "index_users_on_document_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["nro_document"], name: "index_users_on_nro_document", unique: true
@@ -2267,6 +2388,20 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_06_020830) do
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.index ["user_id"], name: "index_view_videos_on_user_id"
+  end
+
+  create_table "votes", force: :cascade do |t|
+    t.date "date_vote"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.bigint "adm_vote_id"
+    t.bigint "candidate_vote_id"
+    t.bigint "habil_vote_id"
+    t.index ["adm_vote_id"], name: "index_votes_on_adm_vote_id"
+    t.index ["candidate_vote_id"], name: "index_votes_on_candidate_vote_id"
+    t.index ["habil_vote_id"], name: "index_votes_on_habil_vote_id"
+    t.index ["user_id"], name: "index_votes_on_user_id"
   end
 
   create_table "working_condition_items", force: :cascade do |t|
@@ -2318,6 +2453,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_06_020830) do
   add_foreign_key "adm_attendances", "users"
   add_foreign_key "adm_extinguishers", "entities"
   add_foreign_key "adm_extinguishers", "users"
+  add_foreign_key "adm_votes", "entities"
   add_foreign_key "admin_extent_dangers", "entities"
   add_foreign_key "admin_extent_dangers", "users"
   add_foreign_key "allow_exams", "adm_exams"
@@ -2334,6 +2470,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_06_020830) do
   add_foreign_key "brigadista_plans", "emergency_plans"
   add_foreign_key "business_days", "entities"
   add_foreign_key "calendars", "adm_calendars"
+  add_foreign_key "candidate_votes", "adm_votes"
+  add_foreign_key "candidate_votes", "users"
   add_foreign_key "car_checklists", "entities"
   add_foreign_key "car_checklists", "users"
   add_foreign_key "clasification_danger_details", "clasification_dangers"
@@ -2369,6 +2507,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_06_020830) do
   add_foreign_key "form_preventions", "clasification_danger_details"
   add_foreign_key "form_preventions", "clasification_dangers"
   add_foreign_key "format_actions", "entities"
+  add_foreign_key "habil_votes", "adm_votes"
+  add_foreign_key "habil_votes", "users"
   add_foreign_key "history_evaluations", "entities"
   add_foreign_key "history_evaluations", "evaluations"
   add_foreign_key "history_evaluations", "risk_levels"
@@ -2380,6 +2520,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_06_020830) do
   add_foreign_key "history_matrix_legals", "matrix_legals"
   add_foreign_key "improvement_items", "improvement_plans"
   add_foreign_key "improvement_plans", "entities"
+  add_foreign_key "inves_recomendations", "investigations"
+  add_foreign_key "inves_users", "investigations"
+  add_foreign_key "investigations", "entities"
+  add_foreign_key "investigations", "users"
   add_foreign_key "kits", "entities"
   add_foreign_key "kits", "users"
   add_foreign_key "locations", "entities"
@@ -2447,6 +2591,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_06_020830) do
   add_foreign_key "unsafe_conditions", "entities"
   add_foreign_key "users", "documents"
   add_foreign_key "view_videos", "users"
+  add_foreign_key "votes", "adm_votes"
+  add_foreign_key "votes", "candidate_votes"
+  add_foreign_key "votes", "habil_votes"
+  add_foreign_key "votes", "users"
   add_foreign_key "working_condition_items", "clasification_danger_details"
   add_foreign_key "working_condition_items", "clasification_dangers"
   add_foreign_key "working_condition_items", "working_conditions"

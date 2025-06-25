@@ -261,7 +261,7 @@ class Evaluation < ApplicationRecord
         details.each do |detail| 
 
             if detail.apply == 0
-                total_score += detail.maximun_value
+                total_score += detail.maximun_value if detail.meets == 1
                 total_score_int += detail.maximun_value  if detail.meets == 1
                 total_details_cumplidos_int += detail.maximun_value if detail.meets == 1
             end
@@ -281,18 +281,18 @@ class Evaluation < ApplicationRecord
         eval.score  = total_score
         eval.percentage =  ((total_details_cumplidos.to_f / total_details_apply.to_f) * 100).round(2) if total_details.to_f > 0
         eval.score_int  = total_score_int
-        eval.percentage_int =  ((total_details_cumplidos_int.to_f / total_details.to_f) * 100).round(2) if total_details.to_f > 0
+        eval.percentage_int = total_score_int
 
-        if eval.score < 61 then
+        if eval.percentage < 61 then
            eval.result = "CRÍTICO"
            eval.observation = "<br>* Plan de Mejoramiento de inmediato a disposición de MinTrabajo.<br/> <br>* Enviar a la ARL reporte de avances ( máx a los tres meses).<br/> <br>* Seguimiento anual y Plan de Visita la empresa por parte del Ministerio.<br/>"
         end 
-        if eval.score > 60.99 && eval.percentage < 86 then
+        if eval.percentage > 60.99 && eval.percentage < 86 then
             eval.result = "MODERADAMENTE ACEPTABLE"
             eval.observation = "<br>* Plan de Mejoramiento a disposición de MinTrabajo.<br/> <br>* Enviar a la ARL reporte de avances (max a los seis meses).<br/> <br>* Plan de visita MinTrabajo.<br/>"
         end 
       
-        if eval.score > 85.99 then
+        if eval.percentage > 85.99 then
             eval.result = "ACEPTABLE"
             eval.observation = "<br>* Mantener la calificación y evidencias a disposición de MinTrabajo.<br/> <br>* Incluir en el Plan de Anual de Trabajo las mejoras que se establezcan de acuerdo con la evaluación.<br/>"
         end 

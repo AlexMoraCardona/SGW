@@ -44,7 +44,7 @@ class DescriptionJobsController < ApplicationController
 
     def update
         @description_job = DescriptionJob.find(params[:id])
-        if @description_job.update(update_description_job_params)
+        if @description_job.update(description_job_params)
             redirect_to description_jobs_path, notice: 'Cargo actualizado correctamente'
         else
             render :edit, description_jobs: :unprocessable_entity
@@ -60,7 +60,7 @@ class DescriptionJobsController < ApplicationController
     def firmar_ela 
         @description_job = DescriptionJob.find_by(id: params[:id].to_i)
         if params[:format].to_i == 1
-            if  @description_job.user_elaboro.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @description_job.user_elaboro.to_i == Current.user.id.to_i 
                 redirect_to firmar_ela_description_jobs_path   
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma."
@@ -71,7 +71,7 @@ class DescriptionJobsController < ApplicationController
     def firmar_rev 
         @description_job = DescriptionJob.find_by(id: params[:id].to_i)
         if params[:format].to_i == 2
-            if  @description_job.user_reviso.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @description_job.user_reviso.to_i == Current.user.id.to_i 
                 redirect_to firmar_rev_description_jobs_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma."
@@ -82,7 +82,7 @@ class DescriptionJobsController < ApplicationController
     def firmar_apr 
         @description_job = DescriptionJob.find_by(id: params[:id].to_i)
         if params[:format].to_i == 3
-            if  @description_job.user_aprobo.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @description_job.user_aprobo.to_i == Current.user.id.to_i 
                 redirect_to firmar_apr_description_jobs_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma."
@@ -122,13 +122,4 @@ class DescriptionJobsController < ApplicationController
             :user_aprobo, :date_firm_elaboro, :date_firm_reviso, :date_firm_aprobo,
              :firm_elaboro, :firm_reviso, :firm_aprobo, :state_job )
     end 
-
-    def update_description_job_params
-        params.require(:description_job).permit(:entity_id, :name_job, :immediate_boss,
-         :objetive_job, :academic_training, :experience, :salary_range, :type_contract,
-          :working_hours, :required_knowledge, :competencies, :job_functions,
-           :roles_responsibilities, :observations, :date_firm_elaboro, :date_firm_reviso, :date_firm_aprobo,
-             :firm_elaboro, :firm_reviso, :firm_aprobo, :state_job )
-    end 
-
 end  

@@ -43,7 +43,8 @@ class ImprovementPlansController < ApplicationController
         respond_to do |format| 
             format.html
             format.pdf {render  pdf: 'ver_improvement_plan_pdf',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
+                margin: {top: 5, bottom: 5, left: 2, right: 2 },
+                orientation: 'Landscape',
                 disable_javascript: true,
                 page_size: 'letter',
                 footer: {
@@ -99,12 +100,20 @@ class ImprovementPlansController < ApplicationController
     def crear_item_improvement_plan 
         @improvement_item = ImprovementItem.new  
         @improvement_items = ImprovementItem.where("improvement_plan_id = ?", params[:id]) if params[:id].present?
+        evaluation = Evaluation.find_by(entity_id: Current.user.entity)
+        @standar_detail_items = EvaluationRuleDetail.where("evaluation_id = ?",evaluation.id) if evaluation.present?
+        if @standar_detail_items.present?
+            @standar_detail_items.each  do |standar_detail_item|
+                standar_detail_item.item_nro = standar_detail_item.standar_detail_item.item_nro
+                standar_detail_item.save
+            end    
+        end    
     end    
 
     def firmar_representante_improvement 
         @improvement_plan = ImprovementPlan.find_by(id: params[:id].to_i)
         if params[:format].to_i == 1
-            if  @improvement_plan.user_representante.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @improvement_plan.user_representante.to_i == Current.user.id.to_i 
                 redirect_to firmar_representante_improvement_plan_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Representante Legal."
@@ -115,7 +124,7 @@ class ImprovementPlansController < ApplicationController
     def firmar_responsable_improvement
         @improvement_plan = ImprovementPlan.find_by(id: params[:id].to_i)
         if params[:format].to_i == 2
-            if  @improvement_plan.user_responsible.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @improvement_plan.user_responsible.to_i == Current.user.id.to_i 
                 redirect_to firmar_responsable_improvement_plan_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Responsable SG-SST."

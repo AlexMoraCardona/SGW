@@ -1,0 +1,42 @@
+<% if @entity.present? %>
+    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
+<% end %>
+ 
+<div>
+    <%= link_to t('common.create_adm_vote'), new_adm_vote_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level < 3 %>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Votación</th>
+            <th scope="col">Empresa</th>
+            <th scope="col">Fecha de inicio</th>
+            <th scope="col">Fecha final</th>
+            <th scope="col">Candidatos</th>
+            <th scope="col">Usuarios Hábiles</th>
+            <th scope="col">Editar</th>
+            <th scope="col">Ver</th>
+            <th scope="col">PDF</th>
+        </tr>
+    </thead>
+    <% if @adm_votes.present? %> 
+        <% @adm_votes.each do |adm_vote| %>
+            <tbody>
+                <tr>
+                    <td><%= adm_vote.titulo_vote %></td>
+                    <td><%= adm_vote.entity.business_name %></td>
+                    <td style="text-align:center"><%= adm_vote.date_initial %></td>
+                    <td style="text-align:center"><%= adm_vote.date_final %></td>
+                    <td style="text-align:center"><%= link_to "Candidatos", crear_candidato_path(adm_vote.id), class: 'btn btn-sm btn btn-warning'  if Current.user.level > 0 && Current.user.level < 3 %></td>
+                    <td style="text-align:center"><%= link_to "Hábiles", ver_habiles_path(adm_vote.id), class: 'btn btn-sm btn btn-warning'  if Current.user.level > 0 && Current.user.level < 3 %></td>
+                    <td style="text-align:center"><%= link_to t('common.edit_adm_vote'), edit_adm_vote_path(adm_vote.id), class: 'btn btn-sm btn btn-warning'  if Current.user.level > 0 && Current.user.level < 3 %></td>
+                    <td style="text-align:center"><%= link_to t('common.show_adm_vote'), adm_vote_path(adm_vote.id), class: 'btn btn-sm btn btn-warning' %></td>
+                    <td style="text-align:center"><%= link_to "PDF", adm_vote_pdf_path(adm_vote.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
+                </tr>    
+            </tbody>
+        <% end %> 
+    <% end %> 
+</table>
+
+

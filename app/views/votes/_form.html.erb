@@ -1,0 +1,47 @@
+<div class="container col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
+    <br>
+    <%= form_with model: @vote do |form| %>
+        <% @vote.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>
+        <div class="col-sm-12 p-3 mb-2  text-dark">    
+            <p class="fst-normal fs-3"><strong><%=@adm_vote.titulo_vote%></strong></p>
+        </div>
+        <br>     
+        <div class="col-sm-12 p-3 mb-2  text-dark">    
+            <p class="fst-normal fs-3"><strong><%=@adm_vote.observation%></strong></p>
+        </div>
+        <%  @candidatos = CandidateVote.listac(@adm_vote.id) %>
+        <%  if @candidatos.present? %>
+            <div class="col-sm-4">
+                <table class="table">
+                    <%  i = 0 %>
+                    <%  @candidatos.each do |candidato| %>
+                        <tr>
+                            <td>
+                                <% if candidato.avatar_candidate.attached? %>
+                                    <% if candidato.avatar_candidate.image? %> 
+                                        <%= image_tag candidato.avatar_candidate, data: {previews_target: "preview"}, class: "avatar-mini" %>
+                                    <% end %>
+                                <% else %> 
+                                    <%= image_tag("avatar.jpg", class: "avatar-voto") %>
+                                <% end %>
+                                </br>
+                                Voto por: <%= candidato.user.name %> <%= form.radio_button :datovoto, candidato.id, required: true %>
+                                </br>
+                            </td>
+                        </tr>    
+                    <% end %>
+                </table>
+            </div>
+        <% end %>
+        <br>
+        <br>
+
+        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+        <div><br></div>
+   <% end %>
+</div>

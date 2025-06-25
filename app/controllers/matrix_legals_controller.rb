@@ -132,7 +132,33 @@ class MatrixLegalsController < ApplicationController
         @legal_rules = LegalRule.where("clasification_norma = ? and state_norma = ?",1,0)
         @norma =  LegalRule.find_by(id:  params[:norm]) if params[:norm].present?
         @matrix_legal = MatrixLegal.find_by(id: params[:mat]) if params[:mat].present?
-        @matrix_legal_item = MatrixLegalItem.new 
+        
+    end    
+
+    def grabar_rule
+        @matrix_legal = MatrixLegal.find_by(id: params[:matrix_legal]) if params[:matrix_legal].present?
+        @norma =  LegalRule.find_by(id:  params[:legal_rule]) if params[:legal_rule].present?
+
+        if @matrix_legal.present? && @norma.present?
+            @matrix_legal_item = MatrixLegalItem.new 
+
+            @matrix_legal_item.legal_rule_id =  @norma.id
+            @matrix_legal_item.meets =  0
+            @matrix_legal_item.risk_factor =  @norma.risk_factor
+            @matrix_legal_item.issuing_entity =  @norma.issuing_entity
+            @matrix_legal_item.requirement =  @norma.requirement
+            @matrix_legal_item.rule_name =  @norma.rule_name
+            @matrix_legal_item.applicable_article =  @norma.applicable_article
+            @matrix_legal_item.description_compliance =  @norma.description_compliance
+            @matrix_legal_item.fec_norma =  @norma.fec_norma
+            @matrix_legal_item.year =  @norma.year
+            @matrix_legal_item.matrix_legal_id =  @matrix_legal.id if @matrix_legal.present?
+            @matrix_legal_item.apply =  0
+            @matrix_legal_item.save
+            redirect_to matrix_legals_path(entity_id: @matrix_legal.entity_id), notice: "Requisito legal creado correctamente"
+        else
+            redirect_to matrix_legals_path, alert: "Error en la creación del Requisito legal"
+        end 
     end    
 
     def crear_historia 

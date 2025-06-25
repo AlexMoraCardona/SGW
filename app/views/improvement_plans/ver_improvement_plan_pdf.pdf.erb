@@ -1,10 +1,5 @@
 <head>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
-<meta charset='utf-8' />
-<%= wicked_pdf_javascript_include_tag "number_pages" %>
-<%= wicked_pdf_stylesheet_link_tag 'pdf' %>
-<%= javascript_importmap_tags %>
+    <meta charset='utf-8' />
 </head>
 <br>
 <div>
@@ -17,8 +12,8 @@
                         <%=  image_tag  @entity.logo, class: "image_peq" %>
                     <% end %> 
                 </td>
-                <td rowspan="4"; colspan="4"; style="text-align:center">
-                    <div class="col-10"><h6><%= @template.name if @template.present? %></h6><h6><%= @improvement_plan.entity.business_name if @improvement_plan.present? %> Nit: <%= @improvement_plan.entity.identification_number if @improvement_plan.present? %> </h6></div>
+                <td rowspan="4"; colspan="3"; style="text-align:center">
+                    <div class="col-10"><%= @template.name if @template.present? %><%= @improvement_plan.entity.business_name if @improvement_plan.present? %> Nit: <%= @improvement_plan.entity.identification_number if @improvement_plan.present? %> </div>
                 </td>
                 <td rowspan="4";  style="text-align:center">
                 </td>
@@ -40,29 +35,52 @@
             </tr>
 
             <tr>  
+                <td style="border:1px solid black; text-align:center">NÚMERAL ESTÁNDAR</TD>
                 <td style="border:1px solid black; text-align:center">ACTIVIDAD</TD>
-                <td style="border:1px solid black; text-align:center">ACCION DE MEJORAMIENTO  CORRECTIVA</TD>
-                <td style="border:1px solid black; text-align:center">FECHA DE INICIO</TD>
-                <td style="border:1px solid black; text-align:center">FECHA DE TERMINACIÓN</TD>
-                <td style="border:1px solid black; text-align:center">OBJETIVO </TD>
                 <td style="border:1px solid black; text-align:center">RECURSOS</TD>
-                <td style="border:1px solid black; text-align:center">PROCESO RESPONSABLE</TD>
-                <td style="border:1px solid black; text-align:center">CUMPLIMIENTO DE LA ACCIÓN %</TD>
+                <td style="border:1px solid black; text-align:center">RESPONSABLE</TD>
+                <td style="border:1px solid black; text-align:center">PLAZO DE LA ACCION</TD>
                 <td style="border:1px solid black; text-align:center">OBSERVACIONES</TD>
+                <td style="border:1px solid black; text-align:center">EVIDENCIA DE CUMPLIMIENTO</TD>
+                <td style="border:1px solid black; text-align:center">VER/EDITAR</TD>
              </tr>  
         </thead>
         <% @improvement_items.each do |item| %>   
             <tbody>
                 <tr>
-                    <td style="border:1px solid black;"><%= item.activity_plan %></td>
-                    <td style="border:1px solid black"><%= item.action_improvement %></td>
-                    <td style="border:1px solid black"><%= item.date_initial %></td>
-                    <td style="border:1px solid black"><%= item.date_fin %></td>
-                    <td style="border:1px solid black"><%= item.aim_improvement %></td>
+                    <td style="border:1px solid black; text-align:center"><%= item.action_improvement %></td>
+                    <td style="border:1px solid black"><%= item.activity_plan %></td>
                     <td style="border:1px solid black"><%= item.resources_improvement %></td>
                     <td style="border:1px solid black"><%= item.responsible_action %></td>
-                    <td style="border:1px solid black; text-align:center"><%= item.percentage_compliance %>%</td>
+                    <td style="border:1px solid black"><%= item.date_initial %></td>
                     <td style="border:1px solid black"><%= item.observation %></td>
+                    <td style="border:1px solid black">
+                        <% if item.file_improvements.attached? %>
+                            <div data-controller="previews" >
+            
+                                <% item.file_improvements.each do |file|%>
+                                    <br>
+                                    <% if file.image? %>
+                                        <div>
+                                            <%= image_tag file, data: {previews_target: "preview"}, class: "image_peq" %>
+                                            <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                        </div>
+                                    <% elsif file.video? %>
+                                            <%= video_tag url_for(file), controls: "", width: "400px" %>          
+                                            <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                    <% elsif file.audio? %>
+                                        <%= audio_tag(url_for(file), controls: "") %>          
+                                        <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                    <% else %>
+                                        <%= link_to file.filename, url_for(file) %>          
+                                        <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                    <% end %>
+                                <% end %>  
+                            </div>
+                        <% end %>  
+                    
+                    </td>
+                    <td style="border:1px solid black; text-align:center;"><%= link_to t('common.edit'), edit_improvement_item_path(item), class: 'btn btn-sm btn-primary'  %></td>
                 </tr>
             </body> 
         <% end %>
@@ -78,15 +96,15 @@
                     <% end %>     
                 <% end %>     
             </td>
-            <td  colspan="4"; style="border:0px solid black"><br>
+            <td  colspan="3"; style="border:0px solid black"><br>
             </td>
-            <td  colspan="2"; style="border:0px solid black"><br>
+            <td  colspan="3"; style="border:0px solid black"><br>
             </td>
         </tr> 
         <tr>
             <td  colspan="4"; style="border:1px solid black"><%= @rep.name %> - Representante Legal</td>
-            <td  colspan="4"; style="border:0px solid black"></td>
-            <td  colspan="2"; style="border:0px solid black"></td>
+            <td  colspan="3"; style="border:0px solid black"></td>
+            <td  colspan="3"; style="border:0px solid black"></td>
         </tr>
     </table>  
     </br>

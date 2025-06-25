@@ -6,6 +6,9 @@ class User < ApplicationRecord
     belongs_to :document
     has_many :form_preventions
     has_many :view_videos
+    has_many :candidate_votes
+    has_many :habil_votes
+    has_many :votes
     
     #validates :document, name, username, email, password_digest,  presence: true #Validar la presencia
     validates :document,  presence: true #Validar la presencia

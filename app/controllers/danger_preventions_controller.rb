@@ -49,7 +49,7 @@ class DangerPreventionsController < ApplicationController
     private
 
     def danger_prevention_params
-        params.require(:danger_prevention).permit(:name, :clasification_danger_detail_id)
+        params.require(:danger_prevention).permit(:name, :clasification_danger_detail_id, :type_danger)
     end 
 
 end  

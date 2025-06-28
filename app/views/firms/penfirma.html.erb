@@ -5,7 +5,7 @@
 </div>
 <div class="container col-11" 
     <br>
-        <h2>EVIDENCIAS PENDIENTES POR FIRMAR</h2>
+        <h5>EVIDENCIAS PENDIENTES POR FIRMAR</h5>
     <hr>
     
     <br>
@@ -50,12 +50,10 @@
 
     <% end %>  
     
-     <br>
-        <h2>ACTAS PENDIENTES POR FIRMAR</h2>
-    <hr>
-    
     <br>
- 
+        <h5>ACTAS PENDIENTES POR FIRMAR</h5>
+    <hr>
+    <br>
     <% if @actas_pendientes.present?   %>
             <table class="table table-hover">
                 <thead>
@@ -89,13 +87,45 @@
                 </tbody>   
             </table>
             </br>  
-    <% else %>
-        <br>
-            <h2>No se encontraron actas pendientes por firma!</h2>
-        <hr>
-    
-        <br>
-
     <% end %>     
-   
+    <br>
+        <h5>OTROS DOCUMENTOS POR FIRMAR</h5>
+    <hr>
+    <br>
+    <% if @description_jobs.present?   %>
+            <table class="table table-hover">
+                <thead>
+                    <tr>  
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Documento</th>
+                        <th scope="col">Ver</th> 
+                        <th scope="col">Firmar</th> 
+                    </tr>
+                </thead>  
+                <tbody> 
+                    <% @description_jobs.each do |description_job| %>
+                        <% if @meeting_minute.present?   %>
+                            <tr> 
+                                <td><%= description_job.created_at.strftime("%Y-%m-%d") %></td>
+                                <td>Descripcion de cargo</td>
+                                <td><%= link_to t('common.veritem'),  description_job_path(description_job.id), class: 'btn btn-sm btn-primary'  %></td>
+                                <td> 
+                                    <% if description_job.firm_elaboro == 0  && description_job.user_elaboro == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_ela_description_jobs_path(description_job.id, 1), class: 'btn btn-sm btn btn-warning' %>
+                                    <% elsif description_job.firm_reviso == 0 && description_job.user_reviso == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_rev_description_jobs_path(description_job.id, 2), class: 'btn btn-sm btn btn-warning' %>
+                                    <% elsif description_job.firm_aprobo == 0 && description_job.user_aprobo == Current.user.id %>   
+                                        <%= link_to t('common.firmar'), firmar_apr_description_jobs_path(description_job.id, 3), class: 'btn btn-sm btn btn-warning' %> 
+                                    <% end %>
+                                </td>
+                            </tr>  
+                        <% end %> 
+                    <% end %> 
+                </tbody>   
+            </table>
+            </br>  
+    <% end %>     
+
+    
+
 </div>

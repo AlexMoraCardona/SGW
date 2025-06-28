@@ -5,7 +5,7 @@ class AdmVote < ApplicationRecord
     has_many :votes
 
     def self.crear_habiles(adm_vote) 
-        users = User.where("entity = ? and state = ? and level > ?",adm_vote.entity_id,1,0)
+        users = User.where("entity = ? and state = ? and level > ?",adm_vote.entity_id,1,2)
         if users.present?
            users.each do |user|
                habil_vote = HabilVote.new

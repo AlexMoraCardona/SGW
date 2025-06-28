@@ -43,16 +43,22 @@
                 <%= form.date_field :date_nacimiento,  class: "form-control" %>
             </div>
         </div>    
-
-        <div class="form-group">    
-            <%= form.label :phone, style: "display: block" %>
-            <%= form.text_field :phone,  class: "form-control" %>
-        </div>
-        <div class="form-group">    
-            <%= form.label :cel, style: "display: block" %>
-            <%= form.text_field :cel,  class: "form-control" %>
-        </div>
-
+        <br>
+        <div class="row g-3">
+            <div class="col-sm-5">
+                <%= form.label :phone, style: "display: block" %>
+                <%= form.text_field :phone,  class: "form-control" %>
+            </div>
+            <div class="col-sm-5">
+                <%= form.label :cel, style: "display: block" %>
+                <%= form.text_field :cel,  class: "form-control" %>
+            </div>
+            <div class="col-sm-5">
+                <%= form.label :license, style: "display: block" %>
+                <%= form.text_field :license,  class: "form-control" %>
+            </div>
+        </div>    
+        <br>
         <div class="form-group">
             <%= form.label :state,  style: "display: block" %>
             <%= form.radio_button :state, 0 %>
@@ -164,7 +170,18 @@
                 <%= form.label :cargo_rol, style: "display: block" %>
                 <%= form.select(:cargo_rol, [['', ''],['Representante Legal', 'Representante Legal'], ['Responsable SG-SST', 'Responsable SG-SST'], ['Asesor externo SG-SST', 'Asesor externo SG-SST'], ['Integrante COPASST', 'Integrante COPASST'], ['Vigía SG-SST', 'Vigía SG-SST'], ['Integrante CCL', 'Integrante CCL'], ['Presidente CCL', 'Presidente CCL'], ['Secretario(a) CCL', 'Secretario(a) CCL'], ['Lider Brigada de Emergencia', 'Lider Brigada de Emergencia'], ['Colaborador', 'Colaborador'], ['Auditor Interno', 'Auditor Interno'], ['Brigada de Evacuación', 'Brigada de Evacuación'], ['Brigada de Primeros Auxilios', 'Brigada de Primeros Auxilios'], ['Brigada de Incendio', 'Brigada de Incendio'], ['Brigada de Sustancias Peligrosas', 'Brigada de Sustancias Peligrosas']]) %>
             </div>
-        </div>        
+        </div> 
+        </br>
+        <hr>
+        <div class="d-flex">
+            <div class="container">
+               <h2 class="display-5">Autorización políticas de protección de datos</h2></br>
+               <p>Autoriza políticas de protección de datos: <%= User.label_politica(@user.authorization_police) if @user.present? %></p>
+               <p>Fecha de autorización políticas de protección de datos: <%= @user.authorization_date.strftime("%F") if  @user.authorization_date.present? %></p>
+            </div> 
+        </div>
+        <hr>
+        </br>
 
         <div class="form-group">     
             <%= form.label :password,  style: "display: block" %>

@@ -70,12 +70,17 @@ class Authentication::UsersController < ApplicationController
         end    
     end  
 
+
+    def politicas
+
+    end    
+
     
 
     private
     def user_params
         params.require(:user).permit(:nro_document, :name, :username, :email, :password, :state, :level, :entity, :activity, :avatar, :firm, :document_id, 
         :legal_representative, :copasst, :ccl, :collaborator, :president_copasst, :secretary_copasst, :vigia_sgsst, 
-        :cargo_rol, :brigade, :cel, :phone, :clasification_post, :sex, :date_entry_company, :date_retirement_company, :date_nacimiento, :area_employee)
+        :cargo_rol, :brigade, :cel, :phone, :clasification_post, :sex, :date_entry_company, :date_retirement_company, :date_nacimiento, :area_employee, :authorization_police, :authorization_date, :license)
     end    
 end    

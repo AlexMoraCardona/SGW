@@ -342,6 +342,7 @@
                                             <a class="dropdown-item" href="/allow_exams"><strong>Autorización evaluaciones</strong></a>
                                             <a class="dropdown-item" href="/users/cambiar_clave/path"><strong>Cambiar clave</strong></a>
                                             <a class="dropdown-item" href="/trainings"><strong>Cronograma de capacitaciones y actividades</strong></a>
+                                            <a class="dropdown-item" href="/protection_elements"><strong>Elementos de protección personal</strong></a>                                            
                                             <a class="dropdown-item" href="/entities"><strong>Empresas</strong></a>
                                             <a class="dropdown-item" href="/description_jobs"><strong>Perfiles de cargos</strong></a>
                                             <a class="dropdown-item" href="/users"><strong>Usuarios</strong></a>
@@ -586,6 +587,7 @@
                                             <a class="dropdown-item" href="/adm_votes"><strong>Administrar votaciones</strong></a>
                                             <a class="dropdown-item" href="/users/cambiar_clave/path"><strong>Cambiar clave</strong></a>
                                             <a class="dropdown-item" href="/trainings"><strong>Cronograma de capacitaciones y actividades</strong></a>
+                                            <a class="dropdown-item" href="/protection_elements"><strong>Elementos de protección personal</strong></a>                                            
                                         </ul>
                                     </div>
                                 </div>
@@ -1014,6 +1016,9 @@
                                 </div>
                                 <div class="dropdown mt-3">
                                     <ul>
+                                        <% if Current.user.ccl == 1 || Current.user.secretary_copasst == 1 %>
+                                          <a class="dropdown-item" href="/meeting_minutes"><strong>Actas de reuniones</strong></a>
+                                        <% end %>  
                                         <a class="dropdown-item" href="/route_controls"><strong>Control de rutas</strong></a>
                                         <a class="dropdown-item" href="firms/penfirma/1"><strong>Documentos pendientes por firmar</strong></a>
                                         <a class="dropdown-item" href="/exams"><strong>Evaluaciones</strong></a>
@@ -1039,7 +1044,7 @@
             <hr>
             <div class="col-sm-10"> 
                 <div>
-                    <%= link_to "Calendario de Actividades", calendar_path(Date.today.year), class: 'btn btn-outline-dark'  %>
+                    <%= link_to "Calendario de Actividades", calendar_path(Date.today.year), class: 'btn btn-outline-dark'  %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to "Política de privacidad aquí", href="http://localhost:3000/users/politicas/1", class: 'btn btn-outline-dark'  %>
                     </br>
 
                     <%  @calendars.each do |calendar| %>
@@ -1052,7 +1057,7 @@
                     <% end %>
                     
                 </div>
-            </div>    
+            </div>  
         </div>
         <div class="col-sm-1" ></div>                    
         <div class="col-sm-4  card p-6" > 

@@ -14,6 +14,10 @@ class OccupationalExamItemsController < ApplicationController
 
     def create
         @occupational_exam_item = OccupationalExamItem.new(occupational_exam_item_params)
+        usuario = User.find(@occupational_exam_item.user_application) if @occupational_exam_item.user_application > 0
+        @occupational_exam_item.nro_identification = usuario.nro_document if usuario.present?
+        @occupational_exam_item.name = usuario.name if usuario.present?
+        @occupational_exam_item.post = User.label_activity(usuario.activity) if usuario.present?
 
         if @occupational_exam_item.save then
             redirect_back fallback_location: root_path, notice: t('.created') 
@@ -46,7 +50,7 @@ class OccupationalExamItemsController < ApplicationController
     def occupational_exam_item_params
         params.require(:occupational_exam_item).permit(:consecutive, :fec_exam, :fec_venc, :exam_type, 
         :nro_identification, :name, :post, :concept, :addressing, :recommendations, :restrictions,
-         :sve, :action, :follow_up, :occupational_exam_id, :state_exam)
+         :sve, :action, :follow_up, :occupational_exam_id, :state_exam, :user_application)
     end  
 
 end  

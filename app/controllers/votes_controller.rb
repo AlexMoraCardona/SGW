@@ -28,10 +28,10 @@ class VotesController < ApplicationController
 
         if resultado == 1 && @vote.save then
             habil_vote.save 
-            redirect_back fallback_location: root_path, notice: 'Voto creado correctamente' 
+            redirect_to home_path, notice: 'Voto creado correctamente' 
         else
-            redirect_back fallback_location: root_path, alert: 'Usuario no se encuentra hábil para votar', vote: :see_other  if resultado == 0            
-            redirect_back fallback_location: root_path, alert: 'Su usuario ya aparece registrado en las votaciones', vote: :see_other  if resultado == 2              
+            redirect_to home_path, alert: 'Usuario no se encuentra hábil para votar', vote: :see_other  if resultado == 0            
+            redirect_to home_path, alert: 'Su usuario ya aparece registrado en las votaciones', vote: :see_other  if resultado == 2              
         end     
     end    
  

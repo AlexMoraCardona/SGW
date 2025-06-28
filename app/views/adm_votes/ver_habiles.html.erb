@@ -1,7 +1,105 @@
 <br>
 <div class="container col-12 card p-5">
     <br>
-    <h2>Usuarios Hábiles</h2>
+    <h2>Usuarios Hábiles</h2>  
+    <div class="row g-2">
+        <div class="col-sm-4">
+            <% @cant_reg =   @habiles.where("vote = ?",0).count if  @habiles.present? %>
+            <% if @cant_reg.present? %>
+                <!-- Button trigger modal --> 
+                <button class="btn btn-sm btn-outline-danger position-relative" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+                    Usuarios pendientes por votar
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                          <%= @cant_reg %>+
+                        <span class="visually-hidden">unread messages</span>
+                    </span>
+                </button>
+                <div class="row" >  
+                    <div align="right"; class="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+              
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel"><strong>Usuarios pendientes por votar</strong></h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <table>
+                                            <tr>     
+                                                <td style="width: 15%;"><strong>Documento</strong></td>
+                                                <td style="width: 30%;"><strong>Nombre</strong></td>
+                                            </tr>    
+                                            <% if  @habiles.present? %>
+                                                <%  @habiles.where("vote = ?",0).each do |habiles| %>
+                                                    <tr>
+                                                        <td style="width: 15%;"><h5></br><%= habiles.user.nro_document %></h5></td>
+                                                        <td style="width: 30%;"><h5></br><%= habiles.user.name %></h5></td>
+                                                    </tr>
+                                                <% end %>
+                                            <% end %>        
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% end %>
+        </div>
+        <div class="col-sm-5">        
+            <% @cant_regya =   @habiles.where("vote = ?",1).count if  @habiles.present? %>
+            <% if @cant_regya.present? %>
+                <!-- Button trigger modal --> 
+                <button class="btn btn-sm btn-outline-primary position-relative" data-bs-toggle="modal" data-bs-target="#exampleModaldos" >
+                    Usuarios que ya votaron
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                          <%= @cant_regya %>+
+                         <span class="visually-hidden">unread messages</span>
+                    </span>
+                </button>
+                <div class="row" >  
+                    <div align="right"; class="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+              
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModaldos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel"><strong>Usuarios pendientes por votar</strong></h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <table>
+                                            <tr>     
+                                                <td style="width: 15%;"><strong>Documento</strong></td>
+                                                <td style="width: 30%;"><strong>Nombre</strong></td>
+                                            </tr>    
+                                            <% if  @habiles.present? %>
+                                                <%  @habiles.where("vote = ?",1).each do |habiles| %>
+                                                    <tr>
+                                                        <td style="width: 15%;"><h5></br><%= habiles.user.nro_document %></h5></td>
+                                                        <td style="width: 30%;"><h5></br><%= habiles.user.name %></h5></td>
+                                                    </tr>
+                                                <% end %>
+                                            <% end %>        
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% end %>
+        </div>
+    </div>    
     <hr>
     <% if @habiles.present? %>
         <table class="table table-hover">

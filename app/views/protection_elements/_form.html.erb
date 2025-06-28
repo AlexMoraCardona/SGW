@@ -113,7 +113,32 @@
             <%= form.label :img_elem,  style: "display: block" %> 
             <%= form.file_field :img_elem,  class: "form-control", accept:"image/*", capture:"environment" %>
         </div>
-
+        <div><br></div>
+        <% if @protection_element.present? %>
+            <% if @protection_element.img_elem.attached? %>
+                <% if @protection_element.img_elem.image? %> 
+                    <%= image_tag @protection_element.img_elem, data: {previews_target: "preview"}, class: "image_peq" %>
+                <% end %>
+            <% else %> 
+                <%= image_tag("avatar.jpg", class: "avatar-mini") %>
+            <% end %>
+        <% end %>     
+        <div><br></div>
+        <div class="form-group">    
+            <%= form.label :img_ficha,  style: "display: block" %> 
+            <%= form.file_field :img_ficha,  class: "form-control", accept:"image/*", capture:"environment" %>
+        </div>
+        <div><br></div>
+        <% if @protection_element.present? %>
+            <% if @protection_element.img_ficha.attached? %>
+                <% if @protection_element.img_ficha.image? %> 
+                    <%= image_tag @protection_element.img_ficha, data: {previews_target: "preview"}, class: "image_peq" %>
+                <% end %>
+            <% else %> 
+                <%= image_tag("avatar.jpg", class: "avatar-mini") %>
+            <% end %>
+        <% end %>     
+        <div><br></div>
         <br>    
         <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
         <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, protection_elements_path %>

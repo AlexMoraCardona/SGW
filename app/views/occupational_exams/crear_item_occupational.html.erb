@@ -30,25 +30,12 @@
             <%= form.select(:exam_type, [['Preingreso', 0], ['Periódicos', 1], ['Egreso', 2]]) %>
         </div>
 
-        <div class="row g-2">
-            <div class="col-sm-3">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar la número de identificación del empleado."><%= t('.nro_identification') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-                <%= form.text_field :nro_identification,  class: "form-control" %>
-            </div>  
-            <div class="col-sm-3">
-            </div>  
-            <div class="col-sm-4"> 
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar los apellídos y nombres del empleado."><%= t('.name') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button> <br>          
-                <%= form.text_field :name,  class: "form-control" %>
-            </div>        
-        </div>   
+        <br>
         <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar el cargo del empleado."><%= t('.post') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :post,  class: "form-control" %>
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el empleado.">Empleado:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                <%= form.collection_select :user_application, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
         </div>
-
-
-
+        </br>
         <div class="form-group">    
             <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar el concepto."><%= t('.concept') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
             <%= form.text_field :concept,  class: "form-control" %>
@@ -78,7 +65,6 @@
 
         <%= form.hidden_field :consecutive, :value => @cant.to_i, class: "form-control" %>
         <%= form.hidden_field :occupational_exam_id, :value => params[:id].to_i, class: "form-control" %>
-
         <br>    
         <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
         <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, occupational_exams_path(entity_id: Current.user.entity.to_i) %>

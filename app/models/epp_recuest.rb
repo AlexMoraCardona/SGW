@@ -1,0 +1,2 @@
+class EppRecuest < ApplicationRecord
+end

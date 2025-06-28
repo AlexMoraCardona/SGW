@@ -25,7 +25,6 @@ class MatrixDangerItemsController < ApplicationController
     
     def update
         @matrix_danger_item = MatrixDangerItem.find(params[:id])
-
         @matrix_danger_item.clasification_danger_id = ClasificationDangerDetail.find(@matrix_danger_item.clasification_danger_detail_id).clasification_danger_id if @matrix_danger_item.clasification_danger_detail_id.present? 
         if @matrix_danger_item.update(matrix_danger_item_params)
             MatrixDangerItem.calculos(@matrix_danger_item.id) if @matrix_danger_item.present?

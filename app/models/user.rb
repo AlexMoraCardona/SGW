@@ -49,6 +49,11 @@ class User < ApplicationRecord
         end 
     end 
 
+    def self.label_politica(dato)
+        if dato == 0 ; 'NO'
+        elsif  dato == 1 ; 'SI'
+        end 
+    end 
 
     
     

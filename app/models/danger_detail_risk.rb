@@ -9,6 +9,16 @@ class DangerDetailRisk < ApplicationRecord
             label = 'Sin Información'
         end
         return label   
-    end          
+    end     
+    
+    def self.buscar_efecto(dato) 
+        danger_detail_risk = DangerDetailRisk.where("clasification_danger_detail_id = ?",dato).last 
+        if danger_detail_risk.present? then
+            label = danger_detail_risk.name
+        else
+            label = 'Sin Información'
+        end
+        return label   
+    end     
 
 end

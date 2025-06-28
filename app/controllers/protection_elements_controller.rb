@@ -1,6 +1,6 @@
 class ProtectionElementsController < ApplicationController
     def index
-        if  Current.user && Current.user.level == 1
+        if  Current.user && Current.user.level > 0 && Current.user.level < 4
             @protection_elements = ProtectionElement.all 
         else
              redirect_to new_session_path, alert: t('common.not_logged_in')  
@@ -46,7 +46,7 @@ class ProtectionElementsController < ApplicationController
     def protection_element_params
         params.require(:protection_element).permit(:name, :body_protect, :rule_protection, :durability, 
         :date_sheet, :delivery_format, :personal_induction, :state_protection, :img_elem, :cost_element, 
-        :cant_person_use, :prom_person_use, :total_anual_person, :stok_min, :proveedor_element, :technical_sheet, :entity)
+        :cant_person_use, :prom_person_use, :total_anual_person, :stok_min, :proveedor_element, :technical_sheet, :entity, :img_ficha)
     end 
 
 end    

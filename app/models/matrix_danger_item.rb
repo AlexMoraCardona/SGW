@@ -22,6 +22,15 @@ class MatrixDangerItem < ApplicationRecord
 
     def self.calculos(id_item)
         item = MatrixDangerItem.find(id_item)
+        item.intervention_measures_elimination = DangerPrevention.buscar_medida(item.clasification_danger_detail_id,0)
+        item.intervention_measures_replacement = DangerPrevention.buscar_medida(item.clasification_danger_detail_id,1)
+        item.intervention_measures_engineering_control = DangerPrevention.buscar_medida(item.clasification_danger_detail_id,2)
+        item.intervention_measures_acsw = DangerPrevention.buscar_medida(item.clasification_danger_detail_id,3)
+        item.intervention_measures_ppee = DangerPrevention.buscar_medida(item.clasification_danger_detail_id,4)
+        item.possible_effects_health = DangerDetailRisk.buscar_efecto(item.clasification_danger_detail_id)
+
+
+
         item.probability_level  = item.deficiency_level.to_f * item.exposure_level.to_f
         
         if item.probability_level.to_f <= 4 ; item.interpretation = 'BAJO'

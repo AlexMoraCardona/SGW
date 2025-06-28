@@ -26,7 +26,7 @@
 </div> 
 <br>
 <div class="container col-11 card p-5">
-   <h2 class="display-6">Posibles Riesgos y Consecuencias</h2>
+   <h2 class="display-6">Efectos en la salud</h2>
    <div>
        <%= link_to t('common.create_danger_detail_risk'), new_danger_detail_risk_path(clasification_danger_detail_id: @clasification_danger_detail.id), class: 'btn btn-sm btn-primary'  %>
    </div>
@@ -39,7 +39,7 @@
                     <th scope="col"><%= t('.id') %></th>
                     <th scope="col">Tipo de peligro</th>
                     <th scope="col">Descrición del peligro</th>
-                    <th scope="col">Posible riesgo/consecuencia</th>
+                    <th scope="col">Efectos en la salud</th>
                     <th scope="col"><%= t('common.edit') %></th>
                     <th scope="col"><%= t('common.delete') %></th>
                 </tr>
@@ -62,7 +62,7 @@
 <br>
 <br>
 <div class="container col-11 card p-5">
-   <h2 class="display-6">Sugerencia de medidas de prevención y control</h2>
+   <h2 class="display-6">Medidas de intervención</h2>
    <div>
         <%= link_to t('common.create_danger_prevention'), new_danger_prevention_path(clasification_danger_detail_id: @clasification_danger_detail.id), class: 'btn btn-sm btn-primary'  %>
    </div>
@@ -73,6 +73,7 @@
             <thead>
                 <tr>
                     <th scope="col"><%= t('.id') %></th>
+                    <th scope="col">Clasificación</th>
                     <th scope="col">Tipo de peligro</th>
                     <th scope="col">Descrición del peligro</th>
                     <th scope="col">Sugerencia de medida de prevención y control</th>
@@ -84,6 +85,7 @@
             <% @danger_preventions.each do |danger_prevention| %>
                 <tr> 
                     <td><%= danger_prevention.id %></td>
+                    <td><%= DangerPrevention.label_type(danger_prevention.type_danger) %></td>
                     <td><%= danger_prevention.clasification_danger_detail.clasification_danger.name %></td>
                     <td><%= danger_prevention.clasification_danger_detail.name %></td>
                     <td><%= danger_prevention.name %></td>

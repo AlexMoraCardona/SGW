@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_06_25_203416) do
+ActiveRecord::Schema[7.0].define(version: 2025_06_27_202147) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -472,6 +472,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_25_203416) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "clasification_danger_detail_id"
+    t.integer "type_danger", default: 0
     t.index ["clasification_danger_detail_id"], name: "index_danger_preventions_on_clasification_danger_detail_id"
   end
 
@@ -779,6 +780,22 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_25_203416) do
     t.integer "pay_entity", default: 0
     t.string "objeto_entity"
     t.index ["email_entity"], name: "index_entities_on_email_entity", unique: true
+  end
+
+  create_table "epp_recuests", force: :cascade do |t|
+    t.date "date_recuest"
+    t.integer "cantidad", default: 0
+    t.integer "state_recuest", default: 0
+    t.date "date_delivery"
+    t.string "observation"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.bigint "user_id"
+    t.bigint "protection_element_id"
+    t.index ["entity_id"], name: "index_epp_recuests_on_entity_id"
+    t.index ["protection_element_id"], name: "index_epp_recuests_on_protection_element_id"
+    t.index ["user_id"], name: "index_epp_recuests_on_user_id"
   end
 
   create_table "equipement_used_plans", force: :cascade do |t|
@@ -1261,6 +1278,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_25_203416) do
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
     t.bigint "user_id"
+    t.string "space_for_injury"
+    t.string "space_for_agente"
+    t.string "de"
     t.index ["entity_id"], name: "index_investigations_on_entity_id"
     t.index ["user_id"], name: "index_investigations_on_user_id"
   end
@@ -1762,6 +1782,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_25_203416) do
     t.datetime "updated_at", null: false
     t.bigint "occupational_exam_id"
     t.integer "state_exam", default: 0
+    t.integer "user_application", default: 0
     t.index ["occupational_exam_id"], name: "index_occupational_exam_items_on_occupational_exam_id"
   end
 
@@ -2485,6 +2506,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_25_203416) do
   add_foreign_key "description_jobs", "entities"
   add_foreign_key "direction_reviews", "entities"
   add_foreign_key "emergency_plans", "entities"
+  add_foreign_key "epp_recuests", "entities"
+  add_foreign_key "epp_recuests", "protection_elements"
+  add_foreign_key "epp_recuests", "users"
   add_foreign_key "equipement_used_plans", "emergency_plans"
   add_foreign_key "evaluation_rule_details", "evaluations"
   add_foreign_key "evaluation_rule_details", "standar_detail_items"

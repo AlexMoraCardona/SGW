@@ -4,7 +4,7 @@ class MeetingMinutesController < ApplicationController
             @meetings = MeetingMinute.all.order(id: :desc)
             @q = @meetings.ransack(params[:q])
             @pagy, @meeting_minutes = pagy(@q.result(date: :desc), items: 3)
-        elsif  Current.user && Current.user.level == 3 
+        elsif  Current.user && Current.user.level == 3 || Current.user && Current.user.ccl == 1 || Current.user && Current.user.secretary_copasst == 1
             @meetings = MeetingMinute.where("entity_id = ?",Current.user.entity).order(id: :desc)
             @q = @meetings.ransack(params[:q])
             @pagy, @meeting_minutes = pagy(@q.result(date: :desc), items: 3)

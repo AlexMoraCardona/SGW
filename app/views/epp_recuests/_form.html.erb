@@ -1,0 +1,41 @@
+<div class="container col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
+    <br>
+    <% if @protection_elements.present? %>    
+        <%= form_with model: @epp_recuest do |form| %>
+            <% @epp_recuest.errors.full_messages.each do |error| %>
+                <div class="alert alert-danger" role="alert">
+                    <%= error%> <%= alert %>
+                </div>
+            <% end %>
+            <div class="col-sm-12 p-3 mb-2  text-dark">    
+                <p class="fst-normal fs-3"><strong>SOLICITUD ELEMENTO DE PROTECCIÓN PERSONAL</strong> </p>
+            </div>
+            <br>     
+            <div class="col-sm-12 p-3 mb-2  text-dark">
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione EPP.">Elemento de protección personal:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                <%= form.collection_select :protection_element_id, @protection_elements, :id,  :name, style: "width=50px" %>
+            </div>
+            <br>     
+            <div class="col-sm-12 p-3 mb-2  text-dark">    
+                <%= form.label :cantidad, style: "display: block" %>
+                <%= form.number_field :cantidad,  class: "form-control", step: 1, max:10, min:1, required: true %>
+            </div>
+            <br>    
+            <div class="col-sm-12 p-3 mb-2  text-dark">    
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingresar información en caso de requerir ejemplo: talla, medida, color etc.">Observaciones:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                <%= form.text_field :observation,  class: "form-control" %>
+            </div>
+            <br>    
+
+
+            <%= form.hidden_field :entity_id, :value => params[:entity_id].to_i, class: "form-control" %>
+            <%= form.hidden_field :user_id, :value => Current.user.id.to_i, class: "form-control" %>
+            <%= form.hidden_field :date_recuest, :value => Time.now, class: "form-control" %>
+
+            <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
+            <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, epp_recuests_path %>
+
+        <% end %>
+        <br> 
+    <% end %>    
+</div>   

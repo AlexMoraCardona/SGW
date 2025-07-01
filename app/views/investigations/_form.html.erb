@@ -1,0 +1,399 @@
+<div class="container col-12 card p-5">
+    <br> 
+    <%= form_with model: @investigation do |form| %>
+        <% @investigation.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %> 
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 30%;border:1px solid black;text-align:center">
+                    <strong>FECHA DE INVESTIGACIÓN</strong>               
+                </td>
+                <td style="width: 70%;border:1px solid black;text-align:center">
+                    <strong>TIPO DE EVENTO</strong>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;text-align:center">
+                    <%= form.date_field :date_investigation,  class: "form-control" %>               
+                </td>
+                <td style="width: 70%;border:1px solid black;text-align:center">
+                    <%= form.radio_button :type_event, 0 %>
+                    <label for="accionpreventiva">INCIDENTE</label>
+                    <%= form.radio_button :type_event, 1 %>
+                    <label for="accionmejora">ACCIDENTE</label>                    
+                    <%= form.radio_button :type_event, 2 %>
+                    <label for="accioncorrectiva">ACCIDENTE GRAVE</label>                    
+                    <%= form.radio_button :type_event, 3 %>
+                    <label for="accioncorrectiva">ACCIDENTE MORTAL</label>                    
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr style="background-color: #00aae4;">    
+                <td style="width: 100%;border:1px solid black;text-align:center">
+                    <strong>DATOS DE LA ENTIDAD</strong>               
+                </td>
+            </tr>
+        </table> 
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 60%;border:1px solid black;">
+                    <strong>RAZÓN SOCIAL: </strong><%= @entity.business_name if @entity.present? %>               
+                </td>
+                <td style="width: 40%;border:1px solid black;">
+                    <strong>NIT: </strong><%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.present? %>-<%= @entity.verification_digit if @entity.present? %>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 60%;border:1px solid black;">
+                    <strong>DIRECCIÓN: </strong><%= @entity.entity_address if @entity.present? %>               
+                </td>
+                <td style="width: 40%;border:1px solid black;">
+                    <strong>TELÉFONO: </strong><%= @entity.phone_number_entity if @entity.present? %>               
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>TIPO DE VINCULACIÓN LABORAL: </strong><%= form.text_field :type_labor_connection,  class: "form-control" %>               
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr style="background-color: #00aae4;">    
+                <td style="width: 100%;border:1px solid black;text-align:center">
+                    <strong>DATOS DEL TRABAJADOR</strong>               
+                </td>
+            </tr>
+        </table> 
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>APELLIDOS Y NOMBRES:   </strong><%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>               
+                </td>
+            </tr>
+        </table> 
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>EDAD:   </strong><%= form.number_field :age,  class: "form-control" %>               
+                </td>
+                <td style="width: 35%;border:1px solid black;">
+                    <strong>NUMERO TELEFONICO /CELULAR:  </strong><%= form.number_field :phone,  class: "form-control" %>               
+                </td>
+                <td style="width: 35%;border:1px solid black;">
+                    <strong>FECHA DE INGRESO A LA ENTIDAD:  </strong><%= form.date_field :date_income,  class: "form-control" %>               
+                </td>
+            </tr>
+        </table> 
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 50%;border:1px solid black;">
+                    <strong>EXPERIENCIA EN EL OFICIO:    </strong><%= form.text_field :job_experience,  class: "form-control" %>               
+                </td>
+                <td style="width: 50%;border:1px solid black;">
+                    <strong>SECRETARIA – AREA:   </strong><%= form.text_field :area,  class: "form-control" %>               
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>¿EL ACCIDENTE OCURRIÓ REALIZANDO SU OFICIO HABITUAL?  </strong>
+                    <%= form.radio_button :accident_usual, 0 %>
+                    <label for="si">SI</label>
+                    <%= form.radio_button :accident_usual, 1 %>
+                    <label for="no">NO</label>                    
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>SI LA RESPUESTA ES NO EXPLIQUE ¿POR QUÉ?  </strong></br>
+                    <%= form.text_field :obs_accident_usual,  class: "form-control" %>
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr style="background-color: #00aae4;">    
+                <td style="width: 100%;border:1px solid black;text-align:center">
+                    <strong>DATOS GENERALES SOBRE EL ACCIDENTE</strong>               
+                </td>
+            </tr>
+        </table> 
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>FECHA DE OCURRENCIA:  </strong><%= form.date_field :date_accident,  class: "form-control" %>               
+                </td>
+                <td style="width: 35%;border:1px solid black;">
+                    <strong>HORA DEL EVENTO:   </strong><%= form.time_field :time_accident,  class: "form-control" %>               
+                </td>
+                <td style="width: 35%;border:1px solid black;">
+                    <strong>LUGAR DONDE OCURRE EL EVENTO:  </strong><%= form.text_field :place,  class: "form-control" %>               
+                </td>
+            </tr>
+        </table> 
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>¿INFORMO OPORTUNAMENTE EL ACCIDENTE?  </strong>
+                    <%= form.radio_button :inform_prompt, 0 %>
+                    <label for="si">SI</label>
+                    <%= form.radio_button :inform_prompt, 1 %>
+                    <label for="no">NO</label>                    
+                    &nbsp; QUÉ?</br>
+                    <%= form.text_field :obs_accident_usual,  class: "form-control" %>
+                </td>
+            </tr>    
+            <tr>
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>TAREA DESARROLLADA AL MOMENTO DEL EVENTO:  </strong></br>
+                    <%= form.text_field :task_moment_accident,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>DESCRIPCIÓN DEL EVENTO (DESCRIBA DONDE, CUANDO, QUE Y CÓMO OCURRIÓ):  </strong></br>
+                    <%= form.text_area :event_description,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>VERSIÓN TRABAJADOR ACCIDENTADO  </strong></br>
+                    <%= form.text_area :version_work,  class: "form-control" %></br>
+                    <strong>OBSERVACIONES DEL TRABAJADOR Y/O TESTIGOS:  </strong></br>
+                    <strong>Versión de los testigos:   </strong></br>
+                    <%= form.text_area :version_witness,  class: "form-control" %></br>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>¿HAN OCURRIDO EVENTOS SIMILARES?  </strong>
+                    <%= form.radio_button :similar_events, 0 %>
+                    <label for="si">SI</label>
+                    <%= form.radio_button :similar_events, 1 %>
+                    <label for="no">NO</label>                    
+                    ,&nbsp;SI LA RESPÙESTA ES AFIRMATIVA, EXPLIQUE QUE ACCIONES SE HABÍAN TOMADO PARA SU CONTROL:</br>
+                    <%= form.text_field :obs_similar_events,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>DATOS COMPLEMENTARIOS  </strong></br>
+                    <%= form.rich_text_area :datos_complementarios,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100%;border:1px solid black;text-align:center">
+                    <strong>REGISTRO FOTOGRAFICO  </strong>
+                        <br>
+                        <div class="container col-11 card p-5">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <h5><%= form.label :"Adjuntar_Archivos:", style: "display: block" %></h5>
+                                        <%= form.file_field :registros_fotograficos, multiple: true %>
+                                    </div> 
+                                </div>
+                            <br> 
+                        </div>  
+                        <br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <br>
+                    <div class="form-group">
+                        <h5>Archivos adjuntos:</h5>
+                    </div>         
+                    <hr>
+                    <% if @investigation.registros_fotograficos.attached? %>
+                        <div data-controller="previews" >
+                            <% @investigation.registros_fotograficos.each do |file|%>
+                                <br>
+                                <% if file.image? %>
+                                    <div>
+                                        <%= image_tag file, data: {previews_target: "preview"}, class: "image" %>
+                                        <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' if Current.user.level > 0 && Current.user.level < 3 %> 
+                                        <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                    </div> 
+                                <% elsif file.video? %>
+                                    <%= video_tag url_for(file), controls: "", width: "400px" %>          
+                                    <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' if Current.user.level > 0 && Current.user.level < 3 %> 
+                                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                <% elsif file.audio? %>
+                                    <%= audio_tag(url_for(file), controls: "") %>          
+                                    <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' if Current.user.level > 0 && Current.user.level < 3 %> 
+                                <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                <% else %>
+                                    <%= link_to file.filename, url_for(file) %>          
+                                    <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' if Current.user.level > 0 && Current.user.level < 3 %> 
+                                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                <% end %>
+                            <% end %>  
+                        </div>
+                    <% end %>  
+                    <hr>
+                    <br>             
+                </td>    
+            </tr>
+            <tr>
+                <td style="width: 100%;border:1px solid black;text-align:center">
+                    <strong>Espacio para la descripción de las imágenes:  </strong>
+                        </br><%= form.text_area :photographic_record,  class: "form-control" %>
+                        <br>
+                </td>
+            </tr>
+        </table> 
+        <table style="width: 100%;">
+            <tr style="background-color: #00aae4;">    
+                <td style="width: 100%;border:1px solid black;text-align:center">
+                    <strong>ÁRBOL DE CAUSAS</strong>               
+                </td>
+            </tr>
+        </table> 
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 100%;border:1px solid black;text-align:center">
+                    Espacio para lesión</br>
+                    <%= form.text_field :space_for_injury,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100%;border:1px solid black;text-align:center">
+                    Espacio para agente del accidente</br>
+                    <%= form.text_field :space_for_agente,  class: "form-control" %>
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 30%;border:1px solid black;text-align:center">
+                    Causa inmediata 1 </br>
+                    <%= form.text_field :immediate_cause1,  class: "form-control" %>               
+                </td>
+                <td style="width: 40%;border:1px solid black;text-align:center">
+                    Causa inmediata 2 </br>
+                    <%= form.text_field :immediate_cause2,  class: "form-control" %>               
+                </td>
+                <td style="width: 30%;border:1px solid black;text-align:center">
+                    Causa inmediata 3 </br>
+                    <%= form.text_field :immediate_cause3,  class: "form-control" %>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;text-align:center">
+                    Causa básica 1 </br>
+                    <%= form.text_field :cause_basic1,  class: "form-control" %>               
+                </td>
+                <td style="width: 40%;border:1px solid black;text-align:center">
+                    Causa básica 2 </br>
+                    <%= form.text_field :cause_basic2,  class: "form-control" %>               
+                </td>
+                <td style="width: 30%;border:1px solid black;text-align:center">
+                    Causa básica 3 </br>
+                    <%= form.text_field :cause_basic3,  class: "form-control" %>               
+                </td>
+            </tr>
+        </table> 
+        <table style="width: 100%;">
+            <tr style="background-color: #00aae4;">    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>CAUSAS DEL ACCIDENTE (Ver tabla de codificación NTC 3701)</strong>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>CAUSAS INMEDIATAS:</strong>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>ACTOS INSEGUROS</strong></br>               
+                    <%= form.rich_text_area :actos_inseguros,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>CONDICIONES INSEGURAS</strong></br>               
+                    <%= form.rich_text_area :condiciones_inseguras,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>CAUSAS BÁSICAS:</strong>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>FACTORES PERSONALES</strong></br>               
+                    <%= form.rich_text_area :factores_personales,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>FACTORES ADMINISTRATIVOS</strong></br>               
+                    <%= form.rich_text_area :factores_administrativos,  class: "form-control" %>
+                </td>
+            </tr>
+        </table> 
+        <table style="width: 100%;">
+            <tr style="background-color: #00aae4;">    
+                <td style="width: 30%;border:1px solid black;text-align:center;">
+                    <strong>PARTE DEL CUERPO AFECTADA</strong>               
+                </td>
+                <td style="width: 30%;border:1px solid black;text-align:center;">
+                    <strong>TIPO DE LESIÓN SUFRIDA</strong>               
+                </td>
+                <td style="width: 30%;border:1px solid black;text-align:center;">
+                    <strong>MECANISMO O FORMA DEL ACCIDENTE</strong>               
+                </td>
+                <td style="width: 10%;border:1px solid black;text-align:center;">
+                    <strong>DÍAS DE INCAPACIDAD</strong>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;text-align:center;">
+                    <%= form.text_field :affected_part,  class: "form-control" %>               
+                </td>
+                <td style="width: 30%;border:1px solid black;text-align:center;">
+                    <%= form.text_field :type_injury,  class: "form-control" %>               
+                </td>
+                <td style="width: 30%;border:1px solid black;text-align:center;">
+                    <%= form.text_field :accident_mechanism,  class: "form-control" %>               
+                </td>
+                <td style="width: 10%;border:1px solid black;text-align:center;">
+                    <%= form.number_field :disability_days,  class: "form-control" %>               
+                </td>
+            </tr>
+        </table> 
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 80%;border:1px solid black;text-align:center">
+                    <strong>NOMBRES Y APELLIDOS DEL PROFESIONAL EN SST</strong>
+                </td>    
+                <td style="width: 20%;border:1px solid black;text-align:center">
+                    <strong>DE:</strong>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 80%;border:1px solid black;text-align:center">
+                    <%= form.collection_select :usr_profesional, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
+                </td>
+                <td style="width: 20%;border:1px solid black;text-align:center">
+                    <%= form.text_field :de,  class: "form-control" %>
+                </td>
+            </tr>
+        </table>
+        </br> 
+        <%= form.hidden_field :entity_id, :value => @entity.id, class: "form-control" if @entity.present? %>
+        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    <% end %>
+</div>        
+<br>
+
+ 

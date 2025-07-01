@@ -1,0 +1,42 @@
+
+<% if @entity.present? %>
+    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
+<% end %>
+<%= link_to "Crear investigación", new_investigation_path, class: 'btn btn-sm btn-primary' if Current.user.level > 0 &&  Current.user.level < 3 %> 
+ 
+<div class="container col-11">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Fecha investigación</th>
+                <th scope="col">Tipo de evento</th>
+                <th scope="col">Empleado</th>
+                <th scope="col">Recomendaciones</th>
+                <th scope="col">Equipo investigador</th>
+                <th scope="col">Ver</th>
+                <th scope="col"><%= t('common.edit') %></th>
+                <th scope="col"><%= t('common.delete') %></th>
+                <th scope="col">PDF</th>
+            </tr>
+        </thead> 
+        <tbody>
+            <% @investigations.each do |investigation| %>
+                <tr> 
+                    <td scope="col"><%= investigation.date_investigation.strftime("%F")  %></td>  
+                    <td scope="col"><%= Investigation.label_type_event(investigation.type_event)  %></td>  
+                    <td scope="col"><%= investigation.user.name %></td>
+                    <td scope="col"><%= link_to 'Recomendaciones', new_inves_recomendation_path(id: investigation.id), class: 'btn btn-sm btn-primary'%></td>
+                    <td scope="col"><%= link_to 'Equipo investigador',  new_inves_user_path(id: investigation.id), class: 'btn btn-sm btn-primary'%></td>
+                    <td scope="col"><%= link_to 'Ver', investigation_path(investigation), class: 'btn btn-sm btn-primary'%></td>
+                    <td scope="col"><%= link_to 'Editar', edit_investigation_path(investigation.id), class: 'btn btn-sm btn-warning' %></td>
+                    <td scope="col"><%= button_to 'Delete', investigation, method: :delete, class:'btn btn-sm btn-danger' %></td>
+                    <td scope="col"><%= link_to "PDF", ver_investigation_path(investigation.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
+                </tr>
+            <% end %>  
+        </tbody>      
+    </table>
+    </br>        
+</div>
+
+
+

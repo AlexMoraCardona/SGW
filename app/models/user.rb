@@ -9,6 +9,7 @@ class User < ApplicationRecord
     has_many :candidate_votes
     has_many :habil_votes
     has_many :votes
+    has_many :epp_recuests
     
     #validates :document, name, username, email, password_digest,  presence: true #Validar la presencia
     validates :document,  presence: true #Validar la presencia
@@ -121,6 +122,20 @@ class User < ApplicationRecord
            @nombre_usuario = User.find(dato).name
         end   
         return @nombre_usuario
+    end  
+
+    def self.buscar_user(dato)
+        @usu = User.find(dato)
+        return @usu
+    end  
+
+    def self.label_license(dato)
+        if dato == 0
+            @license = 'no encontrada'
+        else    
+           @license = User.find(dato).license
+        end   
+        return @license
     end  
 
 

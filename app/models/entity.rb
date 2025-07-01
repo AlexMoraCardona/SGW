@@ -5,6 +5,7 @@ class Entity < ApplicationRecord
     has_many :locations
     has_many :admin_extent_dangers  
     has_many :adm_votes 
+    has_many :epp_recuests
     
     validates :email_entity, presence: true 
     validates :tax_regime, presence: true 

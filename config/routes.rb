@@ -114,7 +114,15 @@ Rails.application.routes.draw do
   resources :candidate_votes
   resources :habil_votes
   resources :votes
+  resources :investigations
+  resources :inves_recomendations
+  resources :inves_users
+  resources :epp_recuests
 
+  get '/inves_users/firma_inves/:id', to: 'inves_users#firma_inves', as: 'firma_inves'
+  get '/investigations/equipo_investigador/:id', to: 'investigations#equipo_investigador', as: 'equipo_investigador'
+  get '/investigations/recomendaciones/:id', to: 'investigations#recomendaciones', as: 'recomendaciones'
+  get '/investigations/ver_investigation/:id', to: 'investigations#ver_investigation', as: 'ver_investigation'
   get '/votes/validar_votacion/:id', to: 'votes#validar_votacion', as: 'validar_votacion'
   get '/adm_votes/ver_votacion/:id', to: 'adm_votes#ver_votacion', as: 'ver_votacion'
   get '/votes/seleccionar_voto/:id', to: 'votes#seleccionar_voto', as: 'seleccionar_voto'

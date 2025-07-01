@@ -1,0 +1,87 @@
+<div class="container col-12 card p-5">
+    <br>
+    <%= form_with model: @inves_recomendation do |form| %>
+        <% @inves_recomendation.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>  
+     
+        <div class="form-group"> 
+            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingrese la recomendación.">Recomendación: <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+            <%= form.text_field :recomendation,  class: "form-control" %>
+        </div>
+        </br>    
+        <div class="row g-3">
+            <div class="col-sm-4">
+                        <%= form.label :apply,  style: "display: block" %>
+                        <%= form.radio_button :apply, 0 %>
+                        <label for="f">F</label>
+                        <%= form.radio_button :apply, 1 %>
+                        <label for="m">M</label>
+                        <%= form.radio_button :apply, 2 %>
+                        <label for="p">P</label>
+            </div>        
+        </div>  
+        </br>    
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingrese la fecha de implementación.">Fecha de implementación: <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+                <%= form.date_field :date_implementation,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-4">
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el responsable de la implementación.">Responsable de la implementación: <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+                <%= form.collection_select :responsible_implementation, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %> 
+            </div>        
+        </div>  
+        </br>    
+        <div class="row g-2">
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingrese la fecha de la verificación.">Fecha de verificación: <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+                <%= form.date_field :date_verification,  class: "form-control" %>
+            </div>        
+            <div class="col-sm-4">
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el responsable de la verificación.">Responsable de la verificación: <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+                <%= form.collection_select :responsible_verification, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %> 
+            </div>        
+        </div> 
+        <%= form.hidden_field :investigation_id, :value => params[:id].to_s, class: "form-control" %>
+
+        </br>    
+        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    <% end %>
+    <hr>
+    <br>
+    <% if @inves_recomendations.present? %>
+        <div class="d-flex">
+            <div class="container">
+                <h class="display-6">Recomendaciones</h>
+            </div> 
+        </div>
+        
+        <hr>
+            
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Recomendación</th>
+                    <th scope="col">Editar</th>
+                    <th scope="col">Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+            
+                    <% @inves_recomendations.each do |inves_recomendation| %>
+                        <tr>
+                            <td><%= inves_recomendation.recomendation %></td>
+                            <td><%= link_to t('common.edit'), edit_inves_recomendation_path(inves_recomendation), class: 'btn btn-sm btn-primary'  %></td>
+                            <td><%= button_to "Delete", inves_recomendation, method: :delete, class:"btn btn-sm btn-danger" %></td>
+                        </tr>
+                    <% end %>
+            </tbody>      
+        </table>
+    <% end %>         
+    
+</div>
+<br>

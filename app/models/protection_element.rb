@@ -8,5 +8,10 @@ class ProtectionElement < ApplicationRecord
         elsif dato == 1 ; 'Si'
         end 
     end 
+
+    def self.ransackable_attributes(auth_object = nil)
+        ["entity"]
+    end 
+
     
 end

@@ -40,5 +40,13 @@ class Entity < ApplicationRecord
     def self.ransackable_attributes(auth_object = nil)
         ["identification_number", "business_name"]
     end 
-   
+
+    def self.label_name(dato)
+        nombre = Entity.find(dato).business_name if dato > 0
+        nombre = "Genérico" if dato == 0
+        return nombre;
+    end 
+    
+
+
 end

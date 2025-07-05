@@ -341,7 +341,7 @@
                                 <br>
                                 <% if file.image? %> 
                                     <div>
-                                        <%=  image_tag  file,:width => "200",  :height=>"200" %>
+                                        <%=  image_tag  file,:width => "400",  :height=>"400" %>
                                         <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
                                     </div>
                                 <% elsif file.video? %>
@@ -423,7 +423,7 @@
                             </div>
                             <div class="col-11">
                                 <div class="row">
-                                    <h6><%= @res.activity %></h6>
+                                    <h6><%= User.label_activity(@res.activity) if @res.activity.present? %></h6>
                                 </div>
                             </div>
                             <div class="col-11">
@@ -431,6 +431,13 @@
                                     <h6><%= @res.document.abbreviation %>: <%= Firm.miles(@res.nro_document) %></h6>
                                 </div>
                             </div>
+                            <% if  @res.level == 2 %>
+                                <div class="col-11">
+                                    <div class="row">
+                                        <h6>Licencia: <%= @res.license %></h6>
+                                    </div>
+                                </div>
+                            <% end %>
                         </div>
                         <br>
                 <% end %>

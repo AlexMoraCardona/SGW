@@ -22,7 +22,7 @@
         <tbody>
             <% @investigations.each do |investigation| %>
                 <tr> 
-                    <td scope="col"><%= investigation.date_investigation.strftime("%F")  %></td>  
+                    <td scope="col"><%= investigation.date_investigation.strftime("%F") if investigation.date_investigation.present? %></td>  
                     <td scope="col"><%= Investigation.label_type_event(investigation.type_event)  %></td>  
                     <td scope="col"><%= investigation.user.name %></td>
                     <td scope="col"><%= link_to 'Recomendaciones', new_inves_recomendation_path(id: investigation.id), class: 'btn btn-sm btn-primary'%></td>

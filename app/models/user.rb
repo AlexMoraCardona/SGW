@@ -115,6 +115,11 @@ class User < ApplicationRecord
         return usuarios if usuarios.present?
     end    
 
+    def self.usuarios_asesor
+        usuarios = User.where("level = ?",2)
+        return usuarios if usuarios.present?
+    end    
+
     def self.label_name(dato)
         if dato == 0
             @nombre_usuario = 'Usuario no encontrado'

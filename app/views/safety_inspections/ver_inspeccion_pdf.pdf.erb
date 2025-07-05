@@ -508,11 +508,18 @@
                         <h6><strong><%= @user_responsable.name %></strong></h6>
                     </div>
                     <div class="row">
-                        <h6><%= @user_responsable.cargo_rol %></h6>
+                        <h6><%= User.label_activity(@user_responsable.cargo_rol) if @user_responsable.cargo_rol.present? %></h6>
                     </div>
                     <div class="row  text-center">
                         <h6><%= @user_responsable.document.abbreviation %>: <%= Firm.miles(@user_responsable.nro_document) %></h6>
                     </div>
+                    <% if  @user_responsable.level == 2 %>
+                        <div class="col-11">
+                            <div class="row">
+                                <h6>Licencia: <%= @user_responsable.license %></h6>
+                            </div>
+                        </div>
+                    <% end %>
                 <br>
             </td>      
     </tr>  

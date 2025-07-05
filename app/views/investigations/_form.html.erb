@@ -96,7 +96,7 @@
                     <strong>EXPERIENCIA EN EL OFICIO:    </strong><%= form.text_field :job_experience,  class: "form-control" %>               
                 </td>
                 <td style="width: 50%;border:1px solid black;">
-                    <strong>SECRETARIA – AREA:   </strong><%= form.text_field :area,  class: "form-control" %>               
+                    <strong>ÁREA:   </strong><%= form.text_field :area,  class: "form-control" %>               
                 </td>
             </tr>
         </table>
@@ -216,7 +216,7 @@
                                 <br>
                                 <% if file.image? %>
                                     <div>
-                                        <%= image_tag file, data: {previews_target: "preview"}, class: "image" %>
+                                        <%= image_tag file, data: {previews_target: "preview"}, class: "image_inv" %>
                                         <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' if Current.user.level > 0 && Current.user.level < 3 %> 
                                         <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
                                     </div> 
@@ -381,7 +381,7 @@
             </tr>
             <tr>    
                 <td style="width: 80%;border:1px solid black;text-align:center">
-                    <%= form.collection_select :usr_profesional, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
+                    <%= form.collection_select :usr_profesional, User.usuarios_asesor.order(id: :asc), :id,  :name, style: "width=50px" %>
                 </td>
                 <td style="width: 20%;border:1px solid black;text-align:center">
                     <%= form.text_field :de,  class: "form-control" %>

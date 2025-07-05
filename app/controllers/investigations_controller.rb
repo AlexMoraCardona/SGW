@@ -1,13 +1,6 @@
 class InvestigationsController < ApplicationController
     def index 
-        if  Current.user && Current.user.level > 0 && Current.user.level < 3
-            if params[:entity_id].present?
-                @entity = Entity.find(params[:entity_id])
-                @investigations = Investigation.where("entity_id = ?", params[:entity_id]).order(id: :desc)
-            else 
-                @entities = Entity.all
-            end    
-        elsif Current.user && Current.user.level == 3 
+        if Current.user && Current.user.level > 0 && Current.user.level < 4 
             @entity = Entity.find(Current.user.entity)
             @investigations = Investigation.where("entity_id = ?",Current.user.entity)
         else

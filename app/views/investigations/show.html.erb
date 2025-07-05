@@ -142,7 +142,7 @@
                     <strong>EXPERIENCIA EN EL OFICIO:    </strong><%=  @investigation.job_experience %>               
                 </td>
                 <td style="width: 35%;border:1px solid black;">
-                    <strong>SECRETARIA – AREA:   </strong><%=  @investigation.area %>               
+                    <strong>ÁREA:   </strong><%=  @investigation.area %>               
                 </td>
             </tr>
         </table>
@@ -173,7 +173,7 @@
                     <strong>FECHA DE OCURRENCIA:  </strong><%=  @investigation.date_accident %>
                 </td>
                 <td style="width: 35%;border:1px solid black;">
-                    <strong>HORA DEL EVENTO:   </strong><%=  @investigation.time_accident.strftime("%T") %>
+                    <strong>HORA DEL EVENTO:   </strong><%=  @investigation.time_accident.strftime("%T") if @investigation.time_accident.present? %>
                 </td>
                 <td style="width: 35%;border:1px solid black;">
                     <strong>LUGAR DONDE OCURRE EL EVENTO:  </strong><%=  @investigation.place %>
@@ -237,9 +237,10 @@
                                                         <%  @investigation.registros_fotograficos.each do |file|%>
                                                             <br>
                                                             <br>
-                                                            <% if file.image? %>
+                                                            <% if file.image?%>
                                                                 <div>
-                                                                    <%= image_tag file, data: {previews_target: "preview"}, class: "image" %>
+                                                                    <%= image_tag file, data: {previews_target: "preview"}, class: "image_inv" %>
+                                                                    <div><%= file.filename %></div>
                                                                 </div>
                                                             <% elsif file.video? %>
                                                                     <%= video_tag url_for(file), controls: "", width: "400px" %>          
@@ -474,13 +475,13 @@
                     
                 </td>  
                 <td style="width: 7%;border:1px solid black;text-align:center">
-                    <strong>F</strong>
+                    <strong>FUENTE</strong>
                 </td>  
                 <td style="width: 7%;border:1px solid black;text-align:center">
-                    <strong>M</strong>
+                    <strong>MEDIO</strong>
                 </td>  
                 <td style="width: 7%;border:1px solid black;text-align:center">
-                    <strong>P</strong>
+                    <strong>PERSONAS</strong>
                 </td>  
                 <td style="width: 12%;border:1px solid black;text-align:center">
                     <strong>FECHA</strong>

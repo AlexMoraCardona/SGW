@@ -46,6 +46,17 @@ class Entity < ApplicationRecord
         nombre = "Genérico" if dato == 0
         return nombre;
     end 
+
+    def self.label_empresas
+        if Current.user.level > 0 && Current.user.level < 3
+            empresas = Entity.all
+        else
+            empresas = Entity.where("id = ?",Current.user.entity)
+        end    
+        return empresas;
+    end 
+
+    
     
 
 

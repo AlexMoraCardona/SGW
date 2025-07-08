@@ -88,7 +88,7 @@ class UnsafeConditionsController < ApplicationController
     def firmar_reporta
         @unsafe_condition = UnsafeCondition.find_by(id: params[:id].to_i)
         if params[:format].to_i == 1
-            if  @unsafe_condition.user_reports.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @unsafe_condition.user_reports.to_i == Current.user.id.to_i
                 redirect_to firmar_reporta_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma."
@@ -99,7 +99,7 @@ class UnsafeConditionsController < ApplicationController
     def firmar_recibe
         @unsafe_condition = UnsafeCondition.find_by(id: params[:id].to_i)
         if params[:format].to_i == 2
-            if  @unsafe_condition.user_receiving.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @unsafe_condition.user_receiving.to_i == Current.user.id.to_i
                 redirect_to firmar_recibe_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma."

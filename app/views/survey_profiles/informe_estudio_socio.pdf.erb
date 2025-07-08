@@ -1,10 +1,13 @@
 <head>
+    <meta charset='utf-8' />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
-    <meta charset='utf-8' />
-    <%= wicked_pdf_javascript_include_tag "number_pages" %>
     <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
     <%= javascript_importmap_tags %>
+    <%= javascript_include_tag "https://www.google.com/jsapi" %>
+    <%= wicked_pdf_javascript_include_tag "chartkick" %>
+    <%= wicked_pdf_javascript_include_tag "application", "chartkick" %>
+
 </head>
 <br>
 
@@ -12,48 +15,48 @@
     <tr>
         <td rowspan="2" style="border:1px solid black; width: 20%; text-align:center">
             <% if @survey_profile.entity.logo.present? then %>
-                <%=  image_tag  @survey_profile.entity.logo, class: "image_peq" %>
+                <%= image_tag(Evaluation.wicked_blob_path(@survey_profile.entity.logo),:width => "80",  :height=>"80") %>
             <% end %>   
         </td>
         <td style="border:1px solid black; text-align:center">
-            <div class="col-10"><h6><%= @survey_profile.entity.business_name if @survey_profile.present? %></h6></div>
+            <div class="col-10"><%= @survey_profile.entity.business_name if @survey_profile.present? %></div>
         </td>
     </tr>
     <tr>    
         <td style="border:1px solid black; text-align:center">
-            <div class="col-10"><h6><%= @template.name if @template.present? %></h6></div>
+            <div class="col-10"><%= @template.name if @template.present? %></div>
         </td>
     </tr>
 </table>
 <table style="width: 100%">
     <tr>    
         <td style="border:1px solid black; width: 25%">
-            <h6>CÓDIGO: </h6>                
+            CÓDIGO:                 
         </td>
         <td style="border:1px solid black; width: 25%">
-            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.reference if @template.present? %></small></h6>                
+            &nbsp;&nbsp;<small class="text-muted"><%= @template.reference if @template.present? %></small>                
         </td>
 
         <td style="border:1px solid black; width: 25%">
-            <h6>VERSIÓN: </h6>                
+            VERSIÓN:                 
         </td>
         <td style="border:1px solid black; width: 25%">
-            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.version if @template.present? %></small></h6>                
+            &nbsp;&nbsp;<small class="text-muted"><%= @template.version if @template.present? %></small>                
         </td>
     </tr>
     <tr>    
         <td style="border:1px solid black; width: 25%">
-            <h6>FECHA DE ELABORACIÓN: </h6>                
+            FECHA DE ELABORACIÓN:                 
         </td>
         <td style="border:1px solid black; width: 25%">
-            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date if @template.present? %></small></h6>                
+            &nbsp;&nbsp;<small class="text-muted"><%= @template.date if @template.present? %></small>                
         </td>
 
         <td style="border:1px solid black; width: 25%">
-            <h6>FECHA DE ACTUALIZACIÓN: </h6>                
+            FECHA DE ACTUALIZACIÓN:                 
         </td>
         <td style="border:1px solid black; width: 25%">
-            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date_updated if @template.present? %></small></h6>                
+            &nbsp;&nbsp;<small class="text-muted"><%= @template.date_updated if @template.present? %></small>                
         </td>
     </tr>
 </table>
@@ -65,26 +68,26 @@
     <div><br></div>
     <div><br></div>
 
-    <div class="row text-center">
+    <div style="text-align:center">
                 <h2><%= @survey_profile.entity.business_name if @survey_profile.present? %></h2>
     </div>
 
     <div><br></div>
     <div><br></div>
 
-    <div class="row text-center">
+    <div style="text-align:center">
         <h2><%= @survey_profile.entity.identification_number if @survey_profile.present? %></h2>
     </div>
 
     <div><br></div>
     <div><br></div>
-    <div class="row text-center">
+    <div style="text-align:center">
         <h2>ESTUDIO SOCIODEMOGRÁFICO </h2>
     </div>
 
     <div><br></div>
 
-    <div class="row text-center">
+    <div style="text-align:center">
         <h4><%= @survey_profile.date_profile if @survey_profile.present? %></h4>
     </div>
 
@@ -98,7 +101,7 @@
     <div><br></div>
                 
     
-    <div class="row text-center">
+    <div style="text-align:center">
         <strong>INFORMACIÓN GENERAL DE LA EMPRESA</strong>
     </div>
     <div><br></div>
@@ -306,7 +309,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">GENERO</th>
@@ -356,7 +359,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">EDAD</th>
@@ -408,7 +411,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">ESTADO CIVIL</th>
@@ -458,7 +461,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">TIENE HIJOS</th>
@@ -507,7 +510,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">NÚMERO DE HIJOS</th>
@@ -556,7 +559,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">PERSONAS A CARGO</th>
@@ -607,7 +610,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">CIUDAD - MUNICIPIO</th>
@@ -658,7 +661,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">TENENCIA DE VIVIENDA</th>
@@ -708,7 +711,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">ESTRATO</th>
@@ -758,7 +761,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">NIVEL DE ESCOLARIDAD</th>
@@ -808,7 +811,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">PROMEDIO SALARIO</th>
@@ -858,7 +861,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">TIPO DE CONTRATO</th>
@@ -908,7 +911,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">TURNO DE TRABAJO</th>
@@ -958,7 +961,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">ENTIDAD BANCARIA</th>
@@ -1008,7 +1011,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">SERVICIOS BÁSICOS</th>
@@ -1058,7 +1061,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">EPS</th>
@@ -1108,7 +1111,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-11">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">FONDO DE PENSIÓN</th>
@@ -1159,7 +1162,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">ARL</th>
@@ -1210,7 +1213,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">FONDO DE CESANTÍAS</th>
@@ -1261,7 +1264,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">¿Vive con personas que tengan alguna discapacidad?</th>
@@ -1311,7 +1314,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">TIPO DE DISCAPACIDAD</th>
@@ -1361,7 +1364,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">USO DEL TIEMPO LIBRE</th>
@@ -1411,7 +1414,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">LE HAN DIAGNOSTICADO ALGUNA ENFERMEDAD</th>
@@ -1461,7 +1464,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">FUMA</th>
@@ -1512,7 +1515,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">CUAL CIGARRILLO</th>
@@ -1564,7 +1567,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">CONSUME BEBIDAS ALCOHÓLICAS</th>
@@ -1614,7 +1617,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">PRACTICA ALGÚN DEPORTE</th>
@@ -1664,7 +1667,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">TIPO DE SANGRE</th>
@@ -1714,7 +1717,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">ÁREA DE TRABAJO</th>
@@ -1764,7 +1767,7 @@
         <% @datosg = [] %>        
         <div class="row g-2">
             <div class="col-sm-3">
-                <table class="table">
+                <table style="width: 40%;">
                     <thead>
                         <tr>
                             <th colspan="2"; style="text-align:center;border:1px solid black;background-color: #00aae4">MEDIO DE TRANSPORTE</th>
@@ -1816,7 +1819,7 @@
                                 <% if @survey_profile.firm_elaboro == 1 %>
                                    <% if @user_elaboro.firm.attached? %>
                                       <% if @user_elaboro.firm.image? %> 
-                                           <%= image_tag @user_elaboro.firm, class: "firma" %>
+                                           <%= image_tag(Evaluation.wicked_blob_path(@user_elaboro.firm), class: "firmapdf")%>
                                             <p align="center">________________________________</p>
                                       <% end %>
                                     <% end %>
@@ -1826,17 +1829,17 @@
                             </div>
                            <div class="col-11">
                                 <div class="row">
-                                    <h6><strong><%= @user_elaboro.name %></strong></h6>
+                                    <strong><%= @user_elaboro.name %></strong>
                                 </div>
                             </div>
                             <div class="col-11">
                                 <div class="row">
-                                    <h6>Asesor SG-SST</h6>
+                                    Asesor SG-SST
                                 </div>
                             </div>
                             <div class="col-11">
                                 <div class="row">
-                                    <h6><%= @user_elaboro.document.abbreviation %>: <%= Firm.miles(@user_elaboro.nro_document) %></h6>
+                                    <%= @user_elaboro.document.abbreviation %>: <%= Firm.miles(@user_elaboro.nro_document) %>
                                 </div>
                             </div>
                         </div>
@@ -1851,7 +1854,7 @@
                                 <% if  @survey_profile.firm_aprobo == 1 %>
                                    <% if @user_aprobo.firm.attached? %>
                                       <% if @user_aprobo.firm.image? %> 
-                                           <%= image_tag @user_aprobo.firm, class: "firma" %>
+                                           <%= image_tag(Evaluation.wicked_blob_path(@user_aprobo.firm), class: "firmapdf")%>
                                             <p align="center">________________________________</p>
                                       <% end %>
                                     <% end %>
@@ -1861,17 +1864,17 @@
                             </div>
                             <div class="col-11">
                                 <div class="row">
-                                    <h6><strong><%= @user_aprobo.name %></strong></h6>
+                                    <strong><%= @user_aprobo.name %></strong>
                                 </div>
                             </div>
                             <div class="col-11">
                                 <div class="row">
-                                    <h6>Representante Legal</h6>
+                                    Representante Legal
                                 </div>
                             </div>
                             <div class="col-11">
                                 <div class="row">
-                                    <h6><%= @user_aprobo.document.abbreviation %>: <%= Firm.miles(@user_aprobo.nro_document) %></h6>
+                                    <%= @user_aprobo.document.abbreviation %>: <%= Firm.miles(@user_aprobo.nro_document) %>
                                 </div>
                             </div>
             

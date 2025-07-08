@@ -104,7 +104,7 @@ class ProvidesProtectionsController < ApplicationController
     end    
 
     def crear_item_provide
-        @protection_elements = ProtectionElement.all
+        @protection_elements = ProtectionElement.where("entity = ?",Current.user.entity).order(id: :asc)
         @provides_protection_item = ProvidesProtectionItem.new  
         @cant = 0
         @provides_protection_items = ProvidesProtectionItem.where("provides_protection_id = ?", params[:id]) if params[:id].present?

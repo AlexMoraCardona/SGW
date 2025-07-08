@@ -94,7 +94,7 @@ class OccupationalExamsController < ApplicationController
     def firmar_rep 
         @occupational_exam = OccupationalExam.find_by(id: params[:id].to_i)
         if params[:format].to_i == 1
-            if  @occupational_exam.user_legal_representative.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @occupational_exam.user_legal_representative.to_i == Current.user.id.to_i
                 redirect_to firmar_rep_occupational_exams_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Representante Legal."
@@ -105,7 +105,7 @@ class OccupationalExamsController < ApplicationController
     def firmar_adv
         @occupational_exam = OccupationalExam.find_by(id: params[:id].to_i)
         if params[:format].to_i == 2
-            if  @occupational_exam.user_adviser_sst.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @occupational_exam.user_adviser_sst.to_i == Current.user.id.to_i
                 redirect_to firmar_adv_occupational_exams_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Asesor en SST."
@@ -116,7 +116,7 @@ class OccupationalExamsController < ApplicationController
     def firmar_res
         @occupational_exam = OccupationalExam.find_by(id: params[:id].to_i)
         if params[:format].to_i == 3
-            if  @occupational_exam.user_responsible_sst.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @occupational_exam.user_responsible_sst.to_i == Current.user.id.to_i
                 redirect_to firmar_res_occupational_exams_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Responsable en SST."

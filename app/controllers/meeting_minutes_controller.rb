@@ -4,11 +4,22 @@ class MeetingMinutesController < ApplicationController
             @meetings = MeetingMinute.all.order(id: :desc)
             @q = @meetings.ransack(params[:q])
             @pagy, @meeting_minutes = pagy(@q.result(date: :desc), items: 3)
-        elsif  Current.user && Current.user.level == 3 || Current.user && Current.user.ccl == 1 || Current.user && Current.user.secretary_copasst == 1
+        elsif  Current.user && Current.user.level == 3
             @meetings = MeetingMinute.where("entity_id = ?",Current.user.entity).order(id: :desc)
             @q = @meetings.ransack(params[:q])
             @pagy, @meeting_minutes = pagy(@q.result(date: :desc), items: 3)
-
+        elsif  Current.user && Current.user.ccl == 1 
+            @meetings = MeetingMinute.where("entity_id = ? and version = ?",Current.user.entity,3).order(id: :desc)
+            @q = @meetings.ransack(params[:q])
+            @pagy, @meeting_minutes = pagy(@q.result(date: :desc), items: 3)
+        elsif Current.user && Current.user.secretary_copasst == 1 || Current.user && Current.user.president_copasst == 1 || Current.user && Current.user.copasst == 1 
+            @meetings = MeetingMinute.where("entity_id = ? and version = ?",Current.user.entity,1).order(id: :desc)
+            @q = @meetings.ransack(params[:q])
+            @pagy, @meeting_minutes = pagy(@q.result(date: :desc), items: 3)
+        elsif Current.user && Current.user.brigade == 1 
+            @meetings = MeetingMinute.where("entity_id = ? and version = ?",Current.user.entity,2).order(id: :desc)
+            @q = @meetings.ransack(params[:q])
+            @pagy, @meeting_minutes = pagy(@q.result(date: :desc), items: 3)
          else
              redirect_to new_session_path, alert: t('common.not_logged_in')    
              session.delete(:user_id)  

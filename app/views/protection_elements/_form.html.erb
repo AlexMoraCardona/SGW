@@ -7,10 +7,12 @@
             </div>
         <% end %>    
         <div class="col-sm-8">
+            <% entities = Entity.label_empresas %>
             <%= form.label :entity, style: "display: block" %>
-            <%= form.select(:entity, [['Genérico', 0], ['Solsuole S.A.S.', 1], ['Consultorio Odontólogo Zuluaga', 3], ['Tulum Fashions', 4]]) %>
+                <%= form.collection_select :entity, entities, :id, :business_name, { prompt: '--Seleccionar--' },
+                { class: 'form-control input-sm select2' } %>
         </div>
-
+        </br> 
         <div class="form-group">    
             <%= form.label :name, style: "display: block" %>
             <%= form.text_field :name,  class: "form-control" %>

@@ -26,9 +26,13 @@ class HistoryEvaluationsController < ApplicationController
 
     def show
         @history_evaluation = HistoryEvaluation.find(params[:id])
-        @history_items = HistoryItem.where(history_evaluation_id: @history_evaluation.id).order(apply: :desc) if @history_evaluation.present?
+        @history_items = HistoryItem.where("history_evaluation_id = ? and apply = ?",@history_evaluation.id, 1).order(:order_nro) if @history_evaluation.present?
+        @history_itemsno = HistoryItem.where("history_evaluation_id = ? and apply = ?",@history_evaluation.id, 0).order(:order_nro) if @history_evaluation.present?
+
         @user_responsible = User.find(@history_evaluation.id_responsible_execution) if @history_evaluation.id_responsible_execution > 0
         @user_representante = User.find(@history_evaluation.id_employee_contractor) if @history_evaluation.id_employee_contractor > 0
+
+
 
         respond_to do |format| 
             format.html
@@ -44,7 +48,9 @@ class HistoryEvaluationsController < ApplicationController
     
     def descargar_historia
         @history_evaluation = HistoryEvaluation.find(params[:id])
-        @history_items = HistoryItem.where(history_evaluation_id: @history_evaluation.id).order(apply: :desc) if @history_evaluation.present?
+        @history_items = HistoryItem.where("history_evaluation_id = ? and apply = ?",@history_evaluation.id, 1).order(:order_nro) if @history_evaluation.present?
+        @history_itemsno = HistoryItem.where("history_evaluation_id = ? and apply = ?",@history_evaluation.id, 0).order(:order_nro) if @history_evaluation.present?
+
         @user_responsible = User.find(@history_evaluation.id_responsible_execution) if @history_evaluation.id_responsible_execution > 0
         @user_representante = User.find(@history_evaluation.id_employee_contractor) if @history_evaluation.id_employee_contractor > 0
 

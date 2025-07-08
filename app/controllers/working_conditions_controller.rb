@@ -93,7 +93,7 @@ class WorkingConditionsController < ApplicationController
     def firmar_user 
         @working_condition = WorkingCondition.find_by(id: params[:id].to_i)
         if params[:format].to_i == 1
-            if  @working_condition.user_id == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @working_condition.user_id == Current.user.id.to_i
                 redirect_to firmar_user_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma."

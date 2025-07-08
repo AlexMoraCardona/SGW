@@ -14,12 +14,14 @@
         </div>
         <hr>
         </br>
-        <%= search_form_for @q do |f| %> 
-            <%= f.label :entity_eq %>
-            <%= f.select :entity_eq, Entity.pluck(:business_name, :id).uniq,  {include_blank: true}, style: "width: 200px;" %>
-            &nbsp;&nbsp;
-            <button type="submit" class="btn btn-sm btn-primary">Buscar</button>
-        <% end %>
+        <% if Current.user.level > 0 && Current.user.level < 3 %> 
+            <%= search_form_for @q do |f| %> 
+                <%= f.label :entity_eq %>
+                <%= f.select :entity_eq, Entity.pluck(:business_name, :id).uniq,  {include_blank: true}, style: "width: 200px;" %>
+                &nbsp;&nbsp;
+                <button type="submit" class="btn btn-sm btn-primary">Buscar</button>
+            <% end %>
+        <% end %>    
 
         <%== pagy_info(@pagy) %>
         <%== pagy_bootstrap_combo_nav_js(@pagy) %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_06_27_202147) do
+ActiveRecord::Schema[7.0].define(version: 2025_07_08_191513) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -1783,6 +1783,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_27_202147) do
     t.bigint "occupational_exam_id"
     t.integer "state_exam", default: 0
     t.integer "user_application", default: 0
+    t.string "emphasis"
     t.index ["occupational_exam_id"], name: "index_occupational_exam_items_on_occupational_exam_id"
   end
 
@@ -2394,6 +2395,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_27_202147) do
     t.integer "authorization_police", default: 0
     t.date "authorization_date"
     t.string "license"
+    t.string "de_license"
     t.index ["document_id"], name: "index_users_on_document_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["nro_document"], name: "index_users_on_nro_document", unique: true

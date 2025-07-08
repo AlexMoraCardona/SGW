@@ -62,7 +62,7 @@ class FormPreventionsController < ApplicationController
     
     def firmar_admin_extent
         @admin_extent_danger = AdminExtentDanger.find(params[:id].to_i)
-        if  @admin_extent_danger.user_id.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+        if  @admin_extent_danger.user_id.to_i == Current.user.id.to_i
         else
             redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma."
         end    

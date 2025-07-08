@@ -167,7 +167,7 @@ class ProfilesController < ApplicationController
     def firma_elaboro
         @survey_profile = SurveyProfile.find_by(id: params[:id].to_i)
         if params[:format].to_i == 3
-            if  @survey_profile.user_elaboro == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @survey_profile.user_elaboro == Current.user.id.to_i
                 redirect_to firma_elaboro_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Responsable en SST."
@@ -178,7 +178,7 @@ class ProfilesController < ApplicationController
     def firma_aprobo
         @survey_profile = SurveyProfile.find_by(id: params[:id].to_i)
         if params[:format].to_i == 1
-            if  @survey_profile.user_aprobo == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @survey_profile.user_aprobo == Current.user.id.to_i
                 redirect_to firma_aprobo_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Representante Legal."
@@ -189,8 +189,8 @@ class ProfilesController < ApplicationController
     def fichatecnica
         @survey_profile = SurveyProfile.find_by(id: params[:id].to_i)
         @profiles = Profile.where(survey_profile_id: @survey_profile.id) if @survey_profile.present?
-        @cantemp = User.where("entity = ?", @survey_profile.entity_id).count
-        @empleados = User.where("entity = ?", @survey_profile.entity_id)
+        @cantemp = User.where("entity = ? and level > ? and state = ?", @survey_profile.entity_id,2,1).count
+        @empleados = User.where("entity = ? and level > ? and state = ?", @survey_profile.entity_id,2,1)
         @cantpendientes = 0
         @pendientes = []
         @ya = []

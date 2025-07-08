@@ -1,37 +1,111 @@
 <br>
-<div class="d-flex">
-    <div class="container">
-        <h class="display-6">Items</h>
-    </div> 
-</div>
-<hr>
+<div class="container col-12" 
+    <br>
+    <h2 class="display-5">Estándares que aplican para la norma</h2> 
+    <hr>
+</div> 
+<br>  
 
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th scope="col">Ciclo:</th>
-            <th scope="col">Estandar:</th>
-            <th scope="col">Detalle estandar:</th>
-            <th scope="col">Puntaje máximo:</th>
-            <th scope="col">Item</th>
-            <th scope="col">Aplica Norma</th>
-            <th scope="col">Cumple</th>
-            <th scope="col">Puntaje</th>
-        </tr>
-    </thead> 
-    <tbody>
-        <% @history_items.each do |item| %>   
-            <tr>
-                <td><%= Standar.label_cycle(item.cycle) %></td>
-                <td><%= item.evaluation_rule_detail.standar_detail_item.standar_detail.standar.name %></td>
-                <td><%= item.evaluation_rule_detail.standar_detail_item.standar_detail.description %></td>
-                <td><%= item.evaluation_rule_detail.standar_detail_item.maximun_value %></td>
-                <td><%= item.description %></td>
-                <td><%= HistoryEvaluation.label_apply(item.apply) %></td>
-                <td><%= HistoryEvaluation.label_meets(item.meets) %></td>
-                <td><%= item.score %></td>
+<div class="container col-12">  
+    </br>        
+
+    <table class="table table-hover">
+        <thead>
+            <tr>  
+                <th scope="col">Ciclo</th>
+                <th scope="col">Item</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Cumple</th>
+                <th scope="col">Aplica Norma</th>
+                <th scope="col">Puntaje</th>
+                <th scope="col">Criterio</th> 
             </tr>
-        <% end %>     
-    </tbody>      
-</table>
-<br>
+        </thead>  
+        <tbody> 
+            <% @history_items.each do |evaluation_items| %> 
+                    <tr> 
+                        <td><%= Standar.label_cycle(evaluation_items.cycle) %></td>
+                        <td><%= evaluation_items.evaluation_rule_detail.standar_detail_item.item_nro %></td>
+                        <td><%= evaluation_items.description%></td>
+                        <td><%= HistoryEvaluation.label_meets(evaluation_items.meets) %></td>
+                        <td><%= HistoryEvaluation.label_apply(evaluation_items.apply) %></td>
+                        <td><%= evaluation_items.score %></td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-light" 
+                                data-bs-toggle="popover"
+                                title="<%=evaluation_items.evaluation_rule_detail.standar_detail_item.description%>"
+                                data-bs-content="CRITERIO: <%=evaluation_items.evaluation_rule_detail.standar_detail_item.criterion%> 
+                                MODO DE VERIFICACIÓN:  <%= evaluation_items.evaluation_rule_detail.standar_detail_item.verification_mode %>" ><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+    
+                        </td>
+                    </tr>  
+            <% end %> 
+        </tbody>   
+ 
+    </table>
+    </br>  
+    <br>
+    <h2 class="display-5">Estándares que no aplican para la norma</h2> 
+    <hr>
+    <div class="row g-3">
+        <div class="col-sm-4">
+           <strong><%= t('.score_int') %>:</strong>
+           <%= @history_evaluation.score_int  %>%
+        </div>        
+        <div class="col-sm-4">
+            <strong>Estado:</strong>
+            <% if  @history_evaluation.score_int > 85.99  %>
+                <div style="color:#008000";>ACEPTABLE</div>
+            <% end  %>    
+            <% if @history_evaluation.score_int > 60.99 && @history_evaluation.score_int < 86  %>
+                <div style="color:#FFD200";>MODERADAMENTE ACEPTABLE</div>
+            <% end  %>    
+            <% if @history_evaluation.score_int < 61 %>
+                <div style="color:#FF0000";>CRÍTICO</div>
+            <% end  %>    
+        </div>        
+    </div>  
+
+    <table class="table table-hover">
+        <thead>
+            <tr>  
+                <th scope="col">Ciclo</th>
+                <th scope="col">Item</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Cumple</th>
+                <th scope="col">Aplica Norma</th>
+                <th scope="col">Puntaje</th>
+                <th scope="col">Criterio</th> 
+            </tr>
+        </thead>  
+        <tbody> 
+            <% @history_itemsno.each do |evaluation_items| %> 
+                    <tr> 
+                        <td><%= Standar.label_cycle(evaluation_items.evaluation_rule_detail.standar_detail_item.standar_detail.standar.cycle) %></td>
+                        <td><%= evaluation_items.evaluation_rule_detail.standar_detail_item.item_nro %></td>
+                        <td><%= evaluation_items.evaluation_rule_detail.standar_detail_item.description%></td>
+                        <td><%= HistoryEvaluation.label_meets(evaluation_items.meets) %></td>
+                        <td><%= HistoryEvaluation.label_apply(evaluation_items.apply) %></td>
+                        <td><%= evaluation_items.score %></td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-light" 
+                                data-bs-toggle="popover"
+                                title="<%=evaluation_items.evaluation_rule_detail.standar_detail_item.description%>"
+                                data-bs-content="CRITERIO: <%=evaluation_items.evaluation_rule_detail.standar_detail_item.criterion%> 
+                                MODO DE VERIFICACIÓN:  <%= evaluation_items.evaluation_rule_detail.standar_detail_item.verification_mode %>" ><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+    
+                        </td>
+                    </tr>  
+            <% end %> 
+        </tbody>   
+ 
+    </table>
+    </br>  
+    
+    
+
+    <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, evaluations_path %>
+    
+</div>  
+<br> 
+

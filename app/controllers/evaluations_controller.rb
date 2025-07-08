@@ -40,7 +40,7 @@ class EvaluationsController < ApplicationController
     end    
 
     def ver_history 
-        @history_evaluations = HistoryEvaluation.where(evaluation_id: params[:id]) if params[:id].present?
+        @history_evaluations = HistoryEvaluation.where(evaluation_id: params[:id]).order(:date_history_evaluation) if params[:id].present?
     end
 
     def planificar
@@ -140,7 +140,7 @@ class EvaluationsController < ApplicationController
     def firmar_representante_evaluation 
         @evaluation = Evaluation.find_by(id: params[:id].to_i)
         if params[:format].to_i == 1
-            if  @evaluation.user_representante.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @evaluation.user_representante.to_i == Current.user.id.to_i
                 redirect_to firmar_representante_evaluation_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Representante Legal."
@@ -151,7 +151,7 @@ class EvaluationsController < ApplicationController
     def firmar_responsable_evaluation
         @evaluation = Evaluation.find_by(id: params[:id].to_i)
         if params[:format].to_i == 2
-            if  @evaluation.user_responsible.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @evaluation.user_responsible.to_i == Current.user.id.to_i
                 redirect_to firmar_responsable_evaluation_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Responsable de la ejecución del SG-SST."

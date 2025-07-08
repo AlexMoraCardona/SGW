@@ -109,7 +109,7 @@ class SafetyInspectionsController < ApplicationController
     def firmar_responsable_inspeccion
         @safety_inspection = SafetyInspection.find_by(id: params[:id].to_i)
         if params[:format].to_i == 2
-            if  @safety_inspection.user_responsible.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @safety_inspection.user_responsible.to_i == Current.user.id.to_i
                 redirect_to firmar_responsable_inspeccion_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Responsable."

@@ -1,8 +1,12 @@
 class ProtectionElementsController < ApplicationController
     def index
-        if  Current.user && Current.user.level > 0 && Current.user.level < 4
+        if  Current.user && Current.user.level > 0 && Current.user.level < 3
             #@protection_elements = ProtectionElement.all 
             @q = ProtectionElement.ransack(params[:q])
+            @pagy, @protection_elements = pagy(@q.result(id: :desc), items: 3)
+        elsif  Current.user && Current.user.level == 3
+            @protection_elements = ProtectionElement.where("entity = ?",Current.user.entity) 
+            @q = @protection_elements.ransack(params[:q])
             @pagy, @protection_elements = pagy(@q.result(id: :desc), items: 3)
         else
              redirect_to new_session_path, alert: t('common.not_logged_in')  

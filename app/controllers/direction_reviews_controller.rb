@@ -93,7 +93,7 @@ class DirectionReviewsController < ApplicationController
     def firmar_representante_review 
         @direction_review = DirectionReview.find_by(id: params[:id].to_i)
         if params[:format].to_i == 1
-            if  @direction_review.user_representante.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @direction_review.user_representante.to_i == Current.user.id.to_i
                 actualizar_fecha(@direction_review.id)
                 redirect_to firmar_representante_review_path
             else

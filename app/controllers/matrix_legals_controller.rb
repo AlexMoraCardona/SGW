@@ -177,7 +177,7 @@ class MatrixLegalsController < ApplicationController
         @matrix_legal = MatrixLegal.find_by(id: params[:id].to_i)
         if params[:format].to_i == 1
 
-            if  @matrix_legal.user_legal_representative.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @matrix_legal.user_legal_representative.to_i == Current.user.id.to_i
                 redirect_to firmar_rep_matrix_legals_path
             else
 
@@ -191,7 +191,7 @@ class MatrixLegalsController < ApplicationController
     def firmar_adv
         @matrix_legal = MatrixLegal.find_by(id: params[:id].to_i)
         if params[:format].to_i == 2
-            if  @matrix_legal.user_adviser_sst.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @matrix_legal.user_adviser_sst.to_i == Current.user.id.to_i
                 redirect_to firmar_adv_matrix_legals_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Asesor en SST."
@@ -202,7 +202,7 @@ class MatrixLegalsController < ApplicationController
     def firmar_res
         @matrix_legal = MatrixLegal.find_by(id: params[:id].to_i)
         if params[:format].to_i == 3
-            if  @matrix_legal.user_responsible_sst.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @matrix_legal.user_responsible_sst.to_i == Current.user.id.to_i
                 redirect_to firmar_res_matrix_legals_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Responsable en SST."

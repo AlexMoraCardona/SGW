@@ -89,7 +89,7 @@ class AdmExtinguishersController < ApplicationController
     def firmar_extinguisher 
         @adm_extinguisher = AdmExtinguisher.find_by(id: params[:id].to_i)
         if params[:format].to_i == 1
-            if  @adm_extinguisher.user_id == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @adm_extinguisher.user_id == Current.user.id.to_i
                 redirect_to firmar_extinguisher_adm_extinguishers_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Representante Legal."

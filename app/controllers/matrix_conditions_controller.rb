@@ -101,7 +101,7 @@ class MatrixConditionsController < ApplicationController
     def firmar_representante 
         @matrix_condition = MatrixCondition.find_by(id: params[:id].to_i)
         if params[:format].to_i == 1
-            if  @matrix_condition.user_representante.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @matrix_condition.user_representante.to_i == Current.user.id.to_i
                 redirect_to firmar_representante_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Representante Legal."
@@ -112,7 +112,7 @@ class MatrixConditionsController < ApplicationController
     def firmar_responsible
         @matrix_condition = MatrixCondition.find_by(id: params[:id].to_i)
         if params[:format].to_i == 2
-            if  @matrix_condition.user_responsible.to_i == Current.user.id.to_i || (Current.user.level < 3 && Current.user.level > 0)
+            if  @matrix_condition.user_responsible.to_i == Current.user.id.to_i
                 redirect_to firmar_responsible_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Asesor en SST."

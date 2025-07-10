@@ -25,12 +25,13 @@
             <a class="list-group-item list-group-item-action" href="#list-item-7">Intervención de peligros y riesgos gestionados</a>
             <a class="list-group-item list-group-item-action" href="#list-item-8">Porcentaje de cobertura en capacitaciones</a>
             <a class="list-group-item list-group-item-action" href="#list-item-9">Porcentaje de trabajadores capacitados</a>
-            <a class="list-group-item list-group-item-action" href="#list-item-10">INDICADORES MINIMOS DE SST (Res 0312/2019, artículo 30)</a>
             <a class="list-group-item list-group-item-action" href="#list-item-11">Autoevaluación del SG-SST</a>
-            <a class="list-group-item list-group-item-action" href="#list-item-12">Intervención de peligros y riesgos prioritarios</a>
             <a class="list-group-item list-group-item-action" href="#list-item-13">Ejecución de Acciones Preventivas AP, Acciones Correctivas AC, y de Mejora</a>
             <a class="list-group-item list-group-item-action" href="#list-item-14">Cumplimiento legal</a>
             <a class="list-group-item list-group-item-action" href="#list-item-15">Cumplimiento del plan de trabajo anual</a>
+            <a class="list-group-item list-group-item-action" href="#list-item-16">Porcentaje de actividades intervenidas del plan de mejoramiento</a>
+            <a class="list-group-item list-group-item-action" href="#list-item-17">Porcentaje de trabajadores que participaron en la encuesta de perfil sociodemográficos</a>
+            <a class="list-group-item list-group-item-action" href="#list-item-10">INDICADORES MINIMOS DE SST (Res 0312/2019, artículo 30)</a>
             
         </div>
     </div>
@@ -439,9 +440,9 @@
         </div>
         </br>
 
-        <div class="row g-3">
+        <div class="row g-3"> 
             <div class="col-sm-5">
-                <%= column_chart  @datos_peligrosriesgos, title: "Porcentaje de peligros y riesgos gestionados", download: {filename: "PorcentajePeligrosRiesgosGestionados"}, download: {background: "#FFFFFF"}, xtitle: "Peligros/Riesgos gestionado", ytitle: "Porcentaje gestionado", suffix: "% de casos gestionados" if @datos_peligrosriesgos.present? %>
+                <%= column_chart  @datos_peligrosriesgos, title: "Porcentaje de peligros y riesgos gestionados en el año", download: {filename: "PorcentajePeligrosRiesgosGestionados"}, download: {background: "#FFFFFF"}, xtitle: "Peligros/Riesgos gestionado", ytitle: "", suffix: "% de peligros y riesgos gestionados" if @datos_peligrosriesgos.present? %>
             </div>
             <div class="col-sm-1">
             </div>
@@ -450,6 +451,8 @@
                 <table class="table">
                     <thead>
                         <tr>
+                            <th scope="col">Año</th>
+                            <th scope="col">Mes</th>
                             <th scope="col">Total de Peligros/Riesgos</th>
                             <th scope="col">Peligros/Riesgos gestionados</th>
                             <th scope="col">Indicador</th>
@@ -457,14 +460,18 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <%  @report_official.each do |rep| %>
                             <tr>
-                                <td style="text-align:center"><%= @totalpeligrosriesgos %></td>
-                                <td style="text-align:center"><%= @interpeligrosriesgos %></td>
-                                <td style="text-align:center"><%= @indicador_peligrosriesgos %></td>
+                                <td style="text-align:center"><%= rep.year %></td>
+                                <td style="text-align:center"><%= Calendar.label_month(rep.month).to_s  %></td>
+                                <td style="text-align:center"><%= rep.risk_danger_total %></td>
+                                <td style="text-align:center"><%= rep.risk_danger_ges %></td>
+                                <td style="text-align:center"><%= rep.risk_danger_gestion %></td>
                                 <td style="text-align:center">
-                                    <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="De <%= @totalpeligrosriesgos %> peligros/riesgos identificados se ha intervenido el <%= @indicador_peligrosriesgos %>% de peligros/riesgos. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                                    <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="De <%= rep.risk_danger_total %> peligros/riesgos identificados se ha intervenido el <%= rep.risk_danger_gestion %>% de peligros/riesgos en el mes de: <%= Calendar.label_month(rep.month).to_s %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
                                 </td>
-                            </tr>    
+                            </tr>
+                        <% end %>        
                     </tbody>
                 </table>
 
@@ -472,6 +479,43 @@
             </div>
         </div>        
         <br>
+        <% if @ano_datos_peligrosriesgos.present? %>
+            <div class="row g-3"> 
+                <div class="col-sm-5">
+                    <%= column_chart  @ano_datos_peligrosriesgos, title: "Porcentaje de peligros y riesgos gestionados por año", download: {filename: "PorcentajePeligrosRiesgosGestionadosaño"}, download: {background: "#FFFFFF"}, xtitle: "Peligros/Riesgos gestionado", ytitle: "", suffix: "% de peligros y riesgos gestionados" if @ano_datos_peligrosriesgos.present? %>
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-5">
+                    <br>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Año</th>
+                                <th scope="col">Total de Peligros/Riesgos</th>
+                                <th scope="col">Peligros/Riesgos gestionados</th>
+                                <th scope="col">Indicador</th>
+                                <th scope="col">Interpretación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%  @report_officialtodo.each.where("month = ?",12) do |rep| %>
+                                <tr>
+                                    <td style="text-align:center"><%= rep.year %></td>
+                                    <td style="text-align:center"><%= rep.risk_danger_total %></td>
+                                    <td style="text-align:center"><%= rep.risk_danger_ges %></td>
+                                    <td style="text-align:center"><%= rep.risk_danger_gestion %></td>
+                                    <td style="text-align:center">
+                                        <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="De <%= rep.risk_danger_total %> peligros/riesgos identificados se ha intervenido el <%= rep.risk_danger_gestion %>% de peligros/riesgos en el mes de: <%= Calendar.label_month(rep.month).to_s %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                                    </td>
+                                </tr>    
+                            <% end %>    
+                        </tbody>
+                    </table>
+                    <hr>
+                </div>
+            </div>        
+        <% end %>    
         <hr>
 
         <div class="row g-2" id="list-item-8">
@@ -493,7 +537,7 @@
 
         <div class="row g-3">
             <div class="col-sm-5">
-                <%= column_chart  @datos_coberturacapacitaciones, title: "Porcentaje de cobertura en capacitaciones", download: {filename: "PorcentajeCoberturaCapacitaciones"}, download: {background: "#FFFFFF"}, xtitle: "Capacitaciones/Actividades realizadas", ytitle: "Porcentaje realizado", min: 0, suffix: "% realizado" if @datos_peligrosriesgos.present? %>
+                <%= column_chart  @datos_coberturacapacitaciones, title: "Porcentaje de cobertura en capacitaciones", download: {filename: "PorcentajeCoberturaCapacitaciones"}, download: {background: "#FFFFFF"}, xtitle: "Capacitaciones/Actividades realizadas", ytitle: "", min: 0, suffix: "% realizado" if @datos_coberturacapacitaciones.present? %>
             </div>
             <div class="col-sm-1">
             </div>
@@ -502,6 +546,8 @@
                 <table class="table">
                     <thead>
                         <tr>
+                            <th scope="col">Año</th>
+                            <th scope="col">Mes</th>
                             <th scope="col">Total de Capacitaciones/Actividades</th>
                             <th scope="col">Capacitaciones/Actividades realizadas</th>
                             <th scope="col">Indicador</th>
@@ -509,14 +555,18 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <%  @report_official.each do |rep| %>
                             <tr>
-                                <td style="text-align:center"><%= @total_coberturacapacitaciones %></td>
-                                <td style="text-align:center"><%= @datos_coberturacapacitaciones[0][0] %></td>
-                                <td style="text-align:center"><%= @datos_coberturacapacitaciones[0][1] %></td>
+                                <td style="text-align:center"><%= rep.year %></td>
+                                <td style="text-align:center"><%= Calendar.label_month(rep.month).to_s  %></td>
+                                <td style="text-align:center"><%= rep.training_total %></td>
+                                <td style="text-align:center"><%= rep.training_ges %></td>
+                                <td style="text-align:center"><%= rep.per_training_coverage %></td>
                                 <td style="text-align:center">
-                                    <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="Porcentaje de cobertura en capacitaciones del <%= @datos_coberturacapacitaciones[0][1] %>%"><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                                    <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="Porcentaje de cobertura de capacitaciones del: <%= rep.per_training_coverage %>% en el mes de: <%= Calendar.label_month(rep.month).to_s %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
                                 </td>
-                            </tr>    
+                            </tr>
+                        <% end %>        
                     </tbody>
                 </table>
 
@@ -524,6 +574,44 @@
             </div>
         </div>        
         <br>
+        <% if @ano_datos_coberturacapacitaciones.present? %>
+            <div class="row g-3"> 
+                <div class="col-sm-5">
+                    <%= column_chart  @ano_datos_coberturacapacitaciones, title: "Porcentaje de cobertura en capacitaciones en el año", download: {filename: "Porcentajecoberturacapacitacionesaño"}, download: {background: "#FFFFFF"}, xtitle: "Cobertura capacitaciones", ytitle: "", suffix: "% de capacitaciones gestionadas" if @ano_datos_coberturacapacitaciones.present? %>
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-5">
+                    <br>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Año</th>
+                                <th scope="col">Total de Capacitaciones/Actividades</th>
+                                <th scope="col">Capacitaciones/Actividades realizadas</th>
+                                <th scope="col">Indicador</th>
+                                <th scope="col">Interpretación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%  @report_officialtodo.each.where("month = ?",12) do |rep| %>
+                                <tr>
+                                    <td style="text-align:center"><%= rep.year %></td>
+                                    <td style="text-align:center"><%= rep.training_total %></td>
+                                    <td style="text-align:center"><%= rep.training_ges %></td>
+                                    <td style="text-align:center"><%= rep.per_training_coverage %></td>
+                                    <td style="text-align:center">
+                                        <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="Porcentaje de cobertura de capacitaciones del: <%= rep.per_training_coverage %>% en el mes de: <%= Calendar.label_month(rep.month).to_s %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                                    </td>
+                                </tr>    
+                            <% end %>    
+                        </tbody>
+                    </table>
+                    <hr>
+                </div>
+            </div>        
+        <% end %>    
+
         <hr>
 
         <div class="row g-2" id="list-item-9">
@@ -545,7 +633,7 @@
 
         <div class="row g-3">
             <div class="col-sm-5">
-                <%= column_chart  @datos_trabajadorescapacitados, title: "Porcentaje de trabajadores capacitados", download: {filename: "PorcentajeTrabajadoresCapacitados"}, download: {background: "#FFFFFF"}, xtitle: "Trabajadores Capacitados", ytitle: "Porcentaje capacitado", suffix: "% capacitado" if @datos_trabajadorescapacitados.present? %>
+                <%= column_chart  @datos_trabajadorescapacitados, title: "Porcentaje de empleados capacitados en el año del: ", download: {filename: "Porcentajeempleadoscapacitadosaño"}, download: {background: "#FFFFFF"}, xtitle: "Cobertura empleados capacitados", ytitle: "", suffix: "% de empleados capacitados" if @datos_trabajadorescapacitados.present? %>
             </div>
             <div class="col-sm-1">
             </div>
@@ -554,21 +642,27 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">Total de Trabajadores</th>
+                            <th scope="col">Año</th>
+                            <th scope="col">Mes</th>
+                            <th scope="col">Total de Trabajadores Programados para capacitación</th>
                             <th scope="col">Trabajadores Capacitados</th>
                             <th scope="col">Indicador</th>
                             <th scope="col">Interpretación</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <%  @report_official.each do |rep| %>
                             <tr>
-                                <td style="text-align:center"><%= @total_trabajadores %></td>
-                                <td style="text-align:center"><%= @total_trabajadoresc %></td>
-                                <td style="text-align:center"><%= @datos_trabajadorescapacitados[0][1] %></td>
+                                <td style="text-align:center"><%= rep.year %></td>
+                                <td style="text-align:center"><%= Calendar.label_month(rep.month).to_s  %></td>
+                                <td style="text-align:center"><%= rep.scheduled_workers %></td>
+                                <td style="text-align:center"><%= rep.trained_workers %></td>
+                                <td style="text-align:center"><%= rep.per_scheduled_workers %></td>
                                 <td style="text-align:center">
-                                    <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="Porcentaje de trabajadores capacitados del <%= @datos_trabajadorescapacitados[0][1] %>%"><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                                    <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="Porcentaje de empleados capacitados del: <%= rep.per_scheduled_workers %>% en el mes de: <%= Calendar.label_month(rep.month).to_s %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
                                 </td>
-                            </tr>    
+                            </tr>
+                        <% end %>        
                     </tbody>
                 </table>
 
@@ -576,9 +670,614 @@
             </div>
         </div>        
         <br>
-        <hr>
-                            
+        <% if @ano_datos_trabajadorescapacitados.present? %>
+            <div class="row g-3"> 
+                <div class="col-sm-5">
+                    <%= column_chart  @ano_datos_trabajadorescapacitados, title: "Porcentaje de empleados capacitados en el año del: ", download: {filename: "Porcentajeempleadoscapacitadosaño"}, download: {background: "#FFFFFF"}, xtitle: "Cobertura empleados capacitados", ytitle: "", suffix: "% de empleados capacitados" if @ano_datos_trabajadorescapacitados.present? %>
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-5">
+                    <br>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Año</th>
+                                <th scope="col">Total de Capacitaciones/Actividades</th>
+                                <th scope="col">Capacitaciones/Actividades realizadas</th>
+                                <th scope="col">Indicador</th>
+                                <th scope="col">Interpretación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%  @report_officialtodo.each.where("month = ?",12) do |rep| %>
+                                <tr>
+                                    <td style="text-align:center"><%= rep.year %></td>
+                                    <td style="text-align:center"><%= rep.scheduled_workers %></td>
+                                    <td style="text-align:center"><%= rep.trained_workers %></td>
+                                    <td style="text-align:center"><%= rep.per_scheduled_workers %></td>
+                                    <td style="text-align:center">
+                                        <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="Porcentaje de cobertura de capacitaciones del: <%= rep.per_training_coverage %>% en el mes de: <%= Calendar.label_month(rep.month).to_s %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                                    </td>
+                                </tr>    
+                            <% end %>    
+                        </tbody>
+                    </table>
+                    <hr>
+                </div>
+            </div>        
+        <% end %>    
 
+
+        <hr>
+        <div class="row g-2" id="list-item-9">
+            <h2 class="display-5">Autoevaluación del SG-SST</h2>
+            <hr>
+        </div>
+        <div class="col-sm-11">
+            <strong>Definición:</strong> <%= @indicador_autoevaluacion.description if @indicador_autoevaluacion.present? %> </br>
+            <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_autoevaluacion.periodicity) if @indicador_autoevaluacion.present? %> </br>
+            <strong>Límites:</strong> <%= @indicador_autoevaluacion.limit_one if @indicador_autoevaluacion.present? %>  - <%= @indicador_autoevaluacion.limit_two if @indicador_autoevaluacion.present? %> </br>
+            <strong>Fórmula:</strong> <%= @indicador_autoevaluacion.formula if @indicador_autoevaluacion.present? %> </br>
+            <strong>Interpretación:</strong> <%= @indicador_autoevaluacion.interpretation if @indicador_autoevaluacion.present? %> </br>
+            <strong>Fuente de la información:</strong> <%= @indicador_autoevaluacion.information_source  if @indicador_autoevaluacion.present? %></br>
+            <strong>Responsable de la gestión:</strong> <%= @indicador_autoevaluacion.responsible_management if @indicador_autoevaluacion.present? %> </br>
+            <strong>Tipo de indicador:</strong> <%= @indicador_autoevaluacion.type_indicator if @indicador_autoevaluacion.present? %> </br>
+            <strong>Personas que deben conocer el resultado:</strong> <%= @indicador_autoevaluacion.person_result if @indicador_autoevaluacion.present? %> </br>
+        </div>
+        </br>
+
+        <div class="row g-3">
+            <div class="col-sm-5">
+                <%= column_chart  @datos_evaluacion, title: "Porcentaje de cumplimiento de estándares en la evaluación inicial: ", download: {filename: "Porcentajecumplimientoestandares"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje cumplimiento estándares", ytitle: "", suffix: "% de cumpliminto" if @datos_evaluacion.present? %>
+            </div>
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-5">
+                <br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Año</th>
+                            <th scope="col">Mes</th>
+                            <th scope="col">Total de estándares</th>
+                            <th scope="col">Estándares que se cumplen</th>
+                            <th scope="col">Indicador</th>
+                            <th scope="col">Interpretación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%  @report_official.each do |rep| %>
+                            <tr>
+                                <td style="text-align:center"><%= rep.year %></td>
+                                <td style="text-align:center"><%= Calendar.label_month(rep.month).to_s  %></td>
+                                <td style="text-align:center"><%= rep.items_autoevaluation_total %></td>
+                                <td style="text-align:center"><%= rep.items_autoevaluation_cumple %></td>
+                                <td style="text-align:center"><%= rep.per_autoevaluation %></td>
+                                <td style="text-align:center">
+                                    <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="En <%= @entity.business_name %> se cumplió con <%= rep.items_autoevaluation_cumple %> items de <%= rep.items_autoevaluation_total %> requeridos según la evaluación inicial en el mes de: <%= Calendar.label_month(rep.month).to_s %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                                </td>
+                            </tr>
+                        <% end %>        
+                    </tbody>
+                </table>
+
+                <hr>
+            </div>
+        </div>        
+        <br>
+        <% if @ano_datos_evaluacion.present? %>
+            <div class="row g-3"> 
+                <div class="col-sm-5">
+                    <%= column_chart  @ano_datos_evaluacion, title: "Porcentaje de cumplimiento de estándares en la evaluación inicial: ", download: {filename: "Porcentajecumplimientoestandares"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje cumplimiento estándares", ytitle: "", suffix: "% de cumpliminto" if @ano_datos_evaluacion.present? %>
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-5">
+                    <br>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Año</th>
+                                <th scope="col">Total de estándares</th>
+                                <th scope="col">Estándares que se cumplen</th>
+                                <th scope="col">Indicador</th>
+                                <th scope="col">Interpretación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%  @report_officialtodo.each.where("month = ?",12) do |rep| %>
+                                <tr>
+                                    <td style="text-align:center"><%= rep.year %></td>
+                                    <td style="text-align:center"><%= rep.items_autoevaluation_total %></td>
+                                    <td style="text-align:center"><%= rep.items_autoevaluation_cumple %></td>
+                                    <td style="text-align:center"><%= rep.per_autoevaluation %></td>
+                                    <td style="text-align:center">
+                                        <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="En <%= rep.entity.business_name %> se cumplió con <%= rep.items_autoevaluation_cumple %> items de <%= rep.items_autoevaluation_total %> requeridos según la evaluación inicial en el mes de: <%= Calendar.label_month(rep.month).to_s %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                                    </td>
+                                </tr>    
+                            <% end %>    
+                        </tbody>
+                    </table>
+                    <hr>
+                </div>
+            </div>        
+        <% end %>    
+        <br>
+        <hr>
+        <div class="row g-2" id="list-item-13">
+            <h2 class="display-5">Ejecución de Acciones Preventivas AP, Acciones Correctivas AC, y de Mejora</h2>
+            <hr>
+        </div> 
+        <div class="col-sm-11">
+            <strong>Definición:</strong> <%= @indicador_acapamanual.description if @indicador_acapamanual.present? %> </br>
+            <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_acapamanual.periodicity) if @indicador_acapamanual.present? %> </br>
+            <strong>Límites:</strong> <%= @indicador_acapamanual.limit_one if @indicador_acapamanual.present? %>  - <%= @indicador_acapamanual.limit_two if @indicador_acapamanual.present? %> </br>
+            <strong>Fórmula:</strong> <%= @indicador_acapamanual.formula if @indicador_acapamanual.present? %> </br>
+            <strong>Interpretación:</strong> <%= @indicador_acapamanual.interpretation if @indicador_acapamanual.present? %> </br>
+            <strong>Fuente de la información:</strong> <%= @indicador_acapamanual.information_source  if @indicador_acapamanual.present? %></br>
+            <strong>Responsable de la gestión:</strong> <%= @indicador_acapamanual.responsible_management if @indicador_acapamanual.present? %> </br>
+            <strong>Tipo de indicador:</strong> <%= @indicador_acapamanual.type_indicator if @indicador_acapamanual.present? %> </br>
+            <strong>Personas que deben conocer el resultado:</strong> <%= @indicador_acapamanual.person_result if @indicador_acapamanual.present? %> </br>
+        </div>
+        </br>
+
+        <div class="row g-3">
+            <div class="col-sm-5">
+                <%= column_chart  @datos_matrizacpm, title: "Porcentaje de acciones(AP,AC,AM) ejecutadas", download: {filename: "PorcentajeACPMejecutadas"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de ACPM ejecutadas", ytitle: "", suffix: "% de cumpliminto" if @datos_matrizacpm.present? %>
+            </div>
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-5">
+                <br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Año</th>
+                            <th scope="col">Mes</th>
+                            <th scope="col">Total de ACPM</th>
+                            <th scope="col">ACPM ejecutadas</th>
+                            <th scope="col">Indicador</th>
+                            <th scope="col">Interpretación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%  @report_official.each do |rep| %>
+                            <tr>
+                                <td style="text-align:center"><%= rep.year %></td>
+                                <td style="text-align:center"><%= Calendar.label_month(rep.month).to_s  %></td>
+                                <td style="text-align:center"><%= rep.acpm_total %></td>
+                                <td style="text-align:center"><%= rep.acpm_cumple %></td>
+                                <td style="text-align:center"><%= rep.per_acpm %></td>
+                                <td style="text-align:center">
+                                    <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="En <%= @entity.business_name %> se ejecutaron <%= rep.acpm_cumple %> acciones (AP, AC, AM) de <%= rep.acpm_total %> acciones identificadas en el mes de: <%= Calendar.label_month(rep.month).to_s %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                                </td>
+                            </tr>
+                        <% end %>        
+                    </tbody>
+                </table>
+
+                <hr>
+            </div>
+        </div>        
+        <br>
+        <% if @ano_datos_evaluacion.present? %>
+            <div class="row g-3"> 
+                <div class="col-sm-5">
+                    <%= column_chart  @ano_datos_evaluacion, title: "Porcentaje de cumplimiento de estándares en la evaluación inicial: ", download: {filename: "Porcentajecumplimientoestandares"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje cumplimiento estándares", ytitle: "", suffix: "% de cumpliminto" if @ano_datos_evaluacion.present? %>
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-5">
+                    <br>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Año</th>
+                                <th scope="col">Total de ACPM</th>
+                                <th scope="col">ACPM ejecutadas</th>
+                                <th scope="col">Indicador</th>
+                                <th scope="col">Interpretación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%  @report_officialtodo.each.where("month = ?",12) do |rep| %>
+                                <tr>
+                                    <td style="text-align:center"><%= rep.year %></td>
+                                    <td style="text-align:center"><%= rep.acpm_total %></td>
+                                    <td style="text-align:center"><%= rep.acpm_cumple %></td>
+                                    <td style="text-align:center"><%= rep.per_acpm %></td>
+                                    <td style="text-align:center">
+                                        <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="En <%= @entity.business_name %> se ejecutaron <%= rep.acpm_cumple %> acciones (AP, AC, AM) de <%= rep.acpm_total %> acciones identificadas en el año: <%= rep.year.to_i %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                                    </td>
+                                </tr>    
+                            <% end %>    
+                        </tbody>
+                    </table>
+                    <hr>
+                </div>
+            </div>        
+        <% end %>    
+        <br>
+        <hr>                   
+        <div class="row g-2" id="list-item-14">
+            <h2 class="display-5">Cumplimiento legal</h2>
+            <hr>
+        </div> 
+        <div class="col-sm-11">
+            <strong>Definición:</strong> <%= @indicador_cumlegalanual.description if @indicador_cumlegalanual.present? %> </br>
+            <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_cumlegalanual.periodicity) if @indicador_cumlegalanual.present? %> </br>
+            <strong>Límites:</strong> <%= @indicador_cumlegalanual.limit_one if @indicador_cumlegalanual.present? %>  - <%= @indicador_cumlegalanual.limit_two if @indicador_cumlegalanual.present? %> </br>
+            <strong>Fórmula:</strong> <%= @indicador_cumlegalanual.formula if @indicador_cumlegalanual.present? %> </br>
+            <strong>Interpretación:</strong> <%= @indicador_cumlegalanual.interpretation if @indicador_cumlegalanual.present? %> </br>
+            <strong>Fuente de la información:</strong> <%= @indicador_cumlegalanual.information_source  if @indicador_cumlegalanual.present? %></br>
+            <strong>Responsable de la gestión:</strong> <%= @indicador_cumlegalanual.responsible_management if @indicador_cumlegalanual.present? %> </br>
+            <strong>Tipo de indicador:</strong> <%= @indicador_cumlegalanual.type_indicator if @indicador_cumlegalanual.present? %> </br>
+            <strong>Personas que deben conocer el resultado:</strong> <%= @indicador_cumlegalanual.person_result if @indicador_cumlegalanual.present? %> </br>
+        </div>
+        </br>
+        <div class="row g-3">
+            <div class="col-sm-5">
+                <%= column_chart  @datos_matrizlegal, title: "Porcentaje de requisitos legales aplicables ejecutados", download: {filename: "Porcentajerequisitoslegalesejecutados."}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de requisitos legales aplicables ejecutados", ytitle: "", suffix: "% de cumpliminto" if @datos_matrizlegal.present? %>
+            </div>
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-5">
+                <br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Año</th>
+                            <th scope="col">Mes</th>
+                            <th scope="col">Total de requisitos legales aplicables</th>
+                            <th scope="col">Requisitos legales que cumplen</th>
+                            <th scope="col">Indicador</th>
+                            <th scope="col">Interpretación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%  @report_official.each do |rep| %>
+                            <tr>
+                                <td style="text-align:center"><%= rep.year %></td>
+                                <td style="text-align:center"><%= Calendar.label_month(rep.month).to_s  %></td>
+                                <td style="text-align:center"><%= rep.compliance_legal_total %></td>
+                                <td style="text-align:center"><%= rep.compliance_legal_cumple %></td>
+                                <td style="text-align:center"><%= rep.compliance_legal %></td>
+                                <td style="text-align:center">
+                                    <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="En <%= @entity.business_name %> se cumplió con  <%= rep.compliance_legal_cumple %> equisitos legales, de <%= rep.compliance_legal_total %> requisitos aplicables en el mes de: <%= Calendar.label_month(rep.month).to_s %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                                </td>
+                            </tr>
+                        <% end %>        
+                    </tbody>
+                </table>
+
+                <hr>
+            </div>
+        </div>        
+        <br>
+        <% if @ano_datos_evaluacion.present? %>
+            <div class="row g-3"> 
+                <div class="col-sm-5">
+                    <%= column_chart  @ano_datos_matrizlegal, title: "Porcentaje de cumplimiento de estándares en la evaluación inicial: ", download: {filename: "Porcentajecumplimientoestandares"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje cumplimiento estándares", ytitle: "", suffix: "% de cumpliminto" if @ano_datos_matrizlegal.present? %>
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-5">
+                    <br>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Año</th>
+                                <th scope="col">Total de ACPM</th>
+                                <th scope="col">ACPM ejecutadas</th>
+                                <th scope="col">Indicador</th>
+                                <th scope="col">Interpretación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%  @report_officialtodo.each.where("month = ?",12) do |rep| %>
+                                <tr>
+                                    <td style="text-align:center"><%= rep.year %></td>
+                                    <td style="text-align:center"><%= rep.acpm_total %></td>
+                                    <td style="text-align:center"><%= rep.acpm_cumple %></td>
+                                    <td style="text-align:center"><%= rep.per_acpm %></td>
+                                    <td style="text-align:center">
+                                        <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="En <%= @entity.business_name %> se cumplió con  <%= rep.compliance_legal_cumple %> equisitos legales, de <%= rep.compliance_legal_total %> requisitos aplicables en el año: <%= rep.year.to_i %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                                    </td>
+                                </tr>    
+                            <% end %>    
+                        </tbody>
+                    </table>
+                    <hr>
+                </div>
+            </div>        
+        <% end %>    
+        <br>
+        <hr>                   
+        <div class="row g-2" id="list-item-15">
+            <h2 class="display-5">Cumplimiento del plan de trabajo anual</h2>
+            <hr>
+        </div>
+        <div class="col-sm-11">
+            <strong>Definición:</strong> <%= @indicador_plantrabajoanual.description if @indicador_plantrabajoanual.present? %> </br>
+            <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_plantrabajoanual.periodicity) if @indicador_plantrabajoanual.present? %> </br>
+            <strong>Límites:</strong> <%= @indicador_plantrabajoanual.limit_one if @indicador_plantrabajoanual.present? %>  - <%= @indicador_plantrabajoanual.limit_two if @indicador_plantrabajoanual.present? %> </br>
+            <strong>Fórmula:</strong> <%= @indicador_plantrabajoanual.formula if @indicador_plantrabajoanual.present? %> </br>
+            <strong>Interpretación:</strong> <%= @indicador_plantrabajoanual.interpretation if @indicador_plantrabajoanual.present? %> </br>
+            <strong>Fuente de la información:</strong> <%= @indicador_plantrabajoanual.information_source  if @indicador_plantrabajoanual.present? %></br>
+            <strong>Responsable de la gestión:</strong> <%= @indicador_plantrabajoanual.responsible_management if @indicador_plantrabajoanual.present? %> </br>
+            <strong>Tipo de indicador:</strong> <%= @indicador_plantrabajoanual.type_indicator if @indicador_plantrabajoanual.present? %> </br>
+            <strong>Personas que deben conocer el resultado:</strong> <%= @indicador_plantrabajoanual.person_result if @indicador_plantrabajoanual.present? %> </br>
+        </div>
+        </br>
+        <div class="row g-3">
+            <div class="col-sm-5">
+                <%= column_chart  @datos_plantrabajoanual, title: "Porcentaje de actividades ejecutadas programadas en el plan anual de trabajo", download: {filename: "Porcentajeactividadesplananual"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de actividades ejecutadas plan anual de trabajo", ytitle: "", suffix: "% de cumpliminto" if @datos_plantrabajoanual.present? %>
+            </div>
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-5">
+                <br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Año</th>
+                            <th scope="col">Mes</th>
+                            <th scope="col">Total de actividades</th>
+                            <th scope="col">Actividades ejecutadas</th>
+                            <th scope="col">Indicador</th>
+                            <th scope="col">Interpretación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%  @report_official.each do |rep| %>
+                            <tr>
+                                <td style="text-align:center"><%= rep.year %></td>
+                                <td style="text-align:center"><%= Calendar.label_month(rep.month).to_s  %></td>
+                                <td style="text-align:center"><%= rep.compliance_work_plan_total %></td>
+                                <td style="text-align:center"><%= rep.compliance_work_plan_cumple %></td>
+                                <td style="text-align:center"><%= rep.compliance_work_plan %></td>
+                                <td style="text-align:center">
+                                    <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="En <%= @entity.business_name %> se ejecutaron  <%= rep.compliance_work_plan_cumple %> actividades de <%= rep.compliance_work_plan_total %> actividades programadas en el plan anual de trabajo en el mes de: <%= Calendar.label_month(rep.month).to_s %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                                </td>
+                            </tr>
+                        <% end %>        
+                    </tbody>
+                </table>
+
+                <hr>
+            </div>
+        </div>        
+        <br>
+        <% if @ano_datos_evaluacion.present? %>
+            <div class="row g-3"> 
+                <div class="col-sm-5">
+                    <%= column_chart  @ano_datos_plantrabajoanual, title: "Porcentaje de actividades ejecutadas programadas en el plan anual de trabajo", download: {filename: "Porcentajeactividadesplananual"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de actividades ejecutadas plan anual de trabajo", ytitle: "", suffix: "% de cumpliminto" if @ano_datos_plantrabajoanual.present? %>
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-5">
+                    <br>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Año</th>
+                                <th scope="col">Total de actividades</th>
+                                <th scope="col">Actividades ejecutadas</th>
+                                <th scope="col">Indicador</th>
+                                <th scope="col">Interpretación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%  @report_officialtodo.each.where("month = ?",12) do |rep| %>
+                                <tr>
+                                    <td style="text-align:center"><%= rep.year %></td>
+                                    <td style="text-align:center"><%= rep.compliance_work_plan_total %></td>
+                                    <td style="text-align:center"><%= rep.compliance_work_plan_cumple %></td>
+                                    <td style="text-align:center"><%= rep.compliance_work_plan %></td>
+                                    <td style="text-align:center">
+                                        <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="En <%= @entity.business_name %> se ejecutaron  <%= rep.compliance_work_plan_cumple %> actividades de <%= rep.compliance_work_plan_total %> actividades programadas en el plan anual de trabajo en el año: <%= rep.year.to_i %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                                    </td>
+                                </tr>    
+                            <% end %>    
+                        </tbody>
+                    </table>
+                    <hr>
+                </div>
+            </div>        
+        <% end %>    
+        <br>
+        <hr>                   
+        <div class="row g-2" id="list-item-15">
+            <h2 class="display-5">Porcentaje de actividades intervenidas del plan de mejoramiento</h2>
+            <hr>
+        </div>
+        <div class="col-sm-11">
+            <strong>Definición:</strong> <%= @indicador_plantrabajoanual.description if @indicador_plantrabajoanual.present? %> </br>
+            <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_plantrabajoanual.periodicity) if @indicador_plantrabajoanual.present? %> </br>
+            <strong>Límites:</strong> <%= @indicador_plantrabajoanual.limit_one if @indicador_plantrabajoanual.present? %>  - <%= @indicador_plantrabajoanual.limit_two if @indicador_plantrabajoanual.present? %> </br>
+            <strong>Fórmula:</strong> <%= @indicador_plantrabajoanual.formula if @indicador_plantrabajoanual.present? %> </br>
+            <strong>Interpretación:</strong> <%= @indicador_plantrabajoanual.interpretation if @indicador_plantrabajoanual.present? %> </br>
+            <strong>Fuente de la información:</strong> <%= @indicador_plantrabajoanual.information_source  if @indicador_plantrabajoanual.present? %></br>
+            <strong>Responsable de la gestión:</strong> <%= @indicador_plantrabajoanual.responsible_management if @indicador_plantrabajoanual.present? %> </br>
+            <strong>Tipo de indicador:</strong> <%= @indicador_plantrabajoanual.type_indicator if @indicador_plantrabajoanual.present? %> </br>
+            <strong>Personas que deben conocer el resultado:</strong> <%= @indicador_plantrabajoanual.person_result if @indicador_plantrabajoanual.present? %> </br>
+        </div>
+        </br>
+        <div class="row g-3">
+            <div class="col-sm-5">
+                <%= column_chart  @datos_planmejoramiento, title: "Porcentaje de actividades intervenidas del plan de mejoramiento", download: {filename: "Porcentajeactividadesintervenidasplanmejoramiento"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de actividades intervenidas del plan de mejoramiento", ytitle: "", suffix: "% de cumplimiento" if @datos_planmejoramiento.present? %>
+            </div>
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-5">
+                <br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Año</th>
+                            <th scope="col">Mes</th>
+                            <th scope="col">Total de actividades</th>
+                            <th scope="col">Actividades intervenidas</th>
+                            <th scope="col">Indicador</th>
+                            <th scope="col">Interpretación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%  @report_official.each do |rep| %>
+                            <tr>
+                                <td style="text-align:center"><%= rep.year %></td>
+                                <td style="text-align:center"><%= Calendar.label_month(rep.month).to_s  %></td>
+                                <td style="text-align:center"><%= rep.activity_plan_total %></td>
+                                <td style="text-align:center"><%= rep.activity_plan_intervenida %></td>
+                                <td style="text-align:center"><%= rep.per_activity_plan %></td>
+                                <td style="text-align:center">
+                                    <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="En <%= @entity.business_name %> se intervinieron  <%= rep.activity_plan_intervenida %> actividades de <%= rep.activity_plan_total %> actividades identificadas en el plan de mejoramiento en el mes de: <%= Calendar.label_month(rep.month).to_s %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                                </td>
+                            </tr>
+                        <% end %>        
+                    </tbody>
+                </table>
+
+                <hr>
+            </div>
+        </div>        
+        <br>
+        <% if @ano_datos_evaluacion.present? %>
+            <div class="row g-3"> 
+                <div class="col-sm-5">
+                    <%= column_chart  @ano_datos_plantrabajoanual, title: "Porcentaje de actividades ejecutadas programadas en el plan anual de trabajo", download: {filename: "Porcentajeactividadesplananual"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de actividades ejecutadas plan anual de trabajo", ytitle: "", suffix: "% de cumpliminto" if @ano_datos_plantrabajoanual.present? %>
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-5">
+                    <br>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Año</th>
+                                <th scope="col">Total de actividades</th>
+                                <th scope="col">Actividades intervenidas</th>
+                                <th scope="col">Indicador</th>
+                                <th scope="col">Interpretación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%  @report_officialtodo.each.where("month = ?",12) do |rep| %>
+                                <tr>
+                                    <td style="text-align:center"><%= rep.year %></td>
+                                    <td style="text-align:center"><%= rep.activity_plan_total %></td>
+                                    <td style="text-align:center"><%= rep.activity_plan_intervenida %></td>
+                                    <td style="text-align:center"><%= rep.per_activity_plan %></td>
+                                    <td style="text-align:center">
+                                        <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="En <%= @entity.business_name %> se intervinieron  <%= rep.activity_plan_intervenida %> actividades de <%= rep.activity_plan_total %> actividades identificadas en el plan de mejoramiento en el año: <%= rep.year.to_i %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                                    </td>
+                                </tr>    
+                            <% end %>    
+                        </tbody>
+                    </table>
+                    <hr>
+                </div>
+            </div>        
+        <% end %>    
+        <br>
+        <hr>                   
+        <div class="row g-2" id="list-item-15">
+            <h2 class="display-5">Porcentaje de trabajadores que participaron en la encuesta de perfil sociodemográficos</h2>
+            <hr>
+        </div>
+        <div class="col-sm-11">
+            <strong>Definición:</strong> <%= @indicador_perfilsocio.description if @indicador_perfilsocio.present? %> </br>
+            <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_perfilsocio.periodicity) if @indicador_perfilsocio.present? %> </br>
+            <strong>Límites:</strong> <%= @indicador_perfilsocio.limit_one if @indicador_perfilsocio.present? %>  - <%= @indicador_perfilsocio.limit_two if @indicador_perfilsocio.present? %> </br>
+            <strong>Fórmula:</strong> <%= @indicador_perfilsocio.formula if @indicador_perfilsocio.present? %> </br>
+            <strong>Interpretación:</strong> <%= @indicador_perfilsocio.interpretation if @indicador_perfilsocio.present? %> </br>
+            <strong>Fuente de la información:</strong> <%= @indicador_perfilsocio.information_source  if @indicador_perfilsocio.present? %></br>
+            <strong>Responsable de la gestión:</strong> <%= @indicador_perfilsocio.responsible_management if @indicador_perfilsocio.present? %> </br>
+            <strong>Tipo de indicador:</strong> <%= @indicador_perfilsocio.type_indicator if @indicador_perfilsocio.present? %> </br>
+            <strong>Personas que deben conocer el resultado:</strong> <%= @indicador_perfilsocio.person_result if @indicador_perfilsocio.present? %> </br>
+        </div>
+        </br>
+        <div class="row g-3">
+            <div class="col-sm-5">
+                <%= column_chart  @datos_perfilsocio, title: "Porcentaje de actividades intervenidas del plan de mejoramiento", download: {filename: "Porcentajeactividadesintervenidasplanmejoramiento"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de actividades intervenidas del plan de mejoramiento", ytitle: "", suffix: "% de cumplimiento" if @datos_perfilsocio.present? %>
+            </div>
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-5">
+                <br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Año</th>
+                            <th scope="col">Mes</th>
+                            <th scope="col">Total de trabajadores</th>
+                            <th scope="col">Trabajadores encuestados</th>
+                            <th scope="col">Indicador</th>
+                            <th scope="col">Interpretación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%  @report_official.each do |rep| %>
+                            <tr>
+                                <td style="text-align:center"><%= rep.year %></td>
+                                <td style="text-align:center"><%= Calendar.label_month(rep.month).to_s  %></td>
+                                <td style="text-align:center"><%= rep.perfil_sociodemo_total %></td>
+                                <td style="text-align:center"><%= rep.perfil_sociodemo_encuestados %></td>
+                                <td style="text-align:center"><%= rep.per_perfil_sociodemo %></td>
+                                <td style="text-align:center">
+                                    <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="En <%= @entity.business_name %>  se encuestaron   <%= rep.perfil_sociodemo_encuestados %> trabajadores de <%= rep.perfil_sociodemo_total %> trabajadores totales de la empresa en el mes de: <%= Calendar.label_month(rep.month).to_s %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                                </td>
+                            </tr>
+                        <% end %>        
+                    </tbody>
+                </table>
+
+                <hr>
+            </div>
+        </div>        
+        <br>
+        <% if @ano_datos_evaluacion.present? %>
+            <div class="row g-3"> 
+                <div class="col-sm-5">
+                    <%= column_chart  @ano_datos_perfilsocio, title: "Porcentaje de actividades ejecutadas programadas en el plan anual de trabajo", download: {filename: "Porcentajeactividadesplananual"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de actividades ejecutadas plan anual de trabajo", ytitle: "", suffix: "% de cumpliminto" if @ano_datos_perfilsocio.present? %>
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-5">
+                    <br>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Año</th>
+                                <th scope="col">Total de trabajadores</th>
+                                <th scope="col">Trabajadores encuestados</th>
+                                <th scope="col">Indicador</th>
+                                <th scope="col">Interpretación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%  @report_officialtodo.each.where("month = ?",12) do |rep| %>
+                                <tr>
+                                    <td style="text-align:center"><%= rep.year %></td>
+                                    <td style="text-align:center"><%= rep.perfil_sociodemo_total %></td>
+                                    <td style="text-align:center"><%= rep.perfil_sociodemo_encuestados %></td>
+                                    <td style="text-align:center"><%= rep.per_perfil_sociodemo %></td>
+                                    <td style="text-align:center">
+                                        <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="En <%= @entity.business_name %>  se encuestaron   <%= rep.perfil_sociodemo_encuestados %> trabajadores de <%= rep.perfil_sociodemo_total %> trabajadores totales de la empresa en el año: <%= rep.year.to_i %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                                    </td>
+                                </tr>    
+                            <% end %>    
+                        </tbody>
+                    </table>
+                    <hr>
+                </div>
+            </div>        
+        <% end %>    
+
+
+        <br>
+        <hr>                   
         <div class="row g-2" id="list-item-10">
             <h2 class="display-5">INDICADORES MINIMOS DE SST (Res 0312/2019, artículo 30)</h2>
             <hr>
@@ -769,231 +1468,8 @@
         </table>
     </div>   
 
-    <br>
-    <hr>                   
-    <div class="row g-2" id="list-item-11">
-        <h2 class="display-5">Autoevaluación del SG-SST</h2>
-        <hr>
-    </div>
-    <div class="col-sm-11">
-        <strong>Definición:</strong> <%= @indicador_autoevaluacion.description if @indicador_autoevaluacion.present? %> </br>
-        <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_autoevaluacion.periodicity) if @indicador_autoevaluacion.present? %> </br>
-        <strong>Límites:</strong> <%= @indicador_autoevaluacion.limit_one if @indicador_autoevaluacion.present? %>  - <%= @indicador_autoevaluacion.limit_two if @indicador_autoevaluacion.present? %> </br>
-        <strong>Fórmula:</strong> <%= @indicador_autoevaluacion.formula if @indicador_autoevaluacion.present? %> </br>
-        <strong>Interpretación:</strong> <%= @indicador_autoevaluacion.interpretation if @indicador_autoevaluacion.present? %> </br>
-        <strong>Fuente de la información:</strong> <%= @indicador_autoevaluacion.information_source  if @indicador_autoevaluacion.present? %></br>
-        <strong>Responsable de la gestión:</strong> <%= @indicador_autoevaluacion.responsible_management if @indicador_autoevaluacion.present? %> </br>
-        <strong>Tipo de indicador:</strong> <%= @indicador_autoevaluacion.type_indicator if @indicador_autoevaluacion.present? %> </br>
-        <strong>Personas que deben conocer el resultado:</strong> <%= @indicador_autoevaluacion.person_result if @indicador_autoevaluacion.present? %> </br>
-    </div>
-    </br>
 
-    <div class="col-sm-11">
-        <div class="col-sm-5">
-            <%= column_chart  @datos_evaluacion, title: "Gráfico", download: {filename: "Gráficoevaluaciones"}, download: {background: "#FFFFFF"}, xtitle: "Fecha Evaluación", ytitle: "Porcentaje cumplimiento", suffix: "% cumplimiento" if @datos_evaluacion.present? %>
-        </div>
-    </div>
-    <div class="col-sm-11">
-        <br>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Fecha</th>
-                    <th scope="col">Número de Ítems que cumplen en la evaluación inicial y/o autoevaluación realizada</th>
-                    <th scope="col">Número de ítems de la evaluación inicial y/o autoevaluación</th>
-                    <th scope="col">Cumplimiento</th>
-                    <th scope="col">Meta</th>
-                    <th scope="col">Interpretación</th>
-                </tr>
-            </thead>
-            <tbody>
-                <%  i = 0 %>
 
-                <%  while i < @cant_eva %>
-
-                    <tr>
-                        <td style="text-align:center"><%= @datos_autoevaluaciones[i][0] %></td>
-                        <td style="text-align:center"><%= @datos_autoevaluaciones[i][2] %></td>
-                        <td style="text-align:center"><%= @datos_autoevaluaciones[i][1] %></td>
-                        <td style="text-align:center"><%= @datos_autoevaluaciones[i][3] %>%</td>
-                        <td style="text-align:center"><%= @datos_autoevaluaciones[i][4] %>%</td>
-                        <td style="text-align:justify"><%= @datos_autoevaluaciones[i][5] %></td>
-                    </tr>  
-                    <%  i = i + 1 %>
-                <%  end %>
-            </tbody>
-        </table>
-
-        <hr>
-    </div>
-    <br>
-    <hr>                   
-    <div class="row g-2" id="list-item-13">
-        <h2 class="display-5">Ejecución de Acciones Preventivas AP, Acciones Correctivas AC, y de Mejora</h2>
-        <hr>
-    </div> 
-    <div class="col-sm-11">
-        <strong>Definición:</strong> <%= @indicador_acapamanual.description if @indicador_acapamanual.present? %> </br>
-        <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_acapamanual.periodicity) if @indicador_acapamanual.present? %> </br>
-        <strong>Límites:</strong> <%= @indicador_acapamanual.limit_one if @indicador_acapamanual.present? %>  - <%= @indicador_acapamanual.limit_two if @indicador_acapamanual.present? %> </br>
-        <strong>Fórmula:</strong> <%= @indicador_acapamanual.formula if @indicador_acapamanual.present? %> </br>
-        <strong>Interpretación:</strong> <%= @indicador_acapamanual.interpretation if @indicador_acapamanual.present? %> </br>
-        <strong>Fuente de la información:</strong> <%= @indicador_acapamanual.information_source  if @indicador_acapamanual.present? %></br>
-        <strong>Responsable de la gestión:</strong> <%= @indicador_acapamanual.responsible_management if @indicador_acapamanual.present? %> </br>
-        <strong>Tipo de indicador:</strong> <%= @indicador_acapamanual.type_indicator if @indicador_acapamanual.present? %> </br>
-        <strong>Personas que deben conocer el resultado:</strong> <%= @indicador_acapamanual.person_result if @indicador_acapamanual.present? %> </br>
-    </div>
-    </br>
-
-    <div class="col-sm-11">
-        <div class="col-sm-5">
-            <%= column_chart  @datos_matrizacapamanualitemsgrafico, title: "Gráfico", download: {filename: "Gráficoacpm"}, download: {background: "#FFFFFF"}, xtitle: "Año", ytitle: "Porcentaje cumplimiento", suffix: "% cumplimiento" if @datos_matrizacapamanualitemsgrafico.present? %>
-        </div>
-    </div>
-    <div class="col-sm-11">
-        <br>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Año</th>
-                    <th scope="col">Nº de AP, AC y de Mejora ejecutadas</th>
-                    <th scope="col">N° total de AP, AC Y de Mejora establecidas</th>
-                    <th scope="col">Cumplimiento</th>
-                    <th scope="col">Interpretación</th>
-                </tr>
-            </thead>
-            <tbody>
-                <%  i = 0 %>
-
-                <%  while i < @total_matrizacapamanualitems %>
-
-                    <tr>
-                        <td style="text-align:center"><%= @datos_matrizacapamanual[i][0] %></td>
-                        <td style="text-align:center"><%= @datos_matrizacapamanual[i][2] %></td>
-                        <td style="text-align:center"><%= @datos_matrizacapamanual[i][1] %></td>
-                        <td style="text-align:center"><%= @datos_matrizacapamanual[i][3] %>%</td>
-                        <td style="text-align:center"><%= @datos_matrizacapamanual[i][4] %></td>
-                    </tr>  
-                    <%  i = i + 1 %>
-                <%  end %>
-            </tbody>
-        </table>
-
-        <hr>
-    </div>
-
-    <br>
-    <hr>                   
-    <div class="row g-2" id="list-item-14">
-        <h2 class="display-5">Cumplimiento legal</h2>
-        <hr>
-    </div> 
-    <div class="col-sm-11">
-        <strong>Definición:</strong> <%= @indicador_cumlegalanual.description if @indicador_cumlegalanual.present? %> </br>
-        <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_cumlegalanual.periodicity) if @indicador_cumlegalanual.present? %> </br>
-        <strong>Límites:</strong> <%= @indicador_cumlegalanual.limit_one if @indicador_cumlegalanual.present? %>  - <%= @indicador_cumlegalanual.limit_two if @indicador_cumlegalanual.present? %> </br>
-        <strong>Fórmula:</strong> <%= @indicador_cumlegalanual.formula if @indicador_cumlegalanual.present? %> </br>
-        <strong>Interpretación:</strong> <%= @indicador_cumlegalanual.interpretation if @indicador_cumlegalanual.present? %> </br>
-        <strong>Fuente de la información:</strong> <%= @indicador_cumlegalanual.information_source  if @indicador_cumlegalanual.present? %></br>
-        <strong>Responsable de la gestión:</strong> <%= @indicador_cumlegalanual.responsible_management if @indicador_cumlegalanual.present? %> </br>
-        <strong>Tipo de indicador:</strong> <%= @indicador_cumlegalanual.type_indicator if @indicador_cumlegalanual.present? %> </br>
-        <strong>Personas que deben conocer el resultado:</strong> <%= @indicador_cumlegalanual.person_result if @indicador_cumlegalanual.present? %> </br>
-    </div>
-    </br>
-
-    <div class="col-sm-11">
-        <div class="col-sm-5">
-            <%= column_chart  @datos_matrizalegalitemsgrafico, title: "Gráfico", download: {filename: "Gráficomatrizlegal"}, download: {background: "#FFFFFF"}, xtitle: "Año", ytitle: "Porcentaje cumplimiento", suffix: "% cumplimiento" if @datos_matrizalegalitemsgrafico.present? %>
-        </div>
-    </div>
-    <div class="col-sm-11">
-        <br>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Año</th>
-                    <th scope="col">Requisitos legales aplicables en SST que se cumplen</th>
-                    <th scope="col">Total de requisitos legales de SST aplicables</th>
-                    <th scope="col">Cumplimiento</th>
-                    <th scope="col">Interpretación</th>
-                </tr>
-            </thead>
-            <tbody>
-                <%  i = 0 %>
-
-                <%  while i < @total_matrizlegalanualitems %>
-
-                    <tr>
-                        <td style="text-align:center"><%= @datos_matrizlegalanual[i][0] %></td>
-                        <td style="text-align:center"><%= @datos_matrizlegalanual[i][2] %></td>
-                        <td style="text-align:center"><%= @datos_matrizlegalanual[i][1] %></td>
-                        <td style="text-align:center"><%= @datos_matrizlegalanual[i][3] %>%</td>
-                        <td style="text-align:center"><%= @datos_matrizlegalanual[i][4] %></td>
-                    </tr>  
-                    <%  i = i + 1 %>
-                <%  end %>
-            </tbody>
-        </table>
-
-        <hr>
-    </div>
-
-    <br>
-    <hr>                   
-    <div class="row g-2" id="list-item-15">
-        <h2 class="display-5">Cumplimiento del plan de trabajo anual</h2>
-        <hr>
-    </div>
-    <div class="col-sm-11">
-        <strong>Definición:</strong> <%= @indicador_plantrabajoanual.description if @indicador_plantrabajoanual.present? %> </br>
-        <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_plantrabajoanual.periodicity) if @indicador_plantrabajoanual.present? %> </br>
-        <strong>Límites:</strong> <%= @indicador_plantrabajoanual.limit_one if @indicador_plantrabajoanual.present? %>  - <%= @indicador_plantrabajoanual.limit_two if @indicador_plantrabajoanual.present? %> </br>
-        <strong>Fórmula:</strong> <%= @indicador_plantrabajoanual.formula if @indicador_plantrabajoanual.present? %> </br>
-        <strong>Interpretación:</strong> <%= @indicador_plantrabajoanual.interpretation if @indicador_plantrabajoanual.present? %> </br>
-        <strong>Fuente de la información:</strong> <%= @indicador_plantrabajoanual.information_source  if @indicador_plantrabajoanual.present? %></br>
-        <strong>Responsable de la gestión:</strong> <%= @indicador_plantrabajoanual.responsible_management if @indicador_plantrabajoanual.present? %> </br>
-        <strong>Tipo de indicador:</strong> <%= @indicador_plantrabajoanual.type_indicator if @indicador_plantrabajoanual.present? %> </br>
-        <strong>Personas que deben conocer el resultado:</strong> <%= @indicador_plantrabajoanual.person_result if @indicador_plantrabajoanual.present? %> </br>
-    </div>
-    </br>
-
-    <div class="col-sm-11">
-        <div class="col-sm-5">
-            <%= column_chart  @datos_plantrabajoanualgrafico, title: "Gráfico", download: {filename: "Gráficoplananualtrabajo"}, download: {background: "#FFFFFF"}, xtitle: "Fecha Evaluación", ytitle: "Porcentaje cumplimiento", suffix: "% cumplimiento" if @datos_plantrabajoanualgrafico.present? %>
-        </div>
-    </div>
-    <div class="col-sm-11">
-        <br>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Fecha</th>
-                    <th scope="col">Número de actividades ejecutadas del plan de trabajo  </th>
-                    <th scope="col">Nº total de actividades programadas del plan de trabajo</th>
-                    <th scope="col">Cumplimiento</th>
-                    <th scope="col">Interpretación</th>
-                </tr>
-            </thead>
-            <tbody>
-                <%  i = 0 %>
-
-                <%  while i < @cant_plan %>
-
-                    <tr>
-                        <td style="text-align:center"><%= @datos_plantrabajoanual[i][0] %></td>
-                        <td style="text-align:center"><%= @datos_plantrabajoanual[i][2] %></td>
-                        <td style="text-align:center"><%= @datos_plantrabajoanual[i][1] %></td>
-                        <td style="text-align:center"><%= @datos_plantrabajoanual[i][3] %>%</td>
-                        <td style="text-align:center"><%= @datos_plantrabajoanual[i][4] %>%</td>
-                        <td style="text-align:justify"><%= @datos_plantrabajoanual[i][5] %></td>
-                    </tr>  
-                    <%  i = i + 1 %>
-                <%  end %>
-            </tbody>
-        </table>
-
-        <hr>
-    </div>
 
     
 </div>        

@@ -38,7 +38,7 @@ class AnnualWorkPlanItemsController < ApplicationController
     def destroy
         @annual_work_plan_item = AnnualWorkPlanItem.find(params[:id])
         @annual_work_plan_item.destroy
-        redirect_to annual_work_plan_items_path, notice: 'Objetivo borrado correctamente', annual_work_plan_item: :see_other
+        redirect_to annual_work_plans_path, notice: 'Objetivo borrado correctamente', annual_work_plan: :see_other
     end    
 
     private

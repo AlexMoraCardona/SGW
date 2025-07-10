@@ -102,10 +102,13 @@ class ImprovementPlansController < ApplicationController
         @improvement_items = ImprovementItem.where("improvement_plan_id = ?", params[:id]) if params[:id].present?
         evaluation = Evaluation.find_by(entity_id: Current.user.entity)
         @standar_detail_items = EvaluationRuleDetail.where("evaluation_id = ?",evaluation.id) if evaluation.present?
+        
         if @standar_detail_items.present?
             @standar_detail_items.each  do |standar_detail_item|
-                standar_detail_item.item_nro = standar_detail_item.standar_detail_item.item_nro
-                standar_detail_item.save
+                if standar_detail_item.item_nro.blank?
+                    standar_detail_item.item_nro = standar_detail_item.standar_detail_item.item_nro
+                    standar_detail_item.save
+                end    
             end    
         end    
     end    

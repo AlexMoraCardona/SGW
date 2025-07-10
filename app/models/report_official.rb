@@ -510,6 +510,167 @@ class ReportOfficial < ApplicationRecord
         @report_official.incidencia_enfermedad_laboral = ((total_occupational_disease_year.to_f / promedio.to_f) * 100000).round(2) if promedio > 0  
         @report_official.total_days_absenteeism = dias_ausentismo 
         @report_official.ausentismo_causa_medica = ((dias_ausentismo.to_f / (@report_official.working_days_month.to_f * total_officials.to_f)) * 100).round(2) if total_officials > 0  
+
+        #Calculo intervencio de peligros y riesgos gestionados
+        matrix_danger_risks = MatrixDangerRisk.find_by(entity_id: @report_official.entity_id) if @report_official.present?
+        matrix_danger_items = MatrixDangerItem.where('matrix_danger_risk_id = ?', matrix_danger_risks.id) if matrix_danger_risks.present?
+        totalpeligrosriesgos = 0
+        interpeligrosriesgos = 0
+        if matrix_danger_items.present? 
+            matrix_danger_items.each do |rep| 
+                totalpeligrosriesgos += 1
+                if rep.danger_intervened == 1 then
+                    interpeligrosriesgos += 1
+                end    
+            end
+        end    
+        @report_official.risk_danger_ges = interpeligrosriesgos
+        @report_official.risk_danger_total = totalpeligrosriesgos
+        @report_official.risk_danger_gestion = (interpeligrosriesgos * 100)/ totalpeligrosriesgos if totalpeligrosriesgos > 0
+
+        #Calculo Porcentaje de cobertura en capacitaciones
+        training = Training.find_by(year: @report_official.year, entity_id: @report_official.entity_id)
+        training_items = TrainingItem.where("training_id = ?",training.id) if training.present?
+        totaltrainings = 0
+        intertrainings = 0
+        if training_items.present? 
+            training_items.each do |rep| 
+                totaltrainings += 1
+                if rep.state_cap == 1 then
+                    intertrainings += 1
+                end    
+            end
+        end    
+        @report_official.training_ges = intertrainings
+        @report_official.training_total = totaltrainings
+        @report_official.per_training_coverage = (intertrainings * 100)/ totaltrainings if totaltrainings > 0
+
+
+        #Calculo Porcentaje de trabajadores capacitados
+        training = Training.find_by(year: @report_official.year, entity_id: @report_official.entity_id)
+        training_items = TrainingItem.where("training_id = ?",training.id) if training.present?
+        scheduled_workers = 0
+        trained_workers = 0
+        if training_items.present? 
+            training_items.each do |rep| 
+                scheduled_workers += rep.cant_emple_cap if rep.state_cap != 2
+                trained_workers += rep.cant_cap if rep.state_cap == 1
+            end
+        end    
+        @report_official.trained_workers = trained_workers
+        @report_official.scheduled_workers = scheduled_workers
+        @report_official.per_scheduled_workers = (trained_workers * 100)/ scheduled_workers if scheduled_workers > 0
+
+
+        #Calculo Autoevaluación del SG-SST
+        evaluation = Evaluation.find_by(entity_id: @report_official.entity_id)
+        evaluation_items = EvaluationRuleDetail.where("evaluation_id = ?",evaluation.id) if evaluation.present?
+        items_autoevaluation_total = 0
+        items_autoevaluation_cumple = 0
+
+        if evaluation_items.present? 
+            evaluation_items.each do |rep| 
+                items_autoevaluation_total += 1 if rep.apply == 1 
+                items_autoevaluation_cumple += 1 if rep.apply == 1 && rep.meets == 1
+            end
+        end    
+
+        @report_official.items_autoevaluation_cumple = items_autoevaluation_cumple
+        @report_official.items_autoevaluation_total = items_autoevaluation_total
+        @report_official.per_autoevaluation = (items_autoevaluation_cumple * 100)/ items_autoevaluation_total if items_autoevaluation_total > 0
+
+
+        #Ejecución de Acciones Preventivas AP, Acciones Correctivas AC, y de Mejora
+        matrix_corrective_action = MatrixCorrectiveAction.find_by(entity_id: @report_official.entity_id) if @report_official.present?
+        matrix_action_anual_items =  MatrixActionItem.where("matrix_corrective_action_id = ? and year = ?", matrix_corrective_action.id, @report_official.year) if matrix_corrective_action.present?
+        acpm_total = 0
+        acpm_cumple = 0
+
+        if matrix_action_anual_items.present? then
+            matrix_action_anual_items.each do |rep| 
+                acpm_total += 1 
+                acpm_cumple += 1 if rep.state_actions == 1 
+            end
+        end    
+
+        @report_official.acpm_cumple = acpm_cumple
+        @report_official.acpm_total = acpm_total
+        @report_official.per_acpm = (acpm_cumple * 100)/ acpm_total if acpm_total > 0
+
+        #Cumplimiento legal
+        matrix_legal_anual = MatrixLegal.find_by(entity_id: @report_official.entity_id) if @report_official.present?
+        matrix_legal_anual_items =  MatrixLegalItem.where("matrix_legal_id = ?", matrix_legal_anual.id) if matrix_legal_anual.present?
+        compliance_legal_total = 0
+        compliance_legal_cumple = 0
+
+        if matrix_legal_anual_items.present? then
+            matrix_legal_anual_items.each do |rep| 
+                compliance_legal_total += 1 
+                compliance_legal_cumple += 1 if rep.meets == 2 
+            end
+        end    
+
+        @report_official.compliance_legal_cumple = compliance_legal_cumple
+        @report_official.compliance_legal_total = compliance_legal_total
+        @report_official.compliance_legal = (compliance_legal_cumple * 100)/ compliance_legal_total if compliance_legal_total > 0
+
+        #Cumplimiento del plan de trabajo anual
+        annual_work_plan = AnnualWorkPlan.find_by(entity_id: @report_official.entity_id, year: @report_official.year) if @report_official.present?
+        annual_work_plan_items = AnnualWorkPlanItem.where("annual_work_plan_id = ?",annual_work_plan.id) if annual_work_plan.present? 
+        compliance_work_plan_total = 0
+        compliance_work_plan_cumple = 0
+
+        if annual_work_plan_items.present? then
+            annual_work_plan_items.each do |rep| 
+                compliance_work_plan_total += 1 
+                compliance_work_plan_cumple += 1 if rep.earring == 1 
+            end
+        end    
+
+        @report_official.compliance_work_plan_cumple = compliance_work_plan_cumple
+        @report_official.compliance_work_plan_total = compliance_work_plan_total
+        @report_official.compliance_work_plan = (compliance_work_plan_cumple * 100)/ compliance_work_plan_total if compliance_work_plan_total > 0
+
+        #Cumplimiento del plan de mejoramiento
+        improvement_plan = ImprovementPlan.find_by(entity_id: @report_official.entity_id) if @report_official.present?
+        improvement_items = ImprovementItem.where("improvement_plan_id = ?",improvement_plan.id) if improvement_plan.present? 
+        activity_plan_total = 0
+        activity_plan_intervenida = 0
+
+        if improvement_items.present? then
+            improvement_items.each do |rep| 
+                activity_plan_total += 1 
+                activity_plan_intervenida += 1 if rep.percentage_compliance == 100 
+            end
+        end    
+
+        @report_official.activity_plan_intervenida = activity_plan_intervenida
+        @report_official.activity_plan_total = activity_plan_total
+        @report_official.per_activity_plan = (activity_plan_intervenida * 100)/ activity_plan_total if activity_plan_total > 0
+
+        #Porcentaje de trabajadores que participaron en la encuesta de perfil sociodemográficos
+        survey_profile = SurveyProfile.find_by(entity_id: @report_official.entity_id) if @report_official.present?
+        if survey_profile.present? && survey_profile.date_profile.strftime("%Y").to_i == @report_official.year
+            profiles = Profile.where(survey_profile_id: survey_profile.id) if survey_profile.present?
+            cantemp = User.where("entity = ? and level > ? and state = ?", survey_profile.entity_id,2,1).count
+            empleados = User.where("entity = ? and level > ? and state = ?", survey_profile.entity_id,2,1)
+            cantencuestados = 0
+            empleados.each do |empleado| 
+                encontro = 0
+                profiles.each do |profile|
+                    if profile.user_id.to_i == empleado.id.to_i then
+                        encontro = 1
+                    end
+                end    
+                if encontro.to_i == 1 then
+                    cantencuestados += 1 
+                end    
+            end    
+        end    
+        @report_official.perfil_sociodemo_encuestados = cantencuestados
+        @report_official.perfil_sociodemo_total = cantemp
+        @report_official.per_perfil_sociodemo = (cantencuestados * 100)/ cantemp if cantemp > 0
+
         @report_official.save
     end    
 

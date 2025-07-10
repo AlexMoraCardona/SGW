@@ -15,8 +15,9 @@ class ImprovementItemsController < ApplicationController
     def create
         @improvement_item = ImprovementItem.new(improvement_item_params)
         @improvement_plan = ImprovementPlan.find(@improvement_item.improvement_plan_id) if @improvement_item.present?
-        @improvement_item.activity_plan = EvaluationRuleDetail.find_by("item_nro = ?",@improvement_item.action_improvement).description if @improvement_item.action_improvement.present?
-
+        evaluation = Evaluation.find_by(entity_id: @improvement_plan.entity_id) if @improvement_plan.present?
+        evaluation_rule_detail = EvaluationRuleDetail.find_by(item_nro: @improvement_item.action_improvement, evaluation_id: evaluation.id) if evaluation.present? && @improvement_item.action_improvement.present?
+        @improvement_item.activity_plan = evaluation_rule_detail.description if evaluation_rule_detail.present?
 
         if @improvement_item.save then 
             redirect_to improvement_plans_path(entity_id: @improvement_plan.entity_id), notice: 'Actividad creada correctamente' 
@@ -35,8 +36,9 @@ class ImprovementItemsController < ApplicationController
     def update
         @improvement_item = ImprovementItem.find(params[:id])
         @improvement_plan = ImprovementPlan.find(@improvement_item.improvement_plan_id) if @improvement_item.present?
-        @improvement_item.activity_plan = EvaluationRuleDetail.find_by("item_nro = ?",@improvement_item.action_improvement).description if @improvement_item.action_improvement.present?
-
+        evaluation = Evaluation.find_by(entity_id: @improvement_plan.entity_id) if @improvement_plan.present?
+        evaluation_rule_detail = EvaluationRuleDetail.find_by(item_nro: @improvement_item.action_improvement, evaluation_id: evaluation.id) if evaluation.present? && @improvement_item.action_improvement.present?
+        @improvement_item.activity_plan = evaluation_rule_detail.description if evaluation_rule_detail.present?
 
         if @improvement_item.update(improvement_item_params)
             redirect_to improvement_plans_path(entity_id: @improvement_plan.entity_id), notice: t('.created')

@@ -75,6 +75,9 @@ class Authentication::UsersController < ApplicationController
 
     end    
 
+    def autorizacion_politica
+        @user = User.find(params[:id])
+    end    
     
 
     private

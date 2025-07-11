@@ -1,0 +1,44 @@
+<body>
+    <div style="background-color: #0090e4;border-top-right-radius: 20px;border-bottom-right-radius: 20px;border-top-left-radius: 20px;border-bottom-left-radius: 20px;", class="container col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5 text-white">
+        <br>
+        <h2>Aceptación de políticas de privacidad y tratamiento de datos personales</h2>
+        <%= form_with model: @user do |form| %>
+            <% @user.errors.full_messages.each do |error| %>
+                <div class="alert alert-danger" role="alert">
+                    <%= error%> <%= alert %>
+                </div>
+            <% end %>
+            <br>
+            <p>Al hacer uso de esta aplicación web estás aceptando las políticas de privacidad y tratamiento de datos personales; la cual puedes consultar en: <a href="https://www.conesst.com/users/politicas/1" class="link-light">Política de privacidad aquí</a></br>
+            ¿Si estás de acuerdo selecciona la siguiente casilla? <input id="myCheckbox" type="checkbox" />
+            <script> 
+                const checkbox = document.getElementById('myCheckbox')
+
+                checkbox.addEventListener('change', (event) => {
+                if (event.currentTarget.checked) {
+                   $('#submitButton').attr('disabled', false);
+                } else {
+                    $('#submitButton').attr('disabled', true);
+                }
+                })
+            </script>
+            </p>
+
+            <%= form.hidden_field :authorization_date, :value => Time.now, class: "form-control" %>
+            <%= form.hidden_field :authorization_police, :value => 1, class: "form-control" %>
+
+            <div class="row g-2">
+                <div class="col-sm-2">
+                    <%= form.submit value= t('common.submitlog'), id: "submitButton", disabled: true  %>
+                </div>        
+                <div class="col-sm-2"> 
+                    <% session.delete(:user_id) %>
+                    <%= link_to '<button class="btn btn-sm btn-light" type="button">Salir</button>'.html_safe, new_session_path %>
+                </div>        
+            </div>   
+
+            <br>
+        <% end %>
+    </div> 
+</body>
+<div></br></div>

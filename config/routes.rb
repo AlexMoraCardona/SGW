@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     post '/sessions/generarclave/:id', to: 'sessions#generarclave', as: 'generarclave'
     get '/users/cambiar_clave/:id', to: 'users#cambiar_clave', as: 'cambiar_clave'
     get '/users/politicas/:id', to: 'users#politicas', as: 'politicas'
+    get '/users/autorizacion_politica/:id', to: 'users#autorizacion_politica', as: 'autorizacion_politica'
 
   end  
   

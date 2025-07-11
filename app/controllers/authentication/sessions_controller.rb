@@ -11,7 +11,11 @@ class Authentication::SessionsController < ApplicationController
         if @user&.authenticate(params[:password]) 
             
             session[:user_id] = @user.id
-            redirect_to home_path, notice: t('.created')
+            if @user.authorization_police == 0
+                redirect_to autorizacion_politica_path(@user.id)
+            else    
+                redirect_to home_path, notice: t('.created')
+            end                
         else
             redirect_to new_session_path, alert: t('.failed')
             session.delete(:user_id)

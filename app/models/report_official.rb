@@ -650,6 +650,8 @@ class ReportOfficial < ApplicationRecord
 
         #Porcentaje de trabajadores que participaron en la encuesta de perfil sociodemográficos
         survey_profile = SurveyProfile.find_by(entity_id: @report_official.entity_id) if @report_official.present?
+        cantencuestados = 0
+        cantemp = 0
         if survey_profile.present? && survey_profile.date_profile.strftime("%Y").to_i == @report_official.year
             profiles = Profile.where(survey_profile_id: survey_profile.id) if survey_profile.present?
             cantemp = User.where("entity = ? and level > ? and state = ?", survey_profile.entity_id,2,1).count

@@ -32,6 +32,8 @@
             <a class="list-group-item list-group-item-action" href="#list-item-16">Porcentaje de actividades intervenidas del plan de mejoramiento</a>
             <a class="list-group-item list-group-item-action" href="#list-item-17">Porcentaje de trabajadores que participaron en la encuesta de perfil sociodemográficos</a>
             <a class="list-group-item list-group-item-action" href="#list-item-10">INDICADORES MINIMOS DE SST (Res 0312/2019, artículo 30)</a>
+            <a class="list-group-item list-group-item-action" href="#list-item-18">Indicador asignación de recursos</a>
+            <a class="list-group-item list-group-item-action" href="#list-item-19">Indicador de investigación de incidentes y/o accidentes</a>
             
         </div>
     </div>
@@ -1274,7 +1276,194 @@
                 </div>
             </div>        
         <% end %>    
+        <br>
+        <hr>                   
+        <div class="row g-2" id="list-item-18">
+            <h2 class="display-5">Indicador asignación de recursos</h2>
+            <hr>
+        </div>
+        <div class="col-sm-11">
+            <strong>Definición:</strong> <%= @indicador_asignacionrecursos.description if @indicador_asignacionrecursos.present? %> </br>
+            <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_asignacionrecursos.periodicity) if @indicador_asignacionrecursos.present? %> </br>
+            <strong>Límites:</strong> <%= @indicador_asignacionrecursos.limit_one if @indicador_asignacionrecursos.present? %>  - <%= @indicador_asignacionrecursos.limit_two if @indicador_asignacionrecursos.present? %> </br>
+            <strong>Fórmula:</strong> <%= @indicador_asignacionrecursos.formula if @indicador_asignacionrecursos.present? %> </br>
+            <strong>Interpretación:</strong> <%= @indicador_asignacionrecursos.interpretation if @indicador_asignacionrecursos.present? %> </br>
+            <strong>Fuente de la información:</strong> <%= @indicador_asignacionrecursos.information_source  if @indicador_asignacionrecursos.present? %></br>
+            <strong>Responsable de la gestión:</strong> <%= @indicador_asignacionrecursos.responsible_management if @indicador_asignacionrecursos.present? %> </br>
+            <strong>Tipo de indicador:</strong> <%= @indicador_asignacionrecursos.type_indicator if @indicador_asignacionrecursos.present? %> </br>
+            <strong>Personas que deben conocer el resultado:</strong> <%= @indicador_asignacionrecursos.person_result if @indicador_asignacionrecursos.present? %> </br>
+        </div>
+        </br>
+        <div class="row g-3">
+            <div class="col-sm-5">
+                <%= column_chart  @datos_asignacionrecursos, title: "Indicador asignación de recursos", download: {filename: "Indicadorasignaciónrecursos"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de actividades ejecutadas en la matriz de asignación de recursos", ytitle: "", suffix: "% de cumplimiento" if @datos_asignacionrecursos.present? %>
+            </div>
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-5">
+                <br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Año</th>
+                            <th scope="col">Mes</th>
+                            <th scope="col">Total de actividades</th>
+                            <th scope="col">Actividades ejecutadas</th>
+                            <th scope="col">Indicador</th>
+                            <th scope="col">Interpretación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%  @report_official.each do |rep| %>
+                            <tr>
+                                <td style="text-align:center"><%= rep.year %></td>
+                                <td style="text-align:center"><%= Calendar.label_month(rep.month).to_s  %></td>
+                                <td style="text-align:center"><%= rep.resources_planned %></td>
+                                <td style="text-align:center"><%= rep.resources_allocated %></td>
+                                <td style="text-align:center"><%= rep.per_resources %></td>
+                                <td style="text-align:center">
+                                    <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="En <%= @entity.business_name %>  se ejecutaron   <%= rep.resources_allocated %> actividades de <%= rep.resources_planned %> actividades registradas en la matriz de asignación de recursos en el mes de: <%= Calendar.label_month(rep.month).to_s %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                                </td>
+                            </tr>
+                        <% end %>        
+                    </tbody>
+                </table>
 
+                <hr>
+            </div>
+        </div>        
+        <br>
+        <% if @ano_datos_asignacionrecursos.present? %>
+            <div class="row g-3"> 
+                <div class="col-sm-5">
+                    <%= column_chart  @ano_datos_asignacionrecursos, title: "Indicador asignación de recursos", download: {filename: "Indicadorasignaciónrecursos"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de actividades ejecutadas en la matriz de asignación de recursos", ytitle: "", suffix: "% de cumpliminto" if @ano_datos_asignacionrecursos.present? %>
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-5">
+                    <br>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Año</th>
+                                <th scope="col">Total de actividades</th>
+                                <th scope="col">Actividades ejecutadas</th>
+                                <th scope="col">Indicador</th>
+                                <th scope="col">Interpretación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%  @report_officialtodo.each.where("month = ?",12) do |rep| %>
+                                <tr>
+                                    <td style="text-align:center"><%= rep.year %></td>
+                                    <td style="text-align:center"><%= rep.resources_planned %></td>
+                                    <td style="text-align:center"><%= rep.resources_allocated %></td>
+                                    <td style="text-align:center"><%= rep.per_resources %></td>
+                                    <td style="text-align:center">
+                                        <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="En <%= @entity.business_name %>  se encuestaron   <%= rep.perfil_sociodemo_encuestados %> trabajadores de <%= rep.perfil_sociodemo_total %> trabajadores totales de la empresa en el año: <%= rep.year.to_i %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                                    </td>
+                                </tr>    
+                            <% end %>    
+                        </tbody>
+                    </table>
+                    <hr>
+                </div>
+            </div>        
+        <% end %>    
+        <br>
+        <hr>                   
+        <div class="row g-2" id="list-item-18">
+            <h2 class="display-5">Indicador de investigación de incidentes y/o accidentes</h2>
+            <hr>
+        </div>
+        <div class="col-sm-11">
+            <strong>Definición:</strong> <%= @indicador_investigacionincidentes.description if @indicador_investigacionincidentes.present? %> </br>
+            <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_investigacionincidentes.periodicity) if @indicador_investigacionincidentes.present? %> </br>
+            <strong>Límites:</strong> <%= @indicador_investigacionincidentes.limit_one if @indicador_investigacionincidentes.present? %>  - <%= @indicador_investigacionincidentes.limit_two if @indicador_investigacionincidentes.present? %> </br>
+            <strong>Fórmula:</strong> <%= @indicador_investigacionincidentes.formula if @indicador_investigacionincidentes.present? %> </br>
+            <strong>Interpretación:</strong> <%= @indicador_investigacionincidentes.interpretation if @indicador_investigacionincidentes.present? %> </br>
+            <strong>Fuente de la información:</strong> <%= @indicador_investigacionincidentes.information_source  if @indicador_investigacionincidentes.present? %></br>
+            <strong>Responsable de la gestión:</strong> <%= @indicador_investigacionincidentes.responsible_management if @indicador_investigacionincidentes.present? %> </br>
+            <strong>Tipo de indicador:</strong> <%= @indicador_investigacionincidentes.type_indicator if @indicador_investigacionincidentes.present? %> </br>
+            <strong>Personas que deben conocer el resultado:</strong> <%= @indicador_investigacionincidentes.person_result if @indicador_investigacionincidentes.present? %> </br>
+        </div>
+        </br>
+        <div class="row g-3">
+            <div class="col-sm-5">
+                <%= column_chart  @datos_investigacionincidentes, title: "Indicador de investigación de incidentes y/o accidentes", download: {filename: "Indicadorinvestigacióndeincidentes"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de incidentes y/o accidentes investigados", ytitle: "", suffix: "% de cumplimiento" if @datos_investigacionincidentes.present? %>
+            </div>
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-5">
+                <br>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Año</th>
+                            <th scope="col">Mes</th>
+                            <th scope="col">Total de incidentes y/o accidentes</th>
+                            <th scope="col">Incidentes y/o accidentes investigados</th>
+                            <th scope="col">Indicador</th>
+                            <th scope="col">Interpretación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%  @report_official.each do |rep| %>
+                            <tr>
+                                <td style="text-align:center"><%= rep.year %></td>
+                                <td style="text-align:center"><%= Calendar.label_month(rep.month).to_s  %></td>
+                                <td style="text-align:center"><%= rep.investigation_total %></td>
+                                <td style="text-align:center"><%= rep.investigation_investigated %></td>
+                                <td style="text-align:center"><%= rep.per_investigation %></td>
+                                <td style="text-align:center">
+                                    <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="En <%= @entity.business_name %>  se investigaron   <%= rep.investigation_investigated %> incidentes y/o accidentes  de <%= rep.investigation_total %> incidentes y/o accidentes registrados en el mes de: <%= Calendar.label_month(rep.month).to_s %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                                </td>
+                            </tr>
+                        <% end %>        
+                    </tbody>
+                </table>
+
+                <hr>
+            </div>
+        </div>        
+        <br>
+        <% if @ano_datos_investigacionincidentes.present? %>
+            <div class="row g-3"> 
+                <div class="col-sm-5">
+                    <%= column_chart  @ano_datos_investigacionincidentes, title: "Indicador de investigación de incidentes y/o accidentes", download: {filename: "Indicadorinvestigacióndeincidentes"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de incidentes y/o accidentes investigados", ytitle: "", suffix: "% de cumpliminto" if @ano_datos_investigacionincidentes.present? %>
+                </div>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm-5">
+                    <br>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Año</th>
+                                <th scope="col">Total de incidentes y/o accidentes</th>
+                                <th scope="col">Incidentes y/o accidentes investigados</th>
+                                <th scope="col">Indicador</th>
+                                <th scope="col">Interpretación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%  @report_officialtodo.each.where("month = ?",12) do |rep| %>
+                                <tr>
+                                    <td style="text-align:center"><%= rep.year %></td>
+                                    <td style="text-align:center"><%= rep.investigation_total %></td>
+                                    <td style="text-align:center"><%= rep.investigation_investigated %></td>
+                                    <td style="text-align:center"><%= rep.per_investigation %></td>
+                                    <td style="text-align:center">
+                                        <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="En <%= @entity.business_name %>  se investigaron   <%= rep.investigation_investigated %> incidentes y/o accidentes  de <%= rep.investigation_total %> incidentes y/o accidentes registrados en el año: <%= rep.year.to_i %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                                    </td>
+                                </tr>    
+                            <% end %>    
+                        </tbody>
+                    </table>
+                    <hr>
+                </div>
+            </div>        
+        <% end %>    
 
         <br>
         <hr>                   
@@ -1469,7 +1658,7 @@
     </div>   
 
 
-
+ 
 
     
 </div>        

@@ -94,6 +94,8 @@ class IndicadoresController < ApplicationController
         calculo_plantrabajoanual(@report_official, @report_officialtodo)
         calculo_planmejoramiento(@report_official, @report_officialtodo)
         calculo_perfilsocio(@report_official, @report_officialtodo)
+        calculo_asignacionrecursos(@report_official, @report_officialtodo)
+        calculo_investigacionincidentes(@report_official, @report_officialtodo)
         
     end
 
@@ -118,6 +120,8 @@ class IndicadoresController < ApplicationController
         calculo_plantrabajoanual(@report_official, @report_officialtodo)
         calculo_planmejoramiento(@report_official, @report_officialtodo)
         calculo_perfilsocio(@report_official, @report_officialtodo)
+        calculo_asignacionrecursos(@report_official, @report_officialtodo)
+        calculo_investigacionincidentes(@report_official, @report_officialtodo)
 
         respond_to do |format| 
             format.html
@@ -690,6 +694,40 @@ class IndicadoresController < ApplicationController
         report_officialtodo.each do |rep| 
             if rep.month == 12
                 @ano_datos_perfilsocio.push([rep.year.to_i, rep.per_perfil_sociodemo.to_f]) 
+            end    
+        end
+
+    end
+
+    def calculo_asignacionrecursos(report_official, report_officialtodo)
+        @indicador_asignacionrecursos = Indicator.find(17)
+        
+        @datos_asignacionrecursos = []
+        @ano_datos_asignacionrecursos = []
+        report_official.each do |rep| 
+            fecha = Calendar.label_month(rep.month).to_s
+            @datos_asignacionrecursos.push([fecha, rep.per_resources.to_f]) 
+        end
+        report_officialtodo.each do |rep| 
+            if rep.month == 12
+                @ano_datos_asignacionrecursos.push([rep.year.to_i, rep.per_resources.to_f]) 
+            end    
+        end
+
+    end
+
+    def calculo_investigacionincidentes(report_official, report_officialtodo)
+        @indicador_investigacionincidentes = Indicator.find(18)
+        
+        @datos_investigacionincidentes = []
+        @ano_datos_investigacionincidentes = []
+        report_official.each do |rep| 
+            fecha = Calendar.label_month(rep.month).to_s
+            @datos_investigacionincidentes.push([fecha, rep.per_investigation.to_f]) 
+        end
+        report_officialtodo.each do |rep| 
+            if rep.month == 12
+                @ano_datos_investigacionincidentes.push([rep.year.to_i, rep.per_investigation.to_f]) 
             end    
         end
 

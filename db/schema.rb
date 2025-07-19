@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_07_08_191513) do
+ActiveRecord::Schema[7.0].define(version: 2025_07_18_164519) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -1281,6 +1281,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_08_191513) do
     t.string "space_for_injury"
     t.string "space_for_agente"
     t.string "de"
+    t.integer "state_investigation", default: 0
+    t.date "date_state_investigation"
     t.index ["entity_id"], name: "index_investigations_on_entity_id"
     t.index ["user_id"], name: "index_investigations_on_user_id"
   end
@@ -2396,6 +2398,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_08_191513) do
     t.date "authorization_date"
     t.string "license"
     t.string "de_license"
+    t.date "date_change_password"
+    t.date "ultima_date_login"
     t.index ["document_id"], name: "index_users_on_document_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["nro_document"], name: "index_users_on_nro_document", unique: true

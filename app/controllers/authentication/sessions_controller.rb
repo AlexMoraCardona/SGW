@@ -11,8 +11,15 @@ class Authentication::SessionsController < ApplicationController
         if @user&.authenticate(params[:password]) 
             
             session[:user_id] = @user.id
+            if @user.present?
+                User.actualizalogin(@user.id)
+            end    
             if @user.authorization_police == 0
                 redirect_to autorizacion_politica_path(@user.id)
+            elsif @user.date_change_password.present? && ((DateTime.now  - @user.date_change_password).round > 60)
+                redirect_to cambiar_clave_path(@user.id)
+            elsif @user.date_change_password.blank?
+                redirect_to cambiar_clave_path(@user.id)                
             else    
                 redirect_to home_path, notice: t('.created')
             end                

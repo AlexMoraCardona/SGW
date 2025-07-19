@@ -673,6 +673,40 @@ class ReportOfficial < ApplicationRecord
         @report_official.perfil_sociodemo_total = cantemp
         @report_official.per_perfil_sociodemo = (cantencuestados * 100)/ cantemp if cantemp > 0
 
+        #Indicador asignación de recursos
+        resource = Resource.find_by(entity_id: @report_official.entity_id, year: @report_official.year) if @report_official.present?
+        resource_items = ResourceItem.where("resource_id = ?",resource.id) if resource.present? 
+
+        cantresourceinves = 0
+        cantresources = 0
+        if resource_items.present? then
+            resource_items.each do |rep| 
+                cantresources += 1 
+                cantresourceinves += 1 if rep.executed == 1 
+            end
+        end    
+
+        @report_official.resources_allocated = cantresourceinves
+        @report_official.resources_planned = cantresources
+        @report_official.per_resources = (cantresourceinves * 100)/ cantresources if cantresources > 0
+
+        #Indicador de investigación de incidentes y/o accidentes
+        investigations = Investigation.where(entity_id: @report_official.entity_id) if @report_official.present?
+
+        cantinvestigations = 0
+        cantinvestigationsres = 0
+        if investigations.present? then
+            investigations.each do |rep| 
+                cantinvestigations += 1 
+                cantinvestigationsres += 1 if rep.state_investigation == 1 
+            end
+        end    
+
+        @report_official.investigation_investigated = cantinvestigationsres
+        @report_official.investigation_total = cantinvestigations
+        @report_official.per_investigation = (cantinvestigationsres * 100)/ cantinvestigations if cantinvestigations > 0
+
+
         @report_official.save
     end    
 

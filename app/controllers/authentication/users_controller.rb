@@ -46,7 +46,9 @@ class Authentication::UsersController < ApplicationController
         if @user.update(user_params)
             redirect_to home_path, notice: 'Actualizado correctamente'
         else
-            render :edit, status: :unprocessable_entity
+            #redirect_to home_path, alert: 'Error en actualización'
+            #render :home_path, status: :unprocessable_entity
+            redirect_back fallback_location: root_path, alert: 'Error en actualización'
         end         
     end    
 
@@ -84,6 +86,7 @@ class Authentication::UsersController < ApplicationController
     def user_params
         params.require(:user).permit(:nro_document, :name, :username, :email, :password, :state, :level, :entity, :activity, :avatar, :firm, :document_id, 
         :legal_representative, :copasst, :ccl, :collaborator, :president_copasst, :secretary_copasst, :vigia_sgsst, 
-        :cargo_rol, :brigade, :cel, :phone, :clasification_post, :sex, :date_entry_company, :date_retirement_company, :date_nacimiento, :area_employee, :authorization_police, :authorization_date, :license, :de_license)
+        :cargo_rol, :brigade, :cel, :phone, :clasification_post, :sex, :date_entry_company, :date_retirement_company, :date_nacimiento, :area_employee, 
+        :authorization_police, :authorization_date, :ultima_date_login, :license, :de_license, :date_change_password)
     end    
 end    

@@ -100,11 +100,11 @@
         <div class="row g-2">
             <div class="col-sm-4">
                 <%= form.label :activity, style: "display: block" %>
-                <%= form.collection_select :activity, @company_positions, :id, :name %>
+                <%= form.collection_select :activity, @company_positions, :id, :name if @company_positions.present? %>
             </div>
             <div class="col-sm-4">
                 <%= form.label :area_employee, style: "display: block" %>
-                <%= form.collection_select :area_employee, @company_areas, :id, :name %>
+                <%= form.collection_select :area_employee, @company_areas, :id, :name if @company_areas.present? %>
             </div>
         </div>
         <br>    
@@ -204,12 +204,18 @@
         </div>
         <hr>
         </br>
+        <div class="row g-2">
+            <div class="col-sm-5">
+                <%= form.label :password,  style: "display: block" %>
+                <%= form.password_field :password,  class: "form-control" %>
+            </div>
+            <div class="col-sm-5">
+                Última fecha de cambio de clave: </br><%= @user.date_change_password.strftime("%F") if @user.date_change_password.present? %>  
 
-        <div class="form-group">     
-            <%= form.label :password,  style: "display: block" %>
-            <%= form.password_field :password,  class: "form-control" %>
+            </div>
         </div>
         <br>
+
         <div class="row g-2">
             <div class="col-sm-5">
                 <%= form.label :avatar,  style: "display: block" %> 

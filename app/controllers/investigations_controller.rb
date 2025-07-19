@@ -134,7 +134,9 @@ class InvestigationsController < ApplicationController
         :personal_factors, :adm_factors, :affected_part, :type_injury, 
         :accident_mechanism, :disability_days, :usr_profesional, :name_profesional, 
         :firm_profesional, :date_firm_profesional, :license, :space_for_injury, 
-        :space_for_agente, :de, :entity_id, :user_id, :datos_complementarios, :plan_accion, :actos_inseguros, :condiciones_inseguras, :factores_personales, :factores_administrativos, registros_fotograficos: [] )
+        :space_for_agente, :de, :entity_id, :user_id, :datos_complementarios, :plan_accion, 
+        :actos_inseguros, :condiciones_inseguras, :factores_personales, :factores_administrativos, 
+        :state_investigation, :date_state_investigation, registros_fotograficos: [] )
     end 
 
 end  

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_07_18_164519) do
+ActiveRecord::Schema[7.0].define(version: 2025_07_24_160312) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -2119,6 +2119,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_18_164519) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
+    t.integer "user_create", default: 0
+    t.integer "entity", default: 0
     t.index ["user_id"], name: "index_route_controls_on_user_id"
   end
 

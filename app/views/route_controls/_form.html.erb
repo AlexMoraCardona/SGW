@@ -9,21 +9,36 @@
         <br>
         <div class="row g-3">
             <div class="col-sm-4">
-                <%= form.label :vehicle_type,  style: "display: block" %>
-                <%= form.radio_button :vehicle_type, 0 %>
-                <label for="moto">Moto</label>
-                <%= form.radio_button :vehicle_type, 1 %>
-                <label for="carro">Carro</label>
+              <% if Current.user.level > 0 && Current.user.level < 4 %>
+                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar la fecha en que se efectuará la ruta."><%= t('.date_control') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+                <%= form.date_field :date_control,  class: "form-control" %>
+              <% end %>  
             </div>
             <div class="col-sm-4">
             </div>
             <div class="col-sm-3">
+                <% if Current.user.level > 0 && Current.user.level < 4 %>
+                    <%= form.label :vehicle_type,  style: "display: block" %>
+                    <%= form.radio_button :vehicle_type, 0 %>
+                    <label for="moto">Moto</label>
+                    <%= form.radio_button :vehicle_type, 1 %>
+                    <label for="carro">Carro</label>
+                <% end %>    
             </div>
         </div>    
         <br> 
+            <% if Current.user.level > 0 && Current.user.level < 4 %>
+               <div class="col-sm-6">
+                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el Conductor de la ruta.">Empleado Conductor de la ruta: <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
+                    <%= form.collection_select :user_create, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %> 
+               </div> 
+            <% end %>           
+        <br> 
         <div class="form-group">    
-            <%= form.label :place, style: "display: block" %>
-            <%= form.text_field :place,  class: "form-control" %>
+            <% if Current.user.level > 0 && Current.user.level < 4 %>
+                <%= form.label :place, style: "display: block" %>
+                <%= form.text_field :place,  class: "form-control" %>
+            <% end %>
         </div>
         <br/>    
         <div class="form-group">    
@@ -32,8 +47,7 @@
         </div>
         <br/>    
         <%= form.hidden_field :user_id, :value => Current.user.id, class: "form-control" %>
-        <%= form.hidden_field :date_control, :value => Time.now, class: "form-control" %>
-
+        <%= form.hidden_field :entity, :value => Current.user.entity, class: "form-control" %>
         <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
         <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, route_controls_path %>
     <% end %>

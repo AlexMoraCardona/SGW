@@ -23,7 +23,7 @@ class User < ApplicationRecord
     validates :email, uniqueness: true #Valor unico en bd
 
     validates :password_digest, length: {minimum: 6}
-    validates :password, length: {minimum: 6}
+    #validates :password, length: {minimum: 6}
 
     before_save :downcase_attributes
 
@@ -60,7 +60,6 @@ class User < ApplicationRecord
     def self.actualizalogin(id)
         user = User.find(id)
         user.ultima_date_login = DateTime.now 
-
         user.save
     end     
     

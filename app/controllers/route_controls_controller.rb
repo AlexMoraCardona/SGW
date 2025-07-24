@@ -1,13 +1,13 @@
 class RouteControlsController < ApplicationController
     def index
             if  Current.user && Current.user.level > 0 && Current.user.level < 4
-                #@route_controls = RouteControl.all.order(id: :desc)
-                @q = RouteControl.ransack(params[:q])
+                @route_controles = RouteControl.all.order(date_control: :desc)
+                @q = @route_controles.ransack(params[:q])
                 @pagy, @route_controls = pagy(@q.result(reference: :desc), items: 3)
                 @users = User.all
 
             elsif Current.user && Current.user.level > 3
-                @route_controles = RouteControl.where("user_id = ?",Current.user.id).order(id: :desc)
+                @route_controles = RouteControl.where("user_create = ?",Current.user.id).order(date_control: :desc)
                 @q = @route_controles.ransack(params[:q])
                 @pagy, @route_controls = pagy(@q.result(reference: :desc), items: 3)
                 @users = User.where("entity = ?",Current.user.entity)
@@ -85,13 +85,22 @@ class RouteControlsController < ApplicationController
     
     def control_hora_inicio
         @route_control = RouteControl.find(params[:id]) if params[:id].present?
+        
         if @route_control.present?
-            @route_control.time_initial_control = Time.now
-            if @route_control.save then
-                    redirect_to route_controls_path, notice: t('.created') 
+            if @route_control.date_control == Date.today
+                if @route_control.user_create == Current.user.id
+                    @route_control.time_initial_control = Time.now
+                    if @route_control.save then
+                        redirect_to route_controls_path, notice: t('.created') 
+                    else
+                        redirect_to route_controls_path, status: :unprocessable_entity
+                    end
+                else
+                    redirect_to route_controls_path, alert: 'Su usuario no corresponde con el usuario conductor.'
+                end
             else
-                redirect_to route_controls_path, status: :unprocessable_entity
-            end              
+                redirect_to route_controls_path, alert: 'El día no corresponde con la fecha asignada para ruta.'
+            end    
         else
             render :route_controls_path, status: :unprocessable_entity
         end    
@@ -100,13 +109,21 @@ class RouteControlsController < ApplicationController
     def control_hora_final
         @route_control = RouteControl.find(params[:id]) if params[:id].present?
         if @route_control.present?
-            @route_control.time_final_control = Time.now
+            if @route_control.date_control == Date.today
+                if @route_control.user_create == Current.user.id
+                    @route_control.time_final_control = Time.now
 
-            if @route_control.save then
-                    redirect_to route_controls_path, notice: t('.created') 
+                    if @route_control.save then
+                        redirect_to route_controls_path, notice: t('.created') 
+                    else
+                        redirect_to route_controls_path, status: :unprocessable_entity
+                    end              
+                else
+                    redirect_to route_controls_path, alert: 'Su usuario no corresponde con el usuario conductor.'               
+                end
             else
-                redirect_to route_controls_path, status: :unprocessable_entity
-            end              
+                redirect_to route_controls_path, alert: 'El día no corresponde con la fecha asignada para ruta.'             
+            end    
         else
             render :route_controls_path, status: :unprocessable_entity
         end    
@@ -116,7 +133,8 @@ class RouteControlsController < ApplicationController
     private
 
     def route_control_params
-        params.require(:route_control).permit(:date_control, :observation, :time_initial_control, :time_final_control, :place, :vehicle_type, :user_id )
+        params.require(:route_control).permit(:date_control, :observation, :time_initial_control, 
+        :time_final_control, :place, :vehicle_type, :user_id, :user_create, :entity)
     end 
 
 end  

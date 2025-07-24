@@ -14,5 +14,33 @@ class RouteControl < ApplicationRecord
         elsif  dato == 1 ; 'Carro'
         end 
     end 
+
+    def self.label_entidad(dato)
+        if dato == 0
+           name = 'No encontrado' 
+        else
+            if dato.present?
+                name = Entity.find_by(id: dato.to_i).business_name 
+            else
+                name = 'No encontrado'
+            end    
+        end    
+        return name;
+    end 
+
+    def self.label_user(dato)
+        if dato == 0
+           name = 'No encontrado' 
+        else
+            if dato.present?
+                name = User.find_by(id: dato.to_i).name 
+            else
+                name = 'No encontrado'
+            end    
+        end    
+        return name;
+    end 
     
+
+
 end

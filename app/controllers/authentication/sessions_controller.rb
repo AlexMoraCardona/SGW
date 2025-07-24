@@ -11,9 +11,6 @@ class Authentication::SessionsController < ApplicationController
         if @user&.authenticate(params[:password]) 
             
             session[:user_id] = @user.id
-            if @user.present?
-                User.actualizalogin(@user.id)
-            end    
             if @user.authorization_police == 0
                 redirect_to autorizacion_politica_path(@user.id)
             elsif @user.date_change_password.present? && ((DateTime.now  - @user.date_change_password).round > 60)
@@ -30,6 +27,9 @@ class Authentication::SessionsController < ApplicationController
     end  
     
     def destroy
+        if Current.user.id.present?
+            User.actualizalogin(Current.user.id)
+        end    
         session.delete(:user_id)
         redirect_to new_session_path, notice: t('.destroyed')
     end 

@@ -14,7 +14,8 @@ class MatrixProtectionItemsController < ApplicationController
 
     def create
         @matrix_protection_item = MatrixProtectionItem.new(matrix_protection_item_params)
-
+        @matrix_protection_item.areas =   @matrix_protection_item.areas.delete('"[]').to_s
+        @matrix_protection_item.areas = @matrix_protection_item.areas.sub(",", " ").to_s
         if @matrix_protection_item.save then
             redirect_to crear_item_protection_matrix_protections_path(@matrix_protection_item.matrix_protection_id), notice: t('.created') 
         else
@@ -44,7 +45,7 @@ class MatrixProtectionItemsController < ApplicationController
     private
 
     def matrix_protection_item_params
-        params.require(:matrix_protection_item).permit(:num, :durability, :date_sheet, :delivery_format, :personal_induction, :state_protection, :matrix_protection_id, :protection_element_id)
+        params.require(:matrix_protection_item).permit(:num, :date_sheet, :delivery_format, :personal_induction, :state_protection, :durability, :matrix_protection_id, :protection_element_id, areas: [])
     end  
 
 end  

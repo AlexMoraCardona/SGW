@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_07_24_160312) do
+ActiveRecord::Schema[7.0].define(version: 2025_07_31_203346) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -1609,6 +1609,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_24_160312) do
     t.datetime "updated_at", null: false
     t.bigint "matrix_protection_id"
     t.bigint "protection_element_id"
+    t.string "areas"
     t.index ["matrix_protection_id"], name: "index_matrix_protection_items_on_matrix_protection_id"
     t.index ["protection_element_id"], name: "index_matrix_protection_items_on_protection_element_id"
   end

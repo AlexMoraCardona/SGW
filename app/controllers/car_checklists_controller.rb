@@ -1,8 +1,8 @@
 class CarChecklistsController < ApplicationController
     def index 
         if  Current.user && Current.user.level > 0 && Current.user.level < 3
-                #@car_checklists = CarChecklist.all.order(id: :desc)
-                @q = CarChecklist.ransack(params[:q])
+                @car_checks = CarChecklist.all.order(date_list: :desc)
+                @q = @car_checks.ransack(params[:q])
                 @pagy, @car_checklists = pagy(@q.result(id: :desc), items: 3)
                 @users = User.all
 

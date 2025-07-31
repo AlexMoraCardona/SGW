@@ -131,15 +131,21 @@
             <%= form.file_field :img_ficha,  class: "form-control", accept:"image/*", capture:"environment" %>
         </div>
         <div><br></div>
-        <% if @protection_element.present? %>
-            <% if @protection_element.img_ficha.attached? %>
-                <% if @protection_element.img_ficha.image? %> 
-                    <%= image_tag @protection_element.img_ficha, data: {previews_target: "preview"}, class: "image_peq" %>
-                <% end %>
-            <% else %> 
-                <%= image_tag("avatar.jpg", class: "avatar-mini") %>
-            <% end %>
-        <% end %>     
+        <div class="form-group">
+                <% if @protection_element.present? %>
+                    <% if @protection_element.img_ficha.attached? %>
+                        <% if @protection_element.img_ficha.image? %>
+                            <%= image_tag @protection_element.img_ficha, data: {previews_target: "preview"} %>
+                        <% else %>
+                            <%= link_to @protection_element.img_ficha.filename, url_for(@protection_element.img_ficha) %>          
+                            <%= link_to "Descargar Archivo", rails_blob_path(@protection_element.img_ficha, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                        <% end %>
+                    <% else %>
+                        <%= image_tag("avatar.jpg", class: "avatar-mini") %>
+                    <% end %>
+                <% end %> 
+        </div>
+
         <div><br></div>
         <br>    
         <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>

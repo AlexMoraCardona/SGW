@@ -44,6 +44,8 @@ class TrainingsController < ApplicationController
                 margin: {top: 10, bottom: 10, left: 10, right: 10 },
                 disable_javascript: true,
                 page_size: 'letter',
+                orientation: 'Landscape',
+                zoom: 0.50,
                 footer: {
                     right: 'Página: [page] de [topage]'
                    }                

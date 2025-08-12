@@ -48,6 +48,7 @@ class EppRecuestsController < ApplicationController
     def edit
         @epp_recuest = EppRecuest.find(params[:id])
         @entity = Entity.find(@epp_recuest.entity_id) if @epp_recuest.present?
+        @protection_elements = ProtectionElement.where("entity = ?",@epp_recuest.entity_id) if @epp_recuest.present?
     end
     
     def show
@@ -55,9 +56,9 @@ class EppRecuestsController < ApplicationController
         @entity = Entity.find(@epp_recuest.entity_id) if @epp_recuest.present?
     end
 
-    def update
+    def update  
         @epp_recuest = EppRecuest.find(params[:id])
-        if @epp_recuest.update(epp_recuest_params)
+        if @epp_recuest.update(epp_recuest_edit_params)
             redirect_to epp_recuests_path, notice: 'Solicitud de EPP actualizada correctamente'
         else
             render :edit, epp_recuests: :unprocessable_entity
@@ -75,6 +76,11 @@ class EppRecuestsController < ApplicationController
     def epp_recuest_params
         params.require(:epp_recuest).permit(:user_id, :protection_element_id, :entity_id, :date_recuest, :cantidad, :state_recuest, :date_delivery, :observation)
     end 
+
+    def epp_recuest_edit_params
+        params.require(:epp_recuest).permit(:protection_element_id, :cantidad, :state_recuest, :date_delivery, :observation)
+    end 
+    
 end  
 
         

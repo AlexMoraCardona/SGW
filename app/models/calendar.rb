@@ -358,24 +358,42 @@ class Calendar < ApplicationRecord
                 @moto_checklists =  MotoChecklist.where("entity_id = ?", @entity.id) if @entity.present? 
                 if @moto_checklists.present?
                     @moto_checklists.each do |moto_checklist| 
-                        if moto_checklist.health_conditions || moto_checklist.protective_equipment || moto_checklist.tire_condition || moto_checklist.lights_condition || moto_checklist.horn_condition || moto_checklist.mirrors_condition || moto_checklist.liquids_condition || moto_checklist.fluids_condition || moto_checklist.brakes_condition || moto_checklist.transmission_condition || moto_checklist.documents_condition || moto_checklist.kit_condition
-                            if  moto_checklist.date_list >= (Date.today - 15) 
-                               @notificaciones << ["Lista Chequeo Moto", @entity.business_name, moto_checklist.user.name, moto_checklist.date_list.to_s, moto_checklist.id]
-                            end   
-                        end
+                        if moto_checklist.firm_user == 0 || moto_checklist.user_autoriza_firm == 0
+                            @notificaciones << ["Lista Chequeo Moto", @entity.business_name, moto_checklist.user.name, moto_checklist.date_list.to_s, moto_checklist.id]
+                        end    
+                        #if moto_checklist.health_conditions || moto_checklist.protective_equipment || moto_checklist.tire_condition || moto_checklist.lights_condition || moto_checklist.horn_condition || moto_checklist.mirrors_condition || moto_checklist.liquids_condition || moto_checklist.fluids_condition || moto_checklist.brakes_condition || moto_checklist.transmission_condition || moto_checklist.documents_condition || moto_checklist.kit_condition
+                        #    if  moto_checklist.date_list >= (Date.today - 15) 
+                        #       @notificaciones << ["Lista Chequeo Moto", @entity.business_name, moto_checklist.user.name, moto_checklist.date_list.to_s, moto_checklist.id]
+                        #    end   
+                        #end
                     end    
                 end
 
                 @car_checklists =  CarChecklist.where("entity_id = ?", @entity.id) if @entity.present? 
                 if @car_checklists.present?
                     @car_checklists.each do |car_checklist| 
-                        if car_checklist.health_conditions == 1 || car_checklist.tire_condition == 1 || car_checklist.lights_condition == 1 || car_checklist.horn_condition == 1 || car_checklist.mirrors_condition == 1 || car_checklist.liquids_condition == 1 || car_checklist.fluids_condition == 1 || car_checklist.brakes_condition == 1 || car_checklist.windshield_condition == 1 || car_checklist.retention_condition == 1 ||  car_checklist.documents_condition == 1 || car_checklist.prevention_condition == 1 || car_checklist.witnesses_condition == 1 || car_checklist.documents_condition == 1 || car_checklist.documents_condition == 1
-                            if  car_checklist.date_list >= (Date.today - 15) 
-                               @notificaciones << ["Lista Chequeo Automóvil", @entity.business_name, car_checklist.user.name, car_checklist.date_list.to_s, car_checklist.id]
-                            end   
-                        end
+                        if car_checklist.firm_user == 0 || car_checklist.user_autoriza_firm == 0
+                                @notificaciones << ["Lista Chequeo Automóvil", @entity.business_name, car_checklist.user.name, car_checklist.date_list.to_s, car_checklist.id]
+                        end        
+                        #else    
+                        #    if car_checklist.health_conditions == 1 || car_checklist.tire_condition == 1 || car_checklist.lights_condition == 1 || car_checklist.horn_condition == 1 || car_checklist.mirrors_condition == 1 || car_checklist.liquids_condition == 1 || car_checklist.fluids_condition == 1 || car_checklist.brakes_condition == 1 || car_checklist.windshield_condition == 1 || car_checklist.retention_condition == 1 ||  car_checklist.documents_condition == 1 || car_checklist.prevention_condition == 1 || car_checklist.witnesses_condition == 1 || car_checklist.documents_condition == 1 || car_checklist.documents_condition == 1
+                        #        if  car_checklist.date_list >= (Date.today - 15) 
+                        #            @notificaciones << ["Lista Chequeo Automóvil", @entity.business_name, car_checklist.user.name, car_checklist.date_list.to_s, car_checklist.id]
+                        #        end   
+                        #    end
+                        #end    
                     end    
                 end
+
+                #notificacion solicitud de elementos de proteccion personal
+
+                @epp_recuests =  EppRecuest.where("entity_id = ? and state_recuest = ?", @entity.id,0) if @entity.present? 
+                if @epp_recuests.present?
+                    @epp_recuests.each do |epp_recuest| 
+                               @notificaciones << ["Solicitud de EPP", @entity.business_name, epp_recuest.user.name, epp_recuest.date_recuest.to_s, epp_recuest.id]
+                    end    
+                end
+
                 
             end
 

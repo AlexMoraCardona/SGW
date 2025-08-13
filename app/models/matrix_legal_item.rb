@@ -34,7 +34,7 @@ class MatrixLegalItem < ApplicationRecord
                 matrix_legal_item.legal_rule_id = legal_rule.id
                 matrix_legal_item.fec_norma = legal_rule.fec_norma
                 matrix_legal_item.meets = 0
-                matrix_legal_item.apply = 0
+                matrix_legal_item.apply = 1
                 matrix_legal_item.save
 
             end   

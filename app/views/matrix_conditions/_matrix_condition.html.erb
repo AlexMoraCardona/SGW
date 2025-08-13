@@ -22,12 +22,23 @@
 
         <div class="row g-4">
             <div class="col-sm-3">
-                <strong><%= t('.user_representante') %></strong><br>
-                <%=  MatrixCondition.name_user(@matrix_condition.user_representante)  %> 
-            </div>        
-            <div class="col-sm-3">
                 <strong><%= t('.user_responsible') %></strong><br>
                 <%=  MatrixCondition.name_user(@matrix_condition.user_responsible)  %> 
+            </div>        
+            <div class="col-sm-1">
+                <% if @matrix_condition.firm_responsible.to_i == 0 %>
+                    <%= link_to t('common.firmar'), firmar_responsible_path(@matrix_condition.id, 2), class: 'btn btn-sm btn btn-warning' %>
+                <% end %>    
+            </div>        
+
+            <div class="col-sm-3">
+                <strong>Asesor</strong><br>
+                <%=  MatrixCondition.name_user(@matrix_condition.user_representante)  %> 
+            </div>        
+            <div class="col-sm-1">
+                <% if @matrix_condition.firm_representante.to_i == 0 %>
+                    <%= link_to t('common.firmar'), firmar_representante_path(@matrix_condition.id, 1), class: 'btn btn-sm btn btn-warning' %>
+                <% end %>    
             </div>        
         </div> 
         <div class="row g-3">

@@ -24,6 +24,8 @@ class MatrixConditionsController < ApplicationController
         @matrix_condition = MatrixCondition.find(params[:id])
         @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", @matrix_condition.id) if @matrix_condition.present?
         @template = Template.where("format_number = ? and document_vigente = ?",65,1).last  
+        @adv = User.find(@matrix_condition.user_representante) if  @matrix_condition.user_representante.present? && @matrix_condition.user_representante > 0
+        @res = User.find(@matrix_condition.user_responsible) if  @matrix_condition.user_responsible.present? && @matrix_condition.user_responsible > 0
         respond_to do |format|
             format.html
             format.xlsx{ 
@@ -36,9 +38,14 @@ class MatrixConditionsController < ApplicationController
         @matrix_condition = MatrixCondition.find(params[:id])
         @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", @matrix_condition.id) if @matrix_condition.present?
         @template = Template.where("format_number = ? and document_vigente = ?",65,1).last  
+        @adv = User.find(@matrix_condition.user_representante) if  @matrix_condition.user_representante.present? && @matrix_condition.user_representante > 0
+        @res = User.find(@matrix_condition.user_responsible) if  @matrix_condition.user_responsible.present? && @matrix_condition.user_responsible > 0
+
         respond_to do |format| 
-            format.html
+            format.html 
             format.pdf {render  pdf: 'ver_matrix_condition',
+                orientation: 'Landscape',
+                zoom: 0.80,
                 margin: {top: 10, bottom: 10, left: 10, right: 10 },
                 disable_javascript: true,
                 page_size: 'letter',
@@ -74,7 +81,7 @@ class MatrixConditionsController < ApplicationController
         @matrix_condition = MatrixCondition.find(params[:id])
         if @matrix_condition.update(matrix_condition_params)
             actualizar_fecha(@matrix_condition.id)
-            redirect_to matrix_conditions_path, notice: 'Matriz  actualizada correctamente'
+            redirect_to matrix_condition_path(@matrix_condition.id), notice: 'Matriz  actualizada correctamente'
         else
             render :edit, status: :unprocessable_entity
         end         
@@ -104,7 +111,7 @@ class MatrixConditionsController < ApplicationController
             if  @matrix_condition.user_representante.to_i == Current.user.id.to_i
                 redirect_to firmar_representante_path
             else
-                redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Representante Legal."
+                redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Asesor en SST."
             end    
         end
     end    
@@ -115,7 +122,7 @@ class MatrixConditionsController < ApplicationController
             if  @matrix_condition.user_responsible.to_i == Current.user.id.to_i
                 redirect_to firmar_responsible_path
             else
-                redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Asesor en SST."
+                redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Responsable en SST."
             end    
         end
     end  

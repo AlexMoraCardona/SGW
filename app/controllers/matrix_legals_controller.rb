@@ -49,7 +49,7 @@ class MatrixLegalsController < ApplicationController
     def show
         @template = Template.where("format_number = ? and document_vigente = ?",76,1).last  
         @matrix_legal = MatrixLegal.find(params[:id])
-        @matrix_legal_items = MatrixLegalItem.where("matrix_legal_id = ?", @matrix_legal.id) if @matrix_legal.present?
+        @matrix_legal_items = MatrixLegalItem.where("matrix_legal_id = ?", @matrix_legal.id).order(id: :desc) if @matrix_legal.present?
         @entity = Entity.find(@matrix_legal.entity_id) if @matrix_legal.present?
         @rep = User.find(@matrix_legal.user_legal_representative) if  @matrix_legal.user_legal_representative.present? && @matrix_legal.user_legal_representative > 0
         @adv = User.find(@matrix_legal.user_adviser_sst) if  @matrix_legal.user_adviser_sst.present? && @matrix_legal.user_adviser_sst > 0
@@ -61,7 +61,7 @@ class MatrixLegalsController < ApplicationController
     def ver_matrix_legal
         @template = Template.where("format_number = ? and document_vigente = ?",76,1).last  
         @matrix_legal = MatrixLegal.find(params[:id])
-        @matrix_legal_items = MatrixLegalItem.where("matrix_legal_id = ?", @matrix_legal.id) if @matrix_legal.present?
+        @matrix_legal_items = MatrixLegalItem.where("matrix_legal_id = ?", @matrix_legal.id).order(id: :desc) if @matrix_legal.present?
         @entity = Entity.find(@matrix_legal.entity_id) if @matrix_legal.present?
         @rep = User.find(@matrix_legal.user_legal_representative) if  @matrix_legal.user_legal_representative.present? && @matrix_legal.user_legal_representative > 0
         @adv = User.find(@matrix_legal.user_adviser_sst) if  @matrix_legal.user_adviser_sst.present? && @matrix_legal.user_adviser_sst > 0
@@ -108,7 +108,7 @@ class MatrixLegalsController < ApplicationController
 
         if @matrix_legal.update(matrix_legal_params)
             actualizar_fecha(@matrix_legal.id)
-            redirect_to matrix_legals_path, notice: 'Actualizado correctamente'
+            redirect_to matrix_legal_path(@matrix_legal.id), notice: 'Actualizado correctamente'
         else
             render :edit, matrix_legals: :unprocessable_entity
         end         
@@ -212,7 +212,7 @@ class MatrixLegalsController < ApplicationController
 
     def show_history
         @matrix_legal = HistoryMatrixLegal.find_by(id: params[:id].to_i)
-        @matrix_legal_items = HistoryMatrixLegalItem.where(history_matrix_legal_id: params[:id].to_i)
+        @matrix_legal_items = HistoryMatrixLegalItem.where(history_matrix_legal_id: params[:id].to_i).order(id: :desc)
     end   
 
     private

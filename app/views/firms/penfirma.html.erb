@@ -107,7 +107,7 @@
                         <% if @meeting_minute.present?   %>
                             <tr> 
                                 <td><%= description_job.created_at.strftime("%Y-%m-%d") %></td>
-                                <td>Descripcion de cargo</td>
+                                <td>DESCRIPCIÓN DE CARGO</td>
                                 <td><%= link_to t('common.veritem'),  description_job_path(description_job.id), class: 'btn btn-sm btn-primary'  %></td>
                                 <td> 
                                     <% if description_job.firm_elaboro == 0  && description_job.user_elaboro == Current.user.id %>
@@ -120,6 +120,219 @@
                                 </td>
                             </tr>  
                         <% end %> 
+                    <% end %> 
+                </tbody>   
+            </table>
+            </br>  
+    <% end %>     
+    <% if @resources.present?   %>
+            <table class="table table-hover">
+                <thead>
+                    <tr>  
+                        <th scope="col">Año</th>
+                        <th scope="col">Documento</th>
+                        <th scope="col">Ver</th> 
+                        <th scope="col">Firmar</th> 
+                    </tr>
+                </thead>  
+                <tbody> 
+                    <% @resources.each do |resource| %>
+                            <tr> 
+                                <td><%= resource.year %></td>
+                                <td>ASIGNACIÓN DE RECURSOS PARA EL SG-SST</td>
+                                <td><%= link_to t('common.veritem'),  resource_path(resource.id), class: 'btn btn-sm btn-primary'  %></td>
+                                <td> 
+                                    <% if resource.firm_legal_representative == 0  && resource.user_legal_representative == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_rep_resources_path(resource.id, 1), class: 'btn btn-sm btn btn-warning' %>
+                                    <% elsif resource.firm_adviser_sst == 0 && resource.user_adviser_sst == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_adv_resources_path(resource.id, 2), class: 'btn btn-sm btn btn-warning' %>
+                                    <% end %>
+                                </td>
+                            </tr>  
+                    <% end %> 
+                </tbody>   
+            </table>
+            </br>  
+    <% end %>     
+    <% if @matrix_protections.present?   %>
+            <table class="table table-hover">
+                <thead>
+                    <tr>  
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Documento</th>
+                        <th scope="col">Ver</th> 
+                        <th scope="col">Firmar</th> 
+                    </tr>
+                </thead>  
+                <tbody> 
+                    <% @matrix_protections.each do |matrix_protection| %>
+                            <tr> 
+                                <td><%= matrix_protection.date_create %></td>
+                                <td>MATRIZ DE ELEMENTOS DE PROTECCIÓN PERSONAL</td>
+                                <td><%= link_to t('common.veritem'),  matrix_protection_path(matrix_protection.id), class: 'btn btn-sm btn-primary'  %></td>
+                                <td> 
+                                    <% if matrix_protection.firm_legal_representative == 0  && matrix_protection.user_legal_representative == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_rep_matrix_protections_path(matrix_protection.id, 1), class: 'btn btn-sm btn btn-warning' %>
+                                    <% elsif matrix_protection.firm_adviser_sst == 0 && matrix_protection.user_adviser_sst == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_adv_matrix_protections_path(matrix_protection.id, 2), class: 'btn btn-sm btn btn-warning' %>
+                                    <% elsif matrix_protection.firm_responsible_sst == 0 && matrix_protection.user_responsible_sst == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_res_matrix_protections_path(matrix_protection.id, 3), class: 'btn btn-sm btn btn-warning' %>
+                                    <% end %>
+                                </td>
+                            </tr>  
+                    <% end %> 
+                </tbody>   
+            </table>
+            </br>  
+    <% end %>     
+    <% if @matrix_legals.present?   %>
+            <table class="table table-hover">
+                <thead>
+                    <tr>  
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Documento</th>
+                        <th scope="col">Ver</th> 
+                        <th scope="col">Firmar</th> 
+                    </tr>
+                </thead>  
+                <tbody> 
+                    <% @matrix_legals.each do |matrix_legal| %>
+                            <tr> 
+                                <td><%= matrix_legal.date_create %></td>
+                                <td>MATRIZ LEGAL</td>
+                                <td><%= link_to t('common.veritem'),  matrix_legal_path(matrix_legal.id), class: 'btn btn-sm btn-primary'  %></td>
+                                <td> 
+                                    <% if matrix_legal.firm_legal_representative == 0  && matrix_legal.user_legal_representative == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_rep_matrix_legals_path(matrix_legal.id, 1), class: 'btn btn-sm btn btn-warning' %>
+                                    <% elsif matrix_legal.firm_adviser_sst == 0 && matrix_legal.user_adviser_sst == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_adv_matrix_legals_path(matrix_legal.id, 2), class: 'btn btn-sm btn btn-warning' %>
+                                    <% elsif matrix_legal.firm_responsible_sst == 0 && matrix_legal.user_responsible_sst == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_res_matrix_legals_path(matrix_legal.id, 3), class: 'btn btn-sm btn btn-warning' %>
+                                    <% end %>
+                                </td>
+                            </tr>  
+                    <% end %> 
+                </tbody>   
+            </table>
+            </br>  
+    <% end %>     
+    <% if @matrix_goals.present?   %>
+            <table class="table table-hover">
+                <thead>
+                    <tr>  
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Documento</th>
+                        <th scope="col">Ver</th> 
+                        <th scope="col">Firmar</th> 
+                    </tr>
+                </thead>  
+                <tbody> 
+                    <% @matrix_goals.each do |matrix_goal| %>
+                            <tr> 
+                                <td><%= matrix_goal.date_unsafe %></td>
+                                <td>OBJETIVOS, METAS E INDICADORES DEL SG-SST SEGURIDAD Y SALUD EN EL TRABAJO</td>
+                                <td><%= link_to t('common.veritem'),  matrix_goal_path(matrix_goal.id), class: 'btn btn-sm btn-primary'  %></td>
+                                <td> 
+                                    <% if matrix_goal.firm_representante == 0  && matrix_goal.user_representante == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_rep_goal_path(matrix_goal.id, 1), class: 'btn btn-sm btn btn-warning' %>
+                                    <% elsif matrix_goal.firm_asesor == 0 && matrix_goal.user_asesor == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_adv_goal_path(matrix_goal.id, 2), class: 'btn btn-sm btn btn-warning' %>
+                                    <% elsif matrix_goal.firm_responsible == 0 && matrix_goal.user_responsible == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_res_goal_path(matrix_goal.id, 3), class: 'btn btn-sm btn btn-warning' %>
+                                    <% end %>
+                                </td>
+                            </tr>  
+                    <% end %> 
+                </tbody>   
+            </table>
+            </br>  
+    <% end %>     
+    <% if @matrix_danger_risks.present?   %>
+            <table class="table table-hover">
+                <thead>
+                    <tr>  
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Documento</th>
+                        <th scope="col">Ver</th> 
+                        <th scope="col">Firmar</th> 
+                    </tr>
+                </thead>  
+                <tbody> 
+                    <% @matrix_danger_risks.each do |matrix_danger_risk| %>
+                            <tr> 
+                                <td><%= matrix_danger_risk.date_create %></td>
+                                <td>MATRIZ DE IDENTIFICACIÓN DE PELIGROS, EVALUACIÓN Y VALORACION DE LOS RIESGOS</td>
+                                <td><%= link_to t('common.veritem'),  matrix_danger_risk_path(matrix_danger_risk.id), class: 'btn btn-sm btn-primary'  %></td>
+                                <td> 
+                                    <% if matrix_danger_risk.firm_legal_representative == 0  && matrix_danger_risk.user_legal_representative == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_rep_matrix_danger_risks_path(matrix_danger_risk.id, 1), class: 'btn btn-sm btn btn-warning' %>
+                                    <% elsif matrix_danger_risk.firm_adviser_sst == 0 && matrix_danger_risk.user_adviser_sst == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_adv_matrix_danger_risks_path(matrix_danger_risk.id, 2), class: 'btn btn-sm btn btn-warning' %>
+                                    <% elsif matrix_danger_risk.firm_responsible_sst == 0 && matrix_danger_risk.user_responsible_sst == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_res_matrix_danger_risks_path(matrix_danger_risk.id, 3), class: 'btn btn-sm btn btn-warning' %>
+                                    <% end %>
+                                </td>
+                            </tr>  
+                    <% end %> 
+                </tbody>   
+            </table>
+            </br>  
+    <% end %>     
+    <% if @annual_work_plans.present?   %>
+            <table class="table table-hover">
+                <thead>
+                    <tr>  
+                        <th scope="col">Año</th>
+                        <th scope="col">Documento</th>
+                        <th scope="col">Ver</th> 
+                        <th scope="col">Firmar</th> 
+                    </tr>
+                </thead>  
+                <tbody> 
+                    <% @annual_work_plans.each do |annual_work_plan| %>
+                            <tr> 
+                                <td><%= annual_work_plan.year %></td>
+                                <td>Plan de Trabajo Anual</td>
+                                <td><%= link_to t('common.veritem'),  annual_work_plan_path(annual_work_plan.id), class: 'btn btn-sm btn-primary'  %></td>
+                                <td> 
+                                    <% if annual_work_plan.firm_legal_representative == 0  && annual_work_plan.user_legal_representative == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_rep_annual_work_plans_path(annual_work_plan.id, 1), class: 'btn btn-sm btn btn-warning' %>
+                                    <% elsif annual_work_plan.firm_adviser_sst == 0 && annual_work_plan.user_adviser_sst == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_adv_annual_work_plans_path(annual_work_plan.id, 2), class: 'btn btn-sm btn btn-warning' %>
+                                    <% elsif annual_work_plan.firm_responsible_sst == 0 && annual_work_plan.user_responsible_sst == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_res_annual_work_plans_path(annual_work_plan.id, 3), class: 'btn btn-sm btn btn-warning' %>
+                                    <% end %>
+                                </td>
+                            </tr>  
+                    <% end %> 
+                </tbody>   
+            </table>
+            </br>  
+    <% end %>     
+    <% if @matrix_conditions.present?   %>
+            <table class="table table-hover">
+                <thead>
+                    <tr>  
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Documento</th>
+                        <th scope="col">Ver</th> 
+                        <th scope="col">Firmar</th> 
+                    </tr>
+                </thead>  
+                <tbody> 
+                    <% @matrix_conditions.each do |matrix_condition| %>
+                            <tr> 
+                                <td><%= matrix_condition.date_unsafe %></td>
+                                <td>MATRIZ DE SEGUIMIENTO DE ACTOS Y CONDICIONES INSEGURAS</td>
+                                <td><%= link_to t('common.veritem'),  matrix_condition_path(matrix_condition.id), class: 'btn btn-sm btn-primary'  %></td>
+                                <td> 
+                                    <% if matrix_condition.firm_representante == 0  && matrix_condition.user_representante == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_representante_path(matrix_condition.id, 1), class: 'btn btn-sm btn btn-warning' %>
+                                    <% elsif matrix_condition.firm_responsible == 0 && matrix_condition.user_responsible == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_responsible_path(matrix_condition.id, 2), class: 'btn btn-sm btn btn-warning' %>
+                                    <% end %>
+                                </td>
+                            </tr>  
                     <% end %> 
                 </tbody>   
             </table>

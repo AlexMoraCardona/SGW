@@ -1,10 +1,5 @@
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
     <meta charset='utf-8' />
-    <%= wicked_pdf_javascript_include_tag "number_pages" %>
-    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
-    <%= javascript_importmap_tags %>
 </head>
 
 <br>
@@ -59,9 +54,11 @@
         </tr>
     </thead> 
     <tbody>
+        <% n = 0 %>
         <% @matrix_legal_items.each do |matrix_legal_item| %>
+            <% n += 1 %>
             <tr>
-                <td style="border:1px solid black"><%= matrix_legal_item.consecutive %></td>
+                <td style="border:1px solid black"><%= n %></td>
                 <td style="border:1px solid black"><%= matrix_legal_item.year %></td>
                 <td style="border:1px solid black"><%= matrix_legal_item.risk_factor %></td>
                 <td style="border:1px solid black"><%= matrix_legal_item.issuing_entity %></td>
@@ -84,8 +81,8 @@
         <% if @matrix_legal.firm_legal_representative == 1 %>
             <% if @rep.present? %>
                 <% if @rep.firm.attached? %>
-                   <% if @rep.firm.image? %> 
-                        <%= image_tag @rep.firm, class: "firma" %>
+                   <% if @rep.firm.image? %>
+                        <%= image_tag(Evaluation.wicked_blob_path(@rep.firm), class: "firmapdf")%> 
                    <% end %>
                 <% end %>
             <% end %> 
@@ -98,7 +95,7 @@
             <% if @adv.present? %>
                 <% if @adv.firm.attached? %>
                     <% if @adv.firm.image? %> 
-                        <%= image_tag @adv.firm, class: "firma" %>
+                        <%= image_tag(Evaluation.wicked_blob_path(@adv.firm), class: "firmapdf")%> 
                     <% end %>
                 <% end %>
             <% end %>     
@@ -111,7 +108,7 @@
             <% if @res.present? %>
                 <% if @res.firm.attached? %>
                     <% if @res.firm.image? %> 
-                        <%= image_tag @res.firm, class: "firma" %>
+                        <%= image_tag(Evaluation.wicked_blob_path(@res.firm), class: "firmapdf")%> 
                     <% end %>
                 <% end %>
             <% end %>     

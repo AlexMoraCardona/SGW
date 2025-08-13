@@ -83,7 +83,7 @@ class MatrixProtectionsController < ApplicationController
         @matrix_protection = MatrixProtection.find(params[:id])
         if @matrix_protection.update(matrix_protection_params)
             actualizar_fecha(@matrix_protection.id)
-            redirect_to matrix_protections_path, notice: 'Matriz  actualizada correctamente'
+            redirect_to matrix_protection_path(@matrix_protection.id), notice: 'Matriz  actualizada correctamente'
         else
             render :edit, status: :unprocessable_entity
         end         

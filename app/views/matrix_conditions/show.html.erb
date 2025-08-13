@@ -100,6 +100,43 @@
                 </tr>
             </body>
         <% end %>
+        <tr>
+            <td style="background-color: black;">&nbsp;<br>&nbsp;<br>&nbsp;<br></td>
+            <td colspan="8"; style="border:1px solid black; text-align:center">&nbsp;
+                <% if @matrix_condition.firm_responsible == 1 %>
+                    <% if @res.present? %>
+                        <% if @res.firm.attached? %>
+                           <% if @res.firm.image? %> 
+                                <%= image_tag @res.firm, class: "firma" %>
+                           <% end %>
+                        <% end %>
+                    <% end %> 
+                <% else %>
+                   <div></br></div>         
+                <% end %>      
+            </td>
+            <td colspan="8"; style="border:1px solid black; text-align:center">&nbsp;
+                <% if @matrix_condition.firm_representante == 1 %>
+                    <% if @adv.present? %>
+                        <% if @adv.firm.attached? %>
+                            <% if @adv.firm.image? %> 
+                                <%= image_tag @adv.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>     
+                <% else %>
+                    <div></br></div>         
+                <% end %>     
+            </td>
+            <td style="background-color: black;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="background-color: black;">&nbsp;</td>
+            <td colspan="8"; style="border:1px solid black; text-align:center"><%= MatrixCondition.name_user(@matrix_condition.user_responsible) %> - Responsable del SST</td>
+            <td colspan="8"; style="border:1px solid black; text-align:center"><%= MatrixCondition.name_user(@matrix_condition.user_representante) %> - Asesor del SST</td>
+            <td style="background-color: black;">&nbsp;</td>
+        </tr>
+
     </table>  
     </br>
 </div>    

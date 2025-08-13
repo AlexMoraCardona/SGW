@@ -134,7 +134,7 @@ class MatrixDangerRisksController < ApplicationController
 
             if @matrix_danger_risk.update(matrix_danger_risk_params)
                 actualizar_fecha(@matrix_danger_risk.id)
-                redirect_to matrix_danger_risks_path, notice: 'Matriz actualizada correctamente'
+                redirect_to matrix_danger_risk_path(@matrix_danger_risk.id), notice: 'Matriz actualizada correctamente'
             else
                 render :edit, matrix_danger_risks: :unprocessable_entity
             end 

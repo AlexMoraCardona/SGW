@@ -78,7 +78,7 @@ class AnnualWorkPlansController < ApplicationController
     def update
         @annual_work_plan = AnnualWorkPlan.find(params[:id])
         if @annual_work_plan.update(annual_work_plan_params)
-            redirect_to annual_work_plans_path, notice: 'Plan anual actualizado correctamente'
+            redirect_to annual_work_plan_path(@annual_work_plan.id), notice: 'Plan anual actualizado correctamente'
         else
             render :edit, annual_work_plans: :unprocessable_entity
         end         

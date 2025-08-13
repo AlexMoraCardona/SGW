@@ -84,7 +84,7 @@ class MatrixGoalsController < ApplicationController
         @matrix_goal = MatrixGoal.find(params[:id])
         if @matrix_goal.update(matrix_goal_params)
             actualizar_fecha(@matrix_goal.id)
-            redirect_to matrix_goals_path(entity_id: @matrix_goal.entity_id),  notice: 'Matriz  actualizada correctamente'
+            redirect_to matrix_goal_path(@matrix_goal.id),  notice: 'Matriz  actualizada correctamente'
         else
             render :edit, status: :unprocessable_entity
         end         

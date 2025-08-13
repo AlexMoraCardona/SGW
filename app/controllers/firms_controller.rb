@@ -104,14 +104,14 @@ class FirmsController < ApplicationController
         @firmas_pendientes  =  Firm.where("user_id = ? and authorize_firm = ?",Current.user.id,0)
         @actas_pendientes = Assistant.where("user_id = ? and firm_assistant = ?",Current.user.id,0)  
         @description_jobs = DescriptionJob.where("user_elaboro = ? and firm_elaboro = ? or user_reviso = ? and firm_reviso = ? or user_aprobo = ? and firm_aprobo = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
-        @resources = Resource.where("user_legal_representative = ? and firm_legal_representative = ? or user_adviser_sst = ? and firm_adviser_sst = ? or user_responsible_sst = ? and firm_responsible_sst = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
+        @resources = Resource.where("user_legal_representative = ? and firm_legal_representative = ? or user_adviser_sst = ? and firm_adviser_sst = ?",Current.user.id,0,Current.user.id,0)  
         @matrix_conditions = MatrixCondition.where("user_representante = ? and firm_representante = ? or user_responsible = ? and firm_responsible = ?",Current.user.id,0,Current.user.id,0)  
         @matrix_protections = MatrixProtection.where("user_legal_representative = ? and firm_legal_representative = ? or user_adviser_sst = ? and firm_adviser_sst = ? or user_responsible_sst = ? and firm_responsible_sst = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
         @matrix_legals = MatrixLegal.where("user_legal_representative = ? and firm_legal_representative = ? or user_adviser_sst = ? and firm_adviser_sst = ? or user_responsible_sst = ? and firm_responsible_sst = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
         @matrix_goals = MatrixGoal.where("user_representante = ? and firm_representante = ? or user_responsible = ? and firm_responsible = ? or user_asesor = ? and firm_asesor = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
         @matrix_danger_risks = MatrixDangerRisk.where("user_legal_representative = ? and firm_legal_representative = ? or user_adviser_sst = ? and firm_adviser_sst = ? or user_responsible_sst = ? and firm_responsible_sst = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
         @annual_work_plans = AnnualWorkPlan.where("user_legal_representative = ? and firm_legal_representative = ? or user_adviser_sst = ? and firm_adviser_sst = ? or user_responsible_sst = ? and firm_responsible_sst = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
-        @occupational_exams = OccupationalExam.where("user_legal_representative = ? and firm_legal_representative = ? or user_adviser_sst = ? and firm_adviser_sst = ? or user_responsible_sst = ? and firm_responsible_sst = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
+        #@occupational_exams = OccupationalExam.where("user_legal_representative = ? and firm_legal_representative = ? or user_adviser_sst = ? and firm_adviser_sst = ? or user_responsible_sst = ? and firm_responsible_sst = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
 
 
     end    

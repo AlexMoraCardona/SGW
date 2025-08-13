@@ -12,6 +12,9 @@ class HomesController < ApplicationController
          @puntaje_eva = @eval.score if @eval.present?
          @porcentaje_eva = @eval.percentage if @eval.present?
          @result_eva = @eval.result if @eval.present?
+         @total_firmar = 0
+         @cant_firma =  Firm.penfirma
+         @total_firmar =  @cant_firma if @cant_firma.present?  
     end    
 
     def show

@@ -45,7 +45,7 @@ class DescriptionJobsController < ApplicationController
     def update
         @description_job = DescriptionJob.find(params[:id])
         if @description_job.update(description_job_params)
-            redirect_to description_jobs_path, notice: 'Cargo actualizado correctamente'
+            redirect_to description_job_path(@description_job.id), notice: 'Cargo actualizado correctamente'
         else
             render :edit, description_jobs: :unprocessable_entity
         end         

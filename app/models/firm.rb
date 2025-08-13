@@ -2,6 +2,32 @@ class Firm < ApplicationRecord
     belongs_to :user
     belongs_to :evidence
 
+    def self.penfirma
+        @firmas_pendientes  =  Firm.where("user_id = ? and authorize_firm = ?",Current.user.id,0)
+        @actas_pendientes = Assistant.where("user_id = ? and firm_assistant = ?",Current.user.id,0)  
+        @description_jobs = DescriptionJob.where("user_elaboro = ? and firm_elaboro = ? or user_reviso = ? and firm_reviso = ? or user_aprobo = ? and firm_aprobo = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
+        @resources = Resource.where("user_legal_representative = ? and firm_legal_representative = ? or user_adviser_sst = ? and firm_adviser_sst = ?",Current.user.id,0,Current.user.id,0)  
+        @matrix_conditions = MatrixCondition.where("user_representante = ? and firm_representante = ? or user_responsible = ? and firm_responsible = ?",Current.user.id,0,Current.user.id,0)  
+        @matrix_protections = MatrixProtection.where("user_legal_representative = ? and firm_legal_representative = ? or user_adviser_sst = ? and firm_adviser_sst = ? or user_responsible_sst = ? and firm_responsible_sst = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
+        @matrix_legals = MatrixLegal.where("user_legal_representative = ? and firm_legal_representative = ? or user_adviser_sst = ? and firm_adviser_sst = ? or user_responsible_sst = ? and firm_responsible_sst = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
+        @matrix_goals = MatrixGoal.where("user_representante = ? and firm_representante = ? or user_responsible = ? and firm_responsible = ? or user_asesor = ? and firm_asesor = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
+        @matrix_danger_risks = MatrixDangerRisk.where("user_legal_representative = ? and firm_legal_representative = ? or user_adviser_sst = ? and firm_adviser_sst = ? or user_responsible_sst = ? and firm_responsible_sst = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
+        @annual_work_plans = AnnualWorkPlan.where("user_legal_representative = ? and firm_legal_representative = ? or user_adviser_sst = ? and firm_adviser_sst = ? or user_responsible_sst = ? and firm_responsible_sst = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
+        #@occupational_exams = OccupationalExam.where("user_legal_representative = ? and firm_legal_representative = ? or user_adviser_sst = ? and firm_adviser_sst = ? or user_responsible_sst = ? and firm_responsible_sst = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
+        @total_firmar = 0
+        @total_firmar += @firmas_pendientes.count if @firmas_pendientes.present?
+        @total_firmar += @actas_pendientes.count if @actas_pendientes.present?
+        @total_firmar += @description_jobs.count if @description_jobs.present?
+        @total_firmar += @resources.count if @resources.present? 
+        @total_firmar += @matrix_conditions.count if @matrix_conditions.present?
+        @total_firmar +=  @matrix_protections.count if @matrix_protections.present?
+        @total_firmar +=  @matrix_legals.count if @matrix_legals.present?
+        @total_firmar +=  @matrix_goals.count if @matrix_goals.present?
+        @total_firmar +=  @matrix_danger_risks.count if @matrix_danger_risks.present?
+        @total_firmar +=  @annual_work_plans.count if @annual_work_plans.present?
+        return @total_firmar
+    end    
+
     def self.firmas(evidence)
         @firms = Firm.where("evidence_id = ?", evidence)
         return @firms;

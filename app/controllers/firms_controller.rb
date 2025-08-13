@@ -98,9 +98,7 @@ class FirmsController < ApplicationController
 
     end  
 
-
-
-    def penfirma
+    def penfirma 
         @firmas_pendientes  =  Firm.where("user_id = ? and authorize_firm = ?",Current.user.id,0)
         @actas_pendientes = Assistant.where("user_id = ? and firm_assistant = ?",Current.user.id,0)  
         @description_jobs = DescriptionJob.where("user_elaboro = ? and firm_elaboro = ? or user_reviso = ? and firm_reviso = ? or user_aprobo = ? and firm_aprobo = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
@@ -113,8 +111,8 @@ class FirmsController < ApplicationController
         @annual_work_plans = AnnualWorkPlan.where("user_legal_representative = ? and firm_legal_representative = ? or user_adviser_sst = ? and firm_adviser_sst = ? or user_responsible_sst = ? and firm_responsible_sst = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
         #@occupational_exams = OccupationalExam.where("user_legal_representative = ? and firm_legal_representative = ? or user_adviser_sst = ? and firm_adviser_sst = ? or user_responsible_sst = ? and firm_responsible_sst = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
 
-
     end    
+
     private
 
     def firm_params

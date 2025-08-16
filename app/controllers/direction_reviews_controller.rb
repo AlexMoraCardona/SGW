@@ -72,7 +72,7 @@ class DirectionReviewsController < ApplicationController
     def update
         @direction_review = DirectionReview.find(params[:id])
         if @direction_review.update(direction_review_params)
-            redirect_to direction_reviews_path(entity_id: @direction_review.entity_id), notice: 'Informe actualizado correctamente'
+            redirect_to direction_review_path(@direction_review.id), notice: 'Informe actualizado correctamente'
         else
             render :edit, direction_reviews: :unprocessable_entity
         end         

@@ -6,5 +6,13 @@ class OccupationalExamItem < ApplicationRecord
         elsif  dato == 1 ; 'Periódicos'
         elsif  dato == 2 ; 'Egreso'
         end 
-    end     
+    end 
+
+    
+    def self.label_state_exam(dato)
+        if dato == 0 ; 'Pendiente'
+        elsif  dato == 1 ; 'Realizado'
+        elsif  dato == 2 ; 'Cancelado'
+        end 
+    end 
 end

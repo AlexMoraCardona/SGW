@@ -336,6 +336,149 @@
             </table>
             </br>  
     <% end %>     
+    <% if @audit_reports.present?   %>
+            <table class="table table-hover">
+                <thead>
+                    <tr>  
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Documento</th>
+                        <th scope="col">Ver</th> 
+                        <th scope="col">Firmar</th> 
+                    </tr>
+                </thead>  
+                <tbody> 
+                    <% @audit_reports.each do |audit_report| %>
+                            <tr> 
+                                <td><%= audit_report.date_audit %></td>
+                                <td>INFORME AUDITORÍA INTERNA SG-SST</td>
+                                <td><%= link_to t('common.veritem'),  audit_report_path(audit_report.id), class: 'btn btn-sm btn-primary'  %></td>
+                                <td> 
+                                    <% if audit_report.firm_representante == 0  && audit_report.user_representante == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_representante_audi_path(audit_report.id, 1), class: 'btn btn-sm btn btn-warning' %>
+                                    <% elsif audit_report.firm_audit == 0 && audit_report.user_audit == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_auditor_path(audit_report.id, 2), class: 'btn btn-sm btn btn-warning' %>
+                                    <% end %>
+                                </td>
+                            </tr>  
+                    <% end %> 
+                </tbody>   
+            </table>
+            </br>  
+    <% end %>     
+    <% if @inves_users.present?   %>
+            <table class="table table-hover">
+                <thead>
+                    <tr>  
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Documento</th>
+                        <th scope="col">Ver</th> 
+                        <th scope="col">Firmar</th> 
+                    </tr>
+                </thead>  
+                <tbody> 
+                    <% @inves_users.each do |inves_user| %>
+                            <tr> 
+                                <td><%= inves_user.investigation.date_investigation %></td>
+                                <td>INVESTIGACIÓN Y ANÁLISIS DEL INCIDENTE Y/O ACCIDENTE DE TRABAJO</td>
+                                <td><%= link_to t('common.veritem'),  investigation_path(inves_user.investigation_id), class: 'btn btn-sm btn-primary'  %></td>
+                                <td> 
+                                    <% if inves_user.firm == 0  && inves_user.user_id == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firma_inves_path(inves_user.id), class: 'btn btn-sm btn btn-warning' %>
+                                    <% end %>
+                                </td>
+                            </tr>  
+                    <% end %> 
+                </tbody>   
+            </table>
+            </br>  
+    <% end %>     
+    <% if @survey_profiles.present?   %>
+            <table class="table table-hover">
+                <thead>
+                    <tr>  
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Documento</th>
+                        <th scope="col">Ver</th> 
+                        <th scope="col">Firmar</th> 
+                    </tr>
+                </thead>  
+                <tbody> 
+                    <% @survey_profiles.each do |survey_profile| %>
+                            <tr> 
+                                <td><%= survey_profile.date_profile %></td>
+                                <td>Informe Estudio Sociodemográfico</td>
+                                <td><%= link_to t('common.veritem'),  infoprofile_path(survey_profile), class: 'btn btn-sm btn-primary'  %></td>
+                                <td> 
+                                    <% if survey_profile.firm_elaboro == 0  && survey_profile.user_elaboro == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firma_elaboro_path(survey_profile.id, 3), class: 'btn btn-sm btn btn-warning' %>
+                                    <% elsif survey_profile.firm_aprobo == 0 && survey_profile.user_aprobo == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firma_aprobo_path(survey_profile.id, 1), class: 'btn btn-sm btn btn-warning' %>
+                                    <% end %>
+                                </td>
+                            </tr>  
+                    <% end %> 
+                </tbody>   
+            </table>
+            </br>  
+    <% end %>     
+    <% if @improvement_plans.present?   %>
+            <table class="table table-hover">
+                <thead>
+                    <tr>  
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Documento</th>
+                        <th scope="col">Ver</th> 
+                        <th scope="col">Firmar</th> 
+                    </tr>
+                </thead>  
+                <tbody> 
+                    <% @improvement_plans.each do |improvement_plan| %>
+                            <tr> 
+                                <td><%= improvement_plan.date_plan %></td>
+                                <td>Informe Plan de Mejoramiento SG-SST</td>
+                                <td><%= link_to t('common.veritem'),  improvement_plan_path(improvement_plan), class: 'btn btn-sm btn-primary'  %></td>
+                                <td> 
+                                    <% if improvement_plan.firm_representante == 0  && improvement_plan.user_representante == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_representante_improvement_plan_path(improvement_plan.id, 1), class: 'btn btn-sm btn btn-warning' %>
+                                    <% elsif improvement_plan.firm_responsible == 0 && improvement_plan.user_responsible == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_responsable_improvement_plan_path(improvement_plan.id, 2), class: 'btn btn-sm btn btn-warning' %>
+                                    <% end %>
+                                </td>
+                            </tr>  
+                    <% end %> 
+                </tbody>   
+            </table>
+            </br>  
+    <% end %>     
+    <% if @direction_reviews.present?   %>
+            <table class="table table-hover">
+                <thead>
+                    <tr>  
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Documento</th>
+                        <th scope="col">Ver</th> 
+                        <th scope="col">Firmar</th> 
+                    </tr>
+                </thead>  
+                <tbody> 
+                    <% @direction_reviews.each do |direction_review| %>
+                            <% if direction_review.firm_representante != 1 %>
+                                <tr> 
+                                    <td><%= direction_review.date_review %></td>
+                                    <td>REVISIÓN POR LA ALTA DIRECCIÓN</td>
+                                    <td><%= link_to t('common.veritem'),  direction_review_path(direction_review), class: 'btn btn-sm btn-primary'  %></td>
+                                    <td> 
+                                        <% if direction_review.firm_representante != 1  && direction_review.user_representante == Current.user.id %>
+                                            <%= link_to t('common.firmar'), firmar_representante_review_path(direction_review.id, 1), class: 'btn btn-sm btn btn-warning' %>
+                                        <% end %>
+                                    </td>
+                                </tr>  
+                            <% end %>    
+                    <% end %> 
+                </tbody>   
+            </table>
+            </br>  
+    <% end %>     
 
     
 

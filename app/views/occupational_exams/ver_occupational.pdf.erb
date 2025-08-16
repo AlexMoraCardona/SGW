@@ -3,7 +3,7 @@
 </head>
 <br>
 <div>
-<table class="table table-hover" style="border:1px solid black"> 
+<table style="border:1px solid black;width:100%;"> 
 <thead>
     <tr>
         <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
@@ -33,22 +33,23 @@
         <td colspan="2"; style="border:1px solid black">Código:</td>
         <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
     </tr>
-
+</thead>
+</table> 
+<table style="border:1px solid black;width:100%;"> 
     <tr>
         <th style="border:1px solid black">FECHA EXAMEN</th>
         <th style="border:1px solid black">FECHA DE VENCIMIENTO</th>
         <th style="border:1px solid black">TIPO DE EXAMEN</th>
-        <th style="border:1px solid black">IDENT.</th>
         <th style="border:1px solid black">APELLIDOS Y NOMBRES  </th>
         <th style="border:1px solid black">CARGO</th>
         <th style="border:1px solid black">CONCEPTO</th>
         <th style="border:1px solid black">DIREC.</th>
         <th style="border:1px solid black">RECOMENDACIONES MEDICAS  </th>
         <th style="border:1px solid black">RESTRICCIONES MEDICAS  </th>
-        <th style="border:1px solid black">SVE  </th>
+        <th style="border:1px solid black">ESTADO DEL EXAMEN</th>
+        <th style="border:1px solid black">ÉNFASIS</th>
     </tr>
 
-</thead>
 
 <% @occupational_exam_items.each do |occupational_exam_item| %>             
     <tbody>
@@ -56,14 +57,14 @@
             <td style="border:1px solid black"><%= occupational_exam_item.fec_exam %></td>
             <td style="border:1px solid black"><%= occupational_exam_item.fec_venc %></td>
             <td style="border:1px solid black"><%= occupational_exam_item.label_exam_type(occupational_exam_item.exam_type) %></td>
-            <td style="border:1px solid black"><%= occupational_exam_item.nro_identification %></td>
             <td style="border:1px solid black"><%= occupational_exam_item.name %></td>
             <td style="border:1px solid black"><%= occupational_exam_item.post %></td>
             <td style="border:1px solid black"><%= occupational_exam_item.concept %></td>
             <td style="border:1px solid black"><%= occupational_exam_item.addressing %></td>
             <td style="border:1px solid black"><%= occupational_exam_item.recommendations %></td>
             <td style="border:1px solid black"><%= occupational_exam_item.restrictions %></td>
-            <td style="border:1px solid black"><%= occupational_exam_item.sve %></td>
+            <td style="border:1px solid black"><%= OccupationalExamItem.label_state_exam(occupational_exam_item.state_exam) %></td>
+            <td style="border:1px solid black"><%= occupational_exam_item.emphasis %></td>
         </tr>
     </body>
 <% end %>

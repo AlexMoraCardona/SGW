@@ -79,7 +79,7 @@ class AuditReportsController < ApplicationController
         @audit_report = AuditReport.find(params[:id])
         if @audit_report.update(audit_report_params)
             actualizar_fecha(@audit_report.id)
-            redirect_to audit_reports_path(entity_id: @audit_report.entity_id), notice: 'Auditoría interna actualizada correctamente'
+            redirect_to audit_report_path(@audit_report.id), notice: 'Auditoría interna actualizada correctamente'
         else
             render :edit, audit_reports: :unprocessable_entity
         end         

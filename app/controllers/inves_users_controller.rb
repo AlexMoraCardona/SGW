@@ -54,7 +54,7 @@ class InvesUsersController < ApplicationController
         
         if Current.user.id == @inves_user.user_id
             if @inves_user.save then
-                redirect_to investigations_path, notice: "Firmado correctamente!"
+                redirect_to investigation_path(@inves_user.investigation_id), notice: "Firmado correctamente!"
             else
                 redirect_to investigations_path, alert: "Se produjo un error en la firma." 
             end

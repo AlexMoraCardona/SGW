@@ -78,7 +78,7 @@ class ImprovementPlansController < ApplicationController
         @improvement_plan = ImprovementPlan.find(params[:id])
         if @improvement_plan.update(improvement_plan_params)
             actualizar_fecha(@improvement_plan.id)
-            redirect_to improvement_plans_path(entity_id: @improvement_plan.entity_id), notice: 'Plan de mejoramiento actualizado correctamente'
+            redirect_to improvement_plan_path(@improvement_plan.id), notice: 'Plan de mejoramiento actualizado correctamente'
         else
             render :edit, improvement_plans: :unprocessable_entity
         end         

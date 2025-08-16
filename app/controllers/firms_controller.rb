@@ -110,6 +110,12 @@ class FirmsController < ApplicationController
         @matrix_danger_risks = MatrixDangerRisk.where("user_legal_representative = ? and firm_legal_representative = ? or user_adviser_sst = ? and firm_adviser_sst = ? or user_responsible_sst = ? and firm_responsible_sst = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
         @annual_work_plans = AnnualWorkPlan.where("user_legal_representative = ? and firm_legal_representative = ? or user_adviser_sst = ? and firm_adviser_sst = ? or user_responsible_sst = ? and firm_responsible_sst = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
         #@occupational_exams = OccupationalExam.where("user_legal_representative = ? and firm_legal_representative = ? or user_adviser_sst = ? and firm_adviser_sst = ? or user_responsible_sst = ? and firm_responsible_sst = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
+        @audit_reports = AuditReport.where("user_representante = ? and firm_representante = ? or user_audit = ? and firm_audit = ?",Current.user.id,0,Current.user.id,0)  
+        @inves_users = InvesUser.where("user_id = ? and firm = ?",Current.user.id,0)  
+        @survey_profiles = SurveyProfile.where("user_elaboro = ? and firm_elaboro = ? or user_reviso = ? and firm_reviso = ? or user_aprobo = ? and firm_aprobo = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
+        @improvement_plans = ImprovementPlan.where("user_representante = ? and firm_representante = ? or user_responsible = ? and firm_responsible = ?",Current.user.id,0,Current.user.id,0)  
+        @direction_reviews = DirectionReview.where("user_representante = ?",Current.user.id)  
+
 
     end    
 

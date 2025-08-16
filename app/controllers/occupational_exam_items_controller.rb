@@ -42,7 +42,7 @@ class OccupationalExamItemsController < ApplicationController
     def destroy
         @occupational_exam_item = OccupationalExamItem.find(params[:id])
         @occupational_exam_item.destroy
-        redirect_to occupational_exam_items_path, notice: 'Item borrado correctamente', occupational_exam_item: :see_other
+        redirect_to occupational_exam_path(@occupational_exam_item.occupational_exam_id), notice: 'Item borrado correctamente', occupational_exam_item: :see_other
     end    
 
     private

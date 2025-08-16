@@ -37,19 +37,19 @@
             </tr>
         
             <tr>
-                <th style="border:1px solid black">Nro</th>
                 <th style="border:1px solid black">FECHA EXAMEN</th>
                 <th style="border:1px solid black">FECHA DE VENCIMIENTO</th>
                 <th style="border:1px solid black">TIPO DE EXAMEN</th>
-                <th style="border:1px solid black">No. DE IDENTIFICACIÓN</th>
                 <th style="border:1px solid black">APELLIDOS Y NOMBRES  </th>
                 <th style="border:1px solid black">CARGO  </th>
                 <th style="border:1px solid black">CONCEPTO  </th>
                 <th style="border:1px solid black">DIRECCIONAMIENTO A EPS, ARL, o IPS   </th>
                 <th style="border:1px solid black">RECOMENDACIONES MEDICAS  </th>
                 <th style="border:1px solid black">RESTRICCIONES MEDICAS  </th>
-                <th style="border:1px solid black">SVE  </th>
-                <th style="border:1px solid black">EDITAR  </th>
+                <th style="border:1px solid black">ESTADO DEL EXAMEN</th>
+                <th style="border:1px solid black">ÉNFASIS</th>
+                <th style="border:1px solid black">EDITAR</th>
+                <th style="border:1px solid black">ELIMINAR</th>
             </tr>
 
         </thead>
@@ -57,19 +57,19 @@
         <% @occupational_exam_items.each do |occupational_exam_item| %>             
             <tbody>
                 <tr>
-                    <td style="border:1px solid black"><%= occupational_exam_item.consecutive %></td>
                     <td style="border:1px solid black"><%= occupational_exam_item.fec_exam %></td>
                     <td style="border:1px solid black"><%= occupational_exam_item.fec_venc %></td>
                     <td style="border:1px solid black"><%= occupational_exam_item.label_exam_type(occupational_exam_item.exam_type) %></td>
-                    <td style="border:1px solid black"><%= occupational_exam_item.nro_identification %></td>
                     <td style="border:1px solid black"><%= occupational_exam_item.name %></td>
                     <td style="border:1px solid black"><%= occupational_exam_item.post %></td>
                     <td style="border:1px solid black"><%= occupational_exam_item.concept %></td>
                     <td style="border:1px solid black"><%= occupational_exam_item.addressing %></td>
                     <td style="border:1px solid black"><%= occupational_exam_item.recommendations %></td>
                     <td style="border:1px solid black"><%= occupational_exam_item.restrictions %></td>
-                    <td style="border:1px solid black"><%= occupational_exam_item.sve %></td>
-                    <td style="border:1px solid black"><%= link_to t('common.edit'), edit_occupational_exam_item_path(occupational_exam_item), class: 'btn btn-xs btn-primary'  %></td>
+                    <td style="border:1px solid black"><%= OccupationalExamItem.label_state_exam(occupational_exam_item.state_exam) %></td>
+                    <td style="border:1px solid black"><%= occupational_exam_item.emphasis %></td>
+                    <td style="border:1px solid black; text-align:center;"><%= link_to t('common.edit'), edit_occupational_exam_item_path(occupational_exam_item), class: 'btn btn-xs btn-primary'  %></td>
+                    <td style="border:1px solid black; text-align:center;"><%= button_to "Delete", occupational_exam_item_path(occupational_exam_item), method: :delete, class:"btn btn-sm btn-danger" %></td>
                 </tr>
             </body>
         <% end %>

@@ -7,8 +7,8 @@
     <td><%= link_to t('common.show'), meeting_minute, class: 'btn btn-sm btn-primary' %></td>
     <td><%= link_to t('common.edit'), edit_meeting_minute_path(meeting_minute), class: 'btn btn-sm btn-secondary' if Current.user.level > 0 &&  Current.user.level < 4 || Current.user.ccl == 1 || Current.user.secretary_copasst == 1 %></td>
     <td><%= button_to "Delete", meeting_minute, method: :delete, class:"btn btn-sm btn-danger" if Current.user.level > 0 &&  Current.user.level < 4 %></td>
-    <td><%= link_to t('common.create_meeting_attendee'), crear_asistente_meeting_minutes_path(meeting_minute.id), class: 'btn btn-sm btn btn-warning' if Current.user.level > 0 &&  Current.user.level < 4 %></td>
-    <td><%= link_to t('common.create_meeting_commitment'), crear_compromiso_meeting_minutes_path(meeting_minute.id), class: 'btn btn-sm btn btn-warning' if Current.user.level > 0 &&  Current.user.level < 4 %></td>
+    <td><%= link_to t('common.create_meeting_attendee'), crear_asistente_meeting_minutes_path(meeting_minute.id), class: 'btn btn-sm btn btn-warning' if Current.user.level > 0 &&  Current.user.level < 4 || Current.user.ccl == 1 || Current.user.secretary_copasst == 1 %></td>
+    <td><%= link_to t('common.create_meeting_commitment'), crear_compromiso_meeting_minutes_path(meeting_minute.id), class: 'btn btn-sm btn btn-warning' if Current.user.level > 0 &&  Current.user.level < 4 || Current.user.ccl == 1 || Current.user.secretary_copasst == 1 %></td>
     <td><%= link_to t('common.create_meeting_signature'), crear_firma_meeting_minutes_path(meeting_minute.id), class: 'btn btn-sm btn btn-warning' %></td>
     <td><%= link_to "PDF", meeting_minute_path(meeting_minute.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
     <td><%= link_to "Duplicar", crear_copia_acta_meeting_minutes_path(meeting_minute.id), class: 'btn btn-sm btn-success' %></td>

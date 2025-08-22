@@ -3,7 +3,8 @@
 <table class="table table-hover" style="border:1px solid black"> 
     <thead>
         <tr>
-            <th scope="col" style="border:1px solid black"><%= t('.consecutive') %></th>
+            <th scope="col" style="border:1px solid black">Editar</th>
+            <th scope="col" style="border:1px solid black">Eliminar</th>
             <th scope="col" style="border:1px solid black"><%= t('.year') %></th>
             <th scope="col" style="border:1px solid black"><%= t('.risk_factor') %></th>
             <th scope="col" style="border:1px solid black"><%= t('.issuing_entity') %></th>
@@ -21,7 +22,8 @@
         <% if params[:format].to_i == 3 %>
             <% @matrix_legal_items.each do |matrix_legal_item| %>
                 <tr>
-                    <td style="border:1px solid black"><%= matrix_legal_item.consecutive %></td>
+                    <td style="border:1px solid black; text-align:center;"><%= link_to t('common.edit'), edit_matrix_legal_item_path(matrix_legal_item), class: 'btn btn-sm btn-primary'  %></td>
+                    <td style="border:1px solid black; text-align:center;"><%= button_to "Delete", matrix_legal_item_path(matrix_legal_item), method: :delete, class:"btn btn-sm btn-danger" %></td>
                     <td style="border:1px solid black"><%= matrix_legal_item.year %></td>
                     <td style="border:1px solid black"><%= matrix_legal_item.risk_factor %></td>
                     <td style="border:1px solid black"><%= matrix_legal_item.issuing_entity %></td>
@@ -38,7 +40,8 @@
         <% else %>
             <% @matrix_legal_items.where(meets: params[:format].to_i).each do |matrix_legal_item| %>
                 <tr>
-                    <td style="border:1px solid black"><%= matrix_legal_item.consecutive %></td>
+                    <td style="border:1px solid black; text-align:center;"><%= link_to t('common.edit'), edit_matrix_legal_item_path(matrix_legal_item), class: 'btn btn-sm btn-primary'  %></td>
+                    <td style="border:1px solid black; text-align:center;"><%= button_to "Delete", matrix_legal_item_path(matrix_legal_item), method: :delete, class:"btn btn-sm btn-danger" %></td>
                     <td style="border:1px solid black"><%= matrix_legal_item.year %></td>
                     <td style="border:1px solid black"><%= matrix_legal_item.risk_factor %></td>
                     <td style="border:1px solid black"><%= matrix_legal_item.issuing_entity %></td>

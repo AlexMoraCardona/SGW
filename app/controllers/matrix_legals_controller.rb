@@ -70,8 +70,10 @@ class MatrixLegalsController < ApplicationController
         respond_to do |format| 
             format.html
             format.pdf {render  pdf: 'ver_matrix_legal',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
+                margin: {top: 10, bottom: 10, left: 5, right: 5 },
                 disable_javascript: true,
+                orientation: 'Landscape',
+                zoom: 0.50,
                 page_size: 'letter',
                 footer: {
                          right: 'Página: [page] de [topage]'

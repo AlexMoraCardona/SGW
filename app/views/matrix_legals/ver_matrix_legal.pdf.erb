@@ -4,15 +4,14 @@
 
 <br>
 <table class="table table-hover" style="border:1px solid black"> 
-<thead>
     <tr>
         <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
             <% if @entity.logo.present? then %>
-                <%=  image_tag  @entity.logo, class: "image_peq" %>
+                <%= image_tag(Evaluation.wicked_blob_path(@entity.logo),:width => "80",  :height=>"80") %>
             <% end %>
         </td>
         <td rowspan="4"; colspan="8"; style="text-align:center; padding-bottom: 40px;">
-            <div class="col-9"><h5>MATRIZ LEGAL</h5><h6><%= @entity.business_name if @entity.present? %> Nit: <%= @entity.identification_number if @entity.present? %> </h6></div>
+            <div class="col-9">MATRIZ LEGAL<%= @entity.business_name if @entity.present? %> Nit: <%= @entity.identification_number if @entity.present? %> </div>
         </td>
         <td rowspan="4";  style="text-align:center">
         </td>
@@ -34,9 +33,7 @@
         <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
     </tr>
 
-</thead>
 <% if @matrix_legal_items.present? %>
-    <thead>
         <tr>
             <th scope="col" style="border:1px solid black"><%= t('.consecutive') %></th>
             <th scope="col" style="border:1px solid black"><%= t('.year') %></th>
@@ -52,7 +49,6 @@
             <th scope="col" style="border:1px solid black"><%= t('.description_compliance') %></th>
             <th scope="col" style="border:1px solid black"><%= t('.attach_evidence') %></th>
         </tr>
-    </thead> 
     <tbody>
         <% n = 0 %>
         <% @matrix_legal_items.each do |matrix_legal_item| %>

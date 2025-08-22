@@ -10,6 +10,7 @@ class MatrixProtectionItemsController < ApplicationController
     
     def new
       @matrix_protection_item = MatrixProtectionItem.new  
+      @company_areas = CompanyArea.where("entity_id = ?",Current.user.entity.to_i) if Current.user.entity.present?
     end    
 
     def create
@@ -25,11 +26,16 @@ class MatrixProtectionItemsController < ApplicationController
  
     def edit
         @matrix_protection_item = MatrixProtectionItem.find(params[:id])
+        @company_areas = CompanyArea.where("entity_id = ?",Current.user.entity.to_i) if Current.user.entity.present?
     end
     
     def update
         @matrix_protection_item = MatrixProtectionItem.find(params[:id])
+
         if @matrix_protection_item.update(matrix_protection_item_params)
+            @matrix_protection_item.areas =   @matrix_protection_item.areas.delete('"[]').to_s
+            @matrix_protection_item.areas = @matrix_protection_item.areas.sub(",", " ").to_s
+            @matrix_protection_item.save
             redirect_to crear_item_protection_matrix_protections_path(@matrix_protection_item.matrix_protection_id), notice: t('.created')
         else
             render :edit, matrix_protections: :unprocessable_entity

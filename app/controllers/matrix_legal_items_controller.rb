@@ -29,7 +29,11 @@ class MatrixLegalItemsController < ApplicationController
     def update
         @matrix_legal_item = MatrixLegalItem.find(params[:id])
         if @matrix_legal_item.update(matrix_legal_item_params)
-            redirect_to matrix_legals_path(entity_id: @matrix_legal_item.matrix_legal.entity_id), notice: 'Norma actualizada correctamente'
+            if  params[:matrix_legal_item][:meets].present?
+                flash[:notice] = "Actualización Matrix Legal"
+            else 
+                redirect_to matrix_legals_path(entity_id: @matrix_legal_item.matrix_legal.entity_id), notice: 'Norma actualizada correctamente'
+            end
         else
             render :edit, matrix_legals: :unprocessable_entity
         end         

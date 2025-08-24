@@ -138,20 +138,30 @@
                     <th scope="col"><%= t('.risk_factor') %></th>
                     <th scope="col"><%= t('.meets') %></th>
                     <th scope="col"><%= t('.description_compliance') %></th>
-                    <th scope="col"><%= t('.attach_evidence') %></th>
                     <th scope="col">Editar</th>
                 </tr>
             </thead> 
             <tbody>
                 <% @matrix_legal_items.each do |matrix_legal_item| %>
-                    <tr>
-                        <td><%= matrix_legal_item.fec_norma %></td>
-                        <td><%= matrix_legal_item.risk_factor %></td>
-                        <td><%= matrix_legal_item.label_meets(matrix_legal_item.meets) %></td>
-                        <td><%= matrix_legal_item.description_compliance %></td>
-                        <td><%= link_to "Descargar Archivo", rails_blob_path(matrix_legal_item.attach_evidence, disposition: 'attachment'), class: 'btn btn-sm btn-success' if matrix_legal_item.attach_evidence.attached? %></td>    
-                        <td><%= link_to t('common.edit'), edit_matrix_legal_item_path(matrix_legal_item), class: 'btn btn-sm btn-primary'  %></td>
-                    </tr>
+                    <%= form_with model: matrix_legal_item do |form| %> 
+                        <tr>
+                            <td><%= matrix_legal_item.fec_norma %></td>
+                            <td><%= matrix_legal_item.risk_factor %></td>
+                            <td style="width:150px;">
+                                <%= form.radio_button :meets, 0, :onClick=>"javascript: this.form.submit.click();" %>
+                                <label for="no_cumple">NO (0%)</label></br>   
+                                <%= form.radio_button :meets, 1, :onClick=>"javascript: this.form.submit.click();" %>
+                                <label for="parcial_cumple">PARCIAL (50%)</label></br> 
+                                <%= form.radio_button :meets, 2, :onClick=>"javascript: this.form.submit.click();" %>
+                                <label for="si_cumple">SI (100%)</label></br> 
+                                <div class="actions" style="display:none;">
+                                    <%= form.submit "", :name => "submit", :remote => "true" %>
+                                </div>                                 
+                            </td>
+                            <td><%= matrix_legal_item.description_compliance %></td>
+                            <td><%= link_to t('common.edit'), edit_matrix_legal_item_path(matrix_legal_item), class: 'btn btn-sm btn-primary'  %></td>
+                        </tr>
+                    <% end %> 
                 <% end %>           
             </tbody>      
         </table>  

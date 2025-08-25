@@ -14,6 +14,8 @@
             <h2 class="display-5"><%= t('.title')%> Nro: <%= @evaluation.id  %></h2>
             <%= link_to "PDF", ver_evaluation_pdf_evaluations_path(@evaluation.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;
             <%= link_to 'Exportar a excel', evaluation_path(@evaluation, @evaluation_items, format: :xlsx), class: 'btn btn-sm btn-success' %>
+            <%= link_to "Crear evidencias", crear_evidencias_evaluations_path(@evaluation.id), class: 'btn btn-sm btn-success' if Current.user.level > 0 && Current.user.level < 3  %> &nbsp;
+
         </div>         
         <div class="col-sm-1">
            <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, evaluations_path %>

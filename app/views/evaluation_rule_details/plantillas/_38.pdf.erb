@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
     <meta charset='utf-8' />
-    <%= wicked_pdf_javascript_include_tag "number_pages" %>
-    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
-    <%= javascript_importmap_tags %>
 </head>
     <div><br></div>
     <div><br></div>
@@ -13,7 +8,7 @@
     <div class="row">
         <div class="col-11">
             <div class="row">
-                <h6><strong><%= @evidence.place if @evidence.place.present? %>,  <%= @evidence.date.day if @evidence.date.present? %> días del mes de <%= localize @evidence.date, format: "%B" if @evidence.date.present? %> del año <%= @evidence.date.year if @evidence.date.present? %></strong></h6>
+                <strong><%= @evidence.place if @evidence.place.present? %>,  <%= @evidence.date.day if @evidence.date.present? %> días del mes de <%= localize @evidence.date, format: "%B" if @evidence.date.present? %> del año <%= @evidence.date.year if @evidence.date.present? %></strong>
             </div>
         </div>
     </div>
@@ -23,8 +18,8 @@
     <div class="row">
         <div class="col-11">
             <div class="row">
-                <h6>Señor(a):<strong>  <%= @colaborador_ssst.name if @colaborador_ssst.present? %></strong></h6>
-                <h6>CC No:<strong><%= EvaluationRuleDetail.miles(@colaborador_ssst.nro_document) if @colaborador_ssst.present? %></strong></h6>
+                Señor(a):<strong>  <%= @colaborador_ssst.name if @colaborador_ssst.present? %></strong>
+                CC No:<strong><%= EvaluationRuleDetail.miles(@colaborador_ssst.nro_document) if @colaborador_ssst.present? %></strong>
             </div>
         </div>
     </div>
@@ -54,7 +49,7 @@
         </tr>
         <tr>
             <td style="text-align:justify">
-                <p>También es importante resaltar que es su compromiso entregar información clara, oportuna y veraz sobre su condición de salud, y todos aquellos riesgos y peligros que puedan afectarla enviando oportunamente sus reportes, y comunicados médicos que sean de competencia para el consultorio.</p>
+                <p>También es importante resaltar que es su compromiso entregar información clara, oportuna y veraz sobre su condición de salud, y todos aquellos riesgos y peligros que puedan afectarla enviando oportunamente sus reportes, y comunicados médicos que sean de competencia para la empresa.</p>
             </td>
         </tr>
         <tr>
@@ -84,7 +79,7 @@
                                             <% if firm.authorize_firm == 1 %>
                                                 <% if firm.user.firm.attached? %>
                                                     <% if firm.user.firm.image? %> 
-                                                        <%= image_tag firm.user.firm, class: "firma" %>
+                                                        <%= image_tag(Evaluation.wicked_blob_path(firm.user.firm), class: "firmapdf")%>
                                                         <p align="center">________________________________</p>
                                                     <% end %>
                                                 <% else %>
@@ -106,17 +101,17 @@
                                         </div>    
                                         <div class="col-11">
                                             <div class="row">
-                                                <h6><strong><%= firm.user.name %></strong></h6>
+                                                <strong><%= firm.user.name %></strong>
                                             </div>
                                         </div>
                                         <div class="col-11">
                                             <div class="row">
-                                                <h6><%= firm.post %></h6>
+                                                <%= firm.post %>
                                             </div>
                                         </div>
                                         <div class="col-11">
                                             <div class="row">
-                                                <h6><%= firm.user.document.abbreviation %>: <%= Firm.miles(firm.user.nro_document) %></h6>
+                                                <%= firm.user.document.abbreviation %>: <%= Firm.miles(firm.user.nro_document) %>
                                             </div>
                                         </div>
                                     </div>
@@ -130,7 +125,7 @@
                                             <% if firm.authorize_firm == 1 %>
                                                 <% if firm.user.firm.attached? %>
                                                     <% if firm.user.firm.image? %> 
-                                                        <%= image_tag firm.user.firm, class: "firma" %>
+                                                        <%= image_tag(Evaluation.wicked_blob_path(firm.user.firm), class: "firmapdf")%>
                                                         <p align="center">________________________________</p>
                                                     <% end %>
                                                 <% else %>    
@@ -152,17 +147,17 @@
                                     </div>    
                                     <div class="col-11">
                                         <div class="row">
-                                            <h6><strong><%= firm.user.name %></strong></h6>
+                                            <strong><%= firm.user.name %></strong>
                                         </div>
                                     </div>
                                     <div class="col-11">
                                         <div class="row">
-                                            <h6><%= firm.post %></h6>
+                                            <%= firm.post %>
                                         </div>
                                     </div>
                                     <div class="col-11">
                                         <div class="row">
-                                            <h6><%= firm.user.document.abbreviation %>: <%= Firm.miles(firm.user.nro_document) %></h6>
+                                            <%= firm.user.document.abbreviation %>: <%= Firm.miles(firm.user.nro_document) %>
                                         </div>
                                     </div>
                                 </div>

@@ -126,7 +126,25 @@ class Evaluation < ApplicationRecord
             @cont += 1 
             @item.save
         end          
-    end    
+    end  
+    
+    def self.crear_evidencias(evaluation, evaluation_items)
+        evaluation_items.each do |item|        
+            templates = Template.where("standar_detail_item_id = ?",item.standar_detail_item_id) 
+            if templates.present?
+               templates.each do |template|
+                    if template.format_number == 1 || template.format_number == 3 || template.format_number == 5 || template.format_number == 7 || template.format_number == 9 || template.format_number == 13 || template.format_number == 20 || template.format_number == 23 || template.format_number == 24 || template.format_number == 25 || 
+                       template.format_number == 26 || template.format_number == 27 || template.format_number == 34 || template.format_number == 39 || template.format_number == 40 || template.format_number == 41 || template.format_number == 42 || template.format_number == 43 || template.format_number == 44 || template.format_number == 45 || 
+                       template.format_number == 46 || template.format_number == 47 || template.format_number == 48 || template.format_number == 49 || template.format_number == 50 || template.format_number == 58 || template.format_number == 62 || template.format_number == 63 || template.format_number == 83 || template.format_number == 84 || 
+                       template.format_number == 85 || template.format_number == 86 || template.format_number == 87 || template.format_number == 88 || template.format_number == 89 || template.format_number == 90 || template.format_number == 91 || template.format_number == 92 || template.format_number == 93 || template.format_number == 94 || 
+                       template.format_number == 102 || template.format_number == 104 then
+                        
+                        Evidence.crear_evidencia(item.id, template.id, evaluation.entity_id)
+                    end   
+               end
+            end    
+        end    
+    end
 
     def self.new_history(evaluation, evaluation_items)
         @history_evaluation = HistoryEvaluation.new

@@ -389,6 +389,7 @@ Rails.application.routes.draw do
       get :crear_evaluacion
       get :crear_historia
       get '/ver_history/:id', to: 'evaluations#ver_history', as: 'ver_history' 
+      get :crear_evidencias
     end
   end
 

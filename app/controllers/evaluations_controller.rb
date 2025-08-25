@@ -37,7 +37,16 @@ class EvaluationsController < ApplicationController
         Evaluation.new_history(@evaluation, @evaluation_items)
     
         redirect_to evaluations_path, notice: "Finalizo la copia de la evaluación, por favor validar"
+    end  
+    
+    def crear_evidencias 
+        @evaluation = Evaluation.find_by(id: params[:format].to_i)
+        @evaluation_items = EvaluationRuleDetail.where("evaluation_id = ? and apply = ?",params[:format].to_i,1)
+        Evaluation.crear_evidencias(@evaluation, @evaluation_items)
+    
+        redirect_to evaluation_path(@evaluation.id), notice: "Finalizo la creación de evidencias, por favor validar"
     end    
+    
 
     def ver_history 
         @history_evaluations = HistoryEvaluation.where(evaluation_id: params[:id]).order(:date_history_evaluation) if params[:id].present?

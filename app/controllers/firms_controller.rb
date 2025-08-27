@@ -115,6 +115,7 @@ class FirmsController < ApplicationController
         @survey_profiles = SurveyProfile.where("user_elaboro = ? and firm_elaboro = ? or user_reviso = ? and firm_reviso = ? or user_aprobo = ? and firm_aprobo = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
         @improvement_plans = ImprovementPlan.where("user_representante = ? and firm_representante = ? or user_responsible = ? and firm_responsible = ?",Current.user.id,0,Current.user.id,0)  
         @direction_reviews = DirectionReview.where("user_representante = ?",Current.user.id)  
+        @provides_protections = ProvidesProtection.where("user_colaborador = ? and firm_colaborador = ? or user_responsible = ? and firm_responsible = ?",Current.user.id,0,Current.user.id,0)  
 
 
     end    

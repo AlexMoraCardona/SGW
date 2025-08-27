@@ -42,7 +42,7 @@ class MatrixLegalItemsController < ApplicationController
     def destroy
         @matrix_legal_item = MatrixLegalItem.find(params[:id])
         @matrix_legal_item.destroy
-        redirect_to matrix_legal_items_path, notice: 'Ciclo borrado correctamente', matrix_legal_item: :see_other
+        redirect_to matrix_legals_path(entity_id: @matrix_legal_item.matrix_legal.entity_id), notice: 'Norma borrada correctamente', matrix_legal_item: :see_other
     end    
 
     private

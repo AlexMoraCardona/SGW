@@ -83,7 +83,7 @@ class ProvidesProtectionsController < ApplicationController
         @provides_protection = ProvidesProtection.find(params[:id])
         if @provides_protection.update(provides_protection_params)
             actualizar_fecha(@provides_protection.id)
-            redirect_to provides_protections_path(entity_id: Current.user.entity.to_i), notice: 'Formato  actualizado correctamente'
+            redirect_to provides_protection_path(@provides_protection.id), notice: 'Formato  actualizado correctamente'
         else
             render :edit, status: :unprocessable_entity
         end         
@@ -128,7 +128,7 @@ class ProvidesProtectionsController < ApplicationController
         @provides_protection = ProvidesProtection.find_by(id: params[:id].to_i)
         if params[:format].to_i == 3
             if  @provides_protection.user_responsible.to_i == Current.user.id.to_i
-                redirect_to firmar_responsable_provides_protections_path
+                redirect_to firmar_responsable_provides_protections_path 
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Responsable en SST."
             end    

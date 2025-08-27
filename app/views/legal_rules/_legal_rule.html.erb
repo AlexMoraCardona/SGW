@@ -1,6 +1,9 @@
 <tr>
-    <td><%= legal_rule.risk_factor %></td>
+    <td><%= highlight legal_rule.risk_factor, params.dig(:q, :risk_factor_cont) %></td>
     <td><%= LegalRule.label_clasification_norma(legal_rule.clasification_norma) %></td>
-
+    <td><%= highlight legal_rule.description_compliance, params.dig(:q, :description_compliance_cont) %></td>
+    <td><%= highlight legal_rule.applicable_article, params.dig(:q, :applicable_article_cont) %></td>
+    <td><%= highlight legal_rule.rule_name, params.dig(:q, :rule_name_cont) %></td>
+    <td><%= LegalRule.label_state_norma(legal_rule.state_norma)  %></td>  
     <td><%= link_to t('common.edit'), edit_legal_rule_path(legal_rule), class: 'btn btn-sm btn-primary'  %></td>
 </tr>

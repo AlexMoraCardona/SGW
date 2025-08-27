@@ -13,11 +13,45 @@
             <%= link_to t('common.create_legal_rule'), new_legal_rule_path, class: 'btn btn-xs btn-primary' %>
         </div>
         <hr>
+        <%= search_form_for @q do |f| %>
+            <div class="row g-2">
+                <div class="col-sm-5">
+                    <%= f.label :risk_factor_cont %></br>
+                    <%= f.search_field :risk_factor_cont %>
+                </div>
+                <div class="col-sm-5">
+                    <%= f.label :description_compliance_cont %></br>
+                    <%= f.search_field :description_compliance_cont %>
+                </div>
+            </div>
+            <div class="row g-2">
+                <div class="col-sm-5">
+                    <%= f.label :applicable_article_cont %></br>
+                    <%= f.search_field :applicable_article_cont %>
+                </div>
+                <div class="col-sm-5">
+                    <%= f.label :rule_name_cont %></br>
+                    <%= f.search_field :rule_name_cont %>
+                </div>
+            </div>
+            </br>
+            <button type="submit" class="btn btn-sm btn-primary">Buscar</button>
+        <% end %>
+    </br>        
+    <%== pagy_info(@pagy) %>
+    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+
+
+
     <table class="table table-hover">
         <thead> 
             <tr>    
-                <th scope="col"><%= t('.risk_factor') %></th>
-                <th scope="col"><%= t('.clasification_norma') %></th>
+                <th scope="col"><%= sort_link(@q, :risk_factor, default_order: :desc) %></th>
+                <th scope="col"><%= sort_link(@q, :clasification_norma, default_order: :desc) %></th>
+                <th scope="col"><%= sort_link(@q, :description_compliance, default_order: :desc) %></th>
+                <th scope="col"><%= sort_link(@q, :applicable_article, default_order: :desc) %></th>
+                <th scope="col"><%= sort_link(@q, :rule_name, default_order: :desc) %></th>
+                <th scope="col"><%= sort_link(@q, :state_norma, default_order: :desc) %></th>
                 <th scope="col"><%= t('common.edit') %></th>
             </tr>
         </thead>

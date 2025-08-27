@@ -1,7 +1,10 @@
 class LegalRulesController < ApplicationController
     def index
-        if  Current.user && Current.user.level == 1
-            @legal_rules = LegalRule.all
+        if  Current.user && Current.user.level > 0 && Current.user.level < 3
+            #@legal_rules = LegalRule.all
+            @q = LegalRule.ransack(params[:q])
+            @pagy, @legal_rules = pagy(@q.result(id: :desc), items: 3)
+
          else
              redirect_to new_session_path, alert: t('common.not_logged_in')     
              session.delete(:user_id) 

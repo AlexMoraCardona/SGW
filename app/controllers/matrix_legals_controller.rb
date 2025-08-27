@@ -155,9 +155,9 @@ class MatrixLegalsController < ApplicationController
             @matrix_legal_item.fec_norma =  @norma.fec_norma
             @matrix_legal_item.year =  @norma.year
             @matrix_legal_item.matrix_legal_id =  @matrix_legal.id if @matrix_legal.present?
-            @matrix_legal_item.apply =  0
+            @matrix_legal_item.apply =  1
             @matrix_legal_item.save
-            redirect_to matrix_legals_path(entity_id: @matrix_legal.entity_id), notice: "Requisito legal creado correctamente"
+            redirect_to crear_item_matrix_legals_path(@matrix_legal.id), notice: "Requisito legal creado correctamente"
         else
             redirect_to matrix_legals_path, alert: "Error en la creación del Requisito legal"
         end 

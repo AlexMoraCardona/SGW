@@ -19,6 +19,7 @@ class Firm < ApplicationRecord
         @survey_profiles = SurveyProfile.where("user_elaboro = ? and firm_elaboro = ? or user_reviso = ? and firm_reviso = ? or user_aprobo = ? and firm_aprobo = ?",Current.user.id,0,Current.user.id,0,Current.user.id,0)  
         @improvement_plans = ImprovementPlan.where("user_representante = ? and firm_representante = ? or user_responsible = ? and firm_responsible = ?",Current.user.id,0,Current.user.id,0)  
         @direction_reviews = DirectionReview.where("user_representante = ?",Current.user.id)  
+        @provides_protections = ProvidesProtection.where("user_colaborador = ? and firm_colaborador = ? or user_responsible = ? and firm_responsible = ?",Current.user.id,0,Current.user.id,0)  
 
         @total_firmar = 0
         @total_firmar += @firmas_pendientes.count if @firmas_pendientes.present?
@@ -38,6 +39,11 @@ class Firm < ApplicationRecord
         if @direction_reviews.present?
             @direction_reviews.each do |direction_review|
                 @total_firmar +=  1 if direction_review.firm_representante != 1
+            end    
+        end    
+        if @provides_protections.present?
+            @provides_protections.each do |provides_protection|
+                @total_firmar +=  1 
             end    
         end    
         

@@ -479,6 +479,35 @@
             </table>
             </br>  
     <% end %>     
+    <% if @provides_protections.present?   %>
+            <table class="table table-hover">
+                <thead>
+                    <tr>  
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Documento</th>
+                        <th scope="col">Ver</th> 
+                        <th scope="col">Firmar</th> 
+                    </tr>
+                </thead>  
+                <tbody> 
+                    <% @provides_protections.each do |provides_protection| %>
+                            <tr> 
+                                <td><%= provides_protection.created_at.strftime("%Y-%m-%d") %></td>
+                                <td>Formato Para la Entrega de EPP</td>
+                                <td><%= link_to t('common.veritem'),  provides_protection_path(provides_protection), class: 'btn btn-sm btn-primary'  %></td>
+                                <td> 
+                                    <% if provides_protection.firm_colaborador == 0  && provides_protection.user_colaborador == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_colaborador_provides_protections_path(provides_protection.id, 2), class: 'btn btn-sm btn btn-warning' %>
+                                    <% elsif provides_protection.firm_responsible == 0 && provides_protection.user_responsible == Current.user.id %>
+                                        <%= link_to t('common.firmar'), firmar_responsable_provides_protections_path(provides_protection.id, 3), class: 'btn btn-sm btn btn-warning' %>
+                                    <% end %>
+                                </td>
+                            </tr>  
+                    <% end %> 
+                </tbody>   
+            </table>
+            </br>  
+    <% end %>     
 
     
 

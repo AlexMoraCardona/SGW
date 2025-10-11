@@ -100,13 +100,15 @@ class InvestigationsController < ApplicationController
 
     
     def ver_investigation
-          @investigation = Investigation.find(params[:id])
-          @entity = Entity.find(@investigation.entity_id)
-          @template = Template.where("format_number = ? and document_vigente = ?",103,1).last  
+        @investigation = Investigation.find(params[:id])
+        @entity = Entity.find(@investigation.entity_id) if @investigation.present?
+        @template = Template.where("format_number = ? and document_vigente = ?",103,1).last  
+        @inves_recomendations = InvesRecomendation.where("investigation_id = ?",@investigation.id) if @investigation.present?   
+        @inves_users = InvesUser.where("investigation_id = ?",@investigation.id) if @investigation.present?   
 
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'ver_investigation',
+            format.pdf {render  pdf: 'ver_investigacion',
                 margin: {top: 10, bottom: 10, left: 10, right: 10 },
                 disable_javascript: true,
                 page_size: 'letter',

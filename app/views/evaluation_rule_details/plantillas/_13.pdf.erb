@@ -1,12 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
-       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
         <meta charset='utf-8' />
-        <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
-        <%= wicked_pdf_javascript_include_tag "number_pages" %>
-       <%= javascript_importmap_tags %>
     </head>
     <div> 
     
@@ -15,14 +10,14 @@
         <div><br></div>
         <div><br></div>
 
-        <div class="row text-center">
+        <div style="text-align:center">
                 <h2><%= @evidence.entity.business_name if @evidence.present? %></h2>
         </div>
 
         <div><br></div>
         <div><br></div>
 
-        <div class="row text-center">
+        <div style="text-align:center">
             <h2><%= EvaluationRuleDetail.miles(@evidence.entity.identification_number) if @evidence.present? %>-<%= @evidence.entity.verification_digit if @evidence.entity.verification_digit.present? %></h2>
         </div>
 
@@ -32,7 +27,7 @@
         <table> 
             <tr>
                 <td style="text-align:center;width: 50%;">
-                    <%= wicked_pdf_image_tag asset_url('imgmv1.png') %>
+                    <%= wicked_pdf_image_tag asset_path('imgmv1.png'), height: "300", width: "auto" %>
                 </td>
             </tr>
         <table>     
@@ -41,129 +36,174 @@
         <div><br></div>
         <div><br></div>
 
-        <div class="row text-center">
+        <div style="text-align:center">
         </div>
 
         <p style='page-break-after:always;'></p>
                 
     
-        <div class="row text-center">
-            <strong>VIGÍA EN SEGURIDAD Y SALUD EN EL TRABAJO</strong>
-        </div>
-        <div><br></div>
-        <div class="row">
-            <strong>¿Qué es un vigía en seguridad y salud en el trabajo?</strong>
-        </div>
-        <div><br></div>
-        <div class="text-justify">
-            <p>El vigía en seguridad y salud en el trabajo se encuentra reglamentado por el  <u style="color: #2d572c"> Decreto 1295 de 1994</u> y la <u style="color: #2d572c">Resolución 2013 de 1986</u>. </p>
-            <p>El rol de Vigía en Seguridad y Salud en el Trabajo es un rol que existe en empresas de menos de 10 trabajadores y su finalidad es la de participar de las actividades de promoción, divulgación e información, sobre seguridad y salud en el trabajo entre empleadores y trabajadores, para obtener su participación activa en el desarrollo de los programas y actividades de la empresa.</p>
-            <p>Los vigías en seguridad y salud en el trabajo eran conocidos como vigías ocupacionales o vigías de salud ocupacional, pero a partir de la  <u style="color: #2d572c">Ley 1562 de 2012</u> todo lo relacionado con salud ocupacional se entenderá como Seguridad y Salud en el Trabajo. </p>
-            <p>“Salud Ocupacional": Se entenderá en adelante como Seguridad y Salud en el Trabajo, definida como aquella disciplina que trata de la prevención de las lesiones y enfermedades causadas por las condiciones de trabajo, y de la protección y promoción de la salud de los trabajadores. Tiene por objeto mejorar las condiciones y el medio ambiente de trabajo, así como la salud en el trabajo, que conlleva la promoción y el mantenimiento del bienestar físico, mental y social de los trabajadores en todas las ocupaciones”. <u style="color: #2d572c">(Ley 1562 de 2012, artículo 1)</u> </p>
-            <p>“Los vigías ocupacionales cumplen las mismas funciones de los comités de salud ocupacional”.  <u style="color: #2d572c">(Decreto 1295 de 1994, artículo 35, parágrafo)</u> </p>
-            <p>Por lo anterior, el Vigía en Seguridad y Salud en el Trabajo cumple las mismas funciones del Comité Paritario en Seguridad y Salud en el Trabajo (COPASST). </p>
-            <p class="text-center"><b>TÉRMINOS Y DEFINICIONES</b></p>
-            <ul>
-                <li><p><b>Accidente de Trabajo:</b> Es todo suceso repentino que sobrevenga por causa o con ocasión del trabajo y que produzca en el trabajador una lesión orgánica, una perturbación funcional, una invalidez o la muerte. También, es aquel que se produce durante la ejecución de órdenes del empleador, o durante la ejecución de una labor bajo su autoridad, aún fuera del lugar y horas de trabajo. </p></li>
-                <li><p><b>Acto o Comportamiento inseguro:</b> Se refieren a todas las acciones y decisiones humanas, que pueden causar una situación insegura o incidente, con consecuencias para el trabajador, la producción, el medio ambiente y otras personas. También el comportamiento inseguro incluye la falta de acciones para informar o corregir condiciones inseguras. </p></li>
-                <li><p><b>Administradora de Riesgos Laborales:</b> Entidades que tienen como objetivo prevenir, proteger y atender a los trabajadores contra Accidentes de Trabajo y Enfermedades Profesionales que puedan ocurrir en el trabajo que desarrollan. </p></li>
-                <li><p><b>Ausentismo:</b> EXISTEN VARIAS DEFINICIONES. Tiene que ver con días perdidos de labor. Incluso las horas de ausencia en el trabajo sumadas también se considera ausentismo. </p></li>
-                <li><p><b>Capacidad Laboral:</b> Es el conjunto de las habilidades, destrezas, aptitudes o potencialidades de orden físico, mental y social de un individuo que le permiten desempeñarse en un trabajo habitual. </p></li>
-                <li><p><b>Concepto y clasificación de lesión:</b> La Organización Mundial de la Salud, define la lesión como "Toda alteración del equilibrio biopsicosocial" y la definición clínica de lesión es: "La alteración funcional orgánica o psíquica consecutiva a factores internos o externos". Desde el punto de vista jurídico encontramos que el artículo 288 del Código Penal vigente para el Distrito Federal, hace mención del concepto de lesión y a la letra dice: "Bajo el nombre de lesión se comprende no solamente las heridas, escoriaciones, contusiones, fracturas, dislocaciones, quemaduras, sino toda alteración de la salud y cualquier otro daño que deje huella material en el cuerpo humano, si estos efectos son producidos por causa externa". </p></li>
-                <li><p><b>Condición insegura:</b> Es todo elemento de los equipos, la materia prima, las herramientas, las máquinas, las instalaciones o el medio ambiente que se convierte en un peligro para las personas, los bienes, la operación y el medio ambiente y que bajo determinadas condiciones puede generar un incidente. </p></li>
-                <li><p><b>Consecuencias:</b> Se refiere a las alteraciones negativas en el estado de salud de las personas, así como en las finanzas e imagen de la empresa. </p></li>
-                <li><p><b>Enfermedad Laboral:</b> Es todo estado patológico permanente o temporal que sobrevenga como consecuencia obligada y directa de la clase de trabajo que desempeña el trabajador, en el medio en que se ha visto obligado a trabajar, y que ha sido determinado como tal por el Gobierno Nacional. </p></li>
-                <li><p><b>Ergonomía:</b> La ergonomía estudia la gran variedad de problemas que se presentan en la mutua adaptación entre el hombre y la máquina y su entorno buscando la eficiencia productiva y bienestar del trabajo. </p></li>
-                <li><p><b>Factor de riesgo:</b> Se entiende bajo esta denominación, la existencia de elementos, fenómenos, condiciones, circunstancias y acciones humanas, que encierran una capacidad potencial de producir lesiones o daños y cuya probabilidad de ocurrencia depende de la eliminación o control del elemento agresivo. </p></li>
-                <li><p><b>Higiene Industrial:</b> Comprende el conjunto de actividades destinadas a la identificación, a la evaluación y al control de los agentes y factores del ambiente de trabajo que puedan afectar la salud de los trabajadores. </p></li>
-                <li><p><b>Incidente de Trabajo:</b> Son los eventos anormales que se presentan en una actividad laboral y que conllevan un riesgo potencial de lesiones o daños materiales. Cuando este tipo de incidente tiene un alto potencial de lesiones es necesario investigar las condiciones peligrosas o intervenir los comportamientos inseguros. </p></li>
-                <li><p><b>Investigación de AT:</b> Procedimientos técnico - administrativos tendientes a clarificar las circunstancias en que sucedió el evento relacionado con el accidente o la enfermedad, con el fin de determinar el origen de dicho evento. </p></li>
-                <li><p><b>Panorama de Factores de Riesgo:</b> Es una estrategia metodológica que permite recopilar y analizar en forma sistemática y organizada los datos relacionados con la identificación, localización, valoración y priorización de los factores de riesgo existentes en un contexto laboral, con el fin de planificar las medidas de prevención y control más convenientes y adecuadas. </p></li>
-                <li><p><b>Peligro:</b> Es una fuente o situación con potencial de daño en términos de lesión o enfermedad, daño a la propiedad, al ambiente de trabajo o una combinación de estos. </p></li>
-                <li><p><b>Política de Seguridad:</b> Un requisito importante dentro de un sistema de gestión de calidad y seguridad es el cumplimiento de la legislación básica en materia de salud ocupacional y el compromiso por la mejora continua de las condiciones de salud y seguridad de los trabajadores.
-                Para tal fin el más alto nivel directivo debe elaborar y firmar una política de salud ocupacional, que incluya el deseo expreso de mejorar las condiciones de trabajo y reducir las lesiones y otro tipo de pérdidas. Por lo tanto, esta debe incluir en enunciados generales, los objetivos a alcanzar en materia de salud y seguridad. </p></li>
-                <li><p><b>R.A.T. Reporte de Accidente de Trabajo:</b> La probabilidad de que un evento ocurra. Abarca una variedad de medidas de probabilidad de un resultado generalmente no favorable (MeSH/NLM). Número esperado de pérdidas humanas, personas heridas, propiedad dañada e interrupción de actividades económicas debido a fenómenos naturales particulares y por consiguiente, el producto de riesgos específicos y elementos de riesgo. </p></li>
-                <li><p><b>Seguridad Industrial:</b> Es uno de los cuatro subprogramas definidos al interior de un Programa de Seguridad y Salud Trabajo que se encarga de vigilar aquellos factores de riesgo que pueden ocasionar accidentes de trabajo. Vigila todas aquellas condiciones y/o actos inseguros a nivel del medio o del trabajador con potencialidad de generar Accidentes de Trabajo. La Seguridad Industrial como capítulo de la salud ocupacional normalmente va acompañada del subprograma de Higiene Industrial. </p></li>
-            </ul>
-            <p class="text-center"><b>MARCO LEGAL</b></p>
-            <p><b>DECRETO 6141 DE 1984:</b> Crea las bases para la organización y Administración pública y privada de la Salud Ocupacional. Reglamente la creación de los Comités de Medicina, Higiene y Seguridad Industrial de la empresa. </p>
-            <p><b>RESOLUCIÓN 1016 DE 1989:</b> Reglamenta los Programas de Salud Ocupacional en las Empresas y los subprogramas de Medicina Preventiva, Medicina del Trabajo, Higiene y Seguridad Industrial. </p>
-            <p><b>RESOLUCIÓN 1401 DE 2007:</b> Reglamenta la investigación de incidentes y accidentes de trabajo. </p>
-            <p><b>RESOLUCIÓN 2013 DE 1986-MTSS: </b> Reglamenta la investigación de incidentes y accidentes de trabajo. Establece la organización del COPASO. El número de Representantes, sus funciones y acciones del presidente y secretaria, obligaciones del empleador frente a la elección y designación de responsables. </p>
-            <p><b>DECRETO 1443 DEL 2014:</b> Emitido por el Ministerio del Trabajo en su Art. 1 parágrafo 2 se entenderá. El Comité Paritario de Salud Ocupacional como Comité Paritario en Seguridad y Salud en el Trabajo y el Vigía en Salud Ocupacional como Vigía en Seguridad y Salud en el Trabajo, quienes tendrán las funciones establecidas en la normatividad vigente. </p>
-            <p class="text-center"><b>¿Cuáles son las funciones del vigía en seguridad y salud en el trabajo?</b></p>
-            <p><b>Son funciones del Vigía En Seguridad Y Salud En El Trabajo, de acuerdo con el artículo 11 de la <u style="color: #2d572c">Resolución 2013 de 1986</u> y el <u style="color: #2d572c">Artículo 26 del Decreto 614 de 1984</u>, las siguientes:</b></p>
-            <ul>
-                <li><p>Participar de las actividades de promoción, divulgación e información, sobre seguridad y salud en el trabajo entre empleadores y trabajadores, para obtener su participación activa en el desarrollo de los programas y actividades del SG-SST. </p></li>
-                <li><p>Actuar como instrumento de vigilancia para el cumplimiento del SG-SST en los lugares de trabajo de la empresa e informar sobre el estado de ejecución de estos a las autoridades de seguridad y salud en el trabajo cuando haya deficiencias en su desarrollo. </p></li>
-                <li><p>Recibir copias, por derecho propio, de las conclusiones sobre inspecciones e investigaciones que realicen las autoridades de seguridad y salud en el trabajo en los sitios de trabajo. </p></li>
-            </ul>
-            <p><b>Otras funciones del vigía que fueron adicionadas en el artículo 11 de la  <u style="color: #2d572c">Resolución 2013 de 1986</u>. A continuación, se describen estas funciones con la actualización de términos vigentes en 2016:</b></p>
-            <ul>
-                <li><p>Proponer a la administración de la empresa o establecimiento de trabajo la adopción de medidas y el desarrollo de actividades que procuren y mantengan la salud en los lugares y ambientes de trabajo. </p></li>
-                <li><p>Proponer y participar en actividades de capacitación en seguridad y salud en los trabajos dirigidas a trabajadores, supervisores y directivos de la empresa o establecimiento de trabajo. </p></li>
-                <li><p>Colaborar con los funcionarios de entidades gubernamentales de seguridad y salud en el trabajo en las actividades que éstos adelanten en la empresa y recibir por derecho propio los informes correspondientes. </p></li>
-                <li><p>Vigilar el desarrollo de las actividades que en materia de seguridad y salud en el trabajo debe realizar la empresa de acuerdo con el Reglamento de Higiene y Seguridad Industrial y las normas vigentes; promover su divulgación y observancia. </p></li>
-                <li><p>Colaborar en el análisis de las causas de los accidentes de trabajo y enfermedades profesionales y proponer al empleador las medidas correctivas que haya lugar para evitar su ocurrencia. Evaluar los programas que se hayan realizado. </p></li>
-                <li><p>Visitar periódicamente los lugares de trabajo e inspeccionar los ambientes, máquinas, equipos, aparatos y las operaciones realizadas por el personal de trabajadores en cada área o sección de la empresa e informar al empleador sobre la existencia de factores de riesgo y sugerir las medidas correctivas y de control. </p></li>
-                <li><p>Estudiar y considerar las sugerencias que presenten los trabajadores en materia de seguridad y salud en el trabajo. </p></li>
-                <li><p>Servir como organismo de coordinación entre el empleador y los trabajadores en la solución de los problemas relativos a la seguridad y salud en el trabajo. Tramitar los reclamos de los trabajadores relacionados con la seguridad y salud en el trabajo. </p></li>
-                <li><p>Solicitar periódicamente a la empresa informes sobre accidentalidad y enfermedades laborales con el objeto de dar cumplimiento a lo estipulado en la Resolución 2013 de 1986. </p></li>
-                <li><p>Mantener un archivo de las actas de cada reunión y demás actividades que se desarrollen el cual estará en cualquier momento a disposición del empleador, los trabajadores y las autoridades competentes. </p></li>
-                <li><p>Las demás funciones que le señalen las normas sobre seguridad y salud en el trabajo. </p></li>
-            </ul>
-            <br>
-            <p>Teniendo en cuenta que las funciones del vigía en seguridad y salud en el trabajo son las mismas que las del COPPAST, el archivo de actas de reunión se interpreta como el archivo de informes de las actividades del vigía, ya que en el acta de reunión se presume la existencia de dos o más miembros como sucede en el COPASST. </p>
-            <p>El rol de presidente y secretario es un rol existente en un COPASST, la función de elegir al secretario del Comité, mencionada en el numeral j del artículo 11 de la Resolución 2013 de 1986 no tiene efecto cuando la empresa tiene menos de diez (10) trabajadores. </p>
-            <br>
-            <p class="text-center"><b>¿Con qué frecuencia debe actuar el vigía en seguridad y salud en el trabajo?</b></p>
+    <div style="text-align:center">
+        <strong>VIGÍA/COPASST EN SEGURIDAD Y SALUD EN EL TRABAJO</strong>
+    </div>
+    <div><br></div>
+    <div class="row">
+        <strong>¿Qué es un vigías/copasst en seguridad y salud en el trabajo?</strong>
+    </div>
+    <div><br></div>
+    <div style="text-align:justify">
+        <p>El vigía/copasst en seguridad y salud en el trabajo se encuentra reglamentado por el <u style="color: #2d572c"> Decreto 1295 de 1994</u> y la <u style="color: #2d572c">Resolución 2013 de 1986</u>. </p>
+        <p>El rol del Vigía/Copasst en Seguridad y Salud en el Trabajo es un rol que existe en empresas de menos de 10 trabajadores y su finalidad es la de participar de las actividades de promoción, divulgación e información, sobre seguridad y salud en el trabajo entre empleadores y trabajadores, para obtener su participación activa en el desarrollo de los programas y actividades de la empresa.</p>
+        <p>Los vigía/copasst en seguridad y salud en el trabajo eran conocidos como vigías ocupacionales o vigías de salud ocupacional, pero a partir de la <u style="color: #2d572c">Ley 1562 de 2012</u> todo lo relacionado con salud ocupacional se entenderá como Seguridad y Salud en el Trabajo. </p>
+        <p>“Salud Ocupacional": Se entenderá en adelante como Seguridad y Salud en el Trabajo, definida como aquella disciplina que trata de la prevención de las lesiones y enfermedades causadas por las condiciones de trabajo, y de la protección y promoción de la salud de los trabajadores. Tiene por objeto mejorar las condiciones y el medio ambiente de trabajo, así como la salud en el trabajo, que conlleva la promoción y el mantenimiento del bienestar físico, mental y social de los trabajadores en todas las ocupaciones”. <u style="color: #2d572c">(Ley 1562 de 2012, artículo 1)</u> </p>
+        <p>“Los vigías/copasst ocupacionales cumplen las mismas funciones de los comités de salud ocupacional”. <u style="color: #2d572c">(Decreto 1295 de 1994, artículo 35, parágrafo)</u> </p>
+        <p>Por lo anterior, el Vigía/Copasst en Seguridad y Salud en el Trabajo cumple las mismas funciones del Comité Paritario en Seguridad y Salud en el Trabajo (COPASST). </p>
+        <br>
+        <p style="text-align:center"><b>TÉRMINOS Y DEFINICIONES</b></p>
+        <ul>
+            <li><p><b>Accidente de Trabajo:</b> Es todo suceso repentino que sobrevenga por causa o con ocasión del trabajo y que produzca en el trabajador una lesión orgánica, una perturbación funcional, una invalidez o la muerte. También, es aquel que se produce durante la ejecución de órdenes del empleador, o durante la ejecución de una labor bajo su autoridad, aún fuera del lugar y horas de trabajo. </p></li>
+            <li><p><b>Acto o Comportamiento inseguro:</b> Se refieren a todas las acciones y decisiones humanas, que pueden causar una situación insegura o incidente, con consecuencias para el trabajador, la producción, el medio ambiente y otras personas. También el comportamiento inseguro incluye la falta de acciones para informar o corregir condiciones inseguras. </p></li>
+            <li><p><b>Administradora de Riesgos Laborales:</b> Entidades que tienen como objetivo prevenir, proteger y atender a los trabajadores contra Accidentes de Trabajo y Enfermedades Profesionales que puedan ocurrir en el trabajo que desarrollan. </p></li>
+            <li><p><b>Ausentismo:</b> EXISTEN VARIAS DEFINICIONES. Tiene que ver con días perdidos de labor. Incluso las horas de ausencia en el trabajo sumadas también se considera ausentismo. </p></li>
+            <li><p><b>Capacidad Laboral:</b> Es el conjunto de las habilidades, destrezas, aptitudes o potencialidades de orden físico, mental y social de un individuo que le permiten desempeñarse en un trabajo habitual. </p></li>
+            <li><p><b>Concepto y clasificación de lesión:</b> La Organización Mundial de la Salud, define la lesión como "Toda alteración del equilibrio biopsicosocial" y la definición clínica de lesión es: "La alteración funcional orgánica o psíquica consecutiva a factores internos o externos". Desde el punto de vista jurídico encontramos que el artículo 288 del Código Penal vigente para el Distrito Federal, hace mención del concepto de lesión y a la letra dice: "Bajo el nombre de lesión se comprende no solamente las heridas, escoriaciones, contusiones, fracturas, dislocaciones, quemaduras, sino toda alteración de la salud y cualquier otro daño que deje huella material en el cuerpo humano, si estos efectos son producidos por causa externa". </p></li>
+            <li><p><b>Condición insegura:</b> Es todo elemento de los equipos, la materia prima, las herramientas, las máquinas, las instalaciones o el medio ambiente que se convierte en un peligro para las personas, los bienes, la operación y el medio ambiente y que bajo determinadas condiciones puede generar un incidente. </p></li>
+            <li><p><b>Consecuencias:</b> Se refiere a las alteraciones negativas en el estado de salud de las personas, así como en las finanzas e imagen de la empresa. </p></li>
+            <li><p><b>Enfermedad Laboral:</b> Es todo estado patológico permanente o temporal que sobrevenga como consecuencia obligada y directa de la clase de trabajo que desempeña el trabajador, en el medio en que se ha visto obligado a trabajar, y que ha sido determinado como tal por el Gobierno Nacional. </p></li>
+            <li><p><b>Ergonomía:</b> La ergonomía estudia la gran variedad de problemas que se presentan en la mutua adaptación entre el hombre y la máquina y su entorno buscando la eficiencia productiva y bienestar del trabajo. </p></li>
+            <li><p><b>Factor de riesgo:</b> Se entiende bajo esta denominación, la existencia de elementos, fenómenos, condiciones, circunstancias y acciones humanas, que encierran una capacidad potencial de producir lesiones o daños y cuya probabilidad de ocurrencia depende de la eliminación o control del elemento agresivo. </p></li>
+            <li><p><b>Higiene Industrial:</b> Comprende el conjunto de actividades destinadas a la identificación, a la evaluación y al control de los agentes y factores del ambiente de trabajo que puedan afectar la salud de los trabajadores. </p></li>
+            <li><p><b>Incidente de Trabajo:</b> Son los eventos anormales que se presentan en una actividad laboral y que conllevan un riesgo potencial de lesiones o daños materiales. Cuando este tipo de incidente tiene un alto potencial de lesiones es necesario investigar las condiciones peligrosas o intervenir los comportamientos inseguros. </p></li>
+            <li><p><b>Investigación de AT:</b> Procedimientos técnico - administrativos tendientes a clarificar las circunstancias en que sucedió el evento relacionado con el accidente o la enfermedad, con el fin de determinar el origen de dicho evento. </p></li>
+            <li><p><b>Panorama de Factores de Riesgo:</b> Es una estrategia metodológica que permite recopilar y analizar en forma sistemática y organizada los datos relacionados con la identificación, localización, valoración y priorización de los factores de riesgo existentes en un contexto laboral, con el fin de planificar las medidas de prevención y control más convenientes y adecuadas. </p></li>
+            <li><p><b>Peligro:</b> Es una fuente o situación con potencial de daño en términos de lesión o enfermedad, daño a la propiedad, al ambiente de trabajo o una combinación de estos. </p></li>
+            <li><p><b>Política de Seguridad:</b> Un requisito importante dentro de un sistema de gestión de calidad y seguridad es el cumplimiento de la legislación básica en materia de salud ocupacional y el compromiso por la mejora continua de las condiciones de salud y seguridad de los trabajadores.
+            Para tal fin el más alto nivel directivo debe elaborar y firmar una política de salud ocupacional, que incluya el deseo expreso de mejorar las condiciones de trabajo y reducir las lesiones y otro tipo de pérdidas. Por lo tanto, esta debe incluir en enunciados generales, los objetivos a alcanzar en materia de salud y seguridad. </p></li>
+            <li><p><b>R.A.T. Reporte de Accidente de Trabajo:</b> La probabilidad de que un evento ocurra. Abarca una variedad de medidas de probabilidad de un resultado generalmente no favorable (MeSH/NLM). Número esperado de pérdidas humanas, personas heridas, propiedad dañada e interrupción de actividades económicas debido a fenómenos naturales particulares y por consiguiente, el producto de riesgos específicos y elementos de riesgo. </p></li>
+            <li><p><b>Seguridad Industrial:</b> Es uno de los cuatro subprogramas definidos al interior de un Programa de Seguridad y Salud Trabajo que se encarga de vigilar aquellos factores de riesgo que pueden ocasionar accidentes de trabajo. Vigila todas aquellas condiciones y/o actos inseguros a nivel del medio o del trabajador con potencialidad de generar Accidentes de Trabajo. La Seguridad Industrial como capítulo de la salud ocupacional normalmente va acompañada del subprograma de Higiene Industrial. </p></li>
+        </ul>
+        <br>
+        <p style="text-align:center"><b>MARCO LEGAL</b></p>
+        <p><b>DECRETO 6141 DE 1984:</b> Crea las bases para la organización y Administración pública y privada de la Salud Ocupacional. Reglamente la creación de los Comités de Medicina, Higiene y Seguridad Industrial de la empresa. </p>
+        <p><b>RESOLUCIÓN 1016 DE 1989:</b> Reglamenta los Programas de Salud Ocupacional en las Empresas y los subprogramas de Medicina Preventiva, Medicina del Trabajo, Higiene y Seguridad Industrial. </p>
+        <p><b>RESOLUCIÓN 1401 DE 2007:</b> Reglamenta la investigación de incidentes y accidentes de trabajo. </p>
+        <p><b>RESOLUCIÓN 2013 DE 1986-MTSS: </b> Reglamenta la investigación de incidentes y accidentes de trabajo. Establece la organización del COPASO. El número de Representantes, sus funciones y acciones del presidente y secretaria, obligaciones del empleador frente a la elección y designación de responsables. </p>
+        <p><b>DECRETO 1443 DEL 2014:</b> Emitido por el Ministerio del Trabajo en su Art. 1 parágrafo 2 se entenderá. El Comité Paritario de Salud Ocupacional como Comité Paritario en Seguridad y Salud en el Trabajo y el Vigía/Copasst en Salud Ocupacional como Vigía/Copasst en Seguridad y Salud en el Trabajo, quienes tendrán las funciones establecidas en la normatividad vigente. </p>
+        <br>
+        <p style="text-align:center"><b>¿Cuáles son las funciones del vigía/copasst en seguridad y salud en el trabajo?</b></p>
+        <p><b>Son funciones del Vigía/Copasst En Seguridad Y Salud En El Trabajo, de acuerdo con el artículo 11 de la <u style="color: #2d572c">Resolución 2013 de 1986</u> y el <u style="color: #2d572c">Artículo 26 del Decreto 614 de 1984</u>, las siguientes:</b></p>
+        <ul>
+            <li><p>Participar de las actividades de promoción, divulgación e información, sobre seguridad y salud en el trabajo entre empleadores y trabajadores, para obtener su participación activa en el desarrollo de los programas y actividades del SG-SST. </p></li>
+            <li><p>Actuar como instrumento de vigilancia para el cumplimiento del SG-SST en los lugares de trabajo de la empresa e informar sobre el estado de ejecución de estos a las autoridades de seguridad y salud en el trabajo cuando haya deficiencias en su desarrollo. </p></li>
+            <li><p>Recibir copias, por derecho propio, de las conclusiones sobre inspecciones e investigaciones que realicen las autoridades de seguridad y salud en el trabajo en los sitios de trabajo. </p></li>
+        </ul>
+        <br>
+        <p><b>Otras funciones del vigía/copasst que fueron adicionadas en el artículo 11 de la <u style="color: #2d572c">Resolución 2013 de 1986</u>. A continuación, se describen estas funciones con la actualización de términos vigentes en 2016:</b></p>
+        <ul>
+            <li><p>Proponer a la administración de la empresa o establecimiento de trabajo la adopción de medidas y el desarrollo de actividades que procuren y mantengan la salud en los lugares y ambientes de trabajo. </p></li>
+            <li><p>Proponer y participar en actividades de capacitación en seguridad y salud en los trabajos dirigidas a trabajadores, supervisores y directivos de la empresa o establecimiento de trabajo. </p></li>
+            <li><p>Colaborar con los funcionarios de entidades gubernamentales de seguridad y salud en el trabajo en las actividades que éstos adelanten en la empresa y recibir por derecho propio los informes correspondientes. </p></li>
+            <li><p>Vigilar el desarrollo de las actividades que en materia de seguridad y salud en el trabajo debe realizar la empresa de acuerdo con el Reglamento de Higiene y Seguridad Industrial y las normas vigentes; promover su divulgación y observancia. </p></li>
+            <li><p>Colaborar en el análisis de las causas de los accidentes de trabajo y enfermedades profesionales y proponer al empleador las medidas correctivas que haya lugar para evitar su ocurrencia. Evaluar los programas que se hayan realizado. </p></li>
+            <li><p>Visitar periódicamente los lugares de trabajo e inspeccionar los ambientes, máquinas, equipos, aparatos y las operaciones realizadas por el personal de trabajadores en cada área o sección de la empresa e informar al empleador sobre la existencia de factores de riesgo y sugerir las medidas correctivas y de control. </p></li>
+            <li><p>Estudiar y considerar las sugerencias que presenten los trabajadores en materia de seguridad y salud en el trabajo. </p></li>
+            <li><p>Servir como organismo de coordinación entre el empleador y los trabajadores en la solución de los problemas relativos a la seguridad y salud en el trabajo. Tramitar los reclamos de los trabajadores relacionados con la seguridad y salud en el trabajo. </p></li>
+            <li><p>Solicitar periódicamente a la empresa informes sobre accidentalidad y enfermedades laborales con el objeto de dar cumplimiento a lo estipulado en la Resolución 2013 de 1986. </p></li>
+            <li><p>Mantener un archivo de las actas de cada reunión y demás actividades que se desarrollen el cual estará en cualquier momento a disposición del empleador, los trabajadores y las autoridades competentes. </p></li>
+            <li><p>Las demás funciones que le señalen las normas sobre seguridad y salud en el trabajo. </p></li>
+        </ul>
+        <br>
+        <p>Teniendo en cuenta que las funciones del vigía/copasst en seguridad y salud en el trabajo son las mismas que las del COPPAST, el archivo de actas de reunión se interpreta como el archivo de informes de las actividades del vigía, ya que en el acta de reunión se presume la existencia de dos o más miembros como sucede en el COPASST. </p>
+        <p>El rol de presidente y secretario es un rol existente en un COPASST, la función de elegir al secretario del Comité, mencionada en el numeral j del artículo 11 de la Resolución 2013 de 1986 no tiene efecto cuando la empresa tiene menos de diez (10) trabajadores. </p>
+        <br>
+        <p style="text-align:center"><b>¿Con qué frecuencia debe actuar el vigía/copasst en seguridad y salud en el trabajo?</b></p>
         
-            <p>El artículo 12 de la  <u style="color: #2d572c">Resolución 2013 de 1986</u> establece que el COPASST debe reunirse al menos una vez al mes. De esto se deriva que el vigía en seguridad y salud en el trabajo debe actuar en el cumplimiento de sus funciones al menos una vez al mes, es decir, que el empleador debe contar con soportes de actuaciones mensuales del vigía en seguridad y salud en el trabajo.  Se recomienda que el vigía en seguridad y salud en el trabajo genere un informe mensual de sus actuaciones. </p>
-            <p class="text-center"><b>FUNCIONES DEL VIGÍA </b></p>
+        <p>El artículo 12 de la <u style="color: #2d572c">Resolución 2013 de 1986</u> establece que el COPASST debe reunirse al menos una vez al mes. De esto se deriva que el vigía/copasst en seguridad y salud en el trabajo debe actuar en el cumplimiento de sus funciones al menos una vez al mes, es decir, que el empleador debe contar con soportes de actuaciones mensuales del vigía/copasst en seguridad y salud en el trabajo.  Se recomienda que el vigía/copasst en seguridad y salud en el trabajo genere un informe mensual de sus actuaciones. </p>
+        <br>
+        <p style="text-align:center"><b>FUNCIONES DEL VIGÍA/COPASST </b></p>
 
-            <table> 
-                <tr>
-                    <td style="text-align:center;width: 50%;">
-                        <%= wicked_pdf_image_tag asset_url('imgmv2.png') %>
-                    </td>
-                </tr>
-            <table>     
-            <ol>
-                <li><p><b>Coordinación:</b>Entre el empleador y trabajadores en temas relacionados con la Seguridad y Salud en el Trabajo. </p></li>
-                <li><p><b>Inspección:</b></p></li>
-                    <ul>
-                        <li><p>Inspecciones (Locativa, máquinas, Herramientas, equipos, EPP y operaciones en general). </p></li>
-                        <li><p>Función esencialmente preventiva para eliminar o mitigar el impacto de los agentes de riesgo. </p></li>
-                    </ul>
-                <li><p><b>Capacitación:</b></p></li>
-                    <ul>
-                        <li><p>Personalizada de acuerdo con los requerimientos de la organización en materia de Seguridad y Salud en el Trabajo. </p></li>
-                    </ul>
-                <li><p><b>Investigación:</b></p></li>
-                    <ul>
-                        <li><p>Incidentes y Accidentes de Trabajo </p></li>
-                        <li><p>Enfermedades Laborales </p></li>
-                        <li><p>Información estadística (Ausentismo) </p></li>
-                    </ul>
-                <li><p><b>Vigilancia:</b>Cumplimiento del empleador y los trabajadores en:</p></li>
-                    <ul>
-                        <li><p>SG-SST </p></li>
-                        <li><p>Reglamento de Higiene y Seguridad Industrial </p></li>
-                        <li><p>Normas legales vigentes </p></li>
-                        <li><p>Actas, planes y programas relacionados con el SG-SST </p></li>
-                    </ul>
-            </ol>
-            <p class="text-center"><b>OBLIGACIONES DEL EMPLEADOR: </b></p>
-            <p>Proporcionar los medios y el tiempo necesario al Vigía los recursos necesarios para el cabal desempeño del Sistema de Gestión. </p>
-            <p>Para el desempeño de las funciones de los Comités Paritarios de Seguridad y Salud en el trabajo, el empleador se obligará a proporcionar mínimo 4 horas semanales dentro de la jornada laboral de trabajo de cada uno de los miembros. </p>
-            <p>Proporcionar los medios necesarios para el normal desempeño de las funciones del Vigía. </p>
-            <p>Estudiar las recomendaciones que surgen del Vigía y determinar la adopción de las medidas más convenientes e informar los correctivos al respecto. </p>
-            <p>Asignar los recursos necesarios /económicos y humanos para el cabal funcionamiento de las acciones propias de Seguridad y Salud en el Trabajo. </p>
-            <p class="text-center"><b>OBLIGACIONES DE LOS TRABAJADORES: </b></p>
-            <p>Informar al Vigía sobre las situaciones de riesgo que se presenten y manifestar sus sugerencias para el mejoramiento de las condiciones de Salud Ocupacional de la empresa. </p>
-            <p>Cumplir con las normas del Comité y los reglamentos e instrucciones de la empresa. </p>
-        </div> 
+        <table> 
+            <tr>
+                <td style="text-align:center;width: 50%;">
+                    <%= wicked_pdf_image_tag asset_path('imgmv2.png'), height: "300", width: "auto" %>
+                </td>
+            </tr>
+        <table>     
 
-        <%= render 'firmarepresentante' %>
+        <br>
+        <ol>
+            <li><p><b>Coordinación:</b>Entre el empleador y trabajadores en temas relacionados con la Seguridad y Salud en el Trabajo. </p></li>
+            <li><p><b>Inspección:</b></p></li>
+                <ul>
+                    <li><p>Inspecciones (Locativa, máquinas, Herramientas, equipos, EPP y operaciones en general). </p></li>
+                    <li><p>Función esencialmente preventiva para eliminar o mitigar el impacto de los agentes de riesgo. </p></li>
+                </ul>
+            <li><p><b>Capacitación:</b></p></li>
+                <ul>
+                    <li><p>Personalizada de acuerdo con los requerimientos de la organización en materia de Seguridad y Salud en el Trabajo. </p></li>
+                </ul>
+            <li><p><b>Investigación:</b></p></li>
+                <ul>
+                    <li><p>Incidentes y Accidentes de Trabajo </p></li>
+                    <li><p>Enfermedades Laborales </p></li>
+                    <li><p>Información estadística (Ausentismo) </p></li>
+                </ul>
+            <li><p><b>Vigilancia:</b>Cumplimiento del empleador y los trabajadores en:</p></li>
+                <ul>
+                    <li><p>SG-SST </p></li>
+                    <li><p>Reglamento de Higiene y Seguridad Industrial </p></li>
+                    <li><p>Normas legales vigentes </p></li>
+                    <li><p>Actas, planes y programas relacionados con el SG-SST </p></li>
+                </ul>
+        </ol>
+        <br>
+        <p style="text-align:center"><b>OBLIGACIONES DEL EMPLEADOR: </b></p>
+        <p>Proporcionar los medios y el tiempo necesario al Vigía/Copasst los recursos necesarios para el cabal desempeño del Sistema de Gestión. </p>
+        <p>Para el desempeño de las funciones de los Comités Paritarios de Seguridad y Salud en el trabajo, el empleador se obligará a proporcionar mínimo 4 horas semanales dentro de la jornada laboral de trabajo de cada uno de los miembros. </p>
+        <p>Proporcionar los medios necesarios para el normal desempeño de las funciones del Vigía/Copasst. </p>
+        <p>Estudiar las recomendaciones que surgen del Vigía/Copasst y determinar la adopción de las medidas más convenientes e informar los correctivos al respecto. </p>
+        <p>Asignar los recursos necesarios /económicos y humanos para el cabal funcionamiento de las acciones propias de Seguridad y Salud en el Trabajo. </p>
+        <br>
+        <p style="text-align:center"><b>OBLIGACIONES DE LOS TRABAJADORES: </b></p>
+        <p>Informar al Vigía/Copasst sobre las situaciones de riesgo que se presenten y manifestar sus sugerencias para el mejoramiento de las condiciones de Salud Ocupacional de la empresa. </p>
+        <p>Cumplir con las normas del Comité y los reglamentos e instrucciones de la empresa. </p>
+    </div> 
+
+    <div style="text-align:center"><br></div>
+        <% @firms.each do |firm| %>
+            <% if firm.legal_representative == 1 %>
+                <div style="text-align:center"> 
+                    <div class="col-11">
+                        <div>&nbsp;</div>
+                            <% if firm.authorize_firm == 1 %>
+                                <% if firm.user.firm.attached? %>
+                                    <% if firm.user.firm.image? %> 
+                                        <%= image_tag firm.user.firm, class: "firma" %>
+                                        <p style="text-align:center">________________________________</p>
+                                    <% end %>
+                                <% end %>
+                            <% else %>    
+                                <p style="text-align:center">________________________________</p>
+                            <% end %>     
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <strong><%= firm.user.name %></strong>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                        <div class="row">
+                            <%= firm.post %>
+                        </div>
+                    </div>
+                    <div class="col-11">
+                        <div class="row">
+                            <%= firm.user.document.abbreviation %>: <%= Firm.miles(firm.user.nro_document) %>
+                        </div>
+                    </div>
+
+                </div>
+                <br>
+            <% end %>    
+        <% end %>
     </div>
 </html>

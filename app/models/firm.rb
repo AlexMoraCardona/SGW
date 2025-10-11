@@ -20,6 +20,7 @@ class Firm < ApplicationRecord
         @improvement_plans = ImprovementPlan.where("user_representante = ? and firm_representante = ? or user_responsible = ? and firm_responsible = ?",Current.user.id,0,Current.user.id,0)  
         @direction_reviews = DirectionReview.where("user_representante = ?",Current.user.id)  
         @provides_protections = ProvidesProtection.where("user_colaborador = ? and firm_colaborador = ? or user_responsible = ? and firm_responsible = ?",Current.user.id,0,Current.user.id,0)  
+        @lessons = Lesson.where("user_adviser_sst = ? and firm_user_adviser_sst = ? or user_vigia = ? and firm_user_vigia = ?",Current.user.id,0,Current.user.id,0)  
 
         @total_firmar = 0
         @total_firmar += @firmas_pendientes.count if @firmas_pendientes.present?
@@ -36,6 +37,8 @@ class Firm < ApplicationRecord
         @total_firmar +=  @inves_users.count if @inves_users.present?
         @total_firmar +=  @survey_profiles.count if @survey_profiles.present?
         @total_firmar +=  @improvement_plans.count if @improvement_plans.present?
+        @total_firmar +=  @lessons.count if @lessons.present?
+
         if @direction_reviews.present?
             @direction_reviews.each do |direction_review|
                 @total_firmar +=  1 if direction_review.firm_representante != 1

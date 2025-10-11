@@ -508,6 +508,33 @@
             </table>
             </br>  
     <% end %>     
+    <% if @lessons.present?   %>
+            <table class="table table-hover">
+                <thead>
+                    <tr>  
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Título</th>
+                        <th scope="col">Ver</th> 
+                        <th scope="col">Firmar</th> 
+                    </tr>
+                </thead>  
+                <tbody> 
+                    <% @lessons.each do |lesson| %>
+                            <tr> 
+                                <td><%= lesson.created_at.strftime("%F") %></td>
+                                <td>LECCIONES APRENDIDAS AT</td>
+                                <td><%= link_to t('common.veritem'),  lesson_path(lesson.id), class: 'btn btn-sm btn-primary'  %></td>
+                                <td> 
+                                    <% if lesson.firm_user_adviser_sst == 0  && lesson.user_adviser_sst == Current.user.id || lesson.firm_user_vigia == 0  && lesson.user_vigia == Current.user.id  %>
+                                        <%= link_to t('common.firmar'), firma_leccion_path(lesson.id), class: 'btn btn-sm btn btn-warning' %>
+                                    <% end %>
+                                </td>
+                            </tr>  
+                    <% end %> 
+                </tbody>   
+            </table>
+            </br>  
+    <% end %>     
 
     
 

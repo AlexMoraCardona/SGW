@@ -1,15 +1,15 @@
 class RouteControlsController < ApplicationController
     def index
             if  Current.user && Current.user.level > 0 && Current.user.level < 4
-                @route_controles = RouteControl.all.order(date_control: :desc)
+                @route_controles = RouteControl.all.order(id: :desc)
                 @q = @route_controles.ransack(params[:q])
-                @pagy, @route_controls = pagy(@q.result(reference: :desc), items: 3)
+                @pagy, @route_controls = pagy(@q.result(id: :desc), items: 3)
                 @users = User.all
 
             elsif Current.user && Current.user.level > 3
-                @route_controles = RouteControl.where("user_create = ?",Current.user.id).order(date_control: :desc)
+                @route_controles = RouteControl.where("user_create = ?",Current.user.id).order(id: :desc)
                 @q = @route_controles.ransack(params[:q])
-                @pagy, @route_controls = pagy(@q.result(reference: :desc), items: 3)
+                @pagy, @route_controls = pagy(@q.result(id: :desc), items: 3)
                 @users = User.where("entity = ?",Current.user.entity)
             else
                 redirect_to new_session_path, alert: t('common.not_logged_in')    

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_07_31_203346) do
+ActiveRecord::Schema[7.0].define(version: 2025_10_09_145012) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -1239,7 +1239,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_31_203346) do
     t.string "job_experience"
     t.date "date_income"
     t.string "area"
-    t.integer "phone", default: 0
+    t.string "phone", default: "0"
     t.date "date_accident"
     t.time "time_accident"
     t.string "place"
@@ -1376,6 +1376,22 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_31_203346) do
     t.integer "year", default: 0
   end
 
+  create_table "lessons", force: :cascade do |t|
+    t.string "title"
+    t.integer "user_adviser_sst", default: 0
+    t.integer "user_vigia", default: 0
+    t.date "date_user_adviser_sst"
+    t.date "date_user_vigia"
+    t.integer "firm_user_adviser_sst", default: 0
+    t.integer "firm_user_vigia", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.bigint "user_id"
+    t.index ["entity_id"], name: "index_lessons_on_entity_id"
+    t.index ["user_id"], name: "index_lessons_on_user_id"
+  end
+
   create_table "levels", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -1416,6 +1432,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_31_203346) do
     t.datetime "updated_at", null: false
     t.bigint "matrix_corrective_action_id"
     t.integer "origin_action", default: 0
+    t.string "hallazgo"
     t.index ["matrix_corrective_action_id"], name: "index_matrix_action_items_on_matrix_corrective_action_id"
   end
 
@@ -1450,6 +1467,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_31_203346) do
     t.integer "firm_responsible_sst", default: 0
     t.date "date_create"
     t.date "date_update"
+    t.string "hallazgo"
     t.index ["entity_id"], name: "index_matrix_corrective_actions_on_entity_id"
   end
 
@@ -2110,6 +2128,13 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_31_203346) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "rooms", force: :cascade do |t|
+    t.string "name"
+    t.boolean "is_private", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "route_controls", force: :cascade do |t|
     t.date "date_control"
     t.string "observation"
@@ -2559,6 +2584,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_31_203346) do
   add_foreign_key "investigations", "users"
   add_foreign_key "kits", "entities"
   add_foreign_key "kits", "users"
+  add_foreign_key "lessons", "entities"
+  add_foreign_key "lessons", "users"
   add_foreign_key "locations", "entities"
   add_foreign_key "matrix_action_items", "matrix_corrective_actions"
   add_foreign_key "matrix_conditions", "entities"

@@ -131,7 +131,7 @@ class MatrixLegalsController < ApplicationController
     end  
     
     def crear_item 
-        @legal_rules = LegalRule.where("clasification_norma = ? and state_norma = ?",1,0)
+        @legal_rules = LegalRule.where("clasification_norma = ? and state_norma = ? or clasification_norma = ? and state_norma = ? and created_at > ?",1,0,0,0,'2025-06-03')
         @norma =  LegalRule.find_by(id:  params[:norm]) if params[:norm].present?
         @matrix_legal = MatrixLegal.find_by(id: params[:mat]) if params[:mat].present?
         

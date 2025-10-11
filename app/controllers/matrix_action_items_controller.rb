@@ -59,7 +59,7 @@ class MatrixActionItemsController < ApplicationController
         params.require(:matrix_action_item).permit(:consecutive, :year, :matrix_corrective_action_id, 
         :type_corrective, :clasification_type_corrective, :campus, :date_action_conformity, :area, 
          :description_action, :action_implement, :responsible, :commitment_date, :closet_date, 
-         :took_actions, :state_actions, :origin_action )
+         :took_actions, :state_actions, :origin_action, :hallazgo)
     end 
 end 
 

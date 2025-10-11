@@ -1,1 +1,618 @@
-entro
+
+<head>
+    <meta charset='utf-8' />
+</head>
+
+<div class="container col-12 card p-5">
+    <table style="border:0px solid black"> 
+        <tr>
+            <td rowspan="2" style="border:1px solid black; width: 20%; text-align:center">
+                <% if @entity.logo.present? then %>
+                    <%= image_tag(Evaluation.wicked_blob_path(@entity.logo),:width => "80",  :height=>"80") %>
+                <% end %>   
+            </td>
+            <td style="border:1px solid black; text-align:center">
+                <div class="col-10"><%= @entity.business_name if @entity.present? %></div>
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; text-align:center">
+                <div class="col-10"><%= @template.name if @template.present? %></div>
+            </td>
+        </tr>
+    </table>
+    <table>
+        <tr>    
+            <td style="border:1px solid black; width: 25%">
+                CÓDIGO:                 
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                &nbsp;&nbsp;<small class="text-muted"><%= @template.reference if @template.present? %></small>                
+            </td>
+
+            <td style="border:1px solid black; width: 25%">
+                VERSIÓN:                 
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                &nbsp;&nbsp;<small class="text-muted"><%= @template.version if @template.present? %></small>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 25%">
+                FECHA DE ELABORACIÓN:                 
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                &nbsp;&nbsp;<small class="text-muted"><%= @template.date if @template.present? %></small>                
+            </td>
+
+            <td style="border:1px solid black; width: 25%">
+                FECHA DE ACTUALIZACIÓN:                 
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                &nbsp;&nbsp;<small class="text-muted"><%= @template.date_updated if @template.present? %></small>                
+            </td>
+        </tr>
+    </table>
+
+    <br> 
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 30%;border:1px solid black;text-align:center">
+                    <strong>FECHA DE INVESTIGACIÓN</strong>               
+                </td>
+                <td style="width: 70%;border:1px solid black;text-align:center">
+                    <strong>TIPO DE EVENTO</strong>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;text-align:center">
+                    <%=  @investigation.date_investigation if @investigation.date_investigation.present? %>               
+                </td>
+                <td style="width: 70%;border:1px solid black;text-align:center">
+                    <%=  Investigation.label_type_event(@investigation.type_event) %>               
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr style="background-color: #00aae4;">    
+                <td style="width: 100%;border:1px solid black;text-align:center">
+                    <strong>DATOS DE LA ENTIDAD</strong>               
+                </td>
+            </tr>
+        </table> 
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 60%;border:1px solid black;">
+                    <strong>RAZÓN SOCIAL: </strong><%= @entity.business_name if @entity.present? %>               
+                </td>
+                <td style="width: 40%;border:1px solid black;">
+                    <strong>NIT: </strong><%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.present? %>-<%= @entity.verification_digit if @entity.present? %>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 60%;border:1px solid black;">
+                    <strong>DIRECCIÓN: </strong><%= @entity.entity_address if @entity.present? %>               
+                </td>
+                <td style="width: 40%;border:1px solid black;">
+                    <strong>TELÉFONO: </strong><%= @entity.phone_number_entity if @entity.present? %>               
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>TIPO DE VINCULACIÓN LABORAL: </strong><%=  @investigation.type_labor_connection %>               
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr style="background-color: #00aae4;">    
+                <td style="width: 100%;border:1px solid black;text-align:center">
+                    <strong>DATOS DEL TRABAJADOR</strong>               
+                </td>
+            </tr>
+        </table> 
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>APELLIDOS Y NOMBRES:   </strong><%=  @investigation.user.name %>               
+                </td>
+            </tr>
+        </table> 
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>EDAD:   </strong><%=  @investigation.age %>               
+                </td>
+                <td style="width: 35%;border:1px solid black;">
+                    <strong>NUMERO TELEFONICO /CELULAR:  </strong><%=  @investigation.phone %>               
+                </td>
+                <td style="width: 35%;border:1px solid black;">
+                    <strong>FECHA DE INGRESO A LA ENTIDAD:  </strong><%=  @investigation.date_income %>               
+                </td>
+            </tr>
+        </table> 
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>OFICIO:   </strong><%=  User.label_activity(@investigation.user.activity) %>               
+                </td>
+                <td style="width: 35%;border:1px solid black;">
+                    <strong>EXPERIENCIA EN EL OFICIO:    </strong><%=  @investigation.job_experience %>               
+                </td>
+                <td style="width: 35%;border:1px solid black;">
+                    <strong>ÁREA:   </strong><%=  @investigation.area %>               
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>¿EL ACCIDENTE OCURRIÓ REALIZANDO SU OFICIO HABITUAL?  </strong>
+                    <%=  Investigation.label_accident_usual(@investigation.accident_usual) %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>SI LA RESPUESTA ES NO EXPLIQUE ¿POR QUÉ?  </strong></br>
+                    <%=  @investigation.obs_accident_usual %>
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr style="background-color: #00aae4;">    
+                <td style="width: 100%;border:1px solid black;text-align:center">
+                    <strong>DATOS GENERALES SOBRE EL ACCIDENTE</strong>               
+                </td>
+            </tr>
+        </table> 
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>FECHA DE OCURRENCIA:  </strong><%=  @investigation.date_accident %>
+                </td>
+                <td style="width: 35%;border:1px solid black;">
+                    <strong>HORA DEL EVENTO:   </strong><%=  @investigation.time_accident.strftime("%T") if @investigation.time_accident.present? %>
+                </td>
+                <td style="width: 35%;border:1px solid black;">
+                    <strong>LUGAR DONDE OCURRE EL EVENTO:  </strong><%=  @investigation.place %>
+                </td>
+            </tr>
+        </table> 
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>¿INFORMO OPORTUNAMENTE EL ACCIDENTE?  </strong>
+                    <%=  Investigation.label_inform_prompt(@investigation.inform_prompt) %>
+                    &nbsp; QUÉ?</br>
+                    <%=  @investigation.obs_inform_prompt %>
+                </td>
+            </tr>    
+            <tr>
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>TAREA DESARROLLADA AL MOMENTO DEL EVENTO:  </strong></br>
+                    <%=  @investigation.task_moment_accident %>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>DESCRIPCIÓN DEL EVENTO (DESCRIBA DONDE, CUANDO, QUE Y CÓMO OCURRIÓ):  </strong></br>
+                    <%=  @investigation.event_description %>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>VERSIÓN TRABAJADOR ACCIDENTADO  </strong></br>
+                    <%=  @investigation.version_work %></br>
+                    <strong>OBSERVACIONES DEL TRABAJADOR Y/O TESTIGOS:  </strong></br>
+                    <strong>Versión de los testigos:   </strong></br>
+                    <%=  @investigation.version_witness %></br>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>¿HAN OCURRIDO EVENTOS SIMILARES?  </strong>
+                    <%=  Investigation.label_similar_events(@investigation.similar_events) %>
+                    ,&nbsp;SI LA RESPÙESTA ES AFIRMATIVA, EXPLIQUE QUE ACCIONES SE HABÍAN TOMADO PARA SU CONTROL:</br>
+                    <%=  @investigation.obs_similar_events %>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>DATOS COMPLEMENTARIOS  </strong></br>
+                    <%=  @investigation.datos_complementarios %>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100%;border:1px solid black;text-align:center">
+                    <strong>REGISTRO FOTOGRAFICO  </strong>
+                        <br>
+                        <div class="container col-11 card p-5">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <% if @investigation.present? then %>
+                                                <% if @investigation.registros_fotograficos.attached? %>
+                                                    <div data-controller="previews" >
+                                                        <%  @investigation.registros_fotograficos.each do |file|%>
+                                                            <br>
+                                                            <br>
+                                                            <% if file.image?%>
+                                                                <div>
+                                                                    <%= image_tag Evaluation.wicked_blob_path(file), data: {previews_target: "preview"},:width => "400",  :height=>"400" %>
+                                                                    <div><%= file.filename %></div>
+                                                                </div>
+                                                            <% elsif file.video? %>
+                                                                    <%= video_tag url_for(file), controls: "", width: "400px" %>          
+                                                            <% elsif file.audio? %>
+                                                                    <%= audio_tag(url_for(file), controls: "") %>          
+                                                            <% else %>
+                                                                <%= link_to file.filename, url_for(file) %>          
+                                                            <% end %>
+                                                        <% end %>    
+                                                    </div>
+                                                <% end %>  
+                                        <% end %>  
+                                    </div> 
+                                </div>
+                            <br> 
+                        </div>  
+                        <br>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100%;border:1px solid black;text-align:center">
+                    <strong>Espacio para la descripción de las imágenes:  </strong>
+                        </br><%=  @investigation.photographic_record %>
+                        <br>
+                </td>
+            </tr>
+        </table> 
+        <div></br></div>
+        <div></br></div>
+        <table style="width: 100%;">
+            <tr style="background-color: #00aae4;">    
+                <td style="width: 100%;border:1px solid black;text-align:center">
+                    <strong>ÁRBOL DE CAUSAS</strong>               
+                </td>
+            </tr>
+        </table> 
+        <div></br></div>
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 30%;border:0px solid black;text-align:center">
+                </td>
+                <td style="width: 40%;border:1px solid black;text-align:center">
+                    <q>Espacio para lesión</q></br>
+                    <%=  @investigation.space_for_injury %>
+                </td>
+                <td style="width: 30%;border:0px solid black;text-align:center">
+                </td>
+            </tr>
+        </table>            
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 30%;border:0px solid black;text-align:center">
+                </td>
+                <td style="width: 40%;border:0px solid black;text-align:center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+                    </svg>                                                            
+                </td>
+                <td style="width: 30%;border:0px solid black;text-align:center">
+                </td>
+            </tr>
+        </table>            
+        <table style="width: 100%;">
+            <tr>
+                <td style="width: 30%;border:0px solid black;text-align:center">
+                </td>
+                <td style="width: 40%;border:1px solid black;text-align:center">
+                    <q>Espacio para agente del accidente</q></br>
+                    <%=  @investigation.space_for_agente %>
+                </td>
+                <td style="width: 30%;border:0px solid black;text-align:center">
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 30%;border:0px solid black;text-align:center">
+                </td>
+                <td style="width: 40%;border:0px solid black;text-align:center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+                    </svg>                                                            
+                </td>
+                <td style="width: 30%;border:0px solid black;text-align:center">
+                </td>
+            </tr>
+        </table>            
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 30%;border:1px solid black;text-align:center">
+                    <q>Causa inmediata 1</q> </br>
+                    <%=  @investigation.immediate_cause1 %>
+                </td>
+                <td style="width: 40%;border:1px solid black;text-align:center">
+                    <q>Causa inmediata 2</q> </br>
+                    <%=  @investigation.immediate_cause2 %>
+                </td>
+                <td style="width: 30%;border:1px solid black;text-align:center">
+                    <q>Causa inmediata 3</q> </br>
+                    <%=  @investigation.immediate_cause3 %>
+                </td>
+            </tr>
+        </table>            
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 30%;border:0px solid black;text-align:center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+                    </svg>                                                            
+                </td>
+                <td style="width: 40%;border:0px solid black;text-align:center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+                    </svg>                                                            
+                </td>
+                <td style="width: 30%;border:0px solid black;text-align:center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+                    </svg>                                                            
+                </td>
+            </tr>
+        </table>            
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 30%;border:1px solid black;text-align:center">
+                    <q>Causa básica 1</q> </br>
+                    <%=  @investigation.cause_basic1 %>
+                </td>
+                <td style="width: 40%;border:1px solid black;text-align:center">
+                    <q>Causa básica 2</q> </br>
+                    <%=  @investigation.cause_basic2 %>               
+                </td>
+                <td style="width: 30%;border:1px solid black;text-align:center">
+                    <q>Causa básica 3</q> </br>
+                    <%=  @investigation.cause_basic3 %>               
+                </td>
+            </tr>
+        </table> 
+        <div></br></div>
+        <div></br></div>
+        <table style="width: 100%;">
+            <tr style="background-color: #00aae4;">    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>CAUSAS DEL ACCIDENTE (Ver tabla de codificación NTC 3701)</strong>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>CAUSAS INMEDIATAS:</strong>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>ACTOS INSEGUROS</strong></br>               
+                    <%=  @investigation.actos_inseguros %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>CONDICIONES INSEGURAS</strong></br>               
+                    <%=  @investigation.condiciones_inseguras %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>CAUSAS BÁSICAS:</strong>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>FACTORES PERSONALES</strong></br>               
+                    <%=  @investigation.factores_personales %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 100%;border:1px solid black;">
+                    <strong>FACTORES ADMINISTRATIVOS</strong></br>               
+                    <%=  @investigation.factores_administrativos %>
+                </td>
+            </tr>
+        </table> 
+        <table style="width: 100%;">
+            <tr style="background-color: #00aae4;">    
+                <td style="width: 30%;border:1px solid black;text-align:center;">
+                    <strong>PARTE DEL CUERPO AFECTADA</strong>               
+                </td>
+                <td style="width: 30%;border:1px solid black;text-align:center;">
+                    <strong>TIPO DE LESIÓN SUFRIDA</strong>               
+                </td>
+                <td style="width: 30%;border:1px solid black;text-align:center;">
+                    <strong>MECANISMO O FORMA DEL ACCIDENTE</strong>               
+                </td>
+                <td style="width: 10%;border:1px solid black;text-align:center;">
+                    <strong>DÍAS DE INCAPACIDAD</strong>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;text-align:center;">
+                    <%=  @investigation.affected_part %>
+                </td>
+                <td style="width: 30%;border:1px solid black;text-align:center;">
+                    <%=  @investigation.type_injury %>
+                </td>
+                <td style="width: 30%;border:1px solid black;text-align:center;">
+                    <%=  @investigation.accident_mechanism %>
+                </td>
+                <td style="width: 10%;border:1px solid black;text-align:center;">
+                    <%=  @investigation.disability_days %>
+                </td>
+            </tr>
+        </table> 
+        <div></br></div>
+        <table style="width: 100%;">
+            <tr style="background-color: #00aae4;">    
+                <td style="width: 29%;border:1px solid black;text-align:center">
+                    <strong>RECOMENDACIÓN </strong>
+                </td>  
+                <td style="width: 21%;border:1px solid black;text-align:center">
+                    <strong>APLICA EN</strong>
+                </td>  
+                <td style="width: 24%;border:1px solid black;text-align:center">
+                    <strong>IMPLEMENTACIÓN</strong>
+                </td>
+                <td style="width: 26%;border:1px solid black;text-align:center">
+                    <strong>VERIFICACIÓN</strong>
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr style="background-color: #00aae4;">    
+                <td style="width: 29%;border:1px solid black;text-align:center">
+                    
+                </td>  
+                <td style="width: 7%;border:1px solid black;text-align:center">
+                    <strong>FUENTE</strong>
+                </td>  
+                <td style="width: 7%;border:1px solid black;text-align:center">
+                    <strong>MEDIO</strong>
+                </td>  
+                <td style="width: 7%;border:1px solid black;text-align:center">
+                    <strong>PERSONAS</strong>
+                </td>  
+                <td style="width: 12%;border:1px solid black;text-align:center">
+                    <strong>FECHA</strong>
+                </td>
+                <td style="width: 12%;border:1px solid black;text-align:center">
+                    <strong>RESPONSABLE</strong>
+                </td>
+                <td style="width: 13%;border:1px solid black;text-align:center">
+                    <strong>FECHA</strong>
+                </td>
+                <td style="width: 13%;border:1px solid black;text-align:center">
+                    <strong>RESPONSABLE</strong>
+                </td>
+            </tr>
+        </table>
+        <% if  @inves_recomendations.present? %>
+            <table style="width: 100%;">
+            <%  @inves_recomendations.each do |inves_recomendation| %>
+                 <tr>
+                <td style="width: 29%;border:1px solid black;text-align:center">
+                    <%=  inves_recomendation.recomendation %>
+                </td>  
+                <td style="width: 7%;border:1px solid black;text-align:center">
+                       <% if  inves_recomendation.apply == 0 %>
+                            <strong>X</strong>
+                       <% end %>
+                </td>  
+                <td style="width: 7%;border:1px solid black;text-align:center">
+                       <% if  inves_recomendation.apply == 1 %>
+                            <strong>X</strong>
+                       <% end %>
+                </td>  
+                <td style="width: 7%;border:1px solid black;text-align:center">
+                       <% if  inves_recomendation.apply == 2 %>
+                            <strong>X</strong>
+                       <% end %>
+                </td>  
+                <td style="width: 12%;border:1px solid black;text-align:center">
+                    <%= inves_recomendation.date_implementation %>
+                </td>
+                <td style="width: 12%;border:1px solid black;text-align:center">
+                    <%=  User.label_name(inves_recomendation.responsible_implementation) %>
+                </td>
+                <td style="width: 13%;border:1px solid black;text-align:center">
+                    <%= inves_recomendation.date_verification %>
+                </td>
+                <td style="width: 13%;border:1px solid black;text-align:center">
+                    <%=  User.label_name(inves_recomendation.responsible_verification) %>
+                </td>
+                 </tr>
+            <% end %>
+            </table>
+        <% end %>
+        <div></br></div>
+        <table style="width: 100%;">
+            <tr style="background-color: #00aae4;">    
+                <td style="width: 100%;border:1px solid black;text-align:center">
+                    <strong>EQUIPO INVESTIGADOR</strong>
+                </td>  
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 50%;border:1px solid black;text-align:center">
+                    <strong>NOMBRE </strong>
+                </td>  
+                <td style="width: 25%;border:1px solid black;text-align:center">
+                    <strong>CARGO</strong>
+                </td>  
+                <td style="width: 25%;border:1px solid black;text-align:center">
+                    <strong>FIRMA</strong>
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <% if  @inves_users.present? %>
+                <%  @inves_users.each do |inves_user| %>
+                    <tr>    
+                        <td style="width: 50%;border:1px solid black;text-align:center">
+                            <strong><%=  inves_user.name %></strong>
+                        </td>  
+                        <td style="width: 25%;border:1px solid black;text-align:center">
+                            <strong><%=  inves_user.post %></strong>
+                        </td>  
+                        <td style="width: 25%;border:1px solid black;text-align:center">
+                                <% usu = User.buscar_user(inves_user.user_id) %>
+                                <% if inves_user.firm == 1 %>
+                                    <% if usu.present? %>
+                                        <% if usu.firm.attached? %>
+                                            <% if usu.firm.image? %> 
+                                                <div  style="padding: 0;height: 70px;display: flex;justify-content: center;align-items: flex-end;"><%= image_tag(Evaluation.wicked_blob_path(usu.firm), class: "firmapdf")%></div>
+                                            <% end %>
+                                        <% end %>
+                                    <% end %>     
+                                <% else %>
+                                        
+                                <% end %>
+
+                        </td>
+                      </tr>
+                <% end %>          
+            <% end %>
+        </table>
+        <div></br></div>
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 60%;border:1px solid black;text-align:center">
+                    <strong>NOMBRES Y APELLIDOS DEL PROFESIONAL EN SST </strong>
+                </td>  
+                <td style="width: 20%;border:1px solid black;text-align:center">
+                    <strong>LICENCIA N° </strong>
+                </td>  
+                <td style="width: 20%;border:1px solid black;text-align:center">
+                    <strong>DE: </strong>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 60%;border:1px solid black;text-align:center">
+                       <%=  User.label_name(@investigation.usr_profesional) %>
+                </td>
+                <td style="width: 20%;border:1px solid black;text-align:center">
+                    <%=  User.label_license(@investigation.usr_profesional) %>
+                </td>
+                <td style="width: 20%;border:1px solid black;text-align:center">
+                    <%=  @investigation.de %>
+                </td>
+            </tr>
+  
+        </table>
+        </br> 
+         <div></br></div>
+</div>        
+<br>
+
+ 

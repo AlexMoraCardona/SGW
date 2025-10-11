@@ -119,7 +119,11 @@ Rails.application.routes.draw do
   resources :inves_recomendations
   resources :inves_users
   resources :epp_recuests
+  resources :rooms
+  resources :lessons
 
+  get '/lessons/firma_leccion/:id', to: 'lessons#firma_leccion', as: 'firma_leccion'
+  get '/lessons/ver_leccion/:id', to: 'lessons#ver_leccion', as: 'ver_leccion'
   get '/inves_users/firma_inves/:id', to: 'inves_users#firma_inves', as: 'firma_inves'
   get '/investigations/equipo_investigador/:id', to: 'investigations#equipo_investigador', as: 'equipo_investigador'
   get '/investigations/recomendaciones/:id', to: 'investigations#recomendaciones', as: 'recomendaciones'

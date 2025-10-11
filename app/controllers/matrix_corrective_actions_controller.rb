@@ -120,17 +120,23 @@ class MatrixCorrectiveActionsController < ApplicationController
         @matrix_action_items = MatrixActionItem.where("matrix_corrective_action_id = ?", @matrix_corrective_action.id).order(:consecutive) if @matrix_corrective_action.present?
         @entity = Entity.find(@matrix_corrective_action.entity_id)  if @matrix_corrective_action.present?
         @template = Template.where("format_number = ? and document_vigente = ?",69,1).last  
-
+        
+        nombre_evidencia = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'resumen_pdf',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
+            format.pdf {
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('resumen_pdf'),
+                    orientation: 'Landscape',
+                    zoom: 0.50,
+                    disable_javascript: true,
+                    margin: {top: 10, bottom: 10, left: 5, right: 5 },
+                    page_size: 'letter',
+                    footer: {right: '[page] de [topage]'}
+                    
+                  )  
+                  send_data(pdf, filename: nombre_evidencia, disposition: 'attachment')      
+            }
         end
       
     end        
@@ -172,7 +178,7 @@ class MatrixCorrectiveActionsController < ApplicationController
 
     def matrix_corrective_action_params
         params.require(:matrix_corrective_action).permit(:user_legal_representative, :user_adviser_sst, 
-        :user_responsible_sst, :version, :code, :entity_id, :date_create, :date_update)
+        :user_responsible_sst, :version, :code, :entity_id, :date_create, :date_update, :hallazgo)
     end 
 end  
 

@@ -15,25 +15,26 @@
                 <th scope="col">Fecha</th>
                 <th scope="col">Capacitación</th>
                 <th scope="col">Asistió</th>
+                <th scope="col">Fecha firma asistencia</th>
             </tr>
         </thead>
-        <tbody>
-            <% if   @adm_attendances.present? %>
-                <%    @adm_attendances.each do |adm_attendance| %>
+        <tbody> 
+            <% if   @attendances.present? %>
+                <%    @attendances.each do |attendance| %>
                     <tr>
-                        <td><%= adm_attendance.date_attendance %></td>
-                        <td><%= adm_attendance.description %></td>
+                        <td><%= attendance.adm_attendance.date_attendance %></td>
+                        <td><%= attendance.adm_attendance.description %></td>
                         <td>
-                            <%  buscar =  Attendance.asistio(adm_attendance.id) %>
-                            <%  if buscar == 1 %>
+                            <%  if attendance.confirm_attendance == 1 %>
                                 <div> 
                                     <%= image_tag("caritafeliz.png", class: "carita-mini") %>
                                 </div> 
                             <%  else %>  
                                 <div>  
-                                    <%= link_to "Registrar Asistencia", registrar_asistencia_path(id: adm_attendance.id), class: 'btn btn-sm btn-primary' %>                        
+                                    <%= link_to "Registrar Asistencia", registrar_asistencia_path(id: attendance.id), class: 'btn btn-sm btn-primary' %>                        
                                 </div>
                             <%  end%>
+                            <td><%= attendance.date_attendance %></td>
                         </td>
                     </tr>
                 <% end %>        

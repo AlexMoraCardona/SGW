@@ -12,32 +12,36 @@ class AdmAttendance < ApplicationRecord
 
     def self.asistentes(dato)
         adm_attendance =  AdmAttendance.find(dato)
-        @attendances = Attendance.where("adm_attendance_id = ?",adm_attendance.id) if adm_attendance.present?
+        @attendances = Attendance.where("adm_attendance_id = ? and confirm_attendance = ?",adm_attendance.id,1) if adm_attendance.present?
     end    
 
     def self.pendientes(dato)
         adm_attendance =  AdmAttendance.find(dato)
-        attendances = Attendance.where("adm_attendance_id = ?",adm_attendance.id) if adm_attendance.present?
-        users = User.where("entity = ? and state = ? and level > ?",adm_attendance.entity_id,1,2) if adm_attendance.present?
+        attendances = Attendance.where("adm_attendance_id = ? and confirm_attendance = ?",adm_attendance.id,0) if adm_attendance.present?
 
         ca = []
-        if users.present?
-            users.each do |u|
-                sw = 0
-                if attendances.present?
-                    attendances.each do |a|
-                        if u.id == a.user_id
-                          sw = 1  
-                        end    
-                    end    
-                end
-                if sw == 0
-                    ca.push(u.name)                     
-                end    
+        if attendances.present?
+            attendances.each do |u|
+                ca.push(u.user.name)                     
             end    
         end
         return  ca 
     end
+
+
+    def self.crear_participantes(n, vector, id_adm_attendance)
+        i = 0
+        while i < n
+            @attendance = Attendance.new
+            @attendance.user_id = vector[i].to_i
+            @attendance.adm_attendance_id = id_adm_attendance
+            @attendance.confirm_attendance = 0
+            @attendance.save
+ 
+            i = i + 1
+        end        
+    end
+
 
 
 end

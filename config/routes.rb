@@ -122,6 +122,8 @@ Rails.application.routes.draw do
   resources :rooms
   resources :lessons
 
+  get '/adm_attendances/seleccion_participantes/:id', to: 'adm_attendances#seleccion_participantes', as: 'seleccion_participantes' 
+  post '/adm_attendances/seleccion_participantes/:id' => 'adm_attendances#citar_participantes', as: 'citar_participantes'
   get '/lessons/firma_leccion/:id', to: 'lessons#firma_leccion', as: 'firma_leccion'
   get '/lessons/ver_leccion/:id', to: 'lessons#ver_leccion', as: 'ver_leccion'
   get '/inves_users/firma_inves/:id', to: 'inves_users#firma_inves', as: 'firma_inves'

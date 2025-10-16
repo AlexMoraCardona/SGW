@@ -1,10 +1,10 @@
 class AttendancesController < ApplicationController
     def index
         if  Current.user && Current.user.level == 1
-            @adm_attendances = AdmAttendance.where("entity_id = ? and date_attendance = ?", Current.user.entity.to_i, Time.now)
+            @attendances = Attendance.where("user_id = ?", Current.user.id.to_i).order(id: :desc)
          else
             if Current.user && Current.user.level > 1
-                @adm_attendances = AdmAttendance.where("entity_id = ? and date_attendance = ?", Current.user.entity.to_i, Time.now)
+                @attendances = Attendance.where("user_id = ?", Current.user.id.to_i).order(id: :desc)
             else  
                 redirect_to new_session_path, alert: t('common.not_logged_in') 
                 session.delete(:user_id)      
@@ -47,20 +47,17 @@ class AttendancesController < ApplicationController
     end  
     
     def registrar_asistencia
-        adm_attendance = AdmAttendance.find(params[:id])
-        if adm_attendance.present?
-            @attendance = Attendance.new 
-            @attendance.date_attendance = Time.now
-            @attendance.confirm_attendance = 1
-            @attendance.adm_attendance_id = adm_attendance.id
-            @attendance.user_id = Current.user.id
-            if @attendance.save then
+        attendance = Attendance.find(params[:id])
+        if attendance.present? &&  (attendance.adm_attendance.date_attendance  + 7.days)  > Time.now      
+            attendance.date_attendance = Time.now
+            attendance.confirm_attendance = 1
+            if attendance.save then
                     redirect_to attendances_path, notice: t('.created') 
             else
                 redirect_to attendances_path, status: :unprocessable_entity
             end              
         else
-            render :attendances, status: :unprocessable_entity
+            redirect_to attendances_path, alert: 'No fue posible actualizar su asistencia', attendance: :see_other
         end    
     end 
     

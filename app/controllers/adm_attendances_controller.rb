@@ -1,10 +1,10 @@
 class AdmAttendancesController < ApplicationController
     def index
         if  Current.user && Current.user.level == 1
-            @adm_attendances = AdmAttendance.all
+            @adm_attendances = AdmAttendance.all.order(id: :desc)
         else
             if Current.user && Current.user.level > 1
-                @adm_attendances = AdmAttendance.where(entity_id: Current.user.entity).order(:id)
+                @adm_attendances = AdmAttendance.where(entity_id: Current.user.entity).order(id: :desc)
             else  
                 redirect_to new_session_path, alert: t('common.not_logged_in') 
                 session.delete(:user_id)      
@@ -72,6 +72,27 @@ class AdmAttendancesController < ApplicationController
 
 
     end    
+
+    def seleccion_participantes
+            @users = User.where("entity = ? and state = ?", Current.user.entity, 1)
+    end 
+
+    def citar_participantes
+        vector = params[:ids] 
+        n = 0
+        n = params[:ids].count if params[:ids].present?
+        id_adm_attendance = params[:id].to_i if params[:id].present?
+
+        if n > 0
+            AdmAttendance.crear_participantes(n, vector, id_adm_attendance)
+            redirect_to adm_attendances_path, notice: 'Participantes creados correctamente', calendar: :see_other
+        else
+            redirect_to adm_attendances_path, status: :unprocessable_entity, alert: 'No se seleccionó ningun usuario.' 
+        end    
+
+    end    
+
+
 
     private
 

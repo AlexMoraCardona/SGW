@@ -4,17 +4,33 @@
     <td><%= adm_attendance.entity.business_name %></td>
 
     <td><%= link_to t('common.edit'), edit_adm_attendance_path(adm_attendance), class: 'btn btn-sm btn-primary'  %></td>
-    <td><%= link_to "PDF", adm_attendance_pdf_path(adm_attendance.id, format: 'pdf'), class: 'btn btn-sm btn-outline-primary'  %></td>
     <td>
         <% @cant_reg =  AdmAttendance.contador(adm_attendance.id) %>
+        <% if @cant_reg > 0 %>
+            <button  class="btn btn-sm btn-outline-primary position-relative" disabled>
+                Participantes
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+                      <%= @cant_reg %>+
+                     <span class="visually-hidden">unread messages</span>
+                </span>
+            </button>
+        <% else %>
+            <%= link_to '<button class="btn btn-sm btn-outline-primary position-relative" type="button">Participantes</button>'.html_safe, seleccion_participantes_path(adm_attendance.id) %>
+        <% end %>   
+    </td>
+    <td><%= link_to "PDF", adm_attendance_pdf_path(adm_attendance.id, format: 'pdf'), class: 'btn btn-sm btn-outline-primary'  %></td>
+    <td>  
+        
         <% @attendances = AdmAttendance.asistentes(adm_attendance.id) %>
+        <% @count_registrados = 0  %>
+        <% @count_registrados = @attendances.count if @attendances.present? %>
 
         <% if @cant_reg.present? %>
             <!-- Button trigger modal --> 
             <button class="btn btn-sm btn-outline-primary position-relative" data-bs-toggle="modal" data-bs-target="#exampleModal<%= adm_attendance.id %>" >
                 Registrados
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                      <%= @cant_reg %>+
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+                      <%= @count_registrados %>+
                      <span class="visually-hidden">unread messages</span>
                 </span>
             </button>

@@ -5,7 +5,7 @@ class Evidence < ApplicationRecord
     has_many :firms
     has_many :participants
     has_rich_text :compliances
-
+    has_many_attached :evi_files
 
     def self.buscar_ciclophva(ciclo)
         entity = Entity.find(Current.user.entity.to_i)

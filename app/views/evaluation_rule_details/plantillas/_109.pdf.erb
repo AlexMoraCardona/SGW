@@ -1,0 +1,182 @@
+<head>
+    <meta charset='utf-8' />
+</head>
+<div class="container col-11 card p-5"> 
+    
+    <div><br></div>
+    <div><br></div>
+    <div><br></div>
+    <div><br></div>
+    <div style="text-align:center">
+                <strong>INFORME SEMANA DE LA SALUD</strong>
+    </div>
+    <div><br></div>
+    <div><br></div>
+    <div style="text-align:center">
+                <strong><%= @evidence.entity.business_name if @evidence.present? %></strong>
+    </div>
+
+
+    <div><br></div>
+    <div><br></div>
+
+    <div style="text-align:center">
+        <strong>Nit: <%= EvaluationRuleDetail.miles(@evidence.entity.identification_number) if @evidence.present? %>-<%= @evidence.entity.verification_digit if @evidence.entity.verification_digit.present? %></strong>
+    </div>
+
+    <div><br></div>
+
+    <div style="text-align:center">
+            <% if @evidence.entity.logo.present? then %>
+                <%= image_tag(Evaluation.wicked_blob_path(@evidence.entity.logo),:width => "100",  :height=>"100") %>
+            <% end %>   
+    </div>
+
+    <div style="text-align:center">
+                <strong>PROFESIONAL:</strong>
+    </div>
+    <div><br></div>
+    <div style="text-align:center">
+        <strong><%= @asesor_externo_ssst.name if @asesor_externo_ssst.present? %></strong>
+    </div>
+    <div><br></div>
+    <div style="text-align:center">
+                <strong>AÑO:</strong>
+    </div>
+    <div><br></div>
+    <div style="text-align:center">
+        <strong><%= @evidence.year_initial if @evidence.present? %></strong>
+    </div>
+
+    <div><br></div>
+    <div><br></div>
+
+
+    <p style='page-break-after:always;'></p>
+
+    <div><br></div>
+    <div><br></div>
+
+    <table> 
+        <tr>
+            <td style="text-align:center">
+                <strong>INTRODUCCIÓN</strong>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:center">
+                <div><br></div>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <p>La Semana de la Salud se llevó a cabo los días <strong><%= @evidence.period if @evidence.present? %></strong> en las instalaciones de <strong><%= @evidence.entity.business_name if @evidence.present? %></strong>, como una estrategia orientada a promover el cuidado integral de los colaboradores de la empresa.</p>
+                <p>La actividad fue liderada por el(la) Responsable de SST y el(la) Asesor(a) Externo(a) de SST, contando con la participación activa de profesionales y aliados estratégicos que desarrollaron actividades de prevención, orientación y bienestar.</p>
+                <p>La iniciativa permitió integrar la prevención de riesgos, la promoción de la salud física y mental, y actividades de relajación y recreación, en un espacio de participación activa que contribuyó al bienestar general de los funcionarios y al fortalecimiento de un entorno laboral seguro y saludable.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div> 
+    <table> 
+        <tr>
+            <td>
+                <strong>Objetivo General</strong>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <p>Promover la cultura de la prevención, el autocuidado y la seguridad entre los colaboradores de la empresa mediante la realización de actividades de sensibilización, educación y participación durante la <strong>Semana de la Salud</strong>.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div> 
+    <table> 
+        <tr>
+            <td>
+                <strong>Objetivos Específicos</strong>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <p>
+                    <ul>
+                        <li>Brindar información y orientación sobre la prevención de enfermedades y riesgos laborales.</li>
+                        <li>Fortalecer la conciencia sobre la importancia del autocuidado en la salud física, mental y emocional.</li>
+                        <li>Generar espacios de participación en actividades lúdicas, educativas y de bienestar que contribuyan a la seguridad y la salud en el trabajo.</li>
+                        <li>Motivar la adopción de estilos de vida saludable como estrategia de prevención de enfermedades y accidentes laborales.</li>
+                    </ul>
+                </p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div> 
+    <table> 
+        <tr>
+            <td>
+                <strong>Desarrollo de la actividad</strong>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <%= @evidence.compliances if @evidence.present? %>  
+            </td>
+        </tr>
+    </table> 
+    <div><br></div> 
+    <table> 
+        <tr>
+            <td>
+                <strong>Registro Asistencia: </strong>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <%= @evidence.goals if @evidence.present? %>  
+            </td>
+        </tr>
+        <div><br></div>
+        <tr>
+            <td>
+                <strong>Número de personas impactadas: </strong><%= @evidence.number_attendees if @evidence.present? %>
+            </td>
+        </tr>
+
+    </table> 
+    <div><br></div> 
+    <div><br></div> 
+    <table> 
+        <tr>
+            <td>
+                <strong>Evidencias Fotográficas: </strong>
+                <hr>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <br>
+                <% if @evidence.evi_files.attached? %>
+                    <div data-controller="previews" >
+                        <% @evidence.evi_files.each do |file|%>
+                            <br>
+                            <% if file.image? %>
+                                <div>
+                                    <%= image_tag(Evaluation.wicked_blob_path(file), height: "350", width: "auto")%>
+                                </div> 
+                            <% elsif file.video? %>
+                                <%= video_tag url_for(file), controls: "", width: "400px" %>          
+                            <% elsif file.audio? %>
+                                <%= audio_tag(url_for(file), controls: "") %>          
+                            <% else %>
+                                <%= link_to file.filename, url_for(file) %>          
+                            <% end %>
+                        <% end %>  
+                    </div>
+                <% end %> 
+            </td>
+        </tr>
+    </table> 
+    <div><br></div> 
+    <div><br></div>
+    <div><br></div>
+    <%= render 'firmaelaborodos' %>
+</div>

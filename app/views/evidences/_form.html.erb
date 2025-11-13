@@ -454,6 +454,34 @@
             </div>
         <% end %>
         
+        <% if @evidence.template.format_number == 109 then %>
+            <div class="row g-2">
+                <div class="col-sm-5">
+                    <%= form.label :year_initial, style: "display: block" %>
+                    <%= form.number_field :year_initial,  class: "form-control" %>
+                </div>
+                <div class="col-sm-5">
+                    <h6> Número de personas impactadas: </h6>
+                    <%= form.number_field :number_attendees,  class: "form-control" %>
+                </div>
+            </div>    
+            <div class="form-group">    
+                <h6> La Semana de la Salud se llevó a cabo los días: </h6>
+                <%= form.text_field :period,  class: "form-control" %>
+            </div>
+            <div class="form-group">    
+                <h6> Desarrollo de la actividad: </h6>
+                <%= form.rich_text_area :compliances,  class: "form-control" %>
+            </div>
+            <div class="form-group">    
+                <h6> Descripción registro asistencia: </h6>
+                <%= form.text_field :goals,  class: "form-control" %>
+            </div>
+            <div class="form-group">
+                <h5><%= form.label :"Adjuntar_Archivos:", style: "display: block" %></h5>
+                <%= form.file_field :evi_files, multiple: true %>
+            </div> 
+        <% end %>
         <br>
         <%= form.submit 'Guardar', class: "btn btn-primary", data: { turbo_confirm: 'Desea guardar los cambios?' }  %>     
         <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back  %>

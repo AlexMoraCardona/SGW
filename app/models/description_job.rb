@@ -4,6 +4,8 @@ class DescriptionJob < ApplicationRecord
     has_rich_text :competencies
     has_rich_text :job_functions
     has_rich_text :roles_responsibilities
+    has_rich_text :type_evaluation
+    has_rich_text :enfasis
 
 
     def label_state_job(dato)
@@ -25,4 +27,14 @@ class DescriptionJob < ApplicationRecord
         elsif  dato == 1 ; 'FIRMADO'
         end 
     end    
+
+    def self.label_area(area_id)
+        name = 'No encontrado'
+        if area_id > 0
+            area =  CompanyArea.find(area_id)
+            name =  area.name
+        end    
+        return  name 
+    end 
+
 end

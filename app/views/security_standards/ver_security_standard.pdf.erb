@@ -1,0 +1,179 @@
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <meta charset='utf-8' />
+    <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+    <%= javascript_importmap_tags %>
+</head>
+<br>
+<table style="border:0px solid black;width: 100%;">
+    <tr>
+        <td rowspan="2" style="border:1px solid black; width: 20%; text-align:center">
+            <% if @security_standard.entity.logo.present? then %>
+                <%=  image_tag  @security_standard.entity.logo, class: "image_peq" %>
+            <% end %>   
+        </td>
+        <td style="border:1px solid black; text-align:center">
+            <div class="col-10"><%= @security_standard.entity.business_name if @security_standard.present? %></div>
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; text-align:center">
+            <div class="col-10"><%= @template.name if @template.present? %></div>
+        </td>
+    </tr>
+</table>
+<table style="border:0px solid black;width: 100%;">
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            CÓDIGO:                 
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            &nbsp;&nbsp;<small class="text-muted"><%= @template.reference if @template.present? %></small>                
+        </td>
+
+        <td style="border:1px solid black; width: 25%">
+            VERSIÓN:                 
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            &nbsp;&nbsp;<small class="text-muted"><%= @template.version if @template.present? %></small>                
+        </td>
+    </tr>
+    <tr>    
+        <td style="border:1px solid black; width: 25%">
+            FECHA DE ELABORACIÓN:                 
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            &nbsp;&nbsp;<small class="text-muted"><%= @template.date if @template.present? %></small>                
+        </td>
+
+        <td style="border:1px solid black; width: 25%">
+            FECHA DE ACTUALIZACIÓN:                 
+        </td>
+        <td style="border:1px solid black; width: 25%">
+            &nbsp;&nbsp;<small class="text-muted"><%= @template.date_updated if @template.present? %></small>                
+        </td>
+    </tr>
+</table>
+<div class="container col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"> 
+    <div></br></div>
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 30%;border:1px solid black;padding: 5px;">
+                    <strong>FECHA:</strong>               
+                </td>
+                <td style="width: 70%;border:1px solid black;padding: 5px;">
+                    <%= @security_standard.date_standard  if @security_standard.present? %>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;padding: 5px;">
+                    <strong>AREA:</strong>                
+                </td>
+                <td style="width: 70%;border:1px solid black;padding: 5px;">
+                    <%= SecurityStandard.label_area(@security_standard.code_area)  %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;padding: 5px;">
+                    <strong>ELABORADO POR:</strong>                
+                </td>
+                <td style="width: 70%;border:1px solid black;padding: 5px;">
+                    <%= @user_elaborated.name if  @user_elaborated.present?%>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;padding: 5px;">
+                    <strong>OBJETIVO:</strong>                
+                </td>
+                <td style="width: 70%;border:1px solid black;padding: 5px;">
+                    <%= @security_standard.objetivo if  @security_standard.present?%>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;padding: 5px;">
+                    <strong>RIESGO ASOCIADO:</strong>                
+                </td>
+                <td style="width: 70%;border:1px solid black;padding: 5px;">
+                    <%= @security_standard.danger if  @security_standard.present?%>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;padding: 5px;">
+                    <strong>TIPO DE ACCIÓN:</strong>                
+                </td> 
+                <td style="width: 70%;border:1px solid black;padding: 5px;">
+                    <%= SecurityStandard.label_tipo(@security_standard.type_action) if  @security_standard.present?%>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;padding: 5px;">
+                    <strong>ELEMENTOS DE PROTECCION PERSONAL:</strong>                
+                </td>
+                <td style="width: 70%;border:1px solid black;padding: 5px;">
+                    <%= @security_standard.element_protection if  @security_standard.present?%>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;padding: 5px;">
+                    <strong>DESCRIPCIÓN DE LA ACTIVIDAD: </strong>                
+                </td>
+                <td style="width: 70%;border:1px solid black;padding: 5px;">
+                    <%= @security_standard.description_activity if  @security_standard.present?%>
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 100%;border:1px solid black;padding: 5px;text-align:center;background-color:#00aae4;">
+                    <strong>ESTANDAR DE SEGURIDAD : (mencionar actividad)</strong></br>                
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 100%;border:1px solid black;padding: 5px;">
+                    <%= @security_standard.standard_security  if @security_standard.present? %>                
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 60%;border:1px solid black;padding: 5px;">
+                    <strong>Elaborado por: </strong>           
+                    <%= @user_elaborated.name if @user_elaborated.present? %></br>
+                    <strong>Cargo: </strong>           
+                    <%= @security_standard.cargo_user_elaborated if @security_standard.present? %></br>
+                </td>
+                <td style="width: 40%;border:1px solid black;padding: 5px;text-align:center;">
+                    <% if @security_standard.firm_user_elaborated == 1 %>
+                        <div>
+                        <% if @user_elaborated.firm.attached? %>
+                            <% if @user_elaborated.firm.image? %> 
+                                <%= image_tag @user_elaborated.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>    
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 60%;border:1px solid black;padding: 5px;">
+                    <strong>Responsable SST: </strong>           
+                    <%= @user_asesor.name if @user_asesor.present? %></br>
+                    <strong>Cargo: </strong>           
+                    <%= @security_standard.cargo_user_asesor if @security_standard.present? %></br>
+                </td>
+                <td style="width: 40%;border:1px solid black;padding: 5px;text-align:center;">
+                    <% if @security_standard.firm_user_asesor == 1 %>
+                        <div>
+                        <% if @user_asesor.firm.attached? %>
+                            <% if @user_asesor.firm.image? %> 
+                                <%= image_tag @user_asesor.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>    
+                </td>
+            </tr>
+        </table>
+</div>    
+<div></br></div>
+<div></br></div>

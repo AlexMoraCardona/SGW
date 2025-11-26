@@ -1,0 +1,142 @@
+<div class="container col-12 card p-5">
+    <br> 
+    <%= form_with model: @simulacrum do |form| %>
+        <% @simulacrum.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %> 
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>FECHA DEL SIMULACRO</strong>
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <strong>AÑO</strong>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;text-align:center">
+                    <%= form.date_field :date_simulacrum,  class: "form-control" %>               
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                     <%= form.number_field :year,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>MUNICIPIO: </strong>
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <%= form.text_field :municipality,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>HORA: </strong>
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <%= form.time_field :time_simulacrum,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>PREPARACIÓN: </strong>               
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <%= form.rich_text_area :preparation,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>TIPO DE EMERGENCIA: </strong>
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <%= form.text_field :type_emergency,  class: "form-control" %>
+                </td>
+            </tr>
+        </table>   
+        <table style="width: 100%;"> 
+            <tr>    
+                <td style="width: 100%;border:1px solid black;text-align:center;">
+                    <strong>TIEMPOS DE EVACUACIÓN </strong>               
+                </td>
+            </tr>
+        </table>   
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>HORA SEÑAL DE ALERTA: </strong>
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <%= form.time_field :time_warning_signal,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>HORA SEÑAL DE ALARMA: </strong>
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <%= form.time_field :time_alarm_signal,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>TIEMPO DE LLEGADA DE TODO EL PERSONAL AL PUNTO DE ENCUENTRO: </strong>
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <%= form.time_field :time_arrival,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>GRUPOS DE APOYO: </strong>
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <%= form.text_area :support_group,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>NÚMEROS DE EMERGENCIA: </strong>
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <%= form.text_area :cel_emergency,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>CONCLUSIONES: </strong>               
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <%= form.rich_text_area :conclusions,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>RECOMENDACIONES: </strong>               
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <%= form.rich_text_area :recommendations,  class: "form-control" %>
+                </td>
+            </tr>
+        </table>  
+        <br>
+        <div class="container col-11 card p-5">
+            <div class="form-group">
+                <h5>Adjuntar_Archivos</h5>
+                <%= form.file_field :simulacro_files, multiple: true %>
+            </div> 
+        </div>
+        <br> 
+
+        </br> 
+        <%= form.hidden_field :user_asesor, :value => @user_asesor.id.to_i, class: "form-control" if @user_asesor.present? %>
+        <%= form.hidden_field :entity_id, :value => Current.user.entity.to_i, class: "form-control" if Current.user.present? %>
+        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    <% end %>
+</div>        
+<br>
+
+ 

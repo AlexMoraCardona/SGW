@@ -1,0 +1,127 @@
+<div align="left"; class="container col-12">
+    <a class="navbar-brand" href="/">
+        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+    </a>
+</div>
+<div class="container col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"> 
+    <%= render 'encabezado' %>
+    <div></br></div>
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 30%;border:1px solid black;padding: 5px;">
+                    <strong>FECHA:</strong>               
+                </td>
+                <td style="width: 70%;border:1px solid black;padding: 5px;">
+                    <%= @security_standard.date_standard  if @security_standard.present? %>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;padding: 5px;">
+                    <strong>AREA:</strong>                
+                </td>
+                <td style="width: 70%;border:1px solid black;padding: 5px;">
+                    <%= SecurityStandard.label_area(@security_standard.code_area)  %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;padding: 5px;">
+                    <strong>ELABORADO POR:</strong>                
+                </td>
+                <td style="width: 70%;border:1px solid black;padding: 5px;">
+                    <%= @user_elaborated.name if  @user_elaborated.present?%>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;padding: 5px;">
+                    <strong>OBJETIVO:</strong>                
+                </td>
+                <td style="width: 70%;border:1px solid black;padding: 5px;">
+                    <%= @security_standard.objetivo if  @security_standard.present?%>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;padding: 5px;">
+                    <strong>RIESGO ASOCIADO:</strong>                
+                </td>
+                <td style="width: 70%;border:1px solid black;padding: 5px;">
+                    <%= @security_standard.danger if  @security_standard.present?%>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;padding: 5px;">
+                    <strong>TIPO DE ACCIÓN:</strong>                
+                </td> 
+                <td style="width: 70%;border:1px solid black;padding: 5px;">
+                    <%= SecurityStandard.label_tipo(@security_standard.type_action) if  @security_standard.present?%>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;padding: 5px;">
+                    <strong>ELEMENTOS DE PROTECCION PERSONAL:</strong>                
+                </td>
+                <td style="width: 70%;border:1px solid black;padding: 5px;">
+                    <%= @security_standard.element_protection if  @security_standard.present?%>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;padding: 5px;">
+                    <strong>DESCRIPCIÓN DE LA ACTIVIDAD: </strong>                
+                </td>
+                <td style="width: 70%;border:1px solid black;padding: 5px;">
+                    <%= @security_standard.description_activity if  @security_standard.present?%>
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 100%;border:1px solid black;padding: 5px;text-align:center;background-color:#00aae4;">
+                    <strong>ESTANDAR DE SEGURIDAD : (mencionar actividad)</strong></br>                
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 100%;border:1px solid black;padding: 5px;">
+                    <%= @security_standard.standard_security  if @security_standard.present? %>                
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 60%;border:1px solid black;padding: 5px;">
+                    <strong>Elaborado por: </strong>           
+                    <%= @user_elaborated.name if @user_elaborated.present? %></br>
+                    <strong>Cargo: </strong>           
+                    <%= @security_standard.cargo_user_elaborated if @security_standard.present? %></br>
+                </td>
+                <td style="width: 40%;border:1px solid black;padding: 5px;text-align:center;">
+                    <% if @security_standard.firm_user_elaborated == 1 %>
+                        <div>
+                        <% if @user_elaborated.firm.attached? %>
+                            <% if @user_elaborated.firm.image? %> 
+                                <%= image_tag @user_elaborated.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>    
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 60%;border:1px solid black;padding: 5px;">
+                    <strong>Responsable SST: </strong>           
+                    <%= @user_asesor.name if @user_asesor.present? %></br>
+                    <strong>Cargo: </strong>           
+                    <%= @security_standard.cargo_user_asesor if @security_standard.present? %></br>
+                </td>
+                <td style="width: 40%;border:1px solid black;padding: 5px;text-align:center;">
+                    <% if @security_standard.firm_user_asesor == 1 %>
+                        <div>
+                        <% if @user_asesor.firm.attached? %>
+                            <% if @user_asesor.firm.image? %> 
+                                <%= image_tag @user_asesor.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>    
+                </td>
+            </tr>
+        </table>
+</div>    
+<div></br></div>
+<div></br></div>

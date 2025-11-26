@@ -1,0 +1,43 @@
+<% if @entity.present? %>
+    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
+<% end %>
+<%= link_to "Crear análisis", new_analysis_risk_path, class: 'btn btn-sm btn-primary' if Current.user.level > 0 &&  Current.user.level < 4 %> 
+ 
+<div class="container col-11">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Fecha</th>
+                <th scope="col">Área</th>
+                <th scope="col">Usuario elaboró</th>
+                <th scope="col">Crear paso</th>
+                <th scope="col">Firmar</th>
+                <th scope="col">Ver</th>
+                <th scope="col"><%= t('common.edit') %></th>
+                <th scope="col">PDF</th>
+            </tr>
+        </thead> 
+        <tbody>
+            <% @analysis_risks.each do |analysis_risk| %>
+                <tr> 
+                    <td scope="col"><%= analysis_risk.date_analysis.strftime("%F") if analysis_risk.date_analysis.present? %></td>  
+                    <td scope="col"><%= AnalysisRisk.label_area(analysis_risk.code_area)  %></td>  
+                    <td scope="col"><%= AnalysisRisk.label_user(analysis_risk.user_elaborated) %></td>
+                    <td scope="col"><%= link_to 'Crear paso', crear_item_paso_path(analysis_risk), class: 'btn btn-sm btn-warning' if Current.user.level > 0 && Current.user.level < 3 %></td>
+                    <% if analysis_risk.firm_user_elaborated == 0 %>
+                        <td scope="col"><%= link_to 'Firmar', firma_analisis_path(analysis_risk), class: 'btn btn-sm btn-warning'%></td>
+                    <% else %>
+                        <td scope="col"><%= analysis_risk.date_user_elaborated.strftime("%F") if analysis_risk.date_user_elaborated.present? %>
+                    <% end %>
+                    <td scope="col"><%= link_to 'Ver', analysis_risk_path(analysis_risk), class: 'btn btn-sm btn-primary'%></td>
+                    <td scope="col"><%= link_to 'Editar', edit_analysis_risk_path(analysis_risk.id), class: 'btn btn-sm btn-warning' if Current.user.level > 0 && Current.user.level < 3 %></td>
+                    <td scope="col"><%= link_to "PDF", ver_analysis_risk_path(analysis_risk.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
+                </tr>
+            <% end %>  
+        </tbody>      
+    </table>
+    </br>        
+</div>
+
+
+

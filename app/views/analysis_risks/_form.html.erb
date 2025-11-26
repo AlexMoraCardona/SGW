@@ -1,0 +1,105 @@
+<div class="container col-12 card p-5">
+    <br> 
+    <%= form_with model: @analysis_risk do |form| %>
+        <% @analysis_risk.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %> 
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Fecha en la que se aplica la lista de chequeo."><strong>FECHA DE ELABORACIÓN</strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>               
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Coloque el nombre del área o proceso donde se ejecuta la actividad o trabajo, ej.: Mantenimiento, Mercadeo, facturación."><strong>ÁREA</strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>                              
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;text-align:center">
+                    <%= form.date_field :date_analysis,  class: "form-control" %>               
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <%= form.collection_select :code_area, @company_areas, :id, :name if @company_areas.present? %>
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 50%;border:1px solid black;">
+                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Describir los aspectos se quieren revisar."><strong>Descripcion de la Actividad: </strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>               
+                </td>
+                <td style="width: 50%;border:1px solid black;">
+                    <%= form.text_area :description_activity,  class: "form-control" %>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 50%;border:1px solid black;">
+                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Marque  si o no según corresponda la actividad."><strong>Actividad rutinaria: </strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>               
+                </td>
+                <td style="width: 50%;border:1px solid black;">
+                    <%= form.radio_button :routine_activity, 0 %>
+                    <label for="no">NO</label>
+                    <%= form.radio_button :routine_activity, 1 %>
+                    <label for="si">SI</label>                    
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 50%;border:1px solid black;">
+                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Describa el tipo de herramientas y/o equipos  de cada una de las herramientas y/o equipos que utilizara en la tarea a ejecutar."><strong>Elementos de protección requeridos: </strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>               
+                </td>
+                <td style="width: 50%;border:1px solid black;">
+                    <%= select_tag :epp_requested, options_from_collection_for_select(@protection_elements, :id, :name), multiple: true, class: 'form-control input-sm select2', :prompt  =>  '--Seleccione los EPP--' %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 50%;border:1px solid black;">
+                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Relacione que accidentes se han presentado realizando la actividad."><strong>Antecedentes de accidentes laborales relacionados con la actividad: </strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>               
+                </td>
+                <td style="width: 50%;border:1px solid black;">
+                     <%= form.text_area :accident,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 50%;border:1px solid black;">
+                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title=" Describa el tipo de equipos  de protección se deben utilizara en la tarea a ejecutar y según indicaciones de la ficha técnica de cada EPP."><strong>Herramientas e Implementos  a utilizar: </strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>               
+                </td>
+                <td style="width: 50%;border:1px solid black;">
+                     <%= form.text_area :tools_use,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 50%;border:1px solid black;">
+                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Relacione que capacitación  e información a recibido frente a la actividad a realiza: Ejemplo uso de EPP, autocuidado."><strong>Capacitación/informacion  relacionado con la actividad: </strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>               
+                </td>
+                <td style="width: 50%;border:1px solid black;">
+                     <%= form.text_area :training_activity,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 50%;border:1px solid black;">
+                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Describa las actividades que tiene relación con el ARO."><strong>Actividades donde aplica el estandar: </strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>               
+                </td>
+                <td style="width: 50%;border:1px solid black;">
+                     <%= form.text_area :activity_standar,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 50%;border:1px solid black;">
+                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Complemente características o recomendaciones frente al aspecto a evaluar."><strong>Observaciones: </strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>               
+                </td>
+                <td style="width: 50%;border:1px solid black;">
+                     <%= form.text_area :observations,  class: "form-control" %>
+                </td>
+            </tr>
+        </table>
+       </br> 
+        <%= form.hidden_field :user_elaborated, :value => Current.user.id.to_i, class: "form-control" if Current.user.present? %>
+        <%= form.hidden_field :entity_id, :value => Current.user.entity.to_i, class: "form-control" if Current.user.present? %>
+        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    <% end %>
+</div>        
+<br>
+
+ 

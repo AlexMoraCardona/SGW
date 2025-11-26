@@ -105,7 +105,7 @@ class MatrixGoalsController < ApplicationController
     end    
     #pendiente corregir
     def crear_item_goal 
-        @protection_elements = ProtectionElement.where("(entity = ? or entity = ?) and state_protection = ?",0,Current.user.entity,1)
+        @protection_elements = ProtectionElement.where("(entity = ? or entity = ?) and state_protection = ?",6,Current.user.entity,1)
         @matrix_goal_item = MatrixGoalItem.new  
         @cant = 0
         @matrix_goal_items = MatrixGoalItem.where("matrix_goal_id = ?", params[:id]) if params[:id].present?

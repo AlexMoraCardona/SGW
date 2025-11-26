@@ -32,7 +32,7 @@ class EppRecuestsController < ApplicationController
 
     def new
       @epp_recuest = EppRecuest.new  
-      @protection_elements = ProtectionElement.where("entity = ?",Current.user.entity)
+      @protection_elements = ProtectionElement.where("(entity = ? or entity = ?) and state_protection = ?",6,Current.user.entity,1)
     end    
 
     def create
@@ -48,7 +48,7 @@ class EppRecuestsController < ApplicationController
     def edit
         @epp_recuest = EppRecuest.find(params[:id])
         @entity = Entity.find(@epp_recuest.entity_id) if @epp_recuest.present?
-        @protection_elements = ProtectionElement.where("entity = ?",@epp_recuest.entity_id) if @epp_recuest.present?
+        @protection_elements = ProtectionElement.where("(entity = ? or entity = ?) and state_protection = ?",6,Current.user.entity,1)
     end
     
     def show

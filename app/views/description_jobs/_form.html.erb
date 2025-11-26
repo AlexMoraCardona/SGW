@@ -22,6 +22,14 @@
                 </tr>
                 <tr> 
                     <td style="width: 40%;border:1px solid black; background-color: #00aae4;">
+                        <strong>Área:</strong>               
+                    </td>
+                    <td style="width: 60%;border:1px solid black;">
+                        <%= form.collection_select :area, @company_areas, :id, :name if @company_areas.present? %>
+                    </td>
+                </tr>
+                <tr> 
+                    <td style="width: 40%;border:1px solid black; background-color: #00aae4;">
                         <strong><%= form.label :immediate_boss, style: "display: block" %></strong>               
                     </td>
                     <td style="width: 60%;border:1px solid black;">
@@ -127,6 +135,51 @@
                         <%= form.rich_text_area :roles_responsibilities, class: "form-control" %>
                     </td>
                 </tr>
+                <tr>    
+                    <td style="width: 100%;border:1px solid black; text-align:center; background-color: #00aae4;">
+                        <strong>Peligros y riesgos asociados </strong>               
+                    </td>
+                </tr>
+                <tr>    
+                    <td style="width: 100%;border:1px solid black;">
+                        <div><%= form.grouped_collection_select(:risks_steps, ClasificationDanger.order(:name), :clasification_danger_details, :name, :id, :name, { prompt: "Seleccione los Peligros y riesgos" }, { multiple: true, class: 'form-control' })   %></div>
+                    </td>
+                </tr>
+                <tr>    
+                    <td style="width: 100%;border:1px solid black; text-align:center; background-color: #00aae4;">
+                        <strong>Elementos de Protección Personal</strong>               
+                    </td>
+                </tr>
+                <tr>    
+                    <td style="width: 100%;border:1px solid black;">
+                        <%= select_tag :epp_requested, options_from_collection_for_select(@protection_elements, :id, :name), multiple: true, class: 'form-control input-sm select2', :prompt  =>  '--Seleccione los EPP--' %>
+                    </td>
+                </tr>
+                <tr>    
+                    <td style="width: 100%;border:1px solid black; text-align:center; background-color: #00aae4;">
+                        <strong>Evaluaciones médicas</strong>               
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 100%;">
+                <tr>    
+                    <td style="width: 50%;border:1px solid black; text-align:center; background-color: #00aae4;">
+                        <strong>Tipo de evaluación</strong>               
+                    </td>
+                    <td style="width: 50%;border:1px solid black; text-align:center; background-color: #00aae4;">
+                        <strong>Enfasis</strong>               
+                    </td>
+                </tr>
+                <tr>    
+                    <td style="width: 50%;border:1px solid black;">
+                        <%= form.rich_text_area :type_evaluation, class: "form-control" %>               
+                    </td>
+                    <td style="width: 50%;border:1px solid black;">
+                        <%= form.rich_text_area :enfasis, class: "form-control" %>               
+                    </td>
+                </tr>
+            </table>
+            <table>
                 <tr>    
                     <td style="width: 100%;border:1px solid black; text-align:center; background-color: #00aae4;">
                         <strong>Observaciones</strong>               

@@ -1,0 +1,162 @@
+<div align="left"; class="container col-12">
+    <a class="navbar-brand" href="/">
+        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+    </a>
+</div>
+<div class="container col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"> 
+    <%= render 'encabezado' %>
+    <div></br></div>
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 50%;border:1px solid black;padding: 5px;">
+                    <strong>Fecha de elaboración:</strong>               
+                </td>
+                <td style="width: 50%;border:1px solid black;padding: 5px;">
+                    <%= @analysis_risk.date_analysis  if @analysis_risk.present? %>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 50%;border:1px solid black;padding: 5px;">
+                    <strong>Área:</strong>                
+                </td>
+                <td style="width: 50%;border:1px solid black;padding: 5px;">
+                    <%= AnalysisRisk.label_area(@analysis_risk.code_area)  %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 50%;border:1px solid black;padding: 5px;">
+                    <strong>Descripcion de la Actividad:</strong>                
+                </td>
+                <td style="width: 50%;border:1px solid black;padding: 5px;">
+                    <%= @analysis_risk.description_activity  if @analysis_risk.present? %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 50%;border:1px solid black;padding: 5px;">
+                    <strong>Actividad rutinaria:</strong>                
+                </td>
+                <td style="width: 50%;border:1px solid black;padding: 5px;">
+                        <% if @analysis_risk.routine_activity == 0 %>
+                            NO
+                        <% else %>    
+                           SI     
+                        <% end %>    
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 50%;border:1px solid black;padding: 5px;">
+                    <strong>Elementos de protección requeridos:</strong>                
+                </td>
+                <td style="width: 50%;border:1px solid black;padding: 5px;">
+                    <%= @analysis_risk.epp_requested  %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 50%;border:1px solid black;padding: 5px;">
+                    <strong>Antecedentes de accidentes laborales relacionados con la actividad:</strong>                
+                </td>
+                <td style="width: 50%;border:1px solid black;padding: 5px;">
+                    <%= @analysis_risk.accident  %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 50%;border:1px solid black;padding: 5px;">
+                    <strong>Herramientas e Implementos  a utilizar:</strong>                
+                </td>
+                <td style="width: 50%;border:1px solid black;padding: 5px;">
+                    <%= @analysis_risk.tools_use  %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 50%;border:1px solid black;padding: 5px;">
+                    <strong>Capacitación/informacion  relacionado con la actividad:</strong>                
+                </td>
+                <td style="width: 50%;border:1px solid black;padding: 5px;">
+                    <%= @analysis_risk.training_activity  %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 50%;border:1px solid black;padding: 5px;">
+                    <strong>Actividades donde aplica el estandar:</strong>                
+                </td>
+                <td style="width: 50%;border:1px solid black;padding: 5px;">
+                    <%= @analysis_risk.activity_standar  %>
+                </td>
+            </tr>
+        </table>
+        <div></br></div>
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 23%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+                    <strong>Pasos básicos del oficio:</strong>               
+                </td>
+                <td style="width: 23%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+                    <strong>Acciones:</strong>               
+                </td>
+                <td style="width: 23%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+                    <strong>Riesgo y peligros potenciales:</strong>               
+                </td>
+                <td style="width: 23%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+                    <strong>Medidas preventivas y/o correctivas a aplicar:</strong>               
+                </td>
+                <td style="width: 8%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+                    <strong>Editar</strong>               
+                </td>
+            </tr>
+            <% if @analysis_risk_items.present? %>
+                <%  @analysis_risk_items.each do |item| %>
+                    <tr>    
+                        <td style="width: 23%;border:1px solid black;padding: 5px;">
+                            <%= item.basic_steps  %>               
+                        </td>
+                        <td style="width: 23%;border:1px solid black;padding: 5px;">
+                            <%= item.actions_steps  %>                
+                        </td>
+                        <td style="width: 23%;border:1px solid black;padding: 5px;">
+                             <%= item.risks_steps  %>               
+                        </td>
+                        <td style="width: 23%;border:1px solid black;padding: 5px;">
+                            <%= item.measures_steps  %>               
+                        </td>
+                        <td style="width: 8%;border:1px solid black;text-align:center;padding: 5px;">
+                            <%= link_to t('common.edit_analysis_risks_item'), edit_analysis_risk_item_path(item.id), class: 'btn btn-sm btn btn-warning' %>               
+                        </td>
+                    </tr>
+                
+                <% end %>               
+            <% end %>               
+        </table>
+        <div></br></div>
+        <div><%= link_to 'Crear paso', crear_item_paso_path(@analysis_risk), class: 'btn btn-sm btn-warning' if Current.user.level > 0 && Current.user.level < 3 %></div>
+        <div></br></div>
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 100%;border:1px solid black;padding: 5px;">
+                    <strong>Observaciones:</strong></br>                
+                    <%= @analysis_risk.observations %>
+                </td>
+            </tr>
+        </table>
+        <div></br></div>
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 60%;border:1px solid black;padding: 5px;">
+                    <strong>Elaborado por: </strong>                
+                    <%= @user.name if @user.present? %></br>
+                    <strong>Cargo: </strong> <%= @analysis_risk.history if @analysis_risk.present? %>
+                </td>
+                <td style="width: 40%;border:1px solid black;padding: 5px;text-align:center;">
+                    <% if @analysis_risk.firm_user_elaborated == 1 %>
+                        <div>
+                        <% if @user.firm.attached? %>
+                            <% if @user.firm.image? %> 
+                                <%= image_tag @user.firm, class: "firma" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>    
+                </td>
+            </tr>
+        </table>
+</div>    
+<div></br></div>
+<div></br></div>

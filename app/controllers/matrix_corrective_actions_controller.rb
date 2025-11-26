@@ -172,6 +172,10 @@ class MatrixCorrectiveActionsController < ApplicationController
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Responsable en SST."
             end    
         end
+    end 
+    
+    def ver_adjunto_acpm
+        @matrix_action_item = MatrixActionItem.find_by(id: params[:id].to_i)
     end    
 
     private

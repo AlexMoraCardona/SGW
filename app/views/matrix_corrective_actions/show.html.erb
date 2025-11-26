@@ -8,13 +8,12 @@
     <table class="table table-hover" style="border:1px solid black"> 
         <thead>
             <tr>
-                <td style="background-color: black;">&nbsp;</td>
                 <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 70px;">
                     <% if @matrix_corrective_action.entity.logo.present? then %>
                         <%=  image_tag  @matrix_corrective_action.entity.logo, class: "image_peq" %>
                     <% end %>
                 </td>
-                <td rowspan="4"; colspan="12"; style="text-align:center;padding-bottom: 70px;">
+                <td rowspan="4"; colspan="13"; style="text-align:center;padding-bottom: 70px;">
                     <div class="col-10"><h5>MATRIZ DE SEGUIMIENTO DE ACCIONES CORRECTIVAS PREVENTIVAS Y DE MEJORA</h5><h6><%= @matrix_corrective_action.entity.business_name if @matrix_corrective_action.present? %> Nit: <%= @matrix_corrective_action.entity.identification_number if @matrix_corrective_action.present? %> </h6></div>
                 </td>
                 <td rowspan="4";  style="text-align:center">
@@ -22,39 +21,29 @@
                 <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
 
                 <td style="border:1px solid black"><%= @template.date if @template.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
             </tr>
        
             <tr> 
-                <td style="background-color: black;">&nbsp;</td>
                 <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
                 <td style="border:1px solid black"><%= @template.date_updated if @template.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
             </tr>
             <tr> 
-                <td style="background-color: black;">&nbsp;</td>
                 <td colspan="2"; style="border:1px solid black">Versión:</td>
                 <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
             </tr>
             <tr> 
-                <td style="background-color: black;">&nbsp;</td>
                 <td colspan="2"; style="border:1px solid black">Código:</td>
                 <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
             </tr>
             
 
             <tr>
-                <td style="background-color: black;">&nbsp;</td>
                 <td colspan="10"; style="border:1px solid black; text-align:center">INFORMACIÓN DE LA ACCIÓN CORRECTIVA, PREVENTIVA Y DE MEJORA </TD>
                 <td colspan="3"; style="border:1px solid black; text-align:center">MEDIDAS DE INTERVENCIÓN NECESARIAS</td>
                 <td style="border:1px solid black; text-align:center">CIERRE DE LA ACCIÓN CORRECTIVA O DE MEJORA</td>
-                <td colspan="3"; style="border:1px solid black; text-align:center">VERIFICACIÓN DE LA EFICACIA</td>
-                <td style="background-color: black;">&nbsp;</td>
+                <td colspan="4"; style="border:1px solid black; text-align:center">VERIFICACIÓN DE LA EFICACIA</td>
             </tr>            
             <tr>  
-                <td style="background-color: black;">&nbsp;</td>
                 <td style="border:1px solid black; text-align:center">Item</TD>
                 <td style="border:1px solid black; text-align:center">Año</TD>
                 <td style="border:1px solid black; text-align:center">N°Acción</TD>
@@ -71,14 +60,13 @@
                 <td style="border:1px solid black; text-align:center">Fecha de Cierre</TD>
                 <td style="border:1px solid black; text-align:center">Se realizaron la Acciones</TD>
                 <td style="border:1px solid black; text-align:center">Estado de las Acciones</TD>
-                <th scope="col" style="border:1px solid black">Editar</th>                
-                <td style="background-color: black;">&nbsp;</td>
+                <th scope="col" style="border:1px solid black; text-align:center">Ver</th>                
+                <th scope="col" style="border:1px solid black; text-align:center">Editar</th>                
              </tr>            
         </thead>
         <% @matrix_action_items.each do |item| %>             
             <tbody>
                 <tr>
-                    <td style="background-color: black;">&nbsp;</td>
                     <td style="border:1px solid black"><%= item.consecutive %></td>
                     <td style="border:1px solid black"><%= item.year %></td> 
                     <td style="border:1px solid black"><%= item.clasification_type_corrective %></td>
@@ -103,8 +91,8 @@
                     <td style="border:1px solid black"><%= item.closet_date %></td>
                     <td style="border:1px solid black"><%= item.label_si_no(item.took_actions) %></td>
                     <td style="border:1px solid black"><%= item.label_state_actions(item.state_actions) %></td>
-                    <td style="border:1px solid black"><%= link_to t('common.edit'), edit_matrix_action_item_path(item), class: 'btn btn-xs btn-primary'  %></td>
-                    <td style="background-color: black;">&nbsp;</td>
+                    <td style="border:1px solid black"><%= link_to 'Ver adjunto', ver_adjunto_acpm_path(item), class: 'btn btn-sm btn-primary'  %></td>
+                    <td style="border:1px solid black"><%= link_to t('common.edit'), edit_matrix_action_item_path(item), class: 'btn btn-sm btn-primary'  %></td>
                 </tr>
             </body>
         <% end %>

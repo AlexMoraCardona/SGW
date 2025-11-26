@@ -1,0 +1,113 @@
+<div class="container col-12 card p-5">
+    <br> 
+    <%= form_with model: @change_management do |form| %>
+        <% @change_management.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %> 
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>FECHA DE ELABORACIÓN</strong>
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <strong>ÁREA</strong>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;text-align:center">
+                    <%= form.date_field :date_change,  class: "form-control" %>               
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <%= form.collection_select :code_area, @company_areas, :id, :name if @company_areas.present? %>
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>DESCRIPCIÓN DEL CAMBIO: </strong>
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <%= form.rich_text_area :description_change,  class: "form-control" %>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>ANÁLISIS DE RIESGOS Y ASPECTOS / REQUISITOS LEGALES APLICABLES: </strong>               
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <%= form.rich_text_area :analisys_change,  class: "form-control" %>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>RECOMENDACIONES DEL ADMINISTRADOR DEL SG-SST: </strong>               
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <%= form.rich_text_area :recomendations_change,  class: "form-control" %>               
+                </td>
+            </tr>
+        </table>   
+        <table style="width: 100%;"> 
+            <tr>    
+                <td style="width: 100%;border:1px solid black;text-align:center;">
+                    <strong>ANÁLISIS DEL IMPACTO DEL SISTEMA  </strong>               
+                </td>
+            </tr>
+        </table>   
+        <table style="width: 100%;"> 
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>PELIGROS Y RIESGOS: </strong>               
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <div class="col-sm-10" > 
+                        <div><%= form.grouped_collection_select(:dangers_change, ClasificationDanger.order(:name), :clasification_danger_details, :name, :id, :name, { prompt: "Seleccione los Peligros y riesgos" }, { multiple: true, class: 'form-control' })   %></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>REQUISITOS LEGALES: </strong>
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                     <%= form.text_area :requeriment_legal,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>CONTROL OPERATIVO: </strong>
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                     <%= form.text_area :operational_control,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>PROCEDIMIENTOS  DE TRABAJO: </strong>               
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                     <%= form.text_area :work_procedure,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>OTROS: </strong>               
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                     <%= form.text_area :others,  class: "form-control" %>
+                </td>
+            </tr>
+        </table>
+       </br> 
+        <%= form.hidden_field :user_elaborated, :value => Current.user.id.to_i, class: "form-control" if Current.user.present? %>
+        <%= form.hidden_field :entity_id, :value => Current.user.entity.to_i, class: "form-control" if Current.user.present? %>
+        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    <% end %>
+</div>        
+<br>
+
+ 

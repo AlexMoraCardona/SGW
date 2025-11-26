@@ -16,10 +16,48 @@ class DescriptionJobsController < ApplicationController
 
     def new
       @description_job = DescriptionJob.new  
+      @protection_elements = ProtectionElement.where("(entity = ? or entity = ?) and state_protection = ?",6,Current.user.entity,1)
+      @company_areas = CompanyArea.where("entity_id = ?",Current.user.entity.to_i) if Current.user.entity.present?
     end    
 
     def create
         @description_job = DescriptionJob.new(description_job_params)
+
+        if params[:epp_requested].present?
+            epps = ''
+            params[:epp_requested].each do |dato|
+                epp = ProtectionElement.find(dato) if dato.present?
+                if epp.present?
+                    epps << epp.name + ", "
+                end    
+            end
+            @description_job.epp_requested =  epps if epps.present?
+        end    
+        if params[:description_job][:risks_steps].present?
+            risks = ''
+            dangers = ''
+            efectos = ''
+            params[:description_job][:risks_steps].each do |dato|
+                risk = ClasificationDangerDetail.find(dato) if dato.present?
+                busqueda_efectos = ''
+                efectos_total = DangerDetailRisk.where("clasification_danger_detail_id = ?",risk.id) if risk.present?
+                if risk.present?
+                    risks << ' *' + risk.clasification_danger.name + ", "
+                    dangers << ' *' + risk.name + ", "
+                    if efectos_total.present?
+                        efectos_total.each do |efe|
+                            busqueda_efectos << efe.name + ", "
+                        end    
+                    end    
+                     
+                    efectos << ' *' + busqueda_efectos + ", "
+                end    
+            end
+            @description_job.risks_steps =  risks if risks.present?
+            @description_job.risks_peligro =  dangers if dangers.present?
+            @description_job.risks_salud =  efectos if efectos.present?
+        end    
+
 
         if @description_job.save then
             redirect_to description_jobs_path, notice: t('.created') 
@@ -31,6 +69,9 @@ class DescriptionJobsController < ApplicationController
     def edit
         @description_job = DescriptionJob.find(params[:id])
         @entity = Entity.find(@description_job.entity_id) if @description_job.present?
+        @protection_elements = ProtectionElement.where("(entity = ? or entity = ?) and state_protection = ?",6,Current.user.entity,1)
+        @company_areas = CompanyArea.where("entity_id = ?",Current.user.entity.to_i) if Current.user.entity.present?
+
     end
     
     def show
@@ -44,6 +85,42 @@ class DescriptionJobsController < ApplicationController
 
     def update
         @description_job = DescriptionJob.find(params[:id])
+
+        if params[:epp_requested].present?
+            epps = ''
+            params[:epp_requested].each do |dato|
+                epp = ProtectionElement.find(dato) if dato.present?
+                if epp.present?
+                    epps << epp.name + ", "
+                end    
+            end
+            @description_job.epp_requested =  epps if epps.present?
+        end    
+        if params[:description_job][:risks_steps].present?
+            risks = ''
+            dangers = ''
+            efectos = ''
+            params[:description_job][:risks_steps].each do |dato|
+                risk = ClasificationDangerDetail.find(dato) if dato.present?
+                busqueda_efectos = ''
+                efectos_total = DangerDetailRisk.where("clasification_danger_detail_id = ?",risk.id) if risk.present?
+                if risk.present?
+                    risks << ' *' + risk.clasification_danger.name + ", "
+                    dangers << ' *' + risk.name + ", "
+                    if efectos_total.present?
+                        efectos_total.each do |efe|
+                            busqueda_efectos << efe.name + ", "
+                        end    
+                    end    
+                     
+                    efectos << ' *' + busqueda_efectos + ", "
+                end    
+            end
+            @description_job.risks_steps =  risks if risks.present?
+            @description_job.risks_peligro =  dangers if dangers.present?
+            @description_job.risks_salud =  efectos if efectos.present?
+        end    
+
         if @description_job.update(description_job_params)
             redirect_to description_job_path(@description_job.id), notice: 'Cargo actualizado correctamente'
         else
@@ -120,6 +197,7 @@ class DescriptionJobsController < ApplicationController
           :working_hours, :required_knowledge, :competencies, :job_functions,
            :roles_responsibilities, :observations, :user_elaboro, :user_reviso,
             :user_aprobo, :date_firm_elaboro, :date_firm_reviso, :date_firm_aprobo,
-             :firm_elaboro, :firm_reviso, :firm_aprobo, :state_job )
+             :firm_elaboro, :firm_reviso, :firm_aprobo, :state_job, :area, :risks_steps, 
+             :risks_peligro, :risks_salud, :epp_requested, :type_evaluation, :enfasis)
     end 
 end  

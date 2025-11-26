@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_10_09_145012) do
+ActiveRecord::Schema[7.0].define(version: 2025_11_25_193319) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -191,6 +191,38 @@ ActiveRecord::Schema[7.0].define(version: 2025_10_09_145012) do
     t.index ["adm_exam_id"], name: "index_allow_exams_on_adm_exam_id"
     t.index ["entity_id"], name: "index_allow_exams_on_entity_id"
     t.index ["user_id"], name: "index_allow_exams_on_user_id"
+  end
+
+  create_table "analysis_risk_items", force: :cascade do |t|
+    t.string "basic_steps"
+    t.string "actions_steps"
+    t.string "risks_steps"
+    t.string "measures_steps"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "analysis_risk_id"
+    t.index ["analysis_risk_id"], name: "index_analysis_risk_items_on_analysis_risk_id"
+  end
+
+  create_table "analysis_risks", force: :cascade do |t|
+    t.date "date_analysis"
+    t.integer "code_area", default: 0
+    t.string "description_activity"
+    t.integer "routine_activity", default: 0
+    t.string "epp_requested"
+    t.string "accident"
+    t.string "history"
+    t.string "tools_use"
+    t.string "training_activity"
+    t.string "activity_standar"
+    t.string "observations"
+    t.integer "user_elaborated", default: 0
+    t.date "date_user_elaborated"
+    t.integer "firm_user_elaborated", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_analysis_risks_on_entity_id"
   end
 
   create_table "annual_work_plan_items", force: :cascade do |t|
@@ -378,6 +410,38 @@ ActiveRecord::Schema[7.0].define(version: 2025_10_09_145012) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "change_management_items", force: :cascade do |t|
+    t.string "activity_plannig"
+    t.integer "responsible_planning", default: 0
+    t.string "communicate_change"
+    t.date "date_execution"
+    t.date "date_continue"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "change_management_id"
+    t.index ["change_management_id"], name: "index_change_management_items_on_change_management_id"
+  end
+
+  create_table "change_managements", force: :cascade do |t|
+    t.date "date_change"
+    t.integer "code_area", default: 0
+    t.string "description_change"
+    t.string "analisys_change"
+    t.string "recomendations_change"
+    t.string "dangers_change"
+    t.string "requeriment_legal"
+    t.string "operational_control"
+    t.string "work_procedure"
+    t.string "others"
+    t.integer "user_elaborated", default: 0
+    t.date "date_user_elaborated"
+    t.integer "firm_user_elaborated", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_change_managements_on_entity_id"
+  end
+
   create_table "clasification_danger_details", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -503,6 +567,13 @@ ActiveRecord::Schema[7.0].define(version: 2025_10_09_145012) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "entity_id", null: false
+    t.integer "area", default: 0
+    t.string "risks_steps"
+    t.string "risks_peligro"
+    t.string "risks_salud"
+    t.string "epp_requested"
+    t.string "type_evaluation"
+    t.string "enfasis"
     t.index ["entity_id"], name: "index_description_jobs_on_entity_id"
   end
 
@@ -1742,6 +1813,39 @@ ActiveRecord::Schema[7.0].define(version: 2025_10_09_145012) do
     t.index ["user_id"], name: "index_meeting_minutes_on_user_id"
   end
 
+  create_table "mock_scripts", force: :cascade do |t|
+    t.string "space_for"
+    t.date "date_script"
+    t.time "time_script"
+    t.string "type_emergency"
+    t.integer "user_representante", default: 0
+    t.string "name_coordinator"
+    t.string "name_brigade"
+    t.string "name_evacuation"
+    t.string "external_soport"
+    t.string "officer_committee"
+    t.string "coordinator_drill"
+    t.string "alert_activation"
+    t.string "evacuation_count"
+    t.string "evacuation_first"
+    t.string "evacuation_second"
+    t.string "withdraw_kit"
+    t.string "withdraw_stretcher"
+    t.string "withdraw_extinguisher"
+    t.string "verification"
+    t.string "return_indication"
+    t.string "routes_evacuation"
+    t.string "emergency_exit"
+    t.string "emergency_resources"
+    t.integer "user_asesor", default: 0
+    t.date "date_user_asesor"
+    t.integer "firm_user_asesor", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_mock_scripts_on_entity_id"
+  end
+
   create_table "moto_checklists", force: :cascade do |t|
     t.date "date_list"
     t.time "time_list"
@@ -2188,6 +2292,73 @@ ActiveRecord::Schema[7.0].define(version: 2025_10_09_145012) do
     t.index ["entity_id"], name: "index_safety_inspections_on_entity_id"
   end
 
+  create_table "security_standards", force: :cascade do |t|
+    t.integer "code_area", default: 0
+    t.date "date_standard"
+    t.integer "user_elaborated", default: 0
+    t.date "date_user_elaborated"
+    t.integer "firm_user_elaborated", default: 0
+    t.string "cargo_user_elaborated"
+    t.integer "user_asesor", default: 0
+    t.date "date_user_asesor"
+    t.integer "firm_user_asesor", default: 0
+    t.string "cargo_user_asesor"
+    t.string "objetivo"
+    t.string "danger"
+    t.integer "type_action", default: 0
+    t.string "element_protection"
+    t.string "description_activity"
+    t.string "standard_security"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_security_standards_on_entity_id"
+  end
+
+  create_table "simulacrum_items", force: :cascade do |t|
+    t.integer "clasification", default: 0
+    t.string "name"
+    t.string "position_exercise"
+    t.string "area_work"
+    t.string "functions"
+    t.string "floor"
+    t.string "evacuated_personal_area"
+    t.string "evacuated_personal_name"
+    t.string "evacuated_personal_cargo"
+    t.string "previous_activity"
+    t.date "date_previous"
+    t.string "responsible_previous"
+    t.time "time_sequence_crono"
+    t.string "activity_sequence"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "simulacrum_id"
+    t.index ["simulacrum_id"], name: "index_simulacrum_items_on_simulacrum_id"
+  end
+
+  create_table "simulacrums", force: :cascade do |t|
+    t.date "date_simulacrum"
+    t.integer "year", default: 0
+    t.integer "user_asesor", default: 0
+    t.date "date_user_asesor"
+    t.integer "firm_user_asesor", default: 0
+    t.time "time_simulacrum"
+    t.string "municipality"
+    t.string "preparation"
+    t.string "type_emergency"
+    t.time "time_warning_signal"
+    t.time "time_alarm_signal"
+    t.time "time_arrival"
+    t.string "support_group"
+    t.string "cel_emergency"
+    t.string "conclusions"
+    t.string "recommendations"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_simulacrums_on_entity_id"
+  end
+
   create_table "situation_conditions", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -2514,6 +2685,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_10_09_145012) do
   add_foreign_key "allow_exams", "adm_exams"
   add_foreign_key "allow_exams", "entities"
   add_foreign_key "allow_exams", "users"
+  add_foreign_key "analysis_risk_items", "analysis_risks"
+  add_foreign_key "analysis_risks", "entities"
   add_foreign_key "annual_work_plan_items", "annual_work_plans"
   add_foreign_key "annual_work_plans", "entities"
   add_foreign_key "assistants", "meeting_minutes"
@@ -2529,6 +2702,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_10_09_145012) do
   add_foreign_key "candidate_votes", "users"
   add_foreign_key "car_checklists", "entities"
   add_foreign_key "car_checklists", "users"
+  add_foreign_key "change_management_items", "change_managements"
+  add_foreign_key "change_managements", "entities"
   add_foreign_key "clasification_danger_details", "clasification_dangers"
   add_foreign_key "commitments", "evidences"
   add_foreign_key "commitments", "users"
@@ -2615,6 +2790,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_10_09_145012) do
   add_foreign_key "meeting_minutes", "entities"
   add_foreign_key "meeting_minutes", "evaluations"
   add_foreign_key "meeting_minutes", "users"
+  add_foreign_key "mock_scripts", "entities"
   add_foreign_key "moto_checklists", "entities"
   add_foreign_key "moto_checklists", "users"
   add_foreign_key "occupational_exam_items", "occupational_exams"
@@ -2640,6 +2816,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_10_09_145012) do
   add_foreign_key "safety_inspection_items", "safety_inspections"
   add_foreign_key "safety_inspection_items", "situation_conditions"
   add_foreign_key "safety_inspections", "entities"
+  add_foreign_key "security_standards", "entities"
+  add_foreign_key "simulacrum_items", "simulacrums"
+  add_foreign_key "simulacrums", "entities"
   add_foreign_key "situation_conditions", "type_condition_inspections"
   add_foreign_key "standar_detail_items", "standar_details"
   add_foreign_key "standar_details", "standars"

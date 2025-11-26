@@ -1,0 +1,55 @@
+<div class="container col-12 card p-5">
+    <br> 
+    <%= form_with model: @analysis_risk_item do |form| %>
+        <% @analysis_risk_item.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %> 
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 50%;border:1px solid black;">
+                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Pasos básicos del oficio: Describa la actividad principal a realizar."><strong>Pasos básicos del oficio: </strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                </td>
+                <td style="width: 50%;border:1px solid black;">
+                    <%= form.rich_text_area :basic_steps,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 50%;border:1px solid black;">
+                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Describa detalladamente cada uno de los pasos de la tarea a ejecutar."><strong>Acciones: </strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                </td>
+                <td style="width: 50%;border:1px solid black;">
+                    <%= form.rich_text_area :actions_steps,  class: "form-control" %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 50%;border:1px solid black;">
+                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Identifiqué cada uno de los peligros potenciales y existentes involucrados en la tarea a ejecutar. Describa las consecuencias que se pueden generar."><strong></br>Riesgo y peligros potenciales: </br></strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                </td>
+                <td style="width: 50%;border:1px solid black;">
+                    <div class="col-sm-10" > 
+                        <div><%= form.grouped_collection_select(:risks_steps, ClasificationDanger.order(:name), :clasification_danger_details, :name, :id, :name, { prompt: "Seleccione los Peligros y riesgos" }, { multiple: true, class: 'form-control' })   %></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 50%;border:1px solid black;">
+                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Describa los controles requeridos."><strong>Medidas preventivas y/o correctivas a aplicar: </strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+
+                                   
+                </td>
+                <td style="width: 50%;border:1px solid black;">
+                    <%= form.rich_text_area :measures_steps,  class: "form-control" %>
+                </td>
+            </tr>
+       </table>
+       </br> 
+        <%= form.hidden_field :analysis_risk_id, :value => params[:id].to_i, class: "form-control" if params[:id].present? %>
+        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    <% end %>
+</div>        
+<br>
+
+ 

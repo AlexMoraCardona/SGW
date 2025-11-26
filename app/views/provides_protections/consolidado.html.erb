@@ -1,0 +1,44 @@
+<div align="left"; class="container col-12">
+    <a class="navbar-brand" href="/">
+        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+    </a>
+</div>
+<div class="container col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"> 
+    <div style="border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+        <strong>Consolidado de elementos de protección personal entregados</strong>                
+    </div>
+    <table class="table table-hover" style="border:1px solid white"> 
+        <tr>
+            <th style="border:1px solid black">NOMBRE Y APELLIDO</th>
+            <th style="border:1px solid black">N° DE DOCUMENTO</th>
+        </tr>
+        <tr>
+            <td style="border:1px solid black"><%=@user.name%></td>
+            <td style="border:1px solid black"><%=@user.nro_document%></td>
+        </tr>
+    </table>
+    <div style="border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+        <strong>Detalle</strong>                
+    </div>
+    <table class="table table-hover" style="border:1px solid white"> 
+        <tr>
+            <th style="border:1px solid black">DESCRIPCIÓN</th>
+            <th style="border:1px solid black;text-align:center">CANTIDAD</th>
+            <th style="border:1px solid black;text-align:center">FECHA DE ENTREGA</th>
+        </tr>
+
+        <% @provides_protections.each do |provides_protection| %> 
+            <% items = ProvidesProtectionItem.consulta(provides_protection.id) %>
+            <% items.each do |item| %>             
+                    <tr>
+                        <td style="border:1px solid black"><%= item.protection_element.name %></td>
+                        <td style="border:1px solid black;text-align:center"><%= item.cant %></td>
+                        <td style="border:1px solid black;text-align:center"><%= item.date_entrega %></td>
+                    </tr>
+            <% end %>
+        <% end %>    
+    </table>
+
+    <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, provides_protections_path(entity_id: Current.user.entity.to_i) %>
+
+</div>

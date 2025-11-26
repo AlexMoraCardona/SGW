@@ -1,0 +1,41 @@
+<% if @entity.present? %>
+    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
+<% end %>
+<%= link_to "Crear Informe simulacro de emergencias", new_simulacrum_path, class: 'btn btn-sm btn-primary' if Current.user.level > 0 &&  Current.user.level < 4 %> 
+ 
+<div class="container col-11">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Fecha</th>
+                <th scope="col">Usuario elaboró</th>
+                <th scope="col">Crear item</th>
+                <th scope="col">Firmar</th>
+                <th scope="col">Ver</th>
+                <th scope="col"><%= t('common.edit') %></th>
+                <th scope="col">PDF</th>
+            </tr>
+        </thead> 
+        <tbody>
+            <% @simulacrums.each do |simulacrum| %>
+                <tr>  
+                    <td scope="col"><%= simulacrum.date_simulacrum.strftime("%F") if simulacrum.date_simulacrum.present? %></td>  
+                    <td scope="col"><%= Simulacrum.label_user(simulacrum.user_asesor) %></td>
+                    <td scope="col"><%= link_to 'Crear item', crear_item_simulacro_path(simulacrum), class: 'btn btn-sm btn-warning' if Current.user.level > 0 && Current.user.level < 3 %></td>
+                    <% if simulacrum.firm_user_asesor == 0 %>
+                        <td scope="col"><%= link_to 'Firmar', firma_simulacro_path(simulacrum), class: 'btn btn-sm btn-warning'%></td>
+                    <% else %>
+                        <td scope="col"><%= simulacrum.date_user_asesor.strftime("%F") if simulacrum.date_user_asesor.present? %>
+                    <% end %>
+                    <td scope="col"><%= link_to 'Ver', simulacrum_path(simulacrum), class: 'btn btn-sm btn-primary'%></td>
+                    <td scope="col"><%= link_to 'Editar', edit_simulacrum_path(simulacrum.id), class: 'btn btn-sm btn-warning' if Current.user.level > 0 && Current.user.level < 3 %></td>
+                    <td scope="col"><%= link_to "PDF", ver_simulacro_path(simulacrum.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
+                </tr>
+            <% end %>  
+        </tbody>      
+    </table>
+    </br>        
+</div>
+
+
+

@@ -1,0 +1,32 @@
+    <div class="form-group">
+       <h5>REGISTRO FOTOGRÁFICO:</h5>
+    </div>         
+    <hr>
+    <% if @matrix_action_item.present? %>
+    <% if @matrix_action_item.matrix_action_item_files.attached? %>
+        <div data-controller="previews" >
+            <% @matrix_action_item.matrix_action_item_files.each do |file|%>
+                <br>
+                <% if file.image? %>
+                    <div>
+                        <%= image_tag file, data: {previews_target: "preview"},:width => "500",  :height=>"auto" %>
+                        <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' if Current.user.level > 0 && Current.user.level < 3 %> 
+                    </div> 
+                <% elsif file.video? %>
+                    <%= video_tag url_for(file), controls: "", width: "400px" %>          
+                    <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' if Current.user.level > 0 && Current.user.level < 3 %> 
+                <% elsif file.audio? %>
+                    <%= audio_tag(url_for(file), controls: "") %>          
+                    <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' if Current.user.level > 0 && Current.user.level < 3 %> 
+                <% else %>
+                    <%= link_to file.filename, url_for(file) %>          
+                    <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' if Current.user.level > 0 && Current.user.level < 3 %> 
+                <% end %>
+            <% end %>  
+        </div>
+    <% end %>
+    <% end %>
+    <div></br></div>
+    <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+     
+    <div></br></div>

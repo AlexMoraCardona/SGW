@@ -1,0 +1,47 @@
+<% if @entity.present? %>
+    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
+<% end %>
+<%= link_to "Crear Estándar de seguridad", new_security_standard_path, class: 'btn btn-sm btn-primary' if Current.user.level > 0 &&  Current.user.level < 4 %> 
+ 
+<div class="container col-11">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Fecha</th>
+                <th scope="col">Área</th>
+                <th scope="col">Usuario elaboró</th>
+                <th scope="col">Firmar elaboró</th>
+                <th scope="col">Firmar asesor</th>
+                <th scope="col">Ver</th>
+                <th scope="col"><%= t('common.edit') %></th>
+                <th scope="col">PDF</th>
+            </tr>
+        </thead> 
+        <tbody>
+            <% @security_standards.each do |security_standard| %>
+                <tr>  
+                    <td scope="col"><%= security_standard.date_standard.strftime("%F") if security_standard.date_standard.present? %></td>  
+                    <td scope="col"><%= SecurityStandard.label_area(security_standard.code_area)  %></td>  
+                    <td scope="col"><%= SecurityStandard.label_user(security_standard.user_elaborated) %></td>
+                    <% if security_standard.firm_user_elaborated == 0 %>
+                        <td scope="col"><%= link_to 'Firmar', firma_security_elaborated_path(security_standard), class: 'btn btn-sm btn-warning'%></td>
+                    <% else %>
+                        <td scope="col"><%= security_standard.date_user_elaborated.strftime("%F") if security_standard.date_user_elaborated.present? %>
+                    <% end %>
+                    <% if security_standard.firm_user_asesor == 0 %>
+                        <td scope="col"><%= link_to 'Firmar', firma_security_asesor_path(security_standard), class: 'btn btn-sm btn-warning'%></td>
+                    <% else %>
+                        <td scope="col"><%= security_standard.date_user_asesor.strftime("%F") if security_standard.date_user_asesor.present? %>
+                    <% end %>
+                    <td scope="col"><%= link_to 'Ver', security_standard_path(security_standard), class: 'btn btn-sm btn-primary'%></td>
+                    <td scope="col"><%= link_to 'Editar', edit_security_standard_path(security_standard.id), class: 'btn btn-sm btn-warning' if Current.user.level > 0 && Current.user.level < 3 %></td>
+                    <td scope="col"><%= link_to "PDF", ver_security_standard_path(security_standard.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
+                </tr>
+            <% end %>  
+        </tbody>      
+    </table>
+    </br>        
+</div>
+
+
+

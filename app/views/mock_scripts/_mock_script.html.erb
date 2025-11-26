@@ -1,0 +1,39 @@
+<% if @entity.present? %>
+    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
+<% end %>
+<%= link_to "Crear Guión", new_mock_script_path, class: 'btn btn-sm btn-primary' if Current.user.level > 0 &&  Current.user.level < 3 %> 
+ 
+<div class="container col-11">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Fecha</th>
+                <th scope="col">Usuario elaboró</th>
+                <th scope="col">Firmar</th>
+                <th scope="col">Ver</th>
+                <th scope="col"><%= t('common.edit') %></th>
+                <th scope="col">PDF</th>
+            </tr>
+        </thead> 
+        <tbody>
+            <% @mock_scripts.each do |mock_script| %>
+                <tr>  
+                    <td scope="col"><%= mock_script.date_script.strftime("%F") if mock_script.date_script.present? %></td>  
+                    <td scope="col"><%= MockScript.label_user(mock_script.user_asesor) %></td>
+                    <% if mock_script.firm_user_asesor == 0 %>
+                        <td scope="col"><%= link_to 'Firmar', firma_mock_script_path(mock_script), class: 'btn btn-sm btn-warning'%></td>
+                    <% else %>
+                        <td scope="col"><%= mock_script.date_user_asesor.strftime("%F") if mock_script.date_user_asesor.present? %>
+                    <% end %>
+                    <td scope="col"><%= link_to 'Ver', mock_script_path(mock_script), class: 'btn btn-sm btn-primary'%></td>
+                    <td scope="col"><%= link_to 'Editar', edit_mock_script_path(mock_script.id), class: 'btn btn-sm btn-warning' if Current.user.level > 0 && Current.user.level < 3 %></td>
+                    <td scope="col"><%= link_to "PDF", ver_mock_script_path(mock_script.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
+                </tr>
+            <% end %>  
+        </tbody>      
+    </table>
+    </br>        
+</div>
+
+
+

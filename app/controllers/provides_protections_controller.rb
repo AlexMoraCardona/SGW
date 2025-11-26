@@ -1,18 +1,28 @@
 class ProvidesProtectionsController < ApplicationController
     def index
+        @users = User.where("entity = ?",Current.user.entity).pluck(:name, :id)
         if  Current.user && Current.user.level > 0 && Current.user.level < 3
             if params[:entity_id].present?
                 @entity = Entity.find(params[:entity_id])
-                @provides_protections = ProvidesProtection.where("entity_id = ?", params[:entity_id]).order(id: :desc)
+                @provides_protections_fil = ProvidesProtection.where("entity_id = ?", params[:entity_id]).order(id: :desc)
+                @q = @provides_protections_fil.ransack(params[:q])
+                @pagy, @provides_protections = pagy(@q.result(id: :desc), items: 6)
             else 
-                @entities = Entity.all
+                @entity = Entity.find(Current.user.entity)
+                @provides_protections_fil = ProvidesProtection.where("entity_id = ?", @entity.id).order(id: :desc)
+                @q = @provides_protections_fil.ransack(params[:q])
+                @pagy, @provides_protections = pagy(@q.result(id: :desc), items: 6)
             end    
         elsif Current.user && Current.user.level == 3 
             @entity = Entity.find(Current.user.entity)
-            @provides_protections = ProvidesProtection.where("entity_id = ?",Current.user.entity)
+            @provides_protections_fil = ProvidesProtection.where("entity_id = ?",Current.user.entity)
+            @q = @provides_protections_fil.ransack(params[:q])
+            @pagy, @provides_protections = pagy(@q.result(id: :desc), items: 6)
         elsif Current.user && Current.user.level > 3 
             @entity = Entity.find(Current.user.entity)
-            @provides_protections = ProvidesProtection.where("entity_id = ? and user_colaborador = ?",Current.user.entity, Current.user.id)
+            @provides_protections_fil = ProvidesProtection.where("entity_id = ? and user_colaborador = ?",Current.user.entity, Current.user.id)
+            @q = @provides_protections_fil.ransack(params[:q])
+            @pagy, @provides_protections = pagy(@q.result(id: :desc), items: 6)
         else
             redirect_to new_session_path, alert: t('common.not_logged_in')    
             session.delete(:user_id)  
@@ -104,7 +114,7 @@ class ProvidesProtectionsController < ApplicationController
     end    
 
     def crear_item_provide
-        @protection_elements = ProtectionElement.where("entity = ?",Current.user.entity).order(id: :asc)
+        @protection_elements = ProtectionElement.where("(entity = ? or entity = ?) and state_protection = ?",6,Current.user.entity,1)
         @provides_protection_item = ProvidesProtectionItem.new  
         @cant = 0
         @provides_protection_items = ProvidesProtectionItem.where("provides_protection_id = ?", params[:id]) if params[:id].present?
@@ -134,6 +144,12 @@ class ProvidesProtectionsController < ApplicationController
             end    
         end
     end    
+
+    def consolidado
+        @user = User.find(params[:id].to_i)
+        @provides_protections = ProvidesProtection.where("user_colaborador = ?", params[:id].to_i)
+
+    end
 
     private
 

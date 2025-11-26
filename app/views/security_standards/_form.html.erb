@@ -1,0 +1,91 @@
+<div class="container col-12 card p-5">
+    <br> 
+    <%= form_with model: @security_standard do |form| %>
+        <% @security_standard.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %> 
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>FECHA DE ELABORACIÓN</strong>
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <strong>ÁREA</strong>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;text-align:center">
+                    <%= form.date_field :date_standard,  class: "form-control" %>               
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <%= form.collection_select :code_area, @company_areas, :id, :name if @company_areas.present? %>
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%;">
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>OBJETIVO: </strong>
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <%= form.text_area :objetivo,  class: "form-control" %>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>RIESGO ASOCIADO: </strong>               
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                        <div><%= form.grouped_collection_select(:danger, ClasificationDanger.order(:name), :clasification_danger_details, :name, :id, :name, { prompt: "Seleccione los Peligros y riesgos" }, { multiple: true, class: 'form-control' })   %></div>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>TIPO DE ACCIÓN: </strong>               
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <%= form.select(:type_action, [['PREVENTIVA', 0], ['CORRECTIVA', 1], ['MEJORA', 2]]) %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>ELEMENTOS DE PROTECCIÓN PERSONAL: </strong>               
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <%= select_tag :element_protection, options_from_collection_for_select(@protection_elements, :id, :name), multiple: true, class: 'form-control input-sm select2', :prompt  =>  '--Seleccione los EPP--' %>
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 30%;border:1px solid black;">
+                    <strong>DESCRIPCIÓN DE LA ACTIVIDAD: </strong>
+                </td>
+                <td style="width: 70%;border:1px solid black;">
+                    <%= form.text_area :description_activity,  class: "form-control" %>               
+                </td>
+            </tr>
+        </table>   
+        <table style="width: 100%;"> 
+            <tr>    
+                <td style="width: 100%;border:1px solid black;text-align:center;">
+                    <strong>ESTANDAR DE SEGURIDAD : (mencionar actividad)</strong>               
+                </td>
+            </tr>
+            <tr>    
+                <td style="width: 100%;border:1px solid black;">
+                    <%= form.rich_text_area :standard_security,  class: "form-control" %>                             
+                </td>
+            </tr>
+        </table>   
+       </br> 
+        <%= form.hidden_field :user_elaborated, :value => Current.user.id.to_i, class: "form-control" if Current.user.present? %>
+        <%= form.hidden_field :user_asesor, :value => @user_asesor.id.to_i, class: "form-control" if @user_asesor.present? %>
+        <%= form.hidden_field :entity_id, :value => Current.user.entity.to_i, class: "form-control" if Current.user.present? %>
+        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+    <% end %>
+</div>        
+<br>
+
+ 

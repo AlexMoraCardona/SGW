@@ -121,7 +121,30 @@ Rails.application.routes.draw do
   resources :epp_recuests
   resources :rooms
   resources :lessons
+  resources :analysis_risks
+  resources :analysis_risk_items
+  resources :change_managements
+  resources :change_management_items
+  resources :security_standards
+  resources :simulacrums
+  resources :simulacrum_items
+  resources :mock_scripts
 
+  get '/matrix_corrective_actions/ver_adjunto_acpm/:id', to: 'matrix_corrective_actions#ver_adjunto_acpm', as: 'ver_adjunto_acpm'
+  get '/mock_scripts/ver_mock_script/:id', to: 'mock_scripts#ver_mock_script', as: 'ver_mock_script'
+  get '/mock_scripts/firma_mock_script/:id', to: 'mock_scripts#firma_mock_script', as: 'firma_mock_script'
+  get '/simulacrums/crear_item_simulacro/:id', to: 'simulacrums#crear_item_simulacro', as: 'crear_item_simulacro'
+  get '/simulacrums/firma_simulacro/:id', to: 'simulacrums#firma_simulacro', as: 'firma_simulacro'
+  get '/simulacrums/ver_simulacro/:id', to: 'simulacrums#ver_simulacro', as: 'ver_simulacro'
+  get '/security_standards/firma_security_asesor/:id', to: 'security_standards#firma_security_asesor', as: 'firma_security_asesor'
+  get '/security_standards/firma_security_elaborated/:id', to: 'security_standards#firma_security_elaborated', as: 'firma_security_elaborated'
+  get '/security_standards/ver_security_standard/:id', to: 'security_standards#ver_security_standard', as: 'ver_security_standard'
+  get '/change_managements/firma_analisis_cambio/:id', to: 'change_managements#firma_analisis_cambio', as: 'firma_analisis_cambio'
+  get '/change_managements/crear_item_paso_cambio/:id', to: 'change_managements#crear_item_paso_cambio', as: 'crear_item_paso_cambio'
+  get '/change_managements/ver_analysis_cambio/:id', to: 'change_managements#ver_analysis_cambio', as: 'ver_analysis_cambio'
+  get '/analysis_risks/firma_analisis/:id', to: 'analysis_risks#firma_analisis', as: 'firma_analisis'
+  get '/analysis_risks/crear_item_paso/:id', to: 'analysis_risks#crear_item_paso', as: 'crear_item_paso'
+  get '/analysis_risks/ver_analysis_risk/:id', to: 'analysis_risks#ver_analysis_risk', as: 'ver_analysis_risk'
   get '/adm_attendances/seleccion_participantes/:id', to: 'adm_attendances#seleccion_participantes', as: 'seleccion_participantes' 
   post '/adm_attendances/seleccion_participantes/:id' => 'adm_attendances#citar_participantes', as: 'citar_participantes'
   get '/lessons/firma_leccion/:id', to: 'lessons#firma_leccion', as: 'firma_leccion'
@@ -385,6 +408,8 @@ Rails.application.routes.draw do
       get '/provides_protections/ver_info_provide/:id', to: 'provides_protections#ver_info_provide', as: 'ver_info_provide'
       get '/provides_protections/firmar_colaborador/:id', to: 'provides_protections#firmar_colaborador', as: 'firmar_colaborador'
       get '/provides_protections/firmar_responsable/:id', to: 'provides_protections#firmar_responsable', as: 'firmar_responsable'
+      get '/provides_protections/consolidado/:id', to: 'provides_protections#consolidado', as: 'consolidado'
+
     end
   end
 

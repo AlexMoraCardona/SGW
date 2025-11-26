@@ -16,6 +16,9 @@ class ProtectionElementsController < ApplicationController
 
     def new
       @protection_element = ProtectionElement.new  
+      @empresas = Entity.select(:business_name, :id).all
+      #nueva_opcion = Entity.new(business_name: "Genérica", id: 0)
+      #@empresas << nueva_opcion
     end    
 
     def create
@@ -30,6 +33,7 @@ class ProtectionElementsController < ApplicationController
  
     def edit
         @protection_element = ProtectionElement.find(params[:id])
+        @empresas = Entity.select(:business_name, :id).all
     end
     
     def update

@@ -41,7 +41,7 @@ class MatrixActionItemsController < ApplicationController
         @matrix_action_item = MatrixActionItem.find(params[:id])
 
         if @matrix_action_item.update(matrix_action_item_params)
-            redirect_to matrix_corrective_actions_path, notice: 'Item actualizado correctamente'
+            redirect_to matrix_corrective_action_path(@matrix_action_item.matrix_corrective_action_id), notice: 'Item actualizado correctamente'
         else
             render :edit, status: :unprocessable_entity
         end         
@@ -50,7 +50,7 @@ class MatrixActionItemsController < ApplicationController
     def destroy
         @matrix_action_item = MatrixActionItem.find(params[:id])
         @matrix_action_item.destroy
-        redirect_to matrix_corrective_actions_path, notice: 'Item borrado correctamente', matrix_action_item: :see_other
+        redirect_to matrix_corrective_action_path(@matrix_action_item.matrix_corrective_action_id), notice: 'Item borrado correctamente', matrix_action_item: :see_other
     end    
 
     private
@@ -59,7 +59,7 @@ class MatrixActionItemsController < ApplicationController
         params.require(:matrix_action_item).permit(:consecutive, :year, :matrix_corrective_action_id, 
         :type_corrective, :clasification_type_corrective, :campus, :date_action_conformity, :area, 
          :description_action, :action_implement, :responsible, :commitment_date, :closet_date, 
-         :took_actions, :state_actions, :origin_action, :hallazgo)
+         :took_actions, :state_actions, :origin_action, :hallazgo, matrix_action_item_files: [])
     end 
 end 
 

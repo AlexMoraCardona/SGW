@@ -1,0 +1,515 @@
+<div align="left"; class="container col-12">
+    <a class="navbar-brand" href="/">
+        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+    </a>
+</div>
+<div class="container col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"> 
+    <%= render 'encabezado' %>
+    <div><br></div>
+    <div><br></div>
+    <div><br></div>
+
+    <div class="row text-center">
+                <h2><strong>INFORME SIMULACRO</strong></h2>
+    </div>
+    <div><br></div> 
+    <div><br></div>
+    <div class="row text-center">
+                <h2><strong><%= @entity.business_name if @entity.present? %></strong></h2>
+    </div>
+    <div class="row text-center">
+        <h2><strong>Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></strong></h2>
+    </div>
+    <div><br></div>
+    <div><br></div>
+    <table style="width: 100%;"> 
+        <tr>
+            <td style="text-align:center;">
+                <% if @entity.logo.present? then %>
+                    <%=  image_tag  @entity.logo, height: "150", width: "150" %>
+                <% end %>   
+            </td>
+        </tr>
+    </table>       
+    <div><br></div>
+    <div><br></div>
+    <div class="row text-center">
+        <h2><strong>Profesional: <%= @user_asesor.name if @user_asesor.present? %></strong></h2>
+    </div>
+    <div><br></div>
+    <div><br></div>
+    <div class="row text-center">
+        <h2><strong>Año: <%=  @simulacrum.year if @simulacrum.present? %></strong></h2>
+    </div>
+    <div><br></div>
+    <p style='page-break-after:always;'></p>
+
+    <table style="width: 100%;"> 
+        <tr>
+            <td style="text-align:center">
+                <strong><h5>INTRODUCCIÓN</h5></strong>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:center">
+                <div><br></div>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <p>El simulacro se realizó en <strong><%= @entity.business_name if @entity.present? %></strong>, el día <strong><%= @simulacrum.date_simulacrum if @simulacrum.date_simulacrum.present? %></strong>  a partir de las <strong><%= @simulacrum.time_simulacrum.strftime("%T %p") if @simulacrum.time_simulacrum.present? %></strong> en el municipio de <strong><%= @simulacrum.municipality if @simulacrum.present? %></strong>.</p>
+                <p>La planeación y ejecución del ejercicio estuvo a cargo del responsable de SST, líder de brigada de emergencias y el asesor externo en SST.</p>
+                <p>Este informe detalla las acciones de preparación del simulacro, así como su resultado y el análisis del mismo.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div> 
+    <table style="width: 100%;"> 
+        <tr>
+            <td>
+                <strong><h5>1. OBJETIVO</h5></strong>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:center">
+                <div><br></div>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <p>Evaluar las acciones de coordinación y el sistema de notificación para el procedimiento de evacuación ante una amenaza que genere riesgo colectivo para los ocupantes de <strong><%= @entity.business_name if @entity.present? %>.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div> 
+    <table style="width: 100%;"> 
+        <tr>
+            <td>
+                <strong><h5>2. PREPARACIÓN</h5></strong>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:center">
+                <div><br></div>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <p>Para la preparación del simulacro de emergencias de la empresa se realizaron las siguientes actividades:</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:center">
+                <div><br></div>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                    <%= @simulacrum.preparation if @simulacrum.present? %>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div> 
+    <table style="width: 100%;"> 
+        <tr>
+            <td>
+                <strong><h5>3. METODOLOGÍA</h5></strong>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:center">
+                <div><br></div>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <p>En el ejercicio participaron:</p>
+            </td>
+        </tr>
+    </table> 
+
+    <table style="width: 100%;">
+        <tr>    
+            <td style="width: 22%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+                <strong>Nombre</strong>               
+            </td>
+            <td style="width: 22%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+                <strong>Cargo en el ejercicio</strong>               
+            </td>
+            <td style="width: 22%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+                <strong>Área de trabajo</strong>               
+            </td>
+            <td style="width: 22%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+                <strong>Funciones</strong>               
+            </td>
+            <td style="width: 12%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+                <strong>Eliminar</strong>               
+            </td>
+        </tr>
+        <% if @simulacrum_items.present? %>
+            <%  @simulacrum_items.where("clasification = ?",0).each  do |simulacrum_item| %>
+                <tr>    
+                    <td style="width: 25%;border:1px solid black;padding: 5px;">
+                        <%= simulacrum_item.name  %>               
+                    </td>
+                    <td style="width: 25%;border:1px solid black;padding: 5px;">
+                        <%= simulacrum_item.position_exercise  %>               
+                    </td>
+                    <td style="width: 25%;border:1px solid black;padding: 5px;">
+                        <%= simulacrum_item.area_work  %>               
+                    </td>
+                    <td style="width: 25%;border:1px solid black;padding: 5px;">
+                        <%= simulacrum_item.functions  %>               
+                    </td>
+                    <td style="width: 25%;border:1px solid black;padding: 5px;text-align:center;">
+                        <%= button_to "Eliminar", simulacrum_item, method: :delete, class:"btn btn-sm btn-danger" if Current.user.level > 0 && Current.user.level < 3   %>               
+                    </td>
+                </tr>
+            <% end %>    
+        <% end %>               
+    </table>
+    <div></br></div>
+    <table style="width: 100%;"> 
+        <tr>
+            <td>
+                <strong><h5>SIMULACRO DE EVACUACIÓN:</h5></strong>
+            </td>
+        </tr>
+    </table> 
+    <div></br></div>
+    <table style="width: 100%;">
+        <tr>    
+            <td style="width: 30%;border:1px solid black;padding: 5px;">
+                <strong>* Tipo de emergencia: </strong>               
+            </td>
+            <td style="width: 70%;border:1px solid black;padding: 5px;">
+                <%= @simulacrum.type_emergency  if @simulacrum.present? %>               
+            </td>
+        </tr>
+        <tr>    
+            <td style="width: 30%;border:1px solid black;padding: 5px;">
+                <strong>* Fecha: </strong>               
+            </td>
+            <td style="width: 70%;border:1px solid black;padding: 5px;">
+                <%= @simulacrum.date_simulacrum  if @simulacrum.date_simulacrum.present? %>               
+            </td>
+        </tr>
+        <tr>    
+            <td style="width: 30%;border:1px solid black;padding: 5px;">
+                <strong>* Hora: </strong>               
+            </td>
+            <td style="width: 70%;border:1px solid black;padding: 5px;">
+                <%= @simulacrum.time_simulacrum.strftime("%T %p")  if @simulacrum.time_simulacrum.present? %>               
+            </td>
+        </tr>
+    </table> 
+    <div></br></div>
+    <table style="width: 100%;"> 
+        <tr>
+            <td>
+                <strong><h5>TIEMPOS DE EVACUACIÓN:</h5></strong>
+            </td>
+        </tr>
+    </table> 
+    <div></br></div>
+    <table style="width: 100%;">
+        <tr>    
+            <td style="width: 30%;border:1px solid black;padding: 5px;">
+                <strong>* Hora señal de alerta: </strong>               
+            </td>
+            <td style="width: 70%;border:1px solid black;padding: 5px;">
+                <%= @simulacrum.time_warning_signal.strftime("%T %p")  if @simulacrum.time_warning_signal.present? %>               
+            </td>
+        </tr>
+        <tr>    
+            <td style="width: 30%;border:1px solid black;padding: 5px;">
+                <strong>*Hora señal de alarma:  </strong>               
+            </td>
+            <td style="width: 70%;border:1px solid black;padding: 5px;">
+                <%= @simulacrum.time_alarm_signal.strftime("%T %p")  if @simulacrum.time_alarm_signal.present? %>               
+            </td>
+        </tr>
+        <tr>    
+            <td style="width: 30%;border:1px solid black;padding: 5px;">
+                <strong>* Tiempo de llegada de todo el personal al punto de encuentro: </strong>               
+            </td>
+            <td style="width: 70%;border:1px solid black;padding: 5px;">
+                <%= @simulacrum.time_arrival.strftime("%T %p")  if @simulacrum.time_arrival.present? %>               
+            </td>
+        </tr>
+    </table> 
+    <div></br></div>
+    <table style="width: 100%;"> 
+        <tr>
+            <td>
+                <strong><h5>PERSONAL EVACUADO:</h5> </strong>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:center">
+                <div><br></div>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <p>Coordinadores de evacuación:</p>
+            </td>
+        </tr>
+    </table> 
+    <table style="width: 100%;">
+        <tr>    
+            <td style="width: 22%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+                <strong>Piso</strong>               
+            </td>
+            <td style="width: 22%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+                <strong>Área</strong>               
+            </td>
+            <td style="width: 22%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+                <strong>Nombre</strong>               
+            </td>
+            <td style="width: 22%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+                <strong>Cargo</strong>               
+            </td>
+            <td style="width: 12%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+                <strong>Eliminar</strong>               
+            </td>
+        </tr>
+        <% if @simulacrum_items.present? %>
+            <%  @simulacrum_items.where("clasification = ?",1).each  do |simulacrum_item| %>
+                <tr>    
+                    <td style="width: 22%;border:1px solid black;padding: 5px;">
+                        <%= simulacrum_item.floor  %>               
+                    </td>
+                    <td style="width: 22%;border:1px solid black;padding: 5px;">
+                        <%= simulacrum_item.evacuated_personal_area  %>               
+                    </td>
+                    <td style="width: 22%;border:1px solid black;padding: 5px;">
+                        <%= simulacrum_item.evacuated_personal_name  %>               
+                    </td>
+                    <td style="width: 22%;border:1px solid black;padding: 5px;">
+                        <%= simulacrum_item.evacuated_personal_cargo  %>               
+                    </td>
+                    <td style="width: 12%;border:1px solid black;padding: 5px;text-align:center;">
+                        <%= button_to "Eliminar", simulacrum_item, method: :delete, class:"btn btn-sm btn-danger" if Current.user.level > 0 && Current.user.level < 3   %>               
+                    </td>
+                </tr>
+            <% end %>               
+        <% end %>               
+    </table>
+    <div></br></div>
+
+    <table style="width: 100%;"> 
+        <tr>
+            <td>
+                <strong><h5>GRUPOS DE APOYO:</h5> </strong>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:center">
+                <div><br></div>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <%= @simulacrum.support_group  if @simulacrum.present? %> 
+            </td>
+        </tr>
+    </table> 
+    <div><br></div> 
+    <table style="width: 100%;"> 
+        <tr>
+            <td>
+                <strong><h5>ACTIVIDADES PREVIAS AL SIMULACRO:</h5></strong>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div> 
+    <table style="width: 100%;">
+        <tr>    
+            <td style="width: 100%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+                <strong>Programación de actividades preparatorias del simulacro</strong>               
+            </td>
+        </tr>    
+    </table>
+    <table style="width: 100%;">
+        <tr>    
+            <td style="width: 40%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+                <strong>Actividad</strong>               
+            </td>
+            <td style="width: 20%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+                <strong>Fecha</strong>               
+            </td>
+            <td style="width: 30%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+                <strong>Responsable</strong>               
+            </td>
+            <td style="width: 10%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+                <strong>Eliminar</strong>               
+            </td>
+        </tr>
+        <% if @simulacrum_items.present? %>
+            <%  @simulacrum_items.where("clasification = ?",2).each  do |simulacrum_item| %>
+                <tr>    
+                    <td style="width: 40%;border:1px solid black;padding: 5px;">
+                        <%= simulacrum_item.previous_activity  %>               
+                    </td>
+                    <td style="width: 20%;border:1px solid black;padding: 5px;">
+                        <%= simulacrum_item.date_previous  %>               
+                    </td>
+                    <td style="width: 30%;border:1px solid black;padding: 5px;">
+                        <%= simulacrum_item.responsible_previous  %>               
+                    </td>
+                    <td style="width: 10%;border:1px solid black;padding: 5px;text-align:center;">
+                        <%= button_to "Eliminar", simulacrum_item, method: :delete, class:"btn btn-sm btn-danger" if Current.user.level > 0 && Current.user.level < 3   %>               
+                    </td>
+                </tr>
+            <% end %>               
+        <% end %>               
+    </table>
+    <div></br></div>
+
+    <table style="width: 100%;"> 
+        <tr>
+            <td>
+                <strong><h5>SECUENCIA CRONOLÓGICA DE EVENTOS:</h5></strong>
+            </td>
+        </tr>
+    </table> 
+    <div></br></div>
+    <table style="width: 100%;">
+         <tr>    
+            <td style="width: 30%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+                <strong>Hora</strong>               
+            </td>
+            <td style="width: 70%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+                <strong>Actividad</strong>               
+            </td>
+            <td style="width: 70%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
+                <strong>Eliminar</strong>               
+            </td>
+        </tr>
+        <% if @simulacrum_items.present? %>
+            <%  @simulacrum_items.where("clasification = ?",3).each  do |simulacrum_item| %>
+                <tr>    
+                    <td style="width: 30%;border:1px solid black;padding: 5px;">
+                        <%= simulacrum_item.time_sequence_crono  %>               
+                    </td>
+                    <td style="width: 60%;border:1px solid black;padding: 5px;">
+                        <%= simulacrum_item.activity_sequence  %>               
+                    </td>
+                    <td style="width: 10%;border:1px solid black;padding: 5px;text-align:center;">
+                        <%= button_to "Eliminar", simulacrum_item, method: :delete, class:"btn btn-sm btn-danger" if Current.user.level > 0 && Current.user.level < 3   %>               
+                    </td>
+                </tr>
+            <% end %>               
+        <% end %>               
+    </table>
+    <div></br></div>
+
+    <table style="width: 100%;"> 
+        <tr>
+            <td>
+                <strong><h5>NÚMEROS DE EMERGENCIAS</h5> </strong>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:center">
+                <div><br></div>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <%= @simulacrum.cel_emergency  if @simulacrum.present? %> 
+            </td>
+        </tr>
+    </table> 
+    <div><br></div> 
+    <table style="width: 100%;"> 
+        <tr>
+            <td>
+                <strong><h5>CONCLUSIONES</h5> </strong>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:center">
+                <div><br></div>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <%= @simulacrum.conclusions  if @simulacrum.present? %> 
+            </td>
+        </tr>
+    </table> 
+    <div><br></div> 
+    <table style="width: 100%;"> 
+        <tr>
+            <td>
+                <strong><h5>RECOMENDACIONES</h5> </strong>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:center">
+                <div><br></div>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <%= @simulacrum.recommendations  if @simulacrum.present? %> 
+            </td>
+        </tr>
+    </table> 
+    <div><br></div> 
+    <br>
+    <div class="form-group">
+       <h5>REGISTRO FOTOGRÁFICO:</h5>
+    </div>         
+    <hr>
+    <% if @simulacrum.simulacro_files.attached? %>
+        <div data-controller="previews" >
+            <% @simulacrum.simulacro_files.each do |file|%>
+                <br>
+                <% if file.image? %>
+                    <div>
+                        <%= image_tag file, data: {previews_target: "preview"},:width => "500",  :height=>"auto" %>
+                        <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' if Current.user.level > 0 && Current.user.level < 3 %> 
+                    </div> 
+                <% elsif file.video? %>
+                    <%= video_tag url_for(file), controls: "", width: "400px" %>          
+                    <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' if Current.user.level > 0 && Current.user.level < 3 %> 
+                <% elsif file.audio? %>
+                    <%= audio_tag(url_for(file), controls: "") %>          
+                    <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' if Current.user.level > 0 && Current.user.level < 3 %> 
+                <% else %>
+                    <%= link_to file.filename, url_for(file) %>          
+                    <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' if Current.user.level > 0 && Current.user.level < 3 %> 
+                <% end %>
+            <% end %>  
+        </div>
+    <% end %>     
+    <div></br></div>
+    <table style="width: 100%;"> 
+        <tr> 
+            <td style="border: 0px solid black;width: 100%;">
+                <% if @simulacrum.firm_user_asesor == 1 %>
+                    <% if @user_asesor.firm.attached? %>
+                        <% if @user_asesor.firm.image? %> 
+                            <div  style="padding: 0;height: 70px;display: flex;align-items: flex-end;"><%= image_tag @user_asesor.firm, class: "firmapdf" %></div>
+                        <% end %>
+                    <% else %> 
+                        <div style="padding: 0;height: 70px;display: flex;justify-content: center;align-items: flex-end;"></div>    
+                    <% end %>
+                <% else %> 
+                    <div style="padding: 0;height: 70px;display: flex;align-items: flex-end;"></div>    
+                <% end %>     
+                <p>________________________________</p>   
+                <div><strong><h5><%= @user_asesor.name if @user_asesor.present? %></h5></strong></div>
+                <div><strong><h5>Asesor SG-SST</h5></strong></div>
+                <div><strong><h5><%= @user_asesor.document.abbreviation if @user_asesor.present? %>: <%= Firm.miles(@user_asesor.nro_document) if @user_asesor.present? %></h5></strong></div>
+                <div><strong><h5>Licencia: <%= @user_asesor.license if @user_asesor.present? %></h5></strong></div>
+            </td>  
+        </tr>        
+    </table> 
+</div>    
+
+<div></br></div>
+<div></br></div>

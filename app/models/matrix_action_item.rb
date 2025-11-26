@@ -1,5 +1,6 @@
 class MatrixActionItem < ApplicationRecord
     belongs_to :matrix_corrective_action
+    has_many_attached :matrix_action_item_files 
 
     def label_state_actions(state)
         if state == 0 ; 'Abierto'

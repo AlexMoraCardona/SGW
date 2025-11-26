@@ -6,6 +6,17 @@
 
     <hr>
 
+        <%= search_form_for @q do |f| %>
+            <%= f.label :user_colaborador_cont %>
+            <%= f.select :user_colaborador_eq, @users,  {include_blank: true}, style: "width: 200px;" %>
+
+            <button type="submit" class="btn btn-sm btn-primary">Buscar</button>
+        <% end %>
+    </br>        
+    <%== pagy_info(@pagy) %>
+    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+
+
     <table class="table table-hover"> 
         <thead> 
             <tr>    
@@ -16,6 +27,8 @@
                 <th scope="col">Firma Responsable</th>
                 <th scope="col">Adicionar EPP</th>
                 <th scope="col">Ver formato</th>
+                <th scope="col">Ver consolidado</th>
+                <th scope="col">Eliminar</th>
                 <th scope="col">PDF</th>
 
             </tr>
@@ -42,6 +55,8 @@
                     </td>
                     <td><%= link_to t('common.create_item_provides_protection'), crear_item_provide_provides_protections_path(provides_protection.id), class: 'btn btn-sm btn-warning' %></td>
                     <td><%= link_to t('common.show_provides_protection'), provides_protection_path(provides_protection.id), class: 'btn btn-sm btn-warning' %></td>
+                    <td><%= link_to 'Consolidado', consolidado_provides_protections_path(provides_protection.user_colaborador), class: 'btn btn-sm btn-warning' %></td>
+                    <td><%= button_to "Eliminar", provides_protection, method: :delete, class:"btn btn-sm btn-danger" if Current.user.level > 0 && Current.user.level < 4 %></td>                    
                     <td><%= link_to "PDF", ver_info_provide_provides_protections_path(provides_protection.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
                 </tr>
             <% end %> 

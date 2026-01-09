@@ -506,7 +506,7 @@ class IndicadoresController < ApplicationController
                         @datos_ausentismog.push([fecha, d.ausentismo_causa_medica.to_f]) 
                     else
                         sumadiasincapacidad +=  d.total_days_absenteeism
-                        sumadiaslaborales += (d.working_days_month * d.total_officials)
+                        sumadiaslaborales += (d.working_days_month * d.total_officials) if d.working_days_month.present? && d.working_days_month > 0 && d.total_officials.present? && d.total_officials > 0
                     end    
                 end 
 

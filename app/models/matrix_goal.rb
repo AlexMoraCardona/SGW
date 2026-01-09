@@ -32,6 +32,8 @@ class MatrixGoal < ApplicationRecord
        elsif indicador == 14 ; dato = report_official.compliance_work_plan
        elsif indicador == 15 ; dato = report_official.per_activity_plan
        elsif indicador == 16 ; dato = report_official.per_perfil_sociodemo
+       elsif indicador == 17 ; dato = report_official.per_resources
+       elsif indicador == 18 ; dato = report_official.per_investigation
        end
        return dato;
     end

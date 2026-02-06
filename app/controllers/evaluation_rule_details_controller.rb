@@ -131,7 +131,7 @@ class EvaluationRuleDetailsController < ApplicationController
  
     def edit
         @evaluation_rule_detail = EvaluationRuleDetail.find(params[:id])
-        @templates = Template.where("standar_detail_item_id = ? and document_vigente = ?", @evaluation_rule_detail.standar_detail_item_id,1) if Current.user.level == 1 || Current.user.level == 2
+        @templates = Template.where("standar_detail_item_id = ? and document_vigente = ? and state = ?", @evaluation_rule_detail.standar_detail_item_id,1,1)   
         @evidences = Evidence.where("evaluation_rule_detail_id = ?", @evaluation_rule_detail.id).order(id: :desc)
         if @evaluation_rule_detail.standar_detail_item_id == 47 || @evaluation_rule_detail.standar_detail_item_id == 115 || @evaluation_rule_detail.standar_detail_item_id == 175
             @evidencias_total = Evidence.where("entity_id = ?",@evaluation_rule_detail.evaluation.entity_id)

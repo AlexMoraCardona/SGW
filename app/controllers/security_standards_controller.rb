@@ -31,7 +31,7 @@ class SecurityStandardsController < ApplicationController
       @template = Template.where("format_number = ? and document_vigente = ?",112,1).last  
       @company_areas = CompanyArea.where("entity_id = ?",Current.user.entity.to_i) if Current.user.entity.present?
       @protection_elements = ProtectionElement.where("(entity = ? or entity = ?) and state_protection = ?",6,Current.user.entity,1)
-      @user_asesor = User.find(@entity.external_consultant) if @entity.external_consultant > 0
+      @user_asesor = User.find(@entity.responsible_sst) if @entity.responsible_sst > 0
     end    
 
     def create
@@ -77,7 +77,7 @@ class SecurityStandardsController < ApplicationController
           @template = Template.where("format_number = ? and document_vigente = ?",112,1).last  
           @company_areas = CompanyArea.where("entity_id = ?",Current.user.entity.to_i) if Current.user.entity.present?
           @protection_elements = ProtectionElement.where("(entity = ? or entity = ?) and state_protection = ?",6,Current.user.entity,1)
-          @user_asesor = User.find(@entity.external_consultant) if @entity.external_consultant > 0
+          @user_asesor = User.find(@entity.responsible_sst) if @entity.responsible_sst > 0
 
     end
     

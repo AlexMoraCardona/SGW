@@ -129,7 +129,10 @@ Rails.application.routes.draw do
   resources :simulacrums
   resources :simulacrum_items
   resources :mock_scripts
+  resources :internal_reports
 
+  get '/internal_reports/firma_internal_report/:id', to: 'internal_reports#firma_internal_report', as: 'firma_internal_report'
+  get '/internal_reports/ver_reporte_interno/:id', to: 'internal_reports#ver_reporte_interno', as: 'ver_reporte_interno'
   get '/matrix_corrective_actions/ver_adjunto_acpm/:id', to: 'matrix_corrective_actions#ver_adjunto_acpm', as: 'ver_adjunto_acpm'
   get '/mock_scripts/ver_mock_script/:id', to: 'mock_scripts#ver_mock_script', as: 'ver_mock_script'
   get '/mock_scripts/firma_mock_script/:id', to: 'mock_scripts#firma_mock_script', as: 'firma_mock_script'

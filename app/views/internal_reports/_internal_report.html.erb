@@ -1,0 +1,70 @@
+<% if @entity.present? %>
+    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
+<% end %>
+<%= link_to "Crear Reporte", new_internal_report_path, class: 'btn btn-sm btn-primary' if Current.user.level > 0 &&  Current.user.level < 4 %> 
+ 
+<div class="container col-11">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Fecha investigación</th>
+                <th scope="col">Tipo de evento</th>
+                <th scope="col">Empleado</th>
+                <th scope="col">Firma</th>
+                <th scope="col">Ver</th>
+                <th scope="col"><%= t('common.edit') %></th>
+                <th scope="col"><%= t('common.delete') %></th>
+                <th scope="col">PDF</th>
+            </tr>
+        </thead> 
+        <tbody>
+            <% if @internal_reports.present? %>
+                <% if Current.user.level > 0 && Current.user.level < 4 %>
+                    <% @internal_reports.each  do |internal_report|  %>
+                        <tr> 
+                            <td scope="col"><%= internal_report.date_report.strftime("%F") if internal_report.date_report.present? %></td>  
+                            <td scope="col"><%= InternalReport.label_type_report(internal_report.type_report)  %></td>  
+                            <td scope="col"><%= internal_report.name_person %></td>
+                            <td scope="col">
+                                <% if internal_report.firm_user.to_i == 0 %>
+                                    <%= link_to t('common.firmar'), firma_internal_report_path(internal_report.id), class: 'btn btn-sm btn btn-warning' %>
+                                <% else %> 
+                                    <%= internal_report.date_user.strftime("%F") if internal_report.date_user.present? %>                           
+                                <% end %>    
+                            </td>
+                            <td scope="col"><%= link_to 'Ver', internal_report_path(internal_report), class: 'btn btn-sm btn-primary'%></td>
+                            <td scope="col"><%= link_to 'Editar', edit_internal_report_path(internal_report.id), class: 'btn btn-sm btn-warning' %></td>
+                            <td scope="col"><%= button_to 'Delete', internal_report, method: :delete, class:'btn btn-sm btn-danger' %></td>
+                            <td scope="col"><%= link_to "PDF", ver_reporte_interno_path(internal_report.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
+                        </tr>
+                    <% end %>
+                <% else %>
+                    <% @internal_reports.each  do |internal_report|  %>
+                        <% if internal_report.user == Current.user.id %>
+                            <tr> 
+                                <td scope="col"><%= internal_report.date_report.strftime("%F") if internal_report.date_report.present? %></td>  
+                                <td scope="col"><%= InternalReport.label_type_report(internal_report.type_report)  %></td>  
+                                <td scope="col"><%= internal_report.name_person %></td>
+                                <td scope="col">
+                                    <% if internal_report.firm_user.to_i == 0 %>
+                                        <%= link_to t('common.firmar'), firma_internal_report_path(internal_report.id), class: 'btn btn-sm btn btn-warning' %>
+                                    <% else %> 
+                                        <%= internal_report.date_user.strftime("%F") if internal_report.date_user.present? %>                           
+                                    <% end %>    
+                                </td>
+                                <td scope="col"><%= link_to 'Ver', internal_report_path(internal_report), class: 'btn btn-sm btn-primary'%></td>
+                                <td scope="col"><%= link_to 'Editar', edit_internal_report_path(internal_report.id), class: 'btn btn-sm btn-warning' %></td>
+                                <td scope="col"><%= button_to 'Delete', internal_report, method: :delete, class:'btn btn-sm btn-danger' %></td>
+                                <td scope="col"><%= link_to "PDF", ver_reporte_interno_path(internal_report.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
+                            </tr>
+                        <% end %>
+                    <% end %>    
+                <% end %>
+            <% end %>      
+        </tbody>      
+    </table>
+    </br>        
+</div>
+
+
+

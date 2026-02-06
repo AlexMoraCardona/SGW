@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_11_25_193319) do
+ActiveRecord::Schema[7.0].define(version: 2026_02_06_190227) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -188,6 +188,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_11_25_193319) do
     t.bigint "adm_exam_id"
     t.bigint "entity_id"
     t.string "name_exam"
+    t.string "description"
     t.index ["adm_exam_id"], name: "index_allow_exams_on_adm_exam_id"
     t.index ["entity_id"], name: "index_allow_exams_on_entity_id"
     t.index ["user_id"], name: "index_allow_exams_on_user_id"
@@ -1273,6 +1274,23 @@ ActiveRecord::Schema[7.0].define(version: 2025_11_25_193319) do
     t.string "type_indicator"
     t.string "person_result"
     t.index ["cycle_id"], name: "index_indicators_on_cycle_id"
+  end
+
+  create_table "internal_reports", force: :cascade do |t|
+    t.date "date_report"
+    t.integer "type_report", default: 0
+    t.time "time_report"
+    t.string "place"
+    t.string "description"
+    t.string "name_person"
+    t.integer "user", default: 0
+    t.date "date_user"
+    t.integer "firm_user", default: 0
+    t.integer "state_report", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "entity_id"
+    t.index ["entity_id"], name: "index_internal_reports_on_entity_id"
   end
 
   create_table "inves_recomendations", force: :cascade do |t|
@@ -2753,6 +2771,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_11_25_193319) do
   add_foreign_key "history_matrix_legals", "matrix_legals"
   add_foreign_key "improvement_items", "improvement_plans"
   add_foreign_key "improvement_plans", "entities"
+  add_foreign_key "internal_reports", "entities"
   add_foreign_key "inves_recomendations", "investigations"
   add_foreign_key "inves_users", "investigations"
   add_foreign_key "investigations", "entities"

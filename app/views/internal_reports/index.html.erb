@@ -1,0 +1,33 @@
+<div align="left"; class="container col-12">
+    <a class="navbar-brand" href="/">
+        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+    </a>
+</div>
+<div class="container col-11" 
+    <br>
+    <h2>REPORTE INTERNO DE ACCIDENTES E INCIDENTES</h2>
+    <hr>
+    
+    <br> 
+ 
+    <% if params[:entity_id].present? || @entity.present? %>
+        <%= render 'internal_report' %> 
+    <% else %>
+        <%= form_with model: @entity, method: :get do |form| %>
+            <div class="row g-2">
+                <div class="col-sm-7">
+                <h3>Empresa:</h3>
+                    <% if @entities.present? %>
+                        <%= form.collection_select :entity_id, @entities.order(id: :asc), :id, :business_name, { prompt: '--Seleccionar Entidad--' },
+                        { class: 'form-control input-sm select2' } %>
+                    <% else %> 
+                        <%=  @entity.business_name %>
+                        <%= form.hidden_field :entity_id, :value => @entity.id, class: "form-control" %>
+                    <% end %>
+                </div>
+            </div>    
+            <br>    
+            <button type="submit" class="btn btn-primary">Consultar</button>
+        <% end %>
+
+    <% end %>     

@@ -48,7 +48,7 @@ class AllowExamsController < ApplicationController
 
     def allow_exam_params
         params.require(:allow_exam).permit(:date_initial, :date_final, :user_id, 
-        :adm_exam_id, :entity_id, :name_exam)
+        :adm_exam_id, :entity_id, :name_exam, :description)
     end 
 
 end  

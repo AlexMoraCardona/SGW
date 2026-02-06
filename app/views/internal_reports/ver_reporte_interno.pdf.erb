@@ -1,0 +1,186 @@
+<head>
+    <meta charset='utf-8' />
+</head>
+<div class="container col-12 card p-5">
+    <table style="width: 100%;border:0px solid black"> 
+        <tr>
+            <td rowspan="2" style="border:1px solid black; width: 20%;text-align:center ">
+                <% if @entity.logo.present? then %>
+                    <%= image_tag(Evaluation.wicked_blob_path(@entity.logo),:width => "80",  :height=>"80") %>
+                <% end %>   
+            </td>
+            <td style="border:1px solid black;text-align:center ">
+                <div class="col-10"><%= @entity.business_name if @entity.present? %></div>
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black;text-align:center ">
+                <div class="col-10"><%= @template.name if @template.present? %></div>
+            </td>
+        </tr>
+    </table>
+    <table style="width: 100%;">
+        <tr>    
+            <td style="border:1px solid black; width: 25%">
+                CÓDIGO:                 
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                &nbsp;&nbsp;<small class="text-muted"><%= @template.reference if @template.present? %></small>                
+            </td>
+
+            <td style="border:1px solid black; width: 25%">
+                VERSIÓN:                 
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                &nbsp;&nbsp;<small class="text-muted"><%= @template.version if @template.present? %></small>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="border:1px solid black; width: 25%">
+                FECHA DE ELABORACIÓN:                 
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                &nbsp;&nbsp;<small class="text-muted"><%= @template.date if @template.present? %></small>                
+            </td>
+
+            <td style="border:1px solid black; width: 25%">
+                FECHA DE ACTUALIZACIÓN:                 
+            </td>
+            <td style="border:1px solid black; width: 25%">
+                &nbsp;&nbsp;<small class="text-muted"><%= @template.date_updated if @template.present? %></small>                
+            </td>
+        </tr>
+    </table>
+    <br> 
+
+    <table style="width: 100%;">
+        <tr>    
+            <td style="width: 30%;border:1px solid black;padding: 10px;">
+                <strong>TIPO DE EVENTO:</strong>               
+            </td>
+            <td style="width: 70%;border:1px solid black;padding: 10px;">
+                <%=  InternalReport.label_type_report (@internal_report.type_report) %>                 </td>
+        </tr>
+        <tr>    
+            <td style="width: 30%;border:1px solid black;padding: 10px;">
+                <strong>FECHA DE OCURRENCIA:</strong>               
+            </td>
+            <td style="width: 70%;border:1px solid black;padding: 10px;">
+                <%=  @internal_report.date_report if @internal_report.date_report.present? %>                
+            </td>
+        </tr>
+        <tr>    
+            <td style="width: 30%;border:1px solid black;padding: 10px;">
+                <strong>HORA DE OCURRENCIA:</strong>               
+            </td>
+            <td style="width: 70%;border:1px solid black;padding: 10px;">
+                <%=  @internal_report.time_report.strftime("%T") if @internal_report.time_report.present? %>               
+            </td>
+        </tr>
+        <tr>    
+            <td style="width: 30%;border:1px solid black;padding: 10px;">
+                <strong>LUGAR DEL INCIDENTE O ACCIDENTE:</strong>               
+            </td>
+            <td style="width: 70%;border:1px solid black;padding: 10px;">
+                <%=  @internal_report.place %>               
+            </td>
+        </tr>
+        <tr>    
+            <td style="width: 30%;border:1px solid black;padding: 10px;">
+                <strong>DESCRIPCIÓN DEL INCIDENTE O ACCIDENTE:</strong>               
+            </td>
+            <td style="width: 70%;border:1px solid black;padding: 10px;">
+                 <%=  @internal_report.description %>               
+            </td>
+        </tr>
+        <tr>    
+            <td style="width: 30%;border:1px solid black;padding: 10px;">
+                <strong>NOMBRE DE LA PERSONA ACCIDENTADA:</strong>               
+            </td>
+            <td style="width: 70%;border:1px solid black;padding: 10px;">
+                <%=  @internal_report.name_person %>                 
+            </td>
+        </tr>
+    </table>
+    <table style="width: 100%;">
+        <tr>
+            <td>
+                <br>
+                <div class="form-group">
+                    Archivos adjuntos:
+                </div>         
+                <hr>
+                <% if @internal_report.imagenes_reports.attached? %>
+                    <div data-controller="previews" >
+                        <% @internal_report.imagenes_reports.each do |file|%>
+                            <br>
+                            <% if file.image? %>
+                                <div>
+                                    <%= image_tag file, data: {previews_target: "preview"}, class: "image_inv" %>
+                                </div> 
+                            <% elsif file.video? %>
+                                <%= video_tag url_for(file), controls: "", width: "400px" %>          
+                            <% elsif file.audio? %>
+                                <%= audio_tag(url_for(file), controls: "") %>          
+                            <% else %>
+                                <%= link_to file.filename, url_for(file) %>          
+                            <% end %>
+                        <% end %>  
+                    </div>
+                <% end %>  
+                <hr>
+            </td>    
+        </tr>
+    </table> 
+    <table style="width: 100%;">
+        <td style="border:0px solid black; width: 33%; text-align:center">
+            <div class="row  text-center"> 
+                <div class="col-11">
+                    <div>Usuario que realiza el reporte:</div>
+                    <div>&nbsp;</div>
+                    <div>&nbsp;</div>
+                            <% if @internal_report.firm_user == 1 %>
+                               <% if @usuario.firm.attached? %>
+                                  <% if @usuario.firm.image? %> 
+                                        <div  style="padding: 0;height: 70px;display: flex;justify-content: center;align-items: flex-end;"><%= image_tag(Evaluation.wicked_blob_path(@usuario.firm), class: "firmapdf")%></div>
+                                        <p align="center">______________________</p>
+                                  <% end %>
+                                <% end %>
+                            <% else %>    
+                                <div  style="padding: 0;height: 70px;display: flex;justify-content: center;align-items: flex-end;"></div>
+                                <p align="center">______________________</p>
+                             <% end %>     
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <strong><%= @usuario.name if @usuario.present? %></strong>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <%= @usuario.cargo_rol if @usuario.present? %>
+                            </div>
+                        </div>
+                        <div class="col-11">
+                            <div class="row">
+                                <%= @usuario.document.abbreviation if @usuario.present? %>: <%= Firm.miles(@usuario.nro_document) if @usuario.present? %>
+                            </div>
+                        </div>
+                        <% if  @usuario.present? && @usuario.level == 2  %>
+                            <div class="col-11">
+                                <div class="row">
+                                    Licencia: <%= @usuario.license if @usuario.present? %>
+                                </div>
+                            </div>
+                        <% end %>
+                    </div>
+                    <br>
+        </td>
+    </tr>
+</table>
+
+        </br> 
+</div>        
+<br>
+
+ 

@@ -45,6 +45,24 @@ class UserMailer < ApplicationMailer
 
   end
 
+  def citacion_exam
+    @user = params[:user]
+    @reunion = params[:reunion]
+    @observaciones = params[:observaciones]
+    @fecha_inicio = params[:fecha_inicio] 
+    @fecha_final = params[:fecha_final]
+    @convocanombre = params[:convocanombre]
+    @convocacargo = params[:convocacargo]
+
+
+    if @user.present?
+      @username = @user.name 
+      mail(to: @user.email, subject: "Citación")
+    end 
+
+  end
+
+
   def compromiso
     @user = params[:user]
     @fechaacor = params[:fechaacor]

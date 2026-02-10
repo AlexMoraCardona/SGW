@@ -2,9 +2,9 @@
     <h class="display-6"><%= @entity.business_name %> Nit: <%=@entity.identification_number %></h>
 <% end %>
 
-<% if @allow_exams.present? %>
+<% if @examenes_activos.present? %>
     <%= form_tag evaluacion_path(Current.user.id.to_i), method: :get do %>
-        <%= select_tag :allow_exam_id, options_from_collection_for_select(@allow_exams, :id, :name_exam), class: 'form-control input-sm select2', :prompt  =>  '--Seleccione la evaluación a realizar--' %>
+        <%= select_tag :allow_exam_id, options_from_collection_for_select(@examenes_activos, :id, :name_exam), class: 'form-control input-sm select2', :prompt  =>  '--Seleccione la evaluación a realizar--' %>
 
         <br>
         <%= submit_tag 'Hacer evaluación',  :class => 'btn btn-primary btn-block spin pull-right' %>

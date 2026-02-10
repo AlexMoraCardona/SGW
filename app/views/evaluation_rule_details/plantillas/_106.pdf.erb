@@ -124,6 +124,39 @@
             </td>
         </tr>
     </table> 
+    <div><br></div> 
+    <table> 
+        <tr>
+            <td>
+                <strong>Evidencias Fotográficas: </strong>
+                <hr>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:justify">
+                <br>
+                <% if @evidence.evi_files.attached? %>
+                    <div data-controller="previews" >
+                        <% @evidence.evi_files.each do |file|%>
+                            <br>
+                            <% if file.image? %>
+                                <div>
+                                    <%= image_tag(Evaluation.wicked_blob_path(file), height: "350", width: "auto")%>
+                                </div> 
+                            <% elsif file.video? %>
+                                <%= video_tag url_for(file), controls: "", width: "400px" %>          
+                            <% elsif file.audio? %>
+                                <%= audio_tag(url_for(file), controls: "") %>          
+                            <% else %>
+                                <%= link_to file.filename, url_for(file) %>          
+                            <% end %>
+                        <% end %>  
+                    </div>
+                <% end %> 
+            </td>
+        </tr>
+    </table> 
+    <div><br></div> 
 
     <div><br></div>
     <div><br></div>

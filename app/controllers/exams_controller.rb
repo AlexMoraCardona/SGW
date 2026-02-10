@@ -3,6 +3,7 @@ class ExamsController < ApplicationController
         if params[:entity_id].present? && Current.user 
             @entity = Entity.find(params[:entity_id])
             @allow_exams = AllowExam.where("entity_id = ? and date_initial <= ? and date_final >= ?", params[:entity_id].to_i, Date.today, Date.today)  
+            @examenes_activos = Exam.buscar_examenes(@allow_exams, Current.user.id)
         else    
             if  Current.user 
                 @entities = Entity.all.order(id: :asc) if Current.user.level == 1

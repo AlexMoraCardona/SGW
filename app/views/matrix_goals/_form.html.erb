@@ -29,9 +29,13 @@
             <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Responsable SST.">Responsable SST:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
             <%= form.collection_select :user_responsible, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
         </div>
+        <% if params[:entity_id].present? %>
+            <%= form.hidden_field :entity_id, :value => params[:entity_id].to_i, class: "form-control"  %>
+            <%= form.hidden_field :date_unsafe, :value => Time.now, class: "form-control" %>
+        <% else %>
+            <%= form.hidden_field :entity_id, :value => @matrix_goal.entity_id, class: "form-control" if @matrix_goal.present? %>
+        <% end %>
         
-        <%= form.hidden_field :entity_id, :value => params[:entity_id].to_i, class: "form-control" %>
-        <%= form.hidden_field :date_unsafe, :value => Time.now, class: "form-control" %>
 
         <br>    
         <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>

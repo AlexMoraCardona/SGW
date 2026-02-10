@@ -92,9 +92,12 @@ class MatrixGoalsController < ApplicationController
     
     def actualizar_fecha(id)
         @matrix_goal = MatrixGoal.find(id)
-        @matrix_goal.date_firm_representante = nil if @matrix_goal.firm_representante.to_i == 0
-        @matrix_goal.date_firm_asesor = nil if @matrix_goal.firm_asesor.to_i == 0
-        @matrix_goal.date_firm_responsible = nil if @matrix_goal.firm_responsible.to_i == 0
+        @matrix_goal.date_firm_representante = nil 
+        @matrix_goal.date_firm_asesor = nil 
+        @matrix_goal.date_firm_responsible = nil 
+        @matrix_goal.firm_representante = 0
+        @matrix_goal.firm_asesor = 0
+        @matrix_goal.firm_responsible = 0
         @matrix_goal.save
     end       
 
@@ -144,6 +147,28 @@ class MatrixGoalsController < ApplicationController
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Responsable en SST."
             end    
         end
+    end    
+
+    def duplicar_matrix_goal
+        @matrix_goal = MatrixGoal.find_by(id: params[:id].to_i)
+        @matrix_goal_items = MatrixGoalItem.where("matrix_goal_id = ?", @matrix_goal.id) if @matrix_goal.present?
+        year_actual = Time.now.year
+        @matrix_goal_actual = MatrixGoal.where("entity_id = ? and year = ?", @matrix_goal.entity_id, year_actual)
+
+        if @matrix_goal_actual.present?
+            redirect_back fallback_location: root_path, alert: "La matrix ya existe para el presente año."
+        else
+            @matrix_goal_new = MatrixGoal.new 
+            @matrix_goal_new.date_unsafe = Time.now 
+            @matrix_goal_new.user_representante = @matrix_goal.user_representante
+            @matrix_goal_new.user_responsible = @matrix_goal.user_responsible
+            @matrix_goal_new.user_asesor = @matrix_goal.user_asesor
+            @matrix_goal_new.year = year_actual.to_i
+            @matrix_goal_new.entity_id = @matrix_goal.entity_id
+            @matrix_goal_new.save
+            MatrixGoal.crear_items(@matrix_goal_new, @matrix_goal)
+            redirect_back fallback_location: root_path, notice: "La matrix se creo correctamente."
+        end    
     end    
 
     private

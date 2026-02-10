@@ -27,6 +27,22 @@ class AllowExamsController < ApplicationController
  
     def edit
         @allow_exam = AllowExam.find(params[:id])
+        @user_cites = ''
+        vector = @allow_exam.user_cites
+        nvector = vector.gsub('"', '')
+        nvector = nvector.gsub('[', '')
+        nvector = nvector.gsub(']', '')        
+        fvector = nvector.split(',')
+        cant = fvector.count
+        n = 0
+        @nom_usuarios = ''
+        while n < cant
+            usu = User.find(fvector[n])
+            if usu.present?
+                @nom_usuarios =   @nom_usuarios + ', ' + usu.name 
+            end  
+            n = n + 1
+        end      
     end
     
     def update
@@ -42,13 +58,40 @@ class AllowExamsController < ApplicationController
         @allow_exam = AllowExam.find(params[:id])
         @allow_exam.destroy
         redirect_to allow_exams_path, notice: 'Autorización borrada correctamente', allow_exam: :see_other
-    end    
+    end  
+    
+    def seleccionar_usuarios_examen
+            @allow_exam = AllowExam.find(params[:id])
+            @users = User.where("entity = ? or level = ?", @allow_exam.entity_id, 1)
+    end 
+
+    def citar_usuarios_examen
+        vector = params[:ids] 
+        n = 0
+        n = params[:ids].count if params[:ids].present?
+        allow_exam_id = params[:id].to_i
+        allow_exam = AllowExam.find(allow_exam_id)
+        allow_exam.user_cites = params[:ids]
+        allow_exam.update(allow_exam_cites_params)
+
+        if n > 0
+
+            AllowExam.crear_citar(n, allow_exam_id, vector)
+            redirect_to allow_exams_path, notice: 'Citación creada correctamente', calendar: :see_other
+        else
+            redirect_to allow_exams_path, status: :unprocessable_entity, alert: 'No se seleccionó ningun usuario.' 
+        end    
+    end
 
     private
 
     def allow_exam_params
         params.require(:allow_exam).permit(:date_initial, :date_final, :user_id, 
-        :adm_exam_id, :entity_id, :name_exam, :description)
+        :adm_exam_id, :entity_id, :name_exam, :description, :user_cites)
+    end 
+
+    def allow_exam_cites_params
+        params.permit(:user_cites)
     end 
 
 end  

@@ -113,4 +113,28 @@ class Exam < ApplicationRecord
         @can_filtro_exams = Exam.where("allow_exam_id = ?", allow_exam_id)
         return @can_filtro_exams;
     end    
+
+    def self.buscar_examenes(allow_examenes, usuario)
+        examenes_activos = []
+        if allow_examenes.count > 0
+            allow_examenes.each do |allow_exam|
+                vector = allow_exam.user_cites
+                nvector = vector.gsub('"', '')
+                nvector = nvector.gsub('[', '')
+                nvector = nvector.gsub(']', '')        
+                fvector = nvector.split(',')
+                cant = fvector.count
+                n = 0
+                @nom_usuarios = ''
+                while n < cant
+                    if fvector[n].to_i == usuario.to_i
+                        examenes_activos << allow_exam
+                    end  
+                    n = n + 1
+                end      
+            end                
+        end
+        return examenes_activos    
+    end   
+
 end

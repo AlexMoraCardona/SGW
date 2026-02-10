@@ -131,6 +131,9 @@ Rails.application.routes.draw do
   resources :mock_scripts
   resources :internal_reports
 
+  get '/matrix_goals/duplicar_matrix_goal/:id', to: 'matrix_goals#duplicar_matrix_goal', as: 'duplicar_matrix_goal' 
+  get '/allow_exams/seleccionar_usuarios_examen/:id', to: 'allow_exams#seleccionar_usuarios_examen', as: 'seleccionar_usuarios_examen' 
+  post '/allow_exams/citar_usuarios_examen/:id' => 'allow_exams#citar_usuarios_examen', as: 'citar_usuarios_examen'
   get '/internal_reports/firma_internal_report/:id', to: 'internal_reports#firma_internal_report', as: 'firma_internal_report'
   get '/internal_reports/ver_reporte_interno/:id', to: 'internal_reports#ver_reporte_interno', as: 'ver_reporte_interno'
   get '/matrix_corrective_actions/ver_adjunto_acpm/:id', to: 'matrix_corrective_actions#ver_adjunto_acpm', as: 'ver_adjunto_acpm'

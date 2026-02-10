@@ -37,4 +37,16 @@ class MatrixGoal < ApplicationRecord
        end
        return dato;
     end
+
+    def self.crear_items(matrix_goal_new, matrix_goal)
+        items = MatrixGoalItem.where("matrix_goal_id = ?",matrix_goal.id)
+        items.each do |item| 
+                matrix_goal_item_new = MatrixGoalItem.new
+                matrix_goal_item_new.objetives = item.objetives
+                matrix_goal_item_new.meta = item.meta
+                matrix_goal_item_new.matrix_goal_id = matrix_goal_new.id
+                matrix_goal_item_new.indicator_id = item.indicator_id
+                matrix_goal_item_new.save
+        end        
+    end   
 end

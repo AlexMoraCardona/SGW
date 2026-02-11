@@ -39,7 +39,7 @@
                     </div>        
                 </div>   
                 <div class="form-group">    
-                    <h5><strong>Descripción evaluación:</strong>
+                    <h5><strong>Observaciones:</strong>
                         <%= allow_exam.description %>
                     </h5>    
                 </div>
@@ -47,12 +47,12 @@
                 <h class="display-7" style="text-align:center">Resumen Evaluación</h>
                 <div class="row g-2">
                     <div class="col-sm-5"> 
-                        <h5><strong>Número de Empleados:</strong>
-                            <%= Exam.numero_empleados(@entity.id, allow_exam.date_initial, allow_exam.date_final) if @entity.present?  %> 
+                        <h5><strong>Cantidad de Empleados citados:</strong>
+                            <%= Exam.numero_empleados(@entity.id, allow_exam.date_initial, allow_exam.date_final, allow_exam.user_cites) if @entity.present?  %> 
                         </h5>
                     </div>        
                     <div class="col-sm-5">
-                        <% @vec = Exam.realiza(@entity.id, allow_exam.id, allow_exam.date_initial, allow_exam.date_final) if @entity.present? %>
+                        <% @vec = Exam.realiza(@entity.id, allow_exam.id, allow_exam.date_initial, allow_exam.date_final, allow_exam.user_cites) if @entity.present? %>
                         
                         <h5><strong>Empleados que realizaron la evaluación:</strong>
                             <%= @vec[0] if @vec[0].present?  %>

@@ -29,11 +29,14 @@ class AllowExamsController < ApplicationController
         @allow_exam = AllowExam.find(params[:id])
         @user_cites = ''
         vector = @allow_exam.user_cites
-        nvector = vector.gsub('"', '')
-        nvector = nvector.gsub('[', '')
-        nvector = nvector.gsub(']', '')        
-        fvector = nvector.split(',')
-        cant = fvector.count
+        cant = 0
+        if vector.present?
+            nvector = vector.gsub('"', '')
+            nvector = nvector.gsub('[', '')
+            nvector = nvector.gsub(']', '')        
+            fvector = nvector.split(',')
+            cant = fvector.count
+        end    
         n = 0
         @nom_usuarios = ''
         while n < cant

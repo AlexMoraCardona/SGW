@@ -54,18 +54,43 @@ class Exam < ApplicationRecord
         @exam.save
     end   
     
-    def self.numero_empleados(entidad, date_initial, date_final)  
-        empleados = User.where("entity = ? and level > ? and (date_entry_company <= ? or date_entry_company is null) and (date_retirement_company >= ? or date_retirement_company is null)",entidad.to_i, 2, date_initial, date_final)
-        cant = empleados.count
+    def self.numero_empleados(entidad, date_initial, date_final, user_cites)
+        vector = user_cites
+        cant = 0
+        if vector.present?
+            nvector = vector.gsub('"', '')
+            nvector = nvector.gsub('[', '')
+            nvector = nvector.gsub(']', '')        
+            fvector = nvector.split(',')
+            cant = fvector.count
+        end    
         return cant
     end    
 
-    def self.realiza(entidad, adexa, date_initial, date_final) 
+    def self.realiza(entidad, adexa, date_initial, date_final, user_cites) 
+        vector = user_cites
+        empleados_citados = 0
+        if vector.present?
+            nvector = vector.gsub('"', '')
+            nvector = nvector.gsub('[', '')
+            nvector = nvector.gsub(']', '')        
+            fvector = nvector.split(',')
+            empleados_citados = fvector.count
+        end    
+
+
         @datos = []
-        empleados = User.where("entity = ? and level > ? and (date_entry_company <= ? or date_entry_company is null) and (date_retirement_company >= ? or date_retirement_company is null)",entidad.to_i, 2, date_initial, date_final)
+        empleados = []
+        if fvector.present?
+            i = 0
+            while i < empleados_citados
+                empleados << User.find(fvector[i].to_i)
+                i = i + 1
+            end            
+        end    
 
         cantemp = 0
-        cantemp = empleados.count
+        cantemp = fvector.count if fvector.present?
         cant = 0
         apro = 0
         repro = 0
@@ -79,7 +104,7 @@ class Exam < ApplicationRecord
                 apro += 1 if id_exam.resul == "Aprobado" 
                 repro += 1 if id_exam.resul == "Reprobado" || id_exam.resul.blank?  
             end    
-        end
+        end 
 
         porapro = (((Float(apro) / cantemp))*100).round(2) 
         porrepro = (((Float(repro) / cantemp))*100).round(2) 
@@ -89,7 +114,25 @@ class Exam < ApplicationRecord
 
    def self.detalle_realiza(entidad, adexa) 
         allow_exam = AllowExam.find(adexa)
-        empleados = User.where("entity = ? and level > ? and (date_entry_company <= ? or date_entry_company is null) and (date_retirement_company >= ? or date_retirement_company is null)",entidad.to_i, 2, allow_exam.date_initial, allow_exam.date_final)
+
+        vector = allow_exam.user_cites
+        empleados_citados = 0
+        if vector.present?
+            nvector = vector.gsub('"', '')
+            nvector = nvector.gsub('[', '')
+            nvector = nvector.gsub(']', '')        
+            fvector = nvector.split(',')
+            empleados_citados = fvector.count
+        end    
+
+        empleados = []
+        if fvector.present?
+            i = 0
+            while i < empleados_citados
+                empleados << User.find(fvector[i].to_i)
+                i = i + 1
+            end            
+        end    
 
         @exams = [] 
         empleados.each do |empleado|

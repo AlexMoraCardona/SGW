@@ -15,6 +15,9 @@ class HomesController < ApplicationController
          @total_firmar = 0
          @cant_firma =  Firm.penfirma
          @total_firmar =  @cant_firma if @cant_firma.present?  
+         @copasst = User.where("entity = ? and copasst = ?",@entity,1) if @entity.present?
+         @ccl = User.where("entity = ? and ccl = ?",@entity,1) if @entity.present?
+         @br = User.where("entity = ? and brigade = ?",@entity,1) if @entity.present?
     end    
 
     def show

@@ -92,12 +92,12 @@ class MatrixGoalsController < ApplicationController
     
     def actualizar_fecha(id)
         @matrix_goal = MatrixGoal.find(id)
-        @matrix_goal.date_firm_representante = nil 
-        @matrix_goal.date_firm_asesor = nil 
-        @matrix_goal.date_firm_responsible = nil 
-        @matrix_goal.firm_representante = 0
-        @matrix_goal.firm_asesor = 0
-        @matrix_goal.firm_responsible = 0
+        @matrix_goal.date_firm_representante = nil if  @matrix_goal.firm_representante.to_i == 0 
+        @matrix_goal.date_firm_asesor = nil if  @matrix_goal.firm_asesor.to_i == 0 
+        @matrix_goal.date_firm_responsible = nil  if @matrix_goal.firm_responsible.to_i == 0 
+        @matrix_goal.firm_representante = 0 if  @matrix_goal.date_firm_representante == nil
+        @matrix_goal.firm_asesor = 0 if  @matrix_goal.date_firm_asesor == nil
+        @matrix_goal.firm_responsible = 0 if  @matrix_goal.date_firm_responsible == nil
         @matrix_goal.save
     end       
 

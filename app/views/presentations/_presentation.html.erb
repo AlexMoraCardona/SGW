@@ -8,20 +8,20 @@
                 <% if presentation.archivo.image? %>
                     <div>
                         <%= image_tag presentation.archivo, data: {previews_target: "preview"}, class: "image" %>
-                        <%= link_to "Borrar Archivo", purge_attachment_path(presentation.archivo), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
+                        <%= link_to "Borrar Archivo", purge_attachment_path(presentation.archivo.attachment.id), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
                         <%= link_to "Descargar Archivo", rails_blob_path(presentation.archivo, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
                     </div> 
                 <% elsif presentation.archivo.video? %>
                     <%= video_tag url_for(presentation.archivo), controls: "", width: "400px" %>          
-                    <%= link_to "Borrar Archivo", purge_attachment_path(presentation.archivo), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
+                    <%= link_to "Borrar Archivo", purge_attachment_path(presentation.archivo.attachment.id), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
                     <%= link_to "Descargar Archivo", rails_blob_path(presentation.archivo, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
                 <% elsif presentation.archivo.audio? %>
                     <%= audio_tag(url_for(presentation.archivo), controls: "") %>          
-                    <%= link_to "Borrar Archivo", purge_attachment_path(presentation.archivo), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
+                    <%= link_to "Borrar Archivo", purge_attachment_path(presentation.archivo.attachment.id), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
                     <%= link_to "Descargar Archivo", rails_blob_path(presentation.archivo, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
                 <% else %>
                     <%= link_to presentation.archivo.filename, url_for(presentation.archivo) %>          
-                    <%= link_to "Borrar Archivo", purge_attachment_path(presentation.archivo), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
+                    <%= link_to "Borrar Archivo", purge_attachment_path(presentation.archivo.attachment.id), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
                     <%= link_to "Descargar Archivo", rails_blob_path(presentation.archivo, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
                 <% end %>
             </div>
@@ -29,6 +29,5 @@
     </td>
 
     <td><%= link_to t('common.edit'), edit_presentation_path(presentation), class: 'btn btn-sm btn-primary'  %></td>
-    <td><%= link_to t('common.delete'), presentation, data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar la presentación?' }, class: 'btn btn-sm btn-danger' %></td>
-
+    <td scope="col"><%= button_to 'Delete', presentation, method: :delete, class:'btn btn-sm btn-danger' %></td>
 </tr>

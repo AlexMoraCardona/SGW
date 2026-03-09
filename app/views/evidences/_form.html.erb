@@ -486,6 +486,79 @@
                 <%= form.file_field :evi_files, multiple: true %>
             </div> 
         <% end %>
+        <% if @evidence.template.format_number == 116 then %>
+            <div class="form-group">    
+                <%= form.label :date, style: "display: block" %>
+                <%= form.date_field :date,  class: "form-control" %>
+            </div>
+            <div class="form-group">
+                    <h6> Edad: </h6>
+                    <%= form.number_field :age,  class: "form-control" %>
+            </div>
+            <div class="form-group">
+                <%= form.label :health_promoter_id, style: "display: block" %>
+                <%= form.collection_select :health_promoter_id , HealthPromoter.all.order(id: :asc), :id, :name_entity, { prompt: '--Seleccionar EPS--' },
+                    { class: 'form-control input-sm select2' } %>
+            </div>
+            <div class="form-group">
+                    <h6> Peso(Kg): </h6>
+                    <%= form.number_field :weight,  class: "form-control" %>
+            </div>
+            <div class="form-group">
+                <%= form.label :company_position_id, style: "display: block" %>
+                <%= form.collection_select :company_position_id, CompanyPosition.where("entity_id = ?",@evidence.entity_id).order(id: :asc), :id, :name, { prompt: '--Seleccionar EPS--' },
+                    { class: 'form-control input-sm select2' } %>
+            </div>
+            <div class="form-group">    
+                <h6> Sede:  </h6>
+                <%= form.text_field :sede,  class: "form-control" %>
+            </div>
+            <div class="form-group">
+                <%= form.label :company_area_id, style: "display: block" %>
+                <%= form.collection_select :company_area_id, CompanyArea.where("entity_id = ?",@evidence.entity_id).order(id: :asc), :id, :name, { prompt: '--Seleccionar EPS--' },
+                    { class: 'form-control input-sm select2' } %>
+            </div>
+            <div class="col-sm-5">
+                <%= form.label :type_employment, style: "display: block" %>           
+                <%= form.select(:type_employment, [['Contrato a Término Fijo', 0], ['Contrato a término indefinido', 1], ['Contrato de Obra o labor', 2], ['Contrato civil por prestación de servicios', 3], ['Contrato de aprendizaje', 4], ['Contrato ocasional de trabajo', 5]]) %>
+            </div>        
+            <div class="col-sm-5">
+                <%= form.label :medical_treatment, style: "display: block" %>           
+                <%= form.select(:medical_treatment, [['NO', 0], ['SI', 1]]) %>
+            </div>        
+            <div class="form-group">    
+                <%= form.label :boss_name, style: "display: block" %>
+                <%= form.text_field :boss_name,  class: "form-control" %>
+            </div>
+            <div class="form-group">    
+                <%= form.label :diagnosis, style: "display: block" %>
+                <%= form.text_area :diagnosis,  class: "form-control" %>
+            </div>
+            <div class="form-group">    
+                <%= form.label :type_treatment, style: "display: block" %>
+                <%= form.text_area :type_treatment,  class: "form-control" %>
+            </div>
+            <div class="form-group">    
+                <h6> Funciones del cargo:  </h6>
+                <%= form.rich_text_area :compliances,  class: "form-control" %>
+            </div>
+            <div class="form-group">    
+                <%= form.label :status_compliance, style: "display: block" %>
+                <%= form.text_area :status_compliance,  class: "form-control" %>
+            </div>
+            <div class="form-group">    
+                <%= form.label :observations, style: "display: block" %>
+                <%= form.text_area :observations,  class: "form-control" %>
+            </div>
+            <div class="form-group">    
+                <%= form.label :collaborator_commitment, style: "display: block" %>
+                <%= form.text_area :collaborator_commitment,  class: "form-control" %>
+            </div>
+            <div class="form-group">    
+                <%=form.label :entity_commitment, style: "display: block" %>
+                <%= form.text_area :entity_commitment,  class: "form-control" %>
+            </div>
+        <% end %>
         <br>
         <%= form.submit 'Guardar', class: "btn btn-primary", data: { turbo_confirm: 'Desea guardar los cambios?' }  %>     
         <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back  %>

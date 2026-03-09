@@ -56,8 +56,11 @@ class EvidencesController < ApplicationController
          :value, :string, :initial_period, :final_period, :initial_time, :final_time, :vigia, :year_initial, :year_final, 
          :month_initial, :month_final, :total_votes, :description_complaint, :data, :evidence_authority, :object, :policy, 
          :compliances, :por_cobertura, :por_trabajadores, :por_reacciones, :por_aprendizaje, :por_resultados, :direct_exposure_areas, 
-         :medical_examination_entity, :biologica_risk_area, :number_acta, evi_files: [])
+         :medical_examination_entity, :biologica_risk_area, :number_acta, :age, :health_promoter_id, :weight, :company_position_id, 
+         :sede, :company_area_id, :type_employment, :medical_treatment, :boss_name, :diagnosis, :type_treatment, :status_compliance, 
+         :observations, :collaborator_commitment, :entity_commitment, evi_files: [])
     end 
 
 end   
 
+        

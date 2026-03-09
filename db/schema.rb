@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_02_09_201611) do
+ActiveRecord::Schema[7.0].define(version: 2026_03_02_163257) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -1000,6 +1000,21 @@ ActiveRecord::Schema[7.0].define(version: 2026_02_09_201611) do
     t.string "medical_examination_entity"
     t.string "biologica_risk_area"
     t.integer "number_acta", default: 0
+    t.integer "age", default: 0
+    t.integer "health_promoter_id", default: 0
+    t.decimal "weight", default: "0.0"
+    t.integer "company_position_id", default: 0
+    t.string "sede"
+    t.integer "company_area_id", default: 0
+    t.integer "type_employment", default: 0
+    t.integer "medical_treatment", default: 0
+    t.string "boss_name"
+    t.string "diagnosis"
+    t.string "type_treatment"
+    t.string "status_compliance"
+    t.string "observations"
+    t.string "collaborator_commitment"
+    t.string "entity_commitment"
     t.index ["entity_id"], name: "index_evidences_on_entity_id"
     t.index ["evaluation_rule_detail_id"], name: "index_evidences_on_evaluation_rule_detail_id"
     t.index ["template_id"], name: "index_evidences_on_template_id"

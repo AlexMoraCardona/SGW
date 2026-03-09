@@ -64,4 +64,10 @@ aspectos por mejorar, observados en el recorrido de inspección."
         return @evidencia
     end 
 
+    def self.tratamiento_medico(dato)
+        if dato == 0 ; 'NO'
+        elsif dato == 1 ; 'SI'
+        end 
+    end 
+
 end

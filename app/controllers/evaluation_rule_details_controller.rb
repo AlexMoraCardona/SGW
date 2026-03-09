@@ -72,7 +72,6 @@ class EvaluationRuleDetailsController < ApplicationController
 
         end
 
-
         @firms.each do |firm| 
             @representante_legal = User.find(firm.user_id) if firm.legal_representative == 1 
         end  
@@ -86,6 +85,7 @@ class EvaluationRuleDetailsController < ApplicationController
             @secretario_comite = User.find(participant.user_id) if participant.joint_committee_secretary == 1 
             @vigia = User.find(participant.user_id) if participant.vigia == 1 
             @colaborador_queja = User.find(participant.user_id) if participant.person_complaining == 1 
+            @usuario_inf = User.find(participant.user_id) if @template.format_number == 116
         end   
                
         @vista = 'evaluation_rule_details/plantillas/' + @evidence.template_id.to_s 

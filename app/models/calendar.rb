@@ -262,6 +262,18 @@ class Calendar < ApplicationRecord
                     end
                 end   
             end
+            #extinguisher
+            @adm_extinguisher = nil
+            @extinguishers = nil
+            @adm_extinguisher = AdmExtinguisher.where("entity_id = ?",Current.user.entity).last if Current.user.present?
+            @extinguishers = Extinguisher.where("adm_extinguisher_id = ?", @adm_extinguisher.id) if @adm_extinguisher.present?
+            if  @extinguishers.present? then
+                @extinguishers.each do |extinguisher| 
+                        nombre = extinguisher.nro.to_s + "-" + extinguisher.area_location
+                        @notificaciones << ["Extintor", @adm_extinguisher.entity.business_name, nombre, extinguisher.date_vec_carga, extinguisher.adm_extinguisher_id]
+                end   
+            end
+
  
             @meeting_commitments = nil
             @meeting_minute = MeetingMinute.where("entity_id = ?",@entity.id).last
@@ -410,8 +422,17 @@ class Calendar < ApplicationRecord
                 end   
             end
 
-
-
+            #extinguisher
+            @adm_extinguisher = nil
+            @extinguishers = nil
+            @adm_extinguisher = AdmExtinguisher.where("entity_id = ?",Current.user.entity).last if Current.user.present?
+            @extinguishers = Extinguisher.where("adm_extinguisher_id = ?", @adm_extinguisher.id) if @adm_extinguisher.present?
+            if  @extinguishers.present? then
+                @extinguishers.each do |extinguisher| 
+                        nombre = extinguisher.nro.to_s + "-" + extinguisher.area_location
+                        @notificaciones << ["Extintor", @adm_extinguisher.entity.business_name, nombre, extinguisher.date_vec_carga, extinguisher.adm_extinguisher_id]
+                end   
+            end
 
         elsif
             if Current.user.level == 4 ||  Current.user.level == 5 then

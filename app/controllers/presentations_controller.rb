@@ -11,6 +11,7 @@ class PresentationsController < ApplicationController
 
     def new
       @presentation = Presentation.new  
+      @empresas = Entity.select(:business_name, :id).all
     end    
 
     def create
@@ -25,6 +26,7 @@ class PresentationsController < ApplicationController
  
     def edit
         @presentation = Presentation.find(params[:id])
+        @empresas = Entity.select(:business_name, :id).all
     end
     
     def update
@@ -47,14 +49,14 @@ class PresentationsController < ApplicationController
     end 
     
     def show 
-        @presentations = Presentation.where(state: 1).order(:id)
+        @presentations = Presentation.where("state = ? and (entity = ? or entity = ?)",1,Current.user.entity,6).order(:id)
         @vistas = ViewVideo.where(user_id: Current.user.id)
     end    
 
     private
 
     def presentation_params
-        params.require(:presentation).permit(:name, :archivo, :state)
+        params.require(:presentation).permit(:name, :archivo, :state, :entity)
     end 
 
 end  

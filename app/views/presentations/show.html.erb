@@ -17,6 +17,7 @@
                 <th scope="col"><%= t('.name') %></th>
                 <th scope="col"><%= t('.archivo') %></th>
                 <th style="text-align:center;">Visto!</th>
+                <th style="text-align:center;">Fecha de visualización</th>
             </tr>
         </thead>
 
@@ -46,13 +47,24 @@
                     <% end %>
                 </td>
                 <td style="text-align:center;">
-                    <% if @vistas.find_by(presentation: presentation.id, type_presentation: 0).present?  %>
+                    <% vis = @vistas.find_by(presentation: presentation.id, type_presentation: 0) %>
+                    <% if vis.present?  %>
                         <div> 
                             <%= image_tag("caritafeliz.png", class: "carita-mini") %>
                         </div> 
                     <% else %>  
                         <div>  
                             <%= link_to "Registrar Vista", registrar_vista_path(id: presentation.id, type: 0), class: 'btn btn-sm btn-light' %>                        
+                        </div>
+                    <% end %>
+                </td>
+                <td style="text-align:center;">
+                    <% if vis.present? %>
+                        <div> 
+                            <%= vis.date_view.strftime("%F") %>
+                        </div> 
+                    <% else %>  
+                        <div>  
                         </div>
                     <% end %>
                 </td>

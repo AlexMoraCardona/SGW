@@ -7,7 +7,7 @@ class KitsController < ApplicationController
             else 
                 @entities = Entity.all
             end    
-        elsif Current.user && Current.user.level == 3 
+        elsif Current.user && (Current.user.level == 3 || Current.user.ccl == 1) 
             @entity = Entity.find(Current.user.entity)
             @kits = Kit.where("entity_id = ?",Current.user.entity)
         else
@@ -26,7 +26,7 @@ class KitsController < ApplicationController
         @kit = Kit.new(kit_params)
 
         if @kit.save then
-            redirect_to kits_path, notice: 'Inspección de botiquín de primeros auxilios creada correctamente', calendar: :see_other
+            redirect_to kits_path(entity_id: @kit.entity_id), notice: 'Inspección de botiquín de primeros auxilios creada correctamente', calendar: :see_other
         else
             render :edit, status: :unprocessable_entity
         end    
@@ -50,7 +50,7 @@ class KitsController < ApplicationController
     def destroy
         @kit = Kit.find(params[:id])
         @kit.destroy
-        redirect_to kits_path, notice: 'Inspección de botiquín de primeros auxilios borrada correctamente', kit: :see_other
+        redirect_to kits_path(entity_id: @kit.entity_id), notice: 'Inspección de botiquín de primeros auxilios borrada correctamente', kit: :see_other
     end 
     
     def firmar_kit

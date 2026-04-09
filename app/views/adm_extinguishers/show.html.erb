@@ -3,6 +3,9 @@
         <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
     </a>
 </div>
+<%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe,  adm_extinguishers_path(entity_id: @adm_extinguisher.entity_id) if @adm_extinguisher.present? %>
+<div><br></div>
+
 <div class="container col-12 card p-5"> 
     <%= render 'encabezado' %>
     
@@ -76,6 +79,9 @@
             <td style="border:1px solid black; text-align:center;transform: rotate(270deg);">
                 <FONT SIZE=1>Adjunto</font> 
             </td>
+            <td style="border:1px solid black; text-align:center;transform: rotate(270deg);">
+                <FONT SIZE=1>Editar</font> 
+            </td>
         </tr>
         <% if @extinguishers.present? %>
              <% @extinguishers.each do |extinguishers| %>
@@ -136,6 +142,9 @@
                     </td>
                     <td style="border:1px solid black;">
                         <FONT SIZE=1><%= link_to t('common.adjunto'), extinguisher_adjunto_adm_extinguishers_path(extinguishers.id), class: 'btn btn-sm btn-primary'  %></font> 
+                    </td>
+                    <td style="border:1px solid black;">
+                        <FONT SIZE=1><%= link_to 'Editar', edit_extinguisher_path(extinguishers.id), class: 'btn btn-sm btn-warning'  %></font> 
                     </td>
                 </tr>
             <% end %>

@@ -33,7 +33,7 @@ class ExtinguishersController < ApplicationController
  
     def edit
         @extinguisher = Extinguisher.find(params[:id])
-        @entity = Entity.find(@extinguisher.entity_id) if @extinguisher.present?
+        @entity = Entity.find(@extinguisher.adm_extinguisher.entity_id) if @extinguisher.present? 
     end
     
     def update

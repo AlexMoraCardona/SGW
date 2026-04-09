@@ -9,7 +9,12 @@
         <div class="col-sm-12 p-3 mb-2  text-dark">    
             <p class="fst-normal fs-3"><strong>LISTA DE CHEQUEO BOTIQUÍN DE PRIMEROS AUXILIOS</strong> </p>
         </div>
-        <br>     
+        <br> 
+        <div class="col-sm-12 p-3 mb-2 text-dark">    
+            <%= form.label :date_creation,  style: "display: block" %>
+            <%= form.date_field :date_creation,  class: "form-control" %>
+        </div>
+        <br>
         <div class="col-sm-12 p-3 mb-2 text-dark">    
             <%= form.label :area,  style: "display: block" %>
             <%= form.text_field :area,  class: "form-control", required: true %>
@@ -409,7 +414,6 @@
         <% if params[:entity_id].present? %>
             <%= form.hidden_field :entity_id, :value => params[:entity_id].to_i, class: "form-control" %>
             <%= form.hidden_field :user_id, :value => Current.user.id.to_i, class: "form-control" %>
-            <%= form.hidden_field :date_creation, :value => Time.now, class: "form-control" %>
         <% end %>
 
         <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>

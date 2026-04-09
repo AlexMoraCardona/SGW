@@ -7,7 +7,7 @@ class AdmExtinguishersController < ApplicationController
             else 
                 @entities = Entity.all
             end    
-        elsif Current.user && Current.user.level == 3 
+        elsif Current.user && (Current.user.level == 3 || Current.user.ccl == 1)
             @entity = Entity.find(Current.user.entity)
             @adm_extinguishers = AdmExtinguisher.where("entity_id = ?",Current.user.entity)
         else
@@ -18,7 +18,7 @@ class AdmExtinguishersController < ApplicationController
     
     def show
         @adm_extinguisher = AdmExtinguisher.find(params[:id])
-        @extinguishers = Extinguisher.where("adm_extinguisher_id = ?", @adm_extinguisher.id) if @adm_extinguisher.present?
+        @extinguishers = Extinguisher.where("adm_extinguisher_id = ?", @adm_extinguisher.id).order(:nro) if @adm_extinguisher.present?
         @template = Template.where("format_number = ? and document_vigente = ?",61,1).last  
         respond_to do |format|
             format.html
@@ -56,7 +56,7 @@ class AdmExtinguishersController < ApplicationController
     def create
         @adm_extinguisher = AdmExtinguisher.new(adm_extinguisher_params)
         if @adm_extinguisher.save then
-            redirect_to adm_extinguishers_path, notice: t('.created') 
+            redirect_to adm_extinguishers_path(entity_id: @adm_extinguisher.entity_id), notice: t('.created') 
         else
             render :edit, status: :unprocessable_entity
         end    
@@ -69,7 +69,7 @@ class AdmExtinguishersController < ApplicationController
     def update
         @adm_extinguisher = AdmExtinguisher.find(params[:id])
         if @adm_extinguisher.update(adm_extinguisher_params)
-            redirect_to adm_extinguishers_path, notice: 'Inspección actualizada correctamente'
+            redirect_to adm_extinguishers_path(entity_id: @adm_extinguisher.entity_id), notice: 'Inspección actualizada correctamente'
         else
             render :edit, adm_extinguishers: :unprocessable_entity
         end         

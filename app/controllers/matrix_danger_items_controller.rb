@@ -37,7 +37,7 @@ class MatrixDangerItemsController < ApplicationController
     def destroy
         @matrix_danger_item = MatrixDangerItem.find(params[:id])
         @matrix_danger_item.destroy
-        redirect_to matrix_danger_risks_path(entity_id: @matrix_danger_item.matrix_danger_risk.entity_id), notice: 'Item borrado correctamente', matrix_danger_item: :see_other
+        redirect_to matrix_danger_risk_path(@matrix_danger_item.matrix_danger_risk_id), notice: 'Item borrado correctamente', matrix_danger_item: :see_other
     end    
 
     private

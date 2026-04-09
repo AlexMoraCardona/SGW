@@ -3,6 +3,33 @@
         <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
     </a>
 </div>
+
+<div class="row g-2">
+            <div class="col-sm-4">
+                <% if @occupational_exam.present? %>  
+                   <%= form_with url: occupational_exam_path(@occupational_exam.id), method: :get do |form| %>
+                        <h5 scope="col">Filtrar por Empleado: </h5>
+                        <%= form.collection_select :user_application, @empleados, :id, :name, { prompt: '--Seleccionar Empleado--' },
+                        { class: 'form-control input-sm select2' , onChange: 'this.form.requestSubmit()', value: params[:id] } if @empleados.present? %>
+                        <%= form.hidden_field :entity_id, :value => @occupational_exam.entity_id, class: "form-control" if @occupational_exam.present? %>
+                    <% end %> 
+                <% end %>     
+            </div>  
+            <div class="col-sm-4">
+                <% if @occupational_exam.present? %> 
+                    <%= form_with url: occupational_exam_path(@occupational_exam.id), method: :get do |form| %>
+                        <h5 scope="col">Filtrar Estado:</h5>
+                        <%= form.select :state_exam,[['Todos'],['Pendiente'], ['Realizado'], ['Cancelado']],{ prompt: '--Seleccionar--' },
+                        { class: 'form-control input-sm select2' , onChange: 'this.form.requestSubmit()', value: params[:state_exam] }  %>
+                        <%= form.hidden_field :entity_id, :value => @occupational_exam.entity_id, class: "form-control" if @occupational_exam.present? %>
+                    <% end %> 
+                <% end %>     
+            </div>  
+
+</div>  
+
+        <br>
+
 <div>
 
     <table class="table table-hover" style="border:1px solid black"> 
@@ -50,7 +77,7 @@
                 <th style="border:1px solid black">ÉNFASIS</th>
                 <th style="border:1px solid black">EDITAR</th>
                 <th style="border:1px solid black">ELIMINAR</th>
-            </tr>
+            </tr> 
 
         </thead>
 

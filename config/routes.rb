@@ -285,6 +285,7 @@ Rails.application.routes.draw do
 
   resources :matrix_danger_risks do
     collection do
+      get '/matrix_danger_risks/ver_matrix_danger_risk/:id', to: 'matrix_danger_risks#ver_matrix_danger_risk', as: 'ver_matrix_danger_risk'
       get '/matrix_danger_risks/crear_item/:id', to: 'matrix_danger_risks#crear_item', as: 'crear_item'
       post '/matrix_danger_risks/duplicar_item/:id', to: 'matrix_danger_risks#duplicar_item', as: 'duplicar_item'
       get '/matrix_danger_risks/resumen_pdf/:id', to: 'matrix_danger_risks#resumen_pdf', as: 'resumen_pdf'
@@ -292,6 +293,7 @@ Rails.application.routes.draw do
       get '/matrix_danger_risks/firmar_rep/:id', to: 'matrix_danger_risks#firmar_rep', as: 'firmar_rep'
       get '/matrix_danger_risks/firmar_adv/:id', to: 'matrix_danger_risks#firmar_adv', as: 'firmar_adv'
       get '/matrix_danger_risks/firmar_res/:id', to: 'matrix_danger_risks#firmar_res', as: 'firmar_res'
+      get '/matrix_danger_risks/duplicar_mpr/:id', to: 'matrix_danger_risks#duplicar_mpr', as: 'duplicar_mpr'
 
     end  
   end

@@ -4,12 +4,14 @@ class OccupationalExamsController < ApplicationController
             if params[:entity_id].present?
                 @entity = Entity.find(params[:entity_id])
                 @occupational_exams = OccupationalExam.where("entity_id = ?", params[:entity_id]).order(id: :desc)
+                @empleados = User.usuarios_empresa
             else 
                 @entities = Entity.all
             end    
         elsif Current.user && Current.user.level > 2 
             @entity = Entity.find(Current.user.entity)
             @occupational_exams = OccupationalExam.where("entity_id = ?",Current.user.entity.to_i)
+            @empleados = User.usuarios_empresa
         else
             redirect_to new_session_path, alert: t('common.not_logged_in')    
             session.delete(:user_id)  
@@ -20,7 +22,25 @@ class OccupationalExamsController < ApplicationController
         @occupational_exam = OccupationalExam.find(params[:id])
         @occupational_exam_items = OccupationalExamItem.where("occupational_exam_id = ?", @occupational_exam.id) if @occupational_exam.present?
         @template = Template.where("format_number = ? and document_vigente = ?",35,1).last  
+        @empleados = User.usuarios_empresa
 
+        if params[:user_application].present?
+            @occupational_exam_items = @occupational_exam_items.where("user_application = ?",params[:user_application].to_i).order(:consecutive)      
+        elsif params[:fec_exam].present?
+            @occupational_exam_items = @occupational_exam_items.where("fec_exam = ?",params[:fec_exam].to_i).order(:consecutive)      
+        elsif params[:state_exam].present?
+            if params[:state_exam].to_s == 'Pendiente'
+                @occupational_exam_items = @occupational_exam_items.where("state_exam = ?",0).order(:consecutive)            
+            elsif params[:state_exam].to_s == 'Realizado'
+                @occupational_exam_items = @occupational_exam_items.where("state_exam = ?",1).order(:consecutive)          
+            elsif params[:state_exam].to_s == 'Cancelado'
+               @occupational_exam_items = @occupational_exam_items.where("state_exam = ?",2).order(:consecutive)               
+            end   
+        else 
+             @occupational_exam_items = OccupationalExamItem.where("occupational_exam_id = ?", @occupational_exam.id) if @occupational_exam.present?       
+        end    
+     
+        
         respond_to do |format|
             format.html
             format.xlsx{ 

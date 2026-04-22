@@ -7,7 +7,7 @@ class KitsController < ApplicationController
             else 
                 @entities = Entity.all
             end    
-        elsif Current.user && (Current.user.level == 3 || Current.user.ccl == 1) 
+        elsif Current.user && (Current.user.level == 3 || Current.user.ccl == 1 || Current.user.copasst == 1) 
             @entity = Entity.find(Current.user.entity)
             @kits = Kit.where("entity_id = ?",Current.user.entity)
         else

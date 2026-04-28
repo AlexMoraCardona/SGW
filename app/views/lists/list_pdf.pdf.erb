@@ -1,0 +1,54 @@
+<head>
+    <meta charset='utf-8' />
+</head>
+
+<div class="container col-11 card p-5">
+    <table style="width: 100%;" class="table table-hover"> 
+        <thead>
+            <tr>
+                <th style="width: 50%;background-color:#51AFF7;border:0px solid black;">Lista de chequeo</th>
+                <th style="width: 50%;background-color:#51AFF7;border:0px solid black;"><%= @list.check_list.name %></th>
+            </tr>
+            <tr>
+                <th style="width: 50%;background-color:#51AFF7;border:0px solid black;"><%= @list.entity.business_name %></th>
+                <th style="width: 50%;background-color:#51AFF7;border:0px solid black;"><%= @list.created_at.strftime("%Y-%m-%d")  %> </th>
+            </tr>
+        </thead>
+    </table> 
+
+    <% if @lists.present? %>
+        <table style="width: 100%;"> 
+            <tr>
+                <td style="background-color:#51AFF7;border:0px solid black;">Ítem</td>
+                <td style="background-color:#51AFF7;border:0px solid black;">Verificación</td>
+                <td style="background-color:#51AFF7;border:0px solid black; text-align:center;">Cumple</td>
+                <td style="background-color:#51AFF7;border:0px solid black; text-align:center;">No cumple</td>
+                <td style="background-color:#51AFF7;border:0px solid black; text-align:center;">No aplica</td>
+                <td style="background-color:#51AFF7;border:0px solid black;">Observaciones</td>
+            </tr>
+
+            <% @lists.group_by(&:clasification).each do |cla, det| %>
+                <% nivel = CheckListItem.label_clasification(cla) %>
+                <tr> 
+                    <td><strong><%= nivel %></strong></td>
+                    <td></td>  
+                    <td></td>  
+                    <td></td>  
+                    <td></td>  
+                    <td></td> 
+                </tr>
+                <% det.each do |d| %>
+                    <tr>
+                        <td style="border:0px solid black;"><%= d.check_list_item.item %></td>
+                        <td style="border:0px solid black;"><%= d.check_list_item.name %></td>
+                        <td style="border:0px solid black; text-align:center;"><% if d.state == 0 %> X <% end %></td>
+                        <td style="border:0px solid black; text-align:center;"><% if d.state == 1 %> X <% end %></td>
+                        <td style="border:0px solid black; text-align:center;"><% if d.state == 2 %> X <% end %></td>
+                        <td style="border:0px solid black;"><%= d.observation%></td>
+                    </tr>
+                <% end %>    
+            <% end %>
+
+        </table>     
+    <% end %>
+</div>            

@@ -1,0 +1,60 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @check_list do |form| %>
+        <% @check_list.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>    
+        <div class="form-group">    
+            <%= form.label :name, style: "display: block" %>
+            <%= form.text_field :name,  class: "form-control" %>
+        </div>
+        <br>    
+        <div class="form-group">    
+            <%= form.label :state,  style: "display: block" %>
+            <%= form.select(:state, [['Activo', 0], ['Inactivo', 1]]) %>
+        </div>
+        <br>    
+        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
+        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, check_lists_path %>
+    <% end %>
+      
+    <br>
+    <div class="container col-11">
+            <div class="d-flex"> 
+                <div class="container">
+                   <h2 class="display-5"> Items Listas de Chequeo</h2>
+                </div> 
+            </div>
+            <hr>
+        <table class="table table-hover">
+            <thead> 
+                <tr>    
+                    <th scope="col"><%= t('.id') %></th>
+                    <th scope="col"><%= t('.name') %></th>
+                    <th scope="col"><%= t('.clasification') %></th>
+                    <th scope="col"><%= t('.state') %></th>
+                    <th scope="col"><%= t('.item') %></th>                
+                    <th scope="col"><%= t('common.edit') %></th>
+                    <th scope="col">Borrar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if  @check_list_items.present? %>
+                    <%  @check_list_items.each do |check_list_item| %>
+                        <tr>
+                            <td><%= check_list_item.id %></td>
+                            <td><%= check_list_item.name %></td>
+                            <td><%= CheckListItem.label_clasification(check_list_item.clasification) %></td>
+                            <td><%= CheckListItem.label_state(check_list_item.state) %></td>
+                            <td><%= check_list_item.item %></td>
+                            <td><%= link_to t('common.edit'), edit_check_list_item_path(check_list_item), class: 'btn btn-sm btn-primary'  %></td>
+                            <td><%= button_to "Delete", check_list_item, method: :delete, class:"btn btn-sm btn-danger" %></td>
+                        </tr>
+                    <% end %>
+                <% end %>                 
+            </tbody>      
+        </table>
+    </div>
+</div>      

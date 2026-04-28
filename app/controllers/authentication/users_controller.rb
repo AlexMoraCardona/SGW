@@ -31,31 +31,48 @@ class Authentication::UsersController < ApplicationController
     end   
     
     def edit
-        @user = User.find(params[:id])
-        if @user.level == 1 ||  @user.level == 2
-            @company_positions = CompanyPosition.all if @user.entity.present?
-            @company_areas = CompanyArea.all if @user.entity.present?
-        else    
-            @company_positions = CompanyPosition.where("entity_id = ?",@user.entity.to_i) if @user.entity.present?
-            @company_areas = CompanyArea.where("entity_id = ?",@user.entity.to_i) if @user.entity.present?
+        if  Current.user.present?
+            @user = User.find(params[:id])
+            if @user.level == 1 ||  @user.level == 2
+                @company_positions = CompanyPosition.all if @user.entity.present?
+                @company_areas = CompanyArea.all if @user.entity.present?
+            else    
+                @company_positions = CompanyPosition.where("entity_id = ?",@user.entity.to_i) if @user.entity.present?
+                @company_areas = CompanyArea.where("entity_id = ?",@user.entity.to_i) if @user.entity.present?
+            end    
+        else
+            redirect_to new_session_path, alert: t('common.not_logged_in')      
+            session.delete(:user_id)            
         end    
+
     end
     
     def update
-        @user = User.find(params[:id])
-        if @user.update(user_params)
-            redirect_to home_path, notice: 'Actualizado correctamente'
+        if  Current.user.present?
+            @user = User.find(params[:id])
+            if @user.update(user_params)
+                redirect_to home_path, notice: 'Actualizado correctamente'
+            else
+                #redirect_to home_path, alert: 'Error en actualización'
+                #render :home_path, status: :unprocessable_entity
+                redirect_back fallback_location: root_path, alert: 'Error en actualización'
+            end         
         else
-            #redirect_to home_path, alert: 'Error en actualización'
-            #render :home_path, status: :unprocessable_entity
-            redirect_back fallback_location: root_path, alert: 'Error en actualización'
-        end         
+            redirect_to new_session_path, alert: t('common.not_logged_in')      
+            session.delete(:user_id)            
+        end    
+
     end    
 
     def destroy
-        @user = User.find(params[:id])
-        @user.destroy
-        redirect_to users_path, notice: 'Usuario borrado correctamente', user: :see_other
+        if  Current.user.present?
+            @user = User.find(params[:id])
+            @user.destroy
+            redirect_to users_path, notice: 'Usuario borrado correctamente', user: :see_other
+        else
+            redirect_to new_session_path, alert: t('common.not_logged_in')      
+            session.delete(:user_id)            
+        end    
     end    
     
     def cambio_empresa

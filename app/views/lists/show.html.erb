@@ -1,0 +1,56 @@
+
+<div class="container col-11 card p-5">
+    <table class="table table-hover"> 
+        <thead>
+            <tr>
+                <th style="background-color:#51AFF7;border:0px solid black;">Lista de chequeo</th>
+                <th style="background-color:#51AFF7;border:0px solid black;"><%= @list.check_list.name %></th>
+            </tr>
+            <tr>
+                <th style="background-color:#51AFF7;border:0px solid black;"><%= @list.entity.business_name %></th>
+                <th style="background-color:#51AFF7;border:0px solid black;"><%= @list.created_at.strftime("%Y-%m-%d")  %> </th>
+            </tr>
+        </thead>
+    </table> 
+    <% if @lists.present? %>
+        <table> 
+            <thead>
+                <tr>
+                    <th style="background-color:#51AFF7;border:0px solid black;">Ítem</th>
+                    <th style="background-color:#51AFF7;border:0px solid black;">Verificación</th>
+                    <th style="background-color:#51AFF7;border:0px solid black; text-align:center;">Cumple</th>
+                    <th style="background-color:#51AFF7;border:0px solid black; text-align:center;">No cumple</th>
+                    <th style="background-color:#51AFF7;border:0px solid black; text-align:center;">No aplica</th>
+                    <th style="background-color:#51AFF7;border:0px solid black;">Observaciones</th>
+                    <th style="background-color:#51AFF7;border:0px solid black;">Editar</th>
+                </tr>
+            </thead>
+
+            <% @lists.group_by(&:clasification).each do |cla, det| %>
+                <% nivel = CheckListItem.label_clasification(cla) %>
+                <tr> 
+                    <td style="background-color:#d3d3d3;"> <%= nivel %></td>
+                    <td style="background-color:#d3d3d3;"></td>  
+                    <td style="background-color:#d3d3d3;"></td>  
+                    <td style="background-color:#d3d3d3;"></td>  
+                    <td style="background-color:#d3d3d3;"></td>  
+                    <td style="background-color:#d3d3d3;"></td> 
+                    <td style="background-color:#d3d3d3;"></td>  
+                </tr>
+                <% det.each do |d| %>
+                    <tr>
+                        <td style="border:0px solid black;"><%= d.check_list_item.item %></td>
+                        <td style="border:0px solid black;"><%= d.check_list_item.name %></td>
+                        <td style="border:0px solid black; text-align:center;"><% if d.state == 0 %> X <% end %></td>
+                        <td style="border:0px solid black; text-align:center;"><% if d.state == 1 %> X <% end %></td>
+                        <td style="border:0px solid black; text-align:center;"><% if d.state == 2 %> X <% end %></td>
+                        <td style="border:0px solid black;"><%= d.observation%></td>
+                        <td><%= link_to t('common.edit'), edit_list_path(d.id), class: 'btn btn-sm btn-outline-primary'   %></td>
+                    </tr>
+                <% end %>    
+            <% end %>
+
+        </table>     
+    <% end %>
+    <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, check_lists_path %>
+</div>            

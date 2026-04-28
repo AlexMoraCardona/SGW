@@ -1,0 +1,25 @@
+<div class="container col-11 card p-5">
+    <br>
+    <%= form_with model: @list do |form| %>
+        <% @list.errors.full_messages.each do |error| %>
+            <div class="alert alert-danger" role="alert">
+                <%= error%> <%= alert %>
+            </div>
+        <% end %>  
+        
+        
+        <div class="form-group">    
+            <%= form.label :check_list_id, style: "display: block" %>
+            <%= form.collection_select :check_list_id, @check_lists.order(id: :asc), :id, :name, { prompt: '--Seleccionar Lista--' },
+            { class: 'form-control input-sm select2' } %>
+        </div>
+        <%= form.hidden_field :entity_id, :value => Current.user.entity.to_i, class: "form-control" %>
+
+        <br>    
+        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
+
+        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, check_lists_path %>
+
+    <% end %>
+</div>        
+ <br>

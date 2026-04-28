@@ -130,7 +130,11 @@ Rails.application.routes.draw do
   resources :simulacrum_items
   resources :mock_scripts
   resources :internal_reports
+  resources :check_lists
+  resources :check_list_items
+  resources :lists
 
+  get '/lists/list_pdf/:id', to: 'lists#list_pdf', as: 'list_pdf'
   get '/matrix_goals/duplicar_matrix_goal/:id', to: 'matrix_goals#duplicar_matrix_goal', as: 'duplicar_matrix_goal' 
   get '/allow_exams/seleccionar_usuarios_examen/:id', to: 'allow_exams#seleccionar_usuarios_examen', as: 'seleccionar_usuarios_examen' 
   post '/allow_exams/citar_usuarios_examen/:id' => 'allow_exams#citar_usuarios_examen', as: 'citar_usuarios_examen'

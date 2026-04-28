@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_03_18_235442) do
+ActiveRecord::Schema[7.0].define(version: 2026_04_28_014804) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -442,6 +442,24 @@ ActiveRecord::Schema[7.0].define(version: 2026_03_18_235442) do
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
     t.index ["entity_id"], name: "index_change_managements_on_entity_id"
+  end
+
+  create_table "check_list_items", force: :cascade do |t|
+    t.string "name"
+    t.integer "clasification", default: 0
+    t.integer "state", default: 0
+    t.string "item"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "check_list_id"
+    t.index ["check_list_id"], name: "index_check_list_items_on_check_list_id"
+  end
+
+  create_table "check_lists", force: :cascade do |t|
+    t.string "name"
+    t.integer "state", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "clasification_danger_details", force: :cascade do |t|
@@ -1501,6 +1519,21 @@ ActiveRecord::Schema[7.0].define(version: 2026_03_18_235442) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "lists", force: :cascade do |t|
+    t.integer "state", default: 0
+    t.string "observation"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "check_list_id"
+    t.bigint "check_list_item_id"
+    t.bigint "entity_id"
+    t.integer "numero", default: 0
+    t.integer "clasification", default: 0
+    t.index ["check_list_id"], name: "index_lists_on_check_list_id"
+    t.index ["check_list_item_id"], name: "index_lists_on_check_list_item_id"
+    t.index ["entity_id"], name: "index_lists_on_entity_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -2739,6 +2772,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_03_18_235442) do
   add_foreign_key "car_checklists", "users"
   add_foreign_key "change_management_items", "change_managements"
   add_foreign_key "change_managements", "entities"
+  add_foreign_key "check_list_items", "check_lists"
   add_foreign_key "clasification_danger_details", "clasification_dangers"
   add_foreign_key "commitments", "evidences"
   add_foreign_key "commitments", "users"
@@ -2797,6 +2831,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_03_18_235442) do
   add_foreign_key "kits", "users"
   add_foreign_key "lessons", "entities"
   add_foreign_key "lessons", "users"
+  add_foreign_key "lists", "check_list_items"
+  add_foreign_key "lists", "check_lists"
+  add_foreign_key "lists", "entities"
   add_foreign_key "locations", "entities"
   add_foreign_key "matrix_action_items", "matrix_corrective_actions"
   add_foreign_key "matrix_conditions", "entities"

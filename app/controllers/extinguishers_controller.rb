@@ -49,7 +49,7 @@ class ExtinguishersController < ApplicationController
     def destroy
         @extinguisher = Extinguisher.find(params[:id])
         @extinguisher.destroy
-        redirect_to extinguishers_path, notice: 'Extintor borrado correctamente', extinguisher: :see_other
+        redirect_to adm_extinguisher_path(@extinguisher.adm_extinguisher_id), notice: 'Extintor borrado correctamente', extinguisher: :see_other 
     end 
     
     private

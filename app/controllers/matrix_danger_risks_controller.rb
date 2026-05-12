@@ -1,24 +1,19 @@
 class MatrixDangerRisksController < ApplicationController
     def index  
-        if  Current.user && Current.user.level > 0 && Current.user.level < 3
-            if params[:entity_id].present?
-                @entity = Entity.find(params[:entity_id]) 
-                @matrix_danger_risks = MatrixDangerRisk.where("entity_id = ?",params[:entity_id])
-                @cargos = CompanyPosition.listar_cargo(params[:entity_id])
-                
-            else 
-                @entities = Entity.all
-            end    
-        elsif Current.user && Current.user.level > 2 
+        if  Current.user && Current.user.level > 0 && Current.user.level < 4
+                @entity = Entity.find(Current.user.entity)
+                @matrix_danger_risks = MatrixDangerRisk.where("entity_id = ?",@entity.id) if @entity.present?
+                @cargos = CompanyPosition.listar_cargo(@entity.id) if @entity.id.present?
+        elsif Current.user && Current.user.level > 3 
             @entity = Entity.find(Current.user.entity)
-            @matrix_danger_risk = MatrixDangerRisk.find_by(entity_id: Current.user.entity.to_i)
+            @matrix_danger_risk = MatrixDangerRisk.find_by(entity_id: Current.user.entity.to_i).last
             @matrix_danger_items_total = MatrixDangerItem.where(matrix_danger_risk_id: @matrix_danger_risk.id).order(:id) if @matrix_danger_risk.present?
             @total_items = 0
             @uno = 0
             @dos = 0
             @tres = 0
             @cuatro = 0
-            @cargos = CompanyPosition.listar_cargo(params[:entity_id])
+            @cargos = CompanyPosition.listar_cargo(@entity.id) if @entity.id.present?
 
             if @matrix_danger_items_total.present? 
                 @matrix_danger_items_total.each do |item| 

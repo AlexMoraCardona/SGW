@@ -1,0 +1,1006 @@
+<div class="container col-11 card p-5"> 
+    <%= render 'encabezado' %>
+    <div><br></div>
+    <center>
+        <div> 
+            <strong>POLÍTICA DE CONVIVENCIA LABORAL</strong>
+        </div> 
+    </center>    
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p><strong><%= @entity.business_name if @entity.present? %> </strong> está comprometido(a) en mantener un entorno laboral sano, dando cumplimiento a la normatividad vigente orientada a la prevención del acoso laboral en todas sus modalidades, proporcionando las mejores condiciones de trabajo para garantizar el bienestar de todos los trabajadores, promoviendo y favoreciendo conductas respetuosas que proteja la salud física y mental de los trabajadores, contratistas y terceros en el desempeño de sus labores.</p>
+                <p>La alta dirección de <strong><%= @entity.business_name if @entity.present? %>, </strong> se compromete a implementar y vigilar el cumplimiento de las normas dirigidas a prevenir cualquier conducta o comportamiento que pueda ser calificado como de acoso laboral, mediante la intervención del Comité de Convivencia Laboral el cual se compromete a proveer mecanismos de prevención y atención de cualquier caso de acoso laboral, tratando de manera adecuada cada caso bajo estricta confidencialidad.</p>
+                <p>La violación a esta política será considerada una falta grave y, por ende, se aplicarán las sanciones estipuladas en el Reglamento de Trabajo o será justa causa de terminación del contrato de trabajo.</p>
+
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>
+    <table>
+        <tr> 
+            <% @firms.each do |firm| %>
+                <% if firm.legal_representative == 1 %>
+                    <td style="border:0px solid black; width: 33%;">
+
+                        <div class="row"> 
+                            <div class="col-11">
+                                <div>&nbsp;</div>
+                                <div>&nbsp;</div>
+                                <% if firm.authorize_firm == 1 %>
+                                    <% if firm.user.firm.attached? %>
+                                        <% if firm.user.firm.image? %> 
+                                            <div  style="padding: 0;height: 70px;display: flex;align-items: flex-end;"><%= image_tag firm.user.firm, class: "firma" %></div>
+                                            <p>______________________</p>
+                                        <% end %>
+                                    <% end %>
+                                <% else %>    
+                                    <div  style="padding: 0;height: 70px;display: flex;justify-content: center;align-items: flex-end;"></div>
+                                    <p>______________________</p>
+                                <% end %>     
+                            </div>
+                            <div class="col-11">
+                                <div class="row">
+                                    <h6><strong><%= firm.user.name %></strong></h6>
+                                </div>
+                            </div>
+                            <div class="col-11">
+                                <div class="row">
+                                    <h6><%= firm.post %></h6>
+                                </div>
+                            </div>
+                            <div class="col-11">
+                                <div class="row">
+                                    <% if firm.date_authorize_firm.present? %>
+                                        <h6><strong><%= AdministrativePoliticalDivision.find(@evidence.entity.entity_location_code).municipality_name if @evidence.present? %></strong>, <%= firm.date_authorize_firm.day if firm.date_authorize_firm.present? %> de <%= I18n.l(firm.date_authorize_firm, format: '%B') if firm.date_authorize_firm.present? %> de <%= firm.date_authorize_firm.strftime("%Y") if firm.date_authorize_firm.present? %></h6>
+                                    <% end %>   
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    </td>      
+                <% end %>    
+            <% end %>
+        </tr>
+    </table>
+    <div><br></div>    
+
+
+
+
+    <div>
+        <strong>1. OBJETIVO DEL COMITÉ DE CONVIVENCIA LABORAL.</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>El Comité de Convivencia Laboral tiene por objeto contribuir con mecanismos alternativos para la solución de conflictos, así como para implementar medidas de prevención y solución de las situaciones causadas por conductas de acoso laboral de los trabajadores al interior de <strong><%= @entity.business_name if @entity.present? %> </strong>.</p>
+                <p>El Comité de Convivencia procurará por generar una conciencia colectiva conviviente entre los trabajadores, con el fin de promover el trabajo en condiciones dignas y justas, bajo los principios de respeto y solidaridad, encaminados a fomentar un ambiente laboral en armonía para todos los trabajadores, protegiendo la intimidad, honra, salud mental y la libertad de éstos.</p>
+                <p>Por lo anterior, el Comité de Convivencia Laboral tendrá como objetivo principal conocer y evaluar las quejas o inquietudes sobre situaciones de presunto acoso laboral o de convivencia que se relacionen con acoso laboral, así como recomendar a la Empresa las medidas correctivas pertinentes para superar dichas conductas y dar seguimiento a las medidas preventivas y correctivas que se establezcan.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>2. ALCANCE</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>El presente reglamento aplica para todos los trabajadores de <strong><%= @entity.business_name if @entity.present? %> </strong>, de acuerdo con las responsabilidades definidas en el presente documento, acordes con la normatividad colombiana aplicable vigente. </strong></p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>3. NORMATIVIDAD</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>El presente reglamento tendrá como fundamentos legales la normatividad que a continuación se relaciona:</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <table style="width: 100%;">
+        <tr>    
+            <td style="width: 40%;border:1px solid black;text-align:center;background-color: #00aae4;">
+                <strong>Norma </strong>
+            </td>  
+            <td style="width: 60%;border:1px solid black;text-align:center;background-color: #00aae4;">
+                <strong>Objeto</strong>
+            </td>  
+        </tr>
+        <tr>    
+            <td style="width: 40%;border:1px solid black;text-align:justify;padding: 20px;">
+                Ley 1010 de Enero 23 de 2006
+            </td>  
+            <td style="width: 60%;border:1px solid black;text-align:justify;padding: 20px;">
+                Por medio de la cual se adoptan las medidas para prevenir, corregir y sancionar el acoso laboral y otros hostigamientos en el marco de las relaciones de trabajo.
+            </td>  
+        </tr>
+        <tr>    
+            <td style="width: 40%;border:1px solid black;text-align:justify;padding: 20px;">
+                Resolución 2646 de Julio 17 de 2008
+            </td>  
+            <td style="width: 60%;border:1px solid black;text-align:justify;padding: 20px;">
+                Artículo 14
+            </td>  
+        </tr>
+        <tr>    
+            <td style="width: 40%;border:1px solid black;text-align:justify;padding: 20px;">
+                Ley 1562 de Julio 11 de 2012
+            </td>  
+            <td style="width: 60%;border:1px solid black;text-align:justify;padding: 20px;">
+                Por la cual se modifica el Sistema de Riesgos Profesionales y se dictan otras disposiciones en materia de Salud Ocupacional
+            </td>  
+        </tr>
+        <tr>    
+            <td style="width: 40%;border:1px solid black;text-align:justify;padding: 20px;">
+                Resolución 3461 de septiembre 01 de 2025
+            </td>  
+            <td style="width: 60%;border:1px solid black;text-align:justify;padding: 20px;">
+                Por la cual se establecen lineamientos para la conformación y funcionamiento del Comité de Convivencia Laboral
+            </td>  
+        </tr>
+    </table>
+    <div><br></div>
+    <div>
+        <strong>4. DE LA CONFORMACIÓN DEL COMITÉ DE CONVIVENCIA LABORAL</strong>
+    </div> 
+    <div><br></div>
+    <div>
+        <strong>4.1. Conformación</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>La conformación del Comité de Convivencia Laboral dependerá del tamaño de la Empresa, así:</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <table style="width: 100%;">
+        <tr>    
+            <td style="width: 25%;border:1px solid black;text-align:center;background-color: #00aae4;">
+                <strong>Número Total de Trabajadores</strong>
+            </td>  
+            <td style="width: 25%;border:1px solid black;text-align:center;background-color: #00aae4;">
+                <strong>Número de miembros por el Empleador</strong>
+            </td>  
+            <td style="width: 25%;border:1px solid black;text-align:center;background-color: #00aae4;">
+                <strong>Número de miembros por los Trabajadores</strong>
+            </td>  
+            <td style="width: 25%;border:1px solid black;text-align:center;background-color: #00aae4;">
+                <strong>Total</strong>
+            </td>  
+        </tr>
+        <tr>    
+            <td style="width: 25%;border:1px solid black;text-align:justify;padding: 20px;">
+                Con menos de Cinco (5) Trabajadores                
+            </td>  
+            <td style="width: 25%;border:1px solid black;text-align:center;padding: 20px;">
+                1
+            </td>  
+            <td style="width: 25%;border:1px solid black;text-align:center;padding: 20px;">
+                1
+            </td>  
+            <td style="width: 25%;border:1px solid black;text-align:center;padding: 20px;">
+                2
+            </td>  
+        </tr>
+        <tr>    
+            <td style="width: 25%;border:1px solid black;text-align:justify;padding: 20px;">
+                Con más de Cinco (5) y menos de Veinte (20) Trabajadores   
+            </td>  
+            <td style="width: 25%;border:1px solid black;text-align:justify;padding: 20px;">
+                2 (Uno principal y su suplente)
+            </td>  
+            <td style="width: 25%;border:1px solid black;text-align:justify;padding: 20px;">
+                2 (Uno principal y su suplente)
+            </td>  
+            <td style="width: 25%;border:1px solid black;text-align:center;padding: 20px;">
+                4
+            </td>  
+        </tr>
+        <tr>    
+            <td style="width: 25%;border:1px solid black;text-align:justify;padding: 20px;">
+                Con más de Veinte (20) Trabajadores
+            </td>  
+            <td style="width: 25%;border:1px solid black;text-align:justify;padding: 20px;">
+                4 (Dos principales y sus suplente)
+            </td>  
+            <td style="width: 25%;border:1px solid black;text-align:justify;padding: 20px;">
+                4 (Dos principales y sus suplente)
+            </td>  
+            <td style="width: 25%;border:1px solid black;text-align:center;padding: 20px;">
+                8
+            </td>  
+        </tr>
+    </table>
+    <div><br></div>
+    <div>
+        <strong>4.1.1. Designación</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Éste Comité estará integrado por (<strong><%= @evidence.number_attendees if @evidence.present? %></strong>) representantes de los trabajadores y (<strong><%= @evidence.number_officials if @evidence.present? %></strong>) representante del empleador con sus respectivos suplentes.</p>
+                <p>Los anteriores representantes serán designados de la siguiente forma:</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <p><strong>4.1.1.1. Representantes de los trabajadores:</strong>Serán elegidos mediante votación abierta, mediante elección popular que represente la expresión libre, espontánea y auténtica de todos los trabajadores y mediante escrutinio público.</p>
+    </div> 
+    <div><br></div>
+    <div>
+        <p><strong>4.1.1.2. Representante del empleador: </strong>Serán designados y confirmados por la alta dirección de la empresa; a través de un comunicado escrito que se enviará al trabajador designado y a su vez el trabajador deberá firmar por escrito su aceptación.</p>
+    </div> 
+    <div><br></div>
+    <div>
+        <p><strong>4.1.1.3. Exclusión: </strong>Los trabajadores contra quienes se haya formulado queja de acoso laboral o hayan sido víctima en los últimos seis (06) meses anteriores a la conformación del comité para el correspondiente período, no podrá ser parte del mismo.</p>
+    </div> 
+    <div><br></div>
+    <div>
+        <p><strong>NOTA 1: </strong>En el evento en que algún miembro del Comité de Convivencia principal se retire o sea terminado su contrato de trabajo por cualquier causa, podrá asumir las funciones el suplente, sin necesidad de convocar a nuevas elecciones.</p>
+        <p>El Empleador podrá de acuerdo con su organización interna, designar un mayor número de representantes, los cuales en todo caso serán iguales en ambas partes.</p>
+    </div> 
+    <div><br></div>
+    <div>
+        <p><strong>NOTA 2: </strong>Los representantes tanto de la Empresa como de los Trabajadores podrán ser reelegidos siempre que ninguno de ellos se viere involucrado en un proceso de acoso o si fuere la persona denunciada o el denunciante quedará invalidada para participar en la elección de conformación de los miembros integrantes del Comité de Convivencia.</p>
+    </div> 
+    <div><br></div>
+    <div>
+        <strong>4.1.2. Reunión de constitución</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>En el término de quince (15) días hábiles siguientes a las votaciones, se realizará una reunión con los miembros del Comité elegidos por los trabajadores y los nombrados por el empleador para que entre ellos elijan al presidente y secretario del Comité. </p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>4.1.3. Plan de capacitación</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Durante la reunión de apertura, el Comité deberá generar el plan de capacitación con el fin de garantizar que los miembros del éste cuenten con competencias actitudinales y comportamentales, tales como respeto, imparcialidad, tolerancia, serenidad, confidencialidad, reserva, etc. </p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>4.2. Del período</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>El período del Comité de Convivencia será de dos (02) años, contados a partir de la fecha de su instalación.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>4.3. Funciones, procedimiento preventivo y términos que deberá cumplir el Comité de Convivencia Laboral</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>El Comité de Convivencia Laboral tendrá a cargo las siguientes funciones y procedimiento preventivo:</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <table style="width: 100%;">
+        <tr>    
+            <td style="width: 60%;border:1px solid black;text-align:center;background-color: #00aae4;">
+                <strong>Funciones</strong>
+            </td>  
+            <td style="width: 40%;border:1px solid black;text-align:center;background-color: #00aae4;">
+                <strong>Tiempos</strong>
+            </td>  
+        </tr>
+        <tr>    
+            <td style="width: 60%;border:1px solid black;text-align:justify;padding: 20px;">
+                1.- Recibir y dar trámite a las quejas presentadas en las que se describan situaciones que puedan constituir acoso laboral.                                
+            </td>  
+            <td style="width: 40%;border:1px solid black;text-align:justify;padding: 20px;">
+               Cinco (5) días calendario 
+            </td>  
+        </tr>
+        <tr>    
+            <td style="width: 60%;border:1px solid black;text-align:justify;padding: 20px;">
+               2.- Examinar de manera confidencial los casos específicos o puntuales en los que se formule queja o reclamo, que pudieran tipificar conductas o circunstancias de acoso laboral                 
+            </td>  
+            <td style="width: 40%;border:1px solid black;text-align:justify;padding: 20px;">
+                    <p>• Cinco (5) días calendario.</p>
+                    <p>• El Comité para ampliar el termino por diez (10) días calendario	más,	previa justificación escrita.</p>
+                    <p>• En todo caso el termino máximo no podrá superar los quince (15) días calendario.</p>
+            </td>  
+        </tr>
+        <tr>    
+            <td style="width: 60%;border:1px solid black;text-align:justify;padding: 20px;">
+                 3.- Escuchar a las partes involucradas de manera individual sobre los hechos que dieron lugar a la queja               
+            </td>  
+            <td style="width: 40%;border:1px solid black;text-align:justify;padding: 20px;">
+                Cinco (5) días calendario
+            </td>  
+        </tr>
+        <tr>    
+            <td style="width: 60%;border:1px solid black;text-align:justify;padding: 20px;">
+                4.- Adelantar reuniones con el fin de crear un espacio de diálogo entre las partes involucradas, promoviendo compromisos mutuos para llegar a una solución efectiva de las controversias y formular un plan de mejora concertado entre las partes, para construir, renovar y promover la convivencia laboral, garantizando en todos los casos el principio dé la confidencialidad.                
+            </td>  
+            <td style="width: 40%;border:1px solid black;text-align:justify;padding: 20px;">
+                    <p>• Cinco (5) días calendario, después de escuchar a las partes de manera	individual.</p>
+                    <p>• El Comité para ampliar el termino por diez (10) días calendario	más,	previa justificación escrita.</p>
+                    <p>• En todo caso el termino máximo no podrá superar los quince (15) días calendario.</p>
+            </td>  
+        </tr>
+        <tr>    
+            <td style="width: 60%;border:1px solid black;text-align:justify;padding: 20px;">
+                5.- Hacer seguimiento a los compromisos adquiridos por las partes involucradas en la queja, verificando su cumplimiento de acuerdo con lo pactado                
+            </td>  
+            <td style="width: 40%;border:1px solid black;text-align:justify;padding: 20px;">
+                Mensual
+            </td>  
+        </tr>
+        <tr>    
+            <td style="width: 60%;border:1px solid black;text-align:justify;padding: 20px;">
+               6.- En aquellos casos en que no se llegue a un acuerdo entre las partes, no se cumplan las recomendaciones formuladas o la conducta persista, el Comité de Convivencia Laboral, informará a la alta dirección de la empresa, cerrará el caso y el trabajador puede presentar queja ante el inspector de trabajo o demandar ante el juez competente.                 
+            </td>  
+            <td style="width: 40%;border:1px solid black;text-align:justify;padding: 20px;">
+                La remisión deberá realizarse máximo a los quince (15) días calendario, una vez se verifique el incumplimiento
+            </td>  
+        </tr>
+        <tr>    
+            <td style="width: 60%;border:1px solid black;text-align:justify;padding: 20px;">
+                  7.- Presentar a la alta dirección de la empresa las recomendaciones para el desarrollo efectivo de las medidas preventivas y correctivas del acoso laboral con copia al trabajador              
+            </td>  
+            <td style="width: 40%;border:1px solid black;text-align:justify;padding: 20px;">
+                Entre	cinco	(5)	y máximo diez (10) días calendario
+            </td>  
+        </tr>
+        <tr>    
+            <td style="width: 60%;border:1px solid black;text-align:justify;padding: 20px;">
+                8.- Hacer seguimiento al cumplimiento de las recomendaciones dadas por el Comité de Convivencia Laboral a las dependencias de gestión del talento humano y Seguridad y Salud en el Trabajo.                
+            </td>  
+            <td style="width: 40%;border:1px solid black;text-align:justify;padding: 20px;">
+                Mensual
+            </td>  
+        </tr>
+        <tr>    
+            <td style="width: 60%;border:1px solid black;text-align:justify;padding: 20px;">
+                 9.- Elaborar informes trimestrales y un (01) informe anual sobre la gestión del Comité de Convivencia Laboral que incluya estadísticas de las quejas, seguimiento de los casos y recomendaciones, los cuales serán presentados a la alta dirección de la empresa.               
+            </td>  
+            <td style="width: 40%;border:1px solid black;text-align:justify;padding: 20px;">
+                Trimestral/Anual
+            </td>  
+        </tr>
+    </table> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p><strong>NOTA: </strong>El procedimiento preventivo para la resolución de las quejas de acoso laboral no podrá extenderse por un periodo superior a sesenta y cinco (65) días calendario, contados a partir de la fecha en que se recíbala queja formal. Los términos señalados anteriormente no son acumulativos.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>4.3.1. Otras Funciones</strong>
+    </div> 
+    <div><br></div>
+    <div>
+        <strong>Además de las funciones antes descritas, el Comité de Convivencia Laboral tendrá que cumplir con las siguientes:</strong>
+    </div> 
+    <div><br></div>
+    <ul>
+        <table> 
+            <tr>
+                <td style="text-align:justify">
+                    <strong>* Funciones preventivas: <strong>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:justify">
+                    <p>&nbsp;<strong>a.- Capacitaciones: </strong> El Comité deberá realizar las siguientes actividades:</p>
+                    <p>&nbsp;&nbsp;* Campañas de divulgación preventivas del acoso laboral. </p>
+                    <p>&nbsp;&nbsp;* Conversatorios. </p>
+                    <p>&nbsp;&nbsp;* Capacitaciones sobre la normatividad y la legislación pertinente. </p>
+                    <p>&nbsp;&nbsp;* Capacitaciones en temas de fortalecimiento en la Convivencia laboral. </p>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:justify">
+                    <p>&nbsp;<strong>b.- Espacios de Diálogos: </strong> El Comité podrá organizar círculos de participación o grupos de similar naturaleza, cuyos objetivos sean:</p>
+                    <p>&nbsp;&nbsp;* Brindar espacios para la evaluación periódica de la vida laboral, en función del trato digno y respetuoso. </p>
+                    <p>&nbsp;&nbsp;* Promover la construcción conjunta de valores y hábitos que promuevan el buen trato laboral. </p>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:justify">
+                    <p>&nbsp;<strong>c.- Canales de comunicación:: </strong> El Comité definirá canales de comunicación claros con el fin de:</p>
+                    <p>&nbsp;&nbsp;* Permitir a los trabajadores expresar ideas, sugerencias o preocupaciones sobre la vida laboral. </p>
+                    <p>&nbsp;&nbsp;* Promover la coherencia operativa y la armonía funcional, que faciliten y fomenten el buen trato laboral al interior de la empresa. </p>
+                    <p>&nbsp;&nbsp;* Entre estos canales está el buzón de sugerencias, el correo electrónico y cualquier otro medio que sirva para dicho objetivo. </p>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:justify">
+                    <p>&nbsp;<strong>d.- Evaluación del clima laboral: </strong> El Comité podrá proponer o hacer recomendaciones al respecto.</p>
+                </td>
+            </tr>
+        </table>
+    </ul>
+    <div><br></div>    
+    <div>
+        <strong>4.3.2.- Obligaciones especiales</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Además del cabal cumplimiento de las normas contractuales, legales y reglamentarias, los miembros del Comité deberán cumplir con las siguientes obligaciones:</p>
+                <p><strong>a. </strong>Asistir puntualmente a las reuniones programadas, o excusarse válidamente por lo menos cuarenta y ocho (48) horas de anticipación, para convocar un suplente.</p>
+                <p><strong>b. </strong>Mantener bajo estricta reserva y confidencialidad la información que conozcan en ejercicio de sus funciones.</p>
+                <p><strong>c. </strong>Suscribir la cláusula de confidencialidad correspondiente.</p>
+                <p><strong>d. </strong>Contribuir al logro de los consensos necesarios para las decisiones del Comité.</p>
+                <p><strong>e. </strong>Asumir los compromisos de capacitación necesarios para el buen desempeño de sus funciones. </p>
+                <p><strong>f. </strong>Llevar a cabo las tareas encomendadas por el Comité.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>4.4. Inhabilidades</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Siempre que un miembro del Comité considere que existe algún factor que impida su actuación con la autonomía e imparcialidad necesarias, deberá manifestarlo a los demás miembros del Comité, para que estos se pronuncien al respecto.</p>
+                <p>En caso de que la inhabilidad sea aceptada por el resto de los miembros del Comité, se designará un suplente.</p>
+                <p>Si la persona que presenta la queja o cualquiera de los miembros del Comité manifiesta (recusa), con razones válidas a juicio de los demás miembros de este, motivos que afecten la autonomía o la imparcialidad de alguno de sus miembros para decidir en un caso concreto de actuación del Comité, se procederá de la misma forma que en el punto anterior.</p>
+                <p>En el caso de que cualquier miembro del Comité de Convivencia Laboral se viera involucrado en un proceso de acoso o afectado por relación de parentesco o afectiva, amistad o enemistad manifiesta, de superioridad o subordinación jerárquica inmediata, o por cualquier otro tipo de relación directa respecto a la persona afectada o a la persona denunciada, que pueda hacer dudar de su objetividad e imparcialidad en el proceso, quedará automáticamente invalidado para formar parte en dicho concreto proceso.</p>
+                <p>Si fuera la persona denunciada o el denunciante, quedará invalidada para intervenir en cualquier otro procedimiento hasta la resolución de su caso.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>4.5. Causales de retiro</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Son causales de retiro de los miembros del Comité de Convivencia Laboral, las siguientes:</p>
+                <p><strong>a) </strong>La terminación del contrato de trabajo.</p>
+                <p><strong>b) </strong>Haber violado el deber de confidencialidad como miembro del Comité.</p>
+                <p><strong>c) </strong>Faltar a más de tres (03) reuniones consecutivas, sin excusa válida.</p>
+                <p><strong>d) </strong>Incumplir en forma reiterada las otras obligaciones que le corresponden como miembro del Comité.</p>
+                <p><strong>e) </strong>La renuncia voluntaria presentada por el integrante del Comité.</p>
+                <p><strong>f) </strong>Que conformando el Comité de Convivencia haya sido objeto de medida disciplinaria que atente contra la buena conducta y ambiente laboral de la empresa</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>La decisión de retiro en los casos b, d y e debe ser adoptada por el resto de los miembros del Comité e informada.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>4.5.1. Reemplazos temporales y definitivos</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Los representantes, tanto del Empleador como de los Trabajadores, deberán tener suplentes designados en la forma prevista en el presente reglamento, los cuales, como suplentes numéricos, serán convocados por el resto de los miembros del Comité en los eventos de ausencias temporales o definitivas de algunos de sus miembros principales.</p>
+                <p>Son suplentes numéricos los convocados en el orden de votación en que hayan sido elegidos.</p>
+                <p>En caso de requerirse la convocatoria de nuevos miembros suplentes, estos se escogerán, en orden de votación, entre los demás candidatos inscritos para la elección de miembros del Comité.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>5. RESPONSABILIDADES</strong>
+    </div> 
+    <div><br></div>
+    <div>
+        <strong>5.1. Responsabilidad de la Gerencia:</strong>Será responsabilidad de la Gerencia General:
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p><strong>a) </strong>Garantizar el cumplimiento del presente reglamento durante las diferentes etapas.</p>
+                <p><strong>b) </strong>Garantizar un espacio físico para las reuniones y demás actividades del Comité de Convivencia Laboral, así como para el manejo reservado de la documentación.</p>
+                <p><strong>c) </strong>Desarrollar las medidas preventivas y correctivas de acoso laboral, las cuales se encuentran en el Reglamento Interno de Trabajo.</p>
+                <p><strong>d) </strong>Promover un excelente ambiente de convivencia laboral.</p>
+                <p><strong>e) </strong>Fomentar relaciones sociales positivas entre todos los trabajadores.</p>
+                <p><strong>f) </strong>Respaldar la dignidad e integridad de las personas en el trabajo.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>5.2. Responsabilidad de Gestión Humana:</strong>Será responsabilidad del área de Gestión Humana:
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p><strong>a) </strong>Cumplir con los compromisos a que se lleguen dentro del trámite de una queja de acoso laboral.</p>
+                <p><strong>b) </strong>Cumplir con las medidas correctivas que emita el Comité de Convivencia Laboral</p>
+                <p><strong>c) </strong>Iniciar los procesos disciplinarios cuando haya lugar, respecto de las quejas de acoso laboral que se formulen.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>5.3. Responsabilidad de Seguridad y Salud en el Trabajo:</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p><strong>a) </strong>Realizar el acompañamiento técnico para la convocatoria, elección, conformación y funcionamiento del Comité de Convivencia Laboral.</p>
+                <p><strong>b) </strong>Realizar actividades de capacitación para los miembros del Comité sobre resolución de conflictos, comunicación asertiva y otros temas considerados prioritarios para el funcionamiento de este.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>5.4. Responsabilidad de los Trabajadores:</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p><strong>a) </strong>Participar de la elección de los miembros del Comité de Convivencia.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>6. FUNCIONAMIENTO DEL COMITÉ DE CONVIVENCIA LABORAL</strong>
+    </div> 
+    <div><br></div>
+    <div>
+        <strong>6.1. Instalación Responsabilidad de los Trabajadores:</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Una vez elegidos los miembros del Comité, se procederá a la instalación formal del Comité, y de dicha instalación se dejará constancia en un acta.</p>
+                <p>De igual manera, en este acto se desarrollarán los siguientes puntos:</p>
+                <p><strong>a) </strong>Nombramiento del Presidente y Secretario.</p>
+                <p><strong>b) </strong>Firma de cláusulas de compromisos de confidencialidad y reserva.</p>
+                <p><strong>c) </strong>Aprobación del reglamento de funcionamiento del Comité.</p>
+                <p><strong>d) </strong>Definición de fechas de reuniones.</p>
+                <p><strong>e) </strong>Participar de la elección de los miembros del Comité de Convivencia.</p>
+                <p><strong>f) </strong>Realizar el plan de trabajo anual.</p>
+                <p><strong>g) </strong>Los demás temas que los miembros quieran tratar.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>NOTA: </strong>De la instalación del Comité de Convivencia Laboral deberá informarse a todos los trabajadores.
+    </div> 
+    <div><br></div>
+    <div>
+        <strong>6.2. Funciones del Presidente</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>* Recibir mediante el mecanismo establecido, las sugerencias, propuestas o comunicaciones en general, que presenten los trabajadores, sobre los temas propios de competencia del Comité.</p>
+                <p>* Tramitar ante el área de Gestión Humana las recomendaciones aprobadas en el Comité y hacer seguimiento de su cumplimiento de manera mensual.</p>
+                <p>* Gestionar ante el área de Gestión Humana los recursos requeridos para el funcionamiento del Comité.</p>
+                <p>* Convocar las sesiones ordinarias y extraordinarias del Comité y presentar los asuntos sometidos a su consideración.</p>
+                <p>* Citar a las personas que el Comité determine para efectos del cumplimiento de sus funciones.</p>
+                <p>* Coordinar la elaboración de las actas correspondientes a las sesiones del Comité, preservando la debida confidencialidad.</p>
+                <p>* Moderar las sesiones del Comité, dando desarrollo ordenado a los temas, según agenda.</p>
+                <p>* Hacer seguimiento al cumplimiento de las funciones del Comité de Convivencia Laboral.</p>
+                <p>* Las demás que la ley, normas reglamentarias o autoridades competentes le asignen.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>NOTA: </strong>En caso de ausencia temporal o definitiva del Presidente el Comité proveerá su reemplazo.
+    </div> 
+    <div><br></div>
+    <div>
+        <strong>6.3. Funciones del Secretario</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>* Recibir y dar trámite a las quejas presentadas por escrito en las que se describan situaciones que puedan constituir acoso laboral, así como las pruebas que las soportan.</p>
+                <p>* Enviar por medio físico o electrónico a los miembros del Comité la convocatoria realizada por el presidente a las sesiones ordinarias y extraordinarias, indicando el día, la hora y el lugar de la reunión.</p>
+                <p>* Citar individualmente a cada una de las partes involucradas en las quejas, con el fin de escuchar los hechos que dieron lugar a la misma.</p>
+                <p>* Citar conjuntamente a los trabajadores involucrados en las quejas con el fin de establecer compromisos de convivencia.</p>
+                <p>* Llevar el archivo de las quejas presentadas, la documentación soporte y velar por la reserva, custodia y confidencialidad de la información.</p>
+                <p>* Elaborar el orden del día y las actas de cada una de las sesiones del Comité.</p>
+                <p>* Enviar las comunicaciones con las recomendaciones dadas por el comité a las diferentes dependencias de la empresa.</p>
+                <p>* Citar a reuniones y solicitar los soportes requeridos para hacer seguimiento al cumplimiento de los compromisos adquiridos por cada una de las partes involucradas.</p>
+                <p>* Apoyar las funciones del Presidente del Comité.</p>
+                <p>* Remitir a la Alta Gerencia, los informes trimestrales sobre la gestión del Comité que incluya estadísticas de las quejas, seguimiento de los casos y recomendaciones.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>NOTA: </strong>El rol de secretaria o secretario del comité puede ser ejercido de manera alterna por cada uno de los integrantes, previo acuerdo y designación formal en reunión del Comité. El integrante designado beberá asumir las funciones durante el periodo acordado.
+    </div> 
+    <div><br></div>
+    <div>
+        <strong>6.4. Capacitación para los Miembros del Comité</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>El Comité fijará fecha para realizar una capacitación conjunta de todos sus miembros en los aspectos más relevantes de la Ley 1010 de 2006 y demás normas vigentes que regulen el acoso laboral.</p>
+                <p>Cada vez que al Comité de Convivencia Laboral se integre un nuevo miembro, éste deberá recibir dicha capacitación, para asegurar su idóneo desempeño dentro del órgano.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>NOTA: </strong>El Comité de Convivencia Laboral, podrá solicitar al área de Gestión Humana apoyo en la capacitación en temas como: toma de decisiones en grupo, resolución de conflictos, comunicación asertiva, entre otros.
+    </div> 
+    <div><br></div>
+    <div>
+        <strong>6.5. Apoyo interdisciplinario</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Para efectos del cumplimiento de sus funciones, el Comité podrá solicitar asesoría y asistencia técnica a la Administradora de Riesgos Laborales (ARL), así como también podrá solicitar apoyo a especialistas en diferentes disciplinas, tales como psicología, trabajo social y derecho, entre otros, garantizando en todo caso la confidencialidad de los temas allí tratados mediante la suscripción de las cláusulas contractuales correspondientes.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>7. METODOLOGÍA DE LAS SESIONES DEL COMITÉ</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>El Comité de Convivencia Laboral se reunirá ordinariamente una (01) vez al mes y sesionará con la mitad más uno de sus integrantes y extraordinariamente cuando se presenten casos o actividades que requieran de su inmediata intervención y podrá ser convocado por cualquiera de sus integrantes.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>7.1. Clasificación de las reuniones</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p><strong>* Reuniones ordinarias: </strong>Las celebradas mediante convocatoria previa, una (01) vez cada al mes.</p>
+                <p><strong>* Reuniones extraordinarias: </strong>Cuando los miembros del Comité consideren que deben reunirse en fechas adicionales a las ordinarias, estas constituirán sesiones de este tipo. Podrán ser convocadas por el Presidente del Comité o por cualquiera de los integrantes.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>NOTA: </strong>En cada reunión se debe generar un acta en la que se determinará la naturaleza de la reunión, la fecha, el lugar de la reunión, la agenda a tratar, los compromisos generados y responsables de estos.
+    </div> 
+    <div>
+        Las actas serán firmadas por todos los integrantes del Comité y estarán bajo la custodia del secretario.
+    </div> 
+    <div>
+        Para la conservación de las actas se implementará un archivo confidencial especial que será de libre consulta para los miembros del Comité. Este archivo se encontrará bajo la custodia del presidente del Comité.
+    </div> 
+    <div>
+        La información contenida en este archivo es de propiedad del Comité de Convivencia Laboral de la empresa y no de sus miembros, quienes simplemente son custodios del mismo en cumplimiento de su deber de confidencialidad.
+    </div> 
+    <div>
+        Ante la finalización del período del Comité o en caso de cambio de algún miembro, este archivo pasará a ser custodiado por los nuevos miembros del comité, existiendo siempre el deber de confidencialidad en cabeza tanto de los miembros activos como de quienes finalizaron su período.
+    </div> 
+    <div><br></div>
+    <div>
+        <strong>7.1.1. De la validez de las Reuniones</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>El Comité de Convivencia Laboral sólo podrá sesionar con la asistencia de por lo menos la mitad más uno (1) de la totalidad de los miembros principales o suplentes y extraordinariamente cuando se presenten casos que se requieran de su inmediata intervención.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>7.2. Decisiones del Comité</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>El Comité adoptará en principio decisiones por la vía del consenso; sin embargo, en caso de no llegarse a él, las decisiones se tomarán a través del sistema de mayoría simple. En caso de existir empate, se llamará a un miembro suplente del Comité, de conformidad con el orden de votación, para que con su voto se dirima el empate.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>NOTA: </strong>Para estos efectos, el consenso es un acuerdo producido por el consentimiento de todos los miembros.
+    </div> 
+    <div><br></div>
+    <div>
+        <strong>8. DEFINICIÓN Y MODALIDADES DE ACOSO LABORAL</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>De acuerdo con lo dispuesto en el artículo 2 de la Ley 1010 de 2006, se entiende por acoso laboral toda conducta persistente y demostrable, ejercida sobre un trabajador por parte su empleador, jefe o superior jerárquico inmediato o mediato, un compañero de trabajo o un subalterno, encaminada a infundir miedo, intimidación, terror y angustia, a causar perjuicio laboral, generar desmotivación en el trabajo, o inducir la renuncia del mismo.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>8.1. Modalidades de acoso:</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p><strong>* Maltrato laboral: </strong>Todo acto de violencia contra la integridad física o moral, la libertad física o sexual y los bienes de quien se desempeñe como empleado o trabajador; toda expresión verbal injuriosa o ultrajante que lesione la integridad moral o los derechos a la intimidad y al buen nombre de quienes participen en una relación de trabajo de tipo laboral o todo comportamiento tendiente a menoscabar la autoestima y la dignidad de quien participe en una relación de trabajo de tipo laboral.</p>
+                <p><strong>* Persecución laboral: </strong>Toda conducta cuyas características de reiteración o evidente arbitrariedad permitan inferir el propósito de inducir la renuncia del empleado o trabajador, mediante la descalificación, la carga excesiva de trabajo y cambios permanentes de horario que puedan producir desmotivación laboral.</p>
+                <p><strong>* Discriminación laboral: </strong>Todo trato diferenciado por razones de raza, género, origen familiar o nacional, credo religioso, preferencia política o situación social o que carezca de toda razonabilidad desde el punto de vista laboral.</p>
+                <p><strong>* Entorpecimiento laboral: </strong>Toda acción tendiente a obstaculizar el cumplimiento de la labor o hacerla más gravosa o retardarla con perjuicio para el trabajador o empleado constituyen acciones de entorpecimiento laboral, entre otras, la privación, ocultación o inutilización de los insumos, documentos o instrumentos para la labor, la destrucción o pérdida de información, el ocultamiento de correspondencia o mensajes electrónicos.</p>
+                <p><strong>* Inequidad laboral: </strong>Asignación de funciones a menosprecio del trabajador.</p>
+                <p><strong>* Desprotección laboral: </strong>Toda conducta tendiente a poner en riesgo la integridad y la seguridad del trabajador mediante órdenes o asignación de funciones sin el cumplimiento de los requisitos mínimos de protección y seguridad para el trabajador.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>8.2. Conductas que constituyen acoso laboral</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>De conformidad con lo dispuesto en el artículo 7 de la ley 1010 de 2006, constituyen acoso laboral, las siguientes conductas:</p>
+                <p><strong>a) </strong>Los actos de agresión física, independientemente de sus consecuencias.</p>
+                <p><strong>b) </strong>Las expresiones injuriosas o ultrajantes sobre la persona, con utilización de palabras soeces o con alusión a la raza, el género, el origen familiar o nacional, la preferencia política o el estatus social.</p>
+                <p><strong>c) </strong>Los comentarios hostiles y humillantes de descalificación profesional expresados en presencia de los compañeros de trabajo.</p>
+                <p><strong>d) </strong>Las injustificadas amenazas de despido expresadas en presencia de los compañeros de trabajo.</p>
+                <p><strong>e) </strong>Las múltiples denuncias disciplinarias de cualquiera de los sujetos activos del acoso, cuya temeridad quede demostrada por el resultado de los respectivos procesos disciplinarios.</p>
+                <p><strong>f) </strong>La descalificación humillante y en presencia de los compañeros de trabajo de las propuestas u opiniones de trabajo.</p>
+                <p><strong>g) </strong>Las burlas sobre la apariencia física o la forma de vestir, formuladas en público.</p>
+                <p><strong>h) </strong>La alusión pública a hechos pertenecientes a la intimidad de la persona.</p>
+                <p><strong>i) </strong>La imposición de deberes ostensiblemente extraños a las obligaciones laborales, las exigencias abiertamente desproporcionadas sobre el cumplimiento de la labor encomendada y el brusco cambio del lugar de trabajo o de la labor contratada sin ningún fundamento objetivo referente a la necesidad técnica de la empresa.</p>
+                <p><strong>j) </strong>La exigencia de laborar en horarios excesivos respecto a la jornada laboral contratada o legalmente establecida, los cambios sorpresivos del turno laboral y la exigencia permanente de laborar en dominicales y días festivos sin ningún fundamento objetivo en las necesidades de la empresa, o en forma discriminatoria respecto a los demás trabajadores o empleados.</p>
+                <p><strong>k) </strong>El trato notoriamente discriminatorio respecto a los demás empleados en cuanto al otorgamiento de derechos y prerrogativas laborales y la imposición de deberes laborales.</p>
+                <p><strong>l) </strong>La negativa a suministrar materiales e información absolutamente indispensables para el cumplimiento de la labor.</p>
+                <p><strong>m) </strong>La negativa claramente injustificada a otorgar permisos, licencias por enfermedad, licencias ordinarias y vacaciones, cuando se dan las condiciones legales, reglamentarias o convencionales para pedirlos.</p>
+                <p><strong>n) </strong>El envío de anónimos, llamadas telefónicas y mensajes virtuales con contenido injurioso, ofensivo o intimidatorio o el sometimiento a una situación de aislamiento social.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>8.3. Conductas que no constituyen acoso laboral:</strong>De conformidad con lo dispuesto en el artículo 8 de la ley 1010 de 2006, NO constituyen acoso laboral, las siguientes conductas:
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p><strong>a) </strong>Los actos destinados a ejercer la potestad disciplinaria que legalmente corresponde a los superiores jerárquicos sobre sus subalternos.</p>
+                <p><strong>b) </strong>La formulación de exigencias razonables de fidelidad laboral o lealtad empresarial e institucional.</p>
+                <p><strong>c) </strong>La formulación de circulares o memorandos de servicio encaminados a solicitar exigencias técnicas o mejorar la eficiencia y la evaluación laborales de subalternos conforme a indicadores objetivos y generales de rendimiento.</p>
+                <p><strong>d) </strong>La solicitud de cumplir deberes extras de colaboración con la empresa o la institución, cuando sean necesarios para la continuidad del servicio o para solucionar situaciones difíciles en la operación de la empresa o la institución.</p>
+                <p><strong>e) </strong>Las actuaciones administrativas o gestiones encaminadas a dar por terminado el contrato de trabajo, con base en una causa legal o una justa causa, prevista en el Código Sustantivo del Trabajo.</p>
+                <p><strong>f) </strong>La solicitud de cumplir los deberes de la persona y el ciudadano, de que trata el artículo 95 de la Constitución.</p>
+                <p><strong>g) </strong>La exigencia de cumplir las obligaciones o deberes de que tratan los artículos 55 a 57 del C.S.T, así como de no incurrir en las prohibiciones de que tratan los artículos 59 y 60 del mismo Código.</p>
+                <p><strong>h) </strong>Las exigencias de cumplir con las estipulaciones contenidas en los reglamentos y cláusulas de los contratos de trabajo.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>9. PROCEDIMIENTO Y TRÁMITE DE QUEJAS POR PRESUNTO ACOSO LABORAL</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Cuando se presente una queja por presunto acoso laboral, se deberá seguir el siguiente procedimiento:</p>
+                <p>* El trabajador que considere que algún compañero de trabajo, jefe o directivo haya ejercido alguna actuación considerada como acoso laboral, de conformidad con lo dispuesto en la ley 1010, podrá formular queja por acoso laboral a través del programa CONESST y/o comunicación escrita, la cual debe ser enviada al comité de convivencia laboral.</p>
+                <p>* Una vez recibida la queja por presunto acoso laboral, por parte del comité de convivencia, se convocará a reunión extraordinaria para la atención y activación de la investigación. Así mismo, se dará inicio al procedimiento establecido en la ley 1010 de 2006, así:
+                    <p><strong>a) </strong>Comunicar al presunto acosado, sobre la recepción de la queja y la revisión de esta.</p>
+                    <p><strong>b) </strong>Reunir a todos los miembros del Comité de Convivencia Laboral, cumpliendo con la asistencia necesaria para sesionar.</p>
+                    <p><strong>c) </strong>Analizar el Formato de formulación de queja que puedan constituir conductas de acoso laboral presentado por el presunto acosado.</p>
+                    <p><strong>NOTA: </strong>El Comité puede evaluar si los hechos se enmarcan en las conductas establecidas en la ley 1010 de 2006 y realizar propuestas de conciliación o acuerdos.</p>
+                </p>
+                <p>* El Comité de Convivencia Laboral, en la reunión extraordinaria en la que analiza la queja y decide continuar con el proceso, definirá las acciones que considere para el tratamiento del caso. En estas acciones, se podrá:
+                    <p><strong>a) </strong>Validar si las pruebas recogidas están comprendidas dentro de las conductas de acoso laboral.</p>
+                    <p><strong>b) </strong>Escuchar a las partes involucradas de manera individual sobre los hechos que dieron lugar a la queja.</p>
+                    <p>En este punto, se citará al trabajador que presentó la queja, con el fin de que ratifique o amplié los hechos denunciados, así como también podrá presentar demás pruebas que considere.</p>
+                </p>
+                <p>* Escuchar a las partes involucradas de manera conjunta sobre los hechos que dieron lugar a la queja, con el fin de llegar a un acuerdo conciliatorio, donde se suscribirán compromisos sobre lo convenido. </p>
+                <p>* Adelantar reuniones con el fin de crear un espacio de diálogo entre las partes involucradas, promoviendo compromisos mutuos para llegar a una solución efectiva de las controversias. </p>
+                <p>* Solicitar apoyo técnico o peritaje de Profesionales en la materia de investigación que ayuden al avance del proceso. Sin dar a conocer los hechos de investigación, y con el ánimo de verificar procedimientos, protocolos, o conceptos técnicos que no conozca los miembros del Comité y que sean indispensable para la investigación. </p>
+                <p><strong>NOTA: </strong>En caso de que la queja involucre alguno de los miembros del Comité de Convivencia, este no podrá intervenir en la investigación del caso y en el evento de comprobarse que realmente estuvo implicado en la queja quedará inhabilitado para pertenecer al Comité de Convivencia Laboral. </p>
+                <p>Luego de surtir el proceso de investigación, el comité deberá sesionar y de acuerdo con la revisión de los hechos y las circunstancias descritas en la actividad anterior, podrá:</p>
+                <p>* Formular un plan de mejora concertado entre las partes, para construir, renovar y promover la convivencia laboral, garantizando en todos los casos el principio de la confidencialidad. </p>
+                <p>* Hacer las recomendaciones para las partes intervinientes sea afectado o presunto implicado, o para ambos de manera escrita, y con compromisos claros sujetos a verificación. Estas acciones recomendadas, estarán enfocadas a mejorar la Convivencia Laboral. </p>
+                <p>* Activar el proceso disciplinario, de acuerdo con lo definido en el Reglamento Interno de Trabajo, para los eventos en el que el resultado de la investigación evidencie una falta disciplinaria por parte de alguno de los intervinientes en este proceso de investigación. </p>
+                <p>* Notificar a ambas partes el concepto o conclusión del resultado de la investigación de manera personalizada. </p>
+                <p>* Una vez escuchadas las partes y emitidas las recomendaciones o suscrito los compromisos, el Comité emitirá una comunicación, a través de la cual se dará una respuesta definitiva. Dicha misiva será remitida a las partes, esto es, el quejoso y contra quien se presentó la queja. </p>
+                <p><strong>NOTA: </strong>El presente trámite deberá cumplir con los tiempos indicados en el 4.3 del presente reglamento.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>9.1. Quejas que no constituyen actos de acoso laboral</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>En los casos en que el Comité de Convivencia Laboral, previo estudio y valoración de la queja formulada y sus anexos, determina que los hechos NO se enmarcan en las conductas establecidas en la ley 1010 de 2006, y, por ende, no se requiere la apertura de un proceso de investigación deberá informar al empleado por escrito y justificando la decisión adoptada.</p>
+                <p>Igualmente, podrá determinar que los hechos denunciados, aunque se enmarcan en las conductas establecidas en la ley 1010 de 2006 por no cumplir con los requisitos definidos en las leyes existentes para tal fin; si amerita el levantamiento de un proceso disciplinario de acuerdo con el reglamento interno de trabajo.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>9.2. Término para la interposición de queja de acoso laboral</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>El término máximo que se dispone para interponer una queja es de tres (03) años, contados a partir de la ocurrencia de los hechos, de conformidad con lo dispuesto en la ley 2209 de 2022.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>9.3. Plazo para resolver la queja</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>El Comité tendrá un término máximo de sesenta y cinco (65) días calendario para decidir sobre una queja de acoso laboral, contados a partir de la fecha de su presentación.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>9.4. Desistimiento</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>El trabajador que formuló la queja podrá desistir en cualquier momento de la queja presentada, para ello deberá presentar un escrito motivado dirigido al Comité de Convivencia Laboral, en el que sustente las razones por las cuales, no desea continuar con el proceso y esta situación genera como efecto el archivo de este.</p>
+                <p>El desistimiento no constituye un impedimento para que, de manera preventiva, el Comité de Convivencia Laboral, pueda continuar haciendo seguimiento de la situación, manteniendo la reserva correspondiente y cumpliendo con las obligaciones y deberes que le competen.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>10. FALTA DE COMPETENCIA PARA ATENDER QUEJAS POR PRESUNTO ACOSO SEXUAL EN EL AMBITO LABORAL</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>En los casos de acoso sexual y en lo pertinente a la Ley 2365 de 2024, el Comité de Convivencia Laboral no es competente para atender las quejas formuladas en tal sentido, ya que estas conductas no son conciliables.</p>
+                <p>Para estos casos, la alta dirección de la empresa y al área de Gestión Humana han establecido un procedimiento para recibir las quejas de presunto acoso sexual o violencia por razones de género y las medidas de atención, prevención y protección.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>11. CONFIDENCIALIDAD Y MANEJO DE LA INFORMACIÓN</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Los miembros del Comité deberán manejar la información que conozcan con absoluta reserva, discreción y confidencialidad.</p>
+                <p>Para facilitar esta obligación, se establece que la información que obtenga cualquier miembro del Comité, sobre un eventual caso de acoso o convivencia laboral, no se circulará previamente entre los miembros, hasta tanto el Comité no se reúna para conocer del caso.</p>
+                <p>En consecuencia, para el análisis de cada situación, el Comité o una comisión delegada, se reunirá las veces que se requiera para cada caso particular, conservado así la custodia de la información y los documentos.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>12. RELACIÓN DEL COMITÉ CON LAS AUTORIDADES</strong>
+    </div> 
+    <div><br></div>
+    <div>
+        <strong>12.1. Relación con las Autoridades Administrativas</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Recibir y atender, a través del Presidente del Comité, las comunicaciones que le formulen las autoridades administrativas, así:</p>
+                <p>* Acreditando el trámite adelantado con respecto a las quejas.</p>
+                <p>* Comprometiéndose a iniciar el trámite, si no ha recibido la queja previamente.</p>
+                <p>* Acreditando las actividades pedagógicas llevadas a cabo para prevenir el acoso laboral.</p>
+                <p>* Acreditando la realización de terapias o estrategias grupales o institucionales para el mejoramiento del clima laboral.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>12.2. Relación con las autoridades judiciales</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>Acreditar ante el Juez que esté adelantando el trámite sancionatorio, promovido por un ex trabajador (renuncia por acoso laboral) o por un trabajador (demanda por acoso laboral), así:</p>
+                <p>* Los procedimientos preventivos llevados a cabo en el caso específico.</p>
+                <p>* Los procedimientos correctivos llevados a cabo en el caso específico.</p>
+                <p>* La ausencia de conocimiento del caso, si a ello hubiere lugar.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>13. RECURSOS PARA EL FUNCIONAMIENTO DEL COMITÉ</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>El Empleador deberá garantizar los recursos humanos, físicos, y económicos para las reuniones, capacitaciones y demás actividades propias del Comité.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+    <div>
+        <strong>14. VIGENCIA Y MODIFICACIONES</strong>
+    </div> 
+    <div><br></div>
+    <table> 
+        <tr>
+            <td style="text-align:justify">
+                <p>El presente Reglamento rige a partir de su publicación y podrá adicionarse, modificarse o revocarse con la intervención de los integrantes del Comité de Convivencia Laboral mediante decisión adoptada a través de una reunión especial de la cual se dejará constancia en un acta suscrita por los intervinientes.</p>
+            </td>
+        </tr>
+    </table> 
+    <div><br></div>    
+</div>

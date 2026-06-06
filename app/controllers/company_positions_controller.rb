@@ -1,6 +1,6 @@
 class CompanyPositionsController < ApplicationController
     def index
-        if  Current.user && Current.user.level == 1
+        if  Current.user && Current.user.level < 3 && Current.user.level > 0
             @company_positions = CompanyPosition.all
          else
              redirect_to new_session_path, alert: t('common.not_logged_in')     

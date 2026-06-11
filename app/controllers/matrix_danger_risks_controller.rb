@@ -276,7 +276,7 @@ class MatrixDangerRisksController < ApplicationController
                 pdf = WickedPdf.new.pdf_from_string(
                     render_to_string('resumen_pdf'),
                     orientation: 'Landscape',
-                    zoom: 0.50,
+                    zoom: 0.40,
                     disable_javascript: true,
                     margin: {top: 10, bottom: 10, left: 5, right: 5 },
                     page_size: 'letter',

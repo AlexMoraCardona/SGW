@@ -13,10 +13,6 @@
         <br>
         <div class="row g-2">
             <div class="col-sm-3">
-                <strong>Fecha de creación</strong><br>
-                <%= @matrix_unsafe_item.date_item %> 
-            </div>        
-            <div class="col-sm-3">
                 <strong>Usuario que reporta:</strong><br>
                 <%= MatrixUnsafeItem.name_user(@matrix_unsafe_item.user_reporta) %> 
             </div>        
@@ -25,7 +21,7 @@
         <div class="row g-2">
             <div class="col-sm-3">
                 <strong>Cargo del usuario que reporta:</strong><br>
-                <%= @matrix_unsafe_item.cargo_reporta %> 
+                <%= CompanyPosition.name_cargo(@matrix_unsafe_item.cargo_reporta) %>
             </div>        
             <div class="col-sm-3"> 
                 <strong>Correo del usuario que reporta:</strong><br>
@@ -40,6 +36,11 @@
                 <%= error%> <%= alert %> 
             </div>
         <% end %>
+
+        <div class="col-sm-3">
+            <strong>Fecha de creación</strong><br>
+            <%= form.date_field :date_item,  class: "form-control" %>
+        </div>        
 
         <div class="form-group">    
             <%= form.label :sede,  style: "display: block" %>

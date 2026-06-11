@@ -18,9 +18,9 @@ class MatrixDangerItem < ApplicationRecord
         if dato == 0 ; 'No'
         elsif dato == 1 ; 'Si'
         end 
-    end    
-
-    def self.calculos(id_item)
+    end  
+    
+    def self.adicionarinter(id_item)
         item = MatrixDangerItem.find(id_item)
         item.intervention_measures_elimination = DangerPrevention.buscar_medida(item.clasification_danger_detail_id,0)
         item.intervention_measures_replacement = DangerPrevention.buscar_medida(item.clasification_danger_detail_id,1)
@@ -28,8 +28,11 @@ class MatrixDangerItem < ApplicationRecord
         item.intervention_measures_acsw = DangerPrevention.buscar_medida(item.clasification_danger_detail_id,3)
         item.intervention_measures_ppee = DangerPrevention.buscar_medida(item.clasification_danger_detail_id,4)
         item.possible_effects_health = DangerDetailRisk.buscar_efecto(item.clasification_danger_detail_id)
+        item.save 
+    end    
 
-
+    def self.calculos(id_item)
+        item = MatrixDangerItem.find(id_item)
 
         item.probability_level  = item.deficiency_level.to_f * item.exposure_level.to_f
         

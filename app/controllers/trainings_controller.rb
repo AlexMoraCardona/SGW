@@ -22,7 +22,7 @@ class TrainingsController < ApplicationController
         @adv = User.find(@training.user_adviser_sst) if  @training.user_adviser_sst.present? && @training.user_adviser_sst > 0
         @res = User.find(@training.user_responsible_sst) if  @training.user_responsible_sst.present? && @training.user_responsible_sst > 0
 
-        @training_items = TrainingItem.where("training_id = ?", @training.id) if @training.present?
+        @training_items = TrainingItem.where("training_id = ?", @training.id).order(:consecutive) if @training.present?
         respond_to do |format|
             format.html
             format.xlsx{ 
@@ -33,7 +33,7 @@ class TrainingsController < ApplicationController
     
     def ver_training
         @training = Training.find(params[:id])
-        @training_items = TrainingItem.where("training_id = ?", @training.id) if @training.present?
+        @training_items = TrainingItem.where("training_id = ?", @training.id).order(:consecutive) if @training.present?
         @rep = User.find(@training.user_legal_representative) if  @training.user_legal_representative.present? && @training.user_legal_representative > 0
         @adv = User.find(@training.user_adviser_sst) if  @training.user_adviser_sst.present? && @training.user_adviser_sst > 0
         @res = User.find(@training.user_responsible_sst) if  @training.user_responsible_sst.present? && @training.user_responsible_sst > 0

@@ -12,6 +12,7 @@ class MatrixDangerItemsController < ApplicationController
         @matrix_danger_item.clasification_danger_id = ClasificationDangerDetail.find(@matrix_danger_item.clasification_danger_detail_id).clasification_danger_id if @matrix_danger_item.clasification_danger_detail_id.present? 
 
         if @matrix_danger_item.save then
+            MatrixDangerItem.adicionarinter(@matrix_danger_item.id) if @matrix_danger_item.present?
             MatrixDangerItem.calculos(@matrix_danger_item.id) if @matrix_danger_item.present?
             redirect_back fallback_location: root_path, notice: t('.created') 
         else
@@ -28,7 +29,7 @@ class MatrixDangerItemsController < ApplicationController
         @matrix_danger_item.clasification_danger_id = ClasificationDangerDetail.find(@matrix_danger_item.clasification_danger_detail_id).clasification_danger_id if @matrix_danger_item.clasification_danger_detail_id.present? 
         if @matrix_danger_item.update(matrix_danger_item_params)
             MatrixDangerItem.calculos(@matrix_danger_item.id) if @matrix_danger_item.present?
-            redirect_to matrix_danger_risks_path(entity_id: @matrix_danger_item.matrix_danger_risk.entity_id), notice: 'Item actualizado correctamente'
+            redirect_to  matrix_danger_risk_path(@matrix_danger_item.matrix_danger_risk_id), notice: 'Item actualizado correctamente'
         else
             render :edit, status: :unprocessable_entity
         end         

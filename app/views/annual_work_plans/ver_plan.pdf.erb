@@ -213,7 +213,7 @@
                     <% if @rep.present? %>
                         <% if @rep.firm.attached? %>
                            <% if @rep.firm.image? %> 
-                                <%= image_tag @rep.firm, class: "firma" %>
+                                <%= image_tag(Evaluation.wicked_blob_path(@rep.firm), class: "firmapdf")%>
                            <% end %>
                         <% end %>
                     <% end %> 
@@ -226,7 +226,7 @@
                     <% if @adv.present? %>
                         <% if @adv.firm.attached? %>
                             <% if @adv.firm.image? %> 
-                                <%= image_tag @adv.firm, class: "firma" %>
+                                <%= image_tag(Evaluation.wicked_blob_path(@adv.firm), class: "firmapdf")%>
                             <% end %>
                         <% end %>
                     <% end %>     
@@ -235,23 +235,12 @@
                 <% end %>     
             </td>
             <td  colspan="7"; style="border:1px solid black; text-align:center">
-                <% if @annual_work_plan.firm_responsible_sst == 1 %>
-                    <% if @res.present? %>
-                        <% if @res.firm.attached? %>
-                            <% if @res.firm.image? %> 
-                                <%= image_tag @res.firm, class: "firma" %>
-                            <% end %>
-                        <% end %>
-                    <% end %>     
-                <% else %>
-                    <div></br></div>         
-                <% end %>     
             </td>
         </tr>
         <tr>
             <td  colspan="6"; style="border:1px solid black"><%= @annual_work_plan.name_user(@annual_work_plan.user_legal_representative) %> - Representante Legal</td>
             <td  colspan="7"; style="border:1px solid black"><%= @annual_work_plan.name_user(@annual_work_plan.user_adviser_sst) %> - Asesor SST</td>
-            <td  colspan="7"; style="border:1px solid black"><%= @annual_work_plan.name_user(@annual_work_plan.user_responsible_sst) %> - Responsable SST</td>
+            <td  colspan="7"; style="border:1px solid black"></td>
         </tr>
     </table>
 </div>    

@@ -50,7 +50,7 @@ class EvaluationRuleDetailsController < ApplicationController
 
     def ver_evidencia
         @evidence = Evidence.find(params[:id])
-        @firms = Firm.where("evidence_id = ?", @evidence.id)
+        @firms = Firm.where("evidence_id = ?", @evidence.id).order(:legal_representative)
         @participants = Participant.where("evidence_id = ?", @evidence.id) if @evidence.present?
         @administrative_political_division = AdministrativePoliticalDivision.find(@evidence.entity.entity_location_code) if @evidence.entity.entity_location_code.present?
         @responsablesst = User.find(@evidence.entity.responsible_sst) if @evidence.entity.responsible_sst.present?

@@ -85,7 +85,7 @@ class DirectionReviewsController < ApplicationController
     end  
      
     def actualizar_fecha(id)
-        @direction_review = AuditReport.find(id)
+        @direction_review = DirectionReview.find(id)
         @direction_review.date_firm_representante = nil if @direction_review.firm_representante.to_i == 0
         @direction_review.save
     end      

@@ -298,6 +298,8 @@ Rails.application.routes.draw do
       get '/matrix_danger_risks/firmar_adv/:id', to: 'matrix_danger_risks#firmar_adv', as: 'firmar_adv'
       get '/matrix_danger_risks/firmar_res/:id', to: 'matrix_danger_risks#firmar_res', as: 'firmar_res'
       get '/matrix_danger_risks/duplicar_mpr/:id', to: 'matrix_danger_risks#duplicar_mpr', as: 'duplicar_mpr'
+      get '/matrix_danger_risks/seleccionar_archivompr/:id', to: 'matrix_danger_risks#seleccionar_archivompr', as: 'seleccionar_archivompr'
+      post '/matrix_danger_risks/cargar_archivompr/:id', to: 'matrix_danger_risks#cargar_archivompr', as: 'cargar_archivompr'
 
     end  
   end

@@ -133,7 +133,195 @@ class MatrixDangerRisk < ApplicationRecord
         return  matrix_danger_risk   
     end
 
+    def self.duplicar_item(matrix_danger_item)
+        nuevo_matrix_danger_item = MatrixDangerItem.new  
+        cant = 0
+        matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ?", matrix_danger_item.matrix_danger_risk_id).order(:id) if matrix_danger_item.present?
+        cant = matrix_danger_items.count if matrix_danger_items.present?
+        cant = cant + 1 
+        
+
+        nuevo_matrix_danger_item.consecutive = cant 
+        nuevo_matrix_danger_item.year = matrix_danger_item.year  
+        nuevo_matrix_danger_item.source_information =  matrix_danger_item.source_information  
+        nuevo_matrix_danger_item.activity = matrix_danger_item.activity 
+        nuevo_matrix_danger_item.task = matrix_danger_item.task
+        nuevo_matrix_danger_item.type_task = matrix_danger_item.type_task
+        nuevo_matrix_danger_item.origin = matrix_danger_item.origin
+        nuevo_matrix_danger_item.possible_effects_health = matrix_danger_item.possible_effects_health
+        nuevo_matrix_danger_item.possible_effects_security = matrix_danger_item.possible_effects_security
+        nuevo_matrix_danger_item.description_existing_control_origin = matrix_danger_item.description_existing_control_origin
+        nuevo_matrix_danger_item.description_existing_control_medium = matrix_danger_item.description_existing_control_medium 
+        nuevo_matrix_danger_item.description_existing_control_person = matrix_danger_item.description_existing_control_person
+        nuevo_matrix_danger_item.description_existing_control_observations = matrix_danger_item.description_existing_control_observations 
+        nuevo_matrix_danger_item.deficiency_level = matrix_danger_item.deficiency_level
+        nuevo_matrix_danger_item.exposure_level = matrix_danger_item.exposure_level 
+        nuevo_matrix_danger_item.probability_level = matrix_danger_item.probability_level 
+        nuevo_matrix_danger_item.interpretation = matrix_danger_item.interpretation 
+        nuevo_matrix_danger_item.consequence_level = matrix_danger_item.consequence_level 
+        nuevo_matrix_danger_item.level_risk_intervention = matrix_danger_item.level_risk_intervention 
+        nuevo_matrix_danger_item.risk_level_interpretation = matrix_danger_item.risk_level_interpretation 
+        nuevo_matrix_danger_item.risk_acceptability = matrix_danger_item.risk_acceptability 
+        nuevo_matrix_danger_item.number_exposed = matrix_danger_item.number_exposed 
+        nuevo_matrix_danger_item.hours_exposure = matrix_danger_item.hours_exposure 
+        nuevo_matrix_danger_item.worst_consequence = matrix_danger_item.worst_consequence  
+        nuevo_matrix_danger_item.existence_legal_requirement = matrix_danger_item.existence_legal_requirement 
+        nuevo_matrix_danger_item.intervention_measures_elimination = matrix_danger_item.intervention_measures_elimination 
+        nuevo_matrix_danger_item.intervention_measures_replacement = matrix_danger_item.intervention_measures_replacement 
+        nuevo_matrix_danger_item.intervention_measures_engineering_control = matrix_danger_item.intervention_measures_engineering_control 
+        nuevo_matrix_danger_item.intervention_measures_acsw = matrix_danger_item.intervention_measures_acsw 
+        nuevo_matrix_danger_item.intervention_measures_ppee = matrix_danger_item.intervention_measures_ppee 
+        nuevo_matrix_danger_item.responsible_implementation = matrix_danger_item.responsible_implementation 
+        nuevo_matrix_danger_item.type_register = matrix_danger_item.type_register  
+        nuevo_matrix_danger_item.proposed_date = matrix_danger_item.proposed_date 
+        nuevo_matrix_danger_item.implementation_date = matrix_danger_item.implementation_date 
+        nuevo_matrix_danger_item.follow_date = matrix_danger_item.follow_date 
+        nuevo_matrix_danger_item.observations =  matrix_danger_item.observations
+        nuevo_matrix_danger_item.clasification_danger_id = matrix_danger_item.clasification_danger_id 
+        nuevo_matrix_danger_item.clasification_danger_detail_id =  matrix_danger_item.clasification_danger_detail_id
+        nuevo_matrix_danger_item.matrix_danger_risk_id = matrix_danger_item.matrix_danger_risk_id 
+        nuevo_matrix_danger_item.location_id = matrix_danger_item.location_id 
+        nuevo_matrix_danger_item.number_exposed_contrators = matrix_danger_item.number_exposed_contrators  
+        nuevo_matrix_danger_item.number_exposed_totals = matrix_danger_item.number_exposed_totals 
+        nuevo_matrix_danger_item.danger_intervened = matrix_danger_item.danger_intervened
+        nuevo_matrix_danger_item.type_cargo = matrix_danger_item.type_cargo
+        
+        nuevo_matrix_danger_item.save
+
+    end    
+
+    def self.cargar_archivompr(archivo, matrix_danger_risk)
+        #nuevo_matrix_danger_item = MatrixDangerItem.new  
+        cant = 0
+        matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ?", matrix_danger_risk.id).order(:id) if matrix_danger_risk.present?
+        cant = matrix_danger_items.count if matrix_danger_items.present?
+
+        archivo.tempfile.each_line.with_index do |linea, indice|
+             linea = linea.force_encoding("UTF-8")
+             # Elimina el salto de línea
+             linea = linea.chomp
+
+             # Omitir la cabecera
+             next if indice == 0
+
+             # Separar por |
+             columnas = linea.split("|")
+
+             #proceso      = columnas[0]
+             #actividad    = columnas[3]
+             #np = columnas[14]
+             #nr = columnas[16]
+             #interpretacion = columnas[17] 
+             #aceptabilidad = columnas[18]
+             mensaje = "  *****ATENCIÓN:  Validar la clasificación del riesgo  y el detalle "        
+
+             cant = cant + 1  
+             consecutive = cant
+             year = Date.today.year
+             source_information = "Administrativo"
+             activity = columnas[3] #actividad
+             type_task = dato_type_task(columnas[5]) #rutinaria 
+             origin = columnas[1] #zona 
+             #possible_effects_health = columnas[8] #efectos   
+             description_existing_control_origin = columnas[9] #controles_fuente   
+             description_existing_control_medium = columnas[10] #controles_medio
+             description_existing_control_person = columnas[11] #controles_trabajador
+             deficiency_level = columnas[12] #nd
+             exposure_level = columnas[13] #ne
+             consequence_level =  columnas[15] #nc
+             intervention_measures_elimination = columnas[19] #medias_intervencion
+             clasification_danger_id = dato_clasification_danger(columnas[6])  #clase
+             if clasification_danger_id == 0 then
+                task = columnas[4] + mensaje + columnas[6] + " - " +columnas[7]#tarea
+             else
+                task = columnas[4] #tarea
+             end   
+             
+             if clasification_danger_id == 0 then
+                clasification_danger_detail_id = 41
+             else
+                clasification_danger_detail_id = dato_clasification_danger_detail(columnas[7], clasification_danger_id)  #descripcion
+                if clasification_danger_detail_id == 0 then 
+                    task = columnas[4] + mensaje + columnas[6] + " - " +columnas[7]#tarea
+                else
+                    task = columnas[4] #tarea
+                end   
+             end  
+             
+             
+             clasification_danger_id = 5 if clasification_danger_id == 0 
+             clasification_danger_detail_id = 41 if clasification_danger_detail_id == 0
+             
+             matrix_danger_risk_id = matrix_danger_risk.id
+             location_id = dato_location(matrix_danger_risk.entity_id)
+             type_cargo = dato_type_cargo(columnas[2], matrix_danger_risk.entity_id)
+
+             # Aquí puedes guardar en la base de datos
+              matrix_danger_item = MatrixDangerItem.create!(
+                consecutive: consecutive,
+                year: year,
+                source_information: source_information,
+                activity: activity,
+                task: task,
+                type_task: type_task, 
+                origin: origin, 
+                #possible_effects_health: possible_effects_health,   
+                description_existing_control_origin: description_existing_control_origin,   
+                description_existing_control_medium: description_existing_control_medium,
+                description_existing_control_person: description_existing_control_person,
+                deficiency_level: deficiency_level,
+                exposure_level: exposure_level,
+                consequence_level: consequence_level,
+                intervention_measures_elimination: intervention_measures_elimination,
+                clasification_danger_detail_id: clasification_danger_detail_id,
+                clasification_danger_id: clasification_danger_id,
+                matrix_danger_risk_id: matrix_danger_risk_id,   
+                location_id: location_id,   
+                type_cargo: type_cargo          
+              )
+           MatrixDangerItem.calculos(matrix_danger_item.id) 
+           MatrixDangerItem.adicionarinter(matrix_danger_item.id)
+       end
+
+    end   
+
+    def self.dato_type_cargo(dato, entity)
+        resultado = "No encontrado"
+        company_position = CompanyPosition.where("entity_id = ? and name LIKE ?", entity,dato).first
+        resultado = company_position.id if company_position.present?
+        return resultado
+    end    
+    def self.dato_location(entity)
+        dato = 0
+        loca = Location.find_by(entity_id: entity)
+        dato = loca.id if loca.present?
+        return dato
+    end    
     
+    def self.dato_type_task(type_task)
+        dato = 1
+        dato = 0 if type_task == "SI"
+        return dato
+    end  
+    
+    def self.dato_clasification_danger_detail(nombre, clasification_danger_id)
+
+        dato = 0
+        detail = ClasificationDangerDetail.where("name LIKE ? and clasification_danger_id = ?", nombre, clasification_danger_id).first if clasification_danger_id.present?
+        dato = detail.id if detail.present?
+        return dato
+    end    
+
+    def self.dato_clasification_danger(dato)
+        dato = dato.upcase
+        clasification_danger = ClasificationDanger.find_by(name: dato)
+        if clasification_danger.present? then
+            resultado = clasification_danger.id
+        else
+            resultado = 0
+        end 
+        return resultado
+    end    
 
 
 end

@@ -35,15 +35,56 @@ class ExtinguishersController < ApplicationController
         @extinguisher = Extinguisher.find(params[:id])
         @entity = Entity.find(@extinguisher.adm_extinguisher.entity_id) if @extinguisher.present? 
     end
+
+    def extinguisher_foto
+        @extinguisher = Extinguisher.find(params[:id])
+    end 
+
     
     def update
+        ppppppp
         @extinguisher = Extinguisher.find(params[:id])
         @entity = Entity.find(@extinguisher.adm_extinguisher.entity_id) if @extinguisher.present?
-        if @extinguisher.update(extinguisher_params) 
-            redirect_to  adm_extinguisher_path(@extinguisher.adm_extinguisher.id), notice: 'Extintor actualizado correctamente'
+
+        if params[:photo_data].present?
+
+            image = params[:photo_data]
+
+            image = image.sub(
+              /^data:image\/jpeg;base64,/,
+            ""
+            )
+
+            decoded = Base64.decode64(image)
+
+            file = Tempfile.new(["foto", ".jpg"])
+
+            file.binmode
+
+            file.write(decoded)
+
+            file.rewind
+
+            @extinguisher.extinguisher_fotos.attach(
+            io: file,
+            filename: "foto.jpg",
+            content_type: "image/jpeg"
+            )
+
+            if @extinguisher.save
+                redirect_to  adm_extinguisher_path(@extinguisher.adm_extinguisher.id), notice: 'Fotografía guardada correctamente.'
+            else
+                render :extinguisher_foto
+            end
         else
-            render :edit, extinguishers: :unprocessable_entity
-        end         
+            if @extinguisher.update(extinguisher_params) 
+                redirect_to  adm_extinguisher_path(@extinguisher.adm_extinguisher.id), notice: 'Extintor actualizado correctamente'
+            else
+                render :edit, extinguishers: :unprocessable_entity
+            end         
+
+        end
+
     end    
 
     def destroy

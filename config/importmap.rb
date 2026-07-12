@@ -9,6 +9,7 @@ pin "popper", to: "popper.js", preload: true
 pin "bootstrap", to: "bootstrap.min.js", preload: true 
 pin "chartkick", to: "chartkick.js"
 pin "Chart.bundle", to: "Chart.bundle.js"
+pin "direct_uploads"
 pin "trix"
 pin "@rails/actiontext", to: "actiontext.js"
 pin "chart.js", to: "https://ga.jspm.io/npm:chart.js@4.4.1/dist/chart.js"

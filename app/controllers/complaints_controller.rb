@@ -85,19 +85,18 @@ class ComplaintsController < ApplicationController
         @footer = 'Nit: ' + @complaint.entity.identification_number.to_s + ', Dirección: ' + @complaint.entity.entity_address.to_s
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'informe', 
-                disable_javascript: true,
-                margin: {top: 45, bottom: 25, left: 25, right: 25 },
-                page_size: 'Letter',
-                header: {
-                         html: { 
-                         template: 'complaints/header_formato'
-                         }},
-                footer: {
-                         right: 'Página: [page] de [topage]'
-                        }
-                
-                       } 
+            format.pdf {
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('informe'),
+                    header: { right: '[page] de [topage]' },
+                    margin: {top: 10, bottom: 10, left: 10, right: 10 },
+                    disable_javascript: true,
+                    enable_plugins: true,
+                    page_size: 'letter',
+
+                  )  
+                  send_data(pdf, filename: 'informe.pdf', disposition: 'attachment')      
+            }
         end
     end
 

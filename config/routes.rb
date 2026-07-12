@@ -174,7 +174,7 @@ Rails.application.routes.draw do
   get '/firms/firma_pendiente/:id', to: 'firms#firma_pendiente', as: 'firma_pendiente'
   get '/adm_attendances/adm_attendance_pdf/:id', to: 'adm_attendances#adm_attendance_pdf', as: 'adm_attendance_pdf'
   get '/attendances/registrar_asistencia/:id', to: 'attendances#registrar_asistencia', as: 'registrar_asistencia'
-  get '/attachments/purge/:id', to: 'attachments#purge', as: 'purge_attachment'
+  delete '/attachments/purge/:id', to: 'attachments#purge', as: 'purge_attachment'    
   get '/emergency_plans/resources_ext_plan/:id', to: 'emergency_plans#resources_ext_plan', as: 'resources_ext_plan'
   get '/emergency_plans/resources_int_plan/:id', to: 'emergency_plans#resources_int_plan', as: 'resources_int_plan'
   get '/emergency_plans/brigadistas_plan/:id', to: 'emergency_plans#brigadistas_plan', as: 'brigadistas_plan'

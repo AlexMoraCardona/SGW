@@ -1,79 +1,72 @@
-<%= form_with(model: @extinguisher,
-              url: extinguisher_foto_path(@extinguisher),
-              method: :patch,
-              local: true) do |f| %>
+<%= form_with model: @extinguisher do |f| %>
+
 
   <div class="card">
 
-    <div class="card-header">
-      <h3>Fotografía del extintor</h3>
-    </div>
-
     <div class="card-body">
-
-      <div id="camera-container" class="text-center">
-
-        <video
-          id="video"
-          autoplay
-          playsinline
-          muted
-          width="640"
-          height="480"
-          style="border:1px solid #999;border-radius:10px;">
-        </video>
-
-        <canvas
-          id="canvas"
-          style="display:none;">
-        </canvas>
-
-        <img
-          id="preview"
-          class="img-fluid"
-          style="display:none;border:1px solid #999;border-radius:10px;">
-
+      <div class="card-header d-flex justify-content-center align-items-center" >
+          <h3>Fotografía del extintor</h3>
       </div>
 
-      <br>
+      <div id="camera-container"  class="d-flex justify-content-center align-items-center" >
 
-      <%= hidden_field_tag :photo_data, nil, id: "photo_data" %>
+        <div data-controller="camera" class="text-center">
+          <video
+              data-camera-target="video"
+              autoplay
+              playsinline
+              muted
+              width="240"
+              height="180"
+              style="border:1px solid #999;">
+          </video>
 
-      <div class="text-center">
+        
+          <canvas
+            data-camera-target="canvas"
+            style="display:none;">
+          </canvas>
+          <img
+            data-camera-target="preview"
+            style="display:none; max-width:100%;">
 
-        <button
-          type="button"
-          id="capture"
-          class="btn btn-primary">
+          <br>
 
-          📷 Tomar fotografía
+          <div class="mb-3">
+            <%= label_tag :photo_name, "Nombre de la fotografía", class: "form-label" %>
+            <%= text_field_tag :photo_name,
+              nil,
+              class: "form-control",
+              maxlength: 100,
+              pattern: "[\\p{L}\\p{N}_ \\-]+",
+              title: "Solo se permiten letras, números, espacios, guiones y guiones bajos." %>
+          </div>          
+          <div class="justify-content:center;">
 
-        </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-camera-target="button"
+              data-action="click->camera#tomarFotografia">
+              📷 Tomar fotografía
+            </button>
 
-        <button
-          type="button"
-          id="retry"
-          class="btn btn-warning"
-          style="display:none;">
+            <%= hidden_field_tag :photo_data, 
+              nil,
+              id:"photo_data",
+              data: { camera_target:"photo" } %>      
+            </br> </br>
+            <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>          
 
-          🔄 Tomar nuevamente
+            <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, adm_extinguisher_path(@extinguisher.adm_extinguisher_id) %>
+          </div>
 
-        </button>
-
+        </div>
       </div>
+
 
     </div>
 
-    <div class="card-footer text-center">
-
-      <%= f.submit "Guardar",
-            class: "btn btn-success" %>
-
-      <%= link_to "Cancelar",
-            adm_extinguishers_path,
-            class: "btn btn-secondary" %>
-
-    </div>
 
   </div>
 

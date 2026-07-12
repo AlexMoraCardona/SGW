@@ -42,11 +42,21 @@ class ExtinguishersController < ApplicationController
 
     
     def update
-        ppppppp
         @extinguisher = Extinguisher.find(params[:id])
         @entity = Entity.find(@extinguisher.adm_extinguisher.entity_id) if @extinguisher.present?
 
         if params[:photo_data].present?
+            nom_foto = "foto"
+            if params[:photo_name].present? 
+                unless params[:photo_name].blank?
+                    nom_foto = params[:photo_name].to_s.strip 
+                end    
+                unless nom_foto.match?(/\A[A-Za-zÁÉÍÓÚáéíóúÑñ0-9 _-]+\z/)
+                    flash[:error] = "El nombre de la fotografía no es válido."
+                    redirect_back(fallback_location: root_path)
+                    return
+                end 
+            end
 
             image = params[:photo_data]
 
@@ -67,7 +77,7 @@ class ExtinguishersController < ApplicationController
 
             @extinguisher.extinguisher_fotos.attach(
             io: file,
-            filename: "foto.jpg",
+            filename: nom_foto + ".jpg",
             content_type: "image/jpeg"
             )
 

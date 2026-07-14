@@ -1,85 +1,141 @@
 <% if @entity.present? %>
-    <h3><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h3>
-<% end %>
-
-
-<% if @adm_extinguishers.present? %>
-    <%= link_to t('common.create_adm_extinguisher'), new_adm_extinguisher_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
-    <div></br></div>
-    <table class="table table-hover"> 
-        <thead>
-            <tr>
-                <td style="border:1px solid black; text-align:center;">
-                    Fecha de creación
-                </td>
-                <td style="border:1px solid black; text-align:center;">
-                    Área
-                </td>
-                <td style="border:1px solid black;">
-                    Usuario responsable
-                </td>
-                <td style="border:1px solid black; text-align:center;">
-                    Firma inspección
-                </td>
-                <td style="border:1px solid black; text-align:center;">
-                    Adicionar Extintor
-                </td>
-                <td style="border:1px solid black; text-align:center;">
-                    Editar
-                </td>
-                <td style="border:1px solid black; text-align:center;">
-                    Ver
-                </td>
-                <td style="border:1px solid black; text-align:center;">
-                    PDF
-                </td>
-                <td style="border:1px solid black; text-align:center;">
-                    Borrar
-                </td>
-            </tr>
-        </thead>
-
+    <div class="container-fluid">
+        <!-- Encabezado -->
+        <div class="row align-items-center mb-4">
+            <div class="col-12 col-lg-8">
+                <h3 class="mb-1">
+                    <%= @entity.business_name %>
+                </h3>
+                <small class="text-muted">
+                    NIT:
+                    <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>
+                    <% if @entity.verification_digit.present? %>
+                        -<%= @entity.verification_digit %>
+                    <% end %>
+                </small>
+            </div>
+            <div class="col-12 col-lg-4 text-lg-end mt-3 mt-lg-0">
+                <%= link_to t('common.create_adm_extinguisher'),
+                    new_adm_extinguisher_path(entity_id: @entity.id),
+                    class: "btn btn-primary" %>
+            </div>
+        </div>
         <% if @adm_extinguishers.present? %>
-            <% @adm_extinguishers.each do |adm_extinguisher| %>
-                <tr>
-                    <td style="border:1px solid black; text-align:center;">
-                        <%= adm_extinguisher.date_creation %> 
-                    </td>
-                    <td style="border:1px solid black; text-align:center;">
-                        <%= adm_extinguisher.area %> 
-                    </td>
-                    <td style="border:1px solid black; text-align:center;">
-                        <%= adm_extinguisher.user.name %> 
-                    </td>
-                    <td style="border:1px solid black; text-align:center;">
-                        <% if adm_extinguisher.firm_user == 0 %>
-                            <%= link_to t('common.firmar'), firmar_extinguisher_adm_extinguishers_path(adm_extinguisher.id, 1), class: 'btn btn-sm btn btn-warning' %>
-                        <% else %>
-                            <%= adm_extinguisher.date_firm_user %>    
-                        <% end %>           
-                    </td>
-                    <td style="border:1px solid black; text-align:center;">
-                        <%= link_to t('common.crear_item_extinguisher'), crear_item_extinguisher_adm_extinguishers_path(adm_extinguisher.id), class: 'btn btn-sm btn-warning' %> &nbsp;
-                    </td>
-                    <td style="border:1px solid black; text-align:center;">
-                        <%= link_to 'Editar', edit_adm_extinguisher_path(adm_extinguisher.id), class: 'btn btn-sm btn btn-warning' %> &nbsp;
-                    </td>
-                    <td style="border:1px solid black; text-align:center;">
-                        <%= link_to t('common.show_adm_extinguisher'), adm_extinguisher_path(adm_extinguisher.id), class: 'btn btn-sm btn-warning' %> &nbsp;
-                    </td>
-                    <td style="border:1px solid black; text-align:center;">
-                        <%= link_to "PDF", ver_extinguisher_adm_extinguishers_path(adm_extinguisher.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;
-                    </td>
-                    <td style="border:1px solid black; text-align:center;">
-                        <%= button_to "Delete", adm_extinguisher, method: :delete, class:"btn btn-sm btn-danger" %>
-                    </td>
-                </tr>
-            <% end %>  
-        <% end %>  
-    </table>  
-    <br>
-<% else %>
-    <div>
-        <%= link_to t('common.create_adm_extinguisher'), new_adm_extinguisher_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+            <!-- ========================= -->
+            <!-- TABLA PARA PC -->
+            <!-- ========================= -->
+            <div class="d-none d-lg-block">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-center">Fecha creación</th>
+                                <th class="text-center">Área</th>
+                                <th class="text-center">Responsable</th>
+                                <th class="text-center">Firma</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% @adm_extinguishers.each do |adm_extinguisher| %>
+                                <tr>
+                                    <td class="text-center">
+                                        <%= adm_extinguisher.date_creation %>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= adm_extinguisher.area %>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= adm_extinguisher.user.name %>
+                                    </td>
+                                    <td class="text-center">
+                                        <% if adm_extinguisher.firm_user == 0 %>
+                                            <%= link_to t('common.firmar'),
+                                                firmar_extinguisher_adm_extinguishers_path(adm_extinguisher.id,1),
+                                                class:"btn btn-warning btn-sm" %>
+                                        <% else %>
+                                            <%= adm_extinguisher.date_firm_user %>
+                                        <% end %>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group" role="group">
+                                            <%= link_to t('common.crear_item_extinguisher'),
+                                                crear_item_extinguisher_adm_extinguishers_path(adm_extinguisher.id),
+                                                class:"btn btn-primary btn-sm me-2" %>
+                                            <%= link_to "Editar",
+                                                edit_adm_extinguisher_path(adm_extinguisher),
+                                                class:"btn btn-warning btn-sm me-2" %>
+                                            <%= link_to t('common.show_adm_extinguisher'),
+                                                adm_extinguisher,
+                                                class:"btn btn-info btn-sm me-2" %>
+                                            <%= link_to "PDF",
+                                                ver_extinguisher_adm_extinguishers_path(adm_extinguisher.id, format: :pdf),
+                                                class:"btn btn-success btn-sm me-2" %>
+                                        </div>
+                                        <div class="mt-2">
+                                            <%= button_to "Eliminar",
+                                                adm_extinguisher,
+                                                method: :delete,
+                                                class:"btn btn-danger btn-sm" %>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% end %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- ========================= -->
+            <!-- VERSION CELULAR -->
+            <!-- ========================= -->
+            <div class="d-lg-none">
+                <% @adm_extinguishers.each do |adm_extinguisher| %>
+                    <div class="card shadow-sm mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <%= adm_extinguisher.area %>
+                            </h5>
+                            <p class="mb-1">
+                                <strong>Fecha:</strong>
+                                <%= adm_extinguisher.date_creation %>
+                            </p>
+                            <p class="mb-1">
+                                <strong>Responsable:</strong>
+                                <%= adm_extinguisher.user.name %>
+                            </p>
+                            <p class="mb-3">
+                                <strong>Firma:</strong>
+                                <% if adm_extinguisher.firm_user == 0 %>
+                                    <%= link_to t('common.firmar'),
+                                        firmar_extinguisher_adm_extinguishers_path(adm_extinguisher.id,1),
+                                        class:"btn btn-warning btn-sm" %>
+                                <% else %>
+                                    <%= adm_extinguisher.date_firm_user %>
+                                <% end %>
+                            </p>
+                            <div class="d-grid gap-2">
+                                <%= link_to t('common.crear_item_extinguisher'),
+                                    crear_item_extinguisher_adm_extinguishers_path(adm_extinguisher.id),
+                                    class:"btn btn-primary btn-sm me-2" %>
+                                <%= link_to "Editar",
+                                    edit_adm_extinguisher_path(adm_extinguisher),
+                                    class:"btn btn-secondary btn-sm me-2" %>
+                                <%= link_to t('common.show_adm_extinguisher'),
+                                    adm_extinguisher,
+                                    class:"btn btn-info btn-sm me-2" %>
+                                <%= link_to "PDF",
+                                    ver_extinguisher_adm_extinguishers_path(adm_extinguisher.id, format: :pdf),
+                                    class:"btn btn-success btn-sm me-2" %>
+                                <%= button_to "Eliminar",
+                                    adm_extinguisher,
+                                    method: :delete,
+                                    class:"btn btn-danger btn-sm w-100" %>
+                            </div>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+        <% end %>
     </div>
+    <%= link_to "Retornar", request.referer || root_path, class: "btn btn-secondary" %>
 <% end %>

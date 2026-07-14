@@ -197,13 +197,14 @@ class MatrixDangerRisk < ApplicationRecord
         cant = matrix_danger_items.count if matrix_danger_items.present?
 
         archivo.tempfile.each_line.with_index do |linea, indice|
+            
              linea = linea.force_encoding("UTF-8")
              # Elimina el salto de línea
              linea = linea.chomp
 
              # Omitir la cabecera
              next if indice == 0
-
+             next if linea.blank?
              # Separar por |
              columnas = linea.split("|")
 
@@ -218,11 +219,11 @@ class MatrixDangerRisk < ApplicationRecord
              cant = cant + 1  
              consecutive = cant
              year = Date.today.year
-             source_information = "Administrativo"
+             source_information = columnas[0]
              activity = columnas[3] #actividad
              type_task = dato_type_task(columnas[5]) #rutinaria 
              origin = columnas[1] #zona 
-             #possible_effects_health = columnas[8] #efectos   
+             possible_effects_health = columnas[8] #efectos   
              description_existing_control_origin = columnas[9] #controles_fuente   
              description_existing_control_medium = columnas[10] #controles_medio
              description_existing_control_person = columnas[11] #controles_trabajador
@@ -242,7 +243,7 @@ class MatrixDangerRisk < ApplicationRecord
              else
                 clasification_danger_detail_id = dato_clasification_danger_detail(columnas[7], clasification_danger_id)  #descripcion
                 if clasification_danger_detail_id == 0 then 
-                    task = columnas[4] + mensaje + columnas[6] + " - " +columnas[7]#tarea
+                    task = mensaje + columnas[6] + " - " +columnas[7] + " Tarea: " + columnas[4] #tarea
                 else
                     task = columnas[4] #tarea
                 end   
@@ -255,6 +256,9 @@ class MatrixDangerRisk < ApplicationRecord
              matrix_danger_risk_id = matrix_danger_risk.id
              location_id = dato_location(matrix_danger_risk.entity_id)
              type_cargo = dato_type_cargo(columnas[2], matrix_danger_risk.entity_id)
+             intervention_measures_elimination = columnas[19] #Medida de intervención eliminación
+             intervention_measures_replacement = columnas[20] #Medida de intervención sustitución
+             intervention_measures_engineering_control = columnas[21] #Medida de intervención control de ingeniería
 
              # Aquí puedes guardar en la base de datos
               matrix_danger_item = MatrixDangerItem.create!(
@@ -265,7 +269,7 @@ class MatrixDangerRisk < ApplicationRecord
                 task: task,
                 type_task: type_task, 
                 origin: origin, 
-                #possible_effects_health: possible_effects_health,   
+                possible_effects_health: possible_effects_health,   
                 description_existing_control_origin: description_existing_control_origin,   
                 description_existing_control_medium: description_existing_control_medium,
                 description_existing_control_person: description_existing_control_person,
@@ -277,12 +281,15 @@ class MatrixDangerRisk < ApplicationRecord
                 clasification_danger_id: clasification_danger_id,
                 matrix_danger_risk_id: matrix_danger_risk_id,   
                 location_id: location_id,   
-                type_cargo: type_cargo          
+                type_cargo: type_cargo,
+                intervention_measures_elimination:  intervention_measures_elimination,
+                intervention_measures_replacement: intervention_measures_replacement,
+                intervention_measures_engineering_control: intervention_measures_engineering_control
               )
            MatrixDangerItem.calculos(matrix_danger_item.id) 
-           MatrixDangerItem.adicionarinter(matrix_danger_item.id)
+           MatrixDangerItem.adicionarinterIA(matrix_danger_item.id)
+           MatrixDangerItem.adicionarposible(matrix_danger_item.id)
        end
-
     end   
 
     def self.dato_type_cargo(dato, entity)
@@ -300,8 +307,8 @@ class MatrixDangerRisk < ApplicationRecord
     
     def self.dato_type_task(type_task)
         dato = 1
-        dato = 0 if type_task == "SI"
-        return dato
+        dato = 0 if type_task == "SI" || type_task == "Sí" || "RUTINARIA"
+        return dato 
     end  
     
     def self.dato_clasification_danger_detail(nombre, clasification_danger_id)
@@ -313,8 +320,8 @@ class MatrixDangerRisk < ApplicationRecord
     end    
 
     def self.dato_clasification_danger(dato)
-        dato = dato.upcase
-        clasification_danger = ClasificationDanger.find_by(name: dato)
+        lectura = dato.upcase if dato.present?
+        clasification_danger = ClasificationDanger.find_by(name: lectura) if lectura.present?
         if clasification_danger.present? then
             resultado = clasification_danger.id
         else

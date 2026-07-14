@@ -239,7 +239,6 @@ class MatrixDangerRisksController < ApplicationController
     def cargar_archivompr
        matrix_danger_risk = MatrixDangerRisk.find(params[:id]) 
        archivo = params[:archivo]
-
        if archivo.nil?
          redirect_back fallback_location: root_path, alert: "Debe seleccionar un archivo."
          return

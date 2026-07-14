@@ -27,9 +27,22 @@ class MatrixDangerItem < ApplicationRecord
         item.intervention_measures_engineering_control = DangerPrevention.buscar_medida(item.clasification_danger_detail_id,2)
         item.intervention_measures_acsw = DangerPrevention.buscar_medida(item.clasification_danger_detail_id,3)
         item.intervention_measures_ppee = DangerPrevention.buscar_medida(item.clasification_danger_detail_id,4)
+        item.save 
+    end 
+
+    def self.adicionarinterIA(id_item)
+        item = MatrixDangerItem.find(id_item)
+        item.intervention_measures_acsw = DangerPrevention.buscar_medida(item.clasification_danger_detail_id,3)
+        item.intervention_measures_ppee = DangerPrevention.buscar_medida(item.clasification_danger_detail_id,4)
+        item.save 
+    end 
+    
+    def self.adicionarposible(id_item)
+        item = MatrixDangerItem.find(id_item)
         item.possible_effects_health = DangerDetailRisk.buscar_efecto(item.clasification_danger_detail_id)
         item.save 
-    end    
+    end 
+    
 
     def self.calculos(id_item)
         item = MatrixDangerItem.find(id_item)

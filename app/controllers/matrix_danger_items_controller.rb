@@ -13,6 +13,7 @@ class MatrixDangerItemsController < ApplicationController
 
         if @matrix_danger_item.save then
             MatrixDangerItem.adicionarinter(@matrix_danger_item.id) if @matrix_danger_item.present?
+            MatrixDangerItem.adicionarposible(@matrix_danger_item.id) if @matrix_danger_item.present?
             MatrixDangerItem.calculos(@matrix_danger_item.id) if @matrix_danger_item.present?
             redirect_back fallback_location: root_path, notice: t('.created') 
         else

@@ -32,19 +32,22 @@ class AdmExtinguishersController < ApplicationController
         @adm_extinguisher = AdmExtinguisher.find(params[:id])
         @extinguishers = Extinguisher.where("adm_extinguisher_id = ?", @adm_extinguisher.id) if @adm_extinguisher.present?
         @template = Template.where("format_number = ? and document_vigente = ?",61,1).last  
+        nombre_evidencia = 'InspecciónExtintores.pdf'
 
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'ver_extinguisher',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
-      
+            format.pdf {
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('ver_extinguisher'),
+                    disable_javascript: true,
+                    margin: {top: 10, bottom: 10, left: 10, right: 10 },
+                    page_size: 'letter',
+                    footer: {right: '[page] de [topage]'}
+                    
+                  )  
+                  send_data(pdf, filename: nombre_evidencia, disposition: 'attachment')      
+            }
+        end    
     end    
 
 

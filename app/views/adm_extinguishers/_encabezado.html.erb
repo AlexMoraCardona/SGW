@@ -1,49 +1,61 @@
-<table style="border:0px solid black">
-    <tr>
-        <td rowspan="2" style="border:1px solid black; width: 20%; text-align:center">
-            <% if @adm_extinguisher.entity.logo.present? then %>
-                <%=  image_tag  @adm_extinguisher.entity.logo, class: "image_peq" %>
-            <% end %>   
-        </td>
-        <td style="border:1px solid black; text-align:center">
-            <div class="col-10"><h6><%= @adm_extinguisher.entity.business_name if @adm_extinguisher.present? %></h6></div>
-        </td>
-    </tr>
-    <tr>    
-        <td style="border:1px solid black; text-align:center">
-            <div class="col-10"><h6><%= @template.name if @template.present? %></h6></div>
-        </td>
-    </tr>
-</table>
-<table>
-    <tr>    
-        <td style="border:1px solid black; width: 25%">
-            <h6>CÓDIGO: </h6>                
-        </td>
-        <td style="border:1px solid black; width: 25%">
-            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.reference if @template.present? %></small></h6>                
-        </td>
-
-        <td style="border:1px solid black; width: 25%">
-            <h6>VERSIÓN: </h6>                
-        </td>
-        <td style="border:1px solid black; width: 25%">
-            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.version if @template.present? %></small></h6>                
-        </td>
-    </tr>
-    <tr>    
-        <td style="border:1px solid black; width: 25%">
-            <h6>FECHA DE ELABORACIÓN: </h6>                
-        </td>
-        <td style="border:1px solid black; width: 25%">
-            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date if @template.present? %></small></h6>                
-        </td>
-
-        <td style="border:1px solid black; width: 25%">
-            <h6>FECHA DE ACTUALIZACIÓN: </h6>                
-        </td>
-        <td style="border:1px solid black; width: 25%">
-            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date_updated if @template.present? %></small></h6>                
-        </td>
-    </tr>
-</table>
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <div class="row align-items-center">
+            <div class="col-12 col-md-3 text-center border p-3">
+                <% if @adm_extinguisher.entity.logo.present? %>
+                    <%= image_tag @adm_extinguisher.entity.logo, class: "img-fluid logo-empresa" %>
+                <% end %>
+            </div>
+            <div class="col-12 col-md-9">
+                <div class="border text-center p-3">
+                    <h5 class="fw-bold mb-0">
+                        <%= @adm_extinguisher.entity.business_name if @adm_extinguisher.present? %>
+                    </h5>
+                </div>
+                <div class="border border-top-0 text-center p-3">
+                    <h5 class="fw-bold mb-0">
+                        <%= @template.name if @template.present? %>
+                    </h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <div class="row g-0">
+            <div class="col-md-3 border p-2 fw-bold">
+                CÓDIGO
+            </div>
+            <div class="col-md-3 border p-2">
+                <small class="text-muted">
+                    <%= @template.reference if @template.present? %>
+                </small>
+            </div>
+            <div class="col-md-3 border p-2 fw-bold">
+                VERSIÓN
+            </div>
+            <div class="col-md-3 border p-2">
+                <small class="text-muted">
+                    <%= @template.version if @template.present? %>
+                </small>
+            </div>
+        </div>
+        <div class="row g-0">
+            <div class="col-md-3 border p-2 fw-bold">
+                FECHA DE ELABORACIÓN
+            </div>
+            <div class="col-md-3 border p-2">
+                <small class="text-muted">
+                    <%= @template.date if @template.present? %>
+                </small>
+            </div>
+            <div class="col-md-3 border p-2 fw-bold">
+                FECHA DE ACTUALIZACIÓN
+            </div>
+            <div class="col-md-3 border p-2">
+                <small class="text-muted">
+                    <%= @template.date_updated if @template.present? %>
+                </small>
+            </div>
+        </div>
+    </div>
+</div>

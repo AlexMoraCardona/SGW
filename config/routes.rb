@@ -268,6 +268,7 @@ Rails.application.routes.draw do
   get '/matrix_goals/firmar_adv_goal/:id', to: 'matrix_goals#firmar_adv_goal', as: 'firmar_adv_goal'
   get '/matrix_goals/firmar_res_goal/:id', to: 'matrix_goals#firmar_res_goal', as: 'firmar_res_goal'
   get '/extinguishers/extinguisher_foto/:id', to: 'extinguishers#extinguisher_foto', as: 'extinguisher_foto'
+  get '/kits/kit_foto/:id', to: 'kits#kit_foto', as: 'kit_foto'
 
 
   resources :admin_extent_dangers do

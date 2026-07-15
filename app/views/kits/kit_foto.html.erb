@@ -1,0 +1,73 @@
+<%= form_with model: @kit do |f| %>
+
+
+  <div class="card">
+
+    <div class="card-body">
+      <div class="card-header d-flex justify-content-center align-items-center" >
+          <h3>Fotografía del botiquín de primeros auxilios</h3>
+      </div>
+
+      <div id="camera-container"  class="d-flex justify-content-center align-items-center" >
+
+        <div data-controller="camera" class="text-center">
+          <video
+              data-camera-target="video"
+              autoplay
+              playsinline
+              muted
+              width="240"
+              height="180"
+              style="border:1px solid #999;">
+          </video>
+
+        
+          <canvas
+            data-camera-target="canvas"
+            style="display:none;">
+          </canvas>
+          <img
+            data-camera-target="preview"
+            style="display:none; max-width:100%;">
+
+          <br>
+
+          <div class="mb-3">
+            <%= label_tag :photo_name, "Nombre de la fotografía", class: "form-label" %>
+            <%= text_field_tag :photo_name,
+              nil,
+              class: "form-control",
+              maxlength: 100,
+              pattern: "[\\p{L}\\p{N}_ \\-]+",
+              title: "Solo se permiten letras, números, espacios, guiones y guiones bajos." %>
+          </div>          
+          <div class="justify-content:center;">
+
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-camera-target="button"
+              data-action="click->camera#tomarFotografia">
+              📷 Tomar fotografía
+            </button>
+
+            <%= hidden_field_tag :photo_data, 
+              nil,
+              id:"photo_data",
+              data: { camera_target:"photo" } %>      
+            </br> </br>
+            <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>          
+
+            <%= link_to "Retornar", request.referer || root_path, class: "btn btn-secondary" %>
+          </div>
+
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+<% end %>

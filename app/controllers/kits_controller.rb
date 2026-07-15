@@ -39,12 +39,58 @@ class KitsController < ApplicationController
     
     def update
         @kit = Kit.find(params[:id])
-        if @kit.update(kit_params)
-            actualizar_fecha(@kit.id) 
-            redirect_to kits_path(entity_id: @kit.entity_id), notice: 'Inspección de botiquín de primeros auxilios actualizada correctamente'
+
+        if params[:photo_data].present?
+            nom_foto = "foto"
+            if params[:photo_name].present? 
+                unless params[:photo_name].blank?
+                    nom_foto = params[:photo_name].to_s.strip 
+                end    
+                unless nom_foto.match?(/\A[A-Za-zÁÉÍÓÚáéíóúÑñ0-9 _-]+\z/)
+                    flash[:error] = "El nombre de la fotografía no es válido."
+                    redirect_back(fallback_location: root_path)
+                    return
+                end 
+            end
+
+            image = params[:photo_data]
+
+            image = image.sub(
+              /^data:image\/jpeg;base64,/,
+            ""
+            )
+
+            decoded = Base64.decode64(image)
+
+            file = Tempfile.new(["foto", ".jpg"])
+
+            file.binmode
+
+            file.write(decoded)
+
+            file.rewind
+
+            @kit.kit_fotos.attach(
+            io: file,
+            filename: nom_foto + ".jpg",
+            content_type: "image/jpeg"
+            )
+
+            if @kit.save
+                redirect_to  kits_path(entity_id: @kit.entity_id), notice: 'Fotografía guardada correctamente.'
+            else
+                render :edit, kits: :unprocessable_entity
+            end
         else
-            render :edit, kits: :unprocessable_entity
-        end         
+            if @kit.update(kit_params)
+                actualizar_fecha(@kit.id) 
+                redirect_to kits_path(entity_id: @kit.entity_id), notice: 'Inspección de botiquín de primeros auxilios actualizada correctamente'
+            else
+                render :edit, kits: :unprocessable_entity
+            end         
+
+        end
+
     end    
 
     def destroy
@@ -78,18 +124,25 @@ class KitsController < ApplicationController
     def kit_pdf
         @kit = Kit.find(params[:id])
         @template = Template.where("format_number = ? and document_vigente = ?",60,1).last  
+
+        nombre_evidencia = 'InspecciónBotiquínPrimerosAuxilios.pdf'
+
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'kit_pdf',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
-    end
+            format.pdf {
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('kit_pdf'),
+                    disable_javascript: true,
+                    margin: {top: 10, bottom: 10, left: 10, right: 10 },
+                    page_size: 'letter',
+                    footer: {right: '[page] de [topage]'}
+                    
+                  )  
+                  send_data(pdf, filename: nombre_evidencia, disposition: 'attachment')      
+            }
+        end    
+    end    
+
 
     def actualizar_fecha(id)
         @kit = Kit.find(id)
@@ -97,6 +150,9 @@ class KitsController < ApplicationController
         @kit.save
     end       
 
+    def kit_foto
+        @kit = Kit.find(params[:id])
+    end 
 
     private
 

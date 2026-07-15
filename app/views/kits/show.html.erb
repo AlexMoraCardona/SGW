@@ -1,604 +1,335 @@
-<div class="container col-11 card p-5"> 
-    <%= render 'encabezado' %>
-    
-    <div><br></div>
-    <table style="width: 100%;"> 
-        <tr>
-            <td style="border:1px solid black;width: 50%;">
-                <strong>Fecha: </strong> <%= @kit.date_creation if @kit.present? %>
-            </td>
-            <td style="border:1px solid black;width: 50%;">
-                <strong>Área: </strong> <%= @kit.area if @kit.present? %>
-            </td>
-        </tr>
-    </table>
-    <table style="width: 100%;"> 
-        <tr>
-            <td style="border:1px solid black;width: 100%;">
-                <strong>Responsable: </strong> <%= @kit.user.name if @kit.present? %>
-            </td>
-        </tr>
-    </table>
-    <table style="width: 100%;"> 
-        <tr>
-            <td style="border:1px solid black;width: 50%;">
-                <strong>Tipo de Botiquín: </strong> <%= Kit.label_type_kit(@kit.type_kit) if @kit.present? %>
-            </td>
-            <td style="border:1px solid black;width: 50%;">
-                <strong>Clasificación de Botiquín: </strong> <%= Kit.label_clasification_kit(@kit.clasification_kit) if @kit.present? %>
-            </td>
-        </tr>
-    </table>
-    <table style="width: 100%;"> 
-        <tr>
-            <td style="border:1px solid black;width: 35%;text-align:center;">
-                <strong>Elemento</strong>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <strong>SI</strong>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <strong>NO</strong>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <strong>N/A</strong>
-            </td>
-            <td style="border:1px solid black;width: 35%;text-align:center;">
-                <strong>Observaciones</strong>
-            </td>
-        </tr>
-    </table>
-    <table style="width: 100%;"> 
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.gauze') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.gauze == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.gauze == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.gauze == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.gauze_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.sticking_plaster') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.sticking_plaster == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.sticking_plaster == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.sticking_plaster == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.sticking_plaster_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.tongue_depressor') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.tongue_depressor == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.tongue_depressor == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.tongue_depressor == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.tongue_depressor_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.gloves') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.gloves == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.gloves == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.gloves == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.gloves_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.elastic_bandage25') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.elastic_bandage25 == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.elastic_bandage25 == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.elastic_bandage25 == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.elastic_bandage25_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.elastic_bandage55') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.elastic_bandage55 == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.elastic_bandage55 == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.elastic_bandage55 == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.elastic_bandage55_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.sell_cotton35') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.sell_cotton35 == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.sell_cotton35 == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.sell_cotton35 == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.sell_cotton35_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.sell_cotton55') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.sell_cotton55 == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.sell_cotton55 == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.sell_cotton55 == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.sell_cotton55_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.soap') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.soap == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.soap == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.soap == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.soap_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.saline_solution') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.saline_solution == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.saline_solution == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.saline_solution == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.saline_solution_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.thermometer') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.thermometer == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.thermometer == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.thermometer == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.thermometer_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.alcohol') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.alcohol == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.alcohol == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.alcohol == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.alcohol_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.sterile_gauze') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.sterile_gauze == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.sterile_gauze == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.sterile_gauze == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.sterile_gauze_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.dressing') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.dressing == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.dressing == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.dressing == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.dressing_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.scissors') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.scissors == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.scissors == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.scissors == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.scissors_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.flashlight') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.flashlight == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.flashlight == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.flashlight == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.flashlight_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.batteries') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.batteries == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.batteries == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.batteries == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.batteries_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.spinal_board') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.spinal_board == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.spinal_board == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.spinal_board == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.spinal_board_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.adult_cervical_collar') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.adult_cervical_collar == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.adult_cervical_collar == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.adult_cervical_collar == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.adult_cervical_collar_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.child_cervical_collar') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.child_cervical_collar == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.child_cervical_collar == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.child_cervical_collar == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.child_cervical_collar_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.adult_immobilizers_top') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.adult_immobilizers_top == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.adult_immobilizers_top == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.adult_immobilizers_top == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.adult_immobilizers_top_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.adult_immobilizers_lower') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.adult_immobilizers_lower == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.adult_immobilizers_lower == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.adult_immobilizers_lower == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.adult_immobilizers_lower_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.child_immobilizers_top') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.child_immobilizers_top == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.child_immobilizers_top == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.child_immobilizers_top == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.child_immobilizers_top_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.child_immobilizers_lower') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.child_immobilizers_lower == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.child_immobilizers_lower == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.child_immobilizers_lower == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.child_immobilizers_lower_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.disposable_cups') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.disposable_cups == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.disposable_cups == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.disposable_cups == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.disposable_cups_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.lood_pressure_monitor') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.lood_pressure_monitor == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.lood_pressure_monitor == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.lood_pressure_monitor == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.lood_pressure_monitor_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.stethoscope') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.stethoscope == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.stethoscope == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.stethoscope == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.stethoscope_obs if @kit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 35%">
-                <%= t('.mask_rcp') %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.mask_rcp == 1 %>X<% end %> 
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.mask_rcp == 2 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 10%;text-align:center;">
-                <%  if @kit.mask_rcp == 0 %>X<% end %>
-            </td>
-            <td style="border:1px solid black;width: 35%">
-                <%= @kit.mask_rcp_obs if @kit.present? %>
-            </td>
-        </tr>
-
-
-    </table>
-    <div><br></div>
-    <table style="width: 100%;">        
-        <tr>
-            <td style="border:0px solid black;width: 100%">
-                Recomendaciones: <%= @kit.recomendaciones if @kit.recomendaciones.present? %>
-            </td>
-        </tr>
-    </table>
-
-    <div><br></div>
-    <div><br></div>
-    <% if @kit.present? %>
-        <br>
-        <table style="width: 100%;"> 
-           <tr>
-               <td style="border:0px solid black;">
-                   <% if @kit.kit_fotos.attached? %>
-                       <hr>
-                       <div class="form-group">
-                           <h5>Archivos adjuntos</h5>
-                       </div>         
-                       <div data-controller="previews" >
-                           <% @kit.kit_fotos.each do |file|%>
-                                <br>
+<div class="container-fluid py-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+            <%= render 'encabezado' %>
+            <div class="row g-3 mt-2">
+                <div class="col-12 col-md-6">
+                    <div class="border rounded p-2 h-100">
+                        <strong>Fecha:</strong>
+                        <%= @kit.date_creation if @kit.present? %>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="border rounded p-2 h-100">
+                        <strong>Área:</strong>
+                        <%= @kit.area if @kit.present? %>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="border rounded p-2">
+                        <strong>Responsable:</strong>
+                        <%= @kit.user.name if @kit.present? %>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="border rounded p-2 h-100">
+                        <strong>Tipo de Botiquín:</strong><br>
+                        <%= Kit.label_type_kit(@kit.type_kit) if @kit.present? %>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="border rounded p-2 h-100">
+                        <strong>Clasificación de Botiquín:</strong><br>
+                        <%= Kit.label_clasification_kit(@kit.clasification_kit) if @kit.present? %>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive mt-4">
+                <table class="table table-bordered align-middle text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width:35%">Elemento</th>
+                            <th style="width:10%">SI</th>
+                            <th style="width:10%">NO</th>
+                            <th style="width:10%">N/A</th>
+                            <th style="width:35%">Observaciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><%= t('.gauze') %></td>
+                            <td class="text-center"><%= "X" if @kit.gauze == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.gauze == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.gauze == 0 %></td>
+                            <td><%= @kit.gauze_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.sticking_plaster') %></td>
+                            <td class="text-center"><%= "X" if @kit.sticking_plaster == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.sticking_plaster == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.sticking_plaster == 0 %></td>
+                            <td><%= @kit.sticking_plaster_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.tongue_depressor') %></td>
+                            <td class="text-center"><%= "X" if @kit.tongue_depressor == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.tongue_depressor == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.tongue_depressor == 0 %></td>
+                            <td><%= @kit.tongue_depressor_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.gloves') %></td>
+                            <td class="text-center"><%= "X" if @kit.gloves == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.gloves == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.gloves == 0 %></td>
+                            <td><%= @kit.gloves_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.elastic_bandage25') %></td>
+                            <td class="text-center"><%= "X" if @kit.elastic_bandage25 == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.elastic_bandage25 == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.elastic_bandage25 == 0 %></td>
+                            <td><%= @kit.elastic_bandage25_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.elastic_bandage55') %></td>
+                            <td class="text-center"><%= "X" if @kit.elastic_bandage55 == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.elastic_bandage55 == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.elastic_bandage55 == 0 %></td>
+                            <td><%= @kit.elastic_bandage55_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.sell_cotton35') %></td>
+                            <td class="text-center"><%= "X" if @kit.sell_cotton35 == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.sell_cotton35 == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.sell_cotton35 == 0 %></td>
+                            <td><%= @kit.sell_cotton35_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.sell_cotton55') %></td>
+                            <td class="text-center"><%= "X" if @kit.sell_cotton55 == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.sell_cotton55 == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.sell_cotton55 == 0 %></td>
+                            <td><%= @kit.sell_cotton55_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.soap') %></td>
+                            <td class="text-center"><%= "X" if @kit.soap == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.soap == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.soap == 0 %></td>
+                            <td><%= @kit.soap_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.saline_solution') %></td>
+                            <td class="text-center"><%= "X" if @kit.saline_solution == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.saline_solution == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.saline_solution == 0 %></td>
+                            <td><%= @kit.saline_solution_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.thermometer') %></td>
+                            <td class="text-center"><%= "X" if @kit.thermometer == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.thermometer == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.thermometer == 0 %></td>
+                            <td><%= @kit.thermometer_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.alcohol') %></td>
+                            <td class="text-center"><%= "X" if @kit.alcohol == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.alcohol == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.alcohol == 0 %></td>
+                            <td><%= @kit.alcohol_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.sterile_gauze') %></td>
+                            <td class="text-center"><%= "X" if @kit.sterile_gauze == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.sterile_gauze == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.sterile_gauze == 0 %></td>
+                            <td><%= @kit.sterile_gauze_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.dressing') %></td>
+                            <td class="text-center"><%= "X" if @kit.dressing == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.dressing == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.dressing == 0 %></td>
+                            <td><%= @kit.dressing_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.scissors') %></td>
+                            <td class="text-center"><%= "X" if @kit.scissors == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.scissors == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.scissors == 0 %></td>
+                            <td><%= @kit.scissors_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.flashlight') %></td>
+                            <td class="text-center"><%= "X" if @kit.flashlight == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.flashlight == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.flashlight == 0 %></td>
+                            <td><%= @kit.flashlight_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.batteries') %></td>
+                            <td class="text-center"><%= "X" if @kit.batteries == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.batteries == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.batteries == 0 %></td>
+                            <td><%= @kit.batteries_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.spinal_board') %></td>
+                            <td class="text-center"><%= "X" if @kit.spinal_board == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.spinal_board == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.spinal_board == 0 %></td>
+                            <td><%= @kit.spinal_board_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.adult_cervical_collar') %></td>
+                            <td class="text-center"><%= "X" if @kit.adult_cervical_collar == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.adult_cervical_collar == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.adult_cervical_collar == 0 %></td>
+                            <td><%= @kit.adult_cervical_collar_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.child_cervical_collar') %></td>
+                            <td class="text-center"><%= "X" if @kit.child_cervical_collar == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.child_cervical_collar == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.child_cervical_collar == 0 %></td>
+                            <td><%= @kit.child_cervical_collar_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.adult_immobilizers_top') %></td>
+                            <td class="text-center"><%= "X" if @kit.adult_immobilizers_top == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.adult_immobilizers_top == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.adult_immobilizers_top == 0 %></td>
+                            <td><%= @kit.adult_immobilizers_top_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.adult_immobilizers_lower') %></td>
+                            <td class="text-center"><%= "X" if @kit.adult_immobilizers_lower == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.adult_immobilizers_lower == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.adult_immobilizers_lower == 0 %></td>
+                            <td><%= @kit.adult_immobilizers_lower_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.child_immobilizers_top') %></td>
+                            <td class="text-center"><%= "X" if @kit.child_immobilizers_top == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.child_immobilizers_top == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.child_immobilizers_top == 0 %></td>
+                            <td><%= @kit.child_immobilizers_top_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.child_immobilizers_lower') %></td>
+                            <td class="text-center"><%= "X" if @kit.child_immobilizers_lower == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.child_immobilizers_lower == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.child_immobilizers_lower == 0 %></td>
+                            <td><%= @kit.child_immobilizers_lower_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.disposable_cups') %></td>
+                            <td class="text-center"><%= "X" if @kit.disposable_cups == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.disposable_cups == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.disposable_cups == 0 %></td>
+                            <td><%= @kit.disposable_cups_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.lood_pressure_monitor') %></td>
+                            <td class="text-center"><%= "X" if @kit.lood_pressure_monitor == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.lood_pressure_monitor == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.lood_pressure_monitor == 0 %></td>
+                            <td><%= @kit.lood_pressure_monitor_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.stethoscope') %></td>
+                            <td class="text-center"><%= "X" if @kit.stethoscope == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.stethoscope == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.stethoscope == 0 %></td>
+                            <td><%= @kit.stethoscope_obs %></td>
+                        </tr>
+                        <tr>
+                            <td><%= t('.mask_rcp') %></td>
+                            <td class="text-center"><%= "X" if @kit.mask_rcp == 1 %></td>
+                            <td class="text-center"><%= "X" if @kit.mask_rcp == 2 %></td>
+                            <td class="text-center"><%= "X" if @kit.mask_rcp == 0 %></td>
+                            <td><%= @kit.mask_rcp_obs %></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        <div class="mt-4">
+    <div class="border rounded p-3">
+        <strong>Recomendaciones</strong>
+        <p class="mb-0 mt-2">
+          <%= @kit.recomendaciones if @kit.recomendaciones.present? %>
+        </p>
+    </div>
+</div>
+<div class="mt-5">                
+    <% if @kit.present? && @kit.kit_fotos.attached? %>
+            <hr class="my-5">
+            <h4 class="mb-4">Archivos adjuntos</h4>
+            <div class="row g-4" data-controller="previews">
+                <% @kit.kit_fotos.each do |file| %>
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-header text-truncate">
+                                 <strong><%= file.filename %></strong>
+                            </div>
+                            <div class="card-body text-center">
                                 <% if file.image? %>
-                                    <div>
-                                        <%= file.blob.filename %>
-                                        <%= image_tag file, data: {previews_target: "preview"}, class: "image" %>
-                                        <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                                    </div> 
+                                    <%= image_tag file, data: { previews_target: "preview" }, class: "img-fluid rounded mb-3" %>
                                 <% elsif file.video? %>
-                                    <%= file.blob.filename %>
-                                    <%= video_tag url_for(file), controls: "", width: "400px" %>          
-                                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                    <%= video_tag url_for(file), controls: true, class: "img-fluid rounded mb-3" %>
                                 <% elsif file.audio? %>
-                                    <%= file.blob.filename %>
-                                    <%= audio_tag(url_for(file), controls: "") %>          
-                                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                    <audio controls class="w-100 mb-3">
+                                        <source src="<%= url_for(file) %>">
+                                    </audio>
                                 <% else %>
-                                    <%= link_to file.filename, url_for(file) %>          
-                                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                    <div class="py-4">
+                                        <i class="bi bi-file-earmark fs-1"></i>
+                                        <div class="mt-2">
+                                            <%= file.filename %>
+                                        </div>
+                                    </div>
                                 <% end %>
-                            <% end %>  
+                            </div>
+                            <div class="card-footer text-center">
+                                <%= link_to "Descargar", rails_blob_path(file, disposition: "attachment"), class: "btn btn-success btn-sm w-100" %>
+                            </div>
                         </div>
-                    <% end %>  
-                </td>
-            </tr>
-        </table>
-    <% end %>          
-    <div><br></div>
-    <div><br></div>
-
-
-    <div><u><%= @kit.user.name if @kit.present? %></u></div>
-    <div>Nombre de quien realiza la inspección</div>
-    <div>&nbsp;</div>
-        <% if @kit.firm_user == 1 %>
-            <div>
-                <% if @kit.user.firm.attached? %>
-                    <% if @kit.user.firm.image? %> 
-                        <strong>Firma:</strong>&nbsp;&nbsp;<%= image_tag @kit.user.firm, class: "firma" %>
-                    <% end %>
+                    </div>
                 <% end %>
             </div>
-            <div>Cargo: <%= @kit.post if @kit.present? %></div>
-        <% else %>    
-            <div>Firma: ________________________________</div>
-            <div>Cargo: <%= @kit.post if @kit.present? %></div>
-        <% end %>     
+    <% end %>
+    <hr class="my-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        Firma del responsable de la inspección
+                    </h5>
+                </div>
+                <div class="card-body">
+                <div class="mb-3">
+                    <strong>Nombre</strong><br>
+                    <span class="text-decoration-underline">
+                        <%= @kit.user.name if @kit.present? %>
+                    </span>
+                </div>
+                <div class="mb-3">
+                    <strong>Cargo</strong><br>
+                    <%= @kit.post if @kit.present? %>
+                </div>
+                <div class="mb-3">
+                    <strong>Firma</strong>
+                    <% if @kit.firm_user == 1 %>
+                        <% if @kit.user.firm.attached? %>
+                            <% if @kit.user.firm.image? %>
+                                <div class="mt-3">
+                                      <%= image_tag @kit.user.firm, class: "img-fluid", style: "max-height:150px;" %>
+                                </div>
+                            <% end %>
+                        <% else %>
+                                <div class="border rounded p-4 text-center text-muted mt-3">
+                                    No existe firma registrada.
+                                </div>
+                        <% end %>
+                    <% else %>
+                        <div class="border-bottom mt-5"></div>
+                    <% end %>
+                </div>
+            </div>
+        </div>
     </div>
-    <div><br></div>
-    <div><br></div>
-    <div><br></div>
-</div>    
+</div>
+<div><%= link_to "Retornar", request.referer || root_path, class: "btn btn-secondary" %></div> 

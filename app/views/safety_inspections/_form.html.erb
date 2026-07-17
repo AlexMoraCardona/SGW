@@ -1,50 +1,96 @@
-<div class="container col-11 card p-5">
-    <br>
-    <%= form_with model: @safety_inspection do |form| %>
-        <% @safety_inspection.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %>
-
-        <%= form.hidden_field :entity_id, :value => params[:entity_id].to_i, class: "form-control" if params[:entity_id].present? %>
-
-        <br>
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el Responsable de la Inspección.">Responsable de la Inspección:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.collection_select :user_responsible, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
+<div class="container-fluid py-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+                Inspección de Seguridad
+            </h4>
         </div>
-        <br>    
-        <div class="row g-2">
-            <div class="col-sm-4">
-                <%= form.label :date_inspection, style: "display: block" %>
-                <%= form.date_field :date_inspection,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="form-group">    
-            <%= form.label :place_inspection,  style: "display: block" %>
-            <%= form.text_field :place_inspection,  class: "form-control" %>
+        <div class="card-body">
+            <%= form_with model: @safety_inspection do |form| %>
+                <% if @safety_inspection.errors.any? %>
+                    <div class="alert alert-danger">
+                        <h6 class="mb-2">
+                            Se encontraron los siguientes errores:
+                        </h6>
+                        <ul class="mb-0">
+                            <% @safety_inspection.errors.full_messages.each do |error| %>
+                                <li><%= error %></li>
+                            <% end %>
+                        </ul>
+                    </div>
+                <% end %>
+                <%= form.hidden_field :entity_id,
+                    value: params[:entity_id].to_i if params[:entity_id].present? %>
+                <!-- Responsable -->
+                <div class="row mb-4">
+                    <div class="col-12 col-lg-6">
+                        <label class="form-label fw-bold">
+                            Responsable de la Inspección
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-outline-secondary ms-2"
+                                data-bs-toggle="tooltip"
+                                title="Seleccione el Responsable de la Inspección.">
+                                <i class="bi bi-question-circle"></i>
+                            </button>
+                        </label>
+                        <%= form.collection_select :user_responsible,
+                            User.usuarios_empresa.order(id: :asc),
+                            :id,
+                            :name,
+                            {},
+                            class: "form-select" %>
+                    </div>
+                </div>
+                <!-- Fecha y Número de empleados -->
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-md-6">
+                        <%= form.label :date_inspection,
+                            class: "form-label fw-bold" %>
+                        <%= form.date_field :date_inspection,
+                            class: "form-control" %>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <%= form.label :number_employees,
+                            class: "form-label fw-bold" %>
+                        <%= form.number_field :number_employees,
+                            class: "form-control" %>
+                    </div>
+                </div>
+                <!-- Lugar y Área -->
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-lg-6">
+                        <%= form.label :place_inspection,
+                            class: "form-label fw-bold" %>
+                        <%= form.text_field :place_inspection,
+                            class: "form-control" %>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <%= form.label :area_inspection,
+                            class: "form-label fw-bold" %>
+                        <%= form.text_field :area_inspection,
+                            class: "form-control" %>
+                    </div>
+                </div>
+                <!-- Afectación -->
+                <div class="mb-4">
+                    <%= form.label :productivity_affectation,
+                        class: "form-label fw-bold" %>
+                    <%= form.text_area :productivity_affectation,
+                        class: "form-control",
+                        rows: 5 %>
+                </div>
+                <!-- Botones -->
+                <div class="d-flex flex-column flex-md-row justify-content-end gap-2">
+                    <%= form.submit t('common.submit'),
+                        class: "btn btn-primary" %>
+                    <%= link_to request.referer || root_path,
+                        class: "btn btn-secondary" do %>
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Retornar
+                    <% end %>
+                </div>
+            <% end %>
         </div>
-        <br>    
-        <div class="form-group">    
-            <%= form.label :area_inspection,  style: "display: block" %>
-            <%= form.text_field :area_inspection,  class: "form-control" %>
-        </div>
-        <br>    
-        <div class="form-group col-4">     
-            <%= form.label :number_employees,  style: "display: block" %>
-            <%= form.number_field :number_employees,  class: "form-control" %>
-        </div>
-        <br>    
-        <div class="form-group">    
-            <%= form.label :productivity_affectation,  style: "display: block" %>
-            <%= form.text_area :productivity_affectation,  class: "form-control" %>
-        </div>
-        <br>    
-        <br>    
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
-    <% end %>
-</div>        
-<br>
+    </div>
+</div>

@@ -1,7 +1,7 @@
 class SafetyInspectionItemsController < ApplicationController
     def index 
         if  Current.user && Current.user.level == 1
-            @safety_inspection_items = SafetyInspectionItem.all
+            @safety_inspection_items = SafetyInspectionItem.all.order(:id)
         else
             redirect_to new_session_path, alert: t('common.not_logged_in')   
             session.delete(:user_id)   
@@ -30,11 +30,55 @@ class SafetyInspectionItemsController < ApplicationController
         @safety_inspection_item = SafetyInspectionItem.find(params[:id])
         @safety_inspection = SafetyInspection.find(@safety_inspection_item.safety_inspection_id) if @safety_inspection_item.present?
 
-        if @safety_inspection_item.update(safety_inspection_item_params)
-           
+        if params[:photo_data].present?
+            nom_foto = "foto"
+            if params[:photo_name].present? 
+                unless params[:photo_name].blank?
+                    nom_foto = params[:photo_name].to_s.strip 
+                end    
+                unless nom_foto.match?(/\A[A-Za-zÁÉÍÓÚáéíóúÑñ0-9 _-]+\z/)
+                    flash[:error] = "El nombre de la fotografía no es válido."
+                    redirect_back(fallback_location: root_path)
+                    return
+                end 
+            end
+
+            image = params[:photo_data]
+
+            image = image.sub(
+              /^data:image\/jpeg;base64,/,
+            ""
+            )
+
+            decoded = Base64.decode64(image)
+
+            file = Tempfile.new(["foto", ".jpg"])
+
+            file.binmode
+
+            file.write(decoded)
+
+            file.rewind
+
+            @safety_inspection_item.inspection_evidences.attach(
+            io: file,
+            filename: nom_foto + ".jpg",
+            content_type: "image/jpeg"
+            )
+ 
+            if @safety_inspection_item.save
+                redirect_to  situacion_condicion_path(@safety_inspection_item.safety_inspection_id), notice: 'Fotografía guardada correctamente.'
+            else
+                render :situacion_foto
+            end
         else
-            render :edit, audit_reports: :unprocessable_entity
-        end         
+            if @safety_inspection_item.update(safety_inspection_item_params)
+                #redirect_to edit_safety_inspection_item_path(@safety_inspection_item.id), notice: 'Inspección actualizada correctamente'
+                redirect_to  situacion_condicion_path(@safety_inspection_item.safety_inspection_id), notice: 'Inspección actualizada correctamente'
+            else
+                render :edit, safety_inspections: :unprocessable_entity
+            end         
+        end
     end    
 
     def destroy

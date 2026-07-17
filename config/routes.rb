@@ -185,6 +185,8 @@ Rails.application.routes.draw do
   get '/safety_inspections/ver_informe_inspeccion/:id', to: 'safety_inspections#ver_informe_inspeccion', as: 'ver_informe_inspeccion'
   get '/safety_inspections/pdf_informe_inspeccion/:id', to: 'safety_inspections#pdf_informe_inspeccion', as: 'pdf_informe_inspeccion'
   get '/safety_inspections/firmar_responsable_inspeccion/:id', to: 'safety_inspections#firmar_responsable_inspeccion', as: 'firmar_responsable_inspeccion'
+  get '/safety_inspections/situacion_condicion/:id', to: 'safety_inspections#situacion_condicion', as: 'situacion_condicion'
+  get '/safety_inspections/situacion_foto/:id', to: 'safety_inspections#situacion_foto', as: 'situacion_foto'
   get '/improvement_plans/crear_item_improvement_plan/:id', to: 'improvement_plans#crear_item_improvement_plan', as: 'crear_item_improvement_plan'
   get '/improvement_plans/firmar_representante_improvement/:id', to: 'improvement_plans#firmar_representante_improvement', as: 'firmar_representante_improvement_plan'
   get '/improvement_plans/firmar_responsable_improvement/:id', to: 'improvement_plans#firmar_responsable_improvement', as: 'firmar_responsable_improvement_plan'

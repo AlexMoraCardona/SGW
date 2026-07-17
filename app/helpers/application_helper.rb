@@ -16,4 +16,19 @@ module ApplicationHelper
         options[:src] = File.expand_path(RAILS_ROOT) + '/public' + image
         tag(:img, options)
     end
+
+    def help_icon(message)
+        content_tag(
+            :i,
+            "",
+            class: "bi bi-question-circle-fill text-primary ms-2",
+            role: "button",
+            data: {
+                bs_toggle: "tooltip",
+                bs_placement: "right"
+            },
+            title: message
+        )
+    end
+
 end

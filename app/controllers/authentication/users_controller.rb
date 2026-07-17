@@ -76,8 +76,12 @@ class Authentication::UsersController < ApplicationController
     end    
     
     def cambio_empresa
-        @user = User.find(params[:id])
-
+        if  Current.user.present?
+            @user = User.find(params[:id])
+        else
+            redirect_to new_session_path, alert: t('common.not_logged_in')      
+            session.delete(:user_id)            
+        end    
     end  
 
     def cambiar_clave

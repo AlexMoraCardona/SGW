@@ -1,55 +1,7 @@
 <div class="container col-11 card p-5"> 
    
-    <table style="border:0px solid black">
-        <tr>
-            <td rowspan="2" style="border:1px solid black; width: 20%; text-align:center">
-                <% if @entity.logo.present? then %>
-                    <%=  image_tag  @entity.logo, class: "image_peq" %>
-                <% end %>   
-            </td>
-            <td style="border:1px solid black; text-align:center">
-                <div class="col-10"><h6 style="text-transform:uppercase;"><%= @entity.business_name if @entity.present? %></h6></div>
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; text-align:center">
-                <div class="col-10"><h6><%= @template.name if @template.present? %></h6></div>
-            </td>
-        </tr>
-    </table>
-    <table>
-        <tr>    
-            <td style="border:1px solid black; width: 25%">
-                <h6>CÓDIGO: </h6>                
-            </td>
-            <td style="border:1px solid black; width: 25%">
-                <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.reference if @template.present? %></small></h6>                
-            </td>
-
-            <td style="border:1px solid black; width: 25%">
-                <h6>VERSIÓN: </h6>                
-            </td>
-            <td style="border:1px solid black; width: 25%">
-                <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.version if @template.present? %></small></h6>                
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; width: 25%">
-                <h6>FECHA DE ELABORACIÓN: </h6>                
-            </td>
-            <td style="border:1px solid black; width: 25%">
-                <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date if @template.present? %></small></h6>                
-            </td>
-
-            <td style="border:1px solid black; width: 25%">
-                <h6>FECHA DE ACTUALIZACIÓN: </h6>                
-            </td>
-            <td style="border:1px solid black; width: 25%">
-                <h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date_updated if @template.present? %></small></h6>                
-            </td>
-        </tr>
-    </table>
-
+    <%= render 'encabezado' %>
+    <div><%= link_to "Retornar", request.referer || root_path, class: "btn btn-secondary" %></div>
 
     <div><br></div>
     <div><br></div>
@@ -340,14 +292,17 @@
                             <% hallazgo.inspection_evidences.each do |file|%>
                                 <br>
                                 <% if file.image? %> 
-                                    <div>
+                                    <div> 
+                                        <p class="small fw-bold"><%= file.blob.filename %></p>
                                         <%=  image_tag  file,:width => "400",  :height=>"400" %>
                                         <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
                                     </div>
                                 <% elsif file.video? %>
+                                    <p class="small fw-bold"><%= file.blob.filename %></p>
                                     <%= video_tag url_for(file), controls: "", width: "400px" %>          
                                     <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
                                 <% elsif file.audio? %>
+                                    <p class="small fw-bold"><%= file.blob.filename %></p>
                                     <%= audio_tag(url_for(file), controls: "") %>          
                                     <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
                                 <% else %>
@@ -444,4 +399,5 @@
             </td>
         </tr>
     </table>
+    <div><%= link_to "Retornar", request.referer || root_path, class: "btn btn-secondary" %></div>
 </div>

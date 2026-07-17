@@ -1,110 +1,117 @@
 <% if @entity.present? %>
-    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
-<% end %>
-
-
-<% if @safety_inspections.present? %>
-    <%= link_to t('.create_safety_inspection'), new_safety_inspection_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level < 3 %>
-
-
-        <% @safety_inspections.each do |safety_inspection| %>
-            <hr>
-            <div class="col-sm-8">
-                <h3>Formato de inspección de seguridad del: <%= safety_inspection.date_inspection %> </h3>
-                <h4>Lugar de la inspección: <%= safety_inspection.place_inspection  %> </h4>
-                <h4>Área de trabajo: <%= safety_inspection.area_inspection  %> </h4>
-            </div>        
-
-            <%= link_to t('common.show_safety_inspection'), safety_inspection_path(safety_inspection.id), class: 'btn btn-sm btn-warning' %> &nbsp;
-            <%= link_to t('common.edit'), edit_safety_inspection_path(safety_inspection.id), class: 'btn btn-sm btn-warning' %> &nbsp;
-            <%= link_to "Ver informe", ver_informe_inspeccion_path(safety_inspection.id), class: 'btn btn-sm btn-warning' %> &nbsp;
-            <%= link_to "Ver informe PDF", pdf_informe_inspeccion_path(safety_inspection.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;
-
-            <div class="container col-12">
-                <br>
-
-                <div class="row g-4">
-                    <div class="col-sm-3">
-                        <strong><%= t('.user_responsible') %></strong><br>
-                        <%= safety_inspection.name_user(safety_inspection.user_responsible) %> 
-                    </div>        
-                    <div class="col-sm-3">
-                        <strong><%= t('.firm_responsible') %></strong><br>
-                        <%= safety_inspection.label_firm(safety_inspection.firm_responsible) %> 
-                    </div>        
-                    <div class="col-sm-3">
-                        <strong><%= t('.date_firm_responsible') %></strong><br>
-                        <%= safety_inspection.date_firm_responsible %> 
-                    </div>
-                    <div class="col-sm-3">
-                        <% if safety_inspection.firm_responsible.to_i == 0 %>
-                            <%= link_to t('common.firmar'), firmar_responsable_inspeccion_path(safety_inspection.id, 2), class: 'btn btn-sm btn btn-warning' %>
-                        <% end %>    
-                    </div>
+    <div class="container-fluid">
+        <!-- Encabezado -->
+        <div class="row align-items-center mb-4">
+            <div class="col-12 col-lg-8">
+                <h3 class="mb-1">
+                    <%= @entity.business_name %>
+                </h3>
+                <small class="text-muted">
+                    NIT:
+                    <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>
+                    <% if @entity.verification_digit.present? %>
+                        -<%= @entity.verification_digit %>
+                    <% end %>
+                </small>
+            </div>
+            <div class="col-12 col-lg-4 text-lg-end mt-3 mt-lg-0">
+                <%= link_to t('common.create_safety_inspection'), new_safety_inspection_path(entity_id: @entity.id), class: "btn btn-primary" %>
+            </div>
+        </div>
+        <% if @safety_inspections.present? %>
+            <!-- ========================= -->
+            <!-- TABLA PARA PC -->
+            <!-- ========================= -->
+            <div class="d-none d-lg-block">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-center">Formato de inspección de seguridad del:</th>
+                                <th class="text-center">Lugar de la inspección:</th>
+                                <th class="text-center">Área de trabajo:</th>
+                                <th class="text-center"><%= t('.user_responsible') %></th>
+                                <th class="text-center">Firma</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% @safety_inspections.each do |safety_inspection| %>
+                                <tr>
+                                    <td class="text-center">
+                                        <%= safety_inspection.date_inspection %>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= safety_inspection.place_inspection %>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= safety_inspection.area_inspection %>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= safety_inspection.name_user(safety_inspection.user_responsible) %>
+                                    </td>
+                                    <td class="text-center">
+                                        <% if safety_inspection.firm_responsible.to_i == 0 %>
+                                            <%= link_to t('common.firmar'), firmar_responsable_inspeccion_path(safety_inspection.id, 2), class: 'btn btn-warning btn-sm' %>
+                                        <% else %>
+                                            <%= safety_inspection.date_firm_responsible %>
+                                        <% end %>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group" role="group">
+                                            <%= link_to "Ver situación o condición", situacion_condicion_path(safety_inspection.id), class:"btn btn-primary btn-sm me-2" %>
+                                            <%= link_to t('common.show_safety_inspection'), safety_inspection_path(safety_inspection.id), class:"btn btn-info btn-sm me-2" %>
+                                            <%= link_to t('common.edit'), edit_safety_inspection_path(safety_inspection.id), class:"btn btn-warning btn-sm me-2" %>
+                                            <%= link_to "Ver informe", ver_informe_inspeccion_path(safety_inspection.id), class:"btn btn-info btn-sm me-2" %>
+                                            <%= link_to "Ver informe PDF", pdf_informe_inspeccion_path(safety_inspection.id, format: 'pdf'), class:"btn btn-success btn-sm me-2" %>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% end %>
+                        </tbody>
+                    </table>
                 </div>
-                <br>
-                <div class="accordion accordion-flush" id="accordionFlushExample<%= safety_inspection.id %>">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<%= safety_inspection.id %>" aria-expanded="false" aria-controls="flush-collapse<%= safety_inspection.id %>">
-                                <div class="d-flex">
-                                  <div class="container">
-                                      <h><u>Ver Situaciones o Condiciones</u></h>
-                                  </div> 
+            </div>
+            <!-- ========================= -->
+            <!-- VERSION CELULAR -->
+            <!-- ========================= -->
+            <div class="d-lg-none">
+                <% @safety_inspections.each do |safety_inspection| %>
+                    <div class="card shadow-sm mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <%= safety_inspection.area_inspection %>
+                            </h5>
+                            <p class="mb-1">
+                                <strong>Fecha:</strong>
+                                <%= safety_inspection.date_inspection %>
+                            </p>
+                            <p class="mb-1">
+                                <strong>Responsable:</strong>
+                                <%= safety_inspection.name_user(safety_inspection.user_responsible) %>
+                            </p>
+                            <p class="mb-3">
+                                <strong>Firma:</strong>
+                                <% if safety_inspection.firm_responsible.to_i == 0 %>
+                                    <%= link_to t('common.firmar'), firmar_responsable_inspeccion_path(safety_inspection.id, 2), class: 'btn btn-warning btn-sm' %>
+                                <% else %>
+                                    <%= safety_inspection.date_firm_responsible %>
+                                <% end %>
+                            </p>
+                            <div class="d-grid gap-2">
+                                <div class="btn-group" role="group">
+                                    <%= link_to t('common.show_safety_inspection'), safety_inspection_path(safety_inspection.id), class:"btn btn-info btn-sm me-2" %>
+                                    <%= link_to t('common.edit'), edit_safety_inspection_path(safety_inspection.id), class:"btn btn-warning btn-sm me-2" %>
+                                    <%= link_to "Ver informe", ver_informe_inspeccion_path(safety_inspection.id), class:"btn btn-info btn-sm me-2" %>
+                                    <%= link_to "Ver informe PDF", pdf_informe_inspeccion_path(safety_inspection.id, format: 'pdf'), class:"btn btn-success btn-sm me-2" %>
                                 </div>
-                            </button>
-                        </h2>
-                        <div id="flush-collapse<%= safety_inspection.id %>" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample<%= safety_inspection.id %>">
-                            <div class="accordion-body">
-                                <% if @safety_inspection_items.present? %>
-                                    <table class="table table-hover">
-                                        <thead> 
-                                            <tr>
-                                                <th scope="col">Situación o Condición</th>
-                                                <th scope="col">Cumplimiento</th>
-                                                <th scope="col"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <% @safety_inspection_items.where("safety_inspection_id = ?", safety_inspection.id).each do |safety_inspection_item| %>
-                                                    <tr>
-                                                        <td><%= safety_inspection_item.situation_condition.name %></td>
-                                                        <td style="width:300px;">
-                                                            <%= form_with model: safety_inspection_item do |form| %> 
-                                                               <%= form.radio_button :state_compliance, 0, :onClick=>"javascript: this.form.submit.click();" %>
-                                                                <label for="noaplica">N/A</label></br>   
-                                                                <%= form.radio_button :state_compliance, 1, :onClick=>"javascript: this.form.submit.click();" %>
-                                                                <label for="si">SI</label></br>
-                                                                <%= form.radio_button :state_compliance, 2, :onClick=>"javascript: this.form.submit.click();" %>
-                                                                <label for="no">NO</label></br>
-                                                                <%= form.radio_button :state_compliance, 3, :onClick=>"javascript: this.form.submit.click();" %>
-                                                                <label for="parcial">PARCIAL</label>&nbsp;
-                                                                <div class="actions" style="display:none;">
-                                                                    <%= form.submit "", :name => "submit", :remote => "true" %>
-                                                                </div>  
-                                                            <% end %>                                    
-                                                        </td>
-                                                        <td>
-                                                            <div class="d-grid gap-2 col-1 mx-auto">
-                                                                <%= link_to t('common.edit'), edit_safety_inspection_item_path(safety_inspection_item), class: 'btn btn-sm btn-primary'  %>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                   
-                                            <% end %>     
-                                        </tbody>      
-                                    </table>
-                                <% end %>     
                             </div>
                         </div>
-                  </div>
-                </div>
-                <br>
-            </div> 
-        <% end %>  
-    <br>
-<% else %>
-    <div>
-        <%= link_to t('common.create_safety_inspection'), new_safety_inspection_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+                    </div>
+                <% end %>
+            </div>
+        <% end %>
     </div>
+    <%= link_to "Retornar", request.referer || root_path, class: "btn btn-secondary" %>
 <% end %>
+

@@ -1,0 +1,357 @@
+<div class="container-fluid py-4">
+    <%# =======================================================
+       CÁLCULO DE ESTADÍSTICAS
+       ======================================================= %>
+    <%
+        total_items = @safety_inspection_items.count
+        na_items       = @safety_inspection_items.where(state_compliance: 0).count
+        si_items       = @safety_inspection_items.where(state_compliance: 1).count
+        no_items       = @safety_inspection_items.where(state_compliance: 2).count
+        parcial_items  = @safety_inspection_items.where(state_compliance: 3).count
+
+        evaluados = na_items + si_items
+
+        porcentaje =
+            total_items.zero? ? 0 :
+            ((evaluados.to_f / total_items) * 100).round
+    %>
+
+    <!-- =======================================================
+         ENCABEZADO
+         ======================================================= -->
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <div class="row align-items-center g-3">
+                <div class="col-12 col-lg-7">
+                    <h2 class="fw-bold mb-2 text-primary">
+                        <%= @entity.business_name %>
+                    </h2>
+                    <div class="text-muted">
+                        <strong>NIT:</strong>
+                        <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>
+                        <% if @entity.verification_digit.present? %>
+                            -<%= @entity.verification_digit %>
+                        <% end %>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-5">
+                    <div class="small">
+                        <div class="mb-2">
+                            <strong>Fecha de inspección</strong>
+                            <div class="text-muted">
+                                <%= @safety_inspection.date_inspection %>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <strong>Lugar</strong>
+                            <div class="text-muted">
+                                <%= @safety_inspection.place_inspection %>
+                            </div>
+                        </div>
+                        <div>
+                            <strong>Área de trabajo</strong>
+                            <div class="text-muted">
+                                <%= @safety_inspection.area_inspection %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- =======================================================
+         AVANCE
+         ======================================================= -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between mb-2">
+                <h5 class="mb-0">
+                    Avance de la inspección
+                </h5>
+                <strong>
+                    <%= porcentaje %>%
+                </strong>
+            </div>
+            <div class="progress" style="height:28px;">
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width:<%= porcentaje %>%">
+                    <%= evaluados %> / <%= total_items %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- =======================================================
+         RESUMEN
+         ======================================================= -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+            <div class="card text-center border-success shadow-sm h-100">
+                <div class="card-body">
+                    <h2 class="text-success mb-0">
+                        <%= si_items %>
+                    </h2>
+                    <div class="fw-semibold text-success">
+                        SI CUMPLE
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card text-center border-danger shadow-sm h-100">
+                <div class="card-body">
+                    <h2 class="text-danger mb-0">
+                        <%= no_items %>
+                    </h2>
+                    <div class="fw-semibold text-danger">
+                        NO CUMPLE
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card text-center border-warning shadow-sm h-100">
+                <div class="card-body">
+                    <h2 class="text-warning mb-0">
+                        <%= parcial_items %>
+                    </h2>
+                    <div class="fw-semibold text-warning">
+                        PARCIAL
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card text-center border-secondary shadow-sm h-100">
+                <div class="card-body">
+                    <h2 class="text-secondary mb-0">
+                        <%= na_items %>
+                    </h2>
+                    <div class="fw-semibold text-secondary">
+                        N/A
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex gap-2 mb-4">
+      <%= button_tag(type: "button", class: "btn btn-primary", onclick: "window.location.reload();") do %>
+        <i class="bi bi-arrow-clockwise me-1"></i>
+        Actualizar
+      <% end %>
+      <%= link_to "Retornar", request.referer || root_path, class: "btn btn-secondary" %>
+    </div>
+    <% if @safety_inspection_items.present? %>
+        <!-- =======================================================
+             VISTA ESCRITORIO
+             ======================================================= -->
+        <div class="card shadow-sm border-0 d-none d-lg-block">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered align-middle">
+                        <thead class="table-primary">
+                            <tr>
+                                <th style="width:45%;">
+                                    Situación o Condición
+                                </th>
+                                <th style="width:40%;">
+                                    Cumplimiento
+                                </th>
+                                <th class="text-center" style="width:15%;">
+                                    Acciónes
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% @safety_inspection_items.order(:id).each do |item| %>
+                                <tr>
+                                    <!-- Situación -->
+                                    <td>
+                                        <div class="fw-semibold mb-2">
+                                            <%= item.situation_condition.name %>
+                                        </div>
+                                        <% case item.state_compliance %>
+                                        <% when 0 %>
+                                            <span class="badge bg-secondary fs-6">
+                                                N/A
+                                            </span>
+                                        <% when 1 %>
+                                            <span class="badge bg-success fs-6">
+                                                ✓ SI CUMPLE
+                                            </span>
+                                        <% when 2 %>
+                                            <span class="badge bg-danger fs-6">
+                                                ✕ NO CUMPLE
+                                            </span>
+                                        <% when 3 %>
+                                            <span class="badge bg-warning text-dark fs-6">
+                                                ⚠ PARCIAL
+                                            </span>
+                                        <% else %>
+                                            <span class="badge bg-light text-dark border fs-6">
+                                                SIN EVALUAR
+                                            </span>
+                                        <% end %>
+                                    </td>
+                                    <!-- Cumplimiento -->
+                                    <td>
+                                        <%= form_with model: item do |form| %>
+                                            <div class="btn-group w-100" role="group">
+                                                <%= form.radio_button :state_compliance,
+                                                    0,
+                                                    class: "btn-check",
+                                                    id: "na_#{item.id}",
+                                                    onclick: "this.form.submit.click();" %>
+                                                <%= form.label :state_compliance,
+                                                    "N/A",
+                                                    for: "na_#{item.id}",
+                                                    class: "btn btn-outline-secondary" %>
+                                                <%= form.radio_button :state_compliance,
+                                                    1,
+                                                    class: "btn-check",
+                                                    id: "si_#{item.id}",
+                                                    onclick: "this.form.submit.click();" %>
+                                                <%= form.label :state_compliance,
+                                                    "SI",
+                                                    for: "si_#{item.id}",
+                                                    class: "btn btn-outline-success" %>
+                                                <%= form.radio_button :state_compliance,
+                                                    2,
+                                                    class: "btn-check",
+                                                    id: "no_#{item.id}",
+                                                    onclick: "this.form.submit.click();" %>
+                                                <%= form.label :state_compliance,
+                                                    "NO",
+                                                    for: "no_#{item.id}",
+                                                    class: "btn btn-outline-danger" %>
+                                                <%= form.radio_button :state_compliance,
+                                                    3,
+                                                    class: "btn-check",
+                                                    id: "parcial_#{item.id}",
+                                                    onclick: "this.form.submit.click();" %>
+                                                <%= form.label :state_compliance,
+                                                    "PARCIAL",
+                                                    for: "parcial_#{item.id}",
+                                                    class: "btn btn-outline-warning" %>
+                                            </div>
+                                            <div class="d-none">
+                                                <%= form.submit "",
+                                                    name: "submit",
+                                                    remote: true %>
+                                            </div>
+                                        <% end %>
+                                    </td>
+                                    <!-- Acciónes -->
+                                    <td class="text-center align-middle">
+                                        <%= link_to edit_safety_inspection_item_path(item), class: "btn btn-primary btn-sm" do %>Editar<% end %>
+                                        <%= link_to "📷", situacion_foto_path(item.id), class:"btn btn-light btn-sm me-2" %>
+                                    </td>
+                                </tr>
+                            <% end %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- =======================================================
+             VISTA PARA CELULAR
+             ======================================================= -->
+        <div class="d-lg-none">
+            <% @safety_inspection_items.order(:id).each do |item| %>
+                <div class="card shadow-sm border-0 mb-3">
+                    <div class="card-body">
+                        <!-- Nombre de la condición -->
+                        <h5 class="fw-bold text-primary mb-3">
+                            <%= item.situation_condition.name %>
+                        </h5>
+                        <!-- Estado actual -->
+                        <div class="mb-3">
+                            <% case item.state_compliance %>
+                            <% when 0 %>
+                                <span class="badge bg-secondary fs-6">
+                                    N/A
+                                </span>
+                            <% when 1 %>
+                                <span class="badge bg-success fs-6">
+                                    ✓ SI CUMPLE
+                                </span>
+                            <% when 2 %>
+                                <span class="badge bg-danger fs-6">
+                                    ✕ NO CUMPLE
+                                </span>
+                            <% when 3 %>
+                                <span class="badge bg-warning text-dark fs-6">
+                                    ⚠ PARCIAL
+                                </span>
+                            <% else %>
+                                <span class="badge bg-light text-dark border fs-6">
+                                    SIN EVALUAR
+                                </span>
+                            <% end %>
+                        </div>
+                        <!-- Formulario -->
+                        <%= form_with model: item do |form| %>
+                            <div class="btn-group w-100 mb-3" role="group">
+                                <%= form.radio_button :state_compliance,
+                                    0,
+                                    class: "btn-check",
+                                    id: "mobile_na_#{item.id}",
+                                    onclick: "this.form.submit.click();" %>
+                                <%= form.label :state_compliance,
+                                    "N/A",
+                                    for: "mobile_na_#{item.id}",
+                                    class: "btn btn-outline-secondary" %>
+                                <%= form.radio_button :state_compliance,
+                                    1,
+                                    class: "btn-check",
+                                    id: "mobile_si_#{item.id}",
+                                    onclick: "this.form.submit.click();" %>
+                                <%= form.label :state_compliance,
+                                    "SI",
+                                    for: "mobile_si_#{item.id}",
+                                    class: "btn btn-outline-success" %>
+                                <%= form.radio_button :state_compliance,
+                                    2,
+                                    class: "btn-check",
+                                    id: "mobile_no_#{item.id}",
+                                    onclick: "this.form.submit.click();" %>
+                                <%= form.label :state_compliance,
+                                    "NO",
+                                    for: "mobile_no_#{item.id}",
+                                    class: "btn btn-outline-danger" %>
+                                <%= form.radio_button :state_compliance,
+                                    3,
+                                    class: "btn-check",
+                                    id: "mobile_parcial_#{item.id}",
+                                    onclick: "this.form.submit.click();" %>
+                                <%= form.label :state_compliance,
+                                    "PARCIAL",
+                                    for: "mobile_parcial_#{item.id}",
+                                    class: "btn btn-outline-warning" %>
+                            </div>
+                            <div class="d-none">
+                                <%= form.submit "",
+                                    name: "submit",
+                                    remote: true %>
+                            </div>
+                        <% end %>
+                        <!-- Botón Editar -->
+                        <div class="d-grid">
+                            <%= link_to edit_safety_inspection_item_path(item),
+                                class: "btn btn-primary" do %>
+                                <i class="bi bi-pencil-square"></i>
+                                Editar observación
+                            <% end %>
+                        </div>
+                    </div>
+                </div>
+            <% end %>
+        </div>
+    <% end %>
+    <div class="d-flex gap-2 mb-4">
+      <%= button_tag(type: "button", class: "btn btn-primary", onclick: "window.location.reload();") do %>
+        <i class="bi bi-arrow-clockwise me-1"></i>
+        Actualizar
+      <% end %>
+      <%= link_to "Retornar", request.referer || root_path, class: "btn btn-secondary" %>
+    </div>
+</div>               

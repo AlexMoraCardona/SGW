@@ -296,12 +296,15 @@
                                     <% hallazgo.inspection_evidences.each do |file|%>
                                         <br>
                                         <% if file.image? %>
+                                            <p class="small fw-bold"><%= file.blob.filename %></p>
                                             <div>
                                                 <%= image_tag Evaluation.wicked_blob_path(file), data: {previews_target: "preview"},:width => "400",  :height=>"400" %>
                                             </div>
                                         <% elsif file.video? %>
+                                            <p class="small fw-bold"><%= file.blob.filename %></p>                                        
                                             <%= video_tag url_for(file), controls: "", width: "400px" %>          
                                         <% elsif file.audio? %>
+                                            <p class="small fw-bold"><%= file.blob.filename %></p>                                        
                                             <%= audio_tag(url_for(file), controls: "") %>          
                                         <% else %>
                                             <%= link_to file.filename, url_for(file) %>          

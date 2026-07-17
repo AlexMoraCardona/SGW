@@ -24,7 +24,7 @@ class SafetyInspectionsController < ApplicationController
         @entity = Entity.find(@safety_inspection.entity_id) if @safety_inspection.present?
         @user_responsable = User.find(@safety_inspection.user_responsible)
 
-        @safety_inspection_items = SafetyInspectionItem.where("safety_inspection_id = ?", @safety_inspection.id) if @safety_inspection.present?
+        @safety_inspection_items = SafetyInspectionItem.where("safety_inspection_id = ?", @safety_inspection.id).order(:id) if @safety_inspection.present?
         respond_to do |format|
             format.html
             format.xlsx{ 
@@ -35,23 +35,28 @@ class SafetyInspectionsController < ApplicationController
     
     def ver_inspeccion_pdf
         @safety_inspection = SafetyInspection.find(params[:id])
-        @safety_inspection_items = SafetyInspectionItem.where("safety_inspection_id = ?", @safety_inspection.id) if @safety_inspection.present?
+        @safety_inspection_items = SafetyInspectionItem.where("safety_inspection_id = ?", @safety_inspection.id).order(:id) if @safety_inspection.present?
         @template = Template.where("format_number = ? and document_vigente = ?",73,1).last  
         @entity = Entity.find(@safety_inspection.entity_id) if @safety_inspection.present?
         @user_responsable = User.find(@safety_inspection.user_responsible) if @safety_inspection.present?
 
+
+        nombre_evidencia = 'InformeInspección.pdf'
+
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'ver_inspeccion',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
-      
+            format.pdf {
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('ver_inspeccion_pdf'),
+                    disable_javascript: true,
+                    margin: {top: 10, bottom: 10, left: 10, right: 10 },
+                    page_size: 'letter',
+                    footer: {right: '[page] de [topage]'}
+                    
+                  )  
+                  send_data(pdf, filename: nombre_evidencia, disposition: 'attachment')      
+            }
+        end    
     end    
 
 
@@ -164,6 +169,16 @@ class SafetyInspectionsController < ApplicationController
             }
         end    
 
+    end    
+
+    def situacion_condicion
+        @safety_inspection = SafetyInspection.find(params[:id])
+        @entity = Entity.find(@safety_inspection.entity_id) if @safety_inspection.present?
+        @safety_inspection_items = SafetyInspectionItem.where("safety_inspection_id = ?",@safety_inspection.id).order(:id) if @safety_inspection.present?
+    end    
+
+    def situacion_foto
+        @safety_inspection_item =  SafetyInspectionItem.find(params[:id])
     end    
 
     private

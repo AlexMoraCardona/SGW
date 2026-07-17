@@ -265,11 +265,14 @@
                                  <strong><%= file.filename %></strong>
                             </div>
                             <div class="card-body text-center">
-                                <% if file.image? %>
+                                <% if file.image? %> 
+                                    <p class="small fw-bold"><%= file.blob.filename %></p>
                                     <%= image_tag file, data: { previews_target: "preview" }, class: "img-fluid rounded mb-3" %>
                                 <% elsif file.video? %>
+                                    <p class="small fw-bold"><%= file.blob.filename %></p>
                                     <%= video_tag url_for(file), controls: true, class: "img-fluid rounded mb-3" %>
                                 <% elsif file.audio? %>
+                                    <p class="small fw-bold"><%= file.blob.filename %></p>
                                     <audio controls class="w-100 mb-3">
                                         <source src="<%= url_for(file) %>">
                                     </audio>

@@ -330,5 +330,43 @@ class MatrixDangerRisk < ApplicationRecord
         return resultado
     end    
 
+    def self.label_deficiency_level(dato, id)
+        item = MatrixDangerItem.find(id) if id.present?
+        resultado = "Dato no encontrado"
+        if dato.present? && item.present? 
+            if dato < 2 ; resultado =  "Bajo - " + item.deficiency_level.to_s 
+            elsif dato == 2 ; resultado =  "Medio - " + item.deficiency_level.to_s
+            elsif dato == 6 ; resultado =  "Alto - " + item.deficiency_level.to_s
+            elsif dato == 10 ; resultado =  "Muy Alto - " + item.deficiency_level.to_s
+            end
+        end    
+        return resultado;
+    end    
+
+    def self.label_exposure_level(dato, id)
+        item = MatrixDangerItem.find(id) if id.present?
+        resultado = "Dato no encontrado"
+        if dato.present? && item.present? 
+            if dato < 2 ; resultado =  "Esporádica - " + item.exposure_level.to_s 
+            elsif dato == 2 ; resultado =  "Ocasional - " + item.exposure_level.to_s
+            elsif dato == 3 ; resultado =  "Frecuente - " + item.exposure_level.to_s
+            elsif dato == 4 ; resultado =  "Continua - " + item.exposure_level.to_s
+            end
+        end    
+        return resultado;
+    end    
+
+    def self.label_consequence_level(dato, id)
+        item = MatrixDangerItem.find(id) if id.present?
+        resultado = "Dato no encontrado"
+        if dato.present? && item.present? 
+            if dato < 25 ; resultado =  "Leve - " + item.consequence_level.to_s 
+            elsif dato == 25 ; resultado =  "Grave - " + item.consequence_level.to_s
+            elsif dato == 60 ; resultado =  "Muy Grave - " + item.consequence_level.to_s
+            elsif dato == 100 ; resultado =  "Mortal o Catastrófico - " + item.consequence_level.to_s
+            end
+        end    
+        return resultado;
+    end    
 
 end

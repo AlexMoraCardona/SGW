@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     get '/sessions/cambioclave/:id', to: 'sessions#cambioclave', as: 'cambioclave'
     post '/sessions/generarclave/:id', to: 'sessions#generarclave', as: 'generarclave'
     get '/users/cambiar_clave/:id', to: 'users#cambiar_clave', as: 'cambiar_clave'
+    get '/users/actualizar_datos/:id', to: 'users#actualizar_datos', as: 'actualizar_datos'
     get '/users/politicas/:id', to: 'users#politicas', as: 'politicas'
     get '/users/autorizacion_politica/:id', to: 'users#autorizacion_politica', as: 'autorizacion_politica'
 

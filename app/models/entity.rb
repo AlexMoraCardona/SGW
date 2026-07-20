@@ -56,8 +56,12 @@ class Entity < ApplicationRecord
         return empresas;
     end 
 
-    
-    
+    def self.label_digito(id)
+        resultado = 0
+        entity = Entity.find(id)
+        resultado = entity.verification_digit if entity.verification_digit.present?
+        return resultado;
+    end
 
 
 end

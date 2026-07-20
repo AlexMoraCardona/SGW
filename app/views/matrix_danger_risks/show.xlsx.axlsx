@@ -1,0 +1,13 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Evaluacion") do |sheet|
+    sheet.add_row ['MATRIZ DE IDENTIFICACIÓN DE PELIGROS, EVALUACIÓN Y VALORACIÓN DE LOS RIESGOS']
+    sheet.add_row ['Empresa', 'Nit']
+    sheet.add_row [@entity.business_name, EvaluationRuleDetail.miles(@entity.identification_number) + ' - ' + Entity.label_digito(@entity.id).to_s ]
+    sheet.add_row []
+    sheet.add_row ['Nro', 'Fecha Creación', 'Fecha Actualización', 'PROCESO', 'CARGO', 'ZONA/LUGAR', 'ACTIVIDAD', 'TAREAS', 'RUTINARIA: SI o NO', 'PELIGRO CLASIFICACIÓN', 'PELIGRO DESCRIPCIÓN', 'EFECTOS POSIBLES EN LA SALUD', 'CONTROLES EXISTENTES FUENTE', 'CONTROLES EXISTENTES MEDIO', 'CONTROLES EXISTENTES INDIVIDUO', 'NIVEL DE DEFICIENCIA (ND)', 'NIVEL DE EXPOSICIÓN (NE)', 'NIVEL DE PROBABILIDAD (ND*NE)', 'INTERPRETACIÓN DEL NIVEL DE PROBABILIDAD', 'NIVEL DE CONSECUENCIA', 'NIVEL DE RIESGO E INTERVENCIÓN (NR)', 'INTERPRETACIÓN DEL NIVEL DE RIESGO', 'ACEPTABILIDAD DEL RIESGO', 'MEDIDAS DE INTERVENCIÓN ELIMINACIÓN', 'MEDIDAS DE INTERVENCIÓN SUSTITUCIÓN', 'MEDIDAS DE INTERVENCIÓN CONTROL DE INGENIERÍA', 'MEDIDAS DE INTERVENCIÓN CONTROLES ADMINISTRATIVAS SEÑALIZACIÓN ADVERTENCIA', 'MEDIDAS DE INTERVENCIÓN EQUIPOS/ELEMENTOS DE PROTECCIÓN PERSONAL']
+    @nro = 0
+    @matrix_danger_items.each do |item|
+        @nro += 1 
+        sheet.add_row [@nro, item.created_at.strftime("%F"), item.updated_at.strftime("%F"), item.source_information, CompanyPosition.name_cargo(item.type_cargo), item.origin, item.activity, item.task, item.label_type_task(item.type_task), item.clasification_danger_detail.clasification_danger.name, item.clasification_danger_detail.name, item.possible_effects_health, item.description_existing_control_origin, item.description_existing_control_medium, item.description_existing_control_person, MatrixDangerRisk.label_deficiency_level(item.deficiency_level, item.id), MatrixDangerRisk.label_exposure_level(item.exposure_level, item.id), item.probability_level, item.interpretation, MatrixDangerRisk.label_consequence_level(item.consequence_level, item.id), item.level_risk_intervention, item.risk_acceptability, item.risk_level_interpretation, item.intervention_measures_elimination, item.intervention_measures_replacement, item.intervention_measures_engineering_control, item.intervention_measures_acsw, item.intervention_measures_ppee]
+    end
+end    

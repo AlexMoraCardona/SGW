@@ -1,4 +1,4 @@
-<div class="container col-11 card p-5"> 
+<div class="container-fluid py-4">
    
     <%= render 'encabezado' %>
     <div><%= link_to "Retornar", request.referer || root_path, class: "btn btn-secondary" %></div>
@@ -148,104 +148,109 @@
         <strong>DATOS DE LA COMPAÑÍA</strong>
     </div> 
     <div><br></div>
-    <table> 
-        <tr>
-            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
-                <strong>RAZÓN SOCIAL:</strong>
-            </td>
-            <td style="border:1px solid black;width: 70%;">
-                <%= @entity.business_name if @entity.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
-                <strong>NIT:</strong>
-            </td>
-            <td style="border:1px solid black;width: 70%;">
-                <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
-                <strong>DIRECCIÓN:</strong>
-            </td>
-            <td style="border:1px solid black;width: 70%;">
-                <%= @entity.entity_address if @entity.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
-                <strong>TELÉFONO:</strong>
-            </td>
-            <td style="border:1px solid black;width: 70%;">
-                <%= @entity.phone_number_entity if @entity.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
-                <strong>CIUDAD/DEPARTAMENTO:</strong>
-            </td>
-            <td style="border:1px solid black;width: 70%;">
-                <%= @administrative_political_division.municipality_name if @administrative_political_division.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
-                <strong>REPRESENTANTE LEGAL:</strong>
-            </td>
-            <td style="border:1px solid black;width: 70%;">
-                <%= @entity.first_name_legal_representative + ' ' +  @entity.second_name_legal_representative + ' ' + @entity.surname_legal_representative + ' ' + @entity.second_surname_legal_representative if @entity.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
-                <strong>CENTROS DE TRABAJO DONDE SE REALIZÓ:</strong>
-            </td>
-            <td style="border:1px solid black;width: 70%;">
-                <%= @safety_inspection.place_inspection if @safety_inspection.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
-                <strong>RESPONSABLE DEL SG-SST:</strong>
-            </td>
-            <td style="border:1px solid black;width: 70%;">
-                <%= @resposable_sst.name if @resposable_sst.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
-                <strong>PAGO:</strong>
-            </td>
-            <td style="border:1px solid black;width: 70%;">
-                <%= Entity.label_pay(@entity.pay_entity) if @entity.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
-                <strong>ACTIVIDAD ECONÓMICA:</strong>
-            </td>
-            <td style="border:1px solid black;width: 70%;">
-                <%= @economic_activity.economic_activity_description if @economic_activity.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
-                <strong>ARL:</strong>
-            </td>
-            <td style="border:1px solid black;width: 70%;">
-                <%= @arl.name if @arl.present? %>
-            </td>
-        </tr>
-        <tr>
-            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
-                <strong>CLASE DE RIESGO ASIGNADO POR LA ARL:</strong>
-            </td>
-            <td style="border:1px solid black;width: 70%;">
-                <%=  @claseriesgo.name if @claseriesgo.present? %>
-            </td>
-        </tr>
-    </table> 
+    <div class="table-responsive">
+                <table class="table table-bordered table-sm align-middle text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                                <strong>RAZÓN SOCIAL:</strong>
+                            </td>
+                            <td style="border:1px solid black;width: 70%;">
+                                <%= @entity.business_name if @entity.present? %>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                                <strong>NIT:</strong>
+                            </td>
+                            <td style="border:1px solid black;width: 70%;">
+                                <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                                <strong>DIRECCIÓN:</strong>
+                            </td>
+                            <td style="border:1px solid black;width: 70%;">
+                                <%= @entity.entity_address if @entity.present? %>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                                <strong>TELÉFONO:</strong>
+                            </td>
+                            <td style="border:1px solid black;width: 70%;">
+                                <%= @entity.phone_number_entity if @entity.present? %>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                                <strong>CIUDAD/DEPARTAMENTO:</strong>
+                            </td>
+                            <td style="border:1px solid black;width: 70%;">
+                                <%= @administrative_political_division.municipality_name if @administrative_political_division.present? %>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                                <strong>REPRESENTANTE LEGAL:</strong>
+                            </td>
+                            <td style="border:1px solid black;width: 70%;">
+                                <%= @entity.first_name_legal_representative + ' ' +  @entity.second_name_legal_representative + ' ' + @entity.surname_legal_representative + ' ' + @entity.second_surname_legal_representative if @entity.present? %>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                                <strong>CENTROS DE TRABAJO DONDE SE REALIZÓ:</strong>
+                            </td>
+                            <td style="border:1px solid black;width: 70%;">
+                                <%= @safety_inspection.place_inspection if @safety_inspection.present? %>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                                <strong>RESPONSABLE DEL SG-SST:</strong>
+                            </td>
+                            <td style="border:1px solid black;width: 70%;">
+                                <%= @resposable_sst.name if @resposable_sst.present? %>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                                <strong>PAGO:</strong>
+                            </td>
+                            <td style="border:1px solid black;width: 70%;">
+                                <%= Entity.label_pay(@entity.pay_entity) if @entity.present? %>
+                            </td>
+                        </tr>
+                        <tr>
+                        <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                                <strong>ACTIVIDAD ECONÓMICA:</strong>
+                        </td>
+                        <td style="border:1px solid black;width: 70%;">
+                            <%= @economic_activity.economic_activity_description if @economic_activity.present? %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                            <strong>ARL:</strong>
+                        </td>
+                        <td style="border:1px solid black;width: 70%;">
+                            <%= @arl.name if @arl.present? %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;width: 30%;background-color: #00aae4;">
+                            <strong>CLASE DE RIESGO ASIGNADO POR LA ARL:</strong>
+                        </td>
+                        <td style="border:1px solid black;width: 70%;">
+                            <%=  @claseriesgo.name if @claseriesgo.present? %>
+                        </td>
+                    </tr>
+                </table> 
+    </div> 
+
+
     <div><br></div>
     <div><br></div>
     <div class="row text-center">
@@ -290,25 +295,34 @@
                         </div> 
                         <div data-controller="previews" >
                             <% hallazgo.inspection_evidences.each do |file|%>
-                                <br>
-                                <% if file.image? %> 
-                                    <div> 
-                                        <p class="small fw-bold"><%= file.blob.filename %></p>
-                                        <%=  image_tag  file,:width => "400",  :height=>"400" %>
-                                        <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <div class="card h-100 shadow-sm">
+                                        <div class="card-header text-truncate">
+                                            <strong><%= file.filename %></strong>
+                                        </div>
+                                        <div class="card-body text-center">
+                                            <% if file.image? %> 
+                                                <%= image_tag file, data: { previews_target: "preview" }, class: "img-fluid rounded mb-3" %>
+                                            <% elsif file.video? %>
+                                                <%= video_tag url_for(file), controls: true, class: "img-fluid rounded mb-3" %>
+                                            <% elsif file.audio? %>
+                                                <audio controls class="w-100 mb-3">
+                                                    <source src="<%= url_for(file) %>">
+                                                </audio>
+                                            <% else %>
+                                                <div class="py-4">
+                                                    <i class="bi bi-file-earmark fs-1"></i>
+                                                    <div class="mt-2">
+                                                        <%= file.filename %>
+                                                    </div>
+                                                </div>
+                                            <% end %>
+                                        </div>
+                                        <div class="card-footer text-center">
+                                            <%= link_to "Descargar", rails_blob_path(file, disposition: "attachment"), class: "btn btn-success btn-sm w-100" %>
+                                        </div>
                                     </div>
-                                <% elsif file.video? %>
-                                    <p class="small fw-bold"><%= file.blob.filename %></p>
-                                    <%= video_tag url_for(file), controls: "", width: "400px" %>          
-                                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                                <% elsif file.audio? %>
-                                    <p class="small fw-bold"><%= file.blob.filename %></p>
-                                    <%= audio_tag(url_for(file), controls: "") %>          
-                                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                                <% else %>
-                                    <%= link_to file.filename, url_for(file) %>          
-                                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                                <% end %>
+                                </div>
                             <% end %>  
                         </div>
                 <% end %>

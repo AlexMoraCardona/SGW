@@ -48,20 +48,44 @@ class Authentication::UsersController < ApplicationController
     end
     
     def update
-        if  Current.user.present?
-            @user = User.find(params[:id])
-            if @user.update(user_params)
-                redirect_to home_path, notice: 'Actualizado correctamente'
-            else
-                #redirect_to home_path, alert: 'Error en actualización'
-                #render :home_path, status: :unprocessable_entity
-                redirect_back fallback_location: root_path, alert: 'Error en actualización'
-            end         
-        else
-            redirect_to new_session_path, alert: t('common.not_logged_in')      
-            session.delete(:user_id)            
-        end    
 
+        if params[:photo_data].present?
+            if  Current.user.present?
+                @user = User.find(params[:id])
+
+                nom_foto = "foto_avatar"
+                image = params[:photo_data]
+                image = image.sub(/^data:image\/jpeg;base64,/,"")
+                decoded = Base64.decode64(image)
+                file = Tempfile.new(["foto", ".jpg"])
+                file.binmode
+                file.write(decoded)
+                file.rewind
+                @user.avatar.attach(io: file, filename: nom_foto + ".jpg", content_type: "image/jpeg")
+                if @user.save
+                    redirect_to  home_path, notice: 'Fotografía actualizada correctamente.'
+                else
+                    redirect_to home_path, alert: 'Error en la actulaización'
+                end
+            else    
+                redirect_to new_session_path, alert: t('common.not_logged_in')      
+                session.delete(:user_id)            
+            end    
+        else
+            if  Current.user.present?
+                @user = User.find(params[:id])
+                if @user.update(user_params)
+                    redirect_to home_path, notice: 'Actualizado correctamente'
+                else
+                    #redirect_to home_path, alert: 'Error en actualización'
+                    #render :home_path, status: :unprocessable_entity
+                    redirect_back fallback_location: root_path, alert: 'Error en actualización'
+                end         
+            else
+                redirect_to new_session_path, alert: t('common.not_logged_in')      
+                session.delete(:user_id)            
+            end    
+        end
     end    
 
     def destroy
@@ -93,6 +117,14 @@ class Authentication::UsersController < ApplicationController
         end    
     end  
 
+    def actualizar_datos
+        if  Current.user.present?
+            @user = User.find(Current.user.id)
+        else
+            redirect_to new_session_path, alert: t('common.not_logged_in')      
+            session.delete(:user_id)            
+        end    
+    end  
 
     def politicas
 

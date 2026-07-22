@@ -1,78 +1,122 @@
 
 <div  id="bodyencabezado" class="container" style="border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-top-left-radius: 10px;border-bottom-left-radius: 10px;padding-top: 10px;", class="container col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5;">
-   <div class="row" > 
-      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
-            <a class="navbar-brand" href="/">
-               <%= image_tag 'LogoConesst202305232.png',  :width => "130",  :height=>"130" %>
+   <div class="container-fluid">
+      <div class="row align-items-center">
+         <div class="col-12 col-md-2 text-center mb-3 mb-md-0">
+            <a class="navbar-brand d-inline-block" href="/">
+               <%= image_tag 'LogoConesst202305232.png', width: 130, height: 130, class: "img-fluid" %>
             </a>
-      </div>
-      <div class="col-xs-7 col-sm-7 col-md-5 col-lg-5 col-xl-5">
-            <h2> <%=  t('.title')%></h2>
-            <% if Current.user %>
-               <p> Bienvenido(a): <%= Current.user.name %></p>
-               <p> Último ingreso: <%= Current.user.ultima_date_login %></p>
-            <% end %>
-      </div>
-      <div class="col-xs-5 col-sm-5 col-md-1 col-lg-1 col-xl-1">
-            <%= link_to t('.login'), new_session_path unless Current.user %>
-            <%= link_to t('.register'), new_user_path unless Current.user %>
-            <a class="nav-link active" aria-current="page" href="/users/cambiar_clave/path" style="color: #0000FF; " text-left data-bs-toggle="tooltip" data-bs-placement="top" title="Cambio de clave">
-               <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-key" viewBox="0 0 16 16">
-                   <path d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8m4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5"/>
-                  <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
-               </svg>
-            </a>
-      </div>
-      <div class="col-xs-5 col-sm-5 col-md-2 col-lg-2 col-xl-2 mb-3">
-            <%= button_to t('.logout'), session_path(Current.user), class: 'btn btn-sm btn-primary rounded-pill', method: :delete, data: { data_turbo_confirm: t('common.confirm')} if Current.user %>
-      </div>
-      <div class="col-xs-7 col-sm-7 col-md-2 col-lg-2 col-xl-2 text-center">
-            <a class="nav-link active" aria-current="page" href="/users/actualizar_datos/path" style="color: #0000FF; " text-left data-bs-toggle="tooltip" data-bs-placement="top" title="Actualizar datos">
-
+         </div>
+         <div class="col-12 col-md-5 text-center text-md-start mb-3 mb-md-0">
+             <h2><%= t('.title') %></h2>
+             <% if Current.user %>
+               <p class="mb-1">Bienvenido(a): <%= Current.user.name %></p>
+               <p class="mb-0">Último ingreso: <%= Current.user.ultima_date_login %></p>
+             <% end %>
+         </div>
+        <div class="col-12 col-md-3 mb-3 mb-md-0">
+            <div class="d-flex justify-content-center align-items-center gap-3">
                <% if Current.user %>
-                  <% if Current.user.avatar.attached? %>
-                     <% if Current.user.avatar.image? %> 
-                        <%= image_tag Current.user.avatar, data: {previews_target: "preview"}, class: "avatar-mini" %>
-                     <% end %>
-                  <% else %> 
-                     <%= image_tag("avatar.jpg", class: "avatar-mini") %>
-                  <% end %>
-               <% end %> 
+                   <a href="/users/cambiar_clave/path" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Cambio de clave" aria-label="Cambio de clave">
+                     <i class="bi bi-key-fill fs-1"></i>
+                   </a>
+                   <%= button_to session_path(Current.user), method: :delete, class: "btn btn-sm btn-primary rounded-pill", data: {turbo_confirm: t('common.confirm') } do %>
+                     <i class="bi-box-arrow-right  me-1"></i>
+                     <span class="d-inline"><%= t('.logout') %></span>
+                   <% end %>
+              <% else %>
+                   <%= link_to t('.login'), new_session_path, class: "btn btn-sm btn-outline-primary" %> 
+                   <%= link_to t('.register'), new_user_path, class: "btn btn-sm btn-primary" %>
+              <% end %>
+            </div>
+        </div>
+        <div class="col-12 col-md-2 text-center">
+             <% if Current.user %>
+                 <a href="/users/actualizar_datos/path" class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="Actualizar datos" aria-label="Actualizar datos">
+                   <% if Current.user.avatar.attached? %>
+                        <% if Current.user.avatar.image? %>
+                             <%= image_tag Current.user.avatar, data: { previews_target: "preview" }, class: "avatar-mini img-fluid" %>
+                        <% end %>
+                   <% else %>
+                     <%= image_tag "avatar.jpg", class: "avatar-mini img-fluid" %>
+                   <% end %>
+                 </a>
+            <% end %>
+       </div>
+     </div>
+   </div>
 
-            </a>
 
-         <div></br></div>
-         <div>
-
-         </div>         
-      </div>
-   </div> 
-   <div class="row" >  
+   <!-- ========================= -->
+   <!-- TABLA PARA PC -->
+   <!-- ========================= -->
+   <div class="d-none d-lg-block">
       <div align="right"; class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-end">
          <% if @cant_noti.present? %>
-            <!-- Button trigger modal -->
-            <button class="btn btn-sm btn-outline-primary position-relative" data-bs-toggle="modal" data-bs-target="#exampleModal" >
-               Notificaciones
-               <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                  <%= @cant_noti %>+
-                  <span class="visually-hidden">unread messages</span>
-               </span>
-            </button>
+            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Ver notificaciones">
+              <button class="btn btn-sm btn-outline-primary position-relative" data-bs-toggle="modal" data-bs-target="#exampleModal" aria-label="Ver notificaciones">
+                   <i class="bi bi-bell-fill me-1"></i>Notificaciones
+                   <% if @cant_noti.to_i > 0 %>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        <%= @cant_noti %>+
+                        <span class="visually-hidden">Notificaciones sin leer</span>
+                        </span>
+                  <% end %>
+              </button>
+            </span>
          <% end %>
          &nbsp;&nbsp;&nbsp;
             <% if @cant_firma.present? %>
-               <a  class="btn btn-sm btn-outline-primary position-relative" href="firms/penfirma/1" role="button" >
-                  Documentos pendientes por firmar
-                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                     <%= @cant_firma %>+
-                     <span class="visually-hidden">unread messages</span>
-                  </span>
-                  </button>
+               <a class="btn btn-sm btn-outline-primary position-relative" href="firms/penfirma/1" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Firmar documentos" aria-label="Firmar documentos">
+                 <i class="bi bi-pen-fill me-1"></i>Firmar documentos
+                 <% if @cant_firma.to_i > 0 %>
+                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        <%= @cant_firma %>+
+                        <span class="visually-hidden">Documentos pendientes por firma </span>
+                     </span>
+                  <% end %>
                </a>
             <% end %>
-
       </div>
-   </div>   
+   </div> 
+   <!-- ========================= -->
+   <!-- VERSION CELULAR -->
+   <!-- ========================= -->
+   <div class="d-lg-none">
+      <div class="card-body">
+         <div class="d-flex flex-column align-items-center gap-3">
+            <% if @cant_noti.present? %>
+               <div class="w-100 d-flex justify-content-center">
+                   <span data-bs-toggle="tooltip" data-bs-placement="top" title="Ver notificaciones">
+                      <button type="button" class="btn btn-sm btn-outline-primary position-relative" data-bs-toggle="modal" data-bs-target="#exampleModal" aria-label="Ver notificaciones">
+                        <i class="bi bi-bell-fill me-1"></i>Notificaciones
+                        <% if @cant_noti.to_i > 0 %>
+                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                  <%= @cant_noti %>+
+                                  <span class="visually-hidden">Notificaciones sin leer</span>
+                           </span>
+                        <% end %>
+                     </button>
+                   </span>
+              </div>
+            <% end %>
+            <% if @cant_firma.present? %>
+               <div class="w-100 d-flex justify-content-center">
+                   <a class="btn btn-sm btn-outline-primary position-relative" href="firms/penfirma/1" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Firmar documentos" aria-label="Firmar documentos">
+                      <i class="bi bi-pen-fill me-1"></i>Firmar documentos
+                         <% if @cant_firma.to_i > 0 %>
+                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                               <%= @cant_firma %>+
+                                 <span class="visually-hidden">Documentos pendientes por firma</span>
+                              </span>
+                           <% end %>
+                   </a>
+               </div>
+            <% end %>
+       </div>
+     </div>
+   </div>
+   
    <div class="row" >  
       <div align="right"; class="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
             

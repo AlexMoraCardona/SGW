@@ -1,32 +1,62 @@
-<% if @entity.present? %>
-    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
-<% end %>
-<div>
-    <%= link_to t('.create_matrix_danger_risk'), new_matrix_danger_risk_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level < 3 %>
-</div>
-</br>
-
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th scope="col">Fecha de creación</th>
-            <th scope="col">Ver</th>
-            <th scope="col">Eliminar</th>
-        </tr>
-    </thead> 
-    <% if @matrix_danger_risks.present? %>
-        <% @matrix_danger_risks.each do |matrix_danger_risk| %>
-            <tr>
-                <td><%= matrix_danger_risk.created_at.strftime("%F") %></td>
-                <td><%= link_to t('common.show_matrix_danger_risk'), matrix_danger_risk_path(matrix_danger_risk.id), class: 'btn btn-sm btn btn-warning' %></td>
-                <td><%= button_to "Delete", matrix_danger_risk, method: :delete, class:"btn btn-sm btn-danger" %></td>
-            </tr>    
-        <% end %>
-    <% else %>
-        <div>
-            <%= link_to t('.create_matrix_danger_risk'), new_matrix_danger_risk_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level < 3 %>
+<div class="container-fluid py-4">   
+    <div align="left"; class="container col-12">
+        <a class="navbar-brand" href="/">
+            <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+        </a>
+    </div>
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <div class="row align-items-center g-3">
+                <div class="col-12 col-lg-7">
+                    <h2 class="fw-bold mb-2 text-primary">
+                        MATRIZ DE IDENTIFICACIÓN DE PELIGROS, EVALUACIÓN Y VALORACIÓN DE LOS RIESGOS
+                    </h2>
+                    <% if @entity.present? %>
+                        <h2 class="fw-bold mb-2 text-primary">
+                            <%= @entity.business_name %>
+                        </h2>
+                        <div class="text-muted">
+                            <strong>NIT:</strong>
+                            <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>
+                            <% if @entity.verification_digit.present? %>
+                                -<%= @entity.verification_digit %>
+                            <% end %>
+                        </div>
+                        <div class="btn-group gap-2" role="group">
+                            <%= link_to t('.create_matrix_danger_risk'), new_matrix_danger_risk_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level < 3 %>
+                            <%= link_to "Retornar", request.referer || root_path, class: "btn btn-secondary" %>                            <!-- Button trigger modal -->
+                        </div>
+                    <% end %>    
+                </div>
+            </div>
         </div>
-    <% end %>
-</table>  
-
-
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th class="text-center">Fecha de creación</th>
+                    <th class="text-center">Ver</th>
+                    <th class="text-center">Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if @matrix_danger_risks.present? %>
+                    <% @matrix_danger_risks.each do |matrix_danger_risk| %>
+                        <tr>
+                            <td class="text-center">
+                                <%= matrix_danger_risk.created_at.strftime("%F") %>
+                            </td>
+                            <td class="text-center">
+                                <%= link_to t('common.show_matrix_danger_risk'), matrix_danger_risk_path(matrix_danger_risk.id), class: 'btn btn-sm btn btn-warning' %></td>
+                            </td>
+                            <td class="text-center">
+                                <%= button_to "Eliminar", matrix_danger_risk, method: :delete, class: "btn btn-danger btn-sm", data: {turbo_confirm: "¿Está seguro de eliminar este registro? Esta acción no se puede deshacer." } %>
+                            </td>
+                        </tr>
+                    <% end %>
+                <% end %>    
+            </tbody>
+        </table>
+    </div>
+</div>

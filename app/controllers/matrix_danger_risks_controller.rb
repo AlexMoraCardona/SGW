@@ -141,21 +141,6 @@ class MatrixDangerRisksController < ApplicationController
         else   
             @matrix_danger_items = MatrixDangerItem.where(matrix_danger_risk_id: @matrix_danger_risk.id).order(:id) if @matrix_danger_risk.present?
         end    
-        @total_items = 0
-        @uno = 0
-        @dos = 0
-        @tres = 0
-        @cuatro = 0
-        if @matrix_danger_items_total.present? 
-            @matrix_danger_items_total.each do |item| 
-                @total_items += 1 
-                if item.risk_level_interpretation.to_s == 'I No Aceptable' ; @uno += 1
-                    elsif item.risk_level_interpretation.to_s == 'II No Aceptable' ; @dos += 1
-                    elsif item.risk_level_interpretation.to_s == 'III Aceptable' ; @tres += 1
-                    elsif item.risk_level_interpretation.to_s == 'IV Aceptable' ; @cuatro += 1    
-                end
-            end    
-        end 
 
         respond_to do |format|
             format.html

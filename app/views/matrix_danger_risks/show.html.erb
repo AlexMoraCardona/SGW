@@ -1,175 +1,440 @@
-<% if @entity.present? %>
-    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
-<% end %>
- 
-<% if @matrix_danger_risk.present? %>
-    <div>
-        <%= link_to t('.create_matrix_danger_risk'), new_matrix_danger_risk_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level < 3 %>
-        <%= link_to 'Retornar', matrix_danger_risks_path(entity_id: @matrix_danger_risk.entity_id), class: 'btn btn-sm btn-success' %>
+    <%# =======================================================
+       CÁLCULO DE ESTADÍSTICAS
+       ======================================================= %>
+    <%
+        total_items = @matrix_danger_items.count
+        n1       = @matrix_danger_items.where("risk_level_interpretation = ?","I No Aceptable").count
+        n2       = @matrix_danger_items.where("risk_level_interpretation = ?","II No Aceptable").count
+        n3       = @matrix_danger_items.where("risk_level_interpretation = ?","III Aceptable").count
+        n4       = @matrix_danger_items.where("risk_level_interpretation = ?","IV Aceptable").count
+        n10      = @matrix_danger_items.where("risk_level_interpretation = ? and danger_intervened = ?","I No Aceptable",0).count
+        n11      = @matrix_danger_items.where("risk_level_interpretation = ? and danger_intervened = ?","I No Aceptable",1).count
+        n20      = @matrix_danger_items.where("risk_level_interpretation = ? and danger_intervened = ?","II No Aceptable",0).count
+        n21      = @matrix_danger_items.where("risk_level_interpretation = ? and danger_intervened = ?","II No Aceptable",1).count
+        n30      = @matrix_danger_items.where("risk_level_interpretation = ? and danger_intervened = ?","III Aceptable",0).count
+        n31      = @matrix_danger_items.where("risk_level_interpretation = ? and danger_intervened = ?","III Aceptable",1).count
+        n40      = @matrix_danger_items.where("risk_level_interpretation = ? and danger_intervened = ?","IV Aceptable",0).count
+        n41      = @matrix_danger_items.where("risk_level_interpretation = ? and danger_intervened = ?","IV Aceptable",1).count
+
+        evaluados = 1
+        porcentaje1 = n1.zero? ? 0 :((n11.to_f / n1.to_f) * 100).round 
+        porcentaje2 = n2.zero? ? 0 :((n21.to_f / n2.to_f) * 100).round 
+        porcentaje3 = n3.zero? ? 0 :((n31.to_f / n3.to_f) * 100).round 
+        porcentaje4 = n4.zero? ? 0 :((n41.to_f / n4.to_f) * 100).round 
+
+        porcentaje = total_items.zero? ? 0 : (((n11.to_f + n21.to_f + n31.to_f + n41.to_f) / total_items) * 100).round
+    %>
+
+<div class="container-fluid py-4">   
+    <!-- =======================================================
+         ENCABEZADO
+         ======================================================= -->
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <div class="row align-items-center g-3">
+                <div class="col-12 col-lg-7">
+                    <h2 class="fw-bold mb-2 text-primary">
+                        <%= @entity.business_name %>
+                    </h2>
+                    <div class="text-muted">
+                        <strong>NIT:</strong>
+                        <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>
+                        <% if @entity.verification_digit.present? %>
+                            -<%= @entity.verification_digit %>
+                        <% end %>
+                    </div>
+                    <!-- ========================= -->
+                    <!-- TABLA PARA PC -->
+                    <!-- ========================= -->
+                    <div class="d-none d-lg-block">
+                        <div class="btn-group gap-2" role="group">
+                            <%= link_to t('.create_matrix_danger_risk'), new_matrix_danger_risk_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level < 3 %>
+                            <%= link_to 'Retornar', matrix_danger_risks_path(entity_id: @matrix_danger_risk.entity_id), class: 'btn btn-sm btn-secondary' %>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#instruDiligenciamiento">
+                                Instrucciones de diligenciamiento
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="instruDiligenciamiento" tabindex="-1" aria-labelledby="instruDiligenciamientoLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="instruDiligenciamientoLabel">Instrucciones de diligenciamiento</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <u>ACTIVIDAD</u>: Describir la actividad General ejemplo permanecia en puesto, jefe, asistente, etc <br>
+                                            <u>TAREA</u>: Descripción paso a paso de la actividad a realizar en los puestos de trabajo <br>
+                                            <u>ACTIVIDAD RUTINARIA</u>: Actividad que forma parte de la operación normal de la organización, se ha planificado y es estandarizable. <br>
+                                            <u>ACTIVIDAD NO RUTINARIA</u>: Actividad que no forma parte de la operación normal de la organización, que no estandarizable debido a la diversidad de escenarios y condiciones bajo las cuales pudiera presentarse. <br>
+                                            <u>ClASIFICACIÓN DE PELIGRO</u>: Seleccionar lista desplegable los peligros <br>
+                                            <u>DESCRIPCIÓN DE PELIGRO</u>: Seleccionar lista desplegable los factores de peligros <br>
+                                            <u>FUENTE</u>: Lo que genera el peligro <br>
+                                            <u>SALUD</u>: Tener en cuanta las condiciones de salud que puede generar la exposición al factor de Peligro, enfermedades de origen laboral <br>
+                                            <u>SEGURIDAD</u>: Efectos posibles en cuanto a lesiones, accidentes laborales <br>
+                                            <u>DESCRIPCIÓN DEL CONTROL EXISTENTE</u>: Controles con los que se cuentan en el momento de la identificación del Peligro <br>
+                                            <u>EXPUESTOS</u>: Escriba el número de personas expuestas directa a un(os) peligro(s). <br> 
+                                            <u>NIVEL DE DEFICIENCIA (ND)</u>: Es la magnitud de la relación esperable entre (1) el conjunto de peligros detectados y su relación causal directa con posibles incidentes y (2) con la eficacia de las medidas preventivas existentes en un lugar de trabajo. <br>
+                                            <u>NIVEL DE EXPOSICIÓN (NE)</u>: Es la situación de exposición a un riesgo que se presenta en un tiempo determinado durante la jornada laboral. <br>
+                                            <u>NIVEL DE PROBABILIDAD (NP)</u>: Es el producto del Nivel de Deficiencia (ND) por el Nivel de Exposición (NE). <br>
+                                            <u>NIVEL DE CONSECUENCIA (NC)</u>: Es una medida de la severidad de las consecuencias. <br>
+                                            <u>NIVEL DE RIESGO</u>: Magnitud de un riesgo resultante del producto del Nivel de Probabilidad (NP) por el Nivel de Consecuencia (NC). <br>
+                                            <u>EVALUACIÓN DEL RIESGO</u>: Proceso para determinar el nivel de riesgo asociado al nivel de probabilidad y el nivel de consecuencia. <br>
+                                            <u>MEDIDAS DE CONTROL</u>: Describa las medidas implementadas en la fuente, medio o persona con el fin de minimizar la ocurrencia de incidentes. <br>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ========================= -->
+                    <!-- VERSION CELULAR -->
+                    <!-- ========================= -->
+                    <div class="d-lg-none">
+                        <div class="d-grid gap-2">
+                            <%= link_to t('.create_matrix_danger_risk'), new_matrix_danger_risk_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary me-2' if Current.user.level > 0 && Current.user.level < 3 %>
+                            <%= link_to 'Retornar', matrix_danger_risks_path(entity_id: @matrix_danger_risk.entity_id), class: 'btn btn-sm btn-secondary me-2' %>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#instruDiligenciamiento">
+                                Instrucciones de diligenciamiento
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="instruDiligenciamiento" tabindex="-1" aria-labelledby="instruDiligenciamientoLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="instruDiligenciamientoLabel">Instrucciones de diligenciamiento</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <u>ACTIVIDAD</u>: Describir la actividad General ejemplo permanecia en puesto, jefe, asistente, etc <br>
+                                            <u>TAREA</u>: Descripción paso a paso de la actividad a realizar en los puestos de trabajo <br>
+                                            <u>ACTIVIDAD RUTINARIA</u>: Actividad que forma parte de la operación normal de la organización, se ha planificado y es estandarizable. <br>
+                                            <u>ACTIVIDAD NO RUTINARIA</u>: Actividad que no forma parte de la operación normal de la organización, que no estandarizable debido a la diversidad de escenarios y condiciones bajo las cuales pudiera presentarse. <br>
+                                            <u>ClASIFICACIÓN DE PELIGRO</u>: Seleccionar lista desplegable los peligros <br>
+                                            <u>DESCRIPCIÓN DE PELIGRO</u>: Seleccionar lista desplegable los factores de peligros <br>
+                                            <u>FUENTE</u>: Lo que genera el peligro <br>
+                                            <u>SALUD</u>: Tener en cuanta las condiciones de salud que puede generar la exposición al factor de Peligro, enfermedades de origen laboral <br>
+                                            <u>SEGURIDAD</u>: Efectos posibles en cuanto a lesiones, accidentes laborales <br>
+                                            <u>DESCRIPCIÓN DEL CONTROL EXISTENTE</u>: Controles con los que se cuentan en el momento de la identificación del Peligro <br>
+                                            <u>EXPUESTOS</u>: Escriba el número de personas expuestas directa a un(os) peligro(s). <br> 
+                                            <u>NIVEL DE DEFICIENCIA (ND)</u>: Es la magnitud de la relación esperable entre (1) el conjunto de peligros detectados y su relación causal directa con posibles incidentes y (2) con la eficacia de las medidas preventivas existentes en un lugar de trabajo. <br>
+                                            <u>NIVEL DE EXPOSICIÓN (NE)</u>: Es la situación de exposición a un riesgo que se presenta en un tiempo determinado durante la jornada laboral. <br>
+                                            <u>NIVEL DE PROBABILIDAD (NP)</u>: Es el producto del Nivel de Deficiencia (ND) por el Nivel de Exposición (NE). <br>
+                                            <u>NIVEL DE CONSECUENCIA (NC)</u>: Es una medida de la severidad de las consecuencias. <br>
+                                            <u>NIVEL DE RIESGO</u>: Magnitud de un riesgo resultante del producto del Nivel de Probabilidad (NP) por el Nivel de Consecuencia (NC). <br>
+                                            <u>EVALUACIÓN DEL RIESGO</u>: Proceso para determinar el nivel de riesgo asociado al nivel de probabilidad y el nivel de consecuencia. <br>
+                                            <u>MEDIDAS DE CONTROL</u>: Describa las medidas implementadas en la fuente, medio o persona con el fin de minimizar la ocurrencia de incidentes. <br>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-5">
+                    <div class="small">
+                        <div class="mb-2">
+                            <strong>Fecha de creación</strong>
+                            <div class="text-muted">
+                                <%= @matrix_danger_risk.created_at.strftime("%F") %> 
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <strong>Representante legal</strong>
+                            <div class="text-muted">
+                                <%=  MatrixDangerRisk.name_user(@matrix_danger_risk.user_legal_representative)  %>
+                            </div>
+                        </div>
+                        <div>
+                            <strong>Firma</strong>
+                            <div class="text-muted">
+                                <% if @matrix_danger_risk.firm_legal_representative.to_i == 0 %>
+                                    <%= link_to t('common.firmar'), firmar_rep_matrix_danger_risks_path(@matrix_danger_risk.id, 1), class: 'btn btn-sm btn btn-warning' %>
+                                <% else %>
+                                       <%= @matrix_danger_risk.date_firm_legal_representative if @matrix_danger_risk.date_firm_legal_representative.present? %>                                 
+                                <% end %>    
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <strong>Asesor SST</strong>
+                            <div class="text-muted">
+                                <%= MatrixDangerRisk.label_firm(@matrix_danger_risk.firm_adviser_sst) %>
+                            </div>
+                        </div>
+                        <div>
+                            <strong>Firma</strong>
+                            <div class="text-muted">
+                                <% if @matrix_danger_risk.firm_legal_representative.to_i == 0 %>
+                                    <%= link_to t('common.firmar'), firmar_adv_matrix_danger_risks_path(@matrix_danger_risk.id, 2), class: 'btn btn-sm btn btn-warning' %>
+                                <% else %>
+                                       <%= @matrix_danger_risk.date_firm_adviser_sst if @matrix_danger_risk.date_firm_adviser_sst.present? %>                                 
+                                <% end %>    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    </br>
-        <td><%= link_to t('common.show_matrix_danger_risk'), ver_matrix_danger_risk_matrix_danger_risks_path(@matrix_danger_risk.id), class: 'btn btn-sm btn btn-warning' %></td>
-        <td><%= link_to t('common.edit_matrix_danger_risk'), edit_matrix_danger_risk_path(@matrix_danger_risk.id), class: 'btn btn-sm btn btn-warning'  if Current.user.level > 0 && Current.user.level < 3 %></td>
-        <td><%= link_to t('common.danger'), crear_item_matrix_danger_risks_path(@matrix_danger_risk.id), class: 'btn btn-sm btn btn-warning' %></td>
-        <td><%= link_to "PDF", resumen_pdf_matrix_danger_risks_path(@matrix_danger_risk.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
-        <td><%= link_to 'Exportar a excel', matrix_danger_risk_path(@matrix_danger_risk, format: :xlsx), class: 'btn btn-sm btn-success' %></td>
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#instruDiligenciamiento">
-            Instrucciones de diligenciamiento
-        </button>
 
-        <!-- Modal -->
-        <div class="modal fade" id="instruDiligenciamiento" tabindex="-1" aria-labelledby="instruDiligenciamientoLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="instruDiligenciamientoLabel">Instrucciones de diligenciamiento</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <u>ACTIVIDAD</u>: Describir la actividad General ejemplo permanecia en puesto, jefe, asistente, etc <br>
-                        <u>TAREA</u>: Descripción paso a paso de la actividad a realizar en los puestos de trabajo <br>
-                        <u>ACTIVIDAD RUTINARIA</u>: Actividad que forma parte de la operación normal de la organización, se ha planificado y es estandarizable. <br>
-                        <u>ACTIVIDAD NO RUTINARIA</u>: Actividad que no forma parte de la operación normal de la organización, que no estandarizable debido a la diversidad de escenarios y condiciones bajo las cuales pudiera presentarse. <br>
-                        <u>ClASIFICACIÓN DE PELIGRO</u>: Seleccionar lista desplegable los peligros <br>
-                        <u>DESCRIPCIÓN DE PELIGRO</u>: Seleccionar lista desplegable los factores de peligros <br>
-                        <u>FUENTE</u>: Lo que genera el peligro <br>
-                        <u>SALUD</u>: Tener en cuanta las condiciones de salud que puede generar la exposición al factor de Peligro, enfermedades de origen laboral <br>
-                        <u>SEGURIDAD</u>: Efectos posibles en cuanto a lesiones, accidentes laborales <br>
-                        <u>DESCRIPCIÓN DEL CONTROL EXISTENTE</u>: Controles con los que se cuentan en el momento de la identificación del Peligro <br>
-                        <u>EXPUESTOS</u>: Escriba el número de personas expuestas directa a un(os) peligro(s). <br> 
-                        <u>NIVEL DE DEFICIENCIA (ND)</u>: Es la magnitud de la relación esperable entre (1) el conjunto de peligros detectados y su relación causal directa con posibles incidentes y (2) con la eficacia de las medidas preventivas existentes en un lugar de trabajo. <br>
-                        <u>NIVEL DE EXPOSICIÓN (NE)</u>: Es la situación de exposición a un riesgo que se presenta en un tiempo determinado durante la jornada laboral. <br>
-                        <u>NIVEL DE PROBABILIDAD (NP)</u>: Es el producto del Nivel de Deficiencia (ND) por el Nivel de Exposición (NE). <br>
-                        <u>NIVEL DE CONSECUENCIA (NC)</u>: Es una medida de la severidad de las consecuencias. <br>
-                        <u>NIVEL DE RIESGO</u>: Magnitud de un riesgo resultante del producto del Nivel de Probabilidad (NP) por el Nivel de Consecuencia (NC). <br>
-                        <u>EVALUACIÓN DEL RIESGO</u>: Proceso para determinar el nivel de riesgo asociado al nivel de probabilidad y el nivel de consecuencia. <br>
-                        <u>MEDIDAS DE CONTROL</u>: Describa las medidas implementadas en la fuente, medio o persona con el fin de minimizar la ocurrencia de incidentes. <br>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+    <!-- =======================================================
+         RESUMEN
+         ======================================================= -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+            <div class="card text-center border-danger shadow-sm h-100">
+                <div class="card-body">
+                    <h2 class="text-danger mb-0">
+                        <%= n1 %>
+                    </h2>
+                    <div class="fw-semibold text-danger">
+                        <a href="<%= total_items_matrix_danger_risks_path(@matrix_danger_risk.id, 'I No Aceptable')%>" class="link-danger">
+                            Nivel I No Aceptable
+                        </a>    
                     </div>
                 </div>
-            </div> 
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <h5 class="mb-0">
+                            Avance Nivel I
+                        </h5>
+                        <strong>
+                            <%= porcentaje1 %>%
+                        </strong>
+                    </div>
+                    <div class="progress" style="height:28px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width:<%= porcentaje1 %>%">
+                            <%= n1 %> / <%= n11 %>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <%= link_to t('common.indicator'), graficosmpr_path(@matrix_danger_risk.id), class: 'btn btn-sm btn btn-success' %>
-        <%= link_to t('common.duplicar_mpr'), duplicar_mpr_matrix_danger_risks_path(@matrix_danger_risk.id), class: 'btn btn-sm btn btn-danger' %>
-        <td><%= link_to "Seleccionar archivo", seleccionar_archivompr_matrix_danger_risks_path(@matrix_danger_risk.id), class: 'btn btn-sm btn-success' %></td>
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#instruCargar">
-            Instrucciones cargar peligros y riesgos
-        </button>
-
-        <!-- Modal -->
-        <div class="modal fade" id="instruCargar" tabindex="-1" aria-labelledby="instruCargarLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="instruCargarLabel">Instrucciones cargar peligros y riesgos</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <u>Solicitar a IA generar el siguiente archivo plano, reemplazar las palabras que se encuentran en negrilla por la información requerida, los cargos deben ser ingresados igual como fueron guardados en cargos de la empresa:</u> <br> Genera un archivo plano separado por "|" con la siguiente estructura de la Guía Técnica Colombiana GTC 45: Proceso|Zona|Cargo|Actividad|Tarea|Rutinaria|Clase_Peligro|Descripcion_Peligro|Efectos_Potenciales|Controles_Fuente|Controles_Medio|Controles_Trabajador|ND|NE|NP|NC|NR|Interpretacion|Aceptabilidad|Medidas_Intervencion eliminación| Medidas_Intervencion sustitución| Medidas_Intervencion control de ingeniería| <br> Incluye los peligros y riesgos aplicables para una empresa de <strong> confecciones </strong> con los <strong>10</strong> siguientes cargos: <strong>Operario de máquinas de confecciones, Corte , Revisado y pulido, Auditora de calidad, Insumos, Empaques, Mecánico, Sublimado, Bonding y cargos administrativos</strong>. Pon actividades y tareas detalladas y reales acorde a cada uno de los cargos mencionados anteriormente. <br> En proceso: diferencialos por administrativos y operativos. <br> En zona/lugar: diferencialos por <strong>planta de confecciones y área administrativa</strong>.<br> En rutinario pon si la tarea es rutinaria o no rutinaria.<br> Controles existentes: sugiere controles que se puedan tener en cada tarea.<br> En medidas de intervención sugiere medidas en eliminación, sustitución y control de ingeniería. <br> Utiliza los peligros y riesgos segun el listado que está a continuación: BIOLÓGICOS Ingestión de alimentos contaminados Contacto con microorganismos Contacto con fluidos corporales o microorganismos SARS- coV2-COVID 19 Ingestión de microorganismos BIOMECÁNICO Posición de pie prolongado Posición sentado prolongado Movimiento repetitivo Carga dinámica Sobreesfuerzos (levantamiento y transporte manual de cargas) Hiperextensión Otras posturas (hiperextensión, cuclillas,posiciones incómodas, etc.). Carga dinámica por sobreesfuerzos de la voz Carga dinámica por sobreesfuerzos visuales ELÉCTRICO Contacto indirecto (alta y baja tensión) Contacto directo (alta y baja tensión) Contacto con electricidad estática FENÓMENOS NATURALES Derrumbes FÍSICO- QUÍMICO Incendio Explosiones FÍSICOS Ruido Iluminación deficiente o en exceso Vibración Temperaturas extremas Presiones anormales Radiaciones ionizantes Radiaciones no ionizantes Humedad Disconfort térmico por calor o por frío. LOCATIVO Condiciones de orden y aseo Caídas al mismo nivel Caídas diferente nivel (menos de 2 mt) Golpeado con o contra Condiciones de pisos, paredes y techos MECÁNICO Manejo de herramientas manuales Contacto con herramientas y superficies cortopunzantes Atrapamiento Contacto con superficies calientes Proyección de partículas PSICOSOCIAL Conflictos interpersonales Altos ritmos de trabajo Monotonía de la tarea Supervisión estricta Capacitación insuficiente Sobrecarga de trabajo Agresiones PÚBLICO Robos, atracos, asaltos, Robos, atracos, asaltos, atentados de orden público, etc. Tránsito QUÍMICOS Gases y vapores Contacto con sustancias químicas Aerosoles líquidos Humos y gases de soldadura Material particulado Salpicadura de químicos TAR (TAREAS DE ALTO RIESGO) Trabajo en alturas Espacios confinados Trabajos en caliente Trabajos con energías peligrosas.
-                        <br>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <div class="col-6 col-lg-3">
+            <div class="card text-center border-danger shadow-sm h-100">
+                <div class="card-body">
+                    <h2 class="text-danger mb-0">
+                        <%= n2 %>
+                    </h2>
+                    <div class="fw-semibold text-danger">
+                        <a href="<%= total_items_matrix_danger_risks_path(@matrix_danger_risk.id, 'II No Aceptable')%>" class="link-danger">                    
+                            Nivel II No Aceptable
+                        </a>    
                     </div>
                 </div>
-            </div> 
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <h5 class="mb-0">
+                            Avance Nivel II
+                        </h5>
+                        <strong>
+                            <%= porcentaje2 %>%
+                        </strong>
+                    </div>
+                    <div class="progress" style="height:28px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width:<%= porcentaje2 %>%">
+                            <%= n2 %> / <%= n21 %>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-
-        <div class="container col-12">
-
-            <br>
-            <div class="row g-2">
-                <div class="col-sm-3">
-                    <strong>Fecha de creación</strong><br>
-                    <%= @matrix_danger_risk.created_at.strftime("%F") %> 
-                </div>        
-            </div>
-
-            <hr>
-
-            <div class="row g-4">
-                <div class="col-sm-3">
-                    <strong><%= t('.user_legal_representative') %></strong><br>
-                    <%=  MatrixDangerRisk.name_user(@matrix_danger_risk.user_legal_representative)  %> 
-                </div>        
-                <div class="col-sm-3">
-                    <strong><%= t('.firm_legal_representative') %></strong><br>
-                    <%= MatrixDangerRisk.label_firm(@matrix_danger_risk.firm_legal_representative) %> 
-                </div>        
-                <div class="col-sm-3">
-                    <strong><%= t('.date_firm_legal_representative') %></strong><br>
-                    <%= @matrix_danger_risk.date_firm_legal_representative %> 
+        <div class="col-6 col-lg-3">
+            <div class="card text-center border-warning shadow-sm h-100">
+                <div class="card-body">
+                    <h2 class="text-warning mb-0">
+                        <%= n3 %>
+                    </h2>
+                    <div class="fw-semibold text-warning">
+                        <a href="<%= total_items_matrix_danger_risks_path(@matrix_danger_risk.id, 'III Aceptable')%>" class="link-warning">
+                            Nivel III Aceptable
+                        </a>    
+                    </div>
                 </div>
-                <div class="col-sm-3">
-                    <% if @matrix_danger_risk.firm_legal_representative.to_i == 0 %>
-                        <%= link_to t('common.firmar'), firmar_rep_matrix_danger_risks_path(@matrix_danger_risk.id, 1), class: 'btn btn-sm btn btn-warning' %>
-                    <% end %>    
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <h5 class="mb-0">
+                            Avance Nivel III
+                        </h5>
+                        <strong>
+                            <%= porcentaje3 %>%
+                        </strong>
+                    </div>
+                    <div class="progress" style="height:28px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width:<%= porcentaje3 %>%">
+                            <%= n3 %> / <%= n31 %>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row g-4">
-                <div class="col-sm-3">
-                    <strong><%= t('.user_adviser_sst') %></strong><br>
-                    <%= MatrixDangerRisk.name_user(@matrix_danger_risk.user_adviser_sst) %> 
-                </div>        
-                <div class="col-sm-3">
-                    <strong><%= t('.firm_adviser_sst') %></strong><br>
-                    <%= MatrixDangerRisk.label_firm(@matrix_danger_risk.firm_adviser_sst) %> 
-                </div>        
-                <div class="col-sm-3">
-                    <strong><%= t('.date_firm_adviser_sst') %></strong><br>
-                    <%= @matrix_danger_risk.date_firm_adviser_sst %> 
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card text-center border-success shadow-sm h-100">
+                <div class="card-body">
+                    <h2 class="text-success mb-0">
+                        <%= n4 %>
+                    </h2>
+                    <div class="fw-semibold text-success">
+                        <a href="<%= total_items_matrix_danger_risks_path(@matrix_danger_risk.id, 'IV Aceptable')%>" class="link-success">
+                            Nivel IV Aceptable
+                        </a>    
+                    </div>
                 </div>
-                <div class="col-sm-3">
-                    <% if @matrix_danger_risk.firm_adviser_sst.to_i == 0 %>
-                        <%= link_to t('common.firmar'), firmar_adv_matrix_danger_risks_path(@matrix_danger_risk.id, 2), class: 'btn btn-sm btn btn-warning' %>
-                    <% end %>      
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <h5 class="mb-0">
+                            Avance Nivel IV
+                        </h5>
+                        <strong>
+                            <%= porcentaje4 %>%
+                        </strong>
+                    </div>
+                    <div class="progress" style="height:28px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width:<%= porcentaje4 %>%">
+                            <%= n4 %> / <%= n41 %>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between mb-2">
+                <h5 class="mb-0">
+                    Avance Total
+                </h5>
+                <strong>
+                    <%= porcentaje %>%
+                </strong>
+            </div>
+            <div class="progress" style="height:28px;">
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width:<%= porcentaje %>%">
+                    <%= (n11.to_f + n21.to_f + n31.to_f + n41.to_f) %> / <%= total_items %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ========================= -->
+    <!-- TABLA PARA PC -->
+    <!-- ========================= -->    
+    <% if @matrix_danger_risk.present? %>
+        <div class="d-none d-lg-block">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <%= link_to t('common.show_matrix_danger_risk'), ver_matrix_danger_risk_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-info btn-sm me-2" %>
+                                    <%= link_to t('common.edit_matrix_danger_risk'), edit_matrix_danger_risk_path(@matrix_danger_risk.id), class:"btn btn-warning btn-sm me-2" if Current.user.level > 0 && Current.user.level < 3 %>
+                                    <%= link_to t('common.danger'), crear_item_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" %>
+                                    <%= link_to "PDF", resumen_pdf_matrix_danger_risks_path(@matrix_danger_risk.id, format: 'pdf'), class:"btn btn-success btn-sm me-2" %>
+                                    <%= link_to "XLS", matrix_danger_risk_path(@matrix_danger_risk, format: :xlsx), class:"btn btn-success btn-sm me-2" %>
+                                    <%= link_to t('common.indicator'), graficosmpr_path(@matrix_danger_risk.id), class:"btn btn-info btn-sm me-2" %>
+                                    <%= link_to t('common.duplicar_mpr'), duplicar_mpr_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" %>
+                                    <%= link_to "Cargar archivo", seleccionar_archivompr_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" %>
+                                    <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#instruCargar">
+                                        Instrucciones cargar peligros y riesgos
+                                    </button>
 
-        </div>           
-        <br> 
-        <div class="container">
-            <h class="display-6">Resumen estado de los Peligros y Riesgos</h>
-        </div> 
-        <div class="container">
-            <table class="table table-hover">
-                <tr>
-                    <td>
-                        <a class="btn btn-sm btn-primary" href="<%= total_items_matrix_danger_risks_path(@matrix_danger_risk.id, 'T')%>" role="button" >
-                            Total Peligros y Riesgos <span class="badge bg-secondary"><%= @total_items.to_i %></td> </span>
-                        </button>
-                    </td> 
-                    <td>
-                        <a class="btn btn-sm btn-primary" href="<%= total_items_matrix_danger_risks_path(@matrix_danger_risk.id, 'I No Aceptable')%>" role="button" >
-                            Nivel I <span class="badge bg-danger"><%= @uno.to_i %></td> </span>
-                        </button>
-                    </td>
-                    <td>
-                        <a class="btn btn-sm btn-primary" href="<%= total_items_matrix_danger_risks_path(@matrix_danger_risk.id, 'II No Aceptable')%>" role="button" >
-                            Nivel II <span class="badge bg-warning"><%= @dos.to_i %></td> </span>
-                        </button>
-                    </td>
-                    <td>
-                        <a class="btn btn-sm btn-primary" href="<%= total_items_matrix_danger_risks_path(@matrix_danger_risk.id, 'III Aceptable')%>" role="button" >
-                            Nivel III <span class="badge bg-warning"><%= @tres.to_i %></td> </span>
-                        </button>
-                    </td>
-                    <td>
-                        <a class="btn btn-sm btn-primary" href="<%= total_items_matrix_danger_risks_path(@matrix_danger_risk.id, 'IV Aceptable')%>" role="button" >
-                            Nivel IV <span class="badge bg-success"><%= @cuatro.to_i %></td> </span>
-                        </button>
-                    </td>
-                </tr>
-            </table>  
-        </div> 
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="instruCargar" tabindex="-1" aria-labelledby="instruCargarLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="instruCargarLabel">Instrucciones cargar peligros y riesgos</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <u>Solicitar a IA generar el siguiente archivo plano, reemplazar las palabras que se encuentran en negrilla por la información requerida, los cargos deben ser ingresados igual como fueron guardados en cargos de la empresa:</u> <br> Genera un archivo plano separado por "|" con la siguiente estructura de la Guía Técnica Colombiana GTC 45: Proceso|Zona|Cargo|Actividad|Tarea|Rutinaria|Clase_Peligro|Descripcion_Peligro|Efectos_Potenciales|Controles_Fuente|Controles_Medio|Controles_Trabajador|ND|NE|NP|NC|NR|Interpretacion|Aceptabilidad|Medidas_Intervencion eliminación| Medidas_Intervencion sustitución| Medidas_Intervencion control de ingeniería| <br> Incluye los peligros y riesgos aplicables para una empresa de <strong> confecciones </strong> con los <strong>10</strong> siguientes cargos: <strong>Operario de máquinas de confecciones, Corte , Revisado y pulido, Auditora de calidad, Insumos, Empaques, Mecánico, Sublimado, Bonding y cargos administrativos</strong>. Pon actividades y tareas detalladas y reales acorde a cada uno de los cargos mencionados anteriormente. <br> En proceso: diferencialos por administrativos y operativos. <br> En zona/lugar: diferencialos por <strong>planta de confecciones y área administrativa</strong>.<br> En rutinario pon si la tarea es rutinaria o no rutinaria.<br> Controles existentes: sugiere controles que se puedan tener en cada tarea.<br> En medidas de intervención sugiere medidas en eliminación, sustitución y control de ingeniería. <br> Utiliza los peligros y riesgos segun el listado que está a continuación: BIOLÓGICOS Ingestión de alimentos contaminados Contacto con microorganismos Contacto con fluidos corporales o microorganismos SARS- coV2-COVID 19 Ingestión de microorganismos BIOMECÁNICO Posición de pie prolongado Posición sentado prolongado Movimiento repetitivo Carga dinámica Sobreesfuerzos (levantamiento y transporte manual de cargas) Hiperextensión Otras posturas (hiperextensión, cuclillas,posiciones incómodas, etc.). Carga dinámica por sobreesfuerzos de la voz Carga dinámica por sobreesfuerzos visuales ELÉCTRICO Contacto indirecto (alta y baja tensión) Contacto directo (alta y baja tensión) Contacto con electricidad estática FENÓMENOS NATURALES Derrumbes FÍSICO- QUÍMICO Incendio Explosiones FÍSICOS Ruido Iluminación deficiente o en exceso Vibración Temperaturas extremas Presiones anormales Radiaciones ionizantes Radiaciones no ionizantes Humedad Disconfort térmico por calor o por frío. LOCATIVO Condiciones de orden y aseo Caídas al mismo nivel Caídas diferente nivel (menos de 2 mt) Golpeado con o contra Condiciones de pisos, paredes y techos MECÁNICO Manejo de herramientas manuales Contacto con herramientas y superficies cortopunzantes Atrapamiento Contacto con superficies calientes Proyección de partículas PSICOSOCIAL Conflictos interpersonales Altos ritmos de trabajo Monotonía de la tarea Supervisión estricta Capacitación insuficiente Sobrecarga de trabajo Agresiones PÚBLICO Robos, atracos, asaltos, Robos, atracos, asaltos, atentados de orden público, etc. Tránsito QUÍMICOS Gases y vapores Contacto con sustancias químicas Aerosoles líquidos Humos y gases de soldadura Material particulado Salpicadura de químicos TAR (TAREAS DE ALTO RIESGO) Trabajo en alturas Espacios confinados Trabajos en caliente Trabajos con energías peligrosas.
+                                                    <br>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- ========================= -->
+        <!-- VERSION CELULAR -->
+        <!-- ========================= -->
+        <div class="d-lg-none">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <%= link_to t('common.show_matrix_danger_risk'), ver_matrix_danger_risk_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-info btn-sm me-2" %>
+                                    <%= link_to t('common.edit_matrix_danger_risk'), edit_matrix_danger_risk_path(@matrix_danger_risk.id), class:"btn btn-warning btn-sm me-2" if Current.user.level > 0 && Current.user.level < 3 %>
+                                    <%= link_to t('common.danger'), crear_item_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" %>
+                                    <%= link_to "PDF", resumen_pdf_matrix_danger_risks_path(@matrix_danger_risk.id, format: 'pdf'), class:"btn btn-success btn-sm me-2" %>
+                                    <%= link_to "XLS", matrix_danger_risk_path(@matrix_danger_risk, format: :xlsx), class:"btn btn-success btn-sm me-2" %>
+                                    <%= link_to t('common.indicator'), graficosmpr_path(@matrix_danger_risk.id), class:"btn btn-info btn-sm me-2" %>
+                                    <%= link_to t('common.duplicar_mpr'), duplicar_mpr_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" %>
+                                    <%= link_to "Cargar archivo", seleccionar_archivompr_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" %>
+                                    <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#instruCargar">
+                                        Instrucciones cargar peligros y riesgos
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="instruCargar" tabindex="-1" aria-labelledby="instruCargarLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="instruCargarLabel">Instrucciones cargar peligros y riesgos</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <u>Solicitar a IA generar el siguiente archivo plano, reemplazar las palabras que se encuentran en negrilla por la información requerida, los cargos deben ser ingresados igual como fueron guardados en cargos de la empresa:</u> <br> Genera un archivo plano separado por "|" con la siguiente estructura de la Guía Técnica Colombiana GTC 45: Proceso|Zona|Cargo|Actividad|Tarea|Rutinaria|Clase_Peligro|Descripcion_Peligro|Efectos_Potenciales|Controles_Fuente|Controles_Medio|Controles_Trabajador|ND|NE|NP|NC|NR|Interpretacion|Aceptabilidad|Medidas_Intervencion eliminación| Medidas_Intervencion sustitución| Medidas_Intervencion control de ingeniería| <br> Incluye los peligros y riesgos aplicables para una empresa de <strong> confecciones </strong> con los <strong>10</strong> siguientes cargos: <strong>Operario de máquinas de confecciones, Corte , Revisado y pulido, Auditora de calidad, Insumos, Empaques, Mecánico, Sublimado, Bonding y cargos administrativos</strong>. Pon actividades y tareas detalladas y reales acorde a cada uno de los cargos mencionados anteriormente. <br> En proceso: diferencialos por administrativos y operativos. <br> En zona/lugar: diferencialos por <strong>planta de confecciones y área administrativa</strong>.<br> En rutinario pon si la tarea es rutinaria o no rutinaria.<br> Controles existentes: sugiere controles que se puedan tener en cada tarea.<br> En medidas de intervención sugiere medidas en eliminación, sustitución y control de ingeniería. <br> Utiliza los peligros y riesgos segun el listado que está a continuación: BIOLÓGICOS Ingestión de alimentos contaminados Contacto con microorganismos Contacto con fluidos corporales o microorganismos SARS- coV2-COVID 19 Ingestión de microorganismos BIOMECÁNICO Posición de pie prolongado Posición sentado prolongado Movimiento repetitivo Carga dinámica Sobreesfuerzos (levantamiento y transporte manual de cargas) Hiperextensión Otras posturas (hiperextensión, cuclillas,posiciones incómodas, etc.). Carga dinámica por sobreesfuerzos de la voz Carga dinámica por sobreesfuerzos visuales ELÉCTRICO Contacto indirecto (alta y baja tensión) Contacto directo (alta y baja tensión) Contacto con electricidad estática FENÓMENOS NATURALES Derrumbes FÍSICO- QUÍMICO Incendio Explosiones FÍSICOS Ruido Iluminación deficiente o en exceso Vibración Temperaturas extremas Presiones anormales Radiaciones ionizantes Radiaciones no ionizantes Humedad Disconfort térmico por calor o por frío. LOCATIVO Condiciones de orden y aseo Caídas al mismo nivel Caídas diferente nivel (menos de 2 mt) Golpeado con o contra Condiciones de pisos, paredes y techos MECÁNICO Manejo de herramientas manuales Contacto con herramientas y superficies cortopunzantes Atrapamiento Contacto con superficies calientes Proyección de partículas PSICOSOCIAL Conflictos interpersonales Altos ritmos de trabajo Monotonía de la tarea Supervisión estricta Capacitación insuficiente Sobrecarga de trabajo Agresiones PÚBLICO Robos, atracos, asaltos, Robos, atracos, asaltos, atentados de orden público, etc. Tránsito QUÍMICOS Gases y vapores Contacto con sustancias químicas Aerosoles líquidos Humos y gases de soldadura Material particulado Salpicadura de químicos TAR (TAREAS DE ALTO RIESGO) Trabajo en alturas Espacios confinados Trabajos en caliente Trabajos con energías peligrosas.
+                                                    <br>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <hr>
 
-        <div class="row g-2">
+        <div class="row g-2 mb-5">
             <div class="col-sm-4">
                 <% if @matrix_danger_risk.present? %>  
                    <%= form_with url: matrix_danger_risk_path(@matrix_danger_risk.id), method: :get do |form| %>
@@ -202,67 +467,112 @@
             </div>  
 
         </div>  
-
-        <br>
-        <h2>Peligros y Riesgos</h2>
-        <table class="table table-hover"> 
-            <thead> 
-                <tr>
-                    <th scope="col">Nro.</th>
-                    <th scope="col">Fecha Creación</th>
-                    <th scope="col">Fecha Modificación</th>
-                    <th scope="col">Cargo</th>
-                    <th scope="col">Tarea</th>
-                    <th scope="col">Clasificación</th>
-                    <th scope="col">Descripción</th>
-                    <th scope="col">Nivel de riesgo</th>
-                    <th scope="col">Intervenido</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-
-            <% @nro = 0 %>
-            <% if @matrix_danger_items.present? %>   
-                <% @matrix_danger_items.each do |matrix_danger_item| %>
-                    <% @nro += 1 %>    
-                    <tr> 
-                        <td scope="col"><%= @nro %></td>
-                        <td scope="col"><%= matrix_danger_item.created_at.strftime("%F")  %></td>  
-                        <td scope="col"><%= matrix_danger_item.updated_at.strftime("%F")  %></td>  
-                        <td scope="col"><%= CompanyPosition.name_cargo(matrix_danger_item.type_cargo) %></td>
-                        <td scope="col"><button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="<%= matrix_danger_item.task %>"><%= matrix_danger_item.task.slice(0, 20) %>...</button></td>
-                        <td scope="col"><%= matrix_danger_item.clasification_danger_detail.clasification_danger.name if matrix_danger_item.clasification_danger_detail_id.present? && matrix_danger_item.clasification_danger_detail_id.to_i > 0 %></td>
-                        <td scope="col"><%= matrix_danger_item.clasification_danger_detail.name if matrix_danger_item.clasification_danger_detail_id.present? && matrix_danger_item.clasification_danger_detail_id.to_i > 0 %></td>
-                        <% if matrix_danger_item.risk_level_interpretation.to_s == 'I No Aceptable'  %>
-                            <td style="border:1px solid black; text-align:center; background-color:#F03553"><%= matrix_danger_item.risk_level_interpretation %></td>
-                        <% end  %>    
-                        <% if matrix_danger_item.risk_level_interpretation.to_s == 'II No Aceptable'  %>
-                            <td style="border:1px solid black; text-align:center; background-color:#D98F3B"><%= matrix_danger_item.risk_level_interpretation %></td>
-                        <% end  %>    
-                        <% if matrix_danger_item.risk_level_interpretation.to_s == 'III Aceptable'  %>
-                            <td style="border:1px solid black; text-align:center; background-color:#F0E835"><%= matrix_danger_item.risk_level_interpretation %></td>
-                        <% end  %>    
-                        <% if matrix_danger_item.risk_level_interpretation.to_s == 'IV Aceptable'  %>
-                            <td style="border:1px solid black; text-align:center; background-color:#038018"><%= matrix_danger_item.risk_level_interpretation %></td>
-                        <% end  %>    
-                        <% if matrix_danger_item.danger_intervened == 0  %>
-                            <td style="text-align:center;">NO</td>
-                        <% else  %>    
-                            <td style="text-align:center;">SI</td>
-                        <% end  %>    
-                        <td><%= link_to t('common.update_matrix_danger_item'), edit_matrix_danger_item_path(matrix_danger_item.id), class: 'btn btn-sm btn-warning' %></br>
-                            <%= button_to 'Duplicar',  duplicar_item_matrix_danger_risks_path(matrix_danger_item.id), class:'btn btn-sm btn-warning' %></br>  
-                            <%= button_to 'Delete', matrix_danger_item, method: :delete, class:'btn btn-sm btn-danger' %></td>
-                    </tr>
-                <% end %>    
-            <% end %>  
-        </table>  
-        <br> 
-        <hr> 
-<% else %>
-    <div>
-        <%= link_to t('.create_matrix_danger_risk'), new_matrix_danger_risk_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level < 3 %>
+        <div class="col-12 col-lg-7">
+            <h3 class="fw-bold mb-2 text-primary">
+                Peligros y Riesgos
+            </h3>
+        </div>    
+       <div class="table-responsive">
+            <table class="table table-bordered table-sm align-middle text-center">
+                <thead class="table-light">
+                    <tr>
+                        <th style="writing-mode: vertical-rl; transform: rotate(180deg); min-width:45px;">
+                            Nro.
+                        </th>
+                        <th style="writing-mode: vertical-rl; transform: rotate(180deg); min-width:45px;">
+                            Fecha Creación
+                        </th>
+                        <th style="writing-mode: vertical-rl; transform: rotate(180deg); min-width:45px;">
+                            Fecha Modificación
+                        </th>
+                        <th style="writing-mode: vertical-rl; transform: rotate(180deg); min-width:45px;">
+                            Cargo
+                        </th>
+                        <th style="writing-mode: vertical-rl; transform: rotate(180deg); min-width:45px;">
+                            Tarea
+                        </th>
+                        <th style="writing-mode: vertical-rl; transform: rotate(180deg); min-width:45px;">
+                            Clasificación
+                        </th>
+                        <th style="writing-mode: vertical-rl; transform: rotate(180deg); min-width:45px;">
+                            Descripción
+                        </th>
+                        <th style="writing-mode: vertical-rl; transform: rotate(180deg); min-width:45px;">
+                            Nivel de riesgo
+                        </th>
+                        <th style="writing-mode: vertical-rl; transform: rotate(180deg); min-width:45px;">
+                            Intervenido
+                        </th>
+                        <th style="min-width:45px;">
+                            Acciones
+                        </th>
+                    </tr>    
+                </thead>
+                <tbody>
+                    <% @nro = 0 %>
+                    <% if @matrix_danger_items.present? %>
+                        <% @matrix_danger_items.each do |matrix_danger_item| %>
+                            <% @nro += 1 %>
+                            <tr>
+                                <td class="text-center">
+                                    <small><%= @nro %></small>
+                                </td>
+                                <td>
+                                    <small><%= matrix_danger_item.created_at.strftime("%F")  %></small>
+                                </td>
+                                <td class="text-center">
+                                    <small><%= matrix_danger_item.updated_at.strftime("%F")  %></small>
+                                </td>
+                                <td class="text-center">
+                                    <small><%= CompanyPosition.name_cargo(matrix_danger_item.type_cargo) %></small>
+                                </td>
+                                <td class="text-center">
+                                    <small><button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="<%= matrix_danger_item.task %>"><%= matrix_danger_item.task.slice(0, 20) %>...</button></small>
+                                </td>
+                                <td class="text-center">
+                                    <small><%= matrix_danger_item.clasification_danger_detail.clasification_danger.name if matrix_danger_item.clasification_danger_detail_id.present? && matrix_danger_item.clasification_danger_detail_id.to_i > 0 %></small>
+                                </td>
+                                <td class="text-center">
+                                    <small><%= matrix_danger_item.clasification_danger_detail.name if matrix_danger_item.clasification_danger_detail_id.present? && matrix_danger_item.clasification_danger_detail_id.to_i > 0 %></small>
+                                </td>
+                                <% if matrix_danger_item.risk_level_interpretation.to_s == 'I No Aceptable'  %>
+                                    <td style="border:1px solid black; text-align:center; background-color:#F03553"><small><%= matrix_danger_item.risk_level_interpretation %></small></td>
+                                <% end  %>    
+                                <% if matrix_danger_item.risk_level_interpretation.to_s == 'II No Aceptable'  %>
+                                    <td style="border:1px solid black; text-align:center; background-color:#D98F3B"><small><%= matrix_danger_item.risk_level_interpretation %></small></td>
+                                <% end  %>    
+                                <% if matrix_danger_item.risk_level_interpretation.to_s == 'III Aceptable'  %>
+                                    <td style="border:1px solid black; text-align:center; background-color:#F0E835"><small><%= matrix_danger_item.risk_level_interpretation %></small></td>
+                                <% end  %>    
+                                <% if matrix_danger_item.risk_level_interpretation.to_s == 'IV Aceptable'  %>
+                                    <td style="border:1px solid black; text-align:center; background-color:#038018"><small><%= matrix_danger_item.risk_level_interpretation %></small></td>
+                                <% end  %>    
+                                <% if matrix_danger_item.danger_intervened == 0  %>
+                                    <td style="text-align:center;"><small>NO</small></td>
+                                <% else  %>    
+                                    <td style="text-align:center;"><small>SI</small></td>
+                                <% end  %>    
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-4 mt-3">
+                                        <%= link_to t('common.update_matrix_danger_item'), edit_matrix_danger_item_path(matrix_danger_item.id), class:"btn btn-warning btn-sm me-2 gap-3" %></br>
+                                        <%= button_to 'Duplicar',  duplicar_item_matrix_danger_risks_path(matrix_danger_item.id), class:"btn btn-primary btn-sm me-2 gap-3" %></br>  
+                                        <%= button_to "Eliminar", matrix_danger_item, method: :delete, class: "btn btn-danger btn-sm gap-3", data: {turbo_confirm: "¿Está seguro de eliminar este registro? Esta acción no se puede deshacer." } %>                                            
+                                    </div>
+                                </td>
+                            </tr>
+                        <% end %>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+    <% else %>
+        <div>
+            <%= link_to t('.create_matrix_danger_risk'), new_matrix_danger_risk_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level < 3 %>
+        </div>
+    <% end %>
+    <div class="text-muted">
+         <%= link_to 'Retornar', matrix_danger_risks_path(entity_id: @matrix_danger_risk.entity_id), class: 'btn btn-sm btn-secondary' %>
     </div>
-<% end %>
+</div>
 
 

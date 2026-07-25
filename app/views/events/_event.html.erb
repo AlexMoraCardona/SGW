@@ -5,8 +5,19 @@
     <td style="text-align:center;"><%= Event.labelsino(event.work_accident) %></td>
     <td style="text-align:center;"><%= Event.labelsino(event.mortal_accident) %></td>
     <td style="text-align:center;"><%= Event.labelsino(event.occupational_disease) %></td>
-    <td><%= link_to t('common.show'), event, class: 'btn btn-sm btn-primary' %></td>
-    <td><%= link_to t('common.edit'), edit_event_path(event), class: 'btn btn-sm btn-secondary'  %></td>
-    <td><%= button_to "Delete", event, method: :delete, class:"btn btn-sm btn-danger"  if Current.user.level > 0 &&  Current.user.level < 3 %></td>
+    <td><%= link_to event, class: "btn btn-sm btn-primary text-nowrap" do %>
+            <i class="bi bi-eye-fill me-1"></i><%= t('common.show') %>
+        <% end %>
+    </td>
+    <td><%= link_to edit_event_path(event), class: "btn btn-warning btn-sm text-nowrap" do %> 
+            <i class="bi bi-pencil-square me-1"></i><%= t('common.edit') %>
+        <% end %>
+    </td>
+    <td><% if Current.user.level > 0 &&  Current.user.level < 3 %>
+            <%= button_to event, method: :delete, class: "btn btn-danger btn-sm text-nowrap", form_class: "w-100", data: {turbo_confirm: "¿Está seguro de eliminar este registro? Esta acción no se puede deshacer." } do %>
+                <i class="bi bi-trash me-1"></i><%= t('common.delete') %>
+            <% end %>
+        <% end %>
+    </td>
 </tr>
 

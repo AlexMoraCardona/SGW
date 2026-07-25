@@ -1,11 +1,42 @@
-<tr>
-    <td><%= report_official.year %></td>
-    <td><%= ReportOfficial.label_month(report_official.month) %></td>
-    <td><%= ReportOfficial.label_entidad(report_official.entity_id) %></td>
-    <td><%= report_official.total_officials %></td>
-    <td><%= report_official.working_days_month %></td> 
-    <td><%= link_to t('common.edit'), edit_report_official_path(report_official), class: 'btn btn-sm btn-primary'  %></td>
-    <td><%= button_to "Delete", report_official, method: :delete, class:"btn btn-sm btn-danger" %></td>
-    <td><%= link_to t('common.update_indicator'), actualizar_indicadores_report_officials_path(report_official), class: 'btn btn-sm btn-primary'  %></td>
-
+<tr class="align-middle">
+    <td class="text-center">
+        <%= report_official.year %>
+    </td>
+    <td class="text-center text-nowrap">
+        <%= ReportOfficial.label_month(report_official.month) %>
+    </td>
+    <td>
+        <%= ReportOfficial.label_entidad(report_official.entity_id) %>
+    </td>
+    <td class="text-center">
+        <%= report_official.total_officials %>
+    </td>
+    <td class="text-center">
+        <%= report_official.working_days_month %>
+    </td>
+    <td class="text-center">
+        <div class="d-grid gap-2">
+            <%= link_to edit_report_official_path(report_official), class: "btn btn-warning btn-sm text-nowrap" do %> 
+                <i class="bi bi-pencil-square me-1"></i>
+                <%= t('common.edit') %>
+            <% end %>
+        </div>
+    </td>
+    <td class="text-center">
+        <div class="d-grid gap-2">
+            <%= button_to report_official, method: :delete, class: "btn btn-danger btn-sm text-nowrap", form_class: "w-100", data: {turbo_confirm: "¿Está seguro de eliminar este registro? Esta acción no se puede deshacer." } do %>
+                <i class="bi bi-trash me-1"></i>
+                <%= t('common.delete') %>
+            <% end %>
+        </div>
+    </td>
+    <td class="text-center">
+        <div class="d-grid gap-2">
+            <%= link_to actualizar_indicadores_report_officials_path(report_official), class: "btn btn-success btn-sm text-nowrap" do %>
+                <i class="bi bi-arrow-repeat me-1"></i>
+                <%= t('common.update_indicator') %>
+            <% end %>
+        </div>
+    </td>
 </tr>
+

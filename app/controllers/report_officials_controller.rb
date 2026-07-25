@@ -13,7 +13,8 @@ class ReportOfficialsController < ApplicationController
     end    
 
     def new
-      @report_official = ReportOfficial.new  
+      @report_official = ReportOfficial.new
+      @entity = Entity.find(Current.user.entity)  
     end    
 
     def create
@@ -28,6 +29,7 @@ class ReportOfficialsController < ApplicationController
  
     def edit
         @report_official = ReportOfficial.find(params[:id])
+        @entity = Entity.find(Current.user.entity) 
     end
     
     def update

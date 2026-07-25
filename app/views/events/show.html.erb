@@ -1,126 +1,288 @@
-<div align="left"; class="container col-12">
-    <a class="navbar-brand" href="/">
-        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-    </a>
+<!-- ========================================================= -->
+<!-- ENCABEZADO / LOGO -->
+<!-- ========================================================= -->
+<div class="container-fluid py-3">
+  <div class="card shadow-sm border-0">
+    <div class="card-body"> 
+      <%= link_to root_path, class: "d-inline-block" do %>
+        <%= image_tag "LogoConesst202305232.png", width: 100, height: 100, class: "img-fluid", alt: "Logo CONESST" %>
+      <% end %>
+    </div>
+  </div>
 </div>
-<div class="container col-11"> 
-    <div class="row g-2">
-        <div class="col-sm-10">
-            <h2 class="display-5"><%= t('.title')%></h2>
-        </div>        
-        <div class="col-sm-1">
-            <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, events_path %>
-        </div> 
-        <hr>
-    </div>            
-</div>  
 
-<div class="container col-11">
-    <br>
-        <div class="row g-3">
-            <div class="col-sm-6">
-                <strong><%= t('.entity_id') %></strong>
-                <%= @event.entity.business_name %> 
-            </div>        
-            <div class="col-sm-6">
-               <strong><%= t('.date_new') %></strong>
-               <%= @event.date_new %>
-            </div>        
-        </div>   
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-11">
-                <strong><%= t('.user_id') %></strong>
-                <%= @event.user.name %> 
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3"> 
-            <div class="col-sm-4">
-               <strong><%= t('.work_accident') %></strong>
-               <%= @event.label_work_accident %>
-            </div>        
-            <div class="col-sm-4">
-                <strong><%= t('.mortal_accident') %></strong>
-                <%= @event.label_mortal_accident %>
-            </div>        
-            <div class="col-sm-4">
-                <strong><%= t('.occupational_disease') %></strong>
-                <%= @event.label_occupational_disease %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">
-               <strong><%= t('.disability_start_date') %></strong>
-               <%= @event.disability_start_date %>
-            </div>        
-            <div class="col-sm-4">
-                <strong><%= t('.disability_end_date') %></strong>
-                <%= @event.disability_end_date %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">
-               <strong><%= t('.laboral_inhability') %></strong>
-               <%= @event.label_laboral_inhability %>
-            </div>        
-            <div class="col-sm-4">
-                <strong><%= t('.common_inhability') %></strong>
-                <%= @event.label_common_inhability %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-2">
-            <div class="col-sm-4">
-               <strong><%= t('.user_reports') %></strong>
-               <%= User.label_name(@event.user_reports) %>
-            </div>        
-            <div class="col-sm-4">
-                <strong><%= t('.days_absenteeism') %></strong>
-                <%= @event.days_absenteeism %>
-            </div>        
-        </div>  
-        <div class="row g-1">
-            <div class="col-sm-10">
-                <strong><%= t('.affected_body') %></strong>
-                <%= Event.label_affected_body(@event.affected_body) %> 
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-1">
-            <div class="col-sm-10">
-                <strong><%= t('.type_injure') %></strong>
-                <%= Event.label_type_injure(@event.type_injure) %> 
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-1">
-            <div class="col-sm-10"> 
-                <strong><%= t('.accident_agent') %></strong>
-                <%= Event.label_accident_agent(@event.accident_agent) %> 
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-1">
-            <div class="col-sm-10">
-                <strong><%= t('.accident_mechanism') %></strong>
-                <%= Event.label_accident_mechanism(@event.accident_mechanism) %> 
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-1">
-            <div class="col-sm-10">
-                <strong><%= t('.name_disease') %></strong>
-                <%=  DetailDisease.label_name_disease(@event.name_disease)    %> 
-            </div>        
-        </div>  
-        <br>
-        
-</div>    
-<br>
+<div class="container-fluid px-3 px-md-4 mb-4">
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+      <div class="row align-items-center g-3">
+        <div class="col-12 col-md">
+          <h2 class="display-6 mb-0">
+            <%= t(".title") %>
+          </h2>
+        </div>
+        <div class="col-12 col-md-auto text-center text-md-end">
+          <%= link_to events_path, class: "btn btn-secondary px-4" do %>
+            <i class="bi bi-arrow-left me-1"></i>
+            Retornar
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
+<div class="container-fluid px-3 px-md-4 pb-4">
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-body-tertiary">
+      <h5 class="mb-0 fw-semibold">
+        <i class="bi bi-info-circle me-2"></i>
+        Información del evento
+      </h5>
+    </div>
+    <div class="card-body">
+      <div class="row g-4 mb-4">
+        <div class="col-12 col-lg-6">
+          <div class="border rounded p-3 h-100">
+            <div class="text-muted small fw-semibold mb-1">
+              <%= t(".entity_id") %>
+            </div>
 
+            <div class="fw-semibold">
+              <%= @event.entity.business_name %>
+            </div>
+          </div>
+        </div>
 
+        <div class="col-12 col-lg-6">
+          <div class="border rounded p-3 h-100">
+            <div class="text-muted small fw-semibold mb-1">
+              <%= t(".date_new") %>
+            </div>
 
+            <div class="fw-semibold">
+              <%= @event.date_new %>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="border rounded p-3">
+            <div class="text-muted small fw-semibold mb-1">
+              <%= t(".user_id") %>
+            </div>
+
+            <div class="fw-semibold">
+              <%= @event.user.name %>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <h5 class="border-bottom pb-2 mb-4">
+        <i class="bi bi-clipboard2-pulse me-2"></i>
+        Clasificación del evento
+      </h5>
+
+      <div class="row g-4 mb-4">
+        <div class="col-12 col-md-4">
+          <div class="border rounded p-3 h-100">
+            <div class="text-muted small fw-semibold mb-1">
+              <%= t(".work_accident") %>
+            </div>
+
+            <div class="fw-semibold">
+              <%= @event.label_work_accident %>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <div class="border rounded p-3 h-100">
+            <div class="text-muted small fw-semibold mb-1">
+              <%= t(".mortal_accident") %>
+            </div>
+
+            <div class="fw-semibold">
+              <%= @event.label_mortal_accident %>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <div class="border rounded p-3 h-100">
+            <div class="text-muted small fw-semibold mb-1">
+              <%= t(".occupational_disease") %>
+            </div>
+
+            <div class="fw-semibold">
+              <%= @event.label_occupational_disease %>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <h5 class="border-bottom pb-2 mb-4">
+        <i class="bi bi-calendar-check me-2"></i>
+        Información de incapacidad
+      </h5>
+
+      <div class="row g-4 mb-4">
+        <div class="col-12 col-md-6">
+          <div class="border rounded p-3 h-100">
+            <div class="text-muted small fw-semibold mb-1">
+              <%= t(".disability_start_date") %>
+            </div>
+
+            <div class="fw-semibold">
+              <%= @event.disability_start_date %>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <div class="border rounded p-3 h-100">
+            <div class="text-muted small fw-semibold mb-1">
+              <%= t(".disability_end_date") %>
+            </div>
+
+            <div class="fw-semibold">
+              <%= @event.disability_end_date %>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <div class="border rounded p-3 h-100">
+            <div class="text-muted small fw-semibold mb-1">
+              <%= t(".laboral_inhability") %>
+            </div>
+
+            <div class="fw-semibold">
+              <%= @event.label_laboral_inhability %>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <div class="border rounded p-3 h-100">
+            <div class="text-muted small fw-semibold mb-1">
+              <%= t(".common_inhability") %>
+            </div>
+
+            <div class="fw-semibold">
+              <%= @event.label_common_inhability %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h5 class="border-bottom pb-2 mb-4">
+        <i class="bi bi-person-exclamation me-2"></i>
+        Información de ausentismo
+      </h5>
+
+      <div class="row g-4 mb-4">
+        <div class="col-12 col-md-6">
+          <div class="border rounded p-3 h-100">
+            <div class="text-muted small fw-semibold mb-1">
+              <%= t(".user_reports") %>
+            </div>
+
+            <div class="fw-semibold">
+              <%= User.label_name(@event.user_reports) %>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <div class="border rounded p-3 h-100">
+            <div class="text-muted small fw-semibold mb-1">
+              <%= t(".days_absenteeism") %>
+            </div>
+
+            <div class="fw-semibold">
+              <%= @event.days_absenteeism %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h5 class="border-bottom pb-2 mb-4">
+        <i class="bi bi-bandaid me-2"></i>
+        Información del accidente
+      </h5>
+
+      <div class="row g-4 mb-4">
+        <div class="col-12">
+          <div class="border rounded p-3">
+            <div class="text-muted small fw-semibold mb-1">
+              <%= t(".affected_body") %>
+            </div>
+
+            <div class="fw-semibold">
+              <%= Event.label_affected_body(@event.affected_body) %>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="border rounded p-3">
+            <div class="text-muted small fw-semibold mb-1">
+              <%= t(".type_injure") %>
+            </div>
+
+            <div class="fw-semibold">
+              <%= Event.label_type_injure(@event.type_injure) %>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="border rounded p-3">
+            <div class="text-muted small fw-semibold mb-1">
+              <%= t(".accident_agent") %>
+            </div>
+
+            <div class="fw-semibold">
+              <%= Event.label_accident_agent(@event.accident_agent) %>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="border rounded p-3">
+            <div class="text-muted small fw-semibold mb-1">
+              <%= t(".accident_mechanism") %>
+            </div>
+
+            <div class="fw-semibold">
+              <%= Event.label_accident_mechanism(@event.accident_mechanism) %>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <h5 class="border-bottom pb-2 mb-4">
+        <i class="bi bi-heart-pulse me-2"></i>
+        Información de enfermedad laboral
+      </h5>
+
+      <div class="row g-4">
+        <div class="col-12">
+          <div class="border rounded p-3">
+            <div class="text-muted small fw-semibold mb-1">
+              <%= t(".name_disease") %>
+            </div>
+
+            <div class="fw-semibold">
+              <%= DetailDisease.label_name_disease(@event.name_disease) %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

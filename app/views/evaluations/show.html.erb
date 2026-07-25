@@ -1,7 +1,6 @@
 
 <%= javascript_include_tag "https://www.google.com/jsapi" %>
 <%= wicked_pdf_javascript_include_tag "chartkick" %>
-<%= wicked_pdf_javascript_include_tag "application", "chartkick" %>
 
 <div align="left"; class="container col-12">
     <a class="navbar-brand" href="/">
@@ -184,20 +183,21 @@
         </thead>  
         <tbody> 
             <% @evaluation_itemstotal.each do |evaluation_items| %> 
-                <%= form_with model: evaluation_items do |form| %> 
 
                     <tr> 
                         <td><%= Standar.label_cycle(evaluation_items.standar_detail_item.standar_detail.standar.cycle) %></td>
                         <td><%= evaluation_items.standar_detail_item.item_nro %></td>
                         <td><%= evaluation_items.standar_detail_item.description%></td>
                         <td style="width:150px;">
-                                <%= form.radio_button :meets, 1, :onClick=>"javascript: this.form.submit.click();" %>
-                                <label for="si_cumple">SI</label>|&nbsp;   
-                                <%= form.radio_button :meets, 0, :onClick=>"javascript: this.form.submit.click();" %>
-                                <label for="no_cumple">NO</label>|&nbsp; 
-                                <div class="actions" style="display:none;">
-                                    <%= form.submit "", :name => "submit", :remote => "true" %>
-                                </div>                                 
+                                <%= form_with model: evaluation_items, data: { turbo: false }, class: "d-flex flex-wrap gap-2 align-items-center" do |form| %> 
+                                     <div class="form-check"> <%= form.radio_button :meets, 1, class: "form-check-input", onchange: "this.form.requestSubmit();" %> 
+                                         <%= form.label :meets, "SI", value: 1, class: "form-check-label" %> 
+                                     </div> 
+                                     <div class="form-check"> 
+                                         <%= form.radio_button :meets, 0, class: "form-check-input", onchange: "this.form.requestSubmit();" %> 
+                                         <%= form.label :meets, "NO", value: 0, class: "form-check-label" %> 
+                                     </div>
+                               <% end %>
                         </td>
                         <td><%= EvaluationRuleDetail.label_apply(evaluation_items.apply) %></td>
                         <td><%= evaluation_items.score %></td>
@@ -212,7 +212,6 @@
     
                         <td><%= link_to t('common.veritem'), edit_evaluation_rule_detail_path(evaluation_items), class: 'btn btn-sm btn-primary'  %></td>
                     </tr>  
-                <% end %> 
             <% end %> 
         </tbody>   
  
@@ -255,20 +254,20 @@
         </thead>  
         <tbody> 
             <% @evaluation_itemstotalno.each do |evaluation_items| %> 
-                <%= form_with model: evaluation_items do |form| %> 
 
                     <tr> 
                         <td><%= Standar.label_cycle(evaluation_items.standar_detail_item.standar_detail.standar.cycle) %></td>
                         <td><%= evaluation_items.standar_detail_item.item_nro %></td>
                         <td><%= evaluation_items.standar_detail_item.description%></td>
                         <td style="width:150px;">
-                                <%= form.radio_button :meets, 1, :onClick=>"javascript: this.form.submit.click();" %>
-                                <label for="si_cumple">SI</label>|&nbsp;   
-                                <%= form.radio_button :meets, 0, :onClick=>"javascript: this.form.submit.click();" %>
-                                <label for="no_cumple">NO</label>|&nbsp; 
-                                <div class="actions" style="display:none;">
-                                    <%= form.submit "", :name => "submit", :remote => "true" %>
-                                </div>                                 
+                            <%= form_with model: evaluation_items, data: { turbo: false }, class: "d-flex flex-wrap gap-2 align-items-center" do |form| %>
+                                  <div class="form-check"> <%= form.radio_button :meets, 1, class: "form-check-input", onchange: "this.form.requestSubmit();" %> 
+                                      <%= form.label :meets, "SI", value: 1, class: "form-check-label" %> 
+                                  </div> 
+                                  <div class="form-check"> <%= form.radio_button :meets, 0, class: "form-check-input", onchange: "this.form.requestSubmit();" %> 
+                                     <%= form.label :meets, "NO", value: 0, class: "form-check-label" %>
+                                  </div>
+                            <% end %>
                         </td>
                         <td><%= EvaluationRuleDetail.label_apply(evaluation_items.apply) %></td>
                         <td><%= evaluation_items.score %></td>
@@ -283,7 +282,7 @@
     
                         <td><%= link_to t('common.veritem'), edit_evaluation_rule_detail_path(evaluation_items), class: 'btn btn-sm btn-primary'  %></td>
                     </tr>  
-                <% end %> 
+                 
             <% end %> 
         </tbody>   
  

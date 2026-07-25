@@ -1,56 +1,123 @@
-<div align="left"; class="container col-12">
-    <a class="navbar-brand" href="/">
-        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-    </a>
-</div>
-<div class="container col-11">
-        <div class="d-flex">
-            <div class="container">
-               <h2> <%= t('.title')%></h2>
-               <%= link_to t('.create_event'), new_event_path, class: 'btn btn-sm btn-primary'  %>
-            </div> 
-        </div>
-        <hr>
-        <%= search_form_for @q do |f| %>
-            <%= f.label :date_new_eq %>
-            <%= f.date_field :date_new_eq %>
-            &nbsp;&nbsp;
-            <% if Current.user.level > 0 &&  Current.user.level < 3 %>
-                <%= f.label :entity_id_eq %>
-                <%= f.select :entity_id_eq, Entity.pluck(:business_name, :id).uniq,  {include_blank: true}, style: "width: 200px;" %>
-            <% end %>    
-            </br> 
-            <%= f.label :user_id_eq %>
-            <%= f.select :user_id_eq, User.pluck(:name, :id).uniq,  {include_blank: true}, style: "width: 200px;" %>
-            &nbsp;&nbsp;
-            <button type="submit" class="btn btn-primary">Buscar</button>
+<div class="container-fluid py-3">
+    <div class="mb-3">
+        <%= link_to root_path, class: "d-inline-block" do %>
+            <%= image_tag "LogoConesst202305232.png", class: "img-fluid", style: "max-width: 100px; height: auto;", alt: "Logo CONESST" %>
         <% end %>
-    </br>        
-    <%== pagy_info(@pagy) %>
-    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+    </div>
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <div class="row align-items-center g-3">
+                <div class="col-12 col-md">
+                    <h2 class="h4 mb-0 text-center text-md-start">
+                        <%= t('.title') %>
+                    </h2>
+                </div>
+                <div class="col-12 col-md-auto">
+                    <div class="d-grid d-md-flex justify-content-md-end gap-2">
+                        <%= link_to new_event_path, class: "btn btn-primary btn-sm" do %>
+                            <i class="bi bi-plus-circle-fill me-1"></i>
+                            <%= t('.create_event') %>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card shadow-sm mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">
+                <i class="bi bi-funnel-fill me-1"></i>
+                Filtros de búsqueda
+            </h5>
+        </div>
+        <div class="card-body">
+            <%= search_form_for @q do |f| %>
+                <div class="row g-3 align-items-end">
+                    <div class="col-12 col-md-4">
+                        <%= f.label :date_new_eq, class: "form-label fw-semibold" %>
+                        <%= f.date_field :date_new_eq, class: "form-control" %>
+                    </div>
+                    <% if Current.user.level > 0 && Current.user.level < 3 %>
+                        <div class="col-12 col-md-4">
+                            <%= f.label :entity_id_eq, class: "form-label fw-semibold" %>
+                            <%= f.select :entity_id_eq, Entity.pluck(:business_name, :id).uniq, { include_blank: "Todas las entidades" }, class: "form-select" %>
+                        </div>
+                    <% end %>
+                    <div class="col-12 col-md-4">
+                        <%= f.label :user_id_eq, class: "form-label fw-semibold" %>
+                        <%= f.select :user_id_eq, User.pluck(:name, :id).uniq, { include_blank: "Todos los usuarios" }, class: "form-select" %>
+                    </div>
+                    <div class="col-12 col-md-auto">
+                        <%= f.button type: "submit", class: "btn btn-primary btn-sm w-100" do %>
+                            <i class="bi bi-search me-1"></i>
+                            Buscar
+                        <% end %>
+                    </div>
+                </div>
+            <% end %>
+        </div>
+    </div>
 
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col"><%= sort_link(@q, :date_new, default_order: :desc) %></th>
-                <th scope="col"><%= sort_link(@q, :user_id, default_order: :desc) %></th>
-                <th scope="col"><%= sort_link(@q, :entity_id, default_order: :desc) %></th>
-                <th scope="col"><%= sort_link(@q, :work_accident, default_order: :desc) %></th>
-                <th scope="col"><%= sort_link(@q, :mortal_accident, default_order: :desc) %></th>
-                <th scope="col"><%= sort_link(@q, :occupational_disease, default_order: :desc) %></th>
-                <th scope="col"><%= t('common.show') %></th>
-                <th scope="col"><%= t('common.edit') %></th>
-                <th scope="col"><%= t('common.delete') %></th>                
-            </tr>
-        </thead>
-        <tbody> 
-            <%= render partial: 'event', collection: @events  %>  
-        </tbody>      
-    </table>
-    </br>        
-    <%== pagy_info(@pagy) %>
-    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
-    </br>        
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 mb-3">
+        <div>
+            <%== pagy_info(@pagy) %>
+        </div>
+        <div>
+            <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+        </div>
+    </div>
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">
+                                <%= sort_link(@q, :date_new, default_order: :desc) %>
+                            </th>
+                            <th scope="col">
+                                <%= sort_link(@q, :user_id, default_order: :desc) %>
+                            </th>
+                            <th scope="col">
+                                <%= sort_link(@q, :entity_id, default_order: :desc) %>
+                            </th>
+                            <th scope="col" class="text-center">
+                                <%= sort_link(@q, :work_accident, default_order: :desc) %>
+                            </th>
+                            <th scope="col" class="text-center">
+                                <%= sort_link(@q, :mortal_accident, default_order: :desc) %>
+                            </th>
+                            <th scope="col" class="text-center">
+                                <%= sort_link(@q, :occupational_disease, default_order: :desc) %>
+                            </th>
+                            <th scope="col" class="text-center">
+                                <i class="bi bi-eye-fill me-1"></i>
+                                <%= t('common.show') %>
+                            </th>
+                            <th scope="col" class="text-center">
+                                <i class="bi bi-pencil-square me-1"></i>
+                                <%= t('common.edit') %>
+                            </th>
+                            <th scope="col" class="text-center">
+                                <i class="bi bi-trash me-1"></i>
+                                <%= t('common.delete') %>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%= render partial: 'event', collection: @events %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 mt-3">
+        <div>
+            <%== pagy_info(@pagy) %>
+        </div>
+        <div>
+            <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+        </div>
+    </div>
 </div>
-
-

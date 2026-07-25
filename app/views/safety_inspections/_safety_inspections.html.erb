@@ -64,6 +64,11 @@
                                             <%= link_to t('common.edit'), edit_safety_inspection_path(safety_inspection.id), class:"btn btn-warning btn-sm me-2" %>
                                             <%= link_to "Ver informe", ver_informe_inspeccion_path(safety_inspection.id), class:"btn btn-info btn-sm me-2" %>
                                             <%= link_to "Ver informe PDF", pdf_informe_inspeccion_path(safety_inspection.id, format: 'pdf'), class:"btn btn-success btn-sm me-2" %>
+                                            <% if Current.user.level > 0 && Current.user.level < 3 %>
+                                                 <%= button_to safety_inspection, method: :delete, class: "btn btn-danger btn-sm me-2", form_class: "w-100", data: { turbo_confirm: "¿Está seguro de eliminar este registro? Esta acción no se puede deshacer." } do %>
+                                                     <i class="bi bi-trash"></i> Eliminar
+                                                <% end %>
+                                            <% end %>                            
                                         </div>
                                     </td>
                                 </tr>
@@ -104,6 +109,11 @@
                                     <%= link_to t('common.edit'), edit_safety_inspection_path(safety_inspection.id), class:"btn btn-warning btn-sm me-2" %>
                                     <%= link_to "Ver informe", ver_informe_inspeccion_path(safety_inspection.id), class:"btn btn-info btn-sm me-2" %>
                                     <%= link_to "Ver informe PDF", pdf_informe_inspeccion_path(safety_inspection.id, format: 'pdf'), class:"btn btn-success btn-sm me-2" %>
+                                    <% if Current.user.level > 0 && Current.user.level < 3 %>
+                                         <%= button_to safety_inspection, method: :delete, class: "btn btn-danger btn-sm me-2", form_class: "w-100", data: { turbo_confirm: "¿Está seguro de eliminar este registro? Esta acción no se puede deshacer." } do %>
+                                             <i class="bi bi-trash"></i> Eliminar
+                                        <% end %>
+                                    <% end %>                            
                             </div>
                         </div>
                     </div>

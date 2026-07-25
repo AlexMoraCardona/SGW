@@ -1,33 +1,84 @@
-<div align="left"; class="container col-12">
-    <a class="navbar-brand" href="/">
-        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-    </a>
-</div>
-<div class="container col-12">
-        <div class="d-flex">
-            <div class="container">
-               <h2>Registro de funcionarios</h2>
-               <%= link_to t('.create_report_official'), new_report_official_path, class: 'btn btn-sm btn-primary'  %>
-            </div> 
-        </div>
-        <hr>
-    <table class="table table-hover"> 
-        <thead>
-            <tr>
-                <th scope="col"><%= t('common.year') %></th>
-                <th scope="col"><%= t('common.month') %></th>
-                <th scope="col"><%= t('common.entity_id') %></th>
-                <th scope="col">Funcionarios</th>
-                <th scope="col"><%= t('common.working_days_month') %></th>
-                <th scope="col"><%= t('common.edit') %></th>
-                <th scope="col"><%= t('common.delete') %></th> 
-                <th scope="col"><%= t('common.update_indicator') %></th> 
+<div class="container-fluid py-3">
+    <!-- LOGO -->
+    <div class="mb-3">
+        <%= link_to root_path, class: "d-inline-block" do %>
+            <%= image_tag "LogoConesst202305232.png",
+                class: "img-fluid",
+                style: "max-width: 100px; height: auto;",
+                alt: "Logo CONESST" %>
+        <% end %>
+    </div>
 
-            </tr>
-        </thead>
-        <tbody>
-            <%= render partial: 'report_official', collection: @report_officials  %>  
-        </tbody>      
-    </table>
+    <!-- ENCABEZADO -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <div class="row align-items-center g-3">
+                <!-- TÍTULO -->
+                <div class="col-12 col-md">
+                    <h2 class="h4 mb-0 text-center text-md-start">
+                        Reporte mensual
+                    </h2>
+                </div>
+                <!-- BOTONERA -->
+                <div class="col-12 col-md-auto">
+                    <div class="d-grid d-md-flex justify-content-md-end gap-2">
+                        <%= link_to new_report_official_path, class: "btn btn-primary btn-sm" do %>
+                            <i class="bi bi-person-plus-fill me-1"></i>
+                            <%= t('.create_report_official') %>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- TABLA -->
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">
+                                <i class="bi bi-calendar-event me-1"></i>
+                                <%= t('common.year') %>
+                            </th>
+                            <th scope="col">
+                                <i class="bi bi-calendar-month me-1"></i>
+                                <%= t('common.month') %>
+                            </th>
+                            <th scope="col">
+                                <i class="bi bi-building me-1"></i>
+                                <%= t('common.entity_id') %>
+                            </th>
+                            <th scope="col">
+                                <i class="bi bi-people-fill me-1"></i>
+                                Funcionarios
+                            </th>
+                            <th scope="col">
+                                <i class="bi bi-calendar-check me-1"></i>
+                                <%= t('common.working_days_month') %>
+                            </th>
+                            <th scope="col" class="text-center">
+                                <i class="bi bi-pencil-square me-1"></i>
+                                <%= t('common.edit') %>
+                            </th>
+                            <th scope="col" class="text-center">
+                                <i class="bi bi-trash me-1"></i>
+                                <%= t('common.delete') %>
+                            </th>
+                            <th scope="col" class="text-center">
+                                <i class="bi bi-arrow-repeat me-1"></i>
+                                <%= t('common.update_indicator') %>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%= render partial: 'report_official',
+                            collection: @report_officials %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 

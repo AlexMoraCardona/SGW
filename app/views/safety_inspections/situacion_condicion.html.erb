@@ -67,7 +67,7 @@
         <div class="card-body">
             <div class="d-flex justify-content-between mb-2">
                 <h5 class="mb-0">
-                    Avance de la inspección
+                    Resultado de la inspección
                 </h5>
                 <strong>
                     <%= porcentaje %>%
@@ -244,6 +244,7 @@
                                     <td class="text-center align-middle">
                                         <%= link_to edit_safety_inspection_item_path(item), class: "btn btn-primary btn-sm" do %>Editar<% end %>
                                         <%= link_to "📷", situacion_foto_path(item.id), class:"btn btn-light btn-sm me-2" %>
+                                        <%= button_to "Eliminar", item, method: :delete, class: "btn btn-danger btn-sm m-2", data: {turbo_confirm: "¿Está seguro de eliminar este registro? Esta acción no se puede deshacer." }  if Current.user.level > 0 && Current.user.level < 3 %>                                            
                                     </td>
                                 </tr>
                             <% end %>
@@ -336,11 +337,17 @@
                         <% end %>
                         <!-- Botón Editar -->
                         <div class="d-grid">
+                            <%= link_to "📷", situacion_foto_path(item.id), class:"btn btn-light btn-sm me-2" %>
                             <%= link_to edit_safety_inspection_item_path(item),
                                 class: "btn btn-primary" do %>
                                 <i class="bi bi-pencil-square"></i>
                                 Editar observación
                             <% end %>
+                            <% if Current.user.level > 0 && Current.user.level < 3 %>
+                                 <%= button_to item, method: :delete, class: "btn btn-danger btn-sm me-2", form_class: "w-100", data: { turbo_confirm: "¿Está seguro de eliminar este registro? Esta acción no se puede deshacer." } do %>
+                                     <i class="bi bi-trash"></i> Eliminar
+                                <% end %>
+                            <% end %>                            
                         </div>
                     </div>
                 </div>

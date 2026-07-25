@@ -1,70 +1,133 @@
-<%= stylesheet_link_tag "https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.1/slimselect.min.css", "data-turbo-track": "reload" %>
-<%# <link href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.27.1/slimselect.min.css" rel="stylesheet"/> %>
-<%= javascript_importmap_tags %>
-
-
-<div class="container col-11 card p-5">
-    <br>
-    <%= form_with model: @event do |form| %>
-        <% @event.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %>    
-
-        <div class="row g-2">
-            <div class="col-sm-8">
-                <%= form.label :user_id, style: "display: block" %>
-                <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id, :name,{ prompt: '--Seleccionar--' },
-                { class: 'form-control input-sm select2' } %>
-            </div>        
-            <div class="col-sm-3">
-                <%= form.label :date_new, style: "display: block" %>
-                <%= form.date_field :date_new,  class: "form-control", required: true %>
-            </div>        
-        </div>   
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">
-                <%= form.label :work_accident, style: "display: block" %>
-                <%= form.radio_button :work_accident, 0 %>
-                <label for="no_accidente_trabajo">NO</label>
-                <%= form.radio_button :work_accident, 1 %>
-                <label for="si_accidente_trabajo">SI</label>
-            </div>        
-            <div class="col-sm-4">
-                <%= form.label :mortal_accident, style: "display: block" %>
-                <%= form.radio_button :mortal_accident, 0 %>
-                <label for="no_accidente_mortal">NO</label>
-                <%= form.radio_button :mortal_accident, 1 %>
-                <label for="si_accidente_mortal">SI</label>
-            </div>        
-            <div class="col-sm-3">
-                <%= form.label :occupational_disease, style: "display: block" %>
-                <%= form.radio_button :occupational_disease, 0 %>
-                <label for="no_enfermedad_profesional">NO</label>
-                <%= form.radio_button :occupational_disease, 1 %>
-                <label for="si_enfermedad_profesional">SI</label>
-            </div>        
-        </div>   
-        <br>
-        <div class="col-sm-11">
-                <%= form.label :affected_body,  style: "display: block" %>
-                <%= form.select(:affected_body, [['Sin clasificar', 0], ['Cerebro', 1], ['Oído (s)  externo', 2], ['Oído (s)  interno (incluyendo la audición)', 3], ['Ojo (s) (incluye nervios ópticos y visión)', 4], ['Párpado', 5], ['Mandíbula (incluyendo el mentón)', 6], ['Boca (incluye labios, diente, lengua, garganta y sentido del gusto)', 7], ['Mejilla', 8], ['Nariz (incluye fosas nasales, senos y sentido del olfato)', 9], ['Ceja', 10], ['Cara, partes múltiples (cualquier combinación de las partes arriba citadas)', 11], ['Cara, no identificada en otra parte', 12], ['Cuero cabelludo', 13], ['Cráneo (incluye solamente lesiones óseas de la bóveda y la base craneal sin compromiso cerebral', 14], ['Cabeza, múltiple, cualquier combinación de las partes anteriores', 15], ['Cabeza no identificada en otra parte', 16], ['Cuello (incluye columna cervical y médula espinal correspondiente)', 17], ['Brazo', 18], ['Hombro', 19], ['Codo', 20], ['Antebrazo', 21], ['Extremidades superiores (cualquier combinación de las partes anteriores)', 22], ['Extremidades superiores (arriba de la muñeca), no identificada en otra parte', 23], ['Muñecas', 24], ['Mano (excluyendo la muñeca y los dedos)', 25], ['Mano,  incluyendo dedos', 26], ['Dedo (s)', 27], ['Extremidades superiores, múltiples (cualquier combinación de las partes anteriores)', 28], ['Extremidades superiores, no identificada en otra parte', 29], ['Abdomen (incluye órganos internos y sus hernias)', 30], ['Espalda (incluye músculos de la espalda, columna, dorso lumbar, región lumbar y médula espinal)', 31], ['Tórax (incluye costillas, esternón y órganos internos del tórax)', 32], ['Caderas (incluye pelvis, órganos pélvicos y nalgas,  escroto, coxis, pubis, sacro, ilíaco y órganos genitales)', 33], ['Hombros (incluye axila)  región escapular,  omoplato y clavícula', 34], ['Tronco, múltiples (cualquier combinación de las partes anteriores)', 35], ['Tronco,  no identificada en otra parte', 36], ['Muslo', 37], ['Rodilla (incluye región poplítea),  corva', 38], ['Pierna  (entre la rodilla y el tobillo)', 39], ['Extremidades inferiores múltiples (cualquier combinación de las partes anteriores)', 40], ['Extremidades inferiores,  no identificadas en otra parte (arriba del tobillo)', 41], ['Tobillos', 42], ['Pié (excluyendo tobillo y dedos)', 43], ['Dedo(s) o  artejos', 44], ['Extremidades inferiores,  múltiples  (cualquier combinación de las partes anteriores)', 45], ['Extremidades inferiores no identificadas en otra parte', 46], ['Parte múltiples  (se aplica cuando se ha afectado más de una de las partes principales del cuerpo,  tales como,  un brazo, una pierna)', 47], ['Sistemas orgánicos ejemplo: intoxicación,  acción corrosiva que afecte órganos internos,  lesión de centros nerviosos, etc.)', 48], ['Sistema circulatorio  (corazón, sangre, arterias, venas,  etc.)', 49], ['Sistema digestivo', 50], ['Sistema excretorio (riñones, vejiga, intestinos, etc.)', 51], ['Sistema músculo-esquelético  (huesos, articulaciones, tendones, músculos, etc.', 52], ['Sistema nervioso', 53], ['Sistema respiratorio (pulmones, etc.)', 54], ['Varios sistemas orgánicos', 55], ['Otros sistemas orgánicos', 56], ['Partes del cuerpo,  no identificadas en otra parte', 57], ['Sin clasificar (insuficiente información para identificar la parte afectada)', 58]]) %></br>
-        </div>        
-        <br>
-
-        <div class="col-sm-11">
-            <div class="col-sm-4">
-                <%= form.label :type_injure,  style: "display: block" %>
-                <%= form.select(:type_injure, [['Sin clasificar', 0], ['Amputación o enucleación', 1], ['Asfixia, estrangulación, ahogamiento', 2], ['Quemadura (calórica) incluye eritema', 3], ['Quemadura  (química) incluye eritema', 4], ['Inflamación de vías respiratorias  (por agentes químicos)', 5], ['Concusión cerebral', 6], ['Enfermedad infecciosa o contagiosa -Ántrax, brucelosis, tuberculosis, etc.', 7], ['Contusión, machacón, magulladura, conservándose la superficie de la piel intacta;', 8], ['Vesículas  (ampollas)', 9], ['Cortada, laceración, pinchazo, herida abierta, avulsión, sección, desprendimiento y fractura de las uñas', 10], ['Dermatitis-erupción, inflamación de la piel o tejido subcutáneo, incluyendo pústulas, etc.', 11], ['Luxación, esguince', 12], ['Choque eléctrico, electrocución, quemadura eléctrica', 13], ['Fractura, fisura ósea', 14], ['Congelación, lesión cutánea producida por el frío', 15], ['Pérdida de la audición o su deterioro (como lesión separada no como secuela de otra lesión)', 16], ['Insolación, calambres calóricos, agotamiento o postración por calor y otros efectos del calor ambiental.', 17], ['Hernias, ruptura.  Incluye tanto las hernias inguinales como no inguinales', 18], ['Inflamación o irritación de las articulaciones, tendones o músculos. Incluye bursitis, sinovitis, tenosinovitis, etc.', 19], ['Envenenamiento (sistémico)', 20], ['Neumoconiosis - incluye la de los mineros del carbón, asbestosis, silicosis, etc.', 21], ['Efectos de las radiaciones, quemaduras solares y toda forma de lesión de los tejidos, huesos o fluidos del cuerpo.', 22], ['Raspaduras, abrasiones (heridas superficiales), conjuntivitis por cuerpo extraño no alojado, excoriación, erosión, fricción.', 23], ['Lesiones en ojos tales como rayones de córnea, heridas en cristalino', 24], ['Distensiones, desgarros (incluye lumbalgias por esfuerzo)', 25], ['Lesiones múltiples', 26], ['Enfermedad ocupacional no identificada en otra parte.  Hiperqueratosis, neuropatía', 27], ['Otras lesiones no identificadas en otra parte', 28], ['Sin clasificar, no determinada', 29]]) %></br>
-            </div>        
-        </div>        
-        <br>
-    
-        <div class="col-sm-4">
-                <%= form.label :accident_agent,  style: "display: block" %>
-                <%= form.select(:accident_agent, [['Sin clasificar', 0], ['Personas', 1], ['Alta presión (como trabajo en un cajón neumático,  zambullida profunda, etc.)', 2], ['Baja presión (aire enrarecido como en alturas extremas)', 3], 
+<div class="container-fluid py-3">
+    <div class="card shadow-sm mx-auto" style="max-width: 1100px;">
+        <div class="card-header">
+            <h2 class="h4 mb-0 text-center">
+                <i class="bi bi-clipboard2-pulse-fill me-1"></i>
+                Registro novedad del empleado
+            </h2>
+        </div>
+        <div class="card-body">
+            <%= form_with model: @event,
+                data: {controller: "event-form"} do |form| %>
+                    <% if @event.errors.any? %>
+                        <div class="alert alert-danger" role="alert">
+                        <h6 class="alert-heading">
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                            Se encontraron los siguientes errores:
+                        </h6>
+                        <ul class="mb-0">
+                            <% @event.errors.full_messages.each do |error| %>
+                                <li><%= error %></li>
+                            <% end %>
+                        </ul>
+                    </div>
+                <% end %>
+                <div class="border rounded p-3 mb-4">
+                    <h5 class="mb-3">
+                        <i class="bi bi-person-fill me-1"></i>
+                        Información del funcionario
+                    </h5>
+                    <div class="row g-3">
+                        <div class="col-12 col-md-8">
+                            <%= form.label :user_id, class: "form-label fw-semibold" %>
+                            <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id, :name, { prompt: "-- Seleccionar funcionario --" }, { class: "form-select", required: true } %>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <%= form.label :date_new, class: "form-label fw-semibold" %>
+                            <%= form.date_field :date_new, class: "form-control", max: Date.current, required: true %>
+                        </div>
+                    </div>
+                </div>
+                <div class="border rounded p-3 mb-4">
+                    <h5 class="mb-3">
+                        <i class="bi bi-question-circle-fill me-1"></i>
+                        Tipo de evento
+                    </h5>
+                    <div class="row g-3">
+                        <div class="col-12 col-md-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <%= form.label :work_accident, class: "form-label fw-semibold" %>
+                                    <div class="d-flex gap-3 mt-2">
+                                        <div class="form-check">
+                                            <%= form.radio_button :work_accident, 0, class: "form-check-input", data: {event_form_target: "workAccident", action: "change->event-form#toggleDetails" } %>
+                                            <%= form.label :work_accident, "NO", value: 0, class: "form-check-label" %>
+                                        </div>
+                                        <div class="form-check">
+                                            <%= form.radio_button :work_accident, 1, class: "form-check-input", data: {event_form_target: "workAccident", action: "change->event-form#toggleDetails" } %>
+                                            <%= form.label :work_accident, "SI", value: 1, class: "form-check-label" %>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <%= form.label :mortal_accident, class: "form-label fw-semibold" %>
+                                    <div class="d-flex gap-3 mt-2">
+                                        <div class="form-check">
+                                            <%= form.radio_button :mortal_accident, 0, class: "form-check-input", data: {event_form_target: "mortalAccident", action: "change->event-form#toggleDetails" } %>
+                                            <%= form.label :mortal_accident, "NO", value: 0, class: "form-check-label" %>
+                                        </div>
+                                        <div class="form-check">
+                                            <%= form.radio_button :mortal_accident, 1, class: "form-check-input", data: {event_form_target: "mortalAccident", action: "change->event-form#toggleDetails" } %>
+                                            <%= form.label :mortal_accident, "SI", value: 1, class: "form-check-label" %>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <%= form.label :occupational_disease, class: "form-label fw-semibold" %>
+                                    <div class="d-flex gap-3 mt-2">
+                                        <div class="form-check">
+                                            <%= form.radio_button :occupational_disease, 0, class: "form-check-input", data: {event_form_target: "occupationalDisease", action: "change->event-form#toggleDisease" } %>
+                                            <%= form.label :occupational_disease, "NO", value: 0, class: "form-check-label" %>
+                                        </div>
+                                        <div class="form-check">
+                                            <%= form.radio_button :occupational_disease, 1, class: "form-check-input", data: {event_form_target: "occupationalDisease", action: "change->event-form#toggleDisease" } %>
+                                            <%= form.label :occupational_disease, "SI", value: 1, class: "form-check-label" %>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="border rounded p-3 mb-4"
+                    data-event-form-target="accidentDetails">
+                    <h5 class="mb-3">
+                        <i class="bi bi-bandaid-fill me-1"></i>
+                        Información del accidente
+                    </h5>
+                    <div class="row g-3">
+                        <div class="col-12 col-md-6">
+                            <%= form.label :affected_body, class: "form-label fw-semibold" %>
+                            <%= form.select :affected_body,
+                                [['Sin clasificar', 0], ['Cerebro', 1], ['Oído (s)  externo', 2], ['Oído (s)  interno (incluyendo la audición)', 3], ['Ojo (s) (incluye nervios ópticos y visión)', 4], ['Párpado', 5], ['Mandíbula (incluyendo el mentón)', 6], ['Boca (incluye labios, diente, lengua, garganta y sentido del gusto)', 7], ['Mejilla', 8], ['Nariz (incluye fosas nasales, senos y sentido del olfato)', 9], ['Ceja', 10], ['Cara, partes múltiples (cualquier combinación de las partes arriba citadas)', 11], ['Cara, no identificada en otra parte', 12], ['Cuero cabelludo', 13], ['Cráneo (incluye solamente lesiones óseas de la bóveda y la base craneal sin compromiso cerebral', 14], ['Cabeza, múltiple, cualquier combinación de las partes anteriores', 15], ['Cabeza no identificada en otra parte', 16], ['Cuello (incluye columna cervical y médula espinal correspondiente)', 17], ['Brazo', 18], ['Hombro', 19], ['Codo', 20], ['Antebrazo', 21], ['Extremidades superiores (cualquier combinación de las partes anteriores)', 22], ['Extremidades superiores (arriba de la muñeca), no identificada en otra parte', 23], ['Muñecas', 24], ['Mano (excluyendo la muñeca y los dedos)', 25], ['Mano,  incluyendo dedos', 26], ['Dedo (s)', 27], ['Extremidades superiores, múltiples (cualquier combinación de las partes anteriores)', 28], ['Extremidades superiores, no identificada en otra parte', 29], ['Abdomen (incluye órganos internos y sus hernias)', 30], ['Espalda (incluye músculos de la espalda, columna, dorso lumbar, región lumbar y médula espinal)', 31], ['Tórax (incluye costillas, esternón y órganos internos del tórax)', 32], ['Caderas (incluye pelvis, órganos pélvicos y nalgas,  escroto, coxis, pubis, sacro, ilíaco y órganos genitales)', 33], ['Hombros (incluye axila)  región escapular,  omoplato y clavícula', 34], ['Tronco, múltiples (cualquier combinación de las partes anteriores)', 35], ['Tronco,  no identificada en otra parte', 36], ['Muslo', 37], ['Rodilla (incluye región poplítea),  corva', 38], ['Pierna  (entre la rodilla y el tobillo)', 39], ['Extremidades inferiores múltiples (cualquier combinación de las partes anteriores)', 40], ['Extremidades inferiores,  no identificadas en otra parte (arriba del tobillo)', 41], ['Tobillos', 42], ['Pié (excluyendo tobillo y dedos)', 43], ['Dedo(s) o  artejos', 44], ['Extremidades inferiores,  múltiples  (cualquier combinación de las partes anteriores)', 45], ['Extremidades inferiores no identificadas en otra parte', 46], ['Parte múltiples  (se aplica cuando se ha afectado más de una de las partes principales del cuerpo,  tales como,  un brazo, una pierna)', 47], ['Sistemas orgánicos ejemplo: intoxicación,  acción corrosiva que afecte órganos internos,  lesión de centros nerviosos, etc.)', 48], ['Sistema circulatorio  (corazón, sangre, arterias, venas,  etc.)', 49], ['Sistema digestivo', 50], ['Sistema excretorio (riñones, vejiga, intestinos, etc.)', 51], ['Sistema músculo-esquelético  (huesos, articulaciones, tendones, músculos, etc.', 52], ['Sistema nervioso', 53], ['Sistema respiratorio (pulmones, etc.)', 54], ['Varios sistemas orgánicos', 55], ['Otros sistemas orgánicos', 56], ['Partes del cuerpo,  no identificadas en otra parte', 57], ['Sin clasificar (insuficiente información para identificar la parte afectada)', 58]],
+                                {},
+                                class: "form-select",
+                                data: {
+                                    event_form_target: "accidentField"
+                                } %>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <%= form.label :type_injure, class: "form-label fw-semibold" %>
+                            <%= form.select :type_injure,
+                                [['Sin clasificar', 0], ['Amputación o enucleación', 1], ['Asfixia, estrangulación, ahogamiento', 2], ['Quemadura (calórica) incluye eritema', 3], ['Quemadura  (química) incluye eritema', 4], ['Inflamación de vías respiratorias  (por agentes químicos)', 5], ['Concusión cerebral', 6], ['Enfermedad infecciosa o contagiosa -Ántrax, brucelosis, tuberculosis, etc.', 7], ['Contusión, machacón, magulladura, conservándose la superficie de la piel intacta;', 8], ['Vesículas  (ampollas)', 9], ['Cortada, laceración, pinchazo, herida abierta, avulsión, sección, desprendimiento y fractura de las uñas', 10], ['Dermatitis-erupción, inflamación de la piel o tejido subcutáneo, incluyendo pústulas, etc.', 11], ['Luxación, esguince', 12], ['Choque eléctrico, electrocución, quemadura eléctrica', 13], ['Fractura, fisura ósea', 14], ['Congelación, lesión cutánea producida por el frío', 15], ['Pérdida de la audición o su deterioro (como lesión separada no como secuela de otra lesión)', 16], ['Insolación, calambres calóricos, agotamiento o postración por calor y otros efectos del calor ambiental.', 17], ['Hernias, ruptura.  Incluye tanto las hernias inguinales como no inguinales', 18], ['Inflamación o irritación de las articulaciones, tendones o músculos. Incluye bursitis, sinovitis, tenosinovitis, etc.', 19], ['Envenenamiento (sistémico)', 20], ['Neumoconiosis - incluye la de los mineros del carbón, asbestosis, silicosis, etc.', 21], ['Efectos de las radiaciones, quemaduras solares y toda forma de lesión de los tejidos, huesos o fluidos del cuerpo.', 22], ['Raspaduras, abrasiones (heridas superficiales), conjuntivitis por cuerpo extraño no alojado, excoriación, erosión, fricción.', 23], ['Lesiones en ojos tales como rayones de córnea, heridas en cristalino', 24], ['Distensiones, desgarros (incluye lumbalgias por esfuerzo)', 25], ['Lesiones múltiples', 26], ['Enfermedad ocupacional no identificada en otra parte.  Hiperqueratosis, neuropatía', 27], ['Otras lesiones no identificadas en otra parte', 28], ['Sin clasificar, no determinada', 29]],
+                                {},
+                                class: "form-select",
+                                data: {
+                                    event_form_target: "accidentField"
+                                } %>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <%= form.label :accident_agent, class: "form-label fw-semibold" %>
+                            <%= form.select :accident_agent,
+                                [['Sin clasificar', 0], ['Personas', 1], ['Alta presión (como trabajo en un cajón neumático,  zambullida profunda, etc.)', 2], ['Baja presión (aire enrarecido como en alturas extremas)', 3], 
                 ['Animales.  (Excepto los que siguen)', 4], ['Pájaros', 5], ['Insectos', 6], ['Reptiles', 7], ['Huesos', 8], ['Secreciones', 9], ['Plumas', 10], ['Pieles, cerdas, lana, etc.  (en estado bruto)', 11], ['Cueros y pieles curtidas', 12], 
                 ['Productos animales,  no especificados en otra parte', 13], ['Movimiento del cuerpo (excluyendo levantar, halar, empujar, etc.)', 14], ['Calderas', 15], ['Autoclave', 16], ['Recipientes presurizados (para gases o líquidos),  compresor', 17], 
                 ['Cilindros de oxígeno y acetileno', 18], ['Líneas de presión  (mangueras o tubos - para líquidos presurizados, gases o vapores)', 19], ['Recipientes a presión,  no especificados en otra parte', 20], 
@@ -105,59 +168,102 @@
                 ['Desperdicios o desechos radioactivos de reactores atómicos', 254], ['Radiaciones solares', 255], ['Equipos de rayos ultravioleta', 256], ['Equipos de soldadura autógena y eléctrica, arco eléctrico', 257], ['Equipos de rayos x y fluoroscopia', 258], ['Sustancias o equipos radioactivos, no especificados en otra parte', 259], ['Jabones, detergentes, compuestos para limpieza, no especificados en otra parte', 260], ['Sílice', 261], ['Desechos industriales, escombros, materiales de desperdicios, no especificados en otra parte', 262], ['Vapor de agua', 263], 
                 ['Productos textiles, no especificados en otra parte', 264], ['De tracción animal', 265], ['Aéreos', 266], ['Vehículos motorizados para carreteras', 267], ['Bicicletas y otros vehículos no motorizados para carretera', 268], ['Carritos de mano, plataformas con rodillos y otros vehículos no motorizados', 269], 
                 ['Levantadores de horquilla, montacargas, apiladores, cargadores de madera y otros vehículos cargadores motorizados', 270], ['Tractores y otros vehículos de remolque motorizados', 271], ['Vehículos sobre rieles', 272], ['Trineos y otros vehículos para transporte sobre nieve y hielo', 273], ['Vehículos acuáticos', 274], ['Vehículos, no especificados en otra parte', 275], ['Productos de madera, no especificados en otra parte (Troncos, madera aserrada, tablas, postes, vigas, astillas y otros productos de madera).', 276], 
-                ['Piso (de un edificio, una mina, un vehículo, un andamio, etc.)', 277], ['Terrenos (al aire libre).', 278], ['Rampas', 279], ['Techos', 280], ['Pasillos o plataformas (superficies elevadas permanentes).', 281], ['Aceras, senderos, pasillos. (Al aire libre)', 282], ['Escaleras, escalones. (Que sean parte integral de la edificación)', 283], ['Calles, caminos, carreteras', 284], ['Superficies de trabajo, no especificadas en otra parte', 285], ['Misceláneos, no especificados en otra parte', 286], ['Equipos de sueros, sondas', 287], ['Desconocidos, sin identificar (distintos a partículas)', 288]]) %></br>
-        </div>   
-        <br>
-        <div class="col-sm-4">
-                <%= form.label :accident_mechanism,  style: "display: block" %>
-                <%= form.select(:accident_mechanism, [['Sin clasificar', 0], ['Objetos fijos', 1], ['Objetos en movimiento', 2], ['Golpeado contra objetos no especificados', 3], ['Objetos que caen (incluye personas)', 4], ['Objetos que vuelan', 5], ['Golpeado o lesionado por otra persona', 6], ['Golpeado por, no especificado en otra parte', 7], ['De andamios, de pasillos,  de plataformas, de sillas,  de techos, etc.', 8], ['De escaleras', 9], ['De materiales apilados', 10], ['De vehículos', 11], ['En escaleras propias de edificios', 12], ['Dentro de pozos, excavaciones, aberturas en los pisos, etc.  (Desde el borde la abertura)', 13], ['Caída a un nivel inferior,  no especificado en otra parte', 14], ['Caer en el pasillo o en la superficie de trabajo', 15], ['Caer sobre o contra objetos', 16], ['Caída a un mismo nivel, no especificada en otra parte', 17], ['Engranajes, rodillos.', 18], ['Un objeto movible y uno fijo', 19], ['Dos o más objetos móviles (que no están engranados)', 20], ['Materiales aplastantes que pueden derrumbarse en un momento dado (deslizamientos de tierra,  derrumbamiento de edificios, etc.', 21], ['Dos objetos fijos', 22], ['Cogido en, debajo o entre, no especificados en otra parte', 23], ['Por recostarse, arrodillarse o sentarse en objetos (no vibrantes)', 24], ['Por objetos operados manualmente (no vibrantes)', 25], ['Por objetos vibrantes', 26], ['Por materias extrañas en los ojos', 27], ['Por repetición de presión', 28], ['Fricción o raspadura no especificada en otra parte', 29], ['Mordida de persona o de animal', 30], ['Proveniente de movimientos involuntarios ', 31], ['Proveniente de movimientos voluntarios', 32], ['Al levantar objetos', 33], ['Al halar o empujar objetos', 34], ['Al manipular o lanzar objetos', 35], ['Sobre- esfuerzo, no especificado en otra parte', 36], ['Contacto con corriente eléctrica', 37], ['Altas temperaturas- atmosféricas, o ambientales', 38], ['Bajas temperaturas- atmosféricas o ambientales', 39], ['Objetos o sustancias calientes', 40], ['Objetos o sustancias frías', 41], ['Por inhalación', 42], ['Por ingestión', 43], ['Por absorción', 44], ['Secreciones líquidas corporales', 45], ['Líquidos contaminados o líquidos que han estado en contacto con pacientes', 46], ['Accidente de aviación', 47], ['Accidentes de buses', 48], ['Accidente de barco o botes', 49], ['Accidente de tranvías o trenes subterráneos', 50], ['Accidente de taxis', 51], ['Accidente de trenes', 52], ['Accidente de vehículos públicos no especificados en otra parte', 53], ['Con un vehículo que se mueve en dirección contraria por el mismo camino, calle o carretera', 54], ['Con un vehículo que se mueve en la misma dirección, en el mismo camino,  calle o carretera', 55], ['Con un vehículo que se mueve en una carretera de intersección o cruce', 56], ['Precipitarse contra o rozar lateralmente con un vehículo u objeto parado en la vía', 57], ['Precipitarse contra o rozar lateralmente con un vehículo u objeto parado a un lado de la vía', 58], ['Ser golpeado por otro vehículo mientras está parado en la vía', 59], ['Ser  golpeado por otro vehículo mientras se está parado fuera de la vía', 60], ['Otros accidentes con choques no especificados', 61], ['Volcarse', 62], ['Salirse fuera de la vía (sin control)', 63], ['Parada o arranque intempestivo (que lance a los ocupantes fuera o contra partes interiores del vehículo)', 64], ['Otros accidentes sin choque', 65], ['Tipos de accidentes, no especificados en otra parte', 66], ['No clasificado, datos insuficientes', 67]]) %></br>
-        </div>        
-        <br>
-        <div class="col-sm-3">
-                <%= form.label :name_disease %>
-                <%= form.collection_select :name_disease, DetailDisease.order(:name),:id,:name, include_blank: true, class: "anchura", size: "3" %>
-        </div>   
-
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">
-                <%= form.label :disability_start_date, style: "display: block" %>
-                <%= form.date_field :disability_start_date,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <%= form.label :disability_end_date, style: "display: block" %>
-                <%= form.date_field :disability_end_date,  class: "form-control" %>
-            </div>        
-        </div>   
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">
-                <%= form.label :laboral_inhability, style: "display: block" %>
-                <%= form.radio_button :laboral_inhability, 0 %>
-                <label for="no_enfermedad_laboral">NO</label>
-                <%= form.radio_button :laboral_inhability, 1 %>
-                <label for="si_enfermedad_laboral">SI</label>
-            </div>        
-            <div class="col-sm-4">
-                <%= form.label :common_inhability, style: "display: block" %>
-                <%= form.radio_button :common_inhability, 0 %>
-                <label for="no_enfermedad_comun">NO</label>
-                <%= form.radio_button :common_inhability, 1 %>
-                <label for="si_enfermedad_comun">SI</label>
-            </div>        
-            <div class="col-sm-4">
-                <%= form.label :days_absenteeism, style: "display: block" %>
-                <%= form.number_field :days_absenteeism,  class: "form-control" %>
-            </div>        
-        </div>   
-
-        <%= form.hidden_field :user_reports, :value => Current.user.id, class: "form-control" %>
-        <%= form.hidden_field :entity_id, :value => Current.user.entity, class: "form-control" %>
-
-        <br>    
-        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, events_path %>
-    <% end %>
+                ['Piso (de un edificio, una mina, un vehículo, un andamio, etc.)', 277], ['Terrenos (al aire libre).', 278], ['Rampas', 279], ['Techos', 280], ['Pasillos o plataformas (superficies elevadas permanentes).', 281], ['Aceras, senderos, pasillos. (Al aire libre)', 282], ['Escaleras, escalones. (Que sean parte integral de la edificación)', 283], ['Calles, caminos, carreteras', 284], ['Superficies de trabajo, no especificadas en otra parte', 285], ['Misceláneos, no especificados en otra parte', 286], ['Equipos de sueros, sondas', 287], ['Desconocidos, sin identificar (distintos a partículas)', 288]],
+                                {},
+                                class: "form-select",
+                                data: {
+                                    event_form_target: "accidentField"
+                                } %>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <%= form.label :accident_mechanism, class: "form-label fw-semibold" %>
+                            <%= form.select :accident_mechanism,
+                                [['Sin clasificar', 0], ['Objetos fijos', 1], ['Objetos en movimiento', 2], ['Golpeado contra objetos no especificados', 3], ['Objetos que caen (incluye personas)', 4], ['Objetos que vuelan', 5], ['Golpeado o lesionado por otra persona', 6], ['Golpeado por, no especificado en otra parte', 7], ['De andamios, de pasillos,  de plataformas, de sillas,  de techos, etc.', 8], ['De escaleras', 9], ['De materiales apilados', 10], ['De vehículos', 11], ['En escaleras propias de edificios', 12], ['Dentro de pozos, excavaciones, aberturas en los pisos, etc.  (Desde el borde la abertura)', 13], ['Caída a un nivel inferior,  no especificado en otra parte', 14], ['Caer en el pasillo o en la superficie de trabajo', 15], ['Caer sobre o contra objetos', 16], ['Caída a un mismo nivel, no especificada en otra parte', 17], ['Engranajes, rodillos.', 18], ['Un objeto movible y uno fijo', 19], ['Dos o más objetos móviles (que no están engranados)', 20], ['Materiales aplastantes que pueden derrumbarse en un momento dado (deslizamientos de tierra,  derrumbamiento de edificios, etc.', 21], ['Dos objetos fijos', 22], ['Cogido en, debajo o entre, no especificados en otra parte', 23], ['Por recostarse, arrodillarse o sentarse en objetos (no vibrantes)', 24], ['Por objetos operados manualmente (no vibrantes)', 25], ['Por objetos vibrantes', 26], ['Por materias extrañas en los ojos', 27], ['Por repetición de presión', 28], ['Fricción o raspadura no especificada en otra parte', 29], ['Mordida de persona o de animal', 30], ['Proveniente de movimientos involuntarios ', 31], ['Proveniente de movimientos voluntarios', 32], ['Al levantar objetos', 33], ['Al halar o empujar objetos', 34], ['Al manipular o lanzar objetos', 35], ['Sobre- esfuerzo, no especificado en otra parte', 36], ['Contacto con corriente eléctrica', 37], ['Altas temperaturas- atmosféricas, o ambientales', 38], ['Bajas temperaturas- atmosféricas o ambientales', 39], ['Objetos o sustancias calientes', 40], ['Objetos o sustancias frías', 41], ['Por inhalación', 42], ['Por ingestión', 43], ['Por absorción', 44], ['Secreciones líquidas corporales', 45], ['Líquidos contaminados o líquidos que han estado en contacto con pacientes', 46], ['Accidente de aviación', 47], ['Accidentes de buses', 48], ['Accidente de barco o botes', 49], ['Accidente de tranvías o trenes subterráneos', 50], ['Accidente de taxis', 51], ['Accidente de trenes', 52], ['Accidente de vehículos públicos no especificados en otra parte', 53], ['Con un vehículo que se mueve en dirección contraria por el mismo camino, calle o carretera', 54], ['Con un vehículo que se mueve en la misma dirección, en el mismo camino,  calle o carretera', 55], ['Con un vehículo que se mueve en una carretera de intersección o cruce', 56], ['Precipitarse contra o rozar lateralmente con un vehículo u objeto parado en la vía', 57], ['Precipitarse contra o rozar lateralmente con un vehículo u objeto parado a un lado de la vía', 58], ['Ser golpeado por otro vehículo mientras está parado en la vía', 59], ['Ser  golpeado por otro vehículo mientras se está parado fuera de la vía', 60], ['Otros accidentes con choques no especificados', 61], ['Volcarse', 62], ['Salirse fuera de la vía (sin control)', 63], ['Parada o arranque intempestivo (que lance a los ocupantes fuera o contra partes interiores del vehículo)', 64], ['Otros accidentes sin choque', 65], ['Tipos de accidentes, no especificados en otra parte', 66], ['No clasificado, datos insuficientes', 67]],
+                                {},
+                                class: "form-select",
+                                data: {
+                                    event_form_target: "accidentField"
+                                } %>
+                        </div>
+                    </div>
+                </div>
+                <div class="border rounded p-3 mb-4" data-event-form-target="diseaseDetails">
+                    <h5 class="mb-3">
+                        <i class="bi bi-heart-pulse-fill me-1"></i>
+                        Información de enfermedad laboral
+                    </h5>
+                    <div class="row g-3">
+                        <div class="col-12 col-md-6">
+                            <%= form.label :name_disease, class: "form-label fw-semibold" %>
+                            <%= form.collection_select :name_disease, DetailDisease.order(:name), :id, :name, { include_blank: "-- Seleccionar enfermedad --" }, { class: "form-select", data: {event_form_target: "diseaseField"} } %>
+                        </div>
+                    </div>
+                </div>
+                <div class="border rounded p-3 mb-4">
+                    <h5 class="mb-3">
+                        <i class="bi bi-calendar2-check-fill me-1"></i>
+                        Incapacidad y ausentismo
+                    </h5>
+                    <div class="row g-3">
+                        <div class="col-12 col-md-4">
+                            <%= form.label :disability_start_date, class: "form-label" %>
+                            <%= form.date_field :disability_start_date, class: "form-control" %>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <%= form.label :disability_end_date, class: "form-label" %>
+                            <%= form.date_field :disability_end_date, class: "form-control" %>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <%= form.label :days_absenteeism, class: "form-label" %>
+                            <%= form.number_field :days_absenteeism, class: "form-control", min: 0, step: 1 %>
+                        </div>
+                        <div class="col-12 col-md-4">
+                                <%= form.label :laboral_inhability, class: "form-label fw-semibold" %>
+                                <div class="d-flex gap-3 mt-2">
+                                    <div class="form-check">
+                                        <%= form.radio_button :laboral_inhability, 0, class: "form-check-input", data: {action: "change->event-form#toggleLaboralInhability" } %>
+                                        <%= form.label :laboral_inhability, "NO", value: 0, class: "form-check-label" %>
+                                    </div>
+                                    <div class="form-check">
+                                        <%= form.radio_button :laboral_inhability, 1, class: "form-check-input", data: {action: "change->event-form#toggleLaboralInhability"} %>
+                                        <%= form.label :laboral_inhability, "SI", value: 1, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                        </div>
+                        <!-- INCAPACIDAD COMÚN -->
+                        <div class="col-12 col-md-4">
+                                <%= form.label :common_inhability, class: "form-label fw-semibold" %>
+                                <div class="d-flex gap-3 mt-2">
+                                    <div class="form-check">
+                                        <%= form.radio_button :common_inhability, 0, class: "form-check-input", data: {action: "change->event-form#toggleCommonInhability"} %>
+                                        <%= form.label :common_inhability, "NO", value: 0, class: "form-check-label" %>
+                                    </div>
+                                    <div class="form-check">
+                                        <%= form.radio_button :common_inhability, 1, class: "form-check-input", data: {action: "change->event-form#toggleCommonInhability"} %>
+                                        <%= form.label :common_inhability, "SI", value: 1, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- CAMPOS OCULTOS -->
+                <%= form.hidden_field :user_reports, value: Current.user.id %>
+                <%= form.hidden_field :entity_id, value: Current.user.entity %>
+                <div class="border-top pt-3 mt-4">
+                    <div class="d-grid d-md-flex justify-content-md-end gap-2">
+                        <!-- GUARDAR -->
+                        <%= form.button type: "submit", class: "btn btn-primary btn-sm" do %>
+                            <i class="bi bi-floppy-fill me-1"></i>
+                            <%= t('common.submit') %>
+                        <% end %>
+                        <%= link_to events_path,  class: "btn btn-secondary btn-sm" do %>
+                            <i class="bi bi-arrow-left me-1"></i>
+                            Retornar
+                        <% end %>
+                    </div>
+                </div>
+            <% end %>
+        </div>
+    </div>
 </div>
-<br>
 

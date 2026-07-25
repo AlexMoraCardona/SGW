@@ -1,6 +1,7 @@
 class Event < ApplicationRecord
     belongs_to :entity
     belongs_to :user
+    validates :date_new, comparison: { less_than_or_equal_to: Date.current }
 
     def self.labelsino(dato)
         if dato == 0 ; 'NO'

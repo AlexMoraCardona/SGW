@@ -9,10 +9,11 @@ class Complaint < ApplicationRecord
         return name 
     end
 
-    def cargo(user_id)
+    def self.cargo(user_id)
+        
         cargo = ''
         usuario = User.find(user_id)
-        cargo = usuario.activity
+        cargo = CompanyPosition.find(usuario.activity.to_i).name if usuario.activity.to_i > 1
         return cargo 
     end
 

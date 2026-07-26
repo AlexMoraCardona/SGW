@@ -1,73 +1,216 @@
-<div align="left"; class="container col-12">
-    <a class="navbar-brand" href="/">
-        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-    </a>
+<div class="container-fluid py-3">
+    <!-- ENCABEZADO CON LOGO -->
+    <div class="container-fluid px-2 px-md-4 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="row align-items-center g-3">
+                    <!-- LOGO -->
+                    <div class="col-12 col-md-auto text-center text-md-start">
+                        <%= link_to root_path,
+                              class: "d-inline-block" do %>
+                            <%= image_tag "LogoConesst202305232.png", class: "img-fluid", style: "max-width: 100px;", alt: "Logo CONESST" %>
+                        <% end %>
+                    </div>
+                    <!-- TÍTULO -->
+                    <div class="col-12 col-md">
+                        <h1 class="h3 mb-0 text-center text-md-start">
+                            ADMINISTRACIÓN QUEJAS
+                            <br class="d-md-none">
+                            COMITÉ DE CONVIVENCIA LABORAL
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="container-fluid px-2 px-md-4">
+        <!-- ENTIDAD -->
+        <% if @entity.present? %>
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-building fs-4 me-2"></i>
+                        <div>
+                            <small class="text-muted d-block">
+                                Entidad
+                            </small>
+                            <strong class="fs-5">
+                                <%= @entity.business_name %>
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% end %>
+        <!-- RESUMEN -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header">
+                <div class="row align-items-center g-2">
+                    <div class="col-12 col-md">
+                        <h2 class="h5 mb-0">
+                            <i class="bi bi-bar-chart-line me-2"></i>
+                            RESUMEN ADMINISTRACIÓN QUEJAS
+                            COMITÉ DE CONVIVENCIA LABORAL
+                        </h2>
+                    </div>
+                    <!-- BOTÓN PDF -->
+                    <% if @entity.present? %>
+                        <div class="col-12 col-md-auto">
+                            <%= link_to resumen_path(@entity.id, format: :pdf), class: "btn btn-success w-100 w-md-auto" do %>
+                                <i class="bi bi-file-earmark-pdf me-1"></i>
+                                Descargar resumen PDF
+                            <% end %>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+            <!-- TABLA RESUMEN -->
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">
+                                    Estado
+                                </th>
+                                <th scope="col"
+                                    class="text-center">
+                                    Cantidad
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <i class="bi bi-hourglass-split me-2"></i>
+                                    Quejas Pendientes
+                                </td>
+                                <td class="text-center fw-semibold">
+                                    <%= @complaints_pendiente %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <i class="bi bi-check-circle me-2"></i>
+                                    Quejas Resueltas
+                                </td>
+                                <td class="text-center fw-semibold">
+                                    <%= @complaints_resuelto %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <i class="bi bi-x-circle me-2"></i>
+                                    Quejas Canceladas
+                                </td>
+                                <td class="text-center fw-semibold">
+                                    <%= @complaints_cancelado %>
+                                </td>
+                            </tr>
+                            <tr class="table-light">
+                                <td class="fw-bold">
+                                   Total
+                                </td>
+                                <td class="text-center fw-bold">
+                                    <%= @complaints_total %>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- LISTADO DE QUEJAS -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header">
+                <h2 class="h5 mb-0">
+                    <i class="bi bi-list-ul me-2"></i>
+                    QUEJAS REGISTRADAS
+                </h2>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">
+                                    Nro.
+                                </th>
+                                <th scope="col">
+                                    Fecha
+                                </th>
+                                <th scope="col">
+                                    Entidad
+                                </th>
+                                <th scope="col">
+                                    Estado
+                                </th>
+                                <th scope="col"
+                                    class="text-center">
+                                    Ver
+                                </th>
+                                <th scope="col"
+                                    class="text-center">
+                                    Descargar
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% @complaints.each do |complaint| %>
+                                <tr>
+                                    <!-- NÚMERO -->
+                                    <td>
+                                        <%= complaint.id %>
+                                    </td>
+                                    <!-- FECHA -->
+                                    <td>
+                                        <%= complaint.date_complaint %>
+                                    </td>
+                                    <!-- ENTIDAD -->
+                                    <td class="text-break">
+
+                                        <%= complaint.entity.business_name if complaint.entity.present? %>
+
+                                    </td>
+                                    <!-- ESTADO -->
+                                    <td>
+                                        <%= complaint.estado(complaint.state_complaint) %>
+                                    </td>
+                                    <!-- VER -->
+                                    <td class="text-center">
+                                        <% if Current.user.ccl == 1 &&
+                                              Current.user.entity == complaint.entity_id %>
+                                            <%= link_to edit_complaint_path(complaint), class: "btn btn-primary btn-sm px-3" do %>
+                                                <i class="bi bi-eye me-1"></i>
+                                                Ver
+                                            <% end %>
+                                        <% end %>
+                                    </td>
+                                    <!-- DESCARGAR PDF -->
+                                    <td class="text-center">
+                                        <% if Current.user.ccl == 1 &&
+                                              Current.user.entity == complaint.entity_id %>
+                                            <%= link_to inform_path(complaint.id, format: :pdf), class: "btn btn-success btn-sm px-3" do %>
+                                                <i class="bi bi-file-earmark-pdf me-1"></i>
+                                                PDF
+                                            <% end %>
+                                        <% end %>
+                                    </td>
+                                </tr>
+                            <% end %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- BOTÓN RETORNAR -->
+        <div class="d-flex justify-content-center justify-content-md-start gap-2 mb-4">
+            <%= link_to :back,
+                  class: "btn btn-secondary px-4" do %>
+                <i class="bi bi-arrow-left me-1"></i>
+                Retornar
+            <% end %>
+        </div>
+    </div>
 </div>
-<div class="container col-11" 
-    <br>
-    <h2 class="display-5">ADMINISTRACIÓN QUEJAS COMITÉ DE CONVIVENCIA LABORAL</h2>
-    <hr>
-
-    <div class="container"> 
-        <%= form_with method: :get  do |form| %>
-            <h5 scope="col">Filtrar por Entidad: </h5>
-            <%= form.collection_select :entity_id, Entity.all.order(id: :asc), :id, :business_name, { prompt: '--Seleccionar Entidad--' },
-            { class: 'form-control input-sm select2' , onChange: 'this.form.requestSubmit()', value: params[:entity_id] }  %>
-        <% end %>      
-    </div>  
-
-    <hr>
-    <h3>RESUMEN ADMINISTRACIÓN QUEJAS COMITÉ DE CONVIVENCIA LABORAL</h3> <%= link_to "PDF", resumen_path(@entity.id, format: 'pdf'), class: 'btn btn-sm btn-success' if @entity.present?  %>
-
-    <br>
-    <table class="table table-hover">
-            <tr>
-                <th scope="col"></th>
-                <th scope="col">Cantidad</th>
-            </tr>
-            <tr>
-                    <td>Quejas Pendientes:</td>
-                    <td><%=@complaints_pendiente%></td>
-            </tr>
-            <tr>
-                 <td>Quejas Resueltas:</td>
-                    <td><%=@complaints_resuelto%></td>
-                </tr>
-                <tr>
-                    <td>Quejas Canceladas:</td>
-                    <td><%=@complaints_cancelado%></td>
-                </tr>
-                <tr>
-                    <td>Total:</td>
-                    <td><%=@complaints_total%></td>
-                </tr>
-    </table>
-
-    <hr>
-
-    <br>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">Nro.</th>
-                <th scope="col">Fecha</th>
-                <th scope="col">Entidad</th>
-                <th scope="col">Estado</th>
-                <th scope="col">Ver</th>
-                <th scope="col">Descargar</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% @complaints.each do |complaint| %>
-                <tr>
-                    <td><%= complaint.id %></td>
-                    <td><%= complaint.date_complaint %></td>
-                    <td><%= complaint.entity.business_name if complaint.entity.present? %></td>
-                    <td><%= complaint.estado(complaint.state_complaint) %></td>
-                    <td><%= link_to t('common.show'), edit_complaint_path(complaint), class: 'btn btn-sm btn-primary' if Current.user.ccl == 1 && Current.user.entity == complaint.entity_id %></td>
-                    <td><%= link_to "PDF", inform_path(complaint.id, format: 'pdf'), class: 'btn btn-sm btn-success' if Current.user.ccl == 1 && Current.user.entity == complaint.entity_id %></td>
-                </tr>
-            <% end %>    
-        </tbody>      
-    </table>
-</div>  

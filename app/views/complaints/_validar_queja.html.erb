@@ -1,136 +1,276 @@
-<div class="container col-11">
-    <br>
-    <div class="d-flex"> 
-        <div class="container">
-            <h2 class="display-5">QUEJA COMITÉ DE CONVIVENCIA LABORAL</h2>
-            <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+<div class="container-fluid py-3">
+    <div class="container-fluid px-2 px-md-4">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <div class="row align-items-center g-3">
+                    <div class="col-12 col-md">
+                        <h2 class="h3 mb-0 text-center text-md-start">
+                            QUEJA COMITÉ DE CONVIVENCIA LABORAL
+                        </h2>
+                    </div>
+                    <div class="col-12 col-md-auto text-center">
+                        <%= link_to :back,
+                              class: "btn btn-secondary px-4" do %>
+                            <i class="bi bi-arrow-left me-1"></i>
+                            Retornar
+                        <% end %>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <br>
-    <div>
-        <p style="background-color: #00aae4;">INFORMACION BÁSICA</p>
-    </div>
-    <div>
-        <strong>Nombre del colaborador:</strong>
-        <%= @complaint.name(@complaint.user_complaint) %> 
-    </div>        
-    <div>
-        <strong>Documento de Identidad:</strong>
-        <%= @complaint.document(@complaint.user_complaint) %> 
-    </div>        
-    <div>
-        <strong>Cargo:</strong>
-        <%= @complaint.cargo(@complaint.user_complaint) %> 
-    </div>        
-    <div>
-        <strong>Correo electrónico:</strong>
-        <%= @complaint.email(@complaint.user_complaint) %> 
-    </div>  
-    <br>      
-    <div>
-        <strong>Persona contra quien se interpone la queja:</strong>
-        <%= @complaint.name(@complaint.user_interpose_complaint) %> 
-    </div>  
-    <div>
-        <strong>Cargo:</strong>
-        <%= @complaint.cargo(@complaint.user_interpose_complaint) %> 
-    </div>        
-    <div>
-        <strong>Fecha diligenciamiento:</strong>
-        <%= @complaint.date_complaint %> 
-    </div> 
-    <br> 
-    <div>
-        <p style="background-color: #00aae4;"><strong>RELACIÓN DE LOS HECHOS MOTIVO DE LA QUEJA:</strong><br>1.1. Describa todos los elementos en los que se identifiquen las circunstancias de tiempo (cuándo), modo (cómo), lugar (dónde) y cualquier otra que considere pertinente. De ser necesario el Comité podrá solicitarle ampliación de la información aquí descrita.</p>
-        <%= @complaint.relationship_facts %> 
-    </div> 
-    <br> 
-    <div>
-        <p style="background-color: #00aae4;"><strong>1.2 ¿Cuenta usted con alguna prueba? ¿Cuál(es)?  Relaciónelas y adjúntelas</strong></p>
-        <%= @complaint.observation %> 
-    </div> 
-    <br>
-    <div>
-        <p style="background-color: #00aae4;"><strong>1.3 ¿Ha puesto en conocimiento de alguna autoridad los hechos aquí relacionados?</strong></p>
-        <% if @complaint.have_proof == 0  then %>
-            <p>NO</p>
-        <% else %>
-            <p>SI</p>
-        <% end %>
-    </div> 
-    <br>
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="bi bi-person-vcard me-2"></i>
+                    INFORMACIÓN BÁSICA
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-12 col-md-6">
+                        <div class="border rounded p-3 h-100">
+                            <strong>
+                                Nombre del colaborador:
+                            </strong>
+                            <div class="mt-1">
+                                <%= @complaint.name(@complaint.user_complaint) %>
+                            </div>
+                        </div>
+                    </div>
 
-    <div>
-        <p style="background-color: #00aae4;"><strong>Firma del Funcionario o Contratista:</strong></p>
-        <% if @complaint.firm_complaint == 0  then %>
-            <p>NO</p>
-        <% else %> 
-                <% if @user.firm.attached? %>
-
-                   <% if @user.firm.attached? %>
-                      <% if @user.firm.image? %> 
-                           <%= image_tag @user.firm, class: "firma" %>
-                           <p>________________________________</p>
-                      <% end %>
+                    <div class="col-12 col-md-6">
+                        <div class="border rounded p-3 h-100">
+                            <strong>
+                                Documento de Identidad:
+                            </strong>
+                            <div class="mt-1">
+                                <%= @complaint.document(@complaint.user_complaint) %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="border rounded p-3 h-100">
+                            <strong>
+                                Cargo:
+                            </strong>
+                            <div class="mt-1">
+                                <%= Complaint.cargo(@complaint.user_complaint) %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="border rounded p-3 h-100">
+                            <strong>
+                                Correo electrónico:
+                            </strong>
+                            <div class="mt-1 text-break">
+                                <%= @complaint.email(@complaint.user_complaint) %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-4">
+                <div class="row g-3">
+                    <div class="col-12 col-md-6">
+                        <div class="border rounded p-3 h-100">
+                            <strong>
+                                Persona contra quien se interpone la queja:
+                            </strong>
+                            <div class="mt-1">
+                                <%= @complaint.name(@complaint.user_interpose_complaint) %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <div class="border rounded p-3 h-100">
+                            <strong>
+                                Cargo:
+                            </strong>
+                            <div class="mt-1">
+                                <%= Complaint.cargo(@complaint.user_interpose_complaint) %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <div class="border rounded p-3 h-100">
+                            <strong>
+                                Fecha diligenciamiento:
+                            </strong>
+                            <div class="mt-1">
+                                <%= @complaint.date_complaint %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- RELACIÓN DE LOS HECHOS -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    RELACIÓN DE LOS HECHOS MOTIVO DE LA QUEJA
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="fw-semibold">
+                    1.1. Describa todos los elementos en los que se identifiquen
+                    las circunstancias de tiempo (cuándo), modo (cómo), lugar
+                    (dónde) y cualquier otra que considere pertinente.
+                    De ser necesario el Comité podrá solicitarle ampliación
+                    de la información aquí descrita.
+                </p>
+                <div class="bg-light border rounded p-3 text-break">
+                    <%= simple_format(@complaint.relationship_facts) %>
+                </div>
+            </div>
+        </div>
+        <!-- PRUEBAS -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    1.2 ¿CUENTA USTED CON ALGUNA PRUEBA?
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="fw-semibold">
+                    ¿Cuál(es)? Relaciónelas y adjúntelas.
+                </p>
+                <div class="bg-light border rounded p-3 text-break">
+                    <%= simple_format(@complaint.observation) %>
+                </div>
+            </div>
+        </div>
+        <!-- AUTORIDAD -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    1.3 ¿HA PUESTO EN CONOCIMIENTO DE ALGUNA AUTORIDAD
+                    LOS HECHOS AQUÍ RELACIONADOS?
+                </h5>
+            </div>
+            <div class="card-body">
+                <% if @complaint.have_proof == 0 %>
+                    <span class="badge text-bg-secondary fs-6 px-3 py-2">
+                        NO
+                    </span>
+                <% else %>
+                    <span class="badge text-bg-success fs-6 px-3 py-2">
+                        SI
+                    </span>
+                <% end %>
+            </div>
+        </div>
+        <!-- FIRMA -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    FIRMA DEL FUNCIONARIO O CONTRATISTA
+                </h5>
+            </div>
+            <div class="card-body text-center">
+                <% if @complaint.firm_complaint == 0 %>
+                    <span class="badge text-bg-secondary fs-6 px-3 py-2">
+                        NO
+                    </span>
+                <% else %>
+                    <% if @user.firm.attached? && @user.firm.image? %>
+                        <%= image_tag @user.firm, class: "img-fluid", style: "max-width: 350px; max-height: 180px;", alt: "Firma" %>
+                        <div class="mt-2">
+                            ________________________________
+                        </div>
                     <% end %>
                 <% end %>
-        <% end %>
-    </div> 
-
-    <hr>
-    <br>
-    <div class="form-group">
-       <h5>Archivos adjuntos:</h5>
-    </div>         
-    <hr>
-    <% if @complaint.files_complaint.attached? %>
-        <div data-controller="previews" >
-            <% @complaint.files_complaint.each do |file|%>
-                <br>
-                <% if file.image? %>
-                    <div>
-                        <%= image_tag file, data: {previews_target: "preview"}, class: "image" %>
-                        <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                    </div> 
-                <% elsif file.video? %>
-                    <%= video_tag url_for(file), controls: "", width: "400px" %>          
-                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                <% elsif file.audio? %>
-                    <%= audio_tag(url_for(file), controls: "") %>          
-                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                <% else %>
-                    <%= link_to file.filename, url_for(file) %>          
-                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                <% end %>
-            <% end %>  
+            </div>
         </div>
-    <% end %>
-    <br>
-    <div class="container col-5 card p-5">
-        <%= form_with model: @complaint do |form| %>
-            <% @complaint.errors.full_messages.each do |error| %>
-                <div class="alert alert-danger" role="alert">
-                    <%= error%> <%= alert %>
-                </div>
-            <% end %>   
-            <div class="d-flex"> 
-                <div class="container">
-                    <p style="background-color: #00aae4;"><strong>Desea cambiar el estado a la queja</strong></p>
-                </div>
+        <!-- ARCHIVOS ADJUNTOS -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="bi bi-paperclip me-2"></i>
+                    Archivos adjuntos
+                </h5>
             </div>
-            <div class="form-group">    
-                <%= form.radio_button :state_complaint, 0 %>
-                <label for="pendiente">PENDIENTE</label>&nbsp;&nbsp; 
-                <%= form.radio_button :state_complaint, 1 %>
-                <label for="resuelto">RESUELTO</label>&nbsp;&nbsp;   
-                <%= form.radio_button :state_complaint, 2 %>
-                <label for="cancelado">CANCELADO</label>&nbsp;&nbsp;   
+            <div class="card-body">
+                <% if @complaint.files_complaint.attached? %>
+                    <div class="row g-4">
+                        <% @complaint.files_complaint.each do |file| %>
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="card h-100 border">
+                                    <div class="card-body text-center">
+                                        <% if file.image? %>
+                                            <%= image_tag file, class: "img-fluid rounded mb-3", style: "max-height: 250px;", alt: file.filename.to_s %>
+                                        <% elsif file.video? %>
+                                            <%= video_tag url_for(file), controls: true, class: "w-100 rounded mb-3", style: "max-height: 250px;" %>
+                                        <% elsif file.audio? %>
+                                            <%= audio_tag url_for(file), controls: true, class: "w-100 mb-3" %>
+                                        <% else %>
+                                            <div class="py-4">
+                                                <i class="bi bi-file-earmark-text fs-1"></i>
+                                                <p class="mt-2 mb-0 text-break">
+                                                    <%= file.filename %>
+                                                </p>
+                                            </div>
+                                        <% end %>
+                                        <%= link_to rails_blob_path(file, disposition: "attachment" ), class: "btn btn-success btn-sm w-100" do %>
+                                            <i class="bi bi-download me-1"></i>
+                                            Descargar archivo
+                                        <% end %>
+                                    </div>
+                                </div>
+                            </div>
+                        <% end %>
+                    </div>
+                <% else %>
+                    <div class="alert alert-secondary mb-0">
+                        <i class="bi bi-info-circle me-2"></i>
+                        No hay archivos adjuntos.
+                    </div>
+                <% end %>
             </div>
-            <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <% end %>
-    </div>  
-    <br>
-</div>  
-
-
-
+        </div>
+        <!-- CAMBIAR ESTADO -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="bi bi-arrow-repeat me-2"></i>
+                    Cambiar estado de la queja
+                </h5>
+            </div>
+            <div class="card-body">
+                <%= form_with model: @complaint do |form| %>
+                    <% @complaint.errors.full_messages.each do |error| %>
+                        <div class="alert alert-danger" role="alert">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            <%= error %>
+                        </div>
+                    <% end %>
+                    <div class="row g-3 align-items-center">
+                        <div class="col-12 col-md">
+                            <div class="d-flex flex-column flex-md-row gap-3">
+                                <div class="form-check">
+                                    <%= form.radio_button :state_complaint, 0, class: "form-check-input" %>
+                                    <%= form.label :state_complaint, "PENDIENTE", value: 0, class: "form-check-label" %>
+                                </div>
+                                <div class="form-check">
+                                    <%= form.radio_button :state_complaint, 1, class: "form-check-input" %>
+                                    <%= form.label :state_complaint, "RESUELTO", value: 1, class: "form-check-label" %>
+                                </div>
+                                <div class="form-check">
+                                    <%= form.radio_button :state_complaint, 2, class: "form-check-input" %>
+                                    <%= form.label :state_complaint, "CANCELADO", value: 2, class: "form-check-label" %>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-auto">
+                            <%= form.button type: "submit",
+                                  class: "btn btn-primary w-100 px-4" do %>
+                                <i class="bi bi-check-circle me-1"></i>
+                                <%= t("common.submit") %>
+                            <% end %>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>

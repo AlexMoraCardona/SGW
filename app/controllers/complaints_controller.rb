@@ -53,23 +53,19 @@ class ComplaintsController < ApplicationController
         if Current.user && Current.user.ccl == 1 && Current.user.level > 2 then
             @entity = Entity.find(Current.user.entity)
             @complaints = Complaint.where("entity_id = ?", @entity.id) if @entity.present?
+            @complaints_pendiente = @complaints.where("state_complaint = ?", 0).count if @complaints.present?
+            @complaints_resuelto = @complaints.where("state_complaint = ?", 1).count if @complaints.present?
+            @complaints_cancelado = @complaints.where("state_complaint = ?", 2).count if @complaints.present?
+            @complaints_total = @complaints.count
+
         else
                 if Current.user && Current.user.level < 3 && Current.user.level > 0 then
-                    if params[:entity_id].present?  then
-                        @entity = Entity.find(params[:entity_id].to_i)
+                        @entity = Entity.find(Current.user.entity)
                         @complaints = Complaint.where("entity_id = ?", @entity.id).order(:id) if @entity.present?
                         @complaints_pendiente = @complaints.where("state_complaint = ?", 0).count if @complaints.present?
                         @complaints_resuelto = @complaints.where("state_complaint = ?", 1).count if @complaints.present?
                         @complaints_cancelado = @complaints.where("state_complaint = ?", 2).count if @complaints.present?
                         @complaints_total = @complaints.count
-                    else    
-                        @entities = Entity.all
-                        @complaints = Complaint.all
-                        @complaints_pendiente = @complaints.where("state_complaint = ?", 0).count if @complaints.present?
-                        @complaints_resuelto = @complaints.where("state_complaint = ?", 1).count if @complaints.present?
-                        @complaints_cancelado = @complaints.where("state_complaint = ?", 2).count if @complaints.present?
-                        @complaints_total = @complaints.count
-                    end    
                 else
                     redirect_to new_session_path, alert: 'Ingreso no permitido'
                     session.delete(:user_id)
@@ -112,16 +108,22 @@ class ComplaintsController < ApplicationController
         @complaints_cancelado = @complaints.where("state_complaint = ?", 2).count if @complaints.present?
         @complaints_total = @complaints.count if @complaints.present?
 
-
-        @vista = 'complaints/resumen/' 
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'informe', 
-                disable_javascript: true,
-                margin: {top: 25, bottom: 25, left: 25, right: 25 },
-                page_size: 'Letter'
-                 } 
+            format.pdf {
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('resumen'),
+                    header: { right: '[page] de [topage]' },
+                    margin: {top: 10, bottom: 10, left: 10, right: 10 },
+                    disable_javascript: true,
+                    enable_plugins: true,
+                    page_size: 'letter',
+
+                  )  
+                  send_data(pdf, filename: 'Resumen.pdf', disposition: 'attachment')      
+            }
         end
+
     end
 
     private

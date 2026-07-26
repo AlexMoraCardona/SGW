@@ -1,13 +1,13 @@
 class RouteControlsController < ApplicationController
     def index
-            if  Current.user && Current.user.level > 0 && Current.user.level < 4
+            if  Current.user && Current.user.level > 0 && Current.user.level < 3
                 @route_controles = RouteControl.all.order(id: :desc)
                 @q = @route_controles.ransack(params[:q])
                 @pagy, @route_controls = pagy(@q.result(id: :desc), items: 3)
                 @users = User.all
 
-            elsif Current.user && Current.user.level > 3
-                @route_controles = RouteControl.where("user_create = ?",Current.user.id).order(id: :desc)
+            elsif Current.user && Current.user.level > 2
+                @route_controles = RouteControl.where("entity = ?",Current.user.entity).order(id: :desc)
                 @q = @route_controles.ransack(params[:q])
                 @pagy, @route_controls = pagy(@q.result(id: :desc), items: 3)
                 @users = User.where("entity = ?",Current.user.entity)

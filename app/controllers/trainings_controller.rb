@@ -4,11 +4,11 @@ class TrainingsController < ApplicationController
             @entity = Entity.find(params[:entity_id])
             @trainings = Training.where("entity_id = ?", params[:entity_id])
         else    
-            if  Current.user && Current.user.level > 0 && Current.user.level < 4
+            if  Current.user && Current.user.level > 0 && Current.user.level < 5
                 @entities = Entity.all if Current.user.level > 0 && Current.user.level < 3
-                @entity = Entity.find(Current.user.entity.to_i) if Current.user.level == 3
+                @entity = Entity.find(Current.user.entity.to_i) if Current.user.level == 3 || Current.user.level == 4
                 @trainings = Training.all if Current.user.level > 0 && Current.user.level < 3
-                @trainings = Training.where("entity_id = ?",Current.user.entity.to_i) if Current.user.level == 3
+                @trainings = Training.where("entity_id = ?",Current.user.entity.to_i) if Current.user.level == 3 || Current.user.level == 4
             else
                 redirect_to new_session_path, alert: t('common.not_logged_in')  
                 session.delete(:user_id)    

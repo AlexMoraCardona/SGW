@@ -135,6 +135,7 @@ class MatrixDangerRisk < ApplicationRecord
 
     def self.duplicar_item(matrix_danger_item)
         nuevo_matrix_danger_item = MatrixDangerItem.new  
+        matrix_danger_risk = MatrixDangerRisk.find(matrix_danger_item.matrix_danger_risk_id) if matrix_danger_item.present?
         cant = 0
         matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ?", matrix_danger_item.matrix_danger_risk_id).order(:id) if matrix_danger_item.present?
         cant = matrix_danger_items.count if matrix_danger_items.present?
@@ -187,11 +188,13 @@ class MatrixDangerRisk < ApplicationRecord
         nuevo_matrix_danger_item.type_cargo = matrix_danger_item.type_cargo
         
         nuevo_matrix_danger_item.save
-
+        matrix_danger_risk.date_update = Time.now if matrix_danger_risk.present?
+        matrix_danger_risk.save if matrix_danger_risk.present?
     end    
 
     def self.cargar_archivompr(archivo, matrix_danger_risk)
         #nuevo_matrix_danger_item = MatrixDangerItem.new  
+        @matrix_danger_risk = MatrixDangerRisk.find(matrix_danger_risk.id) if matrix_danger_risk.present?
         cant = 0
         matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ?", matrix_danger_risk.id).order(:id) if matrix_danger_risk.present?
         cant = matrix_danger_items.count if matrix_danger_items.present?
@@ -289,6 +292,10 @@ class MatrixDangerRisk < ApplicationRecord
            MatrixDangerItem.calculos(matrix_danger_item.id) 
            MatrixDangerItem.adicionarinterIA(matrix_danger_item.id)
            MatrixDangerItem.adicionarposible(matrix_danger_item.id)
+
+           @matrix_danger_risk.date_update = Time.now if @matrix_danger_risk.present?
+           @matrix_danger_risk.save if @matrix_danger_risk.present?
+
        end
     end   
 

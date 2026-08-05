@@ -1,7 +1,18 @@
 <tr>
     <td><%= indicator.name %></td>
     <td><%= indicator.description %></td>
-    <td><%= link_to t('common.show'), indicator_path(indicator), class: 'btn btn-sm btn-primary'  %></td>
-    <td><%= link_to t('common.edit'), edit_indicator_path(indicator), class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level < 3 %></td>
-    
+    <td class="text-center"> 
+        <%= link_to indicator_path(indicator), class: "btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-1", title: t("common.show") do %>
+             <i class="bi bi-eye"></i>
+              <span class="d-none d-md-inline"> <%= t("common.show") %></span>
+        <% end %>
+    </td>    
+    <% if Current.user.level > 0 && Current.user.level < 3 %>
+        <td class="text-center">
+             <%= link_to edit_indicator_path(indicator), class: "btn btn-outline-warning btn-sm d-inline-flex align-items-center gap-1", title: t("common.edit") do %>
+                <i class="bi bi-pencil-square"></i>
+                <span class="d-none d-md-inline"> <%= t("common.edit") %> </span>
+            <% end %>
+        </td>
+    <% end %>
 </tr>

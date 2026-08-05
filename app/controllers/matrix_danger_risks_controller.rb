@@ -1,6 +1,6 @@
 class MatrixDangerRisksController < ApplicationController
     def index  
-        if  Current.user && Current.user.level > 0 && Current.user.level < 4
+        if  Current.user && Current.user.level > 0 && Current.user.level < 5
                 @entity = Entity.find(Current.user.entity)
                 @matrix_danger_risks = MatrixDangerRisk.where("entity_id = ?",@entity.id) if @entity.present?
                 @cargos = CompanyPosition.listar_cargo(@entity.id) if @entity.id.present?
@@ -38,6 +38,8 @@ class MatrixDangerRisksController < ApplicationController
 
     def create
         @matrix_danger_risk = MatrixDangerRisk.new(matrix_danger_risk_params)
+        @matrix_danger_risk.date_create = Time.now if @matrix_danger_risk.present?
+        @matrix_danger_risk.date_update = Time.now if @matrix_danger_risk.present?
 
         if @matrix_danger_risk.save then
             redirect_to matrix_danger_risks_path, notice: t('.created') 
@@ -53,6 +55,7 @@ class MatrixDangerRisksController < ApplicationController
     
     def update
         @matrix_danger_risk = MatrixDangerRisk.find(params[:id])
+        @matrix_danger_risk.date_update = Time.now if @matrix_danger_risk.present?
 
             if @matrix_danger_risk.update(matrix_danger_risk_params)
                 actualizar_fecha(@matrix_danger_risk.id)

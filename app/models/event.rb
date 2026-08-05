@@ -1,7 +1,15 @@
 class Event < ApplicationRecord
     belongs_to :entity
     belongs_to :user
-    validates :date_new, comparison: { less_than_or_equal_to: Date.current }
+    validate :date_new_cannot_be_in_the_future
+
+    def date_new_cannot_be_in_the_future
+        return if date_new.blank?
+
+        if date_new > Date.current
+            errors.add(:date_new, "no puede ser posterior a la fecha de hoy")
+        end
+    end    
 
     def self.labelsino(dato)
         if dato == 0 ; 'NO'

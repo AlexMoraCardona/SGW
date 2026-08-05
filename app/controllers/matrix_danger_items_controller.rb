@@ -10,8 +10,11 @@ class MatrixDangerItemsController < ApplicationController
     def create
         @matrix_danger_item = MatrixDangerItem.new(matrix_danger_item_params)
         @matrix_danger_item.clasification_danger_id = ClasificationDangerDetail.find(@matrix_danger_item.clasification_danger_detail_id).clasification_danger_id if @matrix_danger_item.clasification_danger_detail_id.present? 
+        @matrix_danger_risk = MatrixDangerRisk.find(@matrix_danger_item.matrix_danger_risk_id) if @matrix_danger_item.present?
+        @matrix_danger_risk.date_update = Time.now if @matrix_danger_risk.present?
 
         if @matrix_danger_item.save then
+            @matrix_danger_risk.save if @matrix_danger_risk.present?
             MatrixDangerItem.adicionarinter(@matrix_danger_item.id) if @matrix_danger_item.present?
             MatrixDangerItem.adicionarposible(@matrix_danger_item.id) if @matrix_danger_item.present?
             MatrixDangerItem.calculos(@matrix_danger_item.id) if @matrix_danger_item.present?
@@ -27,8 +30,12 @@ class MatrixDangerItemsController < ApplicationController
     
     def update
         @matrix_danger_item = MatrixDangerItem.find(params[:id])
+        @matrix_danger_risk = MatrixDangerRisk.find(@matrix_danger_item.matrix_danger_risk_id) if @matrix_danger_item.present?
+        @matrix_danger_risk.date_update = Time.now if @matrix_danger_risk.present?
         @matrix_danger_item.clasification_danger_id = ClasificationDangerDetail.find(@matrix_danger_item.clasification_danger_detail_id).clasification_danger_id if @matrix_danger_item.clasification_danger_detail_id.present? 
+         
         if @matrix_danger_item.update(matrix_danger_item_params)
+            @matrix_danger_risk.save if @matrix_danger_risk.present?
             MatrixDangerItem.calculos(@matrix_danger_item.id) if @matrix_danger_item.present?
             redirect_to  matrix_danger_risk_path(@matrix_danger_item.matrix_danger_risk_id), notice: 'Item actualizado correctamente'
         else

@@ -1,76 +1,95 @@
-<div class="container col-11 card p-5">
-    <br>
-    <%= form_with model: @indicator do |form| %>
-        <% @indicator.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
+<div class="container-fluid px-3 px-md-4 px-lg-5 py-3">
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white py-3">
+      <h2 class="mb-0 text-center text-md-start">
+        <i class="bi bi-bar-chart-line me-2"></i>
+        <%= @indicator.new_record? ? t(".title") : @indicator.name %>
+      </h2>
+    </div>
+    <div class="card-body p-3 p-md-4">
+      <%= form_with model: @indicator do |form| %>
+        <% if @indicator.errors.any? %>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <div class="fw-bold mb-2">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>
+              <%= t("errors.template.header", count: @indicator.errors.count) rescue "Se encontraron errores" %>
             </div>
-        <% end %>   
-        
-        <div class="row g-2">
-            <div class="col-sm-6">
-                <%= form.label :name, style: "display: block" %>
-                <%= form.text_field :name,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-5">   
-                <%= form.label :cycle_id,  style: "display: block" %>
-                <%= form.collection_select :cycle_id, @cycles.order(id: :asc), :id,  :name, style: "width=50px" %>
-            </div>        
-        </div>   
-        <br>    
-        <div class="row g-2">
-            <div class="col-sm-6">
-                <%= form.label :person_result, style: "display: block" %>
-                <%= form.text_field :person_result,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-5">   
-                <%= form.label :type_indicator,  style: "display: block" %>
-                <%= form.select(:type_indicator, [['Estructura', 'Estructura'], ['Proceso', 'Proceso'], ['Resultado', 'Resultado'], ['Estándares Mínimos', 'Estándares Mínimos']]) %>
-            </div>        
-        </div>   
-        <br>    
 
-        <div class="form-group">    
-            <%= form.label :description, style: "display: block" %>
-            <%= form.text_field :description,  class: "form-control" %>
+            <ul class="mb-0">
+              <% @indicator.errors.full_messages.each do |error| %>
+                <li><%= error %></li>
+              <% end %>
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+          </div>
+        <% end %>
+        <div class="row g-3 mb-4">
+          <div class="col-12 col-md-7">
+            <%= form.label :name, class: "form-label fw-semibold" %>
+            <%= form.text_field :name, class: "form-control", placeholder: "Ingrese el nombre del indicador" %>
+          </div>
+          <div class="col-12 col-md-5">
+            <%= form.label :cycle_id, class: "form-label fw-semibold" %>
+            <%= form.collection_select :cycle_id, @cycles.order(id: :asc), :id, :name, { prompt: "Seleccione un ciclo" }, { class: "form-select" } %>
+          </div>
+          <div class="col-12 col-md-7">
+            <%= form.label :person_result, class: "form-label fw-semibold" %>
+            <%= form.text_field :person_result, class: "form-control", placeholder: "Ingrese la persona responsable del resultado" %>
+          </div>
+          <div class="col-12 col-md-5">
+            <%= form.label :type_indicator, class: "form-label fw-semibold" %>
+            <%= form.select :type_indicator, [["Estructura", "Estructura"], ["Proceso", "Proceso"], ["Resultado", "Resultado"], ["Estándares Mínimos", "Estándares Mínimos"] ], { prompt: "Seleccione el tipo" }, { class: "form-select" } %>
+          </div>
         </div>
-        <br>    
-        <div class="form-group">    
-            <%= form.label :formula, style: "display: block" %>
-            <%= form.text_field :formula,  class: "form-control" %>
+        <div class="mb-4">
+          <%= form.label :description, class: "form-label fw-semibold" %>
+          <%= form.text_area :description, class: "form-control", rows: 3, placeholder: "Ingrese la descripción del indicador" %>
         </div>
-        <br>    
-        <div class="form-group">    
-            <%= form.label :interpretation, style: "display: block" %>
-            <%= form.text_field :interpretation,  class: "form-control" %>
+        <div class="mb-4">
+          <%= form.label :formula, class: "form-label fw-semibold" %>
+          <%= form.text_area :formula, class: "form-control", rows: 3, placeholder: "Ingrese la fórmula del indicador" %>
         </div>
-        <div class="row g-3">
-            <div class="col-sm-4">
-                <%= form.label :periodicity,  style: "display: block" %>
-                <%= form.select(:periodicity, [['Mensual', 0], ['Bimestral', 1], ['Trimestral', 2], ['Semestral', 3], ['Anual', 4], ['Diaria', 5]]) %>
-            </div>        
-            <div class="col-sm-3"> 
-                <%= form.label :limit_one, style: "display: block" %>
-                <%= form.number_field :limit_one,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-3"> 
-                <%= form.label :limit_two, style: "display: block" %>
-                <%= form.number_field :limit_two,  class: "form-control" %>
-            </div>        
-        </div>   
-        <br>    
-        <div class="form-group">    
-            <%= form.label :information_source, style: "display: block" %>
-            <%= form.text_field :information_source,  class: "form-control" %>
+        <div class="mb-4">
+          <%= form.label :interpretation, class: "form-label fw-semibold" %>
+          <%= form.text_area :interpretation, class: "form-control", rows: 3, placeholder: "Ingrese la interpretación del indicador" %>
         </div>
-        <br>    
-        <div class="form-group">    
-            <%= form.label :responsible_management, style: "display: block" %>
-            <%= form.text_field :responsible_management,  class: "form-control" %>
+        <div class="row g-3 mb-4">
+          <div class="col-12 col-md-4">
+            <%= form.label :periodicity, class: "form-label fw-semibold" %>
+            <%= form.select :periodicity, [["Mensual", 0], ["Bimestral", 1], ["Trimestral", 2], ["Semestral", 3], ["Anual", 4], ["Diaria", 5]], {}, { class: "form-select" } %>
+          </div>
+          <div class="col-12 col-sm-6 col-md-4">
+            <%= form.label :limit_one, class: "form-label fw-semibold" %>
+            <%= form.number_field :limit_one, class: "form-control", step: :any, placeholder: "Límite 1" %>
+          </div>
+          <div class="col-12 col-sm-6 col-md-4">
+            <%= form.label :limit_two, class: "form-label fw-semibold" %>
+            <%= form.number_field :limit_two, class: "form-control", step: :any, placeholder: "Límite 2" %>
+          </div>
         </div>
-        <br>    
-        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, indicators_path %>
-    <% end %>
-</div> 
-<br>
+        <div class="mb-4">
+          <%= form.label :information_source, class: "form-label fw-semibold" %>
+          <%= form.text_field :information_source, class: "form-control", placeholder: "Ingrese la fuente de información" %>
+        </div>
+        <div class="mb-4">
+          <%= form.label :responsible_management, class: "form-label fw-semibold" %>
+          <%= form.text_field :responsible_management, class: "form-control", placeholder: "Ingrese el responsable de gestión" %>
+        </div>
+        <div class="border-top pt-4 mt-4">
+          <div class="d-flex flex-column flex-sm-row gap-2 justify-content-center justify-content-md-start">
+            <%= form.button type: "submit",
+                  class: "btn btn-primary px-4 d-inline-flex align-items-center justify-content-center gap-2" do %>
+              <i class="bi bi-check-circle"></i>
+              <span><%= t("common.submit") %></span>
+            <% end %>
+            <%= link_to indicators_path,
+                  class: "btn btn-outline-secondary px-4 d-inline-flex align-items-center justify-content-center gap-2" do %>
+              <i class="bi bi-arrow-left"></i>
+              <span><%= t("common.return") %></span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

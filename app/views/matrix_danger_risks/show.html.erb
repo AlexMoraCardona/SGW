@@ -152,7 +152,11 @@
                         <div class="mb-2">
                             <strong>Fecha de creación</strong>
                             <div class="text-muted">
-                                <%= @matrix_danger_risk.created_at.strftime("%F") %> 
+                                <%= @matrix_danger_risk.date_create.strftime("%F") %> 
+                            </div>
+                            <strong>Fecha de actualización</strong>
+                            <div class="text-muted">
+                                <%= @matrix_danger_risk.date_update.strftime("%F") %> 
                             </div>
                         </div>
                         <div class="mb-2">
@@ -349,12 +353,12 @@
                                 <div class="btn-group" role="group">
                                     <%= link_to t('common.show_matrix_danger_risk'), ver_matrix_danger_risk_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-info btn-sm me-2" %>
                                     <%= link_to t('common.edit_matrix_danger_risk'), edit_matrix_danger_risk_path(@matrix_danger_risk.id), class:"btn btn-warning btn-sm me-2" if Current.user.level > 0 && Current.user.level < 3 %>
-                                    <%= link_to t('common.danger'), crear_item_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" %>
+                                    <%= link_to t('common.danger'), crear_item_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" if Current.user.level > 0 && Current.user.level < 4 %>
                                     <%= link_to "PDF", resumen_pdf_matrix_danger_risks_path(@matrix_danger_risk.id, format: 'pdf'), class:"btn btn-success btn-sm me-2" %>
                                     <%= link_to "XLS", matrix_danger_risk_path(@matrix_danger_risk, format: :xlsx), class:"btn btn-success btn-sm me-2" %>
                                     <%= link_to t('common.indicator'), graficosmpr_path(@matrix_danger_risk.id), class:"btn btn-info btn-sm me-2" %>
-                                    <%= link_to t('common.duplicar_mpr'), duplicar_mpr_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" %>
-                                    <%= link_to "Cargar archivo", seleccionar_archivompr_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" %>
+                                    <%= link_to t('common.duplicar_mpr'), duplicar_mpr_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" if Current.user.level > 0 && Current.user.level < 4 %>
+                                    <%= link_to "Cargar archivo", seleccionar_archivompr_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" if Current.user.level > 0 && Current.user.level < 4 %>
                                     <!-- Button trigger modal -->
                                         <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#instruCargar">
                                         Instrucciones cargar peligros y riesgos
@@ -402,12 +406,12 @@
                                 <div class="btn-group" role="group">
                                     <%= link_to t('common.show_matrix_danger_risk'), ver_matrix_danger_risk_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-info btn-sm me-2" %>
                                     <%= link_to t('common.edit_matrix_danger_risk'), edit_matrix_danger_risk_path(@matrix_danger_risk.id), class:"btn btn-warning btn-sm me-2" if Current.user.level > 0 && Current.user.level < 3 %>
-                                    <%= link_to t('common.danger'), crear_item_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" %>
+                                    <%= link_to t('common.danger'), crear_item_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" if Current.user.level > 0 && Current.user.level < 4 %>
                                     <%= link_to "PDF", resumen_pdf_matrix_danger_risks_path(@matrix_danger_risk.id, format: 'pdf'), class:"btn btn-success btn-sm me-2" %>
                                     <%= link_to "XLS", matrix_danger_risk_path(@matrix_danger_risk, format: :xlsx), class:"btn btn-success btn-sm me-2" %>
                                     <%= link_to t('common.indicator'), graficosmpr_path(@matrix_danger_risk.id), class:"btn btn-info btn-sm me-2" %>
-                                    <%= link_to t('common.duplicar_mpr'), duplicar_mpr_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" %>
-                                    <%= link_to "Cargar archivo", seleccionar_archivompr_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" %>
+                                    <%= link_to t('common.duplicar_mpr'), duplicar_mpr_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" if Current.user.level > 0 && Current.user.level < 4 %>
+                                    <%= link_to "Cargar archivo", seleccionar_archivompr_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" if Current.user.level > 0 && Current.user.level < 4 %>
                                     <!-- Button trigger modal -->
                                         <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#instruCargar">
                                         Instrucciones cargar peligros y riesgos
@@ -560,9 +564,9 @@
                                 <% end  %>    
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center gap-4 mt-3">
-                                        <%= link_to t('common.update_matrix_danger_item'), edit_matrix_danger_item_path(matrix_danger_item.id), class:"btn btn-warning btn-sm me-2 gap-3" %></br>
-                                        <%= button_to 'Duplicar',  duplicar_item_matrix_danger_risks_path(matrix_danger_item.id), class:"btn btn-primary btn-sm me-2 gap-3" %></br>  
-                                        <%= button_to "Eliminar", matrix_danger_item, method: :delete, class: "btn btn-danger btn-sm gap-3", data: {turbo_confirm: "¿Está seguro de eliminar este registro? Esta acción no se puede deshacer." } %>                                            
+                                        <%= link_to t('common.update_matrix_danger_item'), edit_matrix_danger_item_path(matrix_danger_item.id), class:"btn btn-warning btn-sm me-2 gap-3" if Current.user.level > 0 && Current.user.level < 4 %></br>
+                                        <%= button_to 'Duplicar',  duplicar_item_matrix_danger_risks_path(matrix_danger_item.id), class:"btn btn-primary btn-sm me-2 gap-3" if Current.user.level > 0 && Current.user.level < 4 %></br>  
+                                        <%= button_to "Eliminar", matrix_danger_item, method: :delete, class: "btn btn-danger btn-sm gap-3", data: {turbo_confirm: "¿Está seguro de eliminar este registro? Esta acción no se puede deshacer." } if Current.user.level > 0 && Current.user.level < 4 %>                                            
                                     </div>
                                 </td>
                             </tr>

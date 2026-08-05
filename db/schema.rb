@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_04_28_014804) do
+ActiveRecord::Schema[7.0].define(version: 2026_07_28_020231) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -974,6 +974,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_04_28_014804) do
     t.integer "accident_agent", default: 0
     t.integer "accident_mechanism", default: 0
     t.integer "name_disease", default: 0
+    t.integer "continuous", default: 0
     t.index ["entity_id"], name: "index_events_on_entity_id"
     t.index ["user_id"], name: "index_events_on_user_id"
   end
@@ -2232,6 +2233,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_04_28_014804) do
     t.integer "investigation_total", default: 0
     t.integer "investigation_investigated", default: 0
     t.decimal "per_investigation", default: "0.0"
+    t.integer "promedio_officials_ano", default: 0
     t.index ["entity_id"], name: "index_report_officials_on_entity_id"
   end
 

@@ -86,13 +86,12 @@ gem "pg_search", "~> 2.3"
 #Gemas para generar pdf produccion
 # graficar
 gem 'wicked_pdf'
-gem 'wkhtmltopdf-binary', '0.12.3.1'
-gem 'chartkick', '~> 5.0', '>= 5.0.2'
+#gem 'wkhtmltopdf-binary', '0.12.3.1'
 
 #gem 'wicked_pdf', '~> 2.1.0'
 #gem 'chartkick', '3.4.2'
 #gem 'wkhtmltopdf-binary-edge', '~> 0.12.6.0'
-
+gem 'chartkick', '2.3.5'
 
 # Gema para traducir las fechas
 gem 'rails-i18n'

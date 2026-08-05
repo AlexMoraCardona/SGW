@@ -1,173 +1,235 @@
-<div class="container col-11 card p-5">
-    <br>
-    <%= form_with model: @matrix_danger_item do |form| %> 
-         
-        <% @matrix_danger_item.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %>    
-       
-        <div class="row g-3">
-            <div class="col-sm-2"> 
-                <%= form.label :source_information,  style: "display: block" %></br>
-                <%= form.select(:source_information, [['Administrativo', 'Administrativo'], ['Operativo', 'Operativo']]) %>
-            </div>  
-            <div class="col-sm-5">    
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Zona o lugar. Ejemplo: OFICINA Y TELETRABAJO"><%= t('.origin') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                <%= form.text_field :origin,  class: "form-control" %>
-            </div>
-            <div class="col-sm-4"> 
-                <%= form.label :location_id,  style: "display: block" %></br>
-                <%= form.collection_select :location_id, Location.where("entity_id = ?", MatrixDangerRisk.find(@matrix_danger_item.matrix_danger_risk_id).entity_id).order(id: :asc), :id, :name_locate, { prompt: '--Seleccionar Centro de Trabajo--' },
-                { class: 'form-control input-sm select2'  }  if params[:id].to_i.present? %>
-            </div>        
-        </div>   
-        <br>    
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Describir la actividad General ejemplo permanecia en puesto, jefe, asistente, etc."><%= t('.activity') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.text_area :activity,  class: "form-control" %>
-        </div>
-        <br>
-
-        <div class="row g-3">
-            <div class="col-sm-3">    
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Cargo."><%= t('.type_cargo') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                <%= form.collection_select :type_cargo, CompanyPosition.where("entity_id = ?", @matrix_danger_item.matrix_danger_risk.entity_id), :id, :name, { prompt: '--Seleccionar Cargo--' },
-                { class: 'form-control input-sm select2'  }  if @matrix_danger_item.present? %>
-            </div>
-        </div>    
-        <br>
-        <div class="form-group">
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Descripción paso a paso de la actividad a realizar en los puestos de trabajo."><%= t('.task') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.text_area :task,  class: "form-control" %>
-        </div>        
-        <br>
-        <div class="row g-2">
-            <div class="col-sm-4">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="ACTIVIDAD RUTINARIA: Actividad que forma parte de la operación normal de la organización, se ha planificado y es estandarizable.  ACTIVIDAD NO RUTINARIA: Actividad que no forma parte de la operación normal de la organización, que no estandarizable debido a la diversidad de escenarios y condiciones bajo las cuales pudiera presentarse. "><%= t('.type_task') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button><br>
-                <%= form.radio_button :type_task, 0 %>
-                <label for="no_cumple">Rutinaria</label>&nbsp;&nbsp; 
-                <%= form.radio_button :type_task, 1 %>
-                <label for="si_cumple">No rutinaria</label>&nbsp;&nbsp;   
-            </div>        
-            <div class="col-sm-5">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccionar lista desplegable los factores de peligros."><%= t('.clasification_danger_detail_id') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                <%= form.grouped_collection_select(:clasification_danger_detail_id, ClasificationDanger.order(:name), :clasification_danger_details, :name, :id, :name) %>
-            </div>
-        </div>       
-        <br>    
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Tener en cuanta las condiciones de salud que puede generar la exposición al factor de Peligro, enfermedades de origen laboral."><%= t('.possible_effects_health') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.text_area :possible_effects_health,  class: "form-control" %>
-        </div>
-        <br>    
-        <div class="container col-12 card p-5">
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Controles con los que se cuentan en el momento de la identificación del Peligro."><h4 style="text-align:left">Descripción del control existente <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></h4> </button>
-            <hr>
-            <div class="form-group">    
-                <%= form.label :description_existing_control_origin,  style: "display: block" %>
-                <%= form.text_field :description_existing_control_origin,  class: "form-control" %>
-            </div>
-            <br>
-            <div class="form-group">    
-                <%= form.label :description_existing_control_medium,  style: "display: block" %>
-                <%= form.text_field :description_existing_control_medium,  class: "form-control" %>
-            </div>
-            <br>    
-            <div class="form-group">    
-                <%= form.label :description_existing_control_person,  style: "display: block" %>
-                <%= form.text_field :description_existing_control_person,  class: "form-control" %>
-            </div>
-            <br>
-        </div>    
-        <br>
-
-        <div class="container col-12 card p-5">
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="EVALUACIÓN DEL RIESGO: Proceso para determinar el nivel de riesgo asociado al nivel de probabilidad y el nivel de consecuencia.
-NIVEL DE DEFICIENCIA (ND): Es la magnitud de la relación esperable entre (1) el conjunto de peligros detectados y su relación causal directa con posibles incidentes y (2) con la eficacia de las medidas preventivas existentes en un lugar de trabajo.
-NIVEL DE EXPOSICIÓN (NE): Es la situación de exposición a un riesgo que se presenta en un tiempo determinado durante la jornada laboral. 
-NIVEL DE PROBABILIDAD (NP): Es el producto del Nivel de Deficiencia (ND) por el Nivel de Exposición (NE).
-NIVEL DE CONSECUENCIA (NC): Es una medida de la severidad de las consecuencias.
-NIVEL DE RIESGO: Magnitud de un riesgo resultante del producto del Nivel de Probabilidad (NP) por el Nivel de Consecuencia (NC)."><h4 style="text-align:left">Evaluación del riesgo <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></h4></button>
-                <hr>
-                <div class="row g-3">
-                    <div class="col-sm-4">
-                        <%= form.label :deficiency_level,  style: "display: block" %><button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="0 - Bajo (B) - No se ha detectado anomalía destacable alguna, o la eficacia del conjunto de medidas preventivas existentes es alta, o ambos.  El riesgo está controlado.
-2 - Medio (M) - Se han detectado peligros que pueden dar lugar a consecuencias poco significativas o de menor importancia, o la eficacia del conjunto de medidas preventivas existentes es moderada, o ambos.
-6 - Alto (A) - Se han detectado algunos peligros que pueden dar lugar a consecuencias significativas, o la eficacia del conjunto de medidas preventivas existentes es baja, o ambos.
-10 - Muy Alto (MA) - Se han detectado peligros que determinan como muy posible la generación de incidentes, o la eficacia del conjunto de medidas preventivas existentes respecto al riesgo es nula o no existe o ambos."><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                        <%= form.select(:deficiency_level, [['Bajo', 1], ['Medio', 2], ['Alto', 6], ['Muy Alto', 10]]) %>
-                    </div>        
-                    <div class="col-sm-4">
-                        <%= form.label :exposure_level,  style: "display: block" %><button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="1 - Esporádica (EE) - La situación de exposición se presenta de manera eventual.
-2 - Ocasional (EO) - La situación de exposición se presenta alguna vez durante la jornada laboral y por un periodo de tiempo corto.
-3 - Frecuente (EF) - La situación de exposición se presenta varias veces durante la jornada laboral por tiempos cortos.
-4 - Continua (EC) - La situación de exposición se presenta sin interrupción o varias veces con tiempo prolongado durante la jornada laboral."><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                        <%= form.select(:exposure_level, [['Esporádica', 1], ['Ocasional', 2], ['Frecuente', 3], ['Continua', 4]]) %>
-                    </div>        
-                    <div class="col-sm-4">
-                        <%= form.label :consequence_level,  style: "display: block" %><button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="10 - Leve (L) - Lesiones que no requieren hospitalización.
-25 - Grave (G) - Lesiones con incapacidad laboral temporal.
-60 - Muy Grave (MG) - Lesiones graves irreparables (incapacidad permanente parcial o invalidez).
-100 - Mortal o Catastrófico (M) - Muerte (s)."><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                        <%= form.select(:consequence_level, [['Leve', 10], ['Grave', 25], ['Muy Grave', 60], ['Mortal o Catastrófico', 100]]) %>
+<div class="container-fluid px-2 px-md-4">
+    <div class="card shadow border-0">
+        <div class="card-body p-3 p-md-4">
+            <%= form_with model: @matrix_danger_item do |form| %>
+                <% if @matrix_danger_item.errors.any? %>
+                    <div class="alert alert-danger">
+                        <h6 class="mb-2">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                                 Se encontraron los siguientes errores:
+                        </h6>
+                        <ul class="mb-0">
+                            <% @matrix_danger_item.errors.full_messages.each do |error| %>
+                                <li><%= error %></li>
+                            <% end %>
+                        </ul>
                     </div>
-                </div>               
-        </div>  
-        <br>
-        <div class="container col-12 card p-5">
-            <h4>Medidas de intervención</h4>
-            <hr>
-            <div class="form-group">    
-                <%= form.label :intervention_measures_elimination,  style: "display: block" %>
-                <%= form.text_field :intervention_measures_elimination,  class: "form-control" %>
-            </div>
-            <br>    
-            <div class="form-group">    
-                <%= form.label :intervention_measures_replacement,  style: "display: block" %>
-                <%= form.text_field :intervention_measures_replacement,  class: "form-control" %>
-            </div>
-            <br>    
-            <div class="form-group">    
-                <%= form.label :intervention_measures_engineering_control,  style: "display: block" %>
-                <%= form.text_field :intervention_measures_engineering_control,  class: "form-control" %>
-            </div>
-            <br>    
-            <div class="form-group">    
-                <%= form.label :intervention_measures_acsw,  style: "display: block" %>
-                <%= form.text_field :intervention_measures_acsw,  class: "form-control" %>
-            </div>
-            <br>    
-            <div class="form-group">    
-                <%= form.label :intervention_measures_ppee,  style: "display: block" %>
-                <%= form.text_field :intervention_measures_ppee,  class: "form-control" %>
-            </div>
+                <% end %>        
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-md-3">
+                         <%= form.label :source_information, class:"form-label fw-semibold" %>
+                         <%= form.select :source_information, [["Administrativo","Administrativo"], ["Operativo","Operativo"]], {}, class:"form-select" %>
+                    </div>
+                    <div class="col-12 col-md-5">
+                        <label class="form-label fw-semibold">
+                            <%= t('.origin') %>
+                            <button class="btn btn-link p-0" type="button" data-bs-toggle="tooltip" title="Zona o lugar. Ejemplo: OFICINA Y TELETRABAJO"><%= image_tag "ayuda.png", width:22 %></button>
+                        </label>
+                        <%= form.text_field :origin, class:"form-control" %>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <%= form.label :location_id, class:"form-label fw-semibold" %>
+                        <%= form.collection_select :location_id, Location.where(entity_id: MatrixDangerRisk.find(@matrix_danger_item.matrix_danger_risk_id).entity_id).order(:id), :id, :name_locate, {prompt:"--Seleccionar Centro de Trabajo--"}, {class:"form-select select2"} if params[:id].present? %>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">
+                        <%= t('.activity') %>
+                        <button class="btn btn-link p-0" type="button" data-bs-toggle="tooltip" title="Describir la actividad general"> <%= image_tag "ayuda.png", width:22 %></button>
+                    </label>
+                    <%= form.text_area :activity, class:"form-control", rows:3 %>
+                </div>
+                <div class="row mb-4">
+                     <div class="col-12 col-md-5">
+                         <label class="form-label fw-semibold">
+                            Cargo
+                            <button class="btn btn-link p-0" type="button" data-bs-toggle="tooltip" title="Cargo"><%= image_tag "ayuda.png", width:22 %></button>
+                        </label>
+                        <%= form.collection_select :type_cargo, CompanyPosition.where(entity_id:@matrix_danger_item.matrix_danger_risk.entity_id), :id, :name, {prompt:"--Seleccionar Cargo--"}, {class:"form-select select2"} if @matrix_danger_item.present? %>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">
+                        <%= t('.task') %>
+                        <button class="btn btn-link p-0" type="button" data-bs-toggle="tooltip" title="Descripción paso a paso de la actividad a realizar en los puestos de trabajo."> <%= image_tag "ayuda.png", width:22 %></button>
+                    </label>
+                    <%= form.text_area :task, class:"form-control", rows:3 %>
+                </div>
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-md-3">
+                        <div class="card mb-4">
+                             <div class="card-header bg-light">
+                                 <strong>Tipo de tarea</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-check">
+                                    <%= form.radio_button :type_task,0, class:"form-check-input" %>
+                                    <%= form.label :type_task, "Rutinaria", value:0, class:"form-check-label" %>
+                                </div>
+                                <div class="form-check">
+                                    <%= form.radio_button :type_task,1, class:"form-check-input" %>
+                                    <%= form.label :type_task, "No rutinaria", value:1, class:"form-check-label" %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccionar lista desplegable los factores de peligros."><%= t('.clasification_danger_detail_id') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                            </div> 
+                            <div class="form-check">                           
+                                <%= form.grouped_collection_select(:clasification_danger_detail_id, ClasificationDanger.order(:name), :clasification_danger_details, :name, :id, :name) %>
+                            </div>    
+                        </div>
+                    </div>    
+                </div>        
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">
+                        <%= t('.possible_effects_health') %>
+                        <button class="btn btn-link p-0" type="button" data-bs-toggle="tooltip" title="Tener en cuenta las condiciones de salud que puede generar la exposición al factor de Peligro, enfermedades de origen laboral."> <%= image_tag "ayuda.png", width:22 %></button>
+                    </label>
+                    <%= form.text_area :possible_effects_health, class:"form-control", rows:3 %>
+                </div>
+                <div class="card shadow-sm mb-4">
+                     <div class="card-header bg-primary text-white">
+                         <h5 class="mb-0">
+                                <i class="bi bi-shield-check"></i>
+                                Descripción del control existente <button class="btn btn-link p-0" type="button" data-bs-toggle="tooltip" title="Controles con los que se cuentan en el momento de la identificación del Peligro."><%= image_tag "ayuda.png", width:22 %></button>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-control mb-3">
+                            <%= form.label :description_existing_control_origin,  style: "display: block" %>
+                            <%= form.text_field :description_existing_control_origin,  class: "form-control" %>
+                        </div>
+                        <div class="form-control mb-3">
+                            <%= form.label :description_existing_control_medium,  style: "display: block" %>
+                            <%= form.text_field :description_existing_control_medium,  class: "form-control" %>
+                        </div>
+                        <div class="form-control mb-3">
+                            <%= form.label :description_existing_control_person,  style: "display: block" %>
+                            <%= form.text_field :description_existing_control_person,  class: "form-control" %>
+                        </div>
+                    </div>
+                </div>            
+                <div class="card shadow-sm mb-4">
+                     <div class="card-header bg-primary text-white">
+                         <h5 class="mb-0">
+                                <i class="bi bi-shield-check"></i>
+                                Evaluación del riesgo <button class="btn btn-link p-0" type="button" data-bs-toggle="tooltip" title="EVALUACIÓN DEL RIESGO: Proceso para determinar el nivel de riesgo asociado al nivel de probabilidad y el nivel de consecuencia. NIVEL DE DEFICIENCIA (ND): Es la magnitud de la relación esperable entre (1) el conjunto de peligros detectados y su relación causal directa con posibles incidentes y (2) con la eficacia de las medidas preventivas existentes en un lugar de trabajo. NIVEL DE EXPOSICIÓN (NE): Es la situación de exposición a un riesgo que se presenta en un tiempo determinado durante la jornada laboral. NIVEL DE PROBABILIDAD (NP): Es el producto del Nivel de Deficiencia (ND) por el Nivel de Exposición (NE). NIVEL DE CONSECUENCIA (NC): Es una medida de la severidad de las consecuencias. NIVEL DE RIESGO: Magnitud de un riesgo resultante del producto del Nivel de Probabilidad (NP) por el Nivel de Consecuencia (NC)."> <%= image_tag "ayuda.png", width:22 %></button>
+                        </h5>
+                    </div>
+                </div>            
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <%= form.label :deficiency_level,  style: "display: block" %><button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="0 - Bajo (B) - No se ha detectado anomalía destacable alguna, o la eficacia del conjunto de medidas preventivas existentes es alta, o ambos.  El riesgo está controlado. 2 - Medio (M) - Se han detectado peligros que pueden dar lugar a consecuencias poco significativas o de menor importancia, o la eficacia del conjunto de medidas preventivas existentes es moderada, o ambos. 6 - Alto (A) - Se han detectado algunos peligros que pueden dar lugar a consecuencias significativas, o la eficacia del conjunto de medidas preventivas existentes es baja, o ambos. 10 - Muy Alto (MA) - Se han detectado peligros que determinan como muy posible la generación de incidentes, o la eficacia del conjunto de medidas preventivas existentes respecto al riesgo es nula o no existe o ambos."><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                            </div>
+                            <div class="card-body">
+                                 <%= form.select(:deficiency_level, [['Bajo', 1], ['Medio', 2], ['Alto', 6], ['Muy Alto', 10]]) %>
+                            </div>
+                        </div>    
+                    </div>        
+                    <div class="col-12 col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                 <%= form.label :exposure_level,  style: "display: block" %><button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="1 - Esporádica (EE) - La situación de exposición se presenta de manera eventual. 2 - Ocasional (EO) - La situación de exposición se presenta alguna vez durante la jornada laboral y por un periodo de tiempo corto. 3 - Frecuente (EF) - La situación de exposición se presenta varias veces durante la jornada laboral por tiempos cortos. 4 - Continua (EC) - La situación de exposición se presenta sin interrupción o varias veces con tiempo prolongado durante la jornada laboral."><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>                                
+                            </div>
+                            <div class="card-body">
+                                 <%= form.select(:exposure_level, [['Esporádica', 1], ['Ocasional', 2], ['Frecuente', 3], ['Continua', 4]]) %>
+                            </div>
+                        </div>    
+                    </div>        
+                    <div class="col-12 col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                 <%= form.label :consequence_level,  style: "display: block" %><button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="10 - Leve (L) - Lesiones que no requieren hospitalización. 25 - Grave (G) - Lesiones con incapacidad laboral temporal. 60 - Muy Grave (MG) - Lesiones graves irreparables (incapacidad permanente parcial o invalidez). 100 - Mortal o Catastrófico (M) - Muerte (s)."><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                            </div>
+                            <div class="card-body">
+                                 <%= form.select(:consequence_level, [['Leve', 10], ['Grave', 25], ['Muy Grave', 60], ['Mortal o Catastrófico', 100]]) %>
+                            </div>
+                        </div>    
+                    </div>        
+                </div>
+                <div class="card shadow-sm mb-4">
+                     <div class="card-header bg-primary text-white">
+                         <h5 class="mb-0">
+                                <i class="bi bi-shield-check"></i>
+                                Medidas de intervención 
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-control mb-3">
+                            <%= form.label :intervention_measures_elimination,  style: "display: block" %>
+                            <%= form.text_field :intervention_measures_elimination,  class: "form-control" %>
+                        </div>
+                        <div class="form-control mb-3">
+                             <%= form.label :intervention_measures_replacement,  style: "display: block" %>
+                             <%= form.text_field :intervention_measures_replacement,  class: "form-control" %>
+                        </div>
+                        <div class="form-control mb-3">
+                             <%= form.label :intervention_measures_engineering_control,  style: "display: block" %>
+                             <%= form.text_field :intervention_measures_engineering_control,  class: "form-control" %>
+                        </div>
+                        <div class="form-control mb-3">
+                            <%= form.label :intervention_measures_acsw,  style: "display: block" %>
+                            <%= form.text_field :intervention_measures_acsw,  class: "form-control" %>
+                        </div>
+                        <div class="form-control mb-3">
+                             <%= form.label :intervention_measures_ppee,  style: "display: block" %>
+                               <%= form.text_field :intervention_measures_ppee,  class: "form-control" %>
+                        </div>
+                    </div>
+                </div>            
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                 <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="PELIGRO/RIESGO INTERVENIDO."><%= t('.danger_intervened') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button><br>
+                            </div>
+                            <div class="card-body">
+                                <%= form.radio_button :danger_intervened, 0 %>
+                                <label for="no">NO</label>&nbsp;&nbsp; 
+                                <%= form.radio_button :danger_intervened, 1 %>
+                                <label for="si">SI</label>&nbsp;&nbsp;   
+                            </div>
+                        </div>    
+                    </div>        
+                    <div class="col-12 col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <%= form.label :proposed_date,  style: "display: block" %>
+                            </div>
+                            <div class="card-body">
+                                <%= form.date_field :proposed_date,  class: "form-control"  %>
+                            </div>
+                        </div>    
+                    </div>        
+                    <div class="col-12 col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                 <%= form.label :implementation_date,  style: "display: block" %>
+                            </div>
+                            <div class="card-body">
+                                <%= form.date_field :implementation_date,  class: "form-control"  %>
+                            </div>
+                        </div>     
+                    </div>        
+                </div>
+                <hr>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <%= form.button type: :submit, class: "btn btn-success" do %>
+                        <i class="bi bi-check-circle"></i>
+                        Guardar
+                    <% end %>
+                    <%= link_to :back, class: "btn btn-outline-secondary" do %>
+                        <i class="bi bi-arrow-left-circle"></i>
+                        Retornar
+                    <% end %>
+                </div>
+            <% end %>  
         </div>
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-3">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="PELIGRO/RIESGO INTERVENIDO."><%= t('.danger_intervened') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button><br>
-                <%= form.radio_button :danger_intervened, 0 %>
-                <label for="no">NO</label>&nbsp;&nbsp; 
-                <%= form.radio_button :danger_intervened, 1 %>
-                <label for="si">SI</label>&nbsp;&nbsp;   
-            </div> 
-            <div class="col-sm-3">
-                <%= form.label :proposed_date,  style: "display: block" %>
-                <%= form.date_field :proposed_date,  class: "form-control"  %>
-            </div>        
-            <div class="col-sm-3">
-                <%= form.label :implementation_date,  style: "display: block" %>
-                <%= form.date_field :implementation_date,  class: "form-control"  %>
-            </div>        
-        </div>       
-        <br>    
-
-        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
-    <% end %>
-</div>        
-<br>
-
-
+    </div>
+</div>

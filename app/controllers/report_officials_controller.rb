@@ -70,7 +70,7 @@ class ReportOfficialsController < ApplicationController
          :compliance_legal_total, :compliance_legal_cumple, :compliance_work_plan, :compliance_work_plan_total, 
          :compliance_work_plan_cumple, :per_activity_plan, :activity_plan_intervenida, :activity_plan_total, 
          :per_perfil_sociodemo, :perfil_sociodemo_total, :perfil_sociodemo_encuestados, :resources_allocated, 
-         :resources_planned, :per_resources, :investigation_total, :investigation_investigated, :per_investigation)
+         :resources_planned, :per_resources, :investigation_total, :investigation_investigated, :per_investigation, :promedio_officials_ano)
     end 
 
 end 

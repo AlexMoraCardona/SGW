@@ -3,7 +3,7 @@ class EventsController < ApplicationController
         if  Current.user && Current.user.level > 0 && Current.user.level < 4
             #@events = Event.all
             if Current.user.level == 1 || Current.user.level == 2  
-                @todos = Event.all.order(date_new: :desc)
+                @todos = Event.where("entity_id = ?",Current.user.entity).order(date_new: :desc)
                 @q = @todos.ransack(params[:q]) 
                 @pagy, @events = pagy(@q.result(date: :desc), items: 3)
             else 
@@ -61,7 +61,7 @@ class EventsController < ApplicationController
     def event_params 
         params.require(:event).permit(:date_new, :work_accident, :disability_start_date, 
         :disability_end_date, :mortal_accident, :occupational_disease, :laboral_inhability, 
-        :common_inhability, :days_absenteeism, :user_reports, :user_id, :entity_id, :affected_body, :type_injure, :accident_agent, :accident_mechanism, :name_disease)
+        :common_inhability, :days_absenteeism, :user_reports, :user_id, :entity_id, :affected_body, :type_injure, :accident_agent, :accident_mechanism, :name_disease, :continuous)
     end 
 
 end 

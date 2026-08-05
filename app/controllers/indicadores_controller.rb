@@ -82,7 +82,7 @@ class IndicadoresController < ApplicationController
         calculo_frecuencia_accidentalidad(@report_official, @report_officialtodo)
         calculo_severidad_accidentalidad(@report_official, @report_officialtodo)
         calculo_ausentismo(@report_official, @report_officialtodo)
-        calculo_prevalencia(@report_official)
+        calculo_prevalencia(@report_official, @report_officialtodo)
         calculo_incidencia(@report_official)
         calculo_proporcion(@report_official)
         calculo_peligrosriesgos(@report_official, @report_officialtodo)
@@ -108,7 +108,7 @@ class IndicadoresController < ApplicationController
         calculo_frecuencia_accidentalidad(@report_official, @report_officialtodo)
         calculo_severidad_accidentalidad(@report_official, @report_officialtodo)
         calculo_ausentismo(@report_official, @report_officialtodo)
-        calculo_prevalencia(@report_official)
+        calculo_prevalencia(@report_official, @report_officialtodo)
         calculo_incidencia(@report_official)
         calculo_proporcion(@report_official)
         calculo_peligrosriesgos(@report_official, @report_officialtodo)
@@ -122,25 +122,37 @@ class IndicadoresController < ApplicationController
         calculo_perfilsocio(@report_official, @report_officialtodo)
         calculo_asignacionrecursos(@report_official, @report_officialtodo)
         calculo_investigacionincidentes(@report_official, @report_officialtodo)
+        nombre_evidencia = 'Indicadores.pdf'
 
-        respond_to do |format| 
-            format.html
-            format.pdf {render  pdf: 'graficos_pdf',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                javascript_delay: 3000,
-                window_status: "FLAG_FOR_PDF",
-                image_quality: 100,
-                background: true,
-                disable_smart_shrinking: false,                
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
+        #respond_to do |format| 
+        #    format.html
+        #    format.pdf {
+        #        pdf = WickedPdf.new.pdf_from_string(
+        #           render_to_string('graficos_pdf'),
+        #            orientation: 'Landscape',
+        #            zoom: 0.40,
+        #            javascript_delay: 8000,
+        #            enable_local_file_access: true,                    
+        #            margin: {top: 10, bottom: 10, left: 5, right: 5 },
+        #            page_size: 'letter',
+        #            footer: {right: '[page] de [topage]'}
+        #            
+        #          )  
+        #          send_data(pdf, filename: nombre_evidencia, disposition: 'attachment')      
+        #    }
+        #end  
+
+        
+        respond_to do |format|
+            format.pdf do
+                html = render_to_string(template: "indicadores/graficos_pdf", layout: false, formats: [:pdf])
+                File.write("/tmp/graficos_pdf.html", html)
+                pdf = WickedPdf.new.pdf_from_string(html, javascript_delay: 5000, enable_local_file_access: true, margin: {top: 10, bottom: 10, left: 1, right: 1 })
+                send_data pdf,
+                filename: nombre_evidencia,
+                disposition: "attachment"
+              end
         end
-
-
     end
 
 
@@ -429,23 +441,31 @@ class IndicadoresController < ApplicationController
 
         if report_officialtodo.present?
             report_officialtodo.group_by(&:year).each  do |item, det|
+                @datos_año_frecuencia_accidentalidad += 1 if item != @year
+                cant_meses = 0
+                cant_accidentes = 0
+                cant_empleados = 0
                 det.each do |d|
                     if item == @year
                         @datos_mes_frecuencia_accidentalidad += 1
                         fecha = Calendar.label_month(d.month.to_i).to_s + " " + item.to_s  
-                        inter = fecha + ": Por cada 100 trabajadores en " + @entity.business_name + ", se presentaron " + d.total_work_accidents.to_s + " Accidentes de Trabajo en el año."
+                        inter = "Por cada cien (100) funcionarios y contratistas que laboraron en el mes de " + fecha + " en " + @entity.business_name + ", se presentó  " + d.frecuencia_accidentalidad.to_s + " Accidentes de Trabajo."
                         @datos_frecuencia_accidentalidad.push([@year, fecha, d.total_work_accidents.to_i, d.total_officials.to_i, d.frecuencia_accidentalidad, inter]) 
                         @datos_frecuencia_accidentalidadg.push([fecha, d.frecuencia_accidentalidad.to_f]) 
                     else
-                        if d.month == 12
-                            @datos_año_frecuencia_accidentalidad += 1
-                            fecha = Calendar.label_month(d.month.to_i).to_s + " " + item.to_s  
-                            inter = fecha + ": Por cada 100 trabajadores en " + @entity.business_name + ", se presentaron " + d.total_work_accidents.to_s + " Accidentes de Trabajo en el año."
-                            @datos_frecuencia_accidentalidadaño.push([@year, fecha, d.total_work_accidents.to_i, d.total_officials.to_i, d.frecuencia_accidentalidad, inter]) 
-                            @datos_frecuencia_accidentalidadañog.push([item, d.frecuencia_accidentalidad.to_f]) 
-                        end    
+                        cant_meses += 1 
+                        cant_accidentes += d.total_work_accidents.to_i
+                        cant_empleados += d.total_officials.to_i
                     end    
                 end 
+                if item != @year
+                    calculo = 0
+                    calculo = ((cant_accidentes.to_f / cant_empleados.to_f)*100).round(2) if cant_empleados > 0
+                    fecha = item.to_s  
+                    inter = "Por cada cien (100) funcionarios y contratistas que laboraron en el año " + fecha + " en " +  @entity.business_name + ", se presentó   " + calculo.to_s + " Accidentes de Trabajo."
+                    @datos_frecuencia_accidentalidadaño.push([item, fecha, cant_accidentes, cant_empleados, calculo.to_f, inter]) 
+                    @datos_frecuencia_accidentalidadañog.push([item, calculo.to_f]) 
+                end     
             end
         end
     end
@@ -462,23 +482,30 @@ class IndicadoresController < ApplicationController
 
         if report_officialtodo.present?
             report_officialtodo.group_by(&:year).each  do |item, det|
+                @datos_año_severidad_accidentalidad += 1 if item != @year
+                cant_dias = 0
+                cant_empleados = 0
+
                 det.each do |d|
                     if item == @year
                         @datos_mes_severidad_accidentalidad += 1
                         fecha = Calendar.label_month(d.month.to_i).to_s + " " + item.to_s  
-                        inter = fecha + ": En " + @entity.business_name + ", por cada cien (100) trabajadores que laboran en el mes se perdieron " + d.total_days_severidad_accidents.to_s + " días por AT."
+                        inter = "Por cada cien (100) funcionarios y contratistas que laboraron en el mes " + fecha + " en " +  @entity.business_name + ", se perdieron   " + d.severidad_accidentalidad.to_s + " días por Accidentes de Trabajo."
                         @datos_severidad_accidentalidad.push([@year, fecha, d.total_days_severidad_accidents.to_i, d.total_officials.to_i, d.severidad_accidentalidad, inter]) 
                         @datos_severidad_accidentalidadg.push([fecha, d.severidad_accidentalidad.to_f]) 
                     else
-                        if d.month == 12
-                            @datos_año_severidad_accidentalidad += 1
-                            fecha = Calendar.label_month(d.month.to_i).to_s + " " + item.to_s  
-                            inter = fecha + ": En " + @entity.business_name + ", por cada cien (100) trabajadores que laboran en el mes se perdieron " + d.total_days_severidad_accidents.to_s + " días por AT."
-                            @datos_severidad_accidentalidadaño.push([@year, fecha, d.total_days_severidad_accidents.to_i, d.total_officials.to_i, d.severidad_accidentalidad, inter]) 
-                            @datos_severidad_accidentalidadañog.push([item, d.severidad_accidentalidad.to_f]) 
-                        end    
+                            cant_dias += d.total_days_severidad_accidents.to_i
+                            cant_empleados += d.total_officials.to_i
                     end    
                 end 
+                if item != @year
+                    calculo = 0
+                    calculo = ((cant_dias.to_f / cant_empleados.to_f)*100).round(2) if cant_empleados > 0
+                    fecha = item.to_s  
+                    inter = "Por cada cien (100) funcionarios y contratistas que laboraron en el año " + fecha + " en " +  @entity.business_name + ", se perdieron " + calculo.to_s + " días por Accidentes de Trabajo."
+                    @datos_severidad_accidentalidadaño.push([item, fecha, cant_dias.to_i, cant_empleados.to_i, calculo, inter]) 
+                    @datos_severidad_accidentalidadañog.push([item, calculo.to_f]) 
+                end    
             end
         end
     end
@@ -497,6 +524,7 @@ class IndicadoresController < ApplicationController
             report_officialtodo.group_by(&:year).each  do |item, det|
                 sumadiasincapacidad = 0
                 sumadiaslaborales = 0
+
                 det.each do |d|
                     if item == @year
                         @datos_mes_ausentismo += 1
@@ -509,10 +537,9 @@ class IndicadoresController < ApplicationController
                         sumadiaslaborales += (d.working_days_month * d.total_officials) if d.working_days_month.present? && d.working_days_month > 0 && d.total_officials.present? && d.total_officials > 0
                     end    
                 end 
-
                 if sumadiaslaborales > 0
                     @datos_año_ausentismo += 1
-                    fecha = "Diciembre" + " " + item.to_s  
+                    fecha = item.to_s  
                     inter = fecha + ": En " + @entity.business_name + ", se presentó el " + (((sumadiasincapacidad.to_f / sumadiaslaborales.to_f) * 100).round(2)).to_s + "% de días de ausentismo por incapacidad médicas laboral o común."
                     @datos_ausentismoañog.push([item, (((sumadiasincapacidad.to_f / sumadiaslaborales.to_f) * 100)).round(2)]) 
                     @datos_ausentismoaño.push([fecha, item, sumadiasincapacidad.to_i, sumadiaslaborales.to_i, (((sumadiasincapacidad.to_f / sumadiaslaborales.to_f) * 100)).round(2), inter]) 
@@ -522,30 +549,85 @@ class IndicadoresController < ApplicationController
         end
     end
 
-    def calculo_prevalencia(report_official)
+    def calculo_prevalencia(report_official, report_officialtodo)
         @indicador_prevalencia = Indicator.find(4)
         @datos_prevalencia = []
-        report_official.each do |rep| 
-            fecha = Calendar.label_month(rep.month).to_s
-            @datos_prevalencia.push([fecha, rep.prevalencia_enfermedad_laboral.to_i]) 
+        @datos_prevalenciag = []
+        @datos_prevalenciaa = []
+        @datos_prevalenciaag = []
+        @datos_mes_prevalencia = 0
+        @datos_ano_prevalencia = 0
+
+        if report_officialtodo.present?
+            report_officialtodo.group_by(&:year).each  do |item, det|
+                det.each do |d|
+                    if item == @year
+                        @datos_mes_prevalencia += 1
+
+                        fecha = Calendar.label_month(d.month.to_i).to_s + " " + item.to_s  
+                        inter = "Por cada 100.000 trabajadores existen " + d.prevalencia_enfermedad_laboral.round(0).to_s + " casos nuevos y antiguos de enfermedad laboral en el periodo " + fecha
+                        @datos_prevalencia.push([@year, fecha, d.total_occupational_disease.to_i, d.promedio_year_officials.to_i, d.prevalencia_enfermedad_laboral.round(0), inter]) 
+                        @datos_prevalenciag.push([fecha, d.prevalencia_enfermedad_laboral.to_f]) 
+                    else
+                        if d.month == 12
+                            @datos_ano_prevalencia += 1
+                            fecha = item.to_s  
+                            inter = "Por cada 100.000 trabajadores existen " + d.prevalencia_enfermedad_laboral.round(0).to_s + " casos nuevos y antiguos de enfermedad laboral en el periodo " + fecha
+                            @datos_prevalenciaa.push([item, fecha, d.total_occupational_disease.to_i, d.promedio_year_officials.to_i, d.prevalencia_enfermedad_laboral.round(0), inter]) 
+                            @datos_prevalenciaag.push([item, d.prevalencia_enfermedad_laboral.to_f]) 
+                        end
+                    end    
+                end 
+            end
         end
     end
 
     def calculo_incidencia(report_official)
         @indicador_incidencia = Indicator.find(5)
+        @datos_incidenciag = []
         @datos_incidencia = []
-        report_official.each do |rep| 
-            fecha = Calendar.label_month(rep.month).to_s
-            @datos_incidencia.push([fecha, rep.incidencia_enfermedad_laboral.to_i]) 
+        @datos_mes_incidencia = 0
+        @report_officialtodo.each do |rep|
+            if rep.year == @year  
+               @datos_mes_incidencia += 1 
+               fecha = Calendar.label_month(rep.month).to_s + " " + @year.to_s
+               inter = "Por cada 100.000 trabajadores existen " + rep.incidencia_enfermedad_laboral.round(0).to_s + " de casos nuevos de enfermedad laboral en el periodo " + fecha
+               @datos_incidenciag.push([fecha, rep.incidencia_enfermedad_laboral.to_i]) 
+               @datos_incidencia.push([fecha, rep.total_occupational_disease_year, rep.promedio_officials_ano, rep.incidencia_enfermedad_laboral.to_i, inter]) 
+            end   
         end
     end
 
     def calculo_proporcion(report_official)
         @indicador_proporcion = Indicator.find(3)
+        @datos_proporciong = []
         @datos_proporcion = []
-        report_official.each do |rep| 
-            fecha = Calendar.label_month(rep.month).to_s
-            @datos_proporcion.push([fecha, rep.proporcion_accidentes_mortales.to_f]) 
+        @datos_proporcionag = []
+        @datos_proporciona = []
+
+        @datos_mes_proporcion = 0
+        @datos_ano_proporcion = 0
+
+        if @report_officialtodo.present?
+            @report_officialtodo.group_by(&:year).each  do |item, det|
+                det.each do |d|
+                    if item == @year
+                        @datos_mes_proporcion += 1
+                        fecha = Calendar.label_month(d.month.to_i).to_s + " " + item.to_s 
+                        inter = "En el periodo " + fecha + " el " + d.proporcion_accidentes_mortales.to_s + "% de accidentes de trabajo fueron mortales.  "
+                        @datos_proporcion.push([@year, fecha, d.total_accidents_mortal_year.to_i, d.total_accidents_work_year.to_i, d.proporcion_accidentes_mortales.round(2), inter]) 
+                        @datos_proporciong.push([fecha, d.proporcion_accidentes_mortales.round(2)]) 
+                    else
+                        if d.month == 12
+                            @datos_ano_proporcion += 1
+                            fecha = item.to_s  
+                            inter = "En el periodo " + fecha + " el " + d.proporcion_accidentes_mortales.to_s + "% de accidentes de trabajo fueron mortales.  "
+                            @datos_proporciona.push([item, fecha, d.total_accidents_mortal_year.to_i, d.total_accidents_work_year.to_i, d.proporcion_accidentes_mortales.round(2), inter]) 
+                            @datos_proporcionag.push([item, d.proporcion_accidentes_mortales.round(2)]) 
+                        end
+                    end    
+                end 
+            end
         end
     end
     

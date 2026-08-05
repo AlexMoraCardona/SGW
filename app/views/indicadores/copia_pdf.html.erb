@@ -1,311 +1,659 @@
-<%= javascript_include_tag "https://www.google.com/jsapi" %>
-<%= wicked_pdf_javascript_include_tag "chartkick" %>
-<%= wicked_pdf_javascript_include_tag "application", "chartkick" %>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <meta charset='utf-8' />
+    <%= javascript_include_tag "https://www.google.com/jsapi" %>
+    <%= wicked_pdf_javascript_include_tag "chartkick" %>
+    <%= wicked_pdf_javascript_include_tag "application", "chartkick" %>
 
-<div class="container-fluid py-3">
-  <div class="row">
-    <div class="col-12 text-center text-md-start">
-      <%= link_to root_path, class: "d-inline-block" do %>
-        <%= image_tag "LogoConesst202305232.png",
-              width: 100,
-              height: 100,
-              class: "img-fluid",
-              alt: "Logo CONESST" %>
-      <% end %>
+    <%= wicked_pdf_javascript_include_tag 'application', 'data-turbolinks-track' => true %>    
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+     <%= wicked_pdf_javascript_include_tag "number_pages" %>
+    <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+    <%= javascript_importmap_tags %>
+    
+</head> 
+
+<br>
+<div class="container col-11"> 
+    <div class="row g-2">
+        <h2 class="display-5">Frecuencia de Accidentalidad</h2>
+
+       <hr> 
+    </div>  
+    <div class="col-sm-11">
+        <strong>Definición:</strong> <%= @indicador_frecuencia_accidentalidad.description if @indicador_frecuencia_accidentalidad.present? %> </br>
+        <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_frecuencia_accidentalidad.periodicity) if @indicador_frecuencia_accidentalidad.present? %> </br>
+        <strong>Límites:</strong> <%= @indicador_frecuencia_accidentalidad.limit_one if @indicador_frecuencia_accidentalidad.present? %>  - <%= @indicador_frecuencia_accidentalidad.limit_two if @indicador_frecuencia_accidentalidad.present? %> </br>
+        <strong>Fórmula:</strong> <%= @indicador_frecuencia_accidentalidad.formula if @indicador_frecuencia_accidentalidad.present? %> </br>
+        <strong>Interpretación:</strong> <%= @indicador_frecuencia_accidentalidad.interpretation if @indicador_frecuencia_accidentalidad.present? %> </br>
+        <strong>Fuente de la información:</strong> <%= @indicador_frecuencia_accidentalidad.information_source  if @indicador_frecuencia_accidentalidad.present? %></br>
+        <strong>Responsable de la gestión:</strong> <%= @indicador_frecuencia_accidentalidad.responsible_management if @indicador_frecuencia_accidentalidad.present? %> </br>
     </div>
-  </div>
-</div>
-
-<div class="container-fluid px-3 px-md-4 px-lg-5 pb-4">
-  <div class="card shadow-sm border-0 mb-4">
-    <div class="card-header bg-primary text-white py-3">
-      <div class="row align-items-center g-3">
-        <div class="col-12 col-md">
-          <h2 class="mb-0 text-center text-md-start">
-            <i class="bi bi-bar-chart-line me-2"></i>
-            INDICADORES <%= @entity.business_name if @entity.present? %> 
-          </h2>
+    </br>
+    <div class="row g-3">
+        <div class="col-sm-5">
+            <%= column_chart  @datos_frecuencia_accidentalidad, title: "Frecuencia de accidentalidad", download: {filename: "FrecuenciaAccidentalidad"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", suffix: " Accidentes de trabajo", discrete: true  %>
         </div>
-        <div class="col-12 col-md-auto text-center">
-          <%= link_to graficos_pdf_path(params[:id].to_i, format: :pdf), class: "btn btn-light d-inline-flex align-items-center justify-content-center gap-2 px-4", target: "_blank" do %>
-            <i class="bi bi-file-earmark-pdf"></i>
-            <span>Generar PDF</span>
-          <% end %>
+        <div class="col-sm-1">
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ======================================================= -->
-  <!-- MENÚ DE NAVEGACIÓN -->
-  <!-- ======================================================= -->
-  <div class="card shadow-sm border-0 mb-4">
-    <div class="card-body">
-      <h5 class="card-title mb-3">
-        <i class="bi bi-list-ul me-2"></i>
-        Contenido de indicadores
-      </h5>
-      <div id="list-example" class="list-group">
-        <a class="list-group-item list-group-item-action d-flex align-items-center gap-2" href="#list-item-1">
-          <i class="bi bi-graph-up"></i>
-          <span>Frecuencia de Accidentalidad</span>
-        </a>
-        <a class="list-group-item list-group-item-action d-flex align-items-center gap-2" href="#list-item-2">
-          <i class="bi bi-graph-up"></i>
-          <span>Severidad de Accidentalidad</span>
-        </a>
-        <a class="list-group-item list-group-item-action d-flex align-items-center gap-2" href="#list-item-3">
-          <i class="bi bi-graph-up"></i>
-          <span>Ausentismo por causa médica</span>
-        </a>
-        <a class="list-group-item list-group-item-action d-flex align-items-center gap-2" href="#list-item-4">
-          <i class="bi bi-graph-up"></i>
-          <span>Prevalencia de enfermedad laboral</span>
-        </a>
-        <a class="list-group-item list-group-item-action d-flex align-items-center gap-2" href="#list-item-5">
-          <i class="bi bi-graph-up"></i>
-          <span>Incidencia de enfermedad laboral</span>
-        </a>
-        <a class="list-group-item list-group-item-action d-flex align-items-center gap-2" href="#list-item-6">
-          <i class="bi bi-graph-up"></i>
-          <span>Proporción de accidentes de trabajos mortales</span>
-        </a>
-        <a class="list-group-item list-group-item-action d-flex align-items-center gap-2" href="#list-item-7">
-          <i class="bi bi-graph-up"></i>
-          <span>Intervención de peligros y riesgos gestionados</span>
-        </a>
-        <a class="list-group-item list-group-item-action d-flex align-items-center gap-2" href="#list-item-8">
-          <i class="bi bi-graph-up"></i>
-          <span>Porcentaje de cobertura en capacitaciones</span>
-        </a>
-        <a class="list-group-item list-group-item-action d-flex align-items-center gap-2" href="#list-item-9">
-          <i class="bi bi-graph-up"></i>
-          <span>Porcentaje de trabajadores capacitados</span>
-        </a>
-        <a class="list-group-item list-group-item-action d-flex align-items-center gap-2" href="#list-item-11">
-          <i class="bi bi-graph-up"></i>
-          <span>Autoevaluación del SG-SST</span>
-        </a>
-        <a class="list-group-item list-group-item-action d-flex align-items-center gap-2" href="#list-item-13">
-          <i class="bi bi-graph-up"></i>
-          <span>Ejecución de Acciones Preventivas AP, Acciones Correctivas AC, y de Mejora</span>
-        </a>
-        <a class="list-group-item list-group-item-action d-flex align-items-center gap-2" href="#list-item-14">
-          <i class="bi bi-graph-up"></i>
-          <span>Cumplimiento legal</span>
-        </a>
-        <a class="list-group-item list-group-item-action d-flex align-items-center gap-2" href="#list-item-15">
-          <i class="bi bi-graph-up"></i>
-          <span>Cumplimiento del plan de trabajo anual</span>
-        </a>
-        <a class="list-group-item list-group-item-action d-flex align-items-center gap-2" href="#list-item-16">
-          <i class="bi bi-graph-up"></i>
-          <span>Porcentaje de actividades intervenidas del plan de mejoramiento</span>
-        </a>
-        <a class="list-group-item list-group-item-action d-flex align-items-center gap-2" href="#list-item-17">
-          <i class="bi bi-graph-up"></i>
-          <span>Porcentaje de trabajadores que participaron en la encuesta de perfil sociodemográficos</span>
-        </a>
-        <a class="list-group-item list-group-item-action d-flex align-items-center gap-2" href="#list-item-18">
-          <i class="bi bi-graph-up"></i>
-          <span>Indicador asignación de recursos</span>
-        </a>
-        <a class="list-group-item list-group-item-action d-flex align-items-center gap-2" href="#list-item-19">
-          <i class="bi bi-graph-up"></i>
-          <span>Indicador de investigación de incidentes y/o accidentes</span>
-        </a>
-        <a class="list-group-item list-group-item-action d-flex align-items-center gap-2" href="#list-item-10">
-          <i class="bi bi-clipboard-data"></i>
-          <span>
-            Indicadores Mínimos de SST
-            (Res. 0312/2019, artículo 30)
-          </span>
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- ======================================================= -->
-  <!-- SCROLLSPY -->
-  <!-- ======================================================= -->
-
-  <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-smooth-scroll="true" tabindex="0">
-    <!-- ===================================================== -->
-    <!-- FRECUENCIA DE ACCIDENTALIDAD -->
-    <!-- ===================================================== -->
-    <div id="list-item-1" class="card shadow-sm border-0 mb-4">
-      <div class="card-header bg-light py-3">
-        <h2 class="h4 mb-0"><i class="bi bi-graph-up-arrow me-2"></i>Frecuencia de Accidentalidad</h2>
-      </div>
-      <div class="card-body">
-        <% if @indicador_frecuencia_accidentalidad.present? %>
-          <div class="row g-3 mb-4">
-            <div class="col-12">
-              <div class="border rounded p-3">
-                <strong>Definición:</strong><span><%= @indicador_frecuencia_accidentalidad.description %></span>
-              </div>
-            </div>
-            <div class="col-12 col-md-6">
-              <div class="border rounded p-3 h-100">
-                <strong>Periodicidad:</strong><span><%= Indicator.label_periodicidad(@indicador_frecuencia_accidentalidad.periodicity) %></span>
-              </div>
-            </div>
-            <div class="col-12 col-md-6">
-              <div class="border rounded p-3 h-100">
-                <strong>Límites:</strong><span><%= @indicador_frecuencia_accidentalidad.limit_one %>-<%= @indicador_frecuencia_accidentalidad.limit_two %></span>
-              </div>
-            </div>
-            <div class="col-12">
-              <div class="border rounded p-3">
-                <strong>Fórmula:</strong><span><%= @indicador_frecuencia_accidentalidad.formula %></span>
-              </div>
-            </div>
-            <div class="col-12">
-              <div class="border rounded p-3">
-                <strong>Interpretación:</strong><span><%= @indicador_frecuencia_accidentalidad.interpretation %></span>
-              </div>
-            </div>
-            <div class="col-12 col-md-6">
-              <div class="border rounded p-3 h-100">
-                <strong>Fuente de la información:</strong>
-                <div class="mt-1">
-                  <%= @indicador_frecuencia_accidentalidad.information_source %>
-                </div>
-              </div>
-            </div>
-            <div class="col-12 col-md-6">
-              <div class="border rounded p-3 h-100">
-                <strong>Responsable de la gestión:</strong>
-                <div class="mt-1">
-                  <%= @indicador_frecuencia_accidentalidad.responsible_management %>
-                </div>
-              </div>
-            </div>
-            <div class="col-12 col-md-6">
-              <div class="border rounded p-3 h-100">
-                <strong>Tipo de indicador:</strong>
-                <div class="mt-1">
-                  <%= @indicador_frecuencia_accidentalidad.type_indicator %>
-                </div>
-              </div>
-            </div>
-            <div class="col-12 col-md-6">
-              <div class="border rounded p-3 h-100">
-                <strong>Personas que deben conocer el resultado:</strong>
-                <div class="mt-1">
-                  <%= @indicador_frecuencia_accidentalidad.person_result %>
-                </div>
-              </div>
-            </div>
-          </div>
-        <% end %>
-        <!-- ================================================= -->
-        <!-- GRÁFICOS -->
-        <!-- ================================================= -->
-        <div class="row g-4 mb-4">
-          <!-- Gráfico anual -->
-          <% if @datos_frecuencia_accidentalidadañog.present? %>
-            <div class="col-12 col-lg-6">
-              <div class="card h-100 shadow-sm border-0">
-                <div class="card-body">
-                  <%= column_chart @datos_frecuencia_accidentalidadañog, title: "Frecuencia de accidentalidad anual", download: {filename: "FrecuenciaAccidentalidadAnual", background: "#FFFFFF" }, xtitle: "Período", ytitle: "Indicador", suffix: "% Accidentes de trabajo" %>
-                </div>
-              </div>
-            </div>
-          <% end %>
-          <!-- Gráfico mensual -->
-          <% if @datos_frecuencia_accidentalidadg.present? %>
-            <div class="col-12 col-lg-6">
-              <div class="card h-100 shadow-sm border-0">
-                <div class="card-body">
-                  <%= column_chart @datos_frecuencia_accidentalidadg, title: "Frecuencia de accidentalidad mensual", download: {filename: "FrecuenciaAccidentalidadMensual", background: "#FFFFFF"}, xtitle: "Período", ytitle: "Indicador", suffix: "% Accidentes de trabajo" %>
-                </div>
-              </div>
-            </div>
-          <% end %>
-        </div>
-
-        <!-- ================================================= -->
-        <!-- TABLA FRECUENCIA ACCIDENTALIDAD -->
-        <!-- ================================================= -->
-        <div class="card border-0 shadow-sm">
-          <div class="card-header bg-light">
-            <h5 class="mb-0"><i class="bi bi-table me-2"></i>Resultados de Frecuencia de Accidentalidad</h5>
-          </div>
-          <div class="card-body p-0">
-            <div class="table-responsive">
-              <table class="table table-hover table-striped align-middle mb-0">
-                <thead class="table-dark">
-                  <tr>
-                    <th>Período</th>
-                    <th class="text-center">
-                      Nro. Accidentes
-                    </th>
-                    <th class="text-center">
-                      Nro. Funcionarios
-                    </th>
-                    <th class="text-center">
-                      Valor Indicador
-                    </th>
-                    <th>
-                      Interpretación
-                    </th>
-                  </tr>
+        <div class="col-sm-5">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Año</th>
+                        <th scope="col">Mes</th>
+                        <th scope="col">Nro.Accidentes</th>
+                        <th scope="col">Nro.Funcionarios</th>
+                        <th scope="col">Indicador</th>
+                    </tr>
                 </thead>
                 <tbody>
-                  <% if @datos_frecuencia_accidentalidadaño.present? %>
-                    <% i = 0 %>
-                    <% while i < @datos_año_frecuencia_accidentalidad %>
-                      <tr>
-                        <td>
-                          <%= @datos_frecuencia_accidentalidadaño[i][1] %>
-                        </td>
-                        <td class="text-center">
-                          <%= @datos_frecuencia_accidentalidadaño[i][2] %>
-                        </td>
-                        <td class="text-center">
-                          <%= @datos_frecuencia_accidentalidadaño[i][3] %>
-                        </td>
-                        <td class="text-center fw-semibold">
-                          <%= @datos_frecuencia_accidentalidadaño[i][4] %>
-                        </td>
-                        <td>
-                          <%= @datos_frecuencia_accidentalidadaño[i][5] %>
-                        </td>
-                      </tr>
-                      <% i += 1 %>
+                    <%  @report_official.each do |rep| %>
+                        <tr>
+                            <td style="text-align:center"><%= rep.year %></td>
+                            <td style="text-align:center"><%= rep.month %></td>
+                            <td style="text-align:center"><%= rep.total_work_accidents %></td>
+                            <td style="text-align:center"><%= rep.total_officials %></td>
+                            <td style="text-align:center">
+                                <%= rep.frecuencia_accidentalidad %>
+                            </td>
+                        </tr>    
                     <% end %>
-                  <% end %>
-                  <% if @datos_frecuencia_accidentalidad.present? %>
-                    <% i = 0 %>
-                    <% while i < @datos_mes_frecuencia_accidentalidad %>
-                      <tr>
-                        <td>
-                          <%= @datos_frecuencia_accidentalidad[i][1] %>
-                        </td>
-                        <td class="text-center">
-                          <%= @datos_frecuencia_accidentalidad[i][2] %>
-                        </td>
-                        <td class="text-center">
-                          <%= @datos_frecuencia_accidentalidad[i][3] %>
-                        </td>
-                        <td class="text-center fw-semibold">
-                          <%= @datos_frecuencia_accidentalidad[i][4] %>
-                        </td>
-                        <td>
-                          <%= @datos_frecuencia_accidentalidad[i][5] %>
-                        </td>
-                      </tr>
-                      <% i += 1 %>
-                    <% end %>
-                  <% end %>
                 </tbody>
-              </table>
-            </div>
-          </div>
+            </table>
         </div>
-      </div>
+    </div>        
+    <hr>
+    
+    <div class="row g-2">
+         <h2 class="display-5">Severidad de Accidentalidad</h2>
+         <hr>
     </div>
+    <div class="col-sm-11">
+        <strong>Definición:</strong> <%= @indicador_severidad_accidentalidad.description if @indicador_severidad_accidentalidad.present? %> </br>
+        <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_severidad_accidentalidad.periodicity) if @indicador_severidad_accidentalidad.present? %> </br>
+        <strong>Límites:</strong> <%= @indicador_severidad_accidentalidad.limit_one if @indicador_severidad_accidentalidad.present? %>  - <%= @indicador_severidad_accidentalidad.limit_two if @indicador_severidad_accidentalidad.present? %> </br>
+        <strong>Fórmula:</strong> <%= @indicador_severidad_accidentalidad.formula if @indicador_severidad_accidentalidad.present? %> </br>
+        <strong>Interpretación:</strong> <%= @indicador_severidad_accidentalidad.interpretation if @indicador_severidad_accidentalidad.present? %> </br>
+        <strong>Fuente de la información:</strong> <%= @indicador_severidad_accidentalidad.information_source  if @indicador_severidad_accidentalidad.present? %></br>
+        <strong>Responsable de la gestión:</strong> <%= @indicador_severidad_accidentalidad.responsible_management if @indicador_severidad_accidentalidad.present? %> </br>
+    </div>
+    </br>
+
+    <div class="row g-3">
+        <div class="col-sm-5">
+           <%= column_chart  @datos_severidad_accidentalidad, title: "Severidad de accidentalidad", download: {filename: "SeveridadAccidentalidad"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", suffix: " días por accidentes de trabajo" if @report_official.present? %>
+        </div>
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-5">
+            <br>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Año</th>
+                        <th scope="col">Mes</th>
+                        <th scope="col">Nro.Día Incapacidad</th>
+                        <th scope="col">Nro.Funcionarios</th>
+                        <th scope="col">Indicador</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%  @report_official.each do |rep| %>
+                        <tr>
+                            <td style="text-align:center"><%= rep.year %></td>
+                            <td style="text-align:center"><%= rep.month %></td>
+                            <td style="text-align:center"><%= rep.total_days_severidad_accidents %></td>
+                            <td style="text-align:center"><%= rep.total_officials %></td>
+                            <td style="text-align:center"><%= rep.severidad_accidentalidad %></td>
+                        </tr>    
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+    </div>        
+    
+    <div class="row g-2">
+         <h2 class="display-5">Ausentismo por causa médica</h2>
+         <hr>
+    </div>
+    <div class="col-sm-11">
+        <strong>Definición:</strong> <%= @indicador_ausentismo.description if @indicador_ausentismo.present? %> </br>
+        <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_ausentismo.periodicity) if @indicador_ausentismo.present? %> </br>
+        <strong>Límites:</strong> <%= @indicador_ausentismo.limit_one if @indicador_ausentismo.present? %>  - <%= @indicador_ausentismo.limit_two if @indicador_ausentismo.present? %> </br>
+        <strong>Fórmula:</strong> <%= @indicador_ausentismo.formula if @indicador_ausentismo.present? %> </br>
+        <strong>Interpretación:</strong> <%= @indicador_ausentismo.interpretation if @indicador_ausentismo.present? %> </br>
+        <strong>Fuente de la información:</strong> <%= @indicador_ausentismo.information_source  if @indicador_ausentismo.present? %></br>
+        <strong>Responsable de la gestión:</strong> <%= @indicador_ausentismo.responsible_management if @indicador_ausentismo.present? %> </br>
+    </div>
+    </br>
+
+    <div class="row g-3">
+        <div class="col-sm-5">
+           <%= column_chart  @datos_ausentismo, title: "Ausentismo", download: {filename: "Ausentismo"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", suffix: "% de días de ausentismo" if @report_official.present? %>
+        </div>
+    <div class="col-sm-1">
+    </div>
+    <div class="col-sm-5">
+        <br>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Año</th>
+                    <th scope="col">Mes</th>
+                    <th scope="col">Días de ausencia</th>
+                    <th scope="col">Días de trabajo</th>
+                    <th scope="col">Indicador</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%  @report_official.each do |rep| %>
+                    <tr>
+                        <td style="text-align:center"><%= rep.year %></td>
+                        <td style="text-align:center"><%= rep.month %></td>
+                        <td style="text-align:center"><%= rep.total_days_absenteeism %></td>
+                        <td style="text-align:center"><%= (rep.working_days_month * rep.total_officials) %></td>
+                        <td style="text-align:center"><%= rep.ausentismo_causa_medica %></td>
+                    </tr>    
+                <% end %>
+            </tbody>
+        </table>
+        <hr>
+    </div>
+
+    <div class="row g-2">
+         <h2 class="display-5">Prevalencia de enfermedad laboral</h2>
+         <hr>
+    </div>
+    <div class="col-sm-11">
+        <strong>Definición:</strong> <%= @indicador_prevalencia.description if @indicador_prevalencia.present? %> </br>
+        <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_prevalencia.periodicity) if @indicador_prevalencia.present? %> </br>
+        <strong>Límites:</strong> <%= @indicador_prevalencia.limit_one if @indicador_prevalencia.present? %>  - <%= @indicador_prevalencia.limit_two if @indicador_prevalencia.present? %> </br>
+        <strong>Fórmula:</strong> <%= @indicador_prevalencia.formula if @indicador_prevalencia.present? %> </br>
+        <strong>Interpretación:</strong> <%= @indicador_prevalencia.interpretation if @indicador_prevalencia.present? %> </br>
+        <strong>Fuente de la información:</strong> <%= @indicador_prevalencia.information_source  if @indicador_prevalencia.present? %></br>
+        <strong>Responsable de la gestión:</strong> <%= @indicador_prevalencia.responsible_management if @indicador_prevalencia.present? %> </br>
+    </div>
+    </br>
+
+    <div class="row g-3">
+        <div class="col-sm-5">
+            <%= column_chart  @datos_prevalencia, title: "Prevalencia de enfermedad laboral", download: {filename: "PrevalenciaEnfermedadLaboral"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", suffix: " Casos de enfermedad laboral" if @report_official.present? %>
+        </div>
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-5">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Año</th>
+                        <th scope="col">Mes</th>
+                        <th scope="col">Casos nuevos antiguos</th>
+                        <th scope="col">Promedio funcionarios contratistas</th>
+                        <th scope="col">Indicador</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%  @report_official.each do |rep| %>
+                        <tr>
+                            <td style="text-align:center"><%= rep.year %></td>
+                            <td style="text-align:center"><%= rep.month %></td>
+                            <td style="text-align:center"><%= rep.total_occupational_disease %></td>
+                            <td style="text-align:center"><%= rep.promedio_year_officials %></td>
+                            <td style="text-align:center"><%= rep.prevalencia_enfermedad_laboral.to_i %></td>
+                        </tr>    
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+    </div>        
+    <br>
+    <hr>
+    
+    <div class="row g-2">
+         <h2 class="display-5">Incidencia de enfermedad laboral</h2>
+         <hr>
+    </div>
+    <div class="col-sm-11">
+        <strong>Definición:</strong> <%= @indicador_incidencia.description if @indicador_incidencia.present? %> </br>
+        <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_incidencia.periodicity) if @indicador_incidencia.present? %> </br>
+        <strong>Límites:</strong> <%= @indicador_incidencia.limit_one if @indicador_incidencia.present? %>  - <%= @indicador_incidencia.limit_two if @indicador_incidencia.present? %> </br>
+        <strong>Fórmula:</strong> <%= @indicador_incidencia.formula if @indicador_incidencia.present? %> </br>
+        <strong>Interpretación:</strong> <%= @indicador_incidencia.interpretation if @indicador_incidencia.present? %> </br>
+        <strong>Fuente de la información:</strong> <%= @indicador_incidencia.information_source  if @indicador_incidencia.present? %></br>
+        <strong>Responsable de la gestión:</strong> <%= @indicador_incidencia.responsible_management if @indicador_incidencia.present? %> </br>
+    </div>
+    </br>
+
+    <div class="row g-3">
+        <div class="col-sm-5">
+           <%= column_chart  @datos_incidencia, title: "Incidencia de enfermedad laboral", download: {filename: "IncidenciaEnfermedadLaboral"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", suffix: " Casos nuevos de enfermedad laboral" if @report_official.present? %>
+        </div>
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-5">
+            <br>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Año</th>
+                        <th scope="col">Mes</th>
+                        <th scope="col">Casos nuevos</th>
+                        <th scope="col">Promedio funcionarios contratistas</th>
+                        <th scope="col">Indicador</th>
+                    </tr>
+                </thead>
+                <tbody>
+    
+    
+                    <%  @report_official.each do |rep| %>
+                        <tr>
+                            <td style="text-align:center"><%= rep.year %></td>
+                            <td style="text-align:center"><%= rep.month %></td>
+                            <td style="text-align:center"><%= rep.total_occupational_disease_year %></td>
+                            <td style="text-align:center"><%= rep.promedio_year_officials %></td>
+                            <td style="text-align:center"><%= rep.incidencia_enfermedad_laboral.to_i %></td>
+                        </tr>    
+                    <% end %>
+                </tbody>
+            </table>
+            <hr>
+        </div>
+    </div>        
+
+   
+    <div class="row g-2">
+         <h2 class="display-5">Proporción de accidentes de trabajos mortales</h2>
+         <hr>
+    </div>
+    <div class="col-sm-11">
+        <strong>Definición:</strong> <%= @indicador_proporcion.description if @indicador_proporcion.present? %> </br>
+        <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_proporcion.periodicity) if @indicador_proporcion.present? %> </br>
+        <strong>Límites:</strong> <%= @indicador_proporcion.limit_one if @indicador_proporcion.present? %>  - <%= @indicador_proporcion.limit_two if @indicador_proporcion.present? %> </br>
+        <strong>Fórmula:</strong> <%= @indicador_proporcion.formula if @indicador_proporcion.present? %> </br>
+        <strong>Interpretación:</strong> <%= @indicador_proporcion.interpretation if @indicador_proporcion.present? %> </br>
+        <strong>Fuente de la información:</strong> <%= @indicador_proporcion.information_source  if @indicador_proporcion.present? %></br>
+        <strong>Responsable de la gestión:</strong> <%= @indicador_proporcion.responsible_management if @indicador_proporcion.present? %> </br>
+    </div>
+    </br>
+
+    <div class="row g-3">
+        <div class="col-sm-5">
+            <%= column_chart  @datos_proporcion, title: "Proporción de accidentes de trabajo mortales", download: {filename: "ProporcionAcidentesMortales"}, download: {background: "#FFFFFF"}, xtitle: "Fecha", ytitle: "Indicador", suffix: "% de casos mortales" if @report_official.present? %>
+        </div>
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-5">
+            <br>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Año</th>
+                        <th scope="col">Mes</th>
+                        <th scope="col">Accidentes mortales en el año</th>
+                        <th scope="col">Accidentes en el año</th>
+                        <th scope="col">Indicador</th>
+                    </tr>
+                </thead>
+                <tbody>
+    
+    
+                    <%  @report_official.each do |rep| %>
+                        <tr>
+                            <td style="text-align:center"><%= rep.year %></td>
+                            <td style="text-align:center"><%= rep.month %></td>
+                            <td style="text-align:center"><%= rep.total_accidents_mortal_year %></td>
+                            <td style="text-align:center"><%= rep.total_accidents_work_year %></td>
+                            <td style="text-align:center"><%= rep.proporcion_accidentes_mortales %></td>
+                        </tr>    
+                    <% end %>
+                </tbody>
+            </table>
+
+            <hr>
+        </div>
+    </div>        
+    <br>
+    <hr>
+
+    <div class="row g-2">
+         <h2 class="display-5">Intervención de peligros y riesgos gestionados</h2>
+         <hr>
+    </div>
+    <div class="col-sm-11">
+        <strong>Definición:</strong> <%= @indicador_peligrosyriesgos.description if @indicador_peligrosyriesgos.present? %> </br>
+        <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_peligrosyriesgos.periodicity) if @indicador_peligrosyriesgos.present? %> </br>
+        <strong>Límites:</strong> <%= @indicador_peligrosyriesgos.limit_one if @indicador_peligrosyriesgos.present? %>  - <%= @indicador_peligrosyriesgos.limit_two if @indicador_peligrosyriesgos.present? %> </br>
+        <strong>Fórmula:</strong> <%= @indicador_peligrosyriesgos.formula if @indicador_peligrosyriesgos.present? %> </br>
+        <strong>Interpretación:</strong> <%= @indicador_peligrosyriesgos.interpretation if @indicador_peligrosyriesgos.present? %> </br>
+        <strong>Fuente de la información:</strong> <%= @indicador_peligrosyriesgos.information_source  if @indicador_peligrosyriesgos.present? %></br>
+        <strong>Responsable de la gestión:</strong> <%= @indicador_peligrosyriesgos.responsible_management if @indicador_peligrosyriesgos.present? %> </br>
+    </div>
+    </br>
+
+    <div class="row g-3">
+        <div class="col-sm-5">
+            <%= column_chart  @datos_peligrosriesgos, title: "Porcentaje de peligros y riesgos gestionados", download: {filename: "PorcentajePeligrosRiesgosGestionados"}, download: {background: "#FFFFFF"}, xtitle: "Peligros/Riesgos gestionado", ytitle: "Porcentaje gestionado", suffix: "% de casos gestionados" if @datos_peligrosriesgos.present? %>
+        </div>
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-5">
+            <br>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Total de Peligros/Riesgos</th>
+                        <th scope="col">Peligros/Riesgos gestionados</th>
+                        <th scope="col">Indicador</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr>
+                            <td style="text-align:center"><%= @totalpeligrosriesgos %></td>
+                            <td style="text-align:center"><%= @interpeligrosriesgos %></td>
+                            <td style="text-align:center"><%= @indicador_peligrosriesgos %></td>
+                        </tr>    
+                </tbody>
+            </table>
+
+            <hr>
+        </div>
+    </div>        
+    <br>
+    <hr>
+
+    <div class="row g-2">
+         <h2 class="display-5">Porcentaje de cobertura en capacitaciones</h2>
+         <hr>
+    </div>
+    <div class="col-sm-11">
+        <strong>Definición:</strong> <%= @indicador_coberturacapacitaciones.description if @indicador_coberturacapacitaciones.present? %> </br>
+        <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_coberturacapacitaciones.periodicity) if @indicador_coberturacapacitaciones.present? %> </br>
+        <strong>Límites:</strong> <%= @indicador_coberturacapacitaciones.limit_one if @indicador_coberturacapacitaciones.present? %>  - <%= @indicador_coberturacapacitaciones.limit_two if @indicador_coberturacapacitaciones.present? %> </br>
+        <strong>Fórmula:</strong> <%= @indicador_coberturacapacitaciones.formula if @indicador_coberturacapacitaciones.present? %> </br>
+        <strong>Interpretación:</strong> <%= @indicador_coberturacapacitaciones.interpretation if @indicador_coberturacapacitaciones.present? %> </br>
+        <strong>Fuente de la información:</strong> <%= @indicador_coberturacapacitaciones.information_source  if @indicador_coberturacapacitaciones.present? %></br>
+        <strong>Responsable de la gestión:</strong> <%= @indicador_coberturacapacitaciones.responsible_management if @indicador_coberturacapacitaciones.present? %> </br>
+    </div>
+    </br>
+
+    <div class="row g-3">
+        <div class="col-sm-5">
+            <%= column_chart  @datos_coberturacapacitaciones, title: "Porcentaje de cobertura en capacitaciones", download: {filename: "PorcentajeCoberturaCapacitaciones"}, download: {background: "#FFFFFF"}, xtitle: "Capacitaciones/Actividades realizadas", ytitle: "Porcentaje realizado", suffix: "% realizado" if @datos_peligrosriesgos.present? %>
+        </div>
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-5">
+            <br>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Total de Capacitaciones/Actividades</th>
+                        <th scope="col">Capacitaciones/Actividades realizadas</th>
+                        <th scope="col">Indicador</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr>
+                            <td style="text-align:center"><%= @total_coberturacapacitaciones %></td>
+                            <td style="text-align:center"><%= @datos_coberturacapacitaciones[0][0] %></td>
+                            <td style="text-align:center"><%= @datos_coberturacapacitaciones[0][1] %></td>
+                        </tr>    
+                </tbody>
+            </table>
+
+            <hr>
+        </div>
+    </div>        
+    <br>
+    <hr>
+
+    <div class="row g-2">
+         <h2 class="display-5">Porcentaje de trabajadores capacitados</h2>
+         <hr>
+    </div>
+    <div class="col-sm-11">
+        <strong>Definición:</strong> <%= @indicador_trabajadorescapacitados.description if @indicador_trabajadorescapacitados.present? %> </br>
+        <strong>Periodicidad:</strong> <%= Indicator.label_periodicidad(@indicador_trabajadorescapacitados.periodicity) if @indicador_trabajadorescapacitados.present? %> </br>
+        <strong>Límites:</strong> <%= @indicador_trabajadorescapacitados.limit_one if @indicador_trabajadorescapacitados.present? %>  - <%= @indicador_trabajadorescapacitados.limit_two if @indicador_trabajadorescapacitados.present? %> </br>
+        <strong>Fórmula:</strong> <%= @indicador_trabajadorescapacitados.formula if @indicador_trabajadorescapacitados.present? %> </br>
+        <strong>Interpretación:</strong> <%= @indicador_trabajadorescapacitados.interpretation if @indicador_trabajadorescapacitados.present? %> </br>
+        <strong>Fuente de la información:</strong> <%= @indicador_trabajadorescapacitados.information_source  if @indicador_trabajadorescapacitados.present? %></br>
+        <strong>Responsable de la gestión:</strong> <%= @indicador_trabajadorescapacitados.responsible_management if @indicador_trabajadorescapacitados.present? %> </br>
+    </div>
+    </br>
+
+    <div class="row g-3">
+        <div class="col-sm-5">
+            <%= column_chart  @datos_trabajadorescapacitados, title: "Porcentaje de trabajadores capacitados", download: {filename: "PorcentajeTrabajadoresCapacitados"}, download: {background: "#FFFFFF"}, xtitle: "Trabajadores Capacitados", ytitle: "Porcentaje capacitado", suffix: "% capacitado" if @datos_trabajadorescapacitados.present? %>
+        </div>
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-5">
+            <br>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Total de Trabajadores</th>
+                        <th scope="col">Trabajadores Capacitados</th>
+                        <th scope="col">Indicador</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr>
+                            <td style="text-align:center"><%= @total_trabajadores %></td>
+                            <td style="text-align:center"><%= @total_trabajadoresc %></td>
+                            <td style="text-align:center"><%= @datos_trabajadorescapacitados[0][1] %></td>
+                        </tr>    
+                </tbody>
+            </table>
+
+            <hr>
+        </div>
+    </div>        
+    <br>
+    <hr>
+    
+
+    <div class="row g-2">
+         <h2 class="display-5">INDICADORES MINIMOS DE SST (Res 0312/2019, artículo 30)</h2>
+         <hr>
+    </div>
+    
+    <hr>
+    <table class="table">
+            <tr>
+                <td style="border:1px solid black; width: 100%; text-align:center"><h3>Indicadores mínimos del año <%= @year %> Resolución 0312</h3></td>
+            </tr> 
+    </table>
+    <table class="table">
+            <tr>
+                <td style="border:1px solid black; width: 30%; text-align:center"><small>Indicadores</small></td>
+                <td style="border:1px solid black;text-align:center"><small>Enero</small></td>
+                <td style="border:1px solid black;text-align:center"><small>Febrero</small></td>
+                <td style="border:1px solid black;text-align:center"><small>Marzo</small></td>
+                <td style="border:1px solid black;text-align:center"><small>Abril</small></td>
+                <td style="border:1px solid black;text-align:center"><small>Mayo</small></td>
+                <td style="border:1px solid black;text-align:center"><small>Junio</small></td>
+                <td style="border:1px solid black;text-align:center"><small>Julio</small></td>
+                <td style="border:1px solid black;text-align:center"><small>Agosto</small></td>
+                <td style="border:1px solid black;text-align:center"><small>Septiembre</small></td>
+                <td style="border:1px solid black;text-align:center"><small>Octubre</small></td>
+                <td style="border:1px solid black;text-align:center"><small>Noviembre</small></td>
+                <td style="border:1px solid black;text-align:center"><small>Diciembre</small></td>
+                <td style="border:1px solid black;text-align:center"><small>Total</small></td>
+            </tr>
+            
+            <tr>
+                <td style="border:1px solid black; width: 30%; text-align:center"><small>Número de accidentes laborales en el mes</small></td>
+                <% for j in 1...13  %>
+                    <td style="border:1px solid black; text-align:center"><%= @report_official.dato_total_work_accidents(@report_official, j) if @report_official.present? %></td>
+                <% end %>    
+                <td style="border:1px solid black; text-align:center"><%= @report_official.suma_total_work_accidents(@report_official) if @report_official.present? %></td>
+            </tr>
+            <tr>
+                <td style="border:1px solid black; width: 30%; text-align:center"><small>Número de días de incapacidad por accidente en el mes</small></td>
+                <% for j in 1...13  %>
+                    <td style="border:1px solid black; text-align:center"><%= @report_official.dato_total_days_severidad_accidents(@report_official, j) if @report_official.present? %></td>
+                <% end %>    
+                <td style="border:1px solid black; text-align:center"><%= @report_official.suma_total_days_severidad_accidents(@report_official) if @report_official.present? %></td>
+            </tr>
+
+            <tr> 
+                <td style="border:1px solid black; width: 30%; text-align:center"><small>Número de días de ausencia en el mes (por causa común y laboral)</small></td>
+                <% for j in 1...13  %>
+                    <td style="border:1px solid black; text-align:center"><%= @report_official.dato_total_days_absenteeism(@report_official, j) if @report_official.present? %></td>
+                <% end %>    
+                <td style="border:1px solid black; text-align:center"><%= @report_official.suma_total_days_absenteeism(@report_official) if @report_official.present? %></td>
+            </tr>
+
+            <tr>
+                <td style="border:1px solid black; width: 30%; text-align:center"><small>Número de días de trabajo programados en el mes</small></td>
+                <% for j in 1...13  %>
+                    <td style="border:1px solid black; text-align:center"><%= @report_official.dato_working_days_month(@report_official, j) if @report_official.present? %></td>
+                <% end %>    
+                <td style="border:1px solid black; text-align:center"><%= @report_official.suma_working_days_month(@report_official) if @report_official.present? %></td>
+            </tr>
+
+            <tr>
+                <td style="border:1px solid black; width: 30%; text-align:center"><small>Número de trabajadores DEPENDIENTES en el mes</small></td>
+                <% for j in 1...13  %>
+                    <td style="border:1px solid black; text-align:center"><%= @report_official.dato_number_oficial(@report_official, j) if @report_official.present? %></td>
+                <% end %>    
+                <td style="border:1px solid black; text-align:center">Promedio: <%= @report_official.promedio_number_oficial(@report_official) if @report_official.present? %></td>
+            </tr>
+
+            <tr>
+                <td style="border:1px solid black; width: 30%; text-align:center"><small>Número de trabajadores INDEPENDIENTES en el mes</small></td>
+                <% for j in 1...13  %>
+                    <td style="border:1px solid black; text-align:center"><%= @report_official.dato_number_oficial_independent(@report_official, j) if @report_official.present? %></td>
+                <% end %>    
+                <td style="border:1px solid black; text-align:center">Promedio: <%= @report_official.promedio_number_oficial_independent(@report_official) if @report_official.present? %></td>
+            </tr>
+
+            <tr>
+                <td style="border:1px solid black; width: 30%; text-align:center"><small>Número de trabajadores ESTUDIANTES en el mes</small></td>
+                <% for j in 1...13  %>
+                    <td style="border:1px solid black; text-align:center"><%= @report_official.dato_number_oficial_student(@report_official, j) if @report_official.present? %></td>
+                <% end %>    
+                <td style="border:1px solid black; text-align:center">Promedio: <%= @report_official.promedio_number_oficial_student(@report_official) if @report_official.present? %></td>
+            </tr>
+
+            <tr>
+                <td style="border:1px solid black; width: 30%; text-align:center"><small>Número de trabajadores TEMPORALES (EN MISIÓN) en el mes</small></td>
+                <% for j in 1...13  %>
+                    <td style="border:1px solid black; text-align:center"><%= @report_official.dato_number_oficial_temporary(@report_official, j) if @report_official.present? %></td>
+                <% end %>    
+                <td style="border:1px solid black; text-align:center">Promedio: <%= @report_official.promedio_number_oficial_temporary(@report_official) if @report_official.present? %></td>
+            </tr>
+
+            <tr>
+                <td style="border:1px solid black; width: 30%; text-align:center"><small>Número de trabajadores COOPERADOS en el mes</small></td>
+                <% for j in 1...13  %>
+                    <td style="border:1px solid black; text-align:center"><%= @report_official.dato_number_oficial_cooperative(@report_official, j) if @report_official.present? %></td>
+                <% end %>    
+                <td style="border:1px solid black; text-align:center">Promedio: <%= @report_official.promedio_number_oficial_cooperative(@report_official) if @report_official.present? %></td>
+            </tr>
+
+            <tr>
+                <td style="border:1px solid black; width: 30%; text-align:center"><small>Número de trabajadores OTROS CONTRATOS en el mes</small></td>
+                <% for j in 1...13  %>
+                    <td style="border:1px solid black; text-align:center"><%= @report_official.dato_number_oficial_other(@report_official, j) if @report_official.present? %></td>
+                <% end %>    
+                <td style="border:1px solid black; text-align:center">Promedio: <%= @report_official.promedio_number_oficial_other(@report_official) if @report_official.present? %></td>
+            </tr>
+
+            <tr>
+                <td style="border:1px solid black; width: 30%; text-align:center"><small>Enfermedades laborales </small></td>
+                <% for j in 1...13  %>
+                    <td style="border:1px solid black; text-align:center"><%= @report_official.dato_total_occupational_disease(@report_official, j) if @report_official.present? %></td>
+                <% end %>    
+                <td style="border:1px solid black; text-align:center"><%= @report_official.dato_total_occupational_disease_final(@report_official) if @report_official.present? %></td>
+            </tr>
+
+            <tr>
+                <td style="border:1px solid black; width: 30%; text-align:center"><small>Número de Enfermedad Laboral en el año</small></td>
+                <% for j in 1...13  %>
+                    <td style="border:1px solid black; text-align:center"><%= @report_official.dato_total_occupational_disease_year(@report_official, j) if @report_official.present? %></td>
+                <% end %>    
+                <td style="border:1px solid black; text-align:center"><%= @report_official.dato_total_occupational_disease_year_final(@report_official) if @report_official.present? %></td>
+            </tr>
+
+            <tr>
+                <td style="border:1px solid black; width: 30%; text-align:center"><small>TOTAL TRABAJADORES</small></td>
+                <% for j in 1...13  %>
+                    <td style="border:1px solid black; text-align:center"><%= @report_official.dato_total_officials(@report_official, j) if @report_official.present? %></td>
+                <% end %>    
+                <td style="border:1px solid black; text-align:center">Promedio: <%= @report_official.pro_total_officials(@report_official, 12) if @report_official.present? %></td>
+            </tr>
+
+            <tr>
+                <td style="border:1px solid black; width: 30%; text-align:center"><small>TOTAL DÍAS DE TRABAJO PROGRAMADOS</small></td>
+                <% for j in 1...13  %>
+                    <td style="border:1px solid black; text-align:center"><%= @report_official.dato_total_dias_trabajo_programados(@report_official, j) if @report_official.present? %></td>
+                <% end %>    
+                <td style="border:1px solid black; text-align:center"><%= @report_official.sum_total_dias_trabajo_programados(@report_official) if @report_official.present? %></td>
+            </tr>
+
+            <tr>
+                <td style="border:1px solid black; width: 30%; text-align:center"><small>FRECUENCIA DE LA ACCIDENTALIDAD</small></td>
+                <% for j in 1...13  %>
+                    <td style="border:1px solid black; text-align:center"><%= @report_official.dato_frecuencia_accidentalidad(@report_official, j) if @report_official.present? %></td>
+                <% end %>    
+                <td style="border:1px solid black; text-align:center"><%= @report_official.pro_frecuencia_accidentalidad(@report_official) if @report_official.present? %></td>
+            </tr>
+
+            <tr>
+                <td style="border:1px solid black; width: 30%; text-align:center"><small>SEVERIDAD DE LA ACCIDENTALIDAD</small></td>
+                <% for j in 1...13  %>
+                    <td style="border:1px solid black; text-align:center"><%= @report_official.dato_severidad_accidentalidad(@report_official, j) if @report_official.present? %></td>
+                <% end %>    
+                <td style="border:1px solid black; text-align:center"><%= @report_official.pro_severidad_accidentalidad(@report_official) if @report_official.present? %></td>
+            </tr>
+
+            <tr>
+                <td style="border:1px solid black; width: 30%; text-align:center"><small>AUSENTISMO POR CAUSA MÉDICA</small></td>
+                <% for j in 1...13  %>
+                    <td style="border:1px solid black; text-align:center"><%= @report_official.dato_ausentismo_causa_medica(@report_official, j) if @report_official.present? %></td>
+                <% end %>    
+                <td style="border:1px solid black; text-align:center"><%= @report_official.pro_ausentismo_causa_medica(@report_official) if @report_official.present? %></td>
+            </tr>
+
+            <tr>
+                <td style="border:1px solid black; width: 30%; text-align:center"><small>PREVALENCIA DE LA ENFERMEDAD LABORAL</small></td>
+                <% for j in 1...13  %>
+                    <td style="border:1px solid black; text-align:center"><%= @report_official.dato_prevalencia_enfermedad_laboral(@report_official, j) if @report_official.present? %></td>
+                <% end %>    
+                <td style="border:1px solid black; text-align:center"><%= @report_official.pro_prevalencia_enfermedad_laboral(@report_official) if @report_official.present? %></td>
+            </tr>
+
+            <tr>
+                <td style="border:1px solid black; width: 30%; text-align:center"><small>INCIDENCIA DE LA ENFERMEDAD LABORAL</small></td>
+                <% for j in 1...13  %>
+                    <td style="border:1px solid black; text-align:center"><%= @report_official.dato_incidencia_enfermedad_laboral(@report_official, j) if @report_official.present? %></td>
+                <% end %>    
+                <td style="border:1px solid black; text-align:center"><%= @report_official.pro_incidencia_enfermedad_laboral(@report_official) if @report_official.present? %></td>
+            </tr>
+
+            <tr>
+                <td style="border:1px solid black; width: 30%; text-align:center"><small>PROPORCIÓN DE ACCIDENTES MORTALES</small></td>
+                <% for j in 1...13  %>
+                    <td style="border:1px solid black; text-align:center"><%= @report_official.dato_proporcion_accidentes_mortales(@report_official, j) if @report_official.present? %></td>
+                <% end %>    
+                <td style="border:1px solid black; text-align:center"><%= @report_official.pro_proporcion_accidentes_mortales(@report_official) if @report_official.present? %></td>
+            </tr>
+
+    </table>
+    <br>
+    <hr>                   
+</div>  
+
+
+sigo aqui
+codigo viejo
+
     <!-- ===================================================== -->
     <!-- Severidad de Accidentalidad -->
     <!-- ===================================================== -->
@@ -759,7 +1107,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <% if @datos_prevalenciaa.present? %>
+                  <% if @datos_ano_prevalencia.present? %>
                     <% i = 0 %>
                     <% while i < @datos_ano_prevalencia %>
                       <tr>
@@ -782,7 +1130,7 @@
                       <% i += 1 %>
                     <% end %>
                   <% end %>
-                  <% if @datos_prevalencia.present? %>
+                  <% if @datos_mes_prevalencia.present? %>
                     <% i = 0 %>
                     <% while i < @datos_mes_prevalencia %>
                       <tr>
@@ -919,7 +1267,7 @@
                 </thead>
                 <tbody>
                 <tbody>
-                  <% if @datos_incidencia.present? %>
+                  <% if @datos_mes_incidencia.present? %>
                     <% i = 0 %>
                     <% while i < @datos_mes_incidencia %>
                       <tr>
@@ -1066,7 +1414,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <% if @datos_proporciona.present? %>
+                  <% if @datos_ano_proporcion.present? %>
                     <% i = 0 %>
                     <% while i < @datos_ano_proporcion %>
                       <tr>
@@ -1089,7 +1437,7 @@
                       <% i += 1 %>
                     <% end %>
                   <% end %>
-                  <% if @datos_proporcion.present? %>
+                  <% if @datos_mes_proporcion.present? %>
                     <% i = 0 %>
                     <% while i < @datos_mes_proporcion %>
                       <tr>
@@ -1192,12 +1540,12 @@
         <!-- GRÁFICO -->
         <!-- ================================================= -->
         <div class="row g-4 mb-4">
-          <!-- Gráfico mes -->
+          <!-- Gráfico  -->
           <% if @datos_peligrosriesgos.present? %>
             <div class="col-12 col-lg-6">
               <div class="card h-100 shadow-sm border-0">
                 <div class="card-body">
-                  <%= column_chart  @datos_peligrosriesgos, title: "Porcentaje de peligros y riesgos gestionados en el mes", download: {filename: "PorcentajePeligrosRiesgosGestionados"}, download: {background: "#FFFFFF"}, xtitle: "Peligros/Riesgos gestionado", ytitle: "", suffix: "% de peligros y riesgos gestionados" %>
+                  <%= column_chart  @datos_peligrosriesgos, title: "Porcentaje de peligros y riesgos gestionados en el año", download: {filename: "PorcentajePeligrosRiesgosGestionados"}, download: {background: "#FFFFFF"}, xtitle: "Peligros/Riesgos gestionado", ytitle: "", suffix: "% de peligros y riesgos gestionados" %>
                 </div>
               </div>
             </div>
@@ -1205,11 +1553,11 @@
         </div>
 
         <!-- ================================================= -->
-        <!-- TABLA  Porcentaje de peligros y riesgos gestionados en el mes -->
+        <!-- TABLA  Porcentaje de peligros y riesgos gestionados -->
         <!-- ================================================= -->
         <div class="card border-0 shadow-sm">
           <div class="card-header bg-light">
-            <h5 class="mb-0"><i class="bi bi-table me-2"></i>Resultados Porcentaje de peligros y riesgos gestionados en el mes</h5>
+            <h5 class="mb-0"><i class="bi bi-table me-2"></i>Resultados Porcentaje de peligros y riesgos gestionados</h5>
           </div>
           <div class="card-body p-0">
             <div class="table-responsive">
@@ -1255,10 +1603,10 @@
           </div>
         </div>
         <!-- ================================================= -->
-        <!-- GRÁFICO 2  año-->
+        <!-- GRÁFICO 2 -->
         <!-- ================================================= -->
         <div class="row g-4 mb-4">
-          <!-- Gráfico año -->
+          <!-- Gráfico  -->
           <% if @ano_datos_peligrosriesgos.present? %>
             <div class="col-12 col-lg-6">
               <div class="card h-100 shadow-sm border-0">
@@ -1306,7 +1654,7 @@
                           <%= rep.risk_danger_gestion %>%
                         </td>
                         <td>
-                            <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="De <%= rep.risk_danger_total %> peligros/riesgos identificados se ha intervenido el <%= rep.risk_danger_gestion %>% de peligros/riesgos en el año: <%= rep.year.to_s %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                            <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="De <%= rep.risk_danger_total %> peligros/riesgos identificados se ha intervenido el <%= rep.risk_danger_gestion %>% de peligros/riesgos en el mes de: <%= Calendar.label_month(rep.month).to_s %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
                         </td>
                       </tr>
                     <% end %>
@@ -1505,7 +1853,7 @@
                           <%= rep.per_training_coverage %>%
                         </td>
                         <td>
-                            <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="Porcentaje de cobertura de capacitaciones del: <%= rep.per_training_coverage %>% en el año: <%= rep.year.to_s %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                            <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="Porcentaje de cobertura de capacitaciones del: <%= rep.per_training_coverage %>% en el mes de: <%= Calendar.label_month(rep.month).to_s %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
                         </td>
                       </tr>
                     <% end %>
@@ -1587,7 +1935,7 @@
           </div>
         <% end %>
         <!-- ================================================= -->
-        <!-- GRÁFICO  mes-->
+        <!-- GRÁFICO -->
         <!-- ================================================= -->
         <div class="row g-4 mb-4">
           <!-- Gráfico  -->
@@ -1595,7 +1943,7 @@
             <div class="col-12 col-lg-6">
               <div class="card h-100 shadow-sm border-0">
                 <div class="card-body">
-                  <%= column_chart  @datos_trabajadorescapacitados, title: "Porcentaje de empleados capacitados en el mes: ", download: {filename: "Porcentajeempleadoscapacitadosaño"}, download: {background: "#FFFFFF"}, xtitle: "Cobertura empleados capacitados", ytitle: "", suffix: "% de empleados capacitados" %>
+                  <%= column_chart  @datos_trabajadorescapacitados, title: "Porcentaje de empleados capacitados en el año del: ", download: {filename: "Porcentajeempleadoscapacitadosaño"}, download: {background: "#FFFFFF"}, xtitle: "Cobertura empleados capacitados", ytitle: "", suffix: "% de empleados capacitados" %>
                 </div>
               </div>
             </div>
@@ -1603,11 +1951,11 @@
         </div>
 
         <!-- ================================================= -->
-        <!-- TABLA  Porcentaje de empleados capacitados en el mes-->
+        <!-- TABLA  Porcentaje de empleados capacitados -->
         <!-- ================================================= -->
         <div class="card border-0 shadow-sm">
           <div class="card-header bg-light">
-            <h5 class="mb-0"><i class="bi bi-table me-2"></i>Resultados Porcentaje de empleados capacitados en el mes</h5>
+            <h5 class="mb-0"><i class="bi bi-table me-2"></i>Resultados Porcentaje de empleados capacitados</h5>
           </div>
           <div class="card-body p-0">
             <div class="table-responsive">
@@ -1681,8 +2029,8 @@
                 <thead class="table-dark">
                   <tr>
                     <th class="text-center">Año</th>
-                    <th class="text-center">Total de Trabajadores Programados para capacitación</th>
-                    <th class="text-center">Trabajadores Capacitados</th>
+                    <th class="text-center">Total de Capacitaciones/Actividades</th>
+                    <th class="text-center">Capacitaciones/Actividades realizadas</th>
                     <th class="text-center">Indicador</th>
                     <th>Interpretación</th>
                   </tr>
@@ -1704,7 +2052,7 @@
                           <%= rep.per_scheduled_workers %>%
                         </td>
                         <td>
-                            <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="Porcentaje de empleados capacitados del: <%= rep.per_scheduled_workers %>% en el año: <%= rep.year.to_s %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                            <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="Porcentaje de cobertura de capacitaciones del: <%= rep.per_training_coverage %>% en el mes de: <%= Calendar.label_month(rep.month).to_s %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
                         </td>
                       </tr>
                     <% end %>
@@ -1903,7 +2251,7 @@
                           <%= rep.per_autoevaluation %>%
                         </td>
                         <td>
-                            <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="En <%= @entity.business_name %> se cumplió con <%= rep.items_autoevaluation_cumple %> items de <%= rep.items_autoevaluation_total %> requeridos según la evaluación inicial en el año: <%= rep.year.to_s %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
+                            <button type="button" class="btn btn-sm btn-light" data-bs-toggle="popover" title="En <%= @entity.business_name %> se cumplió con <%= rep.items_autoevaluation_cumple %> items de <%= rep.items_autoevaluation_total %> requeridos según la evaluación inicial en el mes de: <%= Calendar.label_month(rep.month).to_s %>. "><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
                         </td>
                       </tr>
                     <% end %>
@@ -1916,7 +2264,7 @@
       </div>
     </div>
     <!-- ===================================================== -->
-    <!-- Ejecución de Acciones Preventivas AP, Acciones Correctivas AC, y de Mejora -->
+    <!-- Autoevaluación del SG-SST -->
     <!-- ===================================================== -->
     <div id="list-item-13" class="card shadow-sm border-0 mb-4">
       <div class="card-header bg-light py-3">
@@ -1985,7 +2333,7 @@
           </div>
         <% end %>
         <!-- ================================================= -->
-        <!-- GRÁFICO mes-->
+        <!-- GRÁFICO -->
         <!-- ================================================= -->
         <div class="row g-4 mb-4">
           <!-- Gráfico  -->
@@ -1993,7 +2341,7 @@
             <div class="col-12 col-lg-6">
               <div class="card h-100 shadow-sm border-0">
                 <div class="card-body">
-                  <%= column_chart  @datos_matrizacpm, title: "Porcentaje de acciones(AP,AC,AM) ejecutadas en el mes", download: {filename: "PorcentajeACPMejecutadas"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de ACPM ejecutadas", ytitle: "", suffix: "% de cumpliminto" if @datos_matrizacpm.present? %>
+                  <%= column_chart  @datos_matrizacpm, title: "Porcentaje de acciones(AP,AC,AM) ejecutadas", download: {filename: "PorcentajeACPMejecutadas"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de ACPM ejecutadas", ytitle: "", suffix: "% de cumpliminto" if @datos_matrizacpm.present? %>
                 </div>
               </div>
             </div>
@@ -2059,7 +2407,7 @@
             <div class="col-12 col-lg-6">
               <div class="card h-100 shadow-sm border-0">
                 <div class="card-body">
-                  <%= column_chart  @ano_datos_matrizacpm, title: "Porcentaje de acciones(AP,AC,AM) ejecutadas en el año", download: {filename: "PorcentajeACPMejecutadas"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de ACPM ejecutadas", ytitle: "", suffix: "% de cumpliminto" %>
+                  <%= column_chart  @ano_datos_matrizacpm, title: "Porcentaje de acciones(AP,AC,AM) ejecutadas", download: {filename: "PorcentajeACPMejecutadas"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de ACPM ejecutadas", ytitle: "", suffix: "% de cumpliminto" %>
                 </div>
               </div>
             </div>
@@ -2258,7 +2606,7 @@
             <div class="col-12 col-lg-6">
               <div class="card h-100 shadow-sm border-0">
                 <div class="card-body">
-                  <%= column_chart  @ano_datos_matrizlegal, title: "Porcentaje de requisitos legales aplicables ejecutados en el año ", download: {filename: "Porcentajerequisitoslegalesejecutados"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de requisitos legales aplicables ejecutados", ytitle: "", suffix: "% de cumpliminto" %>
+                  <%= column_chart  @ano_datos_matrizlegal, title: "Porcentaje de requisitos legales aplicables ejecutados: ", download: {filename: "Porcentajerequisitoslegalesejecutados"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de requisitos legales aplicables ejecutados", ytitle: "", suffix: "% de cumpliminto" %>
                 </div>
               </div>
             </div>
@@ -2383,7 +2731,7 @@
           </div>
         <% end %>
         <!-- ================================================= -->
-        <!-- GRÁFICO  mes-->
+        <!-- GRÁFICO -->
         <!-- ================================================= -->
         <div class="row g-4 mb-4">
           <!-- Gráfico  -->
@@ -2391,7 +2739,7 @@
             <div class="col-12 col-lg-6">
               <div class="card h-100 shadow-sm border-0">
                 <div class="card-body">
-                  <%= column_chart  @datos_plantrabajoanual, title: "Porcentaje de actividades ejecutadas programadas en el plan anual de trabajo en el mes", download: {filename: "Porcentajeactividadesplananual"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de actividades ejecutadas plan anual de trabajo", ytitle: "", suffix: "% de cumpliminto" %>
+                  <%= column_chart  @datos_plantrabajoanual, title: "Porcentaje de actividades ejecutadas programadas en el plan anual de trabajo", download: {filename: "Porcentajeactividadesplananual"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de actividades ejecutadas plan anual de trabajo", ytitle: "", suffix: "% de cumpliminto" %>
                 </div>
               </div>
             </div>
@@ -2399,7 +2747,7 @@
         </div>
 
         <!-- ================================================= -->
-        <!-- TABLA  Porcentaje de actividades ejecutadas programadas en el plan anual de trabajo en el mes -->
+        <!-- TABLA  Porcentaje de actividades ejecutadas programadas en el plan anual de trabajo -->
         <!-- ================================================= -->
         <div class="card border-0 shadow-sm">
           <div class="card-header bg-light">
@@ -2598,11 +2946,11 @@
         </div>
 
         <!-- ================================================= -->
-        <!-- TABLA  Porcentaje de actividades intervenidas del plan de mejoramiento en el mes -->
+        <!-- TABLA  Porcentaje de actividades intervenidas del plan de mejoramiento -->
         <!-- ================================================= -->
         <div class="card border-0 shadow-sm">
           <div class="card-header bg-light">
-            <h5 class="mb-0"><i class="bi bi-table me-2"></i>Resultados Porcentaje de actividades intervenidas del plan de mejoramiento en el mes</h5>
+            <h5 class="mb-0"><i class="bi bi-table me-2"></i>Resultados Porcentaje de actividades intervenidas del plan de mejoramiento</h5>
           </div>
           <div class="card-body p-0">
             <div class="table-responsive">
@@ -2656,7 +3004,7 @@
             <div class="col-12 col-lg-6">
               <div class="card h-100 shadow-sm border-0">
                 <div class="card-body">
-                  <%= column_chart  @ano_datos_planmejoramiento, title: "Porcentaje de actividades intervenidas del plan de mejoramiento en el año", download: {filename: "Porcentajeactividadesplanmejoramiento"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de actividades ejecutadas plan de mejoramiento", ytitle: "", suffix: "% de cumpliminto" %>
+                  <%= column_chart  @ano_datos_planmejoramiento, title: "Porcentaje de actividades intervenidas del plan de mejoramiento", download: {filename: "Porcentajeactividadesplanmejoramiento"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de actividades ejecutadas plan de mejoramiento", ytitle: "", suffix: "% de cumpliminto" %>
                 </div>
               </div>
             </div>
@@ -3054,7 +3402,7 @@
             <div class="col-12 col-lg-6">
               <div class="card h-100 shadow-sm border-0">
                 <div class="card-body">
-                  <%= column_chart  @ano_datos_asignacionrecursos, title: "Indicador asignación de recursos en el año", download: {filename: "Indicadorasignaciónrecursos"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de actividades ejecutadas en la matriz de asignación de recursos", ytitle: "", suffix: "% de cumpliminto" %>
+                  <%= column_chart  @ano_datos_asignacionrecursos, title: "Indicador asignación de recursos", download: {filename: "Indicadorasignaciónrecursos"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de actividades ejecutadas en la matriz de asignación de recursos", ytitle: "", suffix: "% de cumpliminto" %>
                 </div>
               </div>
             </div>
@@ -3066,7 +3414,7 @@
         <!-- ================================================= -->
         <div class="card border-0 shadow-sm">
           <div class="card-header bg-light">
-            <h5 class="mb-0"><i class="bi bi-table me-2"></i>Resultados Indicador asignación de recursos en el año</h5>
+            <h5 class="mb-0"><i class="bi bi-table me-2"></i>Resultados Indicador asignación de recursos</h5>
           </div>
           <div class="card-body p-0">
             <div class="table-responsive">
@@ -3187,7 +3535,7 @@
             <div class="col-12 col-lg-6">
               <div class="card h-100 shadow-sm border-0">
                 <div class="card-body">
-                  <%= column_chart  @datos_investigacionincidentes, title: "Indicador de investigación de incidentes y/o accidentes en el mes", download: {filename: "Indicadorinvestigacióndeincidentes"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de incidentes y/o accidentes investigados", ytitle: "", suffix: "% de cumplimiento" %>
+                  <%= column_chart  @datos_investigacionincidentes, title: "Indicador de investigación de incidentes y/o accidentes", download: {filename: "Indicadorinvestigacióndeincidentes"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de incidentes y/o accidentes investigados", ytitle: "", suffix: "% de cumplimiento" %>
                 </div>
               </div>
             </div>
@@ -3195,11 +3543,11 @@
         </div>
 
         <!-- ================================================= -->
-        <!-- TABLA  Indicador de investigación de incidentes y/o accidentes en el mes -->
+        <!-- TABLA  Indicador de investigación de incidentes y/o accidentes -->
         <!-- ================================================= -->
         <div class="card border-0 shadow-sm">
           <div class="card-header bg-light">
-            <h5 class="mb-0"><i class="bi bi-table me-2"></i>Resultados Indicador de investigación de incidentes y/o accidentes en el mes</h5>
+            <h5 class="mb-0"><i class="bi bi-table me-2"></i>Resultados Indicador de investigación de incidentes y/o accidentes</h5>
           </div>
           <div class="card-body p-0">
             <div class="table-responsive">
@@ -3253,7 +3601,7 @@
             <div class="col-12 col-lg-6">
               <div class="card h-100 shadow-sm border-0">
                 <div class="card-body">
-                  <%= column_chart  @ano_datos_investigacionincidentes, title: "Indicador de investigación de incidentes y/o accidentes en el año", download: {filename: "Indicadorinvestigacióndeincidentes"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de incidentes y/o accidentes investigados", ytitle: "", suffix: "% de cumpliminto"  %>
+                  <%= column_chart  @ano_datos_investigacionincidentes, title: "Indicador de investigación de incidentes y/o accidentes", download: {filename: "Indicadorinvestigacióndeincidentes"}, download: {background: "#FFFFFF"}, xtitle: "Porcentaje de incidentes y/o accidentes investigados", ytitle: "", suffix: "% de cumpliminto"  %>
                 </div>
               </div>
             </div>
@@ -3261,11 +3609,11 @@
         </div>
 
         <!-- ================================================= -->
-        <!-- TABLA  Indicador de investigación de incidentes y/o accidentes en el año-->
+        <!-- TABLA  Indicador de investigación de incidentes y/o accidentes -->
         <!-- ================================================= -->
         <div class="card border-0 shadow-sm">
           <div class="card-header bg-light">
-            <h5 class="mb-0"><i class="bi bi-table me-2"></i>Resultados Indicador de investigación de incidentes y/o accidentes en el año</h5>
+            <h5 class="mb-0"><i class="bi bi-table me-2"></i>Resultados Indicador de investigación de incidentes y/o accidentes</h5>
           </div>
           <div class="card-body p-0">
             <div class="table-responsive">
@@ -3526,3 +3874,7 @@
     <% end %>
   </div>
 </div>
+
+
+
+

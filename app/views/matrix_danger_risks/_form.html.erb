@@ -1,40 +1,61 @@
-<div class="container col-12 card p-5">
-    <br>  
+<div class="card shadow-sm border-0">
+  <div class="card-body">
     <%= form_with model: @matrix_danger_risk do |form| %>
-        <% @matrix_danger_risk.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
+      <% if @matrix_danger_risk.errors.any? %>
+        <div class="alert alert-danger">
+          <ul class="mb-0">
+            <% @matrix_danger_risk.errors.full_messages.each do |error| %>
+              <li><%= error %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <div class="mb-4">
+        <label class="form-label fw-semibold">
+          Representante Legal
+          <button type="button" class="btn btn-link p-0 ms-1" data-bs-toggle="tooltip" title="Seleccione el nombre del Representante Legal.">
+            <%= image_tag "ayuda.png", width: 22 %>
+          </button>
+        </label>
+        <%= form.collection_select :user_legal_representative, User.usuarios_empresa.order(:id), :id, :name, {}, class: "form-select" %>
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label fw-semibold">
+          Asesor SST
+          <button type="button" class="btn btn-link p-0 ms-1" data-bs-toggle="tooltip" title="Seleccione el nombre del Asesor SST.">
+            <%= image_tag "ayuda.png", width: 22 %>
+          </button>
+        </label>
+        <%= form.collection_select :user_adviser_sst, User.usuarios_empresa.order(:id), :id, :name, {}, class: "form-select" %>
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label fw-semibold">
+          Responsable SST
+          <button type="button" class="btn btn-link p-0 ms-1" data-bs-toggle="tooltip" title="Seleccione el nombre del Responsable SST.">
+            <%= image_tag "ayuda.png", width: 22 %>
+          </button>
+        </label>
+        <%= form.collection_select :user_responsible_sst, User.usuarios_empresa.order(:id), :id, :name, {}, class: "form-select" %>
+      </div>
+      <%= form.hidden_field :entity_id, value: params[:entity_id].to_i if params[:entity_id].present? %>
+      <%= form.hidden_field :code, value: @template.reference if @template.present? %>
+      <%= form.hidden_field :version, value: @template.version if @template.present? %>
+      <hr>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <%= form.button type: :submit, class: "btn btn-success" do %>
+          <i class="bi bi-check-circle"></i>
+          Guardar
         <% end %>
 
-        <br>
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Representante Legal.">Representante Legal:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.collection_select :user_legal_representative, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-        </div>
-        <br>    
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Asesor SST.">Asesor SST:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.collection_select :user_adviser_sst, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-        </div>
-        <br>    
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Responsable SST.">Responsable SST:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.collection_select :user_responsible_sst, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-        </div>
-
-        <%= form.hidden_field :entity_id, :value => params[:entity_id].to_i, class: "form-control" if params[:entity_id].present? %> 
-        <%= form.hidden_field :code, :value => @template.reference, class: "form-control" if @template.present? %>
-        <%= form.hidden_field :version, :value => @template.version.to_i, class: "form-control" if @template.present? %>
-        <%= form.hidden_field :date_create, :value => @template.date, class: "form-control" if @template.present? %>
-        <%= form.hidden_field :date_update, :value => @template.date_updated, class: "form-control" if @template.present? %>
-
-
-        <br>    
-        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+        <%= link_to :back, class: "btn btn-outline-secondary" do %>
+          <i class="bi bi-arrow-left-circle"></i>
+          Retornar
+        <% end %>
+      </div>
     <% end %>
-</div>        
-<br>
+  </div>
+</div>
 
  

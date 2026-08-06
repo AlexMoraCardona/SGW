@@ -9,7 +9,7 @@ class ResourcesController < ApplicationController
             end    
         elsif Current.user && Current.user.level > 2 
             @entity = Entity.find(Current.user.entity)
-            @resources = Resource.where("entity_id = ?",Current.user.entity)
+            @resources = Resource.where("entity_id = ?",Current.user.entity).order(id: :desc)
         else
             redirect_to new_session_path, alert: t('common.not_logged_in')    
             session.delete(:user_id)  
@@ -40,18 +40,23 @@ class ResourcesController < ApplicationController
         @res = User.find(@resource.user_responsible_sst) if  @resource.user_responsible_sst.present? && @resource.user_responsible_sst > 0
         @template = Template.where("format_number = ? and document_vigente = ?",30,1).last  
 
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'ver_resource',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                         right: 'Página: [page] de [topage]'
-                        }                
-                       } 
-        end
-      
+            format.pdf {
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('ver_resource'),
+                    zoom: 1,
+                    disable_javascript: true,
+                    margin: {top: 10, bottom: 10, left: 5, right: 5 },
+                    page_size: 'letter',
+                    footer: {right: '[page] de [topage]'}
+                    
+                  )  
+                  send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+            }
+        end    
+    
     end    
 
 

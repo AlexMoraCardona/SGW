@@ -1,112 +1,154 @@
-<div align="left"; class="container col-12">
-    <a class="navbar-brand" href="/">
-        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-    </a>
+<div class="container-fluid mb-4">
+    <div class="row align-items-center">
+        <div class="col-12 col-lg-2 text-center mb-3 mb-lg-0">
+            <% if @resource.entity.logo.present? %>
+                <%= image_tag @resource.entity.logo, class: "img-fluid", style: "max-height:90px;" %>
+            <% end %>
+        </div>
+        <div class="col-12 col-lg-7 text-center">
+            <h3 class="fw-bold mb-2">
+                ASIGNACIÓN DE RECURSOS PARA EL SG-SST
+            </h3>
+            <h5 class="mb-1">
+                <%= @resource.entity.business_name %>
+            </h5>
+            <small class="text-muted">
+                NIT: <%= @resource.entity.identification_number %>
+            </small>
+        </div>
+        <div class="col-12 col-lg-3">
+            <div class="row">
+                <div class="col-7 fw-bold">Fecha creación:</div>
+                <div class="col-5"><%= @template.date %></div>
+            </div>
+            <div class="row">
+                <div class="col-7 fw-bold">Actualización:</div>
+                <div class="col-5"><%= @template.date_updated %></div>
+            </div>
+            <div class="row">
+                <div class="col-7 fw-bold">Versión:</div>
+                <div class="col-5"><%= @template.version %></div>
+            </div>
+            <div class="row">
+                <div class="col-7 fw-bold">Código:</div>
+                <div class="col-5"><%= @template.reference %></div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <table class="table table-hover" style="border:1px solid black"> 
-        <thead>
-            <tr>
-                <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
-                    <% if @resource.entity.logo.present? then %>
-                        <%=  image_tag  @resource.entity.logo, class: "image_peq" %>
-                    <% end %>
-                </td>
-                <td rowspan="4"; colspan="7"; style="text-align:center; padding-bottom: 40px;">
-                    <div><h5>ASIGNACIÓN DE RECURSOS PARA EL SG-SST <%= @resource.year if @resource.present? %></h5><h6><%= @resource.entity.business_name if @resource.present? %> Nit: <%= @resource.entity.identification_number if @resource.present? %> </h6></div>
-                </td>
-                <td rowspan="4";  style="text-align:center"></td>
+<hr>
 
-                <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
+<div class="card shadow">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-primary">
+                    <tr>
+                        <th rowspan="2"; style="text-align:center">Nro.</th>
+                        <th rowspan="2";>Proceso</th>
+                        <th rowspan="2";>Actividad</th>
+                        <th rowspan="2";>Responsable</th>
+                        <th rowspan="2"; style="text-align:center">Valor presupuestado IVA incluido Año</th>
+                        <th colspan="2"; style="text-align:center">Ejecutado</th>
+                        <th colspan="2"; style="text-align:center">Aprobado</th>
+                        <th style="text-align:center">Fecha de Aprobación </th>
+                        <th rowspan="2"; style="text-align:center">Editar</th>
+                        <th rowspan="2"; style="text-align:center">Eliminar</th>
+                    </tr>   
+                    <tr>
+                        <th style="text-align:center">SI</th>
+                        <th style="text-align:center">NO</th>
+                        <th style="text-align:center">SI</th>
+                        <th style="text-align:center">NO</th>                
+                        <th style="text-align:center">aaaa/mm/dd</th>
+                    </tr>   
 
-                <td style="border:1px solid black"><%= @template.date if @template.present? %></td>
-
-            </tr>
-            <tr> 
-                <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
-                <td style="border:1px solid black"><%= @template.date_updated if @template.present? %></td>
-            </tr>
-            <tr> 
-                <td colspan="2"; style="border:1px solid black">Versión:</td>
-                <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
-            </tr>
-            <tr> 
-                <td colspan="2"; style="border:1px solid black">Código:</td>
-                <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
-            </tr>
-
-            <tr>
-                <th rowspan="2"; style="border:1px solid black;text-align:center">Nro.</th>
-                <th rowspan="2"; style="border:1px solid black">Proceso</th>
-                <th rowspan="2"; style="border:1px solid black">Actividad</th>
-                <th rowspan="2"; style="border:1px solid black">Responsable</th>
-                <th rowspan="2"; style="border:1px solid black;text-align:center">Valor presupuestado IVA incluido Año</th>
-                <th colspan="2"; style="border:1px solid black;text-align:center">Ejecutado</th>
-                <th colspan="2"; style="border:1px solid black;text-align:center">Aprobado</th>
-                <th style="border:1px solid black;text-align:center">Fecha de Aprobación </th>
-                <th rowspan="2"; style="border:1px solid black;text-align:center">Editar</th>
-                <th rowspan="2"; style="border:1px solid black;text-align:center">Eliminar</th>
-            </tr>   
-
-            <tr>
-                <th style="border:1px solid black;text-align:center">SI</th>
-                <th style="border:1px solid black;text-align:center">NO</th>
-                <th style="border:1px solid black;text-align:center">SI</th>
-                <th style="border:1px solid black;text-align:center">NO</th>                
-                <th style="border:1px solid black;text-align:center">aaaa/mm/dd</th>
-            </tr>   
-
-        </thead>
-
-        <% @resource_items.each do |resource_item| %>             
-            <tbody>
-                <tr>
-                    <td style="border:1px solid black;text-align:center"><%= resource_item.consecutive %></td>
-                    <td style="border:1px solid black;text-align:center"><%= resource_item.process %></td>
-                    <td style="border:1px solid black;text-align:center"><%= resource_item.activity %></td>
-                    <td style="border:1px solid black;text-align:center"><%= resource_item.user.name %></td>
-                    <td style="border:1px solid black;text-align:center">$<%= resource_item.miles(resource_item.value) %></td>
-                    <td style="border:1px solid black;text-align:center"><%= resource_item.labelxs(resource_item.executed) %></td>
-                    <td style="border:1px solid black;text-align:center"><%= resource_item.labelxn(resource_item.executed) %></td>
-                    <td style="border:1px solid black;text-align:center"><%= resource_item.labelxs(resource_item.approved) %></td>
-                    <td style="border:1px solid black;text-align:center"><%= resource_item.labelxn(resource_item.approved) %></td>
-                    <td style="border:1px solid black;text-align:center"><%= resource_item.date_approved  %></td>
-                    <td style="border:1px solid black; text-align:center;"><%= link_to t('common.edit'), edit_resource_item_path(resource_item), class: 'btn btn-sm btn-primary'  %></td>
-                    <td style="border:1px solid black; text-align:center;"><%= button_to "Delete", resource_item_path(resource_item), method: :delete, class:"btn btn-sm btn-danger" %></td>
-                </tr> 
-            </body>
-        <% end %>
-        <tr style="border:1px solid black">
-            <td  colspan="4"; style="border:1px solid black"><br>
-                <% if @resource.firm_legal_representative == 1 %>
-                    <% if @rep.present? %>
-                        <% if @rep.firm.attached? %>
-                           <% if @rep.firm.image? %> 
-                                <%= image_tag @rep.firm, class: "firma" %>
-                            <% end %>
-                        <% end %>
-                    <% end %>     
-                <% end %>     
-            </td>
-            <td  colspan="4"; style="border:0px solid black"><br>
-                <% if @resource.firm_adviser_sst == 1 %>
-                    <% if @adv.present? %>
-                        <% if @adv.firm.attached? %>
-                            <% if @adv.firm.image? %> 
-                                <%= image_tag @adv.firm, class: "firma" %>
-                            <% end %>
-                        <% end %>
-                    <% end %>     
-                <% end %>     
-            </td>
-            <td  colspan="4"; style="border:0px solid black"><br>
-            </td>
-        </tr> 
-        <tr>
-            <td  colspan="4"; style="border:1px solid black"><%= @resource.name_user(@resource.user_legal_representative) %> - Representante Legal</td>
-            <td  colspan="4"; style="border:0px solid black"><%= @resource.name_user(@resource.user_adviser_sst) %> - Asesor SG-SST</td>
-            <td  colspan="4"; style="border:0px solid black"></td>
-        </tr>
-    </table>
-</div>  
-<div></br></div>  
+                </thead>
+                <% @resource_items.each do |resource_item| %>             
+                    <tbody>
+                        <tr>
+                            <td style="text-align:center"><%= resource_item.consecutive %></td>
+                            <td style="text-align:center"><%= resource_item.process %></td>
+                            <td style="text-align:center"><%= resource_item.activity %></td>
+                            <td style="text-align:center"><%= resource_item.user.name %></td>
+                            <td style="text-align:center">$<%= resource_item.miles(resource_item.value) %></td>
+                            <td style="text-align:center"><%= resource_item.labelxs(resource_item.executed) %></td>
+                            <td style="text-align:center"><%= resource_item.labelxn(resource_item.executed) %></td>
+                            <td style="text-align:center"><%= resource_item.labelxs(resource_item.approved) %></td>
+                            <td style="text-align:center"><%= resource_item.labelxn(resource_item.approved) %></td>
+                            <td style="text-align:center"><%= resource_item.date_approved  %></td>
+                            <td style=" text-align:center;">
+                                <% if Current.user.level > 0 && Current.user.level < 4 %>
+                                    <%= link_to edit_resource_item_path(resource_item), class:"btn btn-warning btn-sm" do %>
+                                        <i class="bi bi-pencil-square"></i>
+                                    <% end %>                    
+                                <% end %>    
+                            </td>
+                            <td style="text-align:center;">
+                                <% if Current.user.level > 0 && Current.user.level < 4 %>
+                                    <%= button_to resource_item_path(resource_item), method: :delete, class:"btn btn-danger btn-sm", form: {data: {turbo_confirm:"¿Desea eliminar este registro? Esta acción no se puede deshacer."}} do %>
+                                        <i class="bi bi-trash"></i>
+                                    <% end %>
+                                <% end %>    
+                            </td>
+                        </tr> 
+                    </body>
+                <% end %>
+            </table>
+        </div>
+    </div>
+    <hr class="my-5">
+    <div class="container-fluid">
+        <div class="row text-center">
+            <!-- Representante Legal -->
+            <div class="col-12 col-md-6 mb-5">
+                <% if @resource.firm_legal_representative == 1 && @rep.present? && @rep.firm.attached? && @rep.firm.image? %>
+                    <%= image_tag @rep.firm, class: "img-fluid", style: "max-height:90px;" %>
+                <% else %>
+                    <div style="height:90px;"></div>
+                <% end %>
+                <hr style="margin-top:5px;">
+                <strong>
+                    <%= @resource.name_user(@resource.user_legal_representative) %>
+                </strong>
+                <br>
+                <small class="text-muted">
+                    Representante Legal
+                </small>
+            </div>
+            <!-- Asesor SST -->
+            <div class="col-12 col-md-6 mb-5">
+                <% if @resource.firm_adviser_sst == 1 &&  @adv.present? &&  @adv.firm.attached? && @adv.firm.image? %>
+                    <%= image_tag @adv.firm, class: "img-fluid", style: "max-height:90px;" %>
+                <% else %>
+                    <div style="height:90px;"></div>
+                <% end %>
+                <hr style="margin-top:5px;">
+                <strong>
+                    <%= @resource.name_user(@resource.user_adviser_sst) %>
+                </strong>
+                <br>
+                <small class="text-muted">
+                    Asesor SG-SST
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+            <%= link_to resources_path(entity_id: @resource.entity.id), class:"btn btn-secondary" do %>
+                <i class="bi bi-arrow-left-circle"></i>Retornar
+            <% end %>
+            <%= link_to ver_resource_resources_path(@resource,format:"pdf"), class:"btn btn-danger" do %>
+                <i class="bi bi-file-earmark-pdf"></i>PDF
+            <% end %> 
+            <% if Current.user.level > 0 && Current.user.level < 4 %>
+                <%= link_to crear_item_resource_resources_path(@resource), class:"btn btn-success" do %>
+                    <i class="bi bi-plus-circle"></i>Nuevo recurso
+                <% end %>
+            <% end %>    
+        </div>
+    </div>
+</div>

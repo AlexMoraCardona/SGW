@@ -1,37 +1,93 @@
-<div class="container col-11 card p-5">
-    <br> 
-    <%= form_with model: @resource do |form| %>
-        <% @resource.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
+<div class="container py-4">
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">
+        <i class="bi bi-cash-stack"></i>
+        Asignación de Recursos para el SG-SST
+      </h4>
+    </div>
+    <div class="card-body">
+      <%= form_with model: @resource do |form| %>
+        <% if @resource.errors.any? %>
+          <div class="alert alert-danger">
+            <h6 class="fw-bold">
+              <i class="bi bi-exclamation-triangle-fill"></i>
+              Se encontraron los siguientes errores:
+            </h6>
+            <hr>
+            <ul class="mb-0">
+              <% @resource.errors.full_messages.each do |error| %>
+                <li><%= error %></li>
+              <% end %>
+            </ul>
+          </div>
         <% end %>
-
-        <div class="col-sm-3">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingrese el año.">Año:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.number_field :year,  class: "form-control" %>
+        <!-- Año -->
+        <div class="row mb-4">
+          <div class="col-12 col-md-3">
+            <label class="form-label fw-semibold">
+              Año
+              <button type="button" class="btn btn-link p-0 ms-1"  data-bs-toggle="tooltip" title="Ingrese el año.">
+                <%= image_tag "ayuda.png", width: 22, height: 22 %>
+              </button>
+            </label>
+            <%= form.number_field :year, class: "form-control", required: true %>
+          </div>
         </div>
-        <br>
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Representante Legal.">Representante Legal:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.collection_select :user_legal_representative, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
+        <!-- Representante Legal -->
+        <div class="mb-4">
+          <label class="form-label fw-semibold">
+            Representante Legal
+            <button type="button"
+                    class="btn btn-link p-0 ms-1"
+                    data-bs-toggle="tooltip"
+                    title="Seleccione el nombre del Representante Legal.">
+              <%= image_tag "ayuda.png", width: 22, height: 22 %>
+            </button>
+          </label>
+          <%= form.collection_select :user_legal_representative,
+                User.usuarios_empresa.order(id: :asc), :id, :name,  { prompt: "-- Seleccionar Representante Legal --" }, { class: "form-select select2" } %>
         </div>
-        <br>    
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Asesor SST.">Asesor SST:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.collection_select :user_adviser_sst, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
+        <!-- Asesor SST -->
+        <div class="mb-4">
+          <label class="form-label fw-semibold">
+            Asesor SST
+            <button type="button" class="btn btn-link p-0 ms-1" data-bs-toggle="tooltip" title="Seleccione el nombre del Asesor SST.">
+              <%= image_tag "ayuda.png", width: 22, height: 22 %>
+            </button>
+          </label>
+          <%= form.collection_select :user_adviser_sst, User.usuarios_empresa.order(id: :asc), :id, :name, { prompt: "-- Seleccionar Asesor SST --" }, { class: "form-select select2" } %>
         </div>
-        <br>    
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Responsable SST.">Responsable SST:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.collection_select :user_responsible_sst, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
+        <!-- Responsable SST -->
+        <div class="mb-4">
+          <label class="form-label fw-semibold">
+            Responsable SST
+            <button type="button" class="btn btn-link p-0 ms-1" data-bs-toggle="tooltip" title="Seleccione el nombre del Responsable SST.">
+              <%= image_tag "ayuda.png", width: 22, height: 22 %>
+            </button>
+          </label>
+          <%= form.collection_select :user_responsible_sst, User.usuarios_empresa.order(id: :asc), :id, :name, { prompt: "-- Seleccionar Responsable SST --" }, { class: "form-select select2" } %>
         </div>
-        <%= form.hidden_field :entity_id, :value => params[:entity_id].to_i, class: "form-control" %>
-        <%= form.hidden_field :code, :value => @template.reference, class: "form-control" if @template.present? %>
-        <%= form.hidden_field :version, :value => @template.version.to_i, class: "form-control" if @template.present? %>
-        <br>    
-        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
-    <% end %>
-</div>        
-<br>
+        <!-- Campos ocultos -->
+        <%= form.hidden_field :entity_id,
+            value: params[:entity_id].to_i %>
+        <% if @template.present? %>
+          <%= form.hidden_field :code, value: @template.reference %>
+          <%= form.hidden_field :version, value: @template.version.to_i %>
+        <% end %>
+        <hr>
+        <!-- Botonera -->
+        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+          <button type="submit" class="btn btn-success">
+            <i class="bi bi-check-circle"></i>
+            <%= t('common.submit') %>
+          </button>
+          <%= link_to :back, class: "btn btn-secondary" do %>
+            <i class="bi bi-arrow-left-circle"></i>
+            Retornar
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

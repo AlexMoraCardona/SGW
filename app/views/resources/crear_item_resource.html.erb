@@ -1,108 +1,183 @@
-<div class="container col-12 card p-5">
-    <br>
-    <%= form_with model: @resource_item do |form| %>
-        <% @resource_item.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %>  
-        </br>
-        <div class="col-4">
-            <%= form.label :process,  style: "display: block" %>
-            <%= form.select(:process, [['Sin seleccionar', 'Sin seleccionar'], ['SG-SST', 'SG-SST']]) %>
-        </div>
-        </br>
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la actividad."><%= t('.activity') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :activity,  class: "form-control" %>
-        </div>
-        </br>
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del usuario responsable.">Usuario responsable:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-        </div>
-        </br>
-        <div class="row">        
-            <div class="col-5">    
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar el valor presupuestado IVA incluido Año."><%= t('.value') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-                <%= form.number_field :value,  class: "form-control" %>
-            </div>
-        </div>
-        </br>
-        <div class="row">        
-            <div class="col-4">    
-                <%= form.label :executed, style: "display: block" %>
-                <%= form.radio_button :executed, 0 %>
-                <label for="no_cumple">NO</label>&nbsp;&nbsp; 
-                <%= form.radio_button :executed, 1 %>
-                <label for="si_cumple">SI</label>&nbsp;&nbsp;   
-            </div>
-            <div class="col-4">    
-                <%= form.label :approved, style: "display: block" %>
-                <%= form.radio_button :approved, 0 %>
-                <label for="no_cumple">NO</label>&nbsp;&nbsp; 
-                <%= form.radio_button :approved, 1 %>
-                <label for="si_cumple">SI</label>&nbsp;&nbsp;   
-            </div>
-            <div class="col-4">    
-              <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar la fecha en que se aprobó."><%= t('.date_approved') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-              <%= form.date_field :date_approved,  class: "form-control" %>
-            </div>
-        </div>
-        </br>
-        <%= form.hidden_field :consecutive, :value => @cant.to_i, class: "form-control" %>
-        <%= form.hidden_field :resource_id, :value => params[:id].to_i, class: "form-control" %>
-        <br>    
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, resources_path(entity_id: Current.user.entity) %>
-
-    <% end %>
-
-</div>
-<br>
-
-<div class="container col-12 card p-5">
-    <hr>
-    <br>
-    <div class="d-flex">
-        <div class="container">
-            <h class="display-6">Recursos</h>
-        </div> 
+<div class="container py-4">
+  <div align="left"; class="container col-12">
+      <a class="navbar-brand" href="/">
+          <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+      </a>
+  </div>
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">
+        <i class="bi bi-cash-stack"></i>Registro de Recursos
+      </h4>
     </div>
-    <hr>
-            
-    <% if @resource_items.present? %>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">Nro</th>
-                    <th scope="col">Proceso</th>
-                    <th scope="col">Actividad</th>
-                    <th scope="col">Responsable</th>
-                    <th scope="col">Fecha aprobación</th>
-                    <th scope="col">Ejectutada</th>
-                    <th scope="col">Aprobada</th>
-                    <th scope="col">Editar</th>
-                    <th scope="col">Eliminar</th>
-                </tr>
+    <div class="card-body">
+      <%= form_with model: @resource_item do |form| %>
+        <% if @resource_item.errors.any? %>
+          <div class="alert alert-danger">
+            <h6>
+              <i class="bi bi-exclamation-triangle-fill"></i>Se encontraron los siguientes errores
+            </h6>
+            <ul class="mb-0">
+              <% @resource_item.errors.full_messages.each do |error| %>
+                <li><%= error %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="row g-4">
+          <div class="col-12 col-md-4">
+            <%= form.label :process, class:"form-label fw-bold" %>
+            <%= form.select :process, [["Sin seleccionar","Sin seleccionar"], ["SG-SST","SG-SST"]], {}, class:"form-select" %>
+          </div>
+          <div class="col-12 col-md-8">
+            <label class="form-label fw-bold">
+              <%= t('.activity') %>
+              <button class="btn btn-link p-0" type="button" data-bs-toggle="tooltip" title="Especificar la actividad">
+                <%= image_tag "ayuda.png", width:20,height:20 %>
+              </button>
+            </label>
+            <%= form.text_field :activity, class:"form-control" %>
+          </div>
+        </div>
+        <div class="row g-4 mt-2">
+          <div class="col-12">
+            <label class="form-label fw-bold">
+              Usuario responsable
+              <button class="btn btn-link p-0" type="button" data-bs-toggle="tooltip" title="Seleccione el usuario responsable">
+                <%= image_tag "ayuda.png", width:20,height:20 %>
+              </button>
+            </label>
+            <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id, :name, {prompt:"-- Seleccionar Usuario --"}, {class:"form-select select2"} %>
+          </div>
+        </div>
+        <div class="row g-4 mt-2">
+          <div class="col-12 col-md-4">
+            <label class="form-label fw-bold">
+              <%= t('.value') %>
+              <button class="btn btn-link p-0" type="button" data-bs-toggle="tooltip" title="Valor presupuestado">
+                <%= image_tag "ayuda.png", width:20,height:20 %>
+              </button>
+            </label>
+            <%= form.number_field :value, class:"form-control" %>
+          </div>
+          <div class="col-12 col-md-4">
+            <label class="form-label fw-bold">Ejecutada</label>
+            <div class="mt-2">
+              <div class="form-check form-check-inline">
+                <%= form.radio_button :executed,0,class:"form-check-input" %>
+                <label class="form-check-label">No</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <%= form.radio_button :executed,1,class:"form-check-input" %>
+                <label class="form-check-label">Sí</label>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <label class="form-label fw-bold">Aprobada</label>
+            <div class="mt-2">
+              <div class="form-check form-check-inline">
+                <%= form.radio_button :approved,0,class:"form-check-input" %>
+                <label class="form-check-label">No</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <%= form.radio_button :approved,1,class:"form-check-input" %>
+                <label class="form-check-label">Sí</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-12 col-md-4">
+            <label class="form-label fw-bold">
+              <%= t('.date_approved') %>
+              <button class="btn btn-link p-0" type="button" data-bs-toggle="tooltip" title="Fecha de aprobación">
+                <%= image_tag "ayuda.png", width:20,height:20 %>
+              </button>
+            </label>
+            <%= form.date_field :date_approved, class:"form-control" %>
+          </div>
+        </div>
+        <%= form.hidden_field :consecutive, value:@cant.to_i %>
+        <%= form.hidden_field :resource_id, value:params[:id].to_i %>
+        <hr>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+          <button type="submit" class="btn btn-success">
+            <i class="bi bi-check-circle"></i>
+            <%= t('common.submit') %>
+          </button>
+          <%= link_to resources_path(entity_id: Current.user.entity), class:"btn btn-secondary" do %>
+            <i class="bi bi-arrow-left-circle"></i>
+            Retornar
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <!-- =================== TABLA =================== -->
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-success text-white">
+      <h4 class="mb-0"><i class="bi bi-list-ul"></i>Recursos Registrados</h4>
+    </div>
+    <div class="card-body">
+      <% if @resource_items.present? %>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Nro</th>
+                <th>Proceso</th>
+                <th>Actividad</th>
+                <th>Responsable</th>
+                <th>Valor</th>
+                <th>Fecha</th>
+                <th>Ejecutada</th>
+                <th>Aprobada</th>
+                <th class="text-center">Acciones</th>
+              </tr>
             </thead>
             <tbody>
-                <% @resource_items.each do |resource_item| %>
-                    <tr>
-                        <td><%= resource_item.consecutive %></td>
-                        <td><%= resource_item.process %></td>
-                        <td><%= resource_item.activity %></td>
-                        <td><%= resource_item.user.name %></td>
-                        <td><%= resource_item.date_approved %></td>
-                        <td><%= resource_item.label(resource_item.executed) %></td>
-                        <td><%= resource_item.label(resource_item.approved) %></td>
-                        <td><%= link_to t('common.edit'), edit_resource_item_path(resource_item), class: 'btn btn-xs btn-primary'  %></td>
-                        <td><%= button_to "Delete", resource_item, method: :delete, class:"btn btn-sm btn-danger" %></td>
-                    </tr>
-                <% end %>     
-            </tbody>      
-        </table>
-    <% end %>     
+              <% @resource_items.each do |resource_item| %>
+                <tr>
+                  <td><%= resource_item.consecutive %></td>
+                  <td><%= resource_item.process %></td>
+                  <td><%= resource_item.activity %></td>
+                  <td><%= resource_item.user.name %></td>
+                  <td class="text-end">
+                    <%= number_with_delimiter(resource_item.value.to_i, delimiter: ".") %>
+                  </td>
+                  <td><%= resource_item.date_approved %></td>
+                  <td>
+                    <span class="badge bg-<%= resource_item.executed == 1 ? 'success' : 'secondary' %>">
+                      <%= resource_item.label(resource_item.executed) %>
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge bg-<%= resource_item.approved == 1 ? 'primary' : 'secondary' %>">
+                      <%= resource_item.label(resource_item.approved) %>
+                    </span>
+                  </td>
+                  <td>
+                    <div class="d-flex flex-column flex-md-row gap-2 justify-content-center">
+                      <%= link_to edit_resource_item_path(resource_item), class:"btn btn-warning btn-sm" do %>
+                        <i class="bi bi-pencil-square"></i>
+                      <% end %>
+                      <%= button_to resource_item, method: :delete, data:{turbo_confirm:"¿Desea eliminar este registro? Esta acción no se puede deshacer."}, class:"btn btn-danger btn-sm" do %>
+                        <i class="bi bi-trash"></i>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="alert alert-info text-center mb-0">
+          <i class="bi bi-info-circle"></i>No existen recursos registrados.
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>
-        
-<br>

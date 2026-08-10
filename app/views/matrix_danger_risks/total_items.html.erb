@@ -4,83 +4,97 @@
             Peligros y riesgos
         </h2>
     </div>
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover align-middle">
-            <thead class="table-light">
-                <tr>
-                    <th class="text-center">Nro.</th>
-                    <th class="text-center">Clasificación</th>
-                    <th class="text-center">Descripción</th>
-                    <th class="text-center">Aceptabilidad del riesgo</th>
-                    <th class="text-center">Eliminación</th>
-                    <th class="text-center">Sustitución</th>
-                    <th class="text-center">Control de ingeniería</th>
-                    <th class="text-center">Controles administrativas, señalización advertencia</th>
-                    <th class="text-center">Equipos/Elementos de protección personal</th>
-                    <th class="text-center">Editar</th>
-                </tr>
-            </thead>
-            <tbody>
+
+<div class="card shadow">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-primary">
+                    <tr>
+                        <th class="text-center">Nro.</th>
+                        <th class="text-center">Clasificación</th>
+                        <th class="text-center">Descripción</th>
+                        <th class="text-center">Aceptabilidad del riesgo</th>
+                        <th class="text-center">Eliminación</th>
+                        <th class="text-center">Sustitución</th>
+                        <th class="text-center">Control de ingeniería</th>
+                        <th class="text-center">Controles administrativas, señalización advertencia</th>
+                        <th class="text-center">Equipos/Elementos de protección personal</th>
+                        <th class="text-center">Editar</th>
+                    </tr>
+                </thead>
                 <% if @matrix_danger_items.present? %> 
-                    <% if params[:format].to_s == 'T' %>
-                        <% @matrix_danger_items.each do |matrix_danger_item| %>
-                            <tr>
-                                <td scope="col"><%= matrix_danger_item.consecutive %></td>  
-                                <td scope="col"><%= matrix_danger_item.clasification_danger_detail.clasification_danger.name if matrix_danger_item.clasification_danger_detail_id.to_i > 0  %></td>
-                                <td scope="col"><%= matrix_danger_item.clasification_danger_detail.name if matrix_danger_item.clasification_danger_detail_id.present? && matrix_danger_item.clasification_danger_detail_id.to_i > 0 %></td>  
-                                <% if matrix_danger_item.risk_level_interpretation.to_s == 'I No Aceptable'  %>
-                                        <td style="border:1px solid black; text-align:center;background-color:#F03553"><%= matrix_danger_item.risk_level_interpretation %></td>
-                                <% end  %>    
-                                <% if matrix_danger_item.risk_level_interpretation.to_s == 'II No Aceptable'  %>
-                                    <td style="border:1px solid black; text-align:center; background-color:#D98F3B;"><%= matrix_danger_item.risk_level_interpretation %></td>
-                                <% end  %>    
-                                <% if matrix_danger_item.risk_level_interpretation.to_s == 'III Aceptable'  %>
-                                    <td style="border:1px solid black; text-align:center;; background-color:#F0E835"><%= matrix_danger_item.risk_level_interpretation %></td>
-                                <% end  %>    
-                                <% if matrix_danger_item.risk_level_interpretation.to_s == 'IV Aceptable'  %>
-                                    <td style="border:1px solid black; text-align:center; background-color:#038018;"><%= matrix_danger_item.risk_level_interpretation %></td>
-                                <% end  %>  
-                                <td scope="col"><%= matrix_danger_item.intervention_measures_elimination %></td>  
-                                <td scope="col"><%= matrix_danger_item.intervention_measures_replacement %></td>  
-                                <td scope="col"><%= matrix_danger_item.intervention_measures_engineering_control %></td>  
-                                <td scope="col"><%= matrix_danger_item.intervention_measures_acsw %></td>  
-                                <td scope="col"><%= matrix_danger_item.intervention_measures_ppee %></td> 
-                                <td scope="col"><%= link_to t('common.update_matrix_danger_item'), edit_matrix_danger_item_path(matrix_danger_item.id), class:"btn btn-warning btn-sm me-2 gap-3" if Current.user.level > 0 && Current.user.level < 4 %></td> 
-                            </tr>
-                        <% end %>    
-                    <% else %> 
-                        <% @matrix_danger_items.where(risk_level_interpretation: params[:format].to_s).each do |matrix_danger_item| %>
-                            <tr>
-                                <td scope="col"><%= matrix_danger_item.consecutive %></td>  
-                                <td scope="col"><%= matrix_danger_item.clasification_danger_detail.clasification_danger.name if matrix_danger_item.clasification_danger_detail_id.to_i > 0  %></td>
-                                <td scope="col"><%= matrix_danger_item.clasification_danger_detail.name if matrix_danger_item.clasification_danger_detail_id.present? && matrix_danger_item.clasification_danger_detail_id.to_i > 0 %></td>  
-                                <% if matrix_danger_item.risk_level_interpretation.to_s == 'I No Aceptable'  %>
-                                        <td style="border:1px solid black; text-align:center;background-color:#F03553"><%= matrix_danger_item.risk_level_interpretation %></td>
-                                <% end  %>    
-                                <% if matrix_danger_item.risk_level_interpretation.to_s == 'II No Aceptable'  %>
-                                    <td style="border:1px solid black; text-align:center; background-color:#D98F3B;"><%= matrix_danger_item.risk_level_interpretation %></td>
-                                <% end  %>    
-                                <% if matrix_danger_item.risk_level_interpretation.to_s == 'III Aceptable'  %>
-                                    <td style="border:1px solid black; text-align:center;; background-color:#F0E835"><%= matrix_danger_item.risk_level_interpretation %></td>
-                                <% end  %>    
-                                <% if matrix_danger_item.risk_level_interpretation.to_s == 'IV Aceptable'  %>
-                                    <td style="border:1px solid black; text-align:center; background-color:#038018;"><%= matrix_danger_item.risk_level_interpretation %></td>
-                                <% end  %>  
-                                <td scope="col"><%= matrix_danger_item.intervention_measures_elimination %></td>  
-                                <td scope="col"><%= matrix_danger_item.intervention_measures_replacement %></td>  
-                                <td scope="col"><%= matrix_danger_item.intervention_measures_engineering_control %></td>  
-                                <td scope="col"><%= matrix_danger_item.intervention_measures_acsw %></td>  
-                                <td scope="col"><%= matrix_danger_item.intervention_measures_ppee %></td> 
-                                <td scope="col"><%= link_to t('common.update_matrix_danger_item'), edit_matrix_danger_item_path(matrix_danger_item.id), class:"btn btn-warning btn-sm me-2 gap-3" if Current.user.level > 0 && Current.user.level < 4 %></td> 
-                            </tr>
-                        <% end %>
-                    <% end %>                               
+                    <body>
+                        <% if params[:format].to_s == 'T' %>
+                            <% @matrix_danger_items.each do |matrix_danger_item| %>
+                                <tr>
+                                    <td scope="col"><%= matrix_danger_item.consecutive %></td>  
+                                    <td scope="col"><%= matrix_danger_item.clasification_danger_detail.clasification_danger.name if matrix_danger_item.clasification_danger_detail_id.to_i > 0  %></td>
+                                    <td scope="col"><%= matrix_danger_item.clasification_danger_detail.name if matrix_danger_item.clasification_danger_detail_id.present? && matrix_danger_item.clasification_danger_detail_id.to_i > 0 %></td>  
+                                    <% if matrix_danger_item.risk_level_interpretation.to_s == 'I No Aceptable'  %>
+                                            <td style="border:1px solid black; text-align:center;background-color:#F03553"><%= matrix_danger_item.risk_level_interpretation %></td>
+                                    <% end  %>    
+                                    <% if matrix_danger_item.risk_level_interpretation.to_s == 'II No Aceptable'  %>
+                                        <td style="border:1px solid black; text-align:center; background-color:#D98F3B;"><%= matrix_danger_item.risk_level_interpretation %></td>
+                                    <% end  %>    
+                                    <% if matrix_danger_item.risk_level_interpretation.to_s == 'III Aceptable'  %>
+                                        <td style="border:1px solid black; text-align:center;; background-color:#F0E835"><%= matrix_danger_item.risk_level_interpretation %></td>
+                                    <% end  %>    
+                                    <% if matrix_danger_item.risk_level_interpretation.to_s == 'IV Aceptable'  %>
+                                        <td style="border:1px solid black; text-align:center; background-color:#038018;"><%= matrix_danger_item.risk_level_interpretation %></td>
+                                    <% end  %>  
+                                    <td scope="col"><%= matrix_danger_item.intervention_measures_elimination %></td>  
+                                    <td scope="col"><%= matrix_danger_item.intervention_measures_replacement %></td>  
+                                    <td scope="col"><%= matrix_danger_item.intervention_measures_engineering_control %></td>  
+                                    <td scope="col"><%= matrix_danger_item.intervention_measures_acsw %></td>  
+                                    <td scope="col"><%= matrix_danger_item.intervention_measures_ppee %></td> 
+                                    <td scope="col"><%= link_to t('common.update_matrix_danger_item'), edit_matrix_danger_item_path(matrix_danger_item.id), class:"btn btn-warning btn-sm me-2 gap-3" if Current.user.level > 0 && Current.user.level < 4 %></td> 
+                                </tr>
+                            <% end %>    
+                        <% else %> 
+                            <% @matrix_danger_items.where(risk_level_interpretation: params[:format].to_s).each do |matrix_danger_item| %>
+                                <tr>
+                                    <td scope="col"><%= matrix_danger_item.consecutive %></td>  
+                                    <td scope="col"><%= matrix_danger_item.clasification_danger_detail.clasification_danger.name if matrix_danger_item.clasification_danger_detail_id.to_i > 0  %></td>
+                                    <td scope="col"><%= matrix_danger_item.clasification_danger_detail.name if matrix_danger_item.clasification_danger_detail_id.present? && matrix_danger_item.clasification_danger_detail_id.to_i > 0 %></td>  
+                                    <% if matrix_danger_item.risk_level_interpretation.to_s == 'I No Aceptable'  %>
+                                            <td style="border:1px solid black; text-align:center;background-color:#F03553"><%= matrix_danger_item.risk_level_interpretation %></td>
+                                    <% end  %>    
+                                    <% if matrix_danger_item.risk_level_interpretation.to_s == 'II No Aceptable'  %>
+                                        <td style="border:1px solid black; text-align:center; background-color:#D98F3B;"><%= matrix_danger_item.risk_level_interpretation %></td>
+                                    <% end  %>    
+                                    <% if matrix_danger_item.risk_level_interpretation.to_s == 'III Aceptable'  %>
+                                        <td style="border:1px solid black; text-align:center;; background-color:#F0E835"><%= matrix_danger_item.risk_level_interpretation %></td>
+                                    <% end  %>    
+                                    <% if matrix_danger_item.risk_level_interpretation.to_s == 'IV Aceptable'  %>
+                                        <td style="border:1px solid black; text-align:center; background-color:#038018;"><%= matrix_danger_item.risk_level_interpretation %></td>
+                                    <% end  %>  
+                                    <td scope="col"><%= matrix_danger_item.intervention_measures_elimination %></td>  
+                                    <td scope="col"><%= matrix_danger_item.intervention_measures_replacement %></td>  
+                                    <td scope="col"><%= matrix_danger_item.intervention_measures_engineering_control %></td>  
+                                    <td scope="col"><%= matrix_danger_item.intervention_measures_acsw %></td>  
+                                    <td scope="col"><%= matrix_danger_item.intervention_measures_ppee %></td> 
+                                    <td scope="col">
+                                        <% if Current.user.level > 0 && Current.user.level < 4 %>
+                                            <%= link_to edit_matrix_danger_item_path(matrix_danger_item.id), class:"btn btn-warning btn-sm", title: "Editar", data: { bs_toggle: "tooltip" } do %>
+                                                <i class="bi bi-pencil-square"></i>
+                                            <% end %>                    
+                                        <% end %>
+                                    </td> 
+                                </tr>
+                            <% end %>
+                        <% end %> 
+                    </body>                                  
                 <% end %>     
-            </tbody>
-        </table>
-    </div>
-    <div class="text-muted">
-         <%= link_to "Retornar", request.referer || root_path, class: "btn btn-secondary" %>
+            </table>
+        </div>
+    </div>    
+    <div class="card-body">
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+            <%= link_to matrix_danger_risk_path(params[:id]), class:"btn btn-secondary" do %>
+                <i class="bi bi-arrow-left-circle"></i>Retornar
+            <% end %>
+        </div>
     </div>
 </div>
 

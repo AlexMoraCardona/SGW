@@ -1,103 +1,144 @@
-<% if @entity.present? %>
-    <h2><%= @entity.business_name %></h2>
-<% end %>
+<div class="container py-4">
+  <div align="left"; class="container col-12">
+      <a class="navbar-brand" href="/">
+          <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+      </a>
+  </div>
 
-
-<% if @trainings.present? %>
-    <%= link_to t('.create_training'), new_training_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level < 3 %>
-
-    <table class="table table-hover"> 
-
-        <% @trainings.each do |training| %>
-            <hr>
-            <div class="col-sm-8">
-                <h3>Cronograma de capacitaciones y actividades: <%= training.year %> </h3>
-            </div>        
-
-            <%= link_to t('common.create_item_training'), crear_item_training_trainings_path(training.id), class: 'btn btn-sm btn-warning' %> &nbsp;
-            <%= link_to t('common.show_training'), training_path(training.id), class: 'btn btn-sm btn-warning' %> &nbsp;
-            <%= link_to 'Excel', training_path(training.id, format: :xlsx), class: 'btn btn-sm btn-success' %> &nbsp;
-            <%= link_to "PDF", ver_training_trainings_path(training.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;
-
-            <div class="container col-12">
-                <br>
-                <div class="row g-2">
-                    <div class="col-sm-3">
-                        <strong>Fecha de creación</strong><br>
-                        <%= training.created_at.strftime("%F") %> 
-                    </div>        
-                    <div class="col-sm-3">
-                        <strong>Última fecha de actualización</strong><br>
-                        <%= training.updated_at.strftime("%F") %> 
-                    </div>        
-                </div>
-
-                <div class="row g-4">
-                    <div class="col-sm-3">
-                        <strong><%= t('.code') %></strong><br>
-                        <%= training.code %> 
-                    </div>
-                    <div class="col-sm-3">
-                        <strong><%= t('.version') %></strong><br>
-                        <%= training.version %> 
-                    </div>
-                    <div class="col-sm-3">
-                        <strong><%= t('.date_create') %></strong><br>
-                        <%= training.created_at %> 
-                    </div>        
-                    <div class="col-sm-3">
-                        <strong><%= t('.date_update') %></strong><br>
-                        <%= training.updated_at %> 
-                    </div>        
-                </div>
-                <br>
-
-                <div class="row g-4">
-                    <div class="col-sm-3">
-                        <strong><%= t('.user_legal_representative') %></strong><br>
-                        <%=  training.name_user(training.user_legal_representative)  %> 
-                    </div>        
-                    <div class="col-sm-3">
-                        <strong><%= t('.firm_legal_representative') %></strong><br>
-                        <%= training.label_firm(training.firm_legal_representative) %> 
-                    </div>        
-                    <div class="col-sm-3">
-                        <strong><%= t('.date_firm_legal_representative') %></strong><br>
-                        <%= training.date_firm_legal_representative %> 
-                    </div>
-                    <div class="col-sm-3">
-                        <% if training.firm_legal_representative.to_i == 0 %>
-                            <%= link_to t('common.firmar'), firmar_rep_trainings_path(training.id, 1), class: 'btn btn-xs btn btn-warning' %>
-                        <% end %>    
-                    </div>
-                </div>
-                <div class="row g-4">
-                    <div class="col-sm-3">
-                        <strong><%= t('.user_adviser_sst') %></strong><br>
-                        <%= training.name_user(training.user_adviser_sst) %> 
-                    </div>        
-                    <div class="col-sm-3">
-                        <strong><%= t('.firm_adviser_sst') %></strong><br>
-                        <%= training.label_firm(training.firm_adviser_sst) %> 
-                    </div>        
-                    <div class="col-sm-3">
-                        <strong><%= t('.date_firm_adviser_sst') %></strong><br>
-                        <%= training.date_firm_adviser_sst %> 
-                    </div>
-                    <div class="col-sm-3">
-                        <% if training.firm_adviser_sst.to_i == 0 %>
-                            <%= link_to t('common.firmar'), firmar_adv_trainings_path(training.id, 2), class: 'btn btn-xs btn btn-warning' %>
-                        <% end %>    
-                    </div>
-                </div>
-
-            </div>           
-        <% end %>  
-        <hr>  
-    </table>  
-    <br>
-<% else %>
-    <div>
-        <%= link_to t('.create_training'), new_training_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level < 3  %>
+  <% if @entity.present? %>
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-body text-center">
+        <h2 class="fw-bold text-primary mb-0">
+          <i class="bi bi-calendar"></i>
+          <%= @entity.business_name %>
+        </h2>
+      </div>
     </div>
-<% end %>
+  <% end %>
+
+  <% if @trainings.present? %>
+    <% if Current.user.level > 0 && Current.user.level < 3 %>
+      <div class="mb-4">
+        <%= link_to new_training_path(entity_id: @entity.id), class: "btn btn-success" do %>
+          <i class="bi bi-plus-circle"></i>
+          <%= t('.create_training') %>
+        <% end %>
+      </div>
+    <% end %>
+    <% @trainings.each do |training| %>
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light text-dark" >
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h4 class="mb-0">
+                <i class="bi bi-calendar3"></i>
+                MATRIZ CRONOGRAMA DE CAPACITACIONES Y ACTIVIDADES <%= training.year %>
+              </h4>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+              <div class="d-grid d-md-flex justify-content-md-end gap-2">
+                <% if Current.user.level > 0 && Current.user.level < 4 %>
+                  <%= link_to crear_item_training_trainings_path(training.id), class: "btn btn-success btn-sm" do %>
+                    <i class="bi bi-plus-square"></i>
+                    Adicionar Capacitación
+                  <% end %>
+                <% end %>
+                <%= link_to training_path(training.id), class: "btn btn-primary btn-sm text-white" do %>
+                  <i class="bi bi-eye"></i>
+                  <%= t('common.show_training') %>
+                <% end %>
+                <%= link_to training_path(training.id, format: :xlsx),
+                    class: "btn btn-success btn-sm text-white" do %>
+                  <i class="bi-file-earmark-excel"></i>
+                  Excel
+                <% end %>
+                <%= link_to ver_training_trainings_path(training.id, format: :pdf),
+                    class: "btn btn-danger btn-sm" do %>
+                  <i class="bi-file-earmark-pdf"></i>
+                  PDF
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row mb-4">
+            <div class="col-md-4">
+              <strong>Fecha de creación</strong><br>
+              <span class="text-muted">
+                <%= training.created_at.strftime("%d/%m/%Y") %>
+              </span>
+            </div>
+          </div>
+          <hr>
+          <h5 class="text-primary mb-3">
+            <i class="bi bi-person-badge"></i>
+            Representante Legal
+          </h5>
+          <div class="row gy-3">
+            <div class="col-md-3">
+              <strong><%= t('.user_legal_representative') %></strong><br>
+              <%= training.name_user(training.user_legal_representative) %>
+            </div>
+            <div class="col-md-3">
+              <strong><%= t('.firm_legal_representative') %></strong><br>
+              <%= training.label_firm(training.firm_legal_representative) %>
+            </div>
+            <div class="col-md-3">
+              <strong><%= t('.date_firm_legal_representative') %></strong><br>
+              <%= training.date_firm_legal_representative %>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <% if training.firm_legal_representative.to_i == 0 %>
+                    <%= link_to firmar_rep_trainings_path(training.id, 1), class: "btn w-100 fw-semibold", style: "background-color: #145a72; color: white;", title: t('common.firmar'), data: { bs_toggle: "tooltip" } do %>
+                        <i class="bi bi-pen-fill me-2"></i>
+                        <%= t('common.firmar') %>
+                    <% end %>
+                <% end %>
+            </div>            
+          </div>
+          <hr>
+          <h5 class="text-success mb-3">
+            <i class="bi bi-person-workspace"></i>
+            Asesor SST
+          </h5>
+          <div class="row gy-3">
+            <div class="col-md-3">
+              <strong><%= t('.user_adviser_sst') %></strong><br>
+              <%= training.name_user(training.user_adviser_sst) %>
+            </div>
+            <div class="col-md-3">
+              <strong><%= t('.firm_adviser_sst') %></strong><br>
+              <%= training.label_firm(training.firm_adviser_sst) %>
+            </div>
+            <div class="col-md-3">
+              <strong><%= t('.date_firm_adviser_sst') %></strong><br>
+              <%= training.date_firm_adviser_sst %>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <% if training.firm_adviser_sst.to_i == 0 %>
+                    <%= link_to firmar_adv_trainings_path(training.id,2), class: "btn w-100 fw-semibold", style: "background-color: #145a72; color: white;", title: t('common.firmar'), data: { bs_toggle: "tooltip" } do %>
+                        <i class="bi bi-pen-fill me-2"></i>
+                        <%= t('common.firmar') %>
+                    <% end %>
+                <% end %>
+            </div>            
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="card shadow-sm">
+      <div class="card-body text-center">
+        <h5 class="text-secondary mb-4">
+          No existen asignaciones de recursos registradas.
+        </h5>
+        <%= link_to new_resource_path(entity_id: @entity.id),
+            class: "btn btn-success" do %>
+          <i class="bi bi-plus-circle"></i>
+          <%= t('.create_resource') %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

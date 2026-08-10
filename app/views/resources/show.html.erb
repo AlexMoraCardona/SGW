@@ -13,7 +13,7 @@
                 <%= @resource.entity.business_name %>
             </h5>
             <small class="text-muted">
-                NIT: <%= @resource.entity.identification_number %>
+                NIT: <%= @resource.entity.identification_number %>-<%= @resource.entity.verification_digit if @resource.entity.verification_digit.present? %>
             </small>
         </div>
         <div class="col-12 col-lg-3">
@@ -99,39 +99,38 @@
     </div>
     <hr class="my-5">
     <div class="container-fluid">
-        <div class="row text-center">
+        <div class="row text-center align-items-start">
             <!-- Representante Legal -->
             <div class="col-12 col-md-6 mb-5">
+            <div style="height: 90px; display: flex; align-items: center; justify-content: center;">
                 <% if @resource.firm_legal_representative == 1 && @rep.present? && @rep.firm.attached? && @rep.firm.image? %>
-                    <%= image_tag @rep.firm, class: "img-fluid", style: "max-height:90px;" %>
-                <% else %>
-                    <div style="height:90px;"></div>
+                        <%= image_tag @rep.firm, style: "max-height:90px; max-width:100%; object-fit:contain;" %>
                 <% end %>
-                <hr style="margin-top:5px;">
-                <strong>
-                    <%= @resource.name_user(@resource.user_legal_representative) %>
-                </strong>
-                <br>
-                <small class="text-muted">
-                    Representante Legal
-                </small>
             </div>
-            <!-- Asesor SST -->
-            <div class="col-12 col-md-6 mb-5">
-                <% if @resource.firm_adviser_sst == 1 &&  @adv.present? &&  @adv.firm.attached? && @adv.firm.image? %>
-                    <%= image_tag @adv.firm, class: "img-fluid", style: "max-height:90px;" %>
-                <% else %>
-                    <div style="height:90px;"></div>
+            <hr class="my-1">
+            <strong>
+                <%= @resource.name_user(@resource.user_legal_representative) %>
+            </strong>
+            <br>
+            <small class="text-muted">
+                Representante Legal
+            </small>
+        </div>
+        <!-- Asesor SST -->
+        <div class="col-12 col-md-6 mb-5">
+            <div style="height: 90px; display: flex; align-items: center; justify-content: center;">
+                <% if @resource.firm_adviser_sst == 1 && @adv.present? && @adv.firm.attached? && @adv.firm.image? %>
+                    <%= image_tag @adv.firm, style: "max-height:90px; max-width:100%; object-fit:contain;" %>
                 <% end %>
-                <hr style="margin-top:5px;">
-                <strong>
-                    <%= @resource.name_user(@resource.user_adviser_sst) %>
-                </strong>
-                <br>
-                <small class="text-muted">
-                    Asesor SG-SST
-                </small>
             </div>
+            <hr class="my-1">
+            <strong>
+                <%= @resource.name_user(@resource.user_adviser_sst) %>
+            </strong>
+            <br>
+            <small class="text-muted">
+                Asesor SG-SST
+            </small>
         </div>
     </div>
 </div>

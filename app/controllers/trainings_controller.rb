@@ -2,7 +2,7 @@ class TrainingsController < ApplicationController
     def index 
         if params[:entity_id].present?
             @entity = Entity.find(params[:entity_id])
-            @trainings = Training.where("entity_id = ?", params[:entity_id])
+            @trainings = Training.where("entity_id = ?", params[:entity_id]).order(id: :desc)
         else    
             if  Current.user && Current.user.level > 0 && Current.user.level < 5
                 @entities = Entity.all if Current.user.level > 0 && Current.user.level < 3
@@ -26,7 +26,7 @@ class TrainingsController < ApplicationController
         respond_to do |format|
             format.html
             format.xlsx{ 
-                response.headers['Content-Disposition'] = 'attachment; filename="Evaluacion.xlsx"'
+                response.headers['Content-Disposition'] = 'attachment; filename="CronogramaCapacitaciones.xlsx"'
             }
         end    
     end  
@@ -38,19 +38,24 @@ class TrainingsController < ApplicationController
         @adv = User.find(@training.user_adviser_sst) if  @training.user_adviser_sst.present? && @training.user_adviser_sst > 0
         @res = User.find(@training.user_responsible_sst) if  @training.user_responsible_sst.present? && @training.user_responsible_sst > 0
 
+        nombre_archivo = @training.code.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'ver_training',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                orientation: 'Landscape',
-                zoom: 0.50,
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
+            format.pdf {
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('ver_training'),
+                    zoom: 0.50,
+                    disable_javascript: true,
+                    margin: {top: 10, bottom: 10, left: 5, right: 5 },
+                    orientation: 'Landscape',
+                    page_size: 'letter',
+                    footer: {right: '[page] de [topage]'}
+                    
+                  )  
+                  send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+            }
+        end    
+
       
     end    
 
@@ -76,7 +81,7 @@ class TrainingsController < ApplicationController
     def update
         @training = Training.find(params[:id])
         if @training.update(training_params)
-            redirect_to trainings_path, notice: 'Cronograma actualizado correctamente'
+            redirect_to training_path(@training.id), notice: "Firma actualizada correctamente"
         else
             render :edit, trainings: :unprocessable_entity
         end         
@@ -91,7 +96,7 @@ class TrainingsController < ApplicationController
     def crear_item_training 
         @training_item = TrainingItem.new  
         @cant = 0
-        @training_items = TrainingItem.where("training_id = ?", params[:id]) if params[:id].present?
+        @training_items = TrainingItem.where("training_id = ?", params[:id]).order(:consecutive) if params[:id].present?
         @cant = @training_items.count if @training_items.present?
         @cant = @cant + 1 
     end    
@@ -100,7 +105,7 @@ class TrainingsController < ApplicationController
         @training = Training.find_by(id: params[:id].to_i)
         if params[:format].to_i == 1
             if  @training.user_legal_representative.to_i == Current.user.id.to_i
-                redirect_to firmar_rep_trainings_path
+                redirect_to      firmar_rep_trainings_path
             else
                 redirect_back fallback_location: root_path, alert: "Su usuario no esta autorizado para actualizar la firma del Representante Legal."
             end    

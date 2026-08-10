@@ -55,13 +55,17 @@
                     <!-- ========================= -->
                     <div class="d-none d-lg-block">
                         <div class="btn-group gap-2" role="group">
-                            <%= link_to t('.create_matrix_danger_risk'), new_matrix_danger_risk_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level < 3 %>
-                            <%= link_to 'Retornar', matrix_danger_risks_path(entity_id: @matrix_danger_risk.entity_id), class: 'btn btn-sm btn-secondary' %>
+                            <%= link_to new_matrix_danger_risk_path(entity_id: @entity.id), class: "btn btn-success btn-sm me-2" do %>
+                                <i class="bi bi-plus-square"></i><span class="d-none d-md-inline">Crear Matriz de peligros y riesgos</span>
+                            <% end %>
+                            <%= link_to matrix_danger_risks_path(entity_id: @matrix_danger_risk.entity_id), class:"btn btn-secondary" do %>
+                                <i class="bi bi-arrow-left-circle"></i>
+                                Retornar
+                            <% end %>
                             <!-- Button trigger modal -->
                             <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#instruDiligenciamiento">
-                                Instrucciones de diligenciamiento
+                                <i class="bi bi-eye"></i><span class="d-none d-md-inline">Instrucciones de diligenciamiento</span>
                             </button>
-
                             <!-- Modal -->
                             <div class="modal fade" id="instruDiligenciamiento" tabindex="-1" aria-labelledby="instruDiligenciamientoLabel" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -152,11 +156,11 @@
                         <div class="mb-2">
                             <strong>Fecha de creación</strong>
                             <div class="text-muted">
-                                <%= @matrix_danger_risk.date_create.strftime("%F") %> 
+                                <%= @matrix_danger_risk.date_create.strftime("%F") if @matrix_danger_risk.date_create.present? %> 
                             </div>
                             <strong>Fecha de actualización</strong>
                             <div class="text-muted">
-                                <%= @matrix_danger_risk.date_update.strftime("%F") %> 
+                                <%= @matrix_danger_risk.date_update.strftime("%F") if @matrix_danger_risk.date_update.present? %> 
                             </div>
                         </div>
                         <div class="mb-2">
@@ -349,39 +353,58 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="text-center">
+                            <td class="text-center"> 
                                 <div class="btn-group" role="group">
-                                    <%= link_to t('common.show_matrix_danger_risk'), ver_matrix_danger_risk_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-info btn-sm me-2" %>
-                                    <%= link_to t('common.edit_matrix_danger_risk'), edit_matrix_danger_risk_path(@matrix_danger_risk.id), class:"btn btn-warning btn-sm me-2" if Current.user.level > 0 && Current.user.level < 3 %>
-                                    <%= link_to t('common.danger'), crear_item_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" if Current.user.level > 0 && Current.user.level < 4 %>
-                                    <%= link_to "PDF", resumen_pdf_matrix_danger_risks_path(@matrix_danger_risk.id, format: 'pdf'), class:"btn btn-success btn-sm me-2" %>
-                                    <%= link_to "XLS", matrix_danger_risk_path(@matrix_danger_risk, format: :xlsx), class:"btn btn-success btn-sm me-2" %>
-                                    <%= link_to t('common.indicator'), graficosmpr_path(@matrix_danger_risk.id), class:"btn btn-info btn-sm me-2" %>
-                                    <%= link_to t('common.duplicar_mpr'), duplicar_mpr_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" if Current.user.level > 0 && Current.user.level < 4 %>
-                                    <%= link_to "Cargar archivo", seleccionar_archivompr_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" if Current.user.level > 0 && Current.user.level < 4 %>
-                                    <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#instruCargar">
-                                        Instrucciones cargar peligros y riesgos
-                                    </button>
-
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="instruCargar" tabindex="-1" aria-labelledby="instruCargarLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="instruCargarLabel">Instrucciones cargar peligros y riesgos</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <%= link_to ver_matrix_danger_risk_matrix_danger_risks_path(@matrix_danger_risk.id), class: "btn btn-primary btn-sm text-white me-2", title: "Ver", data: { bs_toggle: "tooltip" } do %>
+                                        <i class="bi bi-eye"></i><span class="d-none d-md-inline"><%= t('common.show_matrix_danger_risk') %></span>
+                                    <% end %>
+                                    <% if Current.user.level > 0 && Current.user.level < 3 %>
+                                        <%= link_to edit_matrix_danger_risk_path(@matrix_danger_risk.id), class: "btn btn-warning btn-sm text-white me-2", title: "Editar", data: { bs_toggle: "tooltip" } do %>
+                                            <i class="bi bi-pencil"></i><span class="d-none d-md-inline"><%= t('common.edit_matrix_danger_risk') %></span>
+                                        <% end %>
+                                        <%= link_to crear_item_matrix_danger_risks_path(@matrix_danger_risk.id), class: "btn btn-success btn-sm me-2", title: "Adicionar Peligro/Riesgo", data: { bs_toggle: "tooltip" } do %>
+                                            <i class="bi bi-plus-square"></i><span class="d-none d-md-inline"><%= t('common.danger') %></span>
+                                        <% end %>
+                                    <% end %>    
+                                    <%= link_to resumen_pdf_matrix_danger_risks_path(@matrix_danger_risk.id, format: 'pdf'), class: "btn btn-danger btn-sm me-2", title: "PDF", data: { bs_toggle: "tooltip" } do %>
+                                          <i class="bi-file-earmark-pdf"></i><span class="d-none d-md-inline">PDF</span>
+                                    <% end %>
+                                    <%= link_to matrix_danger_risk_path(@matrix_danger_risk, format: :xlsx), class: "btn btn-success btn-sm text-white  me-2", title: "Excel", data: { bs_toggle: "tooltip" } do %>
+                                          <i class="bi-file-earmark-excel"></i><span class="d-none d-md-inline">Excel</span>
+                                    <% end %>
+                                    <%= link_to graficosmpr_path(@matrix_danger_risk.id), class: "btn btn-primary btn-sm text-white me-2", title: "Indicadores", data: { bs_toggle: "tooltip" } do %>
+                                        <i class="bi-bar-chart-line-fill"></i><span class="d-none d-md-inline"><%= t('common.indicator') %></span>
+                                    <% end %>
+                                    <% if Current.user.level > 0 && Current.user.level < 3 %>
+                                        <%= link_to duplicar_mpr_matrix_danger_risks_path(@matrix_danger_risk.id), class: "btn btn-success btn-sm me-2", title: "Duplicar matriz", data: { bs_toggle: "tooltip" } do %>
+                                            <i class="bi bi-plus-square"></i><span class="d-none d-md-inline"><%= t('common.duplicar_mpr') %></span>
+                                        <% end %>
+                                        <%= link_to seleccionar_archivompr_matrix_danger_risks_path(@matrix_danger_risk.id), class: "btn btn-success btn-sm me-2", title: "Cargar archivo", data: { bs_toggle: "tooltip" } do %>
+                                            <i class="bi bi-plus-square"></i><span class="d-none d-md-inline">Cargar archivo</span>
+                                        <% end %>
+                                        <!-- Button trigger modal -->
+                                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#instruCargar">
+                                            <i class="bi bi-eye"></i><span class="d-none d-md-inline">Instrucciones cargar peligros y riesgos</span>
+                                        </button>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="instruCargar" tabindex="-1" aria-labelledby="instruCargarLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="instruCargarLabel">Instrucciones cargar peligros y riesgos</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <u>Solicitar a IA generar el siguiente archivo plano, reemplazar las palabras que se encuentran en negrilla por la información requerida, los cargos deben ser ingresados igual como fueron guardados en cargos de la empresa:</u> <br> Genera un archivo plano separado por "|" con la siguiente estructura de la Guía Técnica Colombiana GTC 45: Proceso|Zona|Cargo|Actividad|Tarea|Rutinaria|Clase_Peligro|Descripcion_Peligro|Efectos_Potenciales|Controles_Fuente|Controles_Medio|Controles_Trabajador|ND|NE|NP|NC|NR|Interpretacion|Aceptabilidad|Medidas_Intervencion eliminación| Medidas_Intervencion sustitución| Medidas_Intervencion control de ingeniería| <br> Incluye los peligros y riesgos aplicables para una empresa de <strong> confecciones </strong> con los <strong>10</strong> siguientes cargos: <strong>Operario de máquinas de confecciones, Corte , Revisado y pulido, Auditora de calidad, Insumos, Empaques, Mecánico, Sublimado, Bonding y cargos administrativos</strong>. Pon actividades y tareas detalladas y reales acorde a cada uno de los cargos mencionados anteriormente. <br> En proceso: diferencialos por administrativos y operativos. <br> En zona/lugar: diferencialos por <strong>planta de confecciones y área administrativa</strong>.<br> En rutinario pon si la tarea es rutinaria o no rutinaria.<br> Controles existentes: sugiere controles que se puedan tener en cada tarea.<br> En medidas de intervención sugiere medidas en eliminación, sustitución y control de ingeniería. <br> Utiliza los peligros y riesgos segun el listado que está a continuación: BIOLÓGICOS Ingestión de alimentos contaminados Contacto con microorganismos Contacto con fluidos corporales o microorganismos SARS- coV2-COVID 19 Ingestión de microorganismos BIOMECÁNICO Posición de pie prolongado Posición sentado prolongado Movimiento repetitivo Carga dinámica Sobreesfuerzos (levantamiento y transporte manual de cargas) Hiperextensión Otras posturas (hiperextensión, cuclillas,posiciones incómodas, etc.). Carga dinámica por sobreesfuerzos de la voz Carga dinámica por sobreesfuerzos visuales ELÉCTRICO Contacto indirecto (alta y baja tensión) Contacto directo (alta y baja tensión) Contacto con electricidad estática FENÓMENOS NATURALES Derrumbes FÍSICO- QUÍMICO Incendio Explosiones FÍSICOS Ruido Iluminación deficiente o en exceso Vibración Temperaturas extremas Presiones anormales Radiaciones ionizantes Radiaciones no ionizantes Humedad Disconfort térmico por calor o por frío. LOCATIVO Condiciones de orden y aseo Caídas al mismo nivel Caídas diferente nivel (menos de 2 mt) Golpeado con o contra Condiciones de pisos, paredes y techos MECÁNICO Manejo de herramientas manuales Contacto con herramientas y superficies cortopunzantes Atrapamiento Contacto con superficies calientes Proyección de partículas PSICOSOCIAL Conflictos interpersonales Altos ritmos de trabajo Monotonía de la tarea Supervisión estricta Capacitación insuficiente Sobrecarga de trabajo Agresiones PÚBLICO Robos, atracos, asaltos, Robos, atracos, asaltos, atentados de orden público, etc. Tránsito QUÍMICOS Gases y vapores Contacto con sustancias químicas Aerosoles líquidos Humos y gases de soldadura Material particulado Salpicadura de químicos TAR (TAREAS DE ALTO RIESGO) Trabajo en alturas Espacios confinados Trabajos en caliente Trabajos con energías peligrosas.
+                                                        <br>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                    </div>
                                                 </div>
-                                                <div class="modal-body">
-                                                    <u>Solicitar a IA generar el siguiente archivo plano, reemplazar las palabras que se encuentran en negrilla por la información requerida, los cargos deben ser ingresados igual como fueron guardados en cargos de la empresa:</u> <br> Genera un archivo plano separado por "|" con la siguiente estructura de la Guía Técnica Colombiana GTC 45: Proceso|Zona|Cargo|Actividad|Tarea|Rutinaria|Clase_Peligro|Descripcion_Peligro|Efectos_Potenciales|Controles_Fuente|Controles_Medio|Controles_Trabajador|ND|NE|NP|NC|NR|Interpretacion|Aceptabilidad|Medidas_Intervencion eliminación| Medidas_Intervencion sustitución| Medidas_Intervencion control de ingeniería| <br> Incluye los peligros y riesgos aplicables para una empresa de <strong> confecciones </strong> con los <strong>10</strong> siguientes cargos: <strong>Operario de máquinas de confecciones, Corte , Revisado y pulido, Auditora de calidad, Insumos, Empaques, Mecánico, Sublimado, Bonding y cargos administrativos</strong>. Pon actividades y tareas detalladas y reales acorde a cada uno de los cargos mencionados anteriormente. <br> En proceso: diferencialos por administrativos y operativos. <br> En zona/lugar: diferencialos por <strong>planta de confecciones y área administrativa</strong>.<br> En rutinario pon si la tarea es rutinaria o no rutinaria.<br> Controles existentes: sugiere controles que se puedan tener en cada tarea.<br> En medidas de intervención sugiere medidas en eliminación, sustitución y control de ingeniería. <br> Utiliza los peligros y riesgos segun el listado que está a continuación: BIOLÓGICOS Ingestión de alimentos contaminados Contacto con microorganismos Contacto con fluidos corporales o microorganismos SARS- coV2-COVID 19 Ingestión de microorganismos BIOMECÁNICO Posición de pie prolongado Posición sentado prolongado Movimiento repetitivo Carga dinámica Sobreesfuerzos (levantamiento y transporte manual de cargas) Hiperextensión Otras posturas (hiperextensión, cuclillas,posiciones incómodas, etc.). Carga dinámica por sobreesfuerzos de la voz Carga dinámica por sobreesfuerzos visuales ELÉCTRICO Contacto indirecto (alta y baja tensión) Contacto directo (alta y baja tensión) Contacto con electricidad estática FENÓMENOS NATURALES Derrumbes FÍSICO- QUÍMICO Incendio Explosiones FÍSICOS Ruido Iluminación deficiente o en exceso Vibración Temperaturas extremas Presiones anormales Radiaciones ionizantes Radiaciones no ionizantes Humedad Disconfort térmico por calor o por frío. LOCATIVO Condiciones de orden y aseo Caídas al mismo nivel Caídas diferente nivel (menos de 2 mt) Golpeado con o contra Condiciones de pisos, paredes y techos MECÁNICO Manejo de herramientas manuales Contacto con herramientas y superficies cortopunzantes Atrapamiento Contacto con superficies calientes Proyección de partículas PSICOSOCIAL Conflictos interpersonales Altos ritmos de trabajo Monotonía de la tarea Supervisión estricta Capacitación insuficiente Sobrecarga de trabajo Agresiones PÚBLICO Robos, atracos, asaltos, Robos, atracos, asaltos, atentados de orden público, etc. Tránsito QUÍMICOS Gases y vapores Contacto con sustancias químicas Aerosoles líquidos Humos y gases de soldadura Material particulado Salpicadura de químicos TAR (TAREAS DE ALTO RIESGO) Trabajo en alturas Espacios confinados Trabajos en caliente Trabajos con energías peligrosas.
-                                                    <br>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                                </div>
-                                            </div>
-                                        </div> 
-                                    </div>
+                                            </div> 
+                                        </div>
+                                    <% end %>    
                                 </div>
                             </td>
                         </tr>
@@ -404,37 +427,56 @@
                         <tr>
                             <td class="text-center">
                                 <div class="btn-group" role="group">
-                                    <%= link_to t('common.show_matrix_danger_risk'), ver_matrix_danger_risk_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-info btn-sm me-2" %>
-                                    <%= link_to t('common.edit_matrix_danger_risk'), edit_matrix_danger_risk_path(@matrix_danger_risk.id), class:"btn btn-warning btn-sm me-2" if Current.user.level > 0 && Current.user.level < 3 %>
-                                    <%= link_to t('common.danger'), crear_item_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" if Current.user.level > 0 && Current.user.level < 4 %>
-                                    <%= link_to "PDF", resumen_pdf_matrix_danger_risks_path(@matrix_danger_risk.id, format: 'pdf'), class:"btn btn-success btn-sm me-2" %>
-                                    <%= link_to "XLS", matrix_danger_risk_path(@matrix_danger_risk, format: :xlsx), class:"btn btn-success btn-sm me-2" %>
-                                    <%= link_to t('common.indicator'), graficosmpr_path(@matrix_danger_risk.id), class:"btn btn-info btn-sm me-2" %>
-                                    <%= link_to t('common.duplicar_mpr'), duplicar_mpr_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" if Current.user.level > 0 && Current.user.level < 4 %>
-                                    <%= link_to "Cargar archivo", seleccionar_archivompr_matrix_danger_risks_path(@matrix_danger_risk.id), class:"btn btn-primary btn-sm me-2" if Current.user.level > 0 && Current.user.level < 4 %>
-                                    <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#instruCargar">
-                                        Instrucciones cargar peligros y riesgos
-                                    </button>
-
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="instruCargar" tabindex="-1" aria-labelledby="instruCargarLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="instruCargarLabel">Instrucciones cargar peligros y riesgos</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <%= link_to ver_matrix_danger_risk_matrix_danger_risks_path(@matrix_danger_risk.id), class: "btn btn-primary btn-sm text-white me-2" do %>
+                                        <i class="bi bi-eye"></i><span class="d-none d-md-inline"><%= t('common.show_matrix_danger_risk') %></span>
+                                    <% end %>
+                                    <% if Current.user.level > 0 && Current.user.level < 3 %>
+                                        <%= link_to edit_matrix_danger_risk_path(@matrix_danger_risk.id), class: "btn btn-warning btn-sm text-white me-2", title: "Editar", data: { bs_toggle: "tooltip" } do %>
+                                            <i class="bi bi-pencil"></i><span class="d-none d-md-inline"><%= t('common.edit_matrix_danger_risk') %></span>
+                                        <% end %>
+                                        <%= link_to crear_item_matrix_danger_risks_path(@matrix_danger_risk.id), class: "btn btn-success btn-sm me-2" do %>
+                                            <i class="bi bi-plus-square"></i><span class="d-none d-md-inline"><%= t('common.danger') %></span>
+                                        <% end %>
+                                    <% end %>    
+                                    <%= link_to resumen_pdf_matrix_danger_risks_path(@matrix_danger_risk.id, format: 'pdf'), class: "btn btn-danger btn-sm me-2" do %>
+                                          <i class="bi-file-earmark-pdf"></i><span class="d-none d-md-inline">PDF</span>
+                                    <% end %>
+                                    <%= link_to matrix_danger_risk_path(@matrix_danger_risk, format: :xlsx), class: "btn btn-success btn-sm text-white  me-2" do %>
+                                          <i class="bi-file-earmark-excel"></i><span class="d-none d-md-inline">Excel</span>
+                                    <% end %>
+                                    <%= link_to graficosmpr_path(@matrix_danger_risk.id), class: "btn btn-primary btn-sm text-white me-2" do %>
+                                        <i class="bi-bar-chart-line-fill"></i><span class="d-none d-md-inline"><%= t('common.indicator') %></span>
+                                    <% end %>
+                                    <% if Current.user.level > 0 && Current.user.level < 3 %>
+                                        <%= link_to duplicar_mpr_matrix_danger_risks_path(@matrix_danger_risk.id), class: "btn btn-success btn-sm me-2" do %>
+                                            <i class="bi bi-plus-square"></i><span class="d-none d-md-inline"><%= t('common.duplicar_mpr') %></span>
+                                        <% end %>
+                                        <%= link_to seleccionar_archivompr_matrix_danger_risks_path(@matrix_danger_risk.id), class: "btn btn-success btn-sm me-2" do %>
+                                            <i class="bi bi-plus-square"></i><span class="d-none d-md-inline">Cargar archivo</span>
+                                        <% end %>
+                                        <!-- Button trigger modal -->
+                                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#instruCargar">
+                                            <i class="bi bi-eye"></i><span class="d-none d-md-inline">Instrucciones cargar peligros y riesgos</span>
+                                        </button>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="instruCargar" tabindex="-1" aria-labelledby="instruCargarLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="instruCargarLabel">Instrucciones cargar peligros y riesgos</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <u>Solicitar a IA generar el siguiente archivo plano, reemplazar las palabras que se encuentran en negrilla por la información requerida, los cargos deben ser ingresados igual como fueron guardados en cargos de la empresa:</u> <br> Genera un archivo plano separado por "|" con la siguiente estructura de la Guía Técnica Colombiana GTC 45: Proceso|Zona|Cargo|Actividad|Tarea|Rutinaria|Clase_Peligro|Descripcion_Peligro|Efectos_Potenciales|Controles_Fuente|Controles_Medio|Controles_Trabajador|ND|NE|NP|NC|NR|Interpretacion|Aceptabilidad|Medidas_Intervencion eliminación| Medidas_Intervencion sustitución| Medidas_Intervencion control de ingeniería| <br> Incluye los peligros y riesgos aplicables para una empresa de <strong> confecciones </strong> con los <strong>10</strong> siguientes cargos: <strong>Operario de máquinas de confecciones, Corte , Revisado y pulido, Auditora de calidad, Insumos, Empaques, Mecánico, Sublimado, Bonding y cargos administrativos</strong>. Pon actividades y tareas detalladas y reales acorde a cada uno de los cargos mencionados anteriormente. <br> En proceso: diferencialos por administrativos y operativos. <br> En zona/lugar: diferencialos por <strong>planta de confecciones y área administrativa</strong>.<br> En rutinario pon si la tarea es rutinaria o no rutinaria.<br> Controles existentes: sugiere controles que se puedan tener en cada tarea.<br> En medidas de intervención sugiere medidas en eliminación, sustitución y control de ingeniería. <br> Utiliza los peligros y riesgos segun el listado que está a continuación: BIOLÓGICOS Ingestión de alimentos contaminados Contacto con microorganismos Contacto con fluidos corporales o microorganismos SARS- coV2-COVID 19 Ingestión de microorganismos BIOMECÁNICO Posición de pie prolongado Posición sentado prolongado Movimiento repetitivo Carga dinámica Sobreesfuerzos (levantamiento y transporte manual de cargas) Hiperextensión Otras posturas (hiperextensión, cuclillas,posiciones incómodas, etc.). Carga dinámica por sobreesfuerzos de la voz Carga dinámica por sobreesfuerzos visuales ELÉCTRICO Contacto indirecto (alta y baja tensión) Contacto directo (alta y baja tensión) Contacto con electricidad estática FENÓMENOS NATURALES Derrumbes FÍSICO- QUÍMICO Incendio Explosiones FÍSICOS Ruido Iluminación deficiente o en exceso Vibración Temperaturas extremas Presiones anormales Radiaciones ionizantes Radiaciones no ionizantes Humedad Disconfort térmico por calor o por frío. LOCATIVO Condiciones de orden y aseo Caídas al mismo nivel Caídas diferente nivel (menos de 2 mt) Golpeado con o contra Condiciones de pisos, paredes y techos MECÁNICO Manejo de herramientas manuales Contacto con herramientas y superficies cortopunzantes Atrapamiento Contacto con superficies calientes Proyección de partículas PSICOSOCIAL Conflictos interpersonales Altos ritmos de trabajo Monotonía de la tarea Supervisión estricta Capacitación insuficiente Sobrecarga de trabajo Agresiones PÚBLICO Robos, atracos, asaltos, Robos, atracos, asaltos, atentados de orden público, etc. Tránsito QUÍMICOS Gases y vapores Contacto con sustancias químicas Aerosoles líquidos Humos y gases de soldadura Material particulado Salpicadura de químicos TAR (TAREAS DE ALTO RIESGO) Trabajo en alturas Espacios confinados Trabajos en caliente Trabajos con energías peligrosas.
+                                                        <br>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                    </div>
                                                 </div>
-                                                <div class="modal-body">
-                                                    <u>Solicitar a IA generar el siguiente archivo plano, reemplazar las palabras que se encuentran en negrilla por la información requerida, los cargos deben ser ingresados igual como fueron guardados en cargos de la empresa:</u> <br> Genera un archivo plano separado por "|" con la siguiente estructura de la Guía Técnica Colombiana GTC 45: Proceso|Zona|Cargo|Actividad|Tarea|Rutinaria|Clase_Peligro|Descripcion_Peligro|Efectos_Potenciales|Controles_Fuente|Controles_Medio|Controles_Trabajador|ND|NE|NP|NC|NR|Interpretacion|Aceptabilidad|Medidas_Intervencion eliminación| Medidas_Intervencion sustitución| Medidas_Intervencion control de ingeniería| <br> Incluye los peligros y riesgos aplicables para una empresa de <strong> confecciones </strong> con los <strong>10</strong> siguientes cargos: <strong>Operario de máquinas de confecciones, Corte , Revisado y pulido, Auditora de calidad, Insumos, Empaques, Mecánico, Sublimado, Bonding y cargos administrativos</strong>. Pon actividades y tareas detalladas y reales acorde a cada uno de los cargos mencionados anteriormente. <br> En proceso: diferencialos por administrativos y operativos. <br> En zona/lugar: diferencialos por <strong>planta de confecciones y área administrativa</strong>.<br> En rutinario pon si la tarea es rutinaria o no rutinaria.<br> Controles existentes: sugiere controles que se puedan tener en cada tarea.<br> En medidas de intervención sugiere medidas en eliminación, sustitución y control de ingeniería. <br> Utiliza los peligros y riesgos segun el listado que está a continuación: BIOLÓGICOS Ingestión de alimentos contaminados Contacto con microorganismos Contacto con fluidos corporales o microorganismos SARS- coV2-COVID 19 Ingestión de microorganismos BIOMECÁNICO Posición de pie prolongado Posición sentado prolongado Movimiento repetitivo Carga dinámica Sobreesfuerzos (levantamiento y transporte manual de cargas) Hiperextensión Otras posturas (hiperextensión, cuclillas,posiciones incómodas, etc.). Carga dinámica por sobreesfuerzos de la voz Carga dinámica por sobreesfuerzos visuales ELÉCTRICO Contacto indirecto (alta y baja tensión) Contacto directo (alta y baja tensión) Contacto con electricidad estática FENÓMENOS NATURALES Derrumbes FÍSICO- QUÍMICO Incendio Explosiones FÍSICOS Ruido Iluminación deficiente o en exceso Vibración Temperaturas extremas Presiones anormales Radiaciones ionizantes Radiaciones no ionizantes Humedad Disconfort térmico por calor o por frío. LOCATIVO Condiciones de orden y aseo Caídas al mismo nivel Caídas diferente nivel (menos de 2 mt) Golpeado con o contra Condiciones de pisos, paredes y techos MECÁNICO Manejo de herramientas manuales Contacto con herramientas y superficies cortopunzantes Atrapamiento Contacto con superficies calientes Proyección de partículas PSICOSOCIAL Conflictos interpersonales Altos ritmos de trabajo Monotonía de la tarea Supervisión estricta Capacitación insuficiente Sobrecarga de trabajo Agresiones PÚBLICO Robos, atracos, asaltos, Robos, atracos, asaltos, atentados de orden público, etc. Tránsito QUÍMICOS Gases y vapores Contacto con sustancias químicas Aerosoles líquidos Humos y gases de soldadura Material particulado Salpicadura de químicos TAR (TAREAS DE ALTO RIESGO) Trabajo en alturas Espacios confinados Trabajos en caliente Trabajos con energías peligrosas.
-                                                    <br>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                                </div>
-                                            </div>
-                                        </div> 
-                                    </div>
+                                            </div> 
+                                        </div>
+                                    <% end %>    
                                 </div>
                             </td>
                         </tr>
@@ -564,9 +606,17 @@
                                 <% end  %>    
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center gap-4 mt-3">
-                                        <%= link_to t('common.update_matrix_danger_item'), edit_matrix_danger_item_path(matrix_danger_item.id), class:"btn btn-warning btn-sm me-2 gap-3" if Current.user.level > 0 && Current.user.level < 4 %></br>
-                                        <%= button_to 'Duplicar',  duplicar_item_matrix_danger_risks_path(matrix_danger_item.id), class:"btn btn-primary btn-sm me-2 gap-3" if Current.user.level > 0 && Current.user.level < 4 %></br>  
-                                        <%= button_to "Eliminar", matrix_danger_item, method: :delete, class: "btn btn-danger btn-sm gap-3", data: {turbo_confirm: "¿Está seguro de eliminar este registro? Esta acción no se puede deshacer." } if Current.user.level > 0 && Current.user.level < 4 %>                                            
+                                        <% if Current.user.level > 0 && Current.user.level < 4 %>
+                                            <%= link_to edit_matrix_danger_item_path(matrix_danger_item.id), class: "btn btn-warning btn-sm text-white me-2", title: "Editar", data: { bs_toggle: "tooltip" } do %>
+                                                <i class="bi bi-pencil"></i><span class="d-none d-md-inline"><%= t('common.update_matrix_danger_item') %></span>
+                                            <% end %>
+                                            <%= link_to duplicar_item_matrix_danger_risks_path(matrix_danger_item.id), class: "btn btn-success btn-sm me-2", title: "Duplicar", data: { turbo_method: :post, bs_toggle: "tooltip" } do %>
+                                                <i class="bi bi-plus-square"></i><span class="d-none d-md-inline">Duplicar</span>
+                                            <% end %>
+                                            <%= link_to matrix_danger_item, class: "btn btn-danger", title: "Eliminar", data: {turbo_method: :delete, turbo_confirm: "¿Está seguro de eliminar este registro? Esta acción no se puede deshacer.", bs_toggle: "tooltip"} do %>
+                                                <i class="bi bi-trash"></i><span class="d-none d-md-inline">Eliminar</span>
+                                            <% end %>
+                                        <% end  %>    
                                     </div>
                                 </td>
                             </tr>
@@ -580,8 +630,11 @@
             <%= link_to t('.create_matrix_danger_risk'), new_matrix_danger_risk_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level < 3 %>
         </div>
     <% end %>
-    <div class="text-muted">
-         <%= link_to 'Retornar', matrix_danger_risks_path(entity_id: @matrix_danger_risk.entity_id), class: 'btn btn-sm btn-secondary' %>
+    <div class="text-muted"> 
+        <%= link_to matrix_danger_risks_path(entity_id: @matrix_danger_risk.entity_id), class:"btn btn-secondary" do %>
+            <i class="bi bi-arrow-left-circle"></i>
+            Retornar
+        <% end %>
     </div>
 </div>
 

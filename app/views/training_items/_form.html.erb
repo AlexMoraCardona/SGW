@@ -1,5 +1,9 @@
-<div class="container col-11 card p-5">
-    <br>
+<div class="container-fluid px-2 px-md-3">
+    <div align="left"; class="container col-12">
+        <a class="navbar-brand" href="/">
+            <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+        </a>
+    </div>
     <%= form_with model: @training_item do |form| %>
         <% @training_item.errors.full_messages.each do |error| %>
             <div class="alert alert-danger" role="alert">
@@ -7,78 +11,161 @@
             </div>
         <% end %>    
 
-        <div class="form-group"> 
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar el tema de la capacitación."><%= t('.training_topic') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :training_topic,  class: "form-control" %>
-        </div>
-        <br>
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar el objetivo de la capacitación que se va a realizar."><%= t('.goals') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :goals,  class: "form-control" %>
-        </div>
-        <br>
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar el alcance de la capacitación que se va a realizar."><%= t('.scope') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :scope ,  class: "form-control" %>
-        </div>
-        <br>
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar los recursos."><%= t('.resources') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :resources,  class: "form-control" %>
-        </div>
-        <br>
-        <div class="row g-2">
-            <div class="col-sm-5">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar la fecha en que se programa la capacitación."><%= t('.date_training') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-                <%= form.date_field :date_training,  class: "form-control" %>
+        <!-- Información de la capacitación -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-light text-dark fw-semibold">
+                <i class="bi bi-mortarboard-fill me-2"></i>
+                Información de la capacitación
             </div>
-            <div class="col-sm-5">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingresar el tiempo de la capacitación en minutos ejemplo: 20 minutos."><%= t('.duration') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-                <%= form.text_field :duration,  class: "form-control" %>
+            <div class="card-body">
+                <!-- Tema -->
+                <div class="mb-3">
+                    <%= form.label :training_topic, class: "form-label fw-semibold" do %>
+                        <%= t('.training_topic') %>
+                        <i class="bi bi-question-circle text-primary ms-1" data-bs-toggle="tooltip" title="Especificar el tema de la capacitación."></i>
+                    <% end %>
+                    <%= form.text_field :training_topic, class: "form-control", autocomplete: "off" %>
+                </div>
+                <!-- Objetivo -->
+                <div class="mb-3">
+                    <%= form.label :goals, class: "form-label fw-semibold" do %>
+                        <%= t('.goals') %>
+                        <i class="bi bi-question-circle text-primary ms-1" data-bs-toggle="tooltip" title="Especificar el objetivo de la capacitación que se va a realizar."></i>
+                    <% end %>
+                    <%= form.text_field :goals, class: "form-control", autocomplete: "off" %>
+                </div>
+                <!-- Alcance -->
+                <div class="mb-3">
+                    <%= form.label :scope, class: "form-label fw-semibold" do %>
+                        <%= t('.scope') %>
+                        <i class="bi bi-question-circle text-primary ms-1" data-bs-toggle="tooltip" title="Indicar el alcance de la capacitación que se va a realizar."></i>
+                    <% end %>
+                    <%= form.text_field :scope, class: "form-control", autocomplete: "off" %>
+                </div>
+                <!-- Recursos -->
+                <div class="mb-3">
+                    <%= form.label :resources, class: "form-label fw-semibold" do %>
+                        <%= t('.resources') %>
+                        <i class="bi bi-question-circle text-primary ms-1" data-bs-toggle="tooltip" title="Indicar los recursos necesarios para realizar la capacitación."></i>
+                    <% end %>
+                    <%= form.text_field :resources, class: "form-control", autocomplete: "off" %>
+                </div>
+                <!-- Fecha y duración -->
+                <div class="row g-3">
+                    <div class="col-12 col-md-6">
+                        <%= form.label :date_training, class: "form-label fw-semibold" do %>
+                            <%= t('.date_training') %>
+                                <i class="bi bi-question-circle text-primary ms-1" data-bs-toggle="tooltip" title="Indicar la fecha en que se programa la capacitación."></i>
+                        <% end %>
+                        <%= form.date_field :date_training, class: "form-control" %>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <%= form.label :duration, class: "form-label fw-semibold" do %>
+                            <%= t('.duration') %>
+                            <i class="bi bi-question-circle text-primary ms-1" data-bs-toggle="tooltip" title="Ingresar el tiempo de la capacitación en minutos. Ejemplo: 20 minutos."></i>
+                        <% end %>
+                        <div class="input-group">
+                            <%= form.number_field :duration, class: "form-control", min: 1, step: 1 %>
+                            <span class="input-group-text">minutos</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Responsable -->
+                <div class="mt-3 mb-3">
+                    <%= form.label :responsible, class: "form-label fw-semibold" do %>
+                        <%= t('.responsible') %>
+                        <i class="bi bi-question-circle text-primary ms-1" data-bs-toggle="tooltip" title="Indicar la persona responsable de realizar la capacitación."></i>
+                    <% end %>
+                    <%= form.text_field :responsible, class: "form-control", autocomplete: "off" %>
+                </div>
             </div>
-        </div>        
-        <br>
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar los recursos."><%= t('.responsible') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :responsible,  class: "form-control" %>
         </div>
-        <br>
-        <div class="row g-2">
-            <div class="col-sm-5">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar el total de empleados."><%= t('.cant_emple') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-                <%= form.number_field :cant_emple,  class: "form-control", step: 1 %>
+        <!-- Participantes -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-light text-dark fw-semibold">
+                <i class="bi bi-people-fill me-2"></i>
+                Participantes
             </div>
-            <div class="col-sm-5">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar del total de empleados cuantos se van a capacitar o a participar en la actividad."><%= t('.cant_emple_cap') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-                <%= form.number_field :cant_emple_cap,  class: "form-control", step: 1 %>
+            <div class="card-body">
+                <div class="row g-3">
+                    <!-- Total empleados -->
+                    <div class="col-12 col-md-6">
+                        <%= form.label :cant_emple, class: "form-label fw-semibold" do %>
+                            <%= t('.cant_emple') %>
+                            <i class="bi bi-question-circle text-primary ms-1" data-bs-toggle="tooltip" title="Indicar el total de empleados."></i>
+                        <% end %>
+                        <%= form.number_field :cant_emple, class: "form-control", min: 0, step: 1 %>
+                    </div>
+                    <!-- Empleados programados -->
+                    <div class="col-12 col-md-6">
+                        <%= form.label :cant_emple_cap, class: "form-label fw-semibold" do %>
+                            <%= t('.cant_emple_cap') %>
+                            <i class="bi bi-question-circle text-primary ms-1" data-bs-toggle="tooltip" title="Indicar cuántos empleados se van a capacitar o participar en la actividad."></i>
+                        <% end %>
+                        <%= form.number_field :cant_emple_cap, class: "form-control", min: 0, step: 1 %>
+                    </div>
+                    <!-- Empleados capacitados -->
+                    <div class="col-12 col-md-6">
+                        <%= form.label :cant_cap, class: "form-label fw-semibold" do %>
+                            <%= t('.cant_cap') %>
+                            <i class="bi bi-question-circle text-primary ms-1" data-bs-toggle="tooltip" title="Indicar el total de empleados capacitados o que realizaron la actividad."></i>
+                        <% end %>
+                        <%= form.number_field :cant_cap, class: "form-control", min: 0, step: 1 %>
+                    </div>
+                </div>
             </div>
-        </div>        
-        <br>
-        <div class="row g-2">
-            <div class="col-sm-5">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar del total de empleados capacitados  o que realizarón la actividad."><%= t('.cant_cap') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-                <%= form.number_field :cant_cap,  class: "form-control", step: 1 %>
-            </div>
-            <div class="col-sm-5">
-                <%= form.label :state_cap,  style: "display: block" %>
-                <%= form.radio_button :state_cap, 0 %>
-                <label for="Pendiente">Pendiente</label>
-                <%= form.radio_button :state_cap, 1 %>
-                <label for="Realizada">Realizada</label>
-                <%= form.radio_button :state_cap, 2 %>
-                <label for="Cancelada">Cancelada</label>
-            </div>
-        </div>        
-        <br>
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Observaciones."><%= t('.observation') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :observation,  class: "form-control" %>
         </div>
-
-        <br>  
-        <div class="form-group">   
-            <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
-        </div>    
+        <!-- Estado -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-light text-dark fw-semibold">
+                <i class="bi bi-clipboard-check me-2"></i>
+                Estado de la capacitación
+            </div>
+            <div class="card-body">
+                <%= form.label :state_cap, class: "form-label fw-semibold" do %>
+                    Estado
+                <% end %>
+                <div class="d-flex flex-column flex-md-row gap-2 gap-md-4">
+                    <div class="form-check">
+                        <%= form.radio_button :state_cap, 0, class: "form-check-input" %>
+                        <%= form.label :state_cap, "Pendiente", value: 0, class: "form-check-label" %>
+                    </div>
+                    <div class="form-check">
+                        <%= form.radio_button :state_cap, 1, class: "form-check-input" %>
+                        <%= form.label :state_cap, "Realizada", value: 1, class: "form-check-label" %>
+                    </div>
+                    <div class="form-check">
+                        <%= form.radio_button :state_cap, 2, class: "form-check-input" %>
+                        <%= form.label :state_cap, "Cancelada", value: 2, class: "form-check-label" %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Observaciones -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-light text-dark fw-semibold">
+                <i class="bi bi-chat-left-text me-2"></i>
+                Observaciones
+            </div>
+            <div class="card-body">
+                <%= form.label :observation, class: "form-label fw-semibold" do %>
+                    <%= t('.observation') %>
+                    <i class="bi bi-question-circle text-primary ms-1" data-bs-toggle="tooltip" title="Registrar las observaciones relacionadas con la capacitación."></i>
+                <% end %>
+                <%= form.text_area :observation, class: "form-control", rows: 3 %>
+            </div>
+        </div>
+        <!-- Campos ocultos -->
+        <!-- Botonera -->
+        <div class="d-flex flex-column flex-sm-row justify-content-center gap-2 mt-4 mb-3">
+            <%= form.button type: "submit", class: "btn btn-success" do %>
+                <i class="bi bi-check-circle"></i>
+                <%= t('common.submit') %>
+            <% end %>
+            <%= link_to :back, class: "btn btn-secondary" do %>
+                <i class="bi bi-arrow-left-circle me-2"></i>
+                Retornar
+            <% end %>
+        </div>
     <% end %>
-    <hr>
-</div>        
+</div>

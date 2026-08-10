@@ -27,24 +27,24 @@
     <% end %>
     <% @resources.each do |resource| %>
       <div class="card shadow-sm mb-4">
-        <div class="card-header bg-primary text-white">
+        <div class="card-header bg-light text-dark" >
           <div class="row align-items-center">
             <div class="col-md-8">
               <h4 class="mb-0">
                 <i class="bi bi-calendar3"></i>
                 MATRIZ ASIGNACIÓN DE RECURSOS PARA EL SG-SST <%= resource.year %>
-              </h4>
+              </h4> 
             </div>
             <div class="col-md-4 text-md-end mt-3 mt-md-0">
               <div class="d-grid d-md-flex justify-content-md-end gap-2">
                 <% if Current.user.level > 0 && Current.user.level < 4 %>
-                  <%= link_to crear_item_resource_resources_path(resource.id), class: "btn btn-warning btn-sm" do %>
+                  <%= link_to crear_item_resource_resources_path(resource.id), class: "btn btn-success btn-sm" do %>
                     <i class="bi bi-plus-square"></i>
                     <%= t('common.create_item_resource') %>
                   <% end %>
                 <% end %>
                 <%= link_to resource_path(resource.id),
-                    class: "btn btn-info btn-sm text-white" do %>
+                    class: "btn btn-primary btn-sm text-white" do %>
                   <i class="bi bi-eye"></i>
                   <%= t('common.show_resource') %>
                 <% end %>
@@ -85,14 +85,13 @@
               <%= resource.date_firm_legal_representative %>
             </div>
             <div class="col-md-3 d-flex align-items-end">
-              <% if resource.firm_legal_representative.to_i == 0 %>
-                <%= link_to firmar_rep_resources_path(resource.id,1),
-                    class:"btn btn-outline-warning w-100" do %>
-                  <i class="bi bi-pen"></i>
-                  <%= t('common.firmar') %>
+                <% if resource.firm_legal_representative.to_i == 0 %>
+                    <%= link_to firmar_rep_resources_path(resource.id, 1), class: "btn w-100 fw-semibold", style: "background-color: #145a72; color: white;", title: t('common.firmar'), data: { bs_toggle: "tooltip" } do %>
+                        <i class="bi bi-pen-fill me-2"></i>
+                        <%= t('common.firmar') %>
+                    <% end %>
                 <% end %>
-              <% end %>
-            </div>
+            </div>            
           </div>
           <hr>
           <h5 class="text-success mb-3">
@@ -113,14 +112,13 @@
               <%= resource.date_firm_adviser_sst %>
             </div>
             <div class="col-md-3 d-flex align-items-end">
-              <% if resource.firm_adviser_sst.to_i == 0 %>
-                <%= link_to firmar_adv_resources_path(resource.id,2),
-                    class:"btn btn-outline-warning w-100" do %>
-                  <i class="bi bi-pen"></i>
-                  <%= t('common.firmar') %>
+                <% if resource.firm_adviser_sst.to_i == 0 %>
+                    <%= link_to firmar_adv_resources_path(resource.id, 2), class: "btn w-100 fw-semibold", style: "background-color: #145a72; color: white;", title: t('common.firmar'), data: { bs_toggle: "tooltip" } do %>
+                        <i class="bi bi-pen-fill me-2"></i>
+                        <%= t('common.firmar') %>
+                    <% end %>
                 <% end %>
-              <% end %>
-            </div>
+            </div>            
           </div>
         </div>
       </div>

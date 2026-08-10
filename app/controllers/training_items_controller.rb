@@ -31,7 +31,7 @@ class TrainingItemsController < ApplicationController
         @training_item = TrainingItem.find(params[:id])
         if @training_item.update(training_item_params)
             TrainingItem.calculos(@training_item.id)
-            redirect_to crear_item_training_trainings_path(@training_item.training_id), notice: t('.created')
+            redirect_to training_path(@training_item.training_id), notice: t('.created')
         else
             render :edit, trainings: :unprocessable_entity
         end         
@@ -40,7 +40,7 @@ class TrainingItemsController < ApplicationController
     def destroy
         @training_item = TrainingItem.find(params[:id])
         @training_item.destroy
-        redirect_back fallback_location: root_path, notice: 'Capacitación o Actividad borrada correctamente!', training_item: :see_other
+        redirect_to training_path(@training_item.training_id), notice: 'Capacitación o Actividad borrada correctamente!', training_item: :see_other
     end    
 
     private

@@ -1,0 +1,58 @@
+<div class="container-fluid py-4">   
+    <div class="col-12 col-lg-7">
+        <% if params[:format].to_i == 0 %>
+            <h2 class="fw-bold mb-2 text-primary">
+                Condiciones Inseguras
+            </h2>
+        <% else %>
+            <h2 class="fw-bold mb-2 text-primary">
+                Actos Inseguros
+            </h2
+        <% end %>
+    </div>
+
+<div class="card shadow">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-primary">
+                    <tr>
+                        <th class="text-center">Fecha</th>
+                        <th class="text-center">Usuario que reporta</th>
+                        <th class="text-center">Cargo de quien reporta</th>
+                        <th class="text-center">Descripción de la condición / acto inseguro</th>
+                        <th class="text-center">Estado</th>
+                        <th class="text-center">Editar</th>
+                    </tr>
+                </thead>
+                <% if @matrix_unsafe_items.present? %>
+                    <body>
+                        <% @matrix_unsafe_items.where(clasification_unsafe: params[:format].to_i).each do |matrix_unsafe_item| %>
+                            <tr>
+                                <td scope="col"><%= matrix_unsafe_item.date_item %></td>  
+                                <td scope="col"><%= MatrixCondition.name_user(matrix_unsafe_item.user_reporta)%></td>
+                                <td scope="col"><%= CompanyPosition.name_cargo(matrix_unsafe_item.cargo_reporta) %></td>  
+                                <td scope="col"><%= matrix_unsafe_item.description_usafe %></td>  
+                                <td scope="col"><%= MatrixUnsafeItem.estado(matrix_unsafe_item.state_unsafe)%></td>
+                                <td scope="col">
+                                    <% if Current.user.level > 0 && Current.user.level < 4 %>
+                                        <%= link_to edit_matrix_unsafe_item_path(matrix_unsafe_item.id), class: "btn btn-warning btn-sm text-white me-2", title: "Editar", data: { bs_toggle: "tooltip" } do %>
+                                            <i class="bi bi-pencil"></i><span class="d-none d-md-inline"><%= t('common.edit_matrix_danger_risk') %></span>
+                                        <% end %>
+                                    <% end %>
+                                </td> 
+                            </tr>
+                        <% end %>     
+                    </body>                                  
+                <% end %>     
+            </table>
+        </div>
+    </div>    
+    <div class="card-body">
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+            <%= link_to :back, class:"btn btn-secondary" do %>
+                <i class="bi bi-arrow-left-circle"></i>Retornar
+            <% end %>
+        </div>
+    </div>
+</div>

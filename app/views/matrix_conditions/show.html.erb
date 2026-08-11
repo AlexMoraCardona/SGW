@@ -1,142 +1,162 @@
-<div align="left"; class="container col-12">
-    <a class="navbar-brand" href="/">
-        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-    </a>
-</div>
-<div>
-
-    <table class="table table-hover" style="border:1px solid black"> 
-        <thead>
-            <tr>
-                <td style="background-color: black;">&nbsp;</td>
-                <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
-                    <% if @matrix_condition.entity.logo.present? then %>
-                        <%=  image_tag  @matrix_condition.entity.logo, class: "image_peq" %>
-                    <% end %> 
-                </td>
-                <td rowspan="4"; colspan="11"; style="text-align:center">
-                    <div class="col-10"><h5>MATRIZ DE SEGUIMIENTO DE ACTOS Y CONDICIONES INSEGURAS</h5><h6><%= @matrix_condition.entity.business_name if @matrix_condition.present? %> Nit: <%= @matrix_condition.entity.identification_number if @matrix_condition.present? %> </h6></div>
-                </td>
-                <td rowspan="4";  style="text-align:center">
-                </td>
-                <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
-
-                <td style="border:1px solid black"><%= @template.date if @template.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
-            </tr>
-            <tr> 
-                <td style="background-color: black;">&nbsp;</td>
-                <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
-                <td style="border:1px solid black"><%= @template.date_updated if @template.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
-            </tr>
-            <tr> 
-                <td style="background-color: black;">&nbsp;</td>
-                <td colspan="2"; style="border:1px solid black">Versión:</td>
-                <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
-            </tr>
-            <tr> 
-                <td style="background-color: black;">&nbsp;</td>
-                <td colspan="2"; style="border:1px solid black">Código:</td>
-                <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
-                <td style="background-color: black;">&nbsp;</td>
-            </tr>
-
-            <tr>  
-                <td style="background-color: black;">&nbsp;</td>
-                <td style="border:1px solid black; text-align:center">N°</TD>
-                <td style="border:1px solid black; text-align:center">Fecha reporte</TD>
-                <td style="border:1px solid black; text-align:center">Nombre  completo de quien reporta</TD>
-                <td style="border:1px solid black; text-align:center">Cargo de quien reporta</TD>
-                <td style="border:1px solid black; text-align:center">Correo electrónico</TD>
-                <td style="border:1px solid black; text-align:center">Sede del reporte</TD>
-                <td style="border:1px solid black; text-align:center">Ubicación  exacta de la condición /acto inseguro</TD>
-                <td style="border:1px solid black; text-align:center">Descripción de la condición / acto inseguro</TD>
-                <td style="border:1px solid black; text-align:center">Clasificación</TD>
-                <td style="border:1px solid black; text-align:center">Tipo de acción</TD>
-                <td style="border:1px solid black; text-align:center">Estado</TD>
-                <td style="border:1px solid black; text-align:center">Fecha de intervención</TD>
-                <td style="border:1px solid black; text-align:center">Observaciones</TD>
-                <td style="border:1px solid black; text-align:center">Ver/Editar</TD>
-                <td style="border:1px solid black; text-align:center">PDF</TD>
-                <td style="border:1px solid black; text-align:center">Eliminar</TD>
-                <td style="background-color: black;">&nbsp;</td>
-             </tr>  
-             
-        </thead>
-        <% @numero = 0 %>          
-        <% @matrix_unsafe_items.each do |item| %>   
-            <% @numero += 1 %>          
-            <tbody>
-                <tr>
-                    <td style="background-color: black;">&nbsp;</td>
-                    <td style="border:1px solid black; text-align:center"><%= @numero %></td>
-                    <td style="border:1px solid black"><%= item.date_item %></td>
-                    <td style="border:1px solid black"><%= MatrixUnsafeItem.name_user(item.user_reporta) %></td>
-                    <td style="border:1px solid black"><%= User.label_activity(item.cargo_reporta) %></td>
-                    <td style="border:1px solid black"><%= item.correo_reporta %></td>
-                    <td style="border:1px solid black"><%= item.sede %></td>
-                    <td style="border:1px solid black"><%= item.exact_ubication %></td>
-                    <td style="border:1px solid black"><%= item.description_usafe %></td>
-                    <td style="border:1px solid black"><%= MatrixUnsafeItem.clasificacion_accion(item.clasification_unsafe) %></td>
-                    <td style="border:1px solid black"><%= MatrixUnsafeItem.tipo_accion(item.tip_action) %></td>
-                    
-                    <% if item.state_unsafe == 0  %>
-                         <td style="border:1px solid black; text-align:center; background-color:#F03553"><%= MatrixUnsafeItem.estado(item.state_unsafe) %></td>
-                    <% end  %>    
-                    <% if item.state_unsafe == 1  %>
-                         <td style="border:1px solid black; text-align:center; background-color:#038018"><%= MatrixUnsafeItem.estado(item.state_unsafe) %></td>
-                    <% end  %>    
-                    <td style="border:1px solid black; text-align:center"><%= item.date_intervencion %></td>
-
-                    
-                    <td style="border:1px solid black"><%= item.observations %></td>
-                    <td style="border:1px solid black; text-align:center;"><%= link_to t('common.edit'), edit_matrix_unsafe_item_path(item), class: 'btn btn-sm btn-primary'  %></td>
-                    <td style="border:1px solid black; text-align:center;"><%= link_to "PDF", matrix_unsafe_item_pdf_path(item, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
-                    <td style="border:1px solid black; text-align:center;"><%= button_to "Delete", matrix_unsafe_item_path(item), method: :delete, class:"btn btn-sm btn-danger" %></td>
-                                            
-                    <td style="background-color: black;">&nbsp;</td>
-                </tr>
-            </body>
+<div class="container-fluid mb-4">
+    <div class="col-12 col-lg-2 text-center mb-3 mb-lg-0">
+        <%= link_to root_path, class: "navbar-brand" do %>
+            <%= image_tag "LogoConesst202305232.png", class: "img-fluid", style: "max-height:100px;" %>
         <% end %>
-        <tr>
-            <td style="background-color: black;">&nbsp;<br>&nbsp;<br>&nbsp;<br></td>
-            <td colspan="8"; style="border:1px solid black; text-align:center">&nbsp;
-                <% if @matrix_condition.firm_responsible == 1 %>
-                    <% if @res.present? %>
-                        <% if @res.firm.attached? %>
-                           <% if @res.firm.image? %> 
-                                <%= image_tag @res.firm, class: "firma" %>
-                           <% end %>
-                        <% end %>
-                    <% end %> 
-                <% else %>
-                   <div></br></div>         
-                <% end %>      
-            </td>
-            <td colspan="8"; style="border:1px solid black; text-align:center">&nbsp;
-                <% if @matrix_condition.firm_representante == 1 %>
-                    <% if @adv.present? %>
-                        <% if @adv.firm.attached? %>
-                            <% if @adv.firm.image? %> 
-                                <%= image_tag @adv.firm, class: "firma" %>
-                            <% end %>
-                        <% end %>
-                    <% end %>     
-                <% else %>
-                    <div></br></div>         
-                <% end %>     
-            </td>
-            <td style="background-color: black;">&nbsp;</td>
-        </tr>
-        <tr>
-            <td style="background-color: black;">&nbsp;</td>
-            <td colspan="8"; style="border:1px solid black; text-align:center"><%= MatrixCondition.name_user(@matrix_condition.user_responsible) %> - Responsable del SST</td>
-            <td colspan="8"; style="border:1px solid black; text-align:center"><%= MatrixCondition.name_user(@matrix_condition.user_representante) %> - Asesor del SST</td>
-            <td style="background-color: black;">&nbsp;</td>
-        </tr>
-
-    </table>  
-    </br>
-</div>    
+    </div>
+    <div class="row align-items-center">
+        <div class="col-12 col-lg-2 text-center mb-3 mb-lg-0">
+            <% if @matrix_condition.entity.logo.present? %>
+                <%= image_tag @matrix_condition.entity.logo, class: "img-fluid", style: "max-height:90px;" %>
+            <% end %>
+        </div>
+        <div class="col-12 col-lg-7 text-center">
+            <h3 class="fw-bold mb-2">
+                MATRIZ DE SEGUIMIENTO DE ACTOS Y CONDICIONES INSEGURAS
+            </h3>
+            <h5 class="mb-1">
+                <%= @matrix_condition.entity.business_name %>
+            </h5>
+            <small class="text-muted"> 
+                NIT: <%= @matrix_condition.entity.identification_number %>-<%= @matrix_condition.entity.verification_digit if @matrix_condition.entity.verification_digit.present? %>
+            </small>
+        </div>
+        <div class="col-12 col-lg-3">
+            <div class="row">
+                <div class="col-7 fw-bold">Fecha creación:</div>
+                <div class="col-5"><%= @template.date %></div>
+            </div>
+            <div class="row">
+                <div class="col-7 fw-bold">Actualización:</div>
+                <div class="col-5"><%= @template.date_updated %></div>
+            </div>
+            <div class="row">
+                <div class="col-7 fw-bold">Versión:</div>
+                <div class="col-5"><%= @template.version %></div>
+            </div>
+            <div class="row">
+                <div class="col-7 fw-bold">Código:</div>
+                <div class="col-5"><%= @template.reference %></div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="card shadow">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-primary">
+                    <tr>
+                        <td style="border:1px solid black; text-align:center">N°</TD>
+                        <td style="border:1px solid black; text-align:center">Fecha reporte</TD>
+                        <td style="border:1px solid black; text-align:center">Nombre  completo de quien reporta</TD>
+                        <td style="border:1px solid black; text-align:center">Cargo de quien reporta</TD>
+                        <td style="border:1px solid black; text-align:center">Correo electrónico</TD>
+                        <td style="border:1px solid black; text-align:center">Sede del reporte</TD>
+                        <td style="border:1px solid black; text-align:center">Ubicación  exacta de la condición /acto inseguro</TD>
+                        <td style="border:1px solid black; text-align:center">Descripción de la condición / acto inseguro</TD>
+                        <td style="border:1px solid black; text-align:center">Clasificación</TD>
+                        <td style="border:1px solid black; text-align:center">Tipo de acción</TD>
+                        <td style="border:1px solid black; text-align:center">Estado</TD>
+                        <td style="border:1px solid black; text-align:center">Fecha de intervención</TD>
+                        <td style="border:1px solid black; text-align:center">Observaciones</TD>
+                        <td style="border:1px solid black; text-align:center">Editar</TD>
+                        <td style="border:1px solid black; text-align:center">PDF</TD>
+                        <td style="border:1px solid black; text-align:center">Eliminar</TD>
+                    </tr>
+                </thead>
+                <% @numero = 0 %>          
+                <% @matrix_unsafe_items.each do |item| %>   
+                    <% @numero += 1 %>          
+                    <tbody>
+                        <tr>
+                            <td style="border:1px solid black; text-align:center"><%= @numero %></td>
+                            <td style="border:1px solid black"><%= item.date_item %></td>
+                            <td style="border:1px solid black"><%= MatrixUnsafeItem.name_user(item.user_reporta) %></td>
+                            <td style="border:1px solid black"><%= User.label_activity(item.cargo_reporta) %></td>
+                            <td style="border:1px solid black"><%= item.correo_reporta %></td>
+                            <td style="border:1px solid black"><%= item.sede %></td>
+                            <td style="border:1px solid black"><%= item.exact_ubication %></td>
+                            <td style="border:1px solid black"><%= item.description_usafe %></td>
+                            <td style="border:1px solid black"><%= MatrixUnsafeItem.clasificacion_accion(item.clasification_unsafe) %></td>
+                            <td style="border:1px solid black"><%= MatrixUnsafeItem.tipo_accion(item.tip_action) %></td>
+                            <% if item.state_unsafe == 0  %>
+                                 <td style="border:1px solid black; text-align:center; background-color:#F03553"><%= MatrixUnsafeItem.estado(item.state_unsafe) %></td>
+                            <% end  %>    
+                            <% if item.state_unsafe == 1  %>
+                                <td style="border:1px solid black; text-align:center; background-color:#038018"><%= MatrixUnsafeItem.estado(item.state_unsafe) %></td>
+                            <% end  %>    
+                            <td style="border:1px solid black; text-align:center"><%= item.date_intervencion %></td>
+                            <td style="border:1px solid black"><%= item.observations %></td>
+                            <td style="border:1px solid black; text-align:center;">
+                                <% if Current.user.level > 0 && Current.user.level < 4 %>
+                                    <%= link_to edit_matrix_unsafe_item_path(item), class:"btn btn-warning btn-sm", title: "Editar", data: { bs_toggle: "tooltip" } do %>
+                                        <i class="bi bi-pencil-square"></i>
+                                    <% end %>  
+                                <% end %>    
+                            </td>
+                            <td style="border:1px solid black; text-align:center;">
+                                <%= link_to matrix_unsafe_item_pdf_path(item, format: 'pdf'), class: "btn btn-danger btn-sm me-2", title: "PDF", data: { bs_toggle: "tooltip" } do %>
+                                    <i class="bi-file-earmark-pdf"></i><span class="d-none d-md-inline"></span>
+                                <% end %>
+                            </td>
+                            <td style="border:1px solid black; text-align:center;">
+                                <% if Current.user.level > 0 && Current.user.level < 4 %>
+                                    <%= button_to item, method: :delete, title: "Eliminar", class:"btn btn-danger btn-sm", form: {data: {turbo_confirm:"¿Desea eliminar este registro? Esta acción no se puede deshacer.", bs_toggle: "tooltip"}} do %>
+                                        <i class="bi bi-trash"></i>
+                                    <% end %>
+                                <% end %>    
+                            </td>
+                        </tr>
+                    </tbody>
+                <% end %>
+            </table>
+        </div>
+    </div>
+    <hr class="my-5">
+    <div class="container-fluid">
+        <div class="row text-center align-items-start">
+        <!-- Asesor SG-SST -->
+        <div class="col-12 col-md-6 mb-5">
+            <div style="height: 90px; display: flex; align-items: center; justify-content: center;">
+                <% if @matrix_condition.firm_representante == 1 && @adv.present? &&@adv.firm.attached? && @adv.firm.image? %>
+                    <%= image_tag @adv.firm, style: "max-height:90px; max-width:100%; object-fit:contain;" %>
+                <% end %>
+            </div>
+            <hr class="my-1">
+            <strong>
+                <%= MatrixCondition.name_user(@matrix_condition.user_representante) %>
+            </strong>
+            <br>
+            <small class="text-muted">
+                Asesor SG-SST
+            </small>
+        </div>
+        <!-- Responsable SST -->
+        <div class="col-12 col-md-6 mb-5">
+            <div style="height: 90px; display: flex; align-items: center; justify-content: center;">
+                <% if @matrix_condition.firm_responsible == 1 && @res.present? && @res.firm.attached? && @res.firm.image? %>
+                    <%= image_tag @res.firm, style: "max-height:90px; max-width:100%; object-fit:contain;" %>
+                <% end %>
+            </div>
+            <hr class="my-1">
+            <strong>
+                <%= MatrixCondition.name_user(@matrix_condition.user_responsible)  %>
+            </strong>
+            <br>
+            <small class="text-muted">
+                Responsable SST
+            </small>
+        </div>
+    </div>
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <div class="d-flex flex-wrap justify-content-center gap-2">
+                <%= link_to matrix_conditions_path(entity_id: @matrix_condition.entity_id), class:"btn btn-secondary" do %>
+                    <i class="bi bi-arrow-left-circle"></i>Retornar
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>

@@ -47,17 +47,24 @@ class MatrixUnsafeItemsController < ApplicationController
         @recibe = User.find(@unsafe_condition.user_receiving) if  @unsafe_condition.user_receiving.present? && @unsafe_condition.user_receiving > 0
         @coordinador = User.find(@unsafe_condition.user_coordinator) if  @unsafe_condition.user_coordinator.present? && @unsafe_condition.user_coordinator > 0
 
+
+        nombre_evidencia = @template.reference.to_s + '.pdf'
+
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'matrix_unsafe_item_pdf',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
+            format.pdf {
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('matrix_unsafe_item_pdf'),
+                    zoom: 1,
+                    disable_javascript: true,
+                    margin: {top: 10, bottom: 10, left: 5, right: 5 },
+                    page_size: 'letter',
+                    footer: {right: '[page] de [topage]'}
+                    
+                  )  
+                  send_data(pdf, filename: nombre_evidencia, disposition: 'attachment')      
+            }
+        end    
 
     end    
 

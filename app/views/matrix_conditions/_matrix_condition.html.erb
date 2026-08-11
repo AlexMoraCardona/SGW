@@ -1,107 +1,293 @@
-<%= javascript_include_tag "https://www.google.com/jsapi" %>
-<%= wicked_pdf_javascript_include_tag "chartkick" %>
-<%= wicked_pdf_javascript_include_tag "application", "chartkick" %>
+    <%# =======================================================
+       CÁLCULO DE ESTADÍSTICAS
+       ======================================================= %>
+    <%
+        total_a  = 0
+        total_a  = @actos.count if  @actos.present?
+        aa       = @actos.where("state_unsafe = ?",0).count if @actos.present?
+        ac       = @actos.where("state_unsafe = ?",1).count if @actos.present?
+        total_c  = 0
+        total_c  = @condiciones.count if  @condiciones.present?
+        ca       = @condiciones.where("state_unsafe = ?",0).count if @condiciones.present?
+        cc       = @condiciones.where("state_unsafe = ?",1).count if @condiciones.present?
+        total    = 0
+        total    = @matrix_unsafe_items.count if @matrix_unsafe_items.present?
+        totalc   = @matrix_unsafe_items.where("state_unsafe = ?",1).count if @matrix_unsafe_items.present?
 
-<% if @entity.present? %>
-    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
-<% end %>
- 
-<% if @matrix_condition.present? %> 
-    <td><%= link_to t('common.show_matrix_condition'), matrix_condition_path(@matrix_condition.id), class: 'btn btn-sm btn btn-warning' %></td>
-    <td><%= link_to t('common.crear_acto'), crear_item_condition_path(@matrix_condition.id), class: 'btn btn-sm btn btn-warning' %></td>
-    <td><%= link_to "PDF", condition_pdf_path(@matrix_condition.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
-    
-    <div class="container col-12">
-        <br>
-        <div class="row g-2">
-            <div class="col-sm-3">
-                <strong>Fecha de creación</strong><br>
-                <%= @matrix_condition.date_unsafe %> 
-            </div>        
+        porcentajea = total_a.zero? ? 0 :((ac.to_f / total_a.to_f) * 100).round 
+        porcentajec = total_c.zero? ? 0 :((cc.to_f / total_c.to_f) * 100).round 
+        porcentaje = total.zero? ? 0 : ((totalc.to_f / total.to_f) * 100).round
+    %>
+
+<div class="container-fluid py-4">   
+    <% if @matrix_condition.present? %> 
+        <!-- =======================================================
+             ENCABEZADO
+            ======================================================= -->
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+                <div class="row align-items-center g-3">
+                    <div class="col-12 col-lg-7">
+                        <div align="left"; class="container col-12">
+                            <a class="navbar-brand" href="/">
+                                <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+                            </a>
+                        </div>
+                        <h2 class="fw-bold mb-2 text-primary">
+                            <%= @entity.business_name %>
+                        </h2>
+                        <div class="text-muted">
+                            <strong>NIT:</strong>
+                            <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>
+                            <% if @entity.verification_digit.present? %>
+                                -<%= @entity.verification_digit %>
+                            <% end %>
+                        </div>
+                        <!-- ========================= -->
+                        <!-- TABLA PARA PC -->
+                        <!-- ========================= -->
+                        <div class="d-none d-lg-block">
+                            <div class="btn-group gap-2" role="group">
+                                <%= link_to matrix_condition_path(@matrix_condition.id), class: "btn btn-primary btn-sm text-white me-2", title: "Ver", data: { bs_toggle: "tooltip" } do %>
+                                    <i class="bi bi-eye"></i><span class="d-none d-md-inline"><%= t('common.show_matrix_condition') %></span>
+                                <% end %>
+                                <%= link_to condition_pdf_path(@matrix_condition.id, format: 'pdf'), class: "btn btn-danger btn-sm me-2", title: "PDF", data: { bs_toggle: "tooltip" } do %>
+                                    <i class="bi-file-earmark-pdf"></i><span class="d-none d-md-inline">PDF</span>
+                                <% end %>
+                            </div>
+                        </div>
+                        <!-- ========================= -->
+                        <!-- VERSION CELULAR -->
+                        <!-- ========================= -->
+                        <div class="d-lg-none">
+                            <div class="d-grid gap-2">
+                                <%= link_to matrix_condition_path(@matrix_condition.id), class: "btn btn-primary btn-sm text-white me-2", title: "Ver", data: { bs_toggle: "tooltip" } do %>
+                                    <i class="bi bi-eye"></i><span class="d-none d-md-inline"><%= t('common.show_matrix_condition') %></span>
+                                <% end %>
+                                <%= link_to condition_pdf_path(@matrix_condition.id, format: 'pdf'), class: "btn btn-danger btn-sm me-2", title: "PDF", data: { bs_toggle: "tooltip" } do %>
+                                    <i class="bi-file-earmark-pdf"></i><span class="d-none d-md-inline">PDF</span>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-5">
+                        <div class="small">
+                            <div class="mb-2">
+                                <strong>Fecha de creación</strong>
+                                <div class="text-muted">
+                                    <%= @matrix_condition.date_unsafe.strftime("%F") if @matrix_condition.date_unsafe.present? %> 
+                                </div>
+                                <strong>Fecha de actualización</strong>
+                                <div class="text-muted">
+                                    <%= @matrix_condition.updated_at.strftime("%F") if @matrix_condition.updated_at.present? %> 
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <strong>Asesor SST</strong>
+                                <div class="text-muted">
+                                    <%=  MatrixCondition.name_user(@matrix_condition.user_representante)  %>
+                                </div>
+                            </div>
+                            <div>
+                                <strong>Firma</strong>
+                                <div class="text-muted">
+                                    <% if @matrix_condition.firm_representante.to_i == 0 %> 
+                                            <%= link_to firmar_representante_path(@matrix_condition.id, 1), class: "btn btn-sm fw-semibold", style: "background-color: #145a72; color: white;", title: t('common.firmar'), data: { bs_toggle: "tooltip" } do %>
+                                                <i class="bi bi-pen-fill me-2"></i>
+                                                <%= t('common.firmar') %>
+                                            <% end %>
+                                    <% else %>
+                                           <%= @matrix_condition.date_firm_representante if @matrix_condition.date_firm_representante.present? %>                                 
+                                    <% end %>    
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <strong>Responsable SST</strong>
+                                <div class="text-muted">
+                                    <%=  MatrixCondition.name_user(@matrix_condition.user_responsible)  %>
+                                </div>
+                            </div>
+                            <div>
+                                <strong>Firma</strong>
+                                <div class="text-muted">
+                                    <% if @matrix_condition.firm_responsible.to_i == 0 %>
+                                        <%= link_to firmar_responsible_path(@matrix_condition.id, 2), class: "btn btn-sm fw-semibold", style: "background-color: #145a72; color: white;", title: t('common.firmar'), data: { bs_toggle: "tooltip" } do %>
+                                            <i class="bi bi-pen-fill me-2"></i>
+                                            <%= t('common.firmar') %>
+                                        <% end %>
+                                    <% else %>
+                                           <%= @matrix_condition.date_firm_responsible if @matrix_condition.date_firm_responsible.present? %>                                 
+                                    <% end %>    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="row g-4">
-            <div class="col-sm-3">
-                <strong><%= t('.user_responsible') %></strong><br>
-                <%=  MatrixCondition.name_user(@matrix_condition.user_responsible)  %> 
-            </div>        
-            <div class="col-sm-1">
-                <% if @matrix_condition.firm_responsible.to_i == 0 %>
-                    <%= link_to t('common.firmar'), firmar_responsible_path(@matrix_condition.id, 2), class: 'btn btn-sm btn btn-warning' %>
-                <% end %>    
-            </div>        
-
-            <div class="col-sm-3">
-                <strong>Asesor</strong><br>
-                <%=  MatrixCondition.name_user(@matrix_condition.user_representante)  %> 
-            </div>        
-            <div class="col-sm-1">
-                <% if @matrix_condition.firm_representante.to_i == 0 %>
-                    <%= link_to t('common.firmar'), firmar_representante_path(@matrix_condition.id, 1), class: 'btn btn-sm btn btn-warning' %>
-                <% end %>    
-            </div>        
-        </div> 
-        <div class="row g-3">
-            <div class="col-sm-5">
-                <%= pie_chart  @datos_matrix_conditions, title: "Matriz de Condiciones Inseguras", download: {filename: "GraficaCiclo"}, download: {background: "#FFFFFF"}, xtitle: "Cerrados", ytitle: "Abiertos", suffix: "Condiciones", colors: ["#008000", "#FF0000"], donut: true, label: 'true', width: "200px", height: "200px", legend: "bottom", loading: "Loading..."  if @datos_matrix_conditions.present? %>
+        <!-- =======================================================
+             RESUMEN
+            ======================================================= -->
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-lg-3">
+                <div class="card text-center border-danger shadow-sm h-100">
+                    <div class="card-body">
+                        <h2 class="text-danger mb-0">
+                            <%= total_a %>
+                        </h2>
+                        <div class="fw-semibold text-danger">
+                            <a href="<%= total_actos_conditions_path(@matrix_condition.id, 1)%>" class="link-danger">
+                                Actos Inseguros
+                            </a>        
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <h5 class="mb-0">
+                                Gestión Actos Inseguros
+                            </h5>
+                            <strong>
+                                <%= porcentajea %>%
+                            </strong>
+                        </div>
+                        <div class="progress" style="height:28px;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width:<%= porcentajea %>%">
+                                <%= ac %> / <%= total_a %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-sm-1">
+            <div class="col-6 col-lg-3">
+                <div class="card text-center border-danger shadow-sm h-100">
+                    <div class="card-body">
+                        <h2 class="text-danger mb-0">
+                            <%= total_c %>
+                        </h2>
+                        <div class="fw-semibold text-danger">
+                            <a href="<%= total_actos_conditions_path(@matrix_condition.id, 0)%>" class="link-danger">                    
+                                Condiciones Inseguras
+                            </a>    
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <h5 class="mb-0">
+                                Gestión Condiciones Inseguras
+                            </h5>
+                            <strong>
+                                <%= porcentajec %>%
+                            </strong>
+                        </div>
+                        <div class="progress" style="height:28px;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width:<%= porcentajec %>%">
+                                <%= cc %> / <%= total_c %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-sm-5">
-                <br>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Total de Condiciones Inseguras</th>
-                            <th scope="col">Abiertas</th>
-                            <th scope="col">Cerradas</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+        </div>
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-2">
+                    <h5 class="mb-0">
+                        Gestión Total
+                    </h5>
+                    <strong>
+                        <%= porcentaje %>%
+                    </strong>
+                </div>
+                <div class="progress" style="height:28px;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width:<%= porcentaje %>%">
+                        <%= totalc %> / <%= total %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-7">
+            <h3 class="fw-bold mb-2 text-primary">
+                Condiciones y Actos Inseguros
+            </h3>
+        </div>    
+       <div class="table-responsive">
+            <table class="table table-bordered table-sm align-middle text-center">
+                <thead class="table-light">
+                    <tr>
+                        <th>
+                            Fecha
+                        </th>
+                        <th>
+                            Usuario que reporta
+                        </th>
+                        <th>
+                            Cargo de quien reporta
+                        </th>
+                        <th>
+                            Descripción de la condición / acto inseguro
+                        </th>
+                        <th>
+                            Clasificación
+                        </th>
+                        <th>
+                            Estado
+                        </th>
+                        <th style="min-width:45px;">
+                            Acciones
+                        </th>
+                    </tr>    
+                </thead>
+                <tbody>
+                    <% @nro = 0 %>
+                    <% if @matrix_unsafe_items.present? %>
+                        <% @matrix_unsafe_items.each do |matrix_unsafe_item| %>
                             <tr>
-                                <td style="text-align:center"><%= @total_conditions %></td>
-                                <td style="text-align:center"><%= @abierta_conditions %></td>
-                                <td style="text-align:center"><%= @cerrada_conditions %></td>
-                            </tr>    
-                    </tbody>
-                </table>
-            </div>
-        </div>        
-
-        <div class="row g-3">
-            <div class="col-sm-5">
-                <%= pie_chart  @datos_matrix_actos, title: "Matriz de Actos Inseguros", download: {filename: "GraficaCiclo"}, download: {background: "#FFFFFF"}, xtitle: "Cerrados", ytitle: "Abiertos", suffix: "Actos", colors: ["#008000", "#FF0000"], donut: true, label: 'true', width: "200px", height: "200px", legend: "bottom", loading: "Loading..."  if @datos_matrix_actos.present? %>
-            </div>
-            <div class="col-sm-1">
-            </div>
-            <div class="col-sm-5">
-                <br>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Total de Actos Inseguros</th>
-                            <th scope="col">Abiertos</th>
-                            <th scope="col">Cerrados</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                            <tr>
-                                <td style="text-align:center"><%= @total_actos %></td>
-                                <td style="text-align:center"><%= @abierta_actos %></td>
-                                <td style="text-align:center"><%= @cerrada_actos %></td>
-                            </tr>    
-                    </tbody>
-                </table>
-            </div>
-        </div>        
-
-    </div>           
-    <br> 
-    <hr>
-<% else %>
-    <div>
-        <%= link_to t('common.create_matrix_condition'), new_matrix_condition_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level < 3 %>
+                                <td class="text-center">
+                                    <small><%= matrix_unsafe_item.date_item.strftime("%F") if matrix_unsafe_item.date_item.present? %></small>
+                                </td>
+                                <td>
+                                    <small><%= MatrixCondition.name_user(matrix_unsafe_item.user_reporta) %></small>
+                                </td>
+                                <td class="text-center">
+                                    <small><%= CompanyPosition.name_cargo(matrix_unsafe_item.cargo_reporta)  %></small>
+                                </td>
+                                <td class="text-center">
+                                    <small><button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="<%= matrix_unsafe_item.description_usafe %>"><%= matrix_unsafe_item.description_usafe.slice(0, 20) %>...</button></small>
+                                </td>
+                                <td class="text-center">
+                                    <small><%= MatrixUnsafeItem.clasificacion_accion(matrix_unsafe_item.clasification_unsafe)%></small>
+                                </td>
+                                <td class="text-center">
+                                    <small><%= MatrixUnsafeItem.estado(matrix_unsafe_item.state_unsafe)%></small>
+                                </td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-4 mt-3">
+                                        <% if Current.user.level > 0 && Current.user.level < 4 %>
+                                            <%= link_to edit_matrix_unsafe_item_path(matrix_unsafe_item.id), class: "btn btn-warning btn-sm text-white me-2", title: "Editar", data: { bs_toggle: "tooltip" } do %>
+                                                <i class="bi bi-pencil"></i><span class="d-none d-md-inline"><%= t('common.update_matrix_danger_item') %></span>
+                                            <% end %>
+                                            <%= link_to matrix_unsafe_item, class: "btn btn-danger", title: "Eliminar", data: {turbo_method: :delete, turbo_confirm: "¿Está seguro de eliminar este registro? Esta acción no se puede deshacer.", bs_toggle: "tooltip"} do %>
+                                                <i class="bi bi-trash"></i><span class="d-none d-md-inline">Eliminar</span>
+                                            <% end %>
+                                        <% end  %>    
+                                    </div>
+                                </td>
+                            </tr>
+                        <% end %>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+    <% else %>
+        <div>
+            <%= link_to t('common.create_matrix_condition'), new_matrix_condition_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level < 3 %>
+        </div>
+    <% end %>
+    <div class="card-body">
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+            <%= link_to :back, class:"btn btn-secondary" do %>
+                <i class="bi bi-arrow-left-circle"></i>Retornar
+            <% end %>
+        </div>
     </div>
-<% end %>
-
-
+</div>

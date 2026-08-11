@@ -206,6 +206,7 @@ Rails.application.routes.draw do
   get '/matrix_conditions/crear_item_condition/:id', to: 'matrix_conditions#crear_item_condition', as: 'crear_item_condition'
   get '/matrix_conditions/firmar_representante/:id', to: 'matrix_conditions#firmar_representante', as: 'firmar_representante'
   get '/matrix_conditions/firmar_responsible/:id', to: 'matrix_conditions#firmar_responsible', as: 'firmar_responsible'
+  get '/matrix_conditions/total_actos_conditions/:id', to: 'matrix_conditions#total_actos_conditions', as: 'total_actos_conditions'
   get '/unsafe_conditions/firmar_reporta/:id', to: 'unsafe_conditions#firmar_reporta', as: 'firmar_reporta'
   get '/unsafe_conditions/firmar_recibe/:id', to: 'unsafe_conditions#firmar_recibe', as: 'firmar_recibe'
   get '/working_conditions/edit_item/:id', to: 'working_conditions#edit_item', as: 'edit_item_working_condition'

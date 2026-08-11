@@ -4,14 +4,19 @@ class MatrixConditionsController < ApplicationController
             if params[:entity_id].present?
                 @entity = Entity.find(params[:entity_id].to_i)
                 @matrix_condition = MatrixCondition.find_by(entity_id: params[:entity_id].to_i)
-                indicador_matrix_condition(@matrix_condition.id) if @matrix_condition.present?
+                @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", @matrix_condition.id) if @matrix_condition.present?
+                @condiciones = @matrix_unsafe_items.where("clasification_unsafe = ?",0) if @matrix_unsafe_items.present?  
+                @actos = @matrix_unsafe_items.where("clasification_unsafe = ?",1)  if @matrix_unsafe_items.present?
             else 
                 @entities = Entity.all
             end    
         elsif Current.user && Current.user.level > 2 
             @entity = Entity.find(Current.user.entity)
             @matrix_condition = MatrixCondition.find_by(entity_id: Current.user.entity)
-            indicador_matrix_condition(@matrix_condition.id) if @matrix_condition.present?
+            @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", @matrix_condition.id) if @matrix_condition.present?
+            @condiciones = @matrix_unsafe_items.where("clasification_unsafe = ?",0) if @matrix_unsafe_items.present?  
+            @actos = @matrix_unsafe_items.where("clasification_unsafe = ?",1)  if @matrix_unsafe_items.present?
+
         else
             redirect_to new_session_path, alert: t('common.not_logged_in')    
             session.delete(:user_id)  
@@ -23,6 +28,8 @@ class MatrixConditionsController < ApplicationController
     def show
         @matrix_condition = MatrixCondition.find(params[:id])
         @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", @matrix_condition.id) if @matrix_condition.present?
+        @condiciones  =    @matrix_unsafe_items.where("clasification_unsafe = ?",0) if @matrix_unsafe_items.present?  
+        @actos  =    @matrix_unsafe_items.where("clasification_unsafe = ?",1)  if @matrix_unsafe_items.present?
         @template = Template.where("format_number = ? and document_vigente = ?",65,1).last  
         @adv = User.find(@matrix_condition.user_representante) if  @matrix_condition.user_representante.present? && @matrix_condition.user_representante > 0
         @res = User.find(@matrix_condition.user_responsible) if  @matrix_condition.user_responsible.present? && @matrix_condition.user_responsible > 0
@@ -40,21 +47,25 @@ class MatrixConditionsController < ApplicationController
         @template = Template.where("format_number = ? and document_vigente = ?",65,1).last  
         @adv = User.find(@matrix_condition.user_representante) if  @matrix_condition.user_representante.present? && @matrix_condition.user_representante > 0
         @res = User.find(@matrix_condition.user_responsible) if  @matrix_condition.user_responsible.present? && @matrix_condition.user_responsible > 0
+ 
+        nombre_evidencia = @template.reference.to_s + '.pdf'
 
         respond_to do |format| 
-            format.html 
-            format.pdf {render  pdf: 'ver_matrix_condition',
-                orientation: 'Landscape',
-                zoom: 0.80,
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
-      
+            format.html
+            format.pdf {
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('condition_pdf'),
+                    zoom: 0.80,
+                    disable_javascript: true,
+                    margin: {top: 10, bottom: 10, left: 5, right: 5 },
+                    page_size: 'letter',
+                    footer: {right: '[page] de [topage]'}
+                    
+                  )  
+                  send_data(pdf, filename: nombre_evidencia, disposition: 'attachment')      
+            }
+        end    
+   
     end    
 
 
@@ -126,49 +137,11 @@ class MatrixConditionsController < ApplicationController
             end    
         end
     end  
-  
-    def indicador_matrix_condition(matrix_condition_id)
-        @total_items = 0
-        @abierta_conditions = 0
-        @cerrada_conditions = 0
-        @total_conditions = 0
-        @total_actos = 0
-        @abierta_actos = 0
-        @cerrada_actos = 0
 
-
-        @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", matrix_condition_id) if matrix_condition_id.present?
-        
-        if @matrix_unsafe_items.present? 
-            @matrix_unsafe_items.each do |item| 
-                if item.clasification_unsafe == 0;
-                    @total_conditions += 1 
-                    if item.state_unsafe == 0; @abierta_conditions += 1
-                    else @cerrada_conditions += 1    
-                    end
-                end    
-            end    
-        end 
-        @datos_matrix_conditions = []
-        @datos_matrix_conditions.push(['Cerradas', @cerrada_conditions ])
-        @datos_matrix_conditions.push(['Abiertas', @abierta_conditions ])
-
-        if @matrix_unsafe_items.present? 
-            @matrix_unsafe_items.each do |item| 
-                if item.clasification_unsafe == 1;
-                    @total_actos += 1 
-                    if item.state_unsafe == 0; @abierta_actos += 1
-                    else @cerrada_actos += 1    
-                    end
-                end    
-            end    
-        end 
-        @datos_matrix_actos = []
-        @datos_matrix_actos.push(['Cerradas', @cerrada_actos ])
-        @datos_matrix_actos.push(['Abiertas', @abierta_actos ])
-
+    def total_actos_conditions
+        @matrix_condition = MatrixCondition.find(params[:id])
+        @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", @matrix_condition.id) if @matrix_condition.present?
     end    
-
 
     private
 

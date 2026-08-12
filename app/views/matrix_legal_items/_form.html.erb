@@ -1,93 +1,250 @@
-<div class="container col-11 card p-5">
-    <br>
-    <%= form_with model: @matrix_legal_item do |form| %>
-        <% @matrix_legal_item.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %> 
+<div class="container-fluid px-2 px-md-4 py-3">
+    <div class="card shadow-sm mx-auto" style="max-width: 1100px;">
+        <div class="card-header bg-light border-bottom">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-journal-text fs-4 text-primary"></i>
+                <h5 class="mb-0">
+                    Requisito Legal
+                </h5>
             </div>
-        <% end %>
-
-        <div class="form-group">    
-            <%= form.label :risk_factor,  style: "display: block" %>
-            <%= form.text_field :risk_factor,  class: "form-control" %>
         </div>
-
-        <div class="form-group">    
-            <%= form.label :issuing_entity,  style: "display: block" %>
-            <%= form.text_field :issuing_entity,  class: "form-control" %>
+        <div class="card-body p-3 p-md-4">
+            <%= form_with model: @matrix_legal_item do |form| %>
+                <% if @matrix_legal_item.errors.any? %>
+                    <div class="alert alert-danger" role="alert">
+                        <div class="fw-bold mb-2">
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                            Se encontraron los siguientes errores:
+                        </div>
+                        <ul class="mb-0 ps-3">
+                            <% @matrix_legal_item.errors.full_messages.each do |error| %>
+                                <li><%= error %></li>
+                            <% end %>
+                        </ul>
+                    </div>
+                <% end %>
+                <div class="row g-4">
+                    <div class="col-12 col-md-6">
+                        <%= form.label :risk_factor, class: "form-label fw-semibold" do %>
+                            <i class="bi bi-exclamation-triangle text-primary me-1"></i>
+                            <%= form.object.class.human_attribute_name(:risk_factor) %>
+                        <% end %>
+                        <%= form.text_field :risk_factor, class: "form-control" %>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <%= form.label :issuing_entity, class: "form-label fw-semibold" do %>
+                            <i class="bi bi-building text-primary me-1"></i>
+                            <%= form.object.class.human_attribute_name(:issuing_entity) %>
+                        <% end %>
+                        <%= form.text_field :issuing_entity, class: "form-control" %>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <%= form.label :requirement, class: "form-label fw-semibold" do %>
+                            <i class="bi bi-list-check text-primary me-1"></i>
+                            <%= form.object.class.human_attribute_name(:requirement) %>
+                        <% end %>
+                        <%= form.text_field :requirement, class: "form-control" %>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <%= form.label :rule_name, class: "form-label fw-semibold" do %>
+                              <i class="bi bi-file-earmark-text text-primary me-1"></i>
+                              <%= form.object.class.human_attribute_name(:rule_name) %>
+                        <% end %>
+                        <%= form.text_field :rule_name, class: "form-control" %>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <%= form.label :applicable_article, class: "form-label fw-semibold" do %>
+                            <i class="bi bi-bookmark text-primary me-1"></i>
+                            <%= form.object.class.human_attribute_name(:applicable_article) %>
+                        <% end %>
+                        <%= form.text_field :applicable_article,  class: "form-control" %>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <%= form.label :evidence_compliance, class: "form-label fw-semibold" do %>
+                            <i class="bi bi-file-earmark-check text-primary me-1"></i>
+                            <%= form.object.class.human_attribute_name(:evidence_compliance) %>
+                        <% end %>
+                        <%= form.text_field :evidence_compliance, class: "form-control" %>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <%= form.label :responsible, class: "form-label fw-semibold" do %>
+                              <i class="bi bi-person-check text-primary me-1"></i>
+                              <%= form.object.class.human_attribute_name(:responsible) %>
+                        <% end %>
+                        <%= form.text_field :responsible, class: "form-control" %>
+                    </div>
+                    <div class="col-12">
+                        <%= form.label :description_compliance,  class: "form-label fw-semibold" do %>
+                            <i class="bi bi-card-text text-primary me-1"></i>
+                            <%= form.object.class.human_attribute_name(:description_compliance) %>
+                        <% end %>
+                        <%= form.text_area :description_compliance,  class: "form-control", rows: 4 %>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <%= form.label :fec_norma, class: "form-label fw-semibold" do %>
+                            <i class="bi bi-calendar3 text-primary me-1"></i>
+                            <%= form.object.class.human_attribute_name(:fec_norma) %>
+                        <% end %>
+                        <%= form.date_field :fec_norma, class: "form-control" %>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <%= form.label :year, class: "form-label fw-semibold" do %>
+                              <i class="bi bi-calendar-range text-primary me-1"></i>
+                              <%= form.object.class.human_attribute_name(:year) %>
+                        <% end %>
+                        <%= form.number_field :year, class: "form-control" %>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-semibold d-block">
+                            <i class="bi bi-clipboard-check text-primary me-1"></i>
+                              Cumplimiento
+                        </label>
+                        <div class="row g-2">
+                            <!-- NO -->
+                            <div class="col-12 col-md-4">
+                                <%= form.radio_button :meets, 0, class: "btn-check", id: "meets_no" %>
+                                <%= form.label :meets, "NO (0%)", value: 0, for: "meets_no", class: "btn btn-outline-danger w-100 py-2" do %>
+                                    <i class="bi bi-x-circle me-1"></i>
+                                    NO (0%)
+                                <% end %>
+                            </div>
+                            <!-- PARCIAL -->
+                            <div class="col-12 col-md-4">
+                                <%= form.radio_button :meets, 1, class: "btn-check", id: "meets_partial" %>
+                                <%= form.label :meets, "PARCIAL (50%)", value: 1, for: "meets_partial", class: "btn btn-outline-warning w-100 py-2" do %>
+                                    <i class="bi bi-dash-circle me-1"></i>
+                                    PARCIAL (50%)
+                                <% end %>
+                            </div>
+                            <!-- SI -->
+                            <div class="col-12 col-md-4">
+                                <%= form.radio_button :meets, 2, class: "btn-check", id: "meets_yes" %>
+                                <%= form.label :meets, "SI (100%)", value: 2, for: "meets_yes", class: "btn btn-outline-success w-100 py-2" do %>
+                                    <i class="bi bi-check-circle me-1"></i>
+                                    SÍ (100%)
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-top pt-3 mt-4">
+                    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-check-circle me-1"></i>
+                            <%= t('common.submit') %>
+                        </button>
+                        <%= link_to matrix_legals_path(entity_id: @matrix_legal_item.matrix_legal.entity_id), class: "btn btn-secondary" do %>
+                            <i class="bi bi-arrow-left me-1"></i>
+                            Retornar
+                        <% end %>
+                    </div>
+                </div>
+            <% end %>
         </div>
-
-        <div class="form-group">    
-            <%= form.label :requirement,  style: "display: block" %>
-            <%= form.text_field :requirement,  class: "form-control" %>
+    </div>
+    <div class="card shadow-sm mx-auto mt-4" style="max-width: 1100px;">
+        <div class="card-header bg-light">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-paperclip fs-5 text-primary"></i>
+                <h5 class="mb-0">Evidencia de cumplimiento</h5>
+            </div>
         </div>
-
-        <div class="form-group">    
-            <%= form.label :rule_name,  style: "display: block" %>
-            <%= form.text_field :rule_name,  class: "form-control" %>
+        <div class="card-body p-3 p-md-4">
+            <%= form_for @matrix_legal_item do |f| %>
+                <div class="row g-3 align-items-end">
+                    <div class="col-12 col-md-8">
+                        <%= f.label :attach_evidence, "Adjuntar evidencia", class: "form-label fw-semibold" do %>
+                            <i class="bi bi-file-earmark-arrow-up text-primary me-1"></i>
+                            Adjuntar evidencia
+                        <% end %>
+                        <%= f.file_field :attach_evidence, class: "form-control" %>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <%= f.submit "Subir evidencia", class: "btn btn-success w-100" do %>
+                            <i class="bi bi-cloud-arrow-up me-1"></i>
+                            Subir evidencia
+                        <% end %>
+                    </div>
+                </div>
+            <% end %>
         </div>
-
-        <div class="form-group">    
-            <%= form.label :applicable_article,  style: "display: block" %>
-            <%= form.text_field :applicable_article,  class: "form-control" %>
+    </div>
+</div>
+<div class="container-fluid px-2 px-md-4">
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+                <h5 class="mb-0">
+                    <i class="bi bi-folder2-open me-2"></i>
+                    Archivos adjuntos
+                </h5>
+            </div>
         </div>
-
-        <div class="form-group">    
-            <%= form.label :evidence_compliance,  style: "display: block" %>
-            <%= form.text_field :evidence_compliance,  class: "form-control" %>
+        <div class="card-body">
+            <!-- ARCHIVOS -->
+            <% if @matrix_legal_item.present? && @matrix_legal_item.attach_evidence.attached? %>
+                <div data-controller="previews">
+                    <div class="row g-3">
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="card h-100 border shadow-sm">
+                                    <!-- CONTENIDO DEL ARCHIVO -->
+                                    <div class="card-body text-center">
+                                        <% if @matrix_legal_item.attach_evidence.image? %>
+                                            <%= image_tag @matrix_legal_item.attach_evidence, data: { previews_target: "preview" }, class: "img-fluid rounded", style: "max-height: 300px; object-fit: contain;" %>
+                                        <% elsif @matrix_legal_item.attach_evidence.video? %>
+                                            <%= video_tag url_for(@matrix_legal_item.attach_evidence), controls: true, class: "w-100 rounded", style: "max-height: 300px;" %>
+                                        <% elsif @matrix_legal_item.attach_evidence.audio? %>
+                                            <div class="py-4">
+                                                <i class="bi bi-@matrix_legal_item.attach_evidence-earmark-music display-4 text-secondary"></i>
+                                                <div class="mt-3">
+                                                    <%= @matrix_legal_item.attach_evidence.file %>
+                                                </div>
+                                                <audio controls class="w-100 mt-3">
+                                                    <source src="<%= url_for(@matrix_legal_item.attach_evidence) %>">
+                                                </audio>
+                                            </div>
+                                        <% else %>
+                                            <div class="py-4">
+                                                <i class="bi bi-file-earmark display-4 text-secondary"></i>
+                                                <div class="mt-3 text-break">
+                                                    <%= @matrix_legal_item.attach_evidence.filename %>
+                                                </div>
+                                            </div>
+                                        <% end %>
+                                    </div>
+                                    <!-- NOMBRE -->
+                                    <div class="card-footer bg-white">
+                                        <div class="small text-muted text-center text-break mb-3">
+                                            <i class="bi bi-paperclip me-1"></i>
+                                            <%= @matrix_legal_item.attach_evidence.filename %>
+                                        </div>
+                                        <!-- BOTONERA -->
+                                        <div class="d-flex flex-wrap justify-content-center gap-2">
+                                            <%= link_to purge_attachment_path(@matrix_legal_item.attach_evidence), data: {'turbo-method': :delete, 'turbo-confirm': '¿Está seguro de eliminar el archivo?'}, class: "btn btn-sm btn-outline-danger", title: "Borrar archivo", data_bs_toggle: "tooltip" do %>
+                                                <i class="bi bi-trash3-fill me-1"></i>
+                                                <span class="d-none d-sm-inline">
+                                                    Borrar
+                                                </span>
+                                            <% end %>
+                                            <%= link_to rails_blob_path(@matrix_legal_item.attach_evidence, disposition: 'attachment'), class: "btn btn-sm btn-outline-success", title: "Descargar archivo", data_bs_toggle: "tooltip" do %>
+                                                <i class="bi bi-download me-1"></i>
+                                                <span class="d-none d-sm-inline">
+                                                    Descargar
+                                                </span>
+                                            <% end %>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            <% else %>
+                <div class="alert alert-secondary text-center mb-0">
+                    <i class="bi bi-info-circle me-2"></i>
+                        No hay archivos adjuntos para este reporte.
+                </div>
+            <% end %>
         </div>
+    </div>
 
-        <div class="form-group">    
-            <%= form.label :responsible,  style: "display: block" %>
-            <%= form.text_field :responsible,  class: "form-control" %>
-        </div>
-
-        <div class="form-group">    
-            <%= form.label :description_compliance,  style: "display: block" %>
-            <%= form.text_area :description_compliance,  class: "form-control" %>
-        </div>
-        </br>
-        <div class="row g-2">
-            <div class="col-sm-4">
-                <%= form.label :fec_norma,  style: "display: block" %>
-                <%= form.date_field :fec_norma,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <%= form.label :year,  style: "display: block" %>
-                <%= form.number_field :year,  class: "form-control" %>
-            </div>        
-        </div>        
-        </br>    
-        <div class="row g-2">
-            <div class="col-sm-4">
-                <%= form.label :meets, style: "display: block" %>
-                <%= form.radio_button :meets, 0 %>
-                <label for="no_cumple">NO (0%)</label>&nbsp;&nbsp; 
-                <%= form.radio_button :meets, 1 %>
-                <label for="si_cumple">PARCIAL (50%)</label>&nbsp;&nbsp;   
-                <%= form.radio_button :meets, 2 %>
-                <label for="na">SI (100%)</label> 
-            </div>  
-        </div>   
-
-        <br>     
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, matrix_legals_path(entity_id: @matrix_legal_item.matrix_legal.entity_id) %>
-    <% end %>
-
-    <hr>
-    <%= form_for @matrix_legal_item do |f| %>
-        <div class="row">
-           <div class="form-group">
-             <h5><%= f.label :Adjuntar, style: "display: block" %></h5>
-             <%= f.file_field :attach_evidence %>
- 
-             <%= f.submit 'Subir evidencia', class: 'btn btn-primary' %>
-           </div> 
-         </div>
-     <% end %> 
- 
-
-
-</div>        
-<br>
+</div>

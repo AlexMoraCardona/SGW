@@ -1,67 +1,71 @@
 <%= javascript_include_tag "https://www.google.com/jsapi" %>
-<%= wicked_pdf_javascript_include_tag "chartkick" %>
-<%= wicked_pdf_javascript_include_tag "application", "chartkick" %>
-
-<br>
-<div class="container col-11"> 
-    <div>
-        <h3 style="text-align:center">Indicadores Matriz Legal</h3>
-        <h3 style="text-align:center"><%= @entity.business_name %>  Nit:<%= @entity.identification_number %></h3>
-    </div> 
-
+<div class="container-fluid py-4">   
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <div class="row align-items-center g-3">
+                <div align="left"; class="container col-12">
+                    <a class="navbar-brand" href="/">
+                        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+                    </a>
+                </div>
+                <h2 class="fw-bold mb-2 text-primary">
+                    Indicadores Matriz Legal
+                </h2>
+                <div class="text-muted">
+                    <strong><%= @entity.business_name %></strong>
+                    Nit:<%= @entity.identification_number %></h3>
+                </div>
+                <hr>
+                <h3 class="fw-bold mb-2 text-primary">
+                   Indicador Cumplimiento Requisitos Legales
+                </h3>
+                <hr>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th style="text-align:center">Cumplimiento Requisitos Legales</th>
+                            </tr>
+                            <tr>
+                                <th style="text-align:center">Estado</th>
+                                <th style="text-align:center">Cantidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%  @datos_cumplimiento.each do |dat| %>
+                                <tr>
+                                    <% if dat[2].to_s == "0"  %>
+                                        <td style="border:1px solid black; text-align:center; background-color:#F03553"> <%= dat[0].to_s %></td>
+                                    <% end  %>    
+                                    <% if dat[2].to_s == "1"  %>
+                                        <td style="border:1px solid black; text-align:center; background-color:#F0E835"> <%= dat[0].to_s %> </td>
+                                    <% end  %>    
+                                    <% if dat[2].to_s == "2"  %>
+                                        <td style="border:1px solid black; text-align:center; background-color:#038018"> <%= dat[0].to_s %></td>
+                                    <% end  %>    
+                                    <td style="text-align:center"><%= dat[1] %></td>
+                                </tr>    
+                            <% end %>
+                            <tr>
+                                <td style="text-align:center">Total</td>
+                                <td style="text-align:center"><%= @total %></td>
+                            </tr>
+                        </tbody>
+                    </table>        
+                </div>                                    
+                <div class="col-sm-5">
+                    <%= column_chart  @datos_cumplimientog, title: "Indicador Cumplimiento", download: {filename: "Cumplimiento"}, download: {background: "#FFFFFF"}, xtitle: "Nivel de cumplimiento", ytitle: "Cantidad", suffix: "%" if @datos_cumplimientog.present? %>
+                </div>        
+            </div>  
+            <hr>
+        </div>
+    </div>        
     <hr>
-    
-    <div>
-         <h4 style="text-align:center">Indicador Cumplimiento Requisitos Legales</h4>
-         <hr>
+    <div class="card-body">
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+            <%= link_to :back, class:"btn btn-secondary" do %>
+                <i class="bi bi-arrow-left-circle"></i>Retornar
+            <% end %>
+        </div>
     </div>
-
-    
-    <div class="row g-2">
-        <div class="col-sm-5">
-            <table  class="table" >
-                <thead>
-                    <tr>
-                        <th colspan="3"; style="text-align:center">Cumplimiento Requisitos Legales</th>
-                    </tr>
-                    <tr>
-                        <th scope="col" style="text-align:center">Estado</th>
-                        <th scope="col" style="text-align:center">Cantidad</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%  @datos_cumplimiento.each do |dat| %>
-                        
-                        <tr>
-                            <% if dat[0].to_s == 'NO (0%)'  %>
-                                <td style="border:1px solid black; text-align:center; background-color:#F03553"> NO (0%)</td>
-                            <% end  %>    
-                            <% if dat[0].to_s == 'PARCIAL (50%)'  %>
-                                <td style="border:1px solid black; text-align:center; background-color:#F0E835"> PARCIAL (50%) </td>
-                            <% end  %>    
-                        
-                            <% if dat[0].to_s == 'SI (100%)'  %>
-                                <td style="border:1px solid black; text-align:center; background-color:#038018">SI (100%)</td>
-                            <% end  %>    
-   
-                            <td style="text-align:center"><%= dat[1] %></td>
-                        </tr>    
-                    <% end %>
-                    <tr>
-                        <td colspan="2"; style="text-align:center">Total</td>
-                        <td style="text-align:center"><%= @total %></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>        
-        <div class="col-sm-5">
-            <%= column_chart  @datos_cumplimiento, title: "Indicador Cumplimiento", download: {filename: "Cumplimiento"}, download: {background: "#FFFFFF"}, xtitle: "Nivel de cumplimiento", ytitle: "Cantidad", prefix: "Cantidad: " if @datos_cumplimiento.present? %>
-        </div>        
-
-    </div>  
-    <hr>
-   </br> 
-</div>  
-
-
-
+</div>

@@ -6,19 +6,6 @@ class MatrixLegalsController < ApplicationController
                 @entity = Entity.find(params[:entity_id])
                 @matrix_legal = MatrixLegal.find_by(entity_id: params[:entity_id])
                 @matrix_legal_items = MatrixLegalItem.where(matrix_legal_id: @matrix_legal.id).order(id: :desc) if @matrix_legal.present?
-                @total_items = 0
-                @no = 0
-                @parcial = 0
-                @si = 0
-                if @matrix_legal_items.present?
-                    @matrix_legal_items.each do |item| 
-                        @total_items += 1 
-                        if item.meets.to_i == 0 ; @no += 1
-                        elsif item.meets.to_i == 1 ; @parcial += 1
-                        elsif item.meets.to_i == 2 ; @si += 1
-                        end
-                    end
-                end     
             else 
                 @entities = Entity.all
             end    
@@ -26,19 +13,6 @@ class MatrixLegalsController < ApplicationController
             @entity = Entity.find(Current.user.entity)
             @matrix_legal = MatrixLegal.find_by(entity_id: Current.user.entity.to_i)
             @matrix_legal_items = MatrixLegalItem.where(matrix_legal_id: @matrix_legal.id).order(id: :desc) if @matrix_legal.present?
-            @total_items = 0
-            @no = 0
-            @parcial = 0
-            @si = 0
-            if @matrix_legal_items.present?
-                @matrix_legal_items.each do |item| 
-                    @total_items += 1 
-                    if item.meets.to_i == 0 ; @no += 1
-                    elsif item.meets.to_i == 1 ; @parcial += 1
-                    elsif item.meets.to_i == 2 ; @si += 1
-                    end
-                end
-            end     
         else
             redirect_to new_session_path, alert: t('common.not_logged_in')    
             session.delete(:user_id)  
@@ -67,19 +41,23 @@ class MatrixLegalsController < ApplicationController
         @adv = User.find(@matrix_legal.user_adviser_sst) if  @matrix_legal.user_adviser_sst.present? && @matrix_legal.user_adviser_sst > 0
         @res = User.find(@matrix_legal.user_responsible_sst) if  @matrix_legal.user_responsible_sst.present? && @matrix_legal.user_responsible_sst > 0
 
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'ver_matrix_legal',
-                margin: {top: 10, bottom: 10, left: 5, right: 5 },
-                disable_javascript: true,
-                orientation: 'Landscape',
-                zoom: 0.50,
-                page_size: 'letter',
-                footer: {
-                         right: 'Página: [page] de [topage]'
-                        }                
-                       } 
-        end
+            format.pdf {
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('ver_matrix_legal'),
+                    orientation: 'Landscape',
+                    zoom: 0.50,
+                    disable_javascript: true,
+                    margin: {top: 10, bottom: 10, left: 5, right: 5 },
+                    page_size: 'letter',
+                    footer: {right: '[page] de [topage]'}
+                    
+                  )  
+                  send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+            }
+        end    
     end    
 
     def total_items
@@ -110,7 +88,7 @@ class MatrixLegalsController < ApplicationController
 
         if @matrix_legal.update(matrix_legal_params)
             actualizar_fecha(@matrix_legal.id)
-            redirect_to matrix_legal_path(@matrix_legal.id), notice: 'Actualizado correctamente'
+            redirect_to matrix_legals_path(entity_id: @matrix_legal.entity_id), notice: 'Actualizado correctamente'
         else
             render :edit, matrix_legals: :unprocessable_entity
         end         

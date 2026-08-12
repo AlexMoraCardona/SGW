@@ -125,24 +125,6 @@ class IndicadoresController < ApplicationController
         calculo_investigacionincidentes(@report_official, @report_officialtodo)
         nombre_evidencia = 'Indicadores.pdf'
 
-        #respond_to do |format| 
-        #    format.html
-        #    format.pdf {
-        #        pdf = WickedPdf.new.pdf_from_string(
-        #           render_to_string('graficos_pdf'),
-        #            orientation: 'Landscape',
-        #            zoom: 0.40,
-        #            javascript_delay: 8000,
-        #            enable_local_file_access: true,                    
-        #            margin: {top: 10, bottom: 10, left: 5, right: 5 },
-        #            page_size: 'letter',
-        #            footer: {right: '[page] de [topage]'}
-        #            
-        #          )  
-        #          send_data(pdf, filename: nombre_evidencia, disposition: 'attachment')      
-        #    }
-        #end  
-
         
         respond_to do |format|
             format.pdf do
@@ -266,19 +248,37 @@ class IndicadoresController < ApplicationController
         total = 0  
         cant = 0
         datos_cumplimiento = []
+        datos_cumplimientog = []
+        total_items = matrix_legal_items.count
         matrix_legal_items.group_by(&:meets).each do |niv, det|
             cant = 0
             det.each do |d|
                total += 1 
                cant += 1 
             end    
-               
-            datos_cumplimiento.push(["NO (0%)", cant]) if  niv.to_i == 0
-            datos_cumplimiento.push(["PARCIAL (50%)", cant]) if  niv.to_i == 1
-            datos_cumplimiento.push(["SI (100%)", cant]) if  niv.to_i == 2
-
+            porcentaje = 0
+            porcentaje = ((cant.to_f / total_items.to_f)*100).round(0) if  total_items > 0 
+             if  niv.to_i == 0
+                salida = "NO " + porcentaje.to_s + "%"
+                grafico = porcentaje.to_s
+                datos_cumplimiento.push([salida, cant, 0])
+                datos_cumplimientog.push(["NO", grafico]) 
+             end   
+             if  niv.to_i == 1
+                salida = "PARCIAL " + porcentaje.to_s + "%"
+                grafico = porcentaje.to_s
+                datos_cumplimiento.push([salida, cant, 1])
+                datos_cumplimientog.push(["PARCIAL", grafico]) 
+             end   
+             if  niv.to_i == 2
+                salida = "SI " + porcentaje.to_s + "%"
+                grafico = porcentaje.to_s
+                datos_cumplimiento.push([salida, cant, 2])
+                datos_cumplimientog.push(["SI", grafico]) 
+             end   
         end
         @datos_cumplimiento =   datos_cumplimiento 
+        @datos_cumplimientog =   datos_cumplimientog 
         @total = total
     end
 

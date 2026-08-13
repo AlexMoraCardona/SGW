@@ -1,45 +1,97 @@
-<div class="container col-11 card p-5">
-    <br>
-    <%= form_with model: @matrix_goal do |form| %>
-        <% @matrix_goal.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
+<div class="container-fluid px-2 px-md-4 py-3">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-light border-bottom">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+                <h5 class="mb-0">
+                    <i class="bi bi-bullseye me-2"></i>
+                    Configuración de la Matriz de Objetivos
+                </h5>
             </div>
-        <% end %>
-
-        <div class="row g-2">
-            <div class="col-sm-3">
-                <%= form.label :year, style: "display: block" %>
-                <%= form.number_field :year,  class: "form-control", required: true %>
-            </div>        
-        </div>   
-
-        <br>
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Representante Legal.">Representante Legal:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.collection_select :user_representante, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
         </div>
-        <br>    
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Asesor SST.">Asesor SST:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.collection_select :user_asesor, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
+        <div class="card-body">
+            <%= form_with model: @matrix_goal do |form| %>
+                <% if @matrix_goal.errors.any? %>
+                    <div class="alert alert-danger" role="alert">
+                        <div class="d-flex align-items-start">
+                            <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+                            <div>
+                                <strong>
+                                      Se encontraron los siguientes errores:
+                                </strong>
+                                <ul class="mb-0 mt-2">
+                                    <% @matrix_goal.errors.full_messages.each do |error| %>
+                                        <li>
+                                          <%= error %>
+                                        </li>
+                                    <% end %>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                <% end %>
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-md-4 col-lg-3">
+                        <%= form.label :year, class: "form-label fw-semibold" do %>
+                            <i class="bi bi-calendar3 me-1"></i>
+                            <%= t('common.year') %>
+                        <% end %>
+                        <%= form.number_field :year, class: "form-control", required: true, min: 2000, max: 2100 %>
+                    </div>
+                </div>
+                <div class="row g-4">
+                    <div class="col-12 col-md-4">
+                        <div class="form-group">
+                            <div class="d-flex align-items-center mb-2">
+                                <%= form.label :user_representante, "Representante Legal", class: "form-label fw-semibold mb-0" %>
+                                <button type="button" class="btn btn-sm btn-outline-secondary ms-2 rounded-circle p-0" style="width: 25px; height: 25px;"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Seleccione el nombre del Representante Legal.">
+                                    <i class="bi bi-question-lg"></i>
+                                </button>
+                            </div>
+                            <%= form.collection_select :user_representante, User.usuarios_empresa.order(id: :asc), :id, :name, { prompt: "Seleccione..." }, { class: "form-select" } %>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="form-group">
+                            <div class="d-flex align-items-center mb-2">
+                                <%= form.label :user_asesor, "Asesor SST", class: "form-label fw-semibold mb-0" %>
+                                <button type="button"  class="btn btn-sm btn-outline-secondary ms-2 rounded-circle p-0" style="width: 25px; height: 25px;" data-bs-toggle="tooltip" data-bs-placement="top" title="Seleccione el nombre del Asesor SST.">
+                                    <i class="bi bi-question-lg"></i>
+                                </button>
+                            </div>
+                            <%= form.collection_select :user_asesor, User.usuarios_empresa.order(id: :asc), :id, :name, { prompt: "Seleccione..." }, { class: "form-select" } %>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="form-group">
+                            <div class="d-flex align-items-center mb-2">
+                                <%= form.label :user_responsible, "Responsable SST", class: "form-label fw-semibold mb-0" %>
+                                <button type="button" class="btn btn-sm btn-outline-secondary ms-2 rounded-circle p-0" style="width: 25px; height: 25px;" data-bs-toggle="tooltip" data-bs-placement="top"  title="Seleccione el nombre del Responsable SST.">
+                                    <i class="bi bi-question-lg"></i>
+                                </button>
+                            </div>
+                            <%= form.collection_select :user_responsible, User.usuarios_empresa.order(id: :asc), :id, :name, { prompt: "Seleccione..." }, { class: "form-select" } %>
+                        </div>
+                    </div>
+                </div>
+                <% if params[:entity_id].present? %>
+                      <%= form.hidden_field :entity_id,  value: params[:entity_id].to_i %>
+                      <%= form.hidden_field :date_unsafe, value: Time.now %>
+                <% else %>
+                    <% if @matrix_goal.present? %>
+                        <%= form.hidden_field :entity_id, value: @matrix_goal.entity_id %>
+                    <% end %>
+                <% end %>
+                <hr class="my-4">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                     <%= button_tag type: "submit", class: "btn btn-success" do %>
+                        <i class="bi bi-check-circle"></i><%= t('common.submit') %>
+                    <% end %>
+                    <%= link_to :back, class: "btn btn-secondary" do %>
+                        <i class="bi bi-arrow-left-circle"></i>Retornar
+                    <% end %>
+                </div>
+            <% end %>
         </div>
-        <br>    
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Responsable SST.">Responsable SST:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-            <%= form.collection_select :user_responsible, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-        </div>
-        <% if params[:entity_id].present? %>
-            <%= form.hidden_field :entity_id, :value => params[:entity_id].to_i, class: "form-control"  %>
-            <%= form.hidden_field :date_unsafe, :value => Time.now, class: "form-control" %>
-        <% else %>
-            <%= form.hidden_field :entity_id, :value => @matrix_goal.entity_id, class: "form-control" if @matrix_goal.present? %>
-        <% end %>
-        
-
-        <br>    
-        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
-    <% end %>
-</div>        
-<br>
+    </div>
+</div>

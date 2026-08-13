@@ -46,18 +46,23 @@ class MatrixGoalsController < ApplicationController
         @res = User.find(@matrix_goal.user_responsible) if  @matrix_goal.user_responsible.present? && @matrix_goal.user_responsible > 0
         @report_official = ReportOfficial.where("entity_id = ? and year = ?",@entity.id,@matrix_goal.year).last if @entity.present? && @matrix_goal.present?
         
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'ver_matrix_goal',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
-      
+            format.pdf {
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('ver_matrix_goal'),
+                    zoom: 1,
+                    disable_javascript: true,
+                    margin: {top: 10, bottom: 10, left: 5, right: 5 },
+                    page_size: 'letter',
+                    footer: {right: '[page] de [topage]'}
+                    
+                  )  
+                  send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+            }
+        end    
+     
     end    
 
 

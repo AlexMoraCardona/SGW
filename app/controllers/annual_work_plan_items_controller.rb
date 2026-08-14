@@ -29,7 +29,7 @@ class AnnualWorkPlanItemsController < ApplicationController
     def update
         @annual_work_plan_item = AnnualWorkPlanItem.find(params[:id])
         if @annual_work_plan_item.update(annual_work_plan_item_params)
-            redirect_to crear_item_plan_annual_work_plans_path(@annual_work_plan_item.annual_work_plan_id), notice: t('.created')
+            redirect_to crear_item_plan_annual_work_plans_path(@annual_work_plan_item.annual_work_plan_id), notice: 'Actualizado Correctamente!'
         else
             render :edit, annual_work_plans: :unprocessable_entity
         end         

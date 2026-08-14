@@ -1,114 +1,229 @@
-<div align="left"; class="container col-12">
-    <a class="navbar-brand" href="/">
-        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-    </a>
-</div>
-<div class="container col-12 card p-5">
-    <br>
-    <%= form_with model: @annual_work_plan_item do |form| %>
-        <% @annual_work_plan_item.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %>    
-
-        <div class="form-group"> 
-            <button type="button" class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la acción que se va a realizar."><%= t('.aim') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_area :aim,  class: "form-control" %>
-        </div>
-
-        <div class="form-group">    
-            <button type="button" class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar el resultado que se pretende lograr."><%= t('.goal') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_area :goal,  class: "form-control" %>
-        </div>
-
-        <div class="form-group">    
-            <button type="button" class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la actividad que se va realizar para cumplir el objetivo."><%= t('.activity') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_area :activity,  class: "form-control" %>
-        </div>
-
-        <div class="form-group">    
-            <button type="button" class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar el recurso humano y tecnológico que se requiere para cumplir el objetivo."><%= t('.resource') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_area :resource,  class: "form-control" %>
-        </div>
-
-        <div class="form-group">    
-            <button type="button" class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar la persona responsable de cumplir el objetivo."><%= t('.responsible') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_area :responsible,  class: "form-control" %>
-        </div>
-
-        <div class="row g-2">
-            <div class="col-sm-3">
-                <button type="button" class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar la fecha que se tiene planeada para ejecutar el objetivo."><%= t('.date_realization') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-                <%= form.date_field :date_realization,  class: "form-control", required: true %>
-            </div>  
-            <div class="col-sm-3">
-            </div>  
-            <div class="col-sm-4"> 
-                <button type="button" class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar en el respectivo mes si el objetivo está planeado (P) o ejecutado (E)."><%= t('.month') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button> <br>          
-                <%= form.select(:month, [['Enero', 1], ['Febrero', 2], ['Marzo', 3], ['Abril', 4], ['Mayo', 5], ['Junio', 6], ['Julio', 7], ['Agosto', 8], ['Septiembre', 9], ['Octubre', 10], ['Noviembre', 11], ['Diciembre', 12]]) %>
-            </div>        
-        </div>   
-
-        <div class="form-group">    
-            <button type="button" class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar observación referente a los campos diligenciados (opcional)."><%= t('.observation') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :observation,  class: "form-control" %>
-        </div>
-
-        <div class="form-group">    
-            <button type="button" class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar el formato, documento, registro que demuestre que la empresa cumple con el objetivo establecido."><%= t('.evidences_plan') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_area :evidences_plan,  class: "form-control" %>
-        </div>
-
-        <%= form.hidden_field :consecutive, :value => @cant.to_i, class: "form-control" %>
-        <%= form.hidden_field :annual_work_plan_id, :value => params[:id].to_i, class: "form-control" %>
-
-        <br>    
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-    <% end %>
-
-</div>
-<br>
-<div class="container col-12 card p-5">
-    <hr>
-    <br>
-    <div class="d-flex">
-        <div class="container">
-            <h class="display-6">Objetivos</h>
-        </div> 
+<div class="container-fluid py-3">
+    <div class="text-center text-md-start">
+        <%= link_to root_path, class: "d-inline-block" do %>
+            <%= image_tag 'LogoConesst202305232.png', width: 100, height: 100, class: "img-fluid", alt: "Logo CONESST" %>
+        <% end %>
     </div>
-    <hr>
-            
-    <% if @annual_work_plan_items.present? %>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">Nro</th>
-                    <th scope="col">Estado</th>
-                    <th scope="col">Objetivo</th>
-                    <th scope="col">Responsable</th>
-                    <th scope="col">Fecha de realización</th>
-                    <th scope="col">Mes de ejecución</th>
-                    <th scope="col">Editar</th>
-                    <th scope="col">Eliminar</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% @annual_work_plan_items.each do |annual_work_plan_item| %>
-                    <tr>
-                        <td><%= annual_work_plan_item.consecutive %></td>
-                        <td><%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %></td>
-                        <td><%= annual_work_plan_item.aim %></td>
-                        <td><%= annual_work_plan_item.responsible %></td>
-                        <td><%= annual_work_plan_item.date_realization %></td>
-                        <td><%= annual_work_plan_item.month %></td>
-                        <td><%= link_to t('common.edit'), edit_annual_work_plan_item_path(annual_work_plan_item), class: 'btn btn-sm btn-primary'  %></td>
-                        <td><%= button_to "Delete", annual_work_plan_item, method: :delete, class:"btn btn-sm btn-danger" %></td>
-                    </tr>
-                <% end %>     
-            </tbody>      
-        </table>
-    <% end %>     
 </div>
-        
-<br>
+<div class="container-fluid px-2 px-md-4 pb-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">
+                <i class="bi bi-list-check me-2"></i>
+                Nuevo objetivo
+            </h5>
+        </div>
+        <div class="card-body p-3 p-md-4">
+            <%= form_with model: @annual_work_plan_item do |form| %>
+                <% if @annual_work_plan_item.errors.any? %>
+                    <div class="alert alert-danger" role="alert">
+                        <div class="fw-bold mb-2">
+                            <i class="bi bi-exclamation-triangle me-1"></i>
+                            Se encontraron los siguientes errores:
+                        </div>
+                        <ul class="mb-0">
+                            <% @annual_work_plan_item.errors.full_messages.each do |error| %>
+                                <li><%= error %></li>
+                            <% end %>
+                        </ul>
+                    </div>
+                <% end %>
+                <div class="mb-3">
+                    <%= form.label :aim, class: "form-label fw-semibold" do %>
+                        <i class="bi bi-bullseye me-1"></i>
+                        <%= t('.aim') %>
+                    <% end %>
+                    <div class="input-group">
+                        <%= form.text_area :aim, class: "form-control", rows: 3, placeholder: "Especifique la acción que se va a realizar." %>
+                        <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la acción que se va a realizar.">
+                            <%= image_tag 'ayuda.png', width: 22, height: 22, alt: "Ayuda" %>
+                        </button>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <%= form.label :goal, class: "form-label fw-semibold" do %>
+                        <i class="bi bi-flag me-1"></i>
+                        <%= t('.goal') %>
+                    <% end %>
+                    <div class="input-group">
+                        <%= form.text_area :goal, class: "form-control", rows: 3, placeholder: "Especifique el resultado que se pretende lograr." %>
+                        <button type="button" class="btn btn-light" data-bs-toggle="tooltip" title="Especificar el resultado que se pretende lograr.">
+                            <%= image_tag 'ayuda.png', width: 22, height: 22, alt: "Ayuda" %>
+                        </button>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <%= form.label :activity, class: "form-label fw-semibold" do %>
+                        <i class="bi bi-clipboard-check me-1"></i>
+                        <%= t('.activity') %>
+                    <% end %>
+                    <div class="input-group">
+                        <%= form.text_area :activity, class: "form-control", rows: 3, placeholder: "Especifique la actividad que se va a realizar." %>
+                        <button type="button" class="btn btn-light" data-bs-toggle="tooltip" title="Especificar la actividad que se va realizar para cumplir el objetivo.">
+                            <%= image_tag 'ayuda.png', width: 22, height: 22, alt: "Ayuda" %>
+                        </button>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <%= form.label :resource, class: "form-label fw-semibold" do %>
+                        <i class="bi bi-tools me-1"></i>
+                        <%= t('.resource') %>
+                    <% end %>
+                    <div class="input-group">
+                        <%= form.text_area :resource, class: "form-control", rows: 3, placeholder: "Indique los recursos humanos y tecnológicos requeridos." %>
+                        <button type="button" class="btn btn-light" data-bs-toggle="tooltip" title="Indicar el recurso humano y tecnológico que se requiere para cumplir el objetivo.">
+                            <%= image_tag 'ayuda.png', width: 22, height: 22, alt: "Ayuda" %>
+                        </button>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <%= form.label :responsible, class: "form-label fw-semibold" do %>
+                        <i class="bi bi-person-check me-1"></i>
+                        <%= t('.responsible') %>
+                    <% end %>
+                    <div class="input-group">
+                      <%= form.text_area :responsible, class: "form-control", rows: 2, placeholder: "Indique la persona responsable." %>
+                      <button type="button" class="btn btn-light" data-bs-toggle="tooltip" title="Indicar la persona responsable de cumplir el objetivo.">
+                          <%= image_tag 'ayuda.png', width: 22, height: 22, alt: "Ayuda" %>
+                      </button>
+                    </div>
+                </div>
+                <div class="row g-3">
+                    <div class="col-12 col-md-5">
+                        <%= form.label :date_realization, class: "form-label fw-semibold" do %>
+                            <i class="bi bi-calendar-event me-1"></i>
+                            <%= t('.date_realization') %>
+                        <% end %>
+                        <div class="input-group">
+                            <%= form.date_field :date_realization, class: "form-control", required: true %>
+                            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" title="Indicar la fecha que se tiene planeada para ejecutar el objetivo.">
+                                <%= image_tag 'ayuda.png',  width: 22, height: 22, alt: "Ayuda" %>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-5">
+                        <%= form.label :month, class: "form-label fw-semibold" do %>
+                            <i class="bi bi-calendar-month me-1"></i>
+                            <%= t('.month') %>
+                        <% end %>
+                        <div class="input-group">
+                            <%= form.select :month, [['Enero', 1],['Febrero', 2],['Marzo', 3],['Abril', 4],['Mayo', 5],['Junio', 6],['Julio', 7],['Agosto', 8],['Septiembre', 9],['Octubre', 10],['Noviembre', 11],['Diciembre', 12]], { prompt: '-- Seleccionar mes --' }, { class: "form-select" } %>
+                            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" title="Indicar el mes en el cual está planeado o ejecutado el objetivo.">
+                                    <%= image_tag 'ayuda.png', width: 22, height: 22, alt: "Ayuda" %>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3 mb-3">
+                    <%= form.label :observation, class: "form-label fw-semibold" do %>
+                        <i class="bi bi-chat-left-text me-1"></i>
+                        <%= t('.observation') %>
+                    <% end %>
+                    <div class="input-group">
+                        <%= form.text_field :observation, class: "form-control", placeholder: "Observación (opcional)" %>
+                        <button type="button" class="btn btn-light" data-bs-toggle="tooltip" title="Indicar observación referente a los campos diligenciados (opcional).">
+                            <%= image_tag 'ayuda.png', width: 22, height: 22, alt: "Ayuda" %>
+                        </button>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <%= form.label :evidences_plan, class: "form-label fw-semibold" do %>
+                        <i class="bi bi-file-earmark-check me-1"></i>
+                        <%= t('.evidences_plan') %>
+                    <% end %>
+                    <div class="input-group">
+                        <%= form.text_area :evidences_plan, class: "form-control", rows: 3, placeholder: "Especifique el documento, formato o registro que servirá como evidencia." %>
+                        <button type="button" class="btn btn-light"  data-bs-toggle="tooltip" title="Especificar el formato, documento o registro que demuestre que la empresa cumple con el objetivo establecido.">
+                            <%= image_tag 'ayuda.png', width: 22, height: 22,  alt: "Ayuda" %>
+                        </button>
+                    </div>
+                </div>
+                <%= form.hidden_field :consecutive, value: @cant.to_i %>
+                <%= form.hidden_field :annual_work_plan_id, value: params[:id].to_i %>
+                <div class="border-top mt-4 pt-3">
+                    <div class="d-flex flex-column flex-md-row justify-content-center gap-2">
+                        <%= form.button type: :submit, class: "btn btn-success" do %>
+                            <i class="bi bi-check-circle"></i>
+                            Guardar
+                        <% end %>
+                        <%= link_to :back, class: "btn btn-secondary" do %>
+                            <i class="bi bi-arrow-left-circle"></i>
+                            Retornar
+                        <% end %>
+                    </div>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>
+
+
+<!-- LISTADO DE OBJETIVOS -->
+<div class="container-fluid px-2 px-md-4 pb-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">
+                <i class="bi bi-list-check me-2"></i>
+                Objetivos
+            </h5>
+        </div>
+        <div class="card-body p-2 p-md-4">
+            <% if @annual_work_plan_items.present? %>
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-center">Nro</th>
+                                <th>Estado</th>
+                                <th>Objetivo</th>
+                                <th>Responsable</th>
+                                <th>Fecha de realización</th>
+                                <th>Mes de ejecución</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% @annual_work_plan_items.each do |annual_work_plan_item| %>
+                                <tr>
+                                    <td class="text-center fw-semibold">
+                                        <%= annual_work_plan_item.consecutive %>
+                                    </td>
+                                    <td>
+                                        <%= annual_work_plan_item.label_earring(annual_work_plan_item.earring) %>
+                                    </td>
+                                    <td>
+                                        <small><button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="<%= annual_work_plan_item.aim %>"><%= truncate(annual_work_plan_item.aim, length: 20) %></button></small>
+                                    </td>
+                                    <td>
+                                        <%= annual_work_plan_item.responsible %>
+                                    </td>
+                                    <td class="text-nowrap">
+                                        <%= annual_work_plan_item.date_realization %>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= annual_work_plan_item.month %>
+                                    </td>
+                                    <td> 
+                                        <div class="d-flex justify-content-center gap-1">
+                                              <%= link_to edit_annual_work_plan_item_path(annual_work_plan_item), class: "btn btn-sm btn-warning", data: {bs_toggle: "tooltip", bs_title: "Editar objetivo"} do %>
+                                                    <i class="bi bi-pencil-square"></i>
+                                              <% end %>
+                                              <%= button_to annual_work_plan_item, method: :delete, class: "btn btn-sm btn-danger", form: {data: {turbo_confirm: "¿Está seguro de eliminar este objetivo? Esta acción no se puede deshacer."}}, title: "Eliminar objetivo" do %>
+                                                    <i class="bi bi-trash"></i>
+                                              <% end %>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% end %>
+                        </tbody>
+                    </table>
+                </div>
+            <% else %>
+                <div class="alert alert-info mb-0 text-center">
+                    <i class="bi bi-info-circle me-1"></i>
+                    No hay objetivos registrados.
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>

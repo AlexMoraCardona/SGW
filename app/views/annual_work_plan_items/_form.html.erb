@@ -1,92 +1,128 @@
-<div class="container col-11 card p-5">
-    <br>
-    <%= form_with model: @annual_work_plan_item do |form| %>
-        <% @annual_work_plan_item.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %>    
-
-        <tr>  
-            <td>
+<div class="container-fluid px-2 px-md-4 py-3">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">
+                <i class="bi bi-pencil-square me-2"></i>
+                Editar objetivo del Plan de Trabajo
+            </h5>
+        </div>
+        <div class="card-body p-3 p-md-4">
+            <%= form_with model: @annual_work_plan_item do |form| %>
+                <% if @annual_work_plan_item.errors.any? %>
+                    <div class="alert alert-danger" role="alert">
+                        <div class="fw-bold mb-2">
+                            <i class="bi bi-exclamation-triangle me-1"></i>
+                            Se encontraron los siguientes errores:
+                        </div>
+                        <ul class="mb-0">
+                            <% @annual_work_plan_item.errors.full_messages.each do |error| %>
+                                <li><%= error %></li>
+                            <% end %>
+                        </ul>
+                    </div>
+                <% end %>
                 <div class="row g-3">
-                    <div class="col-sm-5">
-                        <%= form.label :estado,  style: "display: block" %> 
-                        <%= form.radio_button :earring, 0 %>
-                        <label for="pendiente">Planeado</label>
-                        <%= form.radio_button :earring, 1 %>
-                        <label for="ejecutado">Ejecutado</label>
-                    </div>        
-                <div class="col-sm-3">
-                    <%= form.label :month, style: "display: block" %>
-                    <%= form.number_field :month,  class: "form-control", min:1 %>
-                </div>        
-                <div class="col-sm-3">
-                    <%= form.label :date_realization, style: "display: block" %>
-                    <%= form.date_field :date_realization,  class: "form-control", required: true %>
-                </div>        
-            </td>
-        </tr>
-
-
-        <div class="form-group">    
-            <%= form.label :aim, style: "display: block" %>
-            <%= form.text_field :aim,  class: "form-control" %>
+                    <div class="col-12 col-md-5">
+                        <%= form.label :earring, "Estado", class: "form-label fw-semibold" %>
+                        <div class="d-flex flex-wrap gap-3 mt-2">
+                            <div class="form-check">
+                                <%= form.radio_button :earring, 0, class: "form-check-input" %>
+                                <%= form.label :earring_0, "Planeado", class: "form-check-label" %>
+                            </div>
+                            <div class="form-check">
+                                <%= form.radio_button :earring, 1, class: "form-check-input" %>
+                                <%= form.label :earring_1, "Ejecutado", class: "form-check-label" %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <%= form.label :month, "Mes de ejecución", class: "form-label fw-semibold" %>
+                        <%= form.number_field :month, class: "form-control", min: 1, max: 12, placeholder: "1 - 12" %>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <%= form.label :date_realization, "Fecha de realización", class: "form-label fw-semibold" %>
+                        <%= form.date_field :date_realization, class: "form-control", required: true %>
+                    </div>
+                </div>
+                <div class="row g-3 mt-1">
+                    <div class="col-12">
+                        <%= form.label :aim, "Objetivo / Acción", class: "form-label fw-semibold" %>
+                        <%= form.text_area :aim, class: "form-control", rows: 3 %>
+                    </div>
+                    <div class="col-12">
+                        <%= form.label :goal, "Meta / Resultado", class: "form-label fw-semibold" %>
+                        <%= form.text_area :goal, class: "form-control", rows: 3 %>
+                    </div>
+                    <div class="col-12">
+                        <%= form.label :activity, "Actividad", class: "form-label fw-semibold" %>
+                        <%= form.text_area :activity, class: "form-control", rows: 3 %>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <%= form.label :resource, "Recursos", class: "form-label fw-semibold" %>
+                        <%= form.text_area :resource,  class: "form-control", rows: 3 %>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <%= form.label :responsible, "Responsable",  class: "form-label fw-semibold" %>
+                        <%= form.text_area :responsible, class: "form-control", rows: 3 %>
+                    </div>
+                    <div class="col-12">
+                        <%= form.label :evidences_plan, "Evidencias", class: "form-label fw-semibold" %>
+                        <%= form.text_area :evidences_plan,  class: "form-control", rows: 3 %>
+                    </div>
+                    <div class="col-12">
+                        <%= form.label :observation, "Observación", class: "form-label fw-semibold" %>
+                        <%= form.text_area :observation, class: "form-control", rows: 3 %>
+                    </div>
+                </div>
+                <div class="border-top mt-4 pt-3">
+                    <div class="d-flex flex-column flex-md-row justify-content-center gap-2">
+                        <%= form.button type: :submit, class: "btn btn-success" do %>
+                            <i class="bi bi-check-circle"></i>
+                            Guardar
+                        <% end %>
+                        <%= link_to :back, class: "btn btn-secondary" do %>
+                            <i class="bi bi-arrow-left-circle"></i>
+                            Retornar
+                        <% end %>
+                    </div>
+                </div>
+            <% end %>
         </div>
-
-        <div class="form-group">    
-            <%= form.label :goal, style: "display: block" %>
-            <%= form.text_field :goal,  class: "form-control" %>
-        </div>
-
-        <div class="form-group">    
-            <%= form.label :activity, style: "display: block" %>
-            <%= form.text_field :activity,  class: "form-control" %>
-        </div>
-
-        <div class="form-group">    
-            <%= form.label :resource, style: "display: block" %>
-            <%= form.text_field :resource,  class: "form-control" %>
-        </div>
-
-        <div class="form-group">    
-            <%= form.label :responsible, style: "display: block" %>
-            <%= form.text_field :responsible,  class: "form-control" %>
-        </div>
-
-        <div class="form-group">    
-            <%= form.label :evidences_plan, style: "display: block" %>
-            <%= form.text_field :evidences_plan,  class: "form-control" %>
-        </div>
-        
-        <div class="form-group">    
-            <%= form.label :observation, style: "display: block" %>
-            <%= form.text_field :observation,  class: "form-control" %>
-        </div>
-
-        <br>  
-        <div class="form-group">   
-            <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        </div>    
-    <% end %>
-    <hr>
-
-    <%= render 'annual_work_plan_items/attachment', post: @annual_work_plan_item%>    
-    <br>
-    <hr>    
-    <div class="container col-11 card p-5">
-        <%= form_for @annual_work_plan_item do |f| %>
-            <div class="row">
-            <div class="form-group">
-                <h5><%= f.label :"Adjuntar_Archivos:", style: "display: block" %></h5>
-                <%= f.file_field :observation_evidences, multiple: true %>
- 
-                <%= f.submit 'Subir Archivos', class: 'btn btn-sm btn-primary' %>
-            </div> 
-            </div>
-        <% end %>
-        <br> 
     </div>
-    <hr>
-</div>        
-<br>
+    <div class="card shadow-sm border-0 mt-4">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">
+                <i class="bi bi-paperclip me-2"></i>
+                Archivos adjuntos
+            </h5>
+        </div>
+        <div class="card-body p-3 p-md-4">
+            <%= render 'annual_work_plan_items/attachment', post: @annual_work_plan_item %>
+        </div>
+    </div>
+    <div class="card shadow-sm border-0 mt-4">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">
+                <i class="bi bi-cloud-arrow-up me-2"></i>
+                Adjuntar archivos
+            </h5>
+        </div>
+        <div class="card-body p-3 p-md-4">
+            <%= form_for @annual_work_plan_item do |f| %>
+                <div class="mb-3">
+                    <%= f.label :observation_evidences, "Seleccionar archivos",  class: "form-label fw-semibold" %>
+                    <%= f.file_field :observation_evidences, multiple: true, class: "form-control" %>
+                    <div class="form-text">
+                        Puede seleccionar uno o varios archivos.
+                    </div>
+                </div>
+                <div class="d-flex flex-column flex-md-row justify-content-center gap-2">
+                    <%= f.button type: "submit", class: "btn btn-primary px-4" do %>
+                        <i class="bi bi-cloud-upload me-1"></i>
+                        Subir archivos 
+                    <% end %>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>

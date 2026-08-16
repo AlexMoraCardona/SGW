@@ -1,189 +1,333 @@
-<% if @entity.present? %>
-    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
-<% end %>
+    <%# =======================================================
+       CÁLCULO DE ESTADÍSTICAS
+       ======================================================= %>
+    <%
+        total_items = @matrix_action_items.count
+        n0       = @matrix_action_items.where("type_corrective = ?",0).count
+        n1       = @matrix_action_items.where("type_corrective = ?",1).count
+        n2       = @matrix_action_items.where("type_corrective = ?",2).count
+        n00       = @matrix_action_items.where("type_corrective = ? and state_actions = ?",0,0).count
+        n01       = @matrix_action_items.where("type_corrective = ? and state_actions = ?",0,1).count
+        n10       = @matrix_action_items.where("type_corrective = ? and state_actions = ?",1,0).count
+        n11       = @matrix_action_items.where("type_corrective = ? and state_actions = ?",1,1).count
+        n20       = @matrix_action_items.where("type_corrective = ? and state_actions = ?",2,0).count
+        n21       = @matrix_action_items.where("type_corrective = ? and state_actions = ?",2,1).count
 
-<% if @matrix_corrective_action.present? %> 
-    <td><%= link_to t('common.show_matrix_corrective_action'), matrix_corrective_action_path(@matrix_corrective_action.id), class: 'btn btn-sm btn btn-warning' %></td>
-    <td><%= link_to t('common.item_action'), crear_item_matrix_corrective_actions_path(@matrix_corrective_action.id), class: 'btn btn-sm btn btn-warning' %></td>
-    <td><%= link_to "PDF", resumen_pdf_matrix_corrective_actions_path(@matrix_corrective_action.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#instruDiligenciamiento">
-      Instrucciones de diligenciamiento
-    </button>
-    
-    <!-- Modal -->
-    <div class="modal fade" id="instruDiligenciamiento" tabindex="-1" aria-labelledby="instruDiligenciamientoLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="instruDiligenciamientoLabel">Instrucciones de diligenciamiento</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <u>Códifique según correpoda</u>: <br>
-            <u>AC</u>:  Acción correctiva <br>
-            <u>AM</u>: Acción de mejora. <br>
-            <u>AP</u>: Acción preventiva con el número que le corresponda. <br>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          </div>
+        porcentaje0 = n0.zero? ? 0 :((n01.to_f / n0.to_f) * 100).round 
+        porcentaje1 = n1.zero? ? 0 :((n11.to_f / n1.to_f) * 100).round 
+        porcentaje2 = n2.zero? ? 0 :((n21.to_f / n2.to_f) * 100).round 
+
+        porcentaje = total_items.zero? ? 0 : (((n01.to_f + n11.to_f + n21.to_f) / total_items) * 100).round
+    %>
+
+<div class="container py-4">
+  <div align="left"; class="container col-12">
+      <a class="navbar-brand" href="/">
+          <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+      </a>
+  </div>
+
+  <% if @entity.present? %>
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-body text-center">
+        <h2 class="fw-bold text-primary mb-0">
+          <i class="bi bi-building"></i>
+          <%= @entity.business_name %>
+        </h2>
+        <div class="text-muted">
+            <strong>NIT:</strong>
+            <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>
+            <% if @entity.verification_digit.present? %>
+            -<%= @entity.verification_digit %>
+            <% end %>
         </div>
       </div>
     </div>
-    <%= link_to t('common.indicator'), graficosacpm_path(@matrix_corrective_action.id), class: 'btn btn-sm btn btn-success' %>
+  <% end %>
 
-    <div class="container col-12">
-
-        <br>
-        <div class="row g-2">
-            <div class="col-sm-3">
-                <strong>Fecha de creación</strong><br>
-                <%= @matrix_corrective_action.created_at.strftime("%F") %> 
-            </div>        
-            <div class="col-sm-3">
-            </div>        
+  <% if @matrix_corrective_action.present? %>
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light text-dark" >
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h4 class="mb-0">
+                <i class="bi bi-calendar3"></i>
+                MATRIZ DE SEGUIMIENTO DE ACCIONES CORRECTIVAS PREVENTIVAS Y DE MEJORA
+              </h4> 
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+              <div class="d-grid d-md-flex justify-content-md-end gap-2">
+                <% if Current.user.level > 0 && Current.user.level < 4 %>
+                  <%= link_to crear_item_matrix_corrective_actions_path(@matrix_corrective_action.id), class: "btn btn-success btn-sm" do %>
+                    <i class="bi bi-plus-square"></i>
+                    <%= t('common.item_action') %>
+                  <% end %>
+                <% end %>
+                <%= link_to matrix_corrective_action_path(@matrix_corrective_action.id), class: "btn btn-primary btn-sm text-white" do %>
+                  <i class="bi bi-eye"></i>
+                  <%= t('common.show_matrix_corrective_action') %>
+                <% end %>
+                <%= link_to graficosacpm_path(@matrix_corrective_action.id), class: "btn btn-primary btn-sm text-white me-2", title: "Indicadores", data: { bs_toggle: "tooltip" } do %>
+                    <i class="bi-bar-chart-line-fill"></i><span class="d-none d-md-inline"><%= t('common.indicator') %></span>
+                <% end %>
+                <%= link_to resumen_pdf_matrix_corrective_actions_path(@matrix_corrective_action.id, format: 'pdf'),
+                    class: "btn btn-danger btn-sm" do %>
+                  <i class="bi bi-file-earmark-pdf"></i>
+                  PDF
+                <% end %>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#instruDiligenciamiento">
+                    Instrucciones de diligenciamiento
+                </button>
+    
+                <!-- Modal -->
+                <div class="modal fade" id="instruDiligenciamiento" tabindex="-1" aria-labelledby="instruDiligenciamientoLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="instruDiligenciamientoLabel">Instrucciones de diligenciamiento</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <u>Códifique según correpoda</u>: <br>
+                        <u>AC</u>:  Acción correctiva <br>
+                        <u>AM</u>: Acción de mejora. <br>
+                        <u>AP</u>: Acción preventiva con el número que le corresponda. <br>
+                        </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <hr>    
-    </div>           
-    <br> 
-    
-
-    <table class="table table-hover">  
-        <thead>
-            <tr>
-                <th scope="col"><%= t('.date_create') %></th>
-                <th scope="col"><%= t('.date_update') %></th>
-                <th scope="col"><%= t('.user_legal_representative') %></th>
-                <th scope="col"><%= t('.user_adviser_sst') %></th>
-                <th scope="col"><%= t('.user_responsible_sst') %></th>
-
-            </tr>
-        </thead>
-        <tr>  
-            <td scope="col"><%= @matrix_corrective_action.created_at %></td>   
-            <td scope="col"><%= @matrix_corrective_action.updated_at %></td>
-            <td scope="col"><%= @matrix_corrective_action.name_user(@matrix_corrective_action.user_legal_representative) %></td>
-            <td scope="col"><%= @matrix_corrective_action.name_user(@matrix_corrective_action.user_adviser_sst) %></td>
-            <td scope="col"><%= @matrix_corrective_action.name_user(@matrix_corrective_action.user_responsible_sst) %></td> 
-        </tr>
-    </table>
-    
-    <br> 
-        <div class="container">
-            <h class="display-6">Resumen Seguimiento Acciones</h>
-        </div> 
-        <div class="container">
-            <table class="table table-hover">
-                <tr>
-                    <td>
-                        <a class="btn btn-sm btn-primary" href="<%= total_items_matrix_corrective_actions_path(@matrix_corrective_action.id, 3)%>" role="button" >
-                            Total Acciones <span class="badge bg-secondary"><%= @total_items.to_i %></td> </span>
-                        </button> 
-                    </td> 
-                    <td>
-                        <a class="btn btn-sm btn-primary" href="<%= total_items_matrix_corrective_actions_path(@matrix_corrective_action.id, 0)%>" role="button" >
-                            Acciones Preventivas <span class="badge bg-success"><%= @ap.to_i %></td> </span>
-                        </button>
-                    </td>
-                    <td>
-                        <a class="btn btn-sm btn-primary" href="<%= total_items_matrix_corrective_actions_path(@matrix_corrective_action.id, 1)%>" role="button" >
-                            Acciones de Mejora <span class="badge bg-warning"><%= @am.to_i %></td> </span>
-                        </button>
-                    </td>
-                    <td>
-                        <a class="btn btn-sm btn-primary" href="<%= total_items_matrix_corrective_actions_path(@matrix_corrective_action.id, 2)%>" role="button" >
-                            Acciones Correctivas <span class="badge bg-danger"><%= @ac.to_i %></td> </span>
-                        </button>
-                    </td>
-                </tr>
-                </br>
-            </table>
-            <table style="width: 100%;">
-                <tr>
-                    <td style="width: 50%;">
-                        <table class="table-light" style="width: 30%;text-align:center;">
-                            <tr class="table-light">
-                                <th class="table-light">
-                                    Estado de las Acciones 
-                                </th>
-                            </tr>
-                        </table> 
-                        <table class="table-light" style="width: 30%;">
-                            <tr class="table-success">
-                                <td class="table-success">
-                                    Cerradas:
-                                </td>
-                                <td class="table-success">
-                                    <%= @cerrada %>
-                                </td>
-                            </tr>
-                            <tr class="table-danger">
-                                <td class="table-danger">
-                                    Abiertas:
-                                </td>
-                                <td class="table-danger">
-                                    <%= @abierta %>    
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td style="width: 50%;">    
-                        <%= pie_chart  @datos_estado_acciones, download: {filename: "EstadoAcciones"}, download: {background: "#FFFFFF"}, xtitle: "Acciones Abiertas", ytitle: "Acciones Cerradas", prefix: "Cantidad: ", colors: ["#FF0000", "#008000"], width: "150px", height: "150px", donut: true, label: 'true', library: {plotOptions: { pie: { dataLabels: { enabled: true }}}} if @datos_estado_acciones.present? %>
-                    </td>                        
-                </tr>
-            </table>   
-
-        </div>  
-
-
-
-    <hr>
-    
-
-    <br>
-    <h2>Acciones</h2>
-    <table class="table table-hover"> 
-        <thead> 
-            <tr>
-                <th scope="col">Nro.</th>
-                <th scope="col">Año</th>
-                <th scope="col">Tipo de Acción </th>
-                <th scope="col">N°Acción</th>
-                <th scope="col">Descripción de la acción</th>
-                <th scope="col">Se realizaron la Acciones</th>
-                <th scope="col">Estado de las Acciones</th>
-                <th scope="col">Ver/Editar</th>
-            </tr>
-        </thead>
-
-        <% @matrix_action_items.each do |matrix_action_item| %>
-            <tr> 
-                <td scope="col"><%= matrix_action_item.consecutive %></td>  
-                <td scope="col"><%= matrix_action_item.year %></td>  
-                <% if matrix_action_item.type_corrective.to_i == 0  %>
-                    <td style="border:1px solid black; text-align:center; background-color:#038018">Acción Preventiva</td>
-                <% end  %>    
-                <% if matrix_action_item.type_corrective.to_i == 1  %>
-                    <td style="border:1px solid black; text-align:center; background-color:#F0E835">Acción de Mejora</td>
-                <% end  %>    
-                <% if matrix_action_item.type_corrective.to_i == 2  %>
-                    <td style="border:1px solid black; text-align:center; background-color:#F03553">Acción Correctiva</td>
-                <% end  %>    
-                <td scope="col"><%= matrix_action_item.clasification_type_corrective %></td>
-                <td scope="col"><%= matrix_action_item.description_action %></td>
-                <td scope="col"><%= matrix_action_item.label_si_no(matrix_action_item.took_actions) %></td>
-                <td scope="col"><%= matrix_action_item.label_state_actions(matrix_action_item.state_actions) %></td>
-                <td><%= link_to t('common.update_matrix_action_item'), edit_matrix_action_item_path(matrix_action_item.id), class: 'btn btn-sm btn-warning' %></td>
-            </tr>
-        <% end %>  
-    </table>  
-    <br> 
-    <hr> 
-<% else %>
-    <div>
-        <%= link_to t('.create_matrix_corrective_action'), new_matrix_corrective_action_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level < 3 %>
+        <div class="card-body">
+          <div class="row mb-4">
+            <div class="col-md-4">
+              <strong>Fecha de creación</strong><br>
+              <span class="text-muted">
+                <%= @matrix_corrective_action.created_at.strftime("%F") %>
+              </span>
+            </div>
+          </div>
+          <hr>
+          <h5 class="text-primary mb-3">
+            <i class="bi bi-person-badge"></i>
+            Representante Legal
+          </h5>
+          <div class="row gy-3">
+            <div class="col-md-3">
+              <strong><%= t('.user_legal_representative') %></strong><br>
+              <%= @matrix_corrective_action.name_user(@matrix_corrective_action.user_legal_representative) %>
+            </div>
+          </div>
+          <hr>
+          <h5 class="text-success mb-3">
+            <i class="bi bi-person-workspace"></i>
+            Asesor SST
+          </h5>
+          <div class="row gy-3">
+            <div class="col-md-3">
+              <strong><%= t('.user_adviser_sst') %></strong><br>
+              <%= @matrix_corrective_action.name_user(@matrix_corrective_action.user_adviser_sst) %>
+            </div>
+          </div>
+          <hr>
+          <h5 class="text-danger mb-3">
+            <i class="bi bi-person-check"></i>
+            <%= t('.user_responsible_sst') %>
+          </h5>
+          <div class="row gy-3">
+            <div class="col-md-3">
+              <strong><%= t('.user_responsible_sst') %></strong><br>
+              <%= @matrix_corrective_action.name_user(@matrix_corrective_action.user_responsible_sst) %>
+            </div>
+          </div>
+          <hr>
+        </div>
     </div>
-<% end %>
-
-
+  <% else %>
+    <div class="card shadow-sm">
+      <div class="card-body text-center">
+        <h5 class="text-secondary mb-4">
+          No existen matrices registradas.
+        </h5>
+        <%= link_to new_matrix_corrective_action_path(entity_id: @entity.id), class: "btn btn-success" do %>
+          <i class="bi bi-plus-circle"></i>
+          <%= t('.create_matrix_corrective_action') %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+    <!-- =======================================================
+         RESUMEN
+         ======================================================= -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-4">
+            <div class="card text-center border-success shadow-sm h-100">
+                <div class="card-body">
+                    <h2 class="text-success mb-0">
+                        <%= n0 %>
+                    </h2>
+                    <div class="fw-semibold text-success">
+                        <a href="<%= total_items_matrix_corrective_actions_path(@matrix_corrective_action.id, 0) %>" class="link-success">
+                            Acciones Preventivas
+                        </a>    
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <h5 class="mb-0">
+                            Gestión Acciones Preventivas
+                        </h5>
+                        <strong>
+                            <%= porcentaje0 %>%
+                        </strong>
+                    </div>
+                    <div class="progress" style="height:28px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width:<%= porcentaje0 %>%">
+                            <%= n01 %> / <%= n0 %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-4">
+            <div class="card text-center border-warning shadow-sm h-100">
+                <div class="card-body">
+                    <h2 class="text-warning mb-0">
+                        <%= n1 %>
+                    </h2>
+                    <div class="fw-semibold text-warning">
+                        <a href="<%= total_items_matrix_corrective_actions_path(@matrix_corrective_action.id, 1)%>" class="link-warning">                    
+                            Acciones de Mejora
+                        </a>    
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <h5 class="mb-0">
+                            Gestión Acciones de Mejora
+                        </h5>
+                        <strong>
+                            <%= porcentaje1 %>%
+                        </strong>
+                    </div>
+                    <div class="progress" style="height:28px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width:<%= porcentaje1 %>%">
+                            <%= n11 %> / <%= n1 %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-4">
+            <div class="card text-center border-danger shadow-sm h-100">
+                <div class="card-body">
+                    <h2 class="text-danger mb-0">
+                        <%= n2 %>
+                    </h2>
+                    <div class="fw-semibold text-danger">
+                        <a href="<%= total_items_matrix_corrective_actions_path(@matrix_corrective_action.id, 2) %>" class="link-danger">
+                            Acciones Correctivas
+                        </a>    
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <h5 class="mb-0">
+                            Gestión Acciones Correctivas
+                        </h5>
+                        <strong>
+                            <%= porcentaje2 %>%
+                        </strong>
+                    </div>
+                    <div class="progress" style="height:28px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width:<%= porcentaje2 %>%">
+                            <%= n21 %> / <%= n2 %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between mb-2">
+                <h5 class="mb-0">
+                    Gestión Total
+                </h5>
+                <strong>
+                    <%= porcentaje %>%
+                </strong>
+            </div>
+            <div class="progress" style="height:28px;">
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width:<%= porcentaje %>%">
+                    <%= (n01.to_i + n11.to_i + n21.to_i ) %> / <%= total_items %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-7">
+        <h3 class="fw-bold mb-2 text-primary">
+            ACCIONES CORRECTIVAS PREVENTIVAS Y DE MEJORA
+        </h3>
+    </div>    
+    <div class="table-responsive">
+            <table class="table table-bordered table-sm align-middle text-center">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Nro.</th>
+                        <th scope="col">Año</th>
+                        <th scope="col">Tipo de Acción </th>
+                        <th scope="col">N°Acción</th>
+                        <th scope="col">Descripción de la acción</th>
+                        <th scope="col">Se realizaron la Acciones</th>
+                        <th scope="col">Estado de las Acciones</th>
+                        <th scope="col">Editar</th>
+                    </tr>    
+                </thead>
+                <tbody>
+                    <% if @matrix_action_items.present? %>
+                        <% @matrix_action_items.each do |matrix_action_item| %>
+                            <tr>
+                                <td scope="col"><%= matrix_action_item.consecutive %></td>  
+                                <td scope="col"><%= matrix_action_item.year %></td>  
+                                <% if matrix_action_item.type_corrective.to_i == 0  %>
+                                    <td style="border:1px solid black; text-align:center; background-color:#038018">Acción Preventiva</td>
+                                <% end  %>    
+                                <% if matrix_action_item.type_corrective.to_i == 1  %>
+                                    <td style="border:1px solid black; text-align:center; background-color:#F0E835">Acción de Mejora</td>
+                                <% end  %>    
+                                <% if matrix_action_item.type_corrective.to_i == 2  %>
+                                    <td style="border:1px solid black; text-align:center; background-color:#F03553">Acción Correctiva</td>
+                                <% end  %>    
+                                <td scope="col"><%= matrix_action_item.clasification_type_corrective %></td>
+                                <td scope="col">
+                                    <small><button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="<%= matrix_action_item.description_action %>"><%= matrix_action_item.description_action.slice(0, 20) %>...</button></small>
+                                </td>  
+                                <td scope="col"><%= matrix_action_item.label_si_no(matrix_action_item.took_actions) %></td>
+                                <td scope="col"><%= matrix_action_item.label_state_actions(matrix_action_item.state_actions) %></td>
+                                <td>
+                                    <% if Current.user.level > 0 && Current.user.level < 4 %>
+                                        <%= link_to edit_matrix_action_item_path(matrix_action_item.id), class: "btn btn-warning btn-sm text-white me-2", title: "Editar", data: { bs_toggle: "tooltip" } do %>
+                                            <i class="bi bi-pencil"></i><span class="d-none d-md-inline"><%= t('common.edit') %></span>
+                                        <% end %>
+                                    <% end  %>    
+                                </td>
+                            </tr>
+                        <% end %>
+                    <% end %>
+                </tbody>
+            </table>
+    </div>
+    <div class="text-muted"> 
+        <%= link_to :back, class:"btn btn-secondary" do %>
+            <i class="bi bi-arrow-left-circle"></i>
+            Retornar
+        <% end %>
+    </div>
+</div>

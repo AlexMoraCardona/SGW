@@ -5,27 +5,6 @@ class MatrixCorrectiveActionsController < ApplicationController
                 @entity = Entity.find(params[:entity_id])
                 @matrix_corrective_action = MatrixCorrectiveAction.find_by(entity_id: params[:entity_id])
                 @matrix_action_items = MatrixActionItem.where(matrix_corrective_action_id: @matrix_corrective_action.id).order(:consecutive) if @matrix_corrective_action.present?
-
-                @total_items = 0
-                @ac = 0
-                @am = 0
-                @ap = 0
-                @cerrada = 0
-                @abierta = 0
-                if @matrix_action_items.present?
-                    @matrix_action_items.each do |item| 
-                        @total_items += 1 
-                        if item.type_corrective.to_i == 0 ; @ap += 1
-                        elsif item.type_corrective.to_i == 1 ; @am += 1
-                        elsif item.type_corrective.to_i == 2 ; @ac += 1
-                        end
-                        @abierta += 1 if item.state_actions == 0
-                        @cerrada += 1 if item.state_actions == 1
-                    end
-                end  
-                @datos_estado_acciones = []
-                @datos_estado_acciones.push(["Abiertas", @abierta]) 
-                @datos_estado_acciones.push(["Cerradas", @cerrada]) 
             else 
                 @entities = Entity.all
             end    

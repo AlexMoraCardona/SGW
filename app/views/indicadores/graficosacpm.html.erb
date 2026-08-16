@@ -1,96 +1,185 @@
 <%= javascript_include_tag "https://www.google.com/jsapi" %>
-<%= wicked_pdf_javascript_include_tag "chartkick" %>
-<%= wicked_pdf_javascript_include_tag "application", "chartkick" %>
 
-<br>
-<div class="container col-11"> 
-    <div>
-        <h3 style="text-align:center">Indicadores Matriz De Seguimiento De Acciones Correctivas Preventivas y De Mejora</h3>
-        <h3 style="text-align:center"><%= @entity.business_name %>  Nit:<%= @entity.identification_number %></h3>
-    </div> 
-
-    <hr>
-    
-    <div>
-         <h4 style="text-align:center">Indicador Estado de las Acciones</h4>
-         <hr>
+<div class="container-fluid px-2 px-md-4 py-3">
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body text-center">
+            <h3 class="fw-bold mb-2">
+                    Indicadores Matriz de Seguimiento de Acciones Correctivas, Preventivas y de Mejora
+            </h3>
+            <h5 class="text-muted mb-0">
+                <%= @entity.business_name %>
+                <span class="mx-2">|</span>
+                NIT: <%= @entity.identification_number %>
+            </h5>
+        </div>
     </div>
-
-    
-    <div class="row g-2">
-        <div class="col-sm-5">
-            <table  class="table" >
-                <thead>
-                    <tr>
-                        <th colspan="3"; style="text-align:center">Cumplimiento Requisitos Legales</th>
-                    </tr>
-                    <tr>
-                        <th scope="col" style="text-align:center">Tipo de Accion</th>
-                        <th scope="col" style="text-align:center">Cantidad</th>
-                        <th scope="col" style="text-align:center">En estado abierto</th>
-                        <th scope="col" style="text-align:center">En proceso</th>
-                        <th scope="col" style="text-align:center">En estado Cerrado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%  @datos_accion_generales.each do |dat| %>
-                        
-                        <tr>
-                            <% if dat[0].to_s == 'ACCIONES PREVENTIVAS'  %>
-                                <td style="border:1px solid black; text-align:center; background-color:#038018"> ACCIONES PREVENTIVAS</td>
-                            <% end  %>    
-                            <% if dat[0].to_s == 'ACCIONES DE MEJORA'  %>
-                                <td style="border:1px solid black; text-align:center; background-color:#F0E835"> ACCIONES DE MEJORA </td>
-                            <% end  %>    
-                        
-                            <% if dat[0].to_s == 'ACCIONES CORRECTIVAS'  %>
-                                <td style="border:1px solid black; text-align:center; background-color:#F03553">ACCIONES CORRECTIVAS</td>
-                            <% end  %>    
-                            <td style="text-align:center"><%= dat[1] %></td>
-                            <td style="text-align:center"><%= dat[2] %></td>
-                            <td style="text-align:center"><%= dat[3] %></td>
-                            <td style="text-align:center"><%= dat[4] %></td>
-                           
-                        </tr> 
-
-                    <% end %>
-                    <tr>
-                        <td colspan="2"; style="text-align:center">Total</td>
-                        <td style="text-align:center"><%= @total %></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>        
-        <div class="col-sm-6">
-            <%= column_chart  @datos_accion, title: "Indicador Tipo de Acción", download: {filename: "Accion"}, download: {background: "#FFFFFF"}, xtitle: "Tipo de acción", ytitle: "Cantidad", prefix: "Cantidad: " if @datos_accion.present? %>
-        </div>        
-
-    </div>  
-    <hr>
-    <div>
-         <h4 style="text-align:center">Indicador Estado de las Acciones Detallado</h4>
-         <hr>
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-light text-center">
+            <h4 class="mb-0 fw-semibold">
+                <i class="bi bi-bar-chart-line me-2"></i>
+                Indicador Estado de las Acciones
+            </h4> 
+        </div>
+            <div class="card-body">
+                <div class="row g-4 align-items-center">
+                    <div class="col-12 col-lg-6">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th colspan="5" class="text-center">
+                                            Cumplimiento Requisitos Legales
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center">
+                                                Tipo de Acción
+                                        </th>
+                                        <th class="text-center">
+                                            Cantidad
+                                        </th>
+                                        <th class="text-center">
+                                            Abierto
+                                        </th>
+                                        <th class="text-center">
+                                            En proceso
+                                        </th>
+                                        <th class="text-center">
+                                            Cerrado
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% @datos_accion_generales.each do |dat| %>
+                                        <tr>
+                                            <% if dat[0].to_s == 'ACCIONES PREVENTIVAS' %>
+                                                <td class="text-center fw-semibold" style="background-color:#038018; color:white;">
+                                                    ACCIONES PREVENTIVAS
+                                                </td>
+                                            <% elsif dat[0].to_s == 'ACCIONES DE MEJORA' %>
+                                                <td class="text-center fw-semibold" style="background-color:#F0E835;">
+                                                    ACCIONES DE MEJORA
+                                                </td>
+                                            <% elsif dat[0].to_s == 'ACCIONES CORRECTIVAS' %>
+                                                  <td class="text-center fw-semibold" style="background-color:#F03553; color:white;">
+                                                        ACCIONES CORRECTIVAS
+                                                  </td>
+                                            <% else %>
+                                                <td class="text-center">
+                                                    <%= dat[0] %>
+                                                </td>
+                                            <% end %>
+                                            <td class="text-center">
+                                                      <%= dat[1] %>
+                                            </td>
+                                            <td class="text-center">
+                                                  <%= dat[2] %>
+                                            </td>
+                                            <td class="text-center">
+                                                  <%= dat[3] %>
+                                            </td>
+                                            <td class="text-center">
+                                                  <%= dat[4] %>
+                                            </td>
+                                        </tr>
+                                    <% end %>
+                                    <tr class="table-light fw-bold">
+                                        <td colspan="2" class="text-center">
+                                            Total
+                                        </td>
+                                        <td colspan="3" class="text-center">
+                                            <%= @total %>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <% if @datos_accion.present? %>
+                            <div class="w-100">
+                                <%= column_chart @datos_accion, title: "Indicador Tipo de Acción", download: {filename: "Accion", background: "#FFFFFF"}, xtitle: "Tipo de acción", ytitle: "Cantidad", prefix: "Cantidad: " %>
+                            </div>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-light text-center">
+                <h4 class="mb-0 fw-semibold">
+                    <i class="bi bi-bar-chart-fill me-2"></i>
+                    Indicador Estado de las Acciones Detallado
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="row g-4">
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card border h-100">
+                            <div class="card-header text-center fw-semibold">
+                                Acciones Preventivas
+                            </div>
+                            <div class="card-body">
+                                <% if @datos_0.present? %>
+                                    <%= column_chart @datos_0,  title: "Acciones Preventivas", download: {filename: "Preventivas", background: "#FFFFFF"}, xtitle: "Estado Acciones Preventivas", ytitle: "Cantidad", prefix: "Cantidad: ", colors: ["#038018"] %>
+                                <% else %>
+                                    <div class="text-center text-muted py-5">
+                                        <i class="bi bi-bar-chart display-5"></i>
+                                        <p class="mt-2 mb-0">
+                                            No hay datos disponibles
+                                        </p>
+                                    </div>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card border h-100">
+                            <div class="card-header text-center fw-semibold">
+                                Acciones de Mejora
+                            </div>
+                            <div class="card-body">
+                                <% if @datos_1.present? %>
+                                    <%= column_chart @datos_1, title: "Acciones de Mejora", download: {filename: "Mejora", background: "#FFFFFF"}, xtitle: "Estado Acciones de Mejora", ytitle: "Cantidad", prefix: "Cantidad: ", colors: ["#F0E835"] %>
+                                <% else %>
+                                    <div class="text-center text-muted py-5">
+                                        <i class="bi bi-bar-chart display-5"></i>
+                                        <p class="mt-2 mb-0">
+                                            No hay datos disponibles
+                                        </p>
+                                    </div>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card border h-100">
+                            <div class="card-header text-center fw-semibold">
+                                Acciones Correctivas
+                            </div>
+                            <div class="card-body">
+                                <% if @datos_2.present? %>
+                                    <%= column_chart @datos_2,  title: "Acciones Correctivas",  download: {filename: "Correctivas", background: "#FFFFFF"}, xtitle: "Estado Acciones Correctivas", ytitle: "Cantidad", prefix: "Cantidad: ", colors: ["#F03553"] %>
+                                <% else %>
+                                    <div class="text-center text-muted py-5">
+                                        <i class="bi bi-bar-chart display-5"></i>
+                                        <p class="mt-2 mb-0">
+                                                No hay datos disponibles
+                                        </p>
+                                    </div>
+                               <% end %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="border-top pt-4 pb-3">
+            <div class="d-flex flex-column flex-md-row justify-content-center align-items-stretch gap-2">
+                  <%= link_to :back, class: "btn btn-secondary px-4" do %>
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Retornar
+                  <% end %>
+            </div>
+        </div>
     </div>
-    <div class="row g-3">
-      
-        <div class="col-sm-4">
-            <%= column_chart  @datos_0, title: "Acciones Preventivas", download: {filename: "Preventivas"}, download: {background: "#FFFFFF"}, xtitle: "Estado Acciones Preventivas", ytitle: "Cantidad", prefix: "Cantidad: ", colors: ["#038018"] if @datos_0.present? %>
-        </div>        
-        <div class="col-sm-4">
-            <%= column_chart  @datos_1, title: "Acciones de Mejora", download: {filename: "Mejora"}, download: {background: "#FFFFFF"}, xtitle: "Estado Acciones de Mejora", ytitle: "Cantidad", prefix: "Cantidad: ", colors: ["#F0E835"] if @datos_1.present? %>
-        </div>        
-        <div class="col-sm-4">
-            <%= column_chart  @datos_2, title: "Acciones Correctivas", download: {filename: "Correctivas"}, download: {background: "#FFFFFF"}, xtitle: "Estado Acciones Correctivas", ytitle: "Cantidad", prefix: "Cantidad: ", colors: ["#F03553"] if @datos_2.present? %>
-        </div>        
-
-
-    </div>  
-    <hr>
-    
-
-
-
-</div>  
-
-
-

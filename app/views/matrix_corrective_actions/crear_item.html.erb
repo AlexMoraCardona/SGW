@@ -1,138 +1,162 @@
-<div class="container col-11 card p-5">
-    <br>
-    <%= form_with model: @matrix_action_item do |form| %> 
-        <% @matrix_action_item.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %>    
-    
-        <%= form.hidden_field :consecutive, :value => @cant.to_i, class: "form-control" %>
-        <%= form.hidden_field :matrix_corrective_action_id, :value => params[:id].to_i, class: "form-control" %>
-        <table style="width: 100%;">  
-            <tr>    
-                <td style="border:1px solid black; width: 50%; text-align:center">
-                    <div class="col-auto text-center">
-                        </br>
-                        <%= form.label :date_action_conformity,  style: "display: block" %>
-                        <%= form.date_field :date_action_conformity,  class: "form-control"  %>
-                        </br>                       
-                     </div>        
-                </td>
-                <td style="border:1px solid black; width: 50%; text-align:center">
-                    <%= form.label :origin_action,  style: "display: block" %>
-                    <%= form.select(:origin_action, [['Revisión por la dirección', 0], ['Inspecciones', 1], ['Indicadores', 2], ['Recomendaciones COPASST', 3], ['Auditorías', 4], ['Investigaciones AT-EL', 5], ['Evaluación inicial', 6], ['Cumplimiento requisitos legales', 7], ['Intervención de peligros y riesgos priorizados', 8], ['Quejas o sugerencias', 9], ['Reporte de actos y condiciones inseguras', 10], ['Cambios de procedimientos', 11], ['Simulacros emergencias', 12], ['Recomendaciones ARL', 13], ['Otros', 14]]) %></br>
-                </td>
-            </tr>    
-        </table>
-        <table style="width: 100%;">
-            <tr>    
-                <td style="border:1px solid black; width: 100%; text-align:center">
-                    </br>
-                    <strong>SOLICITUD ACCION</strong><br>
-                    <%= form.radio_button :type_corrective, 0 %>
-                    <label for="accionpreventiva">Acción Preventiva</label>
-                    <%= form.radio_button :type_corrective, 1 %>
-                    <label for="accionmejora">Acción de Mejora</label>                    
-                    <%= form.radio_button :type_corrective, 2 %>
-                    <label for="accioncorrectiva">Acción Correctiva</label>                    
-                    </br>
-                </td>
-            </tr>    
-        </table>
-        <table style="width: 100%;">
-            <tr>    
-                <td style="border:1px solid black; width: 100%; text-align:center">
-                    </br>
-                    <strong>HALLAZGO</strong><br>
-                    <%= form.text_area :hallazgo,  class: "form-control" %>
-                    </br>
-                </td>
-            </tr>    
-        </table>
-        <table style="width: 100%;">
-            <tr>    
-                <td style="border:1px solid black; width: 50%; text-align:center">
-                    </br>
-                    <strong>Fue detectada en:</strong><br>
-                    <div>
-                    <%= form.label :campus,  style: "display: block" %>
-                    <%= form.collection_select :campus, @locations.order(id: :asc), :id, :name_locate, { prompt: '--Seleccionar Centro de Trabajo--' },
-                    { class: 'form-control input-sm select2' } %><br>
-                    </div>    
-                    <%= form.label :area,  style: "display: block" %>
-                    <%= form.text_field :area,  class: "form-control" %>
-                    </br>
-                </td>
-                <td style="border:1px solid black; width: 50%; text-align:center">
-                    <%= form.label :description_action,  style: "display: block" %>
-                    <%= form.text_area :description_action,  class: "form-control" %>
-                </td>
-            </tr>    
-        </table>
-        <table style="width: 100%;">
-            <tr>   
-                <td style="border:1px solid black; width: 50%; text-align:center">
-                    <%= form.label :year,  style: "display: block" %>
-                    <%= form.select(:year, [['2022', 2022], ['2023', 2023], ['2024', 2024], ['2025', 2025], ['2026', 2026], ['2027', 2027]]) %></br>
-                    </br>
-                </td>
-                <td style="border:1px solid black; width: 50%; text-align:center">
-
-                </td>
-            </tr> 
-            <tr>    
-                <td style="border:1px solid black; width: 50%; text-align:center">
-                   </br>
-                    <%= form.label :action_implement,  style: "display: block" %>
-                    <%= form.select(:action_implement, [['Inmediata', 0], ['Corto Plazo', 1], ['Mediano Plazo', 2], ['Largo Plazo', 3]]) %>
-                    </br>
-                 </td>
-                <td style="border:1px solid black; width: 50%; text-align:center">
-                   </br>
-                    <%= form.label :responsible,  style: "display: block" %>
-                    <%= form.text_field :responsible,  class: "form-control" %>
-                    </br>
-                 </td>
-            </tr> 
-            <tr>    
-                <td style="border:1px solid black; width: 50%; text-align:center">
-                    </br>
-                    <%= form.label :commitment_date,  style: "display: block" %>
-                    <%= form.date_field :commitment_date,  class: "form-control" %>
-                    </br>
-                 </td>
-                <td style="border:1px solid black; width: 50%; text-align:center">
-                    <%= form.label :closet_date,  style: "display: block" %>
-                    <%= form.date_field :closet_date,  class: "form-control" %>
-                </td>
-            </tr> 
-            <tr>    
-                <td style="border:1px solid black; width: 50%; text-align:center">
-                    </br>
-                    <%= form.label :took_actions,  style: "display: block" %>
-                    <%= form.select(:took_actions, [['No', 0], ['Si', 1]]) %>
-                    </br>
-                 </td>
-                <td style="border:1px solid black; width: 50%; text-align:center">
-                    </br>
-                    <%= form.label :state_actions,  style: "display: block" %>
-                    <%= form.select(:state_actions, [['Abierto', 0], ['Cerrado', 1]]) %>
-                    </br>
-                 </td>
-            </tr> 
-        </table>
-        <br>
-        <div class="container col-11 card p-5">
-            <div class="form-group">
-                <h5>Adjuntar_Archivos</h5>
-                <%= form.file_field :matrix_action_item_files, multiple: true %>
-            </div> 
+<div class="container-fluid px-2 px-md-4 py-3">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-light border-bottom">
+            <h5 class="mb-0 text-center">
+                <i class="bi bi-clipboard-check me-2"></i>
+                    Acción Correctiva / Preventiva / Mejora
+            </h5>
         </div>
-        <br> 
-
-        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
-    <% end %>
-</div>        
-<br>
+        <div class="card-body">
+            <%= form_with model: @matrix_action_item do |form| %>
+                <% @matrix_action_item.errors.full_messages.each do |error| %>
+                    <div class="alert alert-danger" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <%= error %>
+                    </div>
+                <% end %>
+                <%= form.hidden_field :consecutive, value: @cant.to_i %>
+                    <%= form.hidden_field :matrix_corrective_action_id, value: params[:id].to_i %>
+                        <div class="row g-3 mb-4">
+                            <div class="col-12 col-md-6">
+                                <div class="border rounded p-3 h-100">
+                                    <%= form.label :date_action_conformity, class: "form-label fw-semibold" %>
+                                    <%= form.date_field :date_action_conformity, class: "form-control" %>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="border rounded p-3 h-100">
+                                    <%= form.label :origin_action, class: "form-label fw-semibold" %>
+                                    <%= form.select :origin_action, [['Revisión por la dirección', 0], ['Inspecciones', 1], ['Indicadores', 2], ['Recomendaciones COPASST', 3], ['Auditorías', 4], ['Investigaciones AT-EL', 5], ['Evaluación inicial', 6], ['Cumplimiento requisitos legales', 7], ['Intervención de peligros y riesgos priorizados', 8], ['Quejas o sugerencias', 9], ['Reporte de actos y condiciones inseguras', 10], ['Cambios de procedimientos', 11], ['Simulacros emergencias', 12], ['Recomendaciones ARL', 13], ['Otros', 14]], {}, class: "form-select" %>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card border mb-4">
+                            <div class="card-header bg-light text-center fw-semibold">
+                                <i class="bi bi-list-check me-2"></i>
+                                SOLICITUD DE ACCIÓN
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex flex-column flex-md-row justify-content-center gap-3">
+                                <div class="form-check">
+                                    <%= form.radio_button :type_corrective, 0, class: "form-check-input", id: "accionpreventiva" %>
+                                    <%= form.label :type_corrective, "Acción Preventiva", value: 0, for: "accionpreventiva", class: "form-check-label" %>
+                                </div>
+                                <div class="form-check">
+                                    <%= form.radio_button :type_corrective, 1, class: "form-check-input", id: "accionmejora" %>
+                                    <%= form.label :type_corrective, "Acción de Mejora", value: 1, for: "accionmejora", class: "form-check-label" %>
+                                </div>
+                                <div class="form-check">
+                                    <%= form.radio_button :type_corrective, 2, class: "form-check-input", id: "accioncorrectiva" %>
+                                    <%= form.label :type_corrective, "Acción Correctiva", value: 2, for: "accioncorrectiva", class: "form-check-label" %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card border mb-4">
+                        <div class="card-header bg-light fw-semibold">
+                            <i class="bi bi-search me-2"></i>
+                            HALLAZGO
+                        </div>
+                        <div class="card-body">
+                        <%= form.text_area :hallazgo, class: "form-control", rows: 4, placeholder: "Describa el hallazgo..." %>
+                    </div>
+                </div>
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-md-6">
+                        <div class="card border h-100">
+                            <div class="card-header bg-light fw-semibold">
+                                <i class="bi bi-geo-alt me-2"></i>
+                                Fue detectada en
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <%= form.label :campus, class: "form-label fw-semibold" %>
+                                    <%= form.collection_select :campus, @locations.order(id: :asc), :id, :name_locate, { prompt: '-- Seleccionar Centro de Trabajo --' }, { class: 'form-select select2' } %>
+                                </div>
+                                <div>
+                                    <%= form.label :area, class: "form-label fw-semibold" %>
+                                    <%= form.text_field :area, class: "form-control" %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="card border h-100">
+                            <div class="card-header bg-light fw-semibold">
+                                <i class="bi bi-card-text me-2"></i>
+                                Descripción de la acción
+                            </div>
+                            <div class="card-body">
+                                <%= form.text_area :description_action, class: "form-control h-100", rows: 6, placeholder: "Describa la acción a implementar..." %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border mb-4">
+                    <div class="card-header bg-light fw-semibold">
+                        <i class="bi bi-info-circle me-2"></i>
+                        Información de la acción
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-12 col-md-6">
+                                <%= form.label :year, class: "form-label fw-semibold" %>
+                                <%= form.select :year, [['2022', 2022], ['2023', 2023], ['2024', 2024], ['2025', 2025], ['2026', 2026], ['2027', 2027]], {}, class: "form-select" %>
+                            </div>
+                            <div class="col-12 col-md-6"></div>
+                            <div class="col-12 col-md-6">
+                                <%= form.label :action_implement, class: "form-label fw-semibold" %>
+                                <%= form.select :action_implement, [['Inmediata', 0], ['Corto Plazo', 1], ['Mediano Plazo', 2], ['Largo Plazo', 3]], {}, class: "form-select" %>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <%= form.label :responsible, class: "form-label fw-semibold" %>
+                                <%= form.text_field :responsible, class: "form-control" %>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <%= form.label :commitment_date, class: "form-label fw-semibold" %>
+                                <%= form.date_field :commitment_date, class: "form-control" %>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <%= form.label :closet_date, class: "form-label fw-semibold" %>
+                                <%= form.date_field :closet_date, class: "form-control" %>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <%= form.label :took_actions, class: "form-label fw-semibold" %>
+                                <%= form.select :took_actions, [['No', 0], ['Sí', 1]], {}, class: "form-select" %>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <%= form.label :state_actions, class: "form-label fw-semibold" %>
+                                <%= form.select :state_actions, [['Abierto', 0], ['Cerrado', 1]], {}, class: "form-select" %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border mb-4">
+                    <div class="card-header bg-light fw-semibold">
+                        <i class="bi bi-paperclip me-2"></i>
+                        Archivos adjuntos
+                    </div>
+                    <div class="card-body">
+                        <%= form.label :matrix_action_item_files, "Seleccionar archivos", class: "form-label" %>
+                        <%= form.file_field :matrix_action_item_files, multiple: true, class: "form-control" %>
+                        <div class="form-text">
+                              Puede seleccionar uno o varios archivos.
+                        </div>
+                    </div>
+                </div>
+                <div class="border-top pt-4">
+                    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-check-circle me-1"></i>
+                            <%= t('common.submit') %>
+                        </button>
+                        <%= link_to :back, class: "btn btn-secondary" do %>
+                            <i class="bi bi-arrow-left me-1"></i>
+                            Retornar
+                        <% end %>
+                    </div>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>

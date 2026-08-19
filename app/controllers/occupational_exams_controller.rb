@@ -15,7 +15,7 @@ class OccupationalExamsController < ApplicationController
         else
             redirect_to new_session_path, alert: t('common.not_logged_in')    
             session.delete(:user_id)  
-        end     
+        end      
     end  
     
     def show
@@ -54,19 +54,25 @@ class OccupationalExamsController < ApplicationController
         @occupational_exam_items = OccupationalExamItem.where("occupational_exam_id = ?", @occupational_exam.id) if @occupational_exam.present?
         @template = Template.where("format_number = ? and document_vigente = ?",35,1).last  
 
+
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'ver_occupational',
-                margin: {top: 10, bottom: 10, left: 5, right: 5 },
-                disable_javascript: true,
-                orientation: 'Landscape',
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
-      
+            format.pdf {
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('ver_occupational'),
+                    orientation: 'Landscape',
+                    zoom: 1,
+                    disable_javascript: true,
+                    margin: {top: 10, bottom: 10, left: 5, right: 5 },
+                    page_size: 'letter',
+                    footer: {right: '[page] de [topage]'}
+                    
+                  )  
+                  send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+            }
+        end    
+   
     end    
 
 

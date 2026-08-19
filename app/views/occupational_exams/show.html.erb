@@ -1,105 +1,130 @@
-<div align="left"; class="container col-12">
-    <a class="navbar-brand" href="/">
-        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-    </a>
+<div class="container-fluid mb-4">
+    <div class="row align-items-center">
+        <div class="col-12 col-lg-2 text-center mb-3 mb-lg-0">
+            <% if @occupational_exam.entity.logo.present? %>
+                <%= image_tag @occupational_exam.entity.logo, class: "img-fluid", style: "max-height:90px;" %>
+            <% end %>
+        </div>
+        <div class="col-12 col-lg-7 text-center">
+            <h3 class="fw-bold mb-2">
+                MATRIZ  DE SEGUIMIENTO EXAMENES OCUPACIONALES
+            </h3>
+            <h5 class="mb-1">
+                <%= @occupational_exam.entity.business_name %>
+            </h5>
+            <small class="text-muted">
+                NIT: <%= @occupational_exam.entity.identification_number %>-<%= @occupational_exam.entity.verification_digit if @occupational_exam.entity.verification_digit.present? %>
+            </small>
+        </div>
+        <div class="col-12 col-lg-3">
+            <div class="row">
+                <div class="col-7 fw-bold">Fecha creación:</div>
+                <div class="col-5"><%= @template.date %></div>
+            </div>
+            <div class="row">
+                <div class="col-7 fw-bold">Actualización:</div>
+                <div class="col-5"><%= @template.date_updated %></div>
+            </div>
+            <div class="row">
+                <div class="col-7 fw-bold">Versión:</div>
+                <div class="col-5"><%= @template.version %></div>
+            </div>
+            <div class="row">
+                <div class="col-7 fw-bold">Código:</div>
+                <div class="col-5"><%= @template.reference %></div>
+            </div>
+        </div>
+    </div>
 </div>
-
-<div class="row g-2">
-            <div class="col-sm-4">
-                <% if @occupational_exam.present? %>  
-                   <%= form_with url: occupational_exam_path(@occupational_exam.id), method: :get do |form| %>
-                        <h5 scope="col">Filtrar por Empleado: </h5>
-                        <%= form.collection_select :user_application, @empleados, :id, :name, { prompt: '--Seleccionar Empleado--' },
-                        { class: 'form-control input-sm select2' , onChange: 'this.form.requestSubmit()', value: params[:id] } if @empleados.present? %>
-                        <%= form.hidden_field :entity_id, :value => @occupational_exam.entity_id, class: "form-control" if @occupational_exam.present? %>
-                    <% end %> 
-                <% end %>     
-            </div>  
-            <div class="col-sm-4">
-                <% if @occupational_exam.present? %> 
-                    <%= form_with url: occupational_exam_path(@occupational_exam.id), method: :get do |form| %>
-                        <h5 scope="col">Filtrar Estado:</h5>
-                        <%= form.select :state_exam,[['Todos'],['Pendiente'], ['Realizado'], ['Cancelado']],{ prompt: '--Seleccionar--' },
-                        { class: 'form-control input-sm select2' , onChange: 'this.form.requestSubmit()', value: params[:state_exam] }  %>
-                        <%= form.hidden_field :entity_id, :value => @occupational_exam.entity_id, class: "form-control" if @occupational_exam.present? %>
-                    <% end %> 
-                <% end %>     
-            </div>  
-
-</div>  
-
-        <br>
-
-<div>
-
-    <table class="table table-hover" style="border:1px solid black"> 
-        <thead>
-            <tr>
-                <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
-                    <% if @occupational_exam.entity.logo.present? then %>
-                        <%=  image_tag  @occupational_exam.entity.logo, class: "image_peq" %>
-                    <% end %>
-                </td>
-                <td rowspan="4"; colspan="8"; style="text-align:center; padding-bottom: 40px;">
-                    <div class="col-10"><h5>MATRIZ  DE SEGUIMIENTO EXAMENES OCUPACIONALES</h5><h6><%= @occupational_exam.entity.business_name if @occupational_exam.present? %> Nit: <%= @occupational_exam.entity.identification_number if @occupational_exam.present? %> </h6></div>
-                </td>
-                <td rowspan="4";  style="text-align:center"></td>
-
-                <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
-
-                <td style="border:1px solid black"><%= @template.date if @template.present? %></td>
-
-            </tr>
-            <tr> 
-                <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
-                <td style="border:1px solid black"><%= @template.date_updated if @template.present? %></td>
-            </tr>
-            <tr> 
-                <td colspan="2"; style="border:1px solid black">Versión:</td>
-                <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
-            </tr>
-            <tr> 
-                <td colspan="2"; style="border:1px solid black">Código:</td>
-                <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
-            </tr>
-        
-            <tr>
-                <th style="border:1px solid black">FECHA EXAMEN</th>
-                <th style="border:1px solid black">FECHA DE VENCIMIENTO</th>
-                <th style="border:1px solid black">TIPO DE EXAMEN</th>
-                <th style="border:1px solid black">APELLIDOS Y NOMBRES  </th>
-                <th style="border:1px solid black">CARGO  </th>
-                <th style="border:1px solid black">CONCEPTO  </th>
-                <th style="border:1px solid black">DIRECCIONAMIENTO A EPS, ARL, o IPS   </th>
-                <th style="border:1px solid black">RECOMENDACIONES MEDICAS  </th>
-                <th style="border:1px solid black">RESTRICCIONES MEDICAS  </th>
-                <th style="border:1px solid black">ESTADO DEL EXAMEN</th>
-                <th style="border:1px solid black">ÉNFASIS</th>
-                <th style="border:1px solid black">EDITAR</th>
-                <th style="border:1px solid black">ELIMINAR</th>
-            </tr> 
-
-        </thead>
-
-        <% @occupational_exam_items.each do |occupational_exam_item| %>             
-            <tbody>
-                <tr>
-                    <td style="border:1px solid black"><%= occupational_exam_item.fec_exam %></td>
-                    <td style="border:1px solid black"><%= occupational_exam_item.fec_venc %></td>
-                    <td style="border:1px solid black"><%= occupational_exam_item.label_exam_type(occupational_exam_item.exam_type) %></td>
-                    <td style="border:1px solid black"><%= occupational_exam_item.name %></td>
-                    <td style="border:1px solid black"><%= occupational_exam_item.post %></td>
-                    <td style="border:1px solid black"><%= occupational_exam_item.concept %></td>
-                    <td style="border:1px solid black"><%= occupational_exam_item.addressing %></td>
-                    <td style="border:1px solid black"><%= occupational_exam_item.recommendations %></td>
-                    <td style="border:1px solid black"><%= occupational_exam_item.restrictions %></td>
-                    <td style="border:1px solid black"><%= OccupationalExamItem.label_state_exam(occupational_exam_item.state_exam) %></td>
-                    <td style="border:1px solid black"><%= occupational_exam_item.emphasis %></td>
-                    <td style="border:1px solid black; text-align:center;"><%= link_to t('common.edit'), edit_occupational_exam_item_path(occupational_exam_item), class: 'btn btn-xs btn-primary'  %></td>
-                    <td style="border:1px solid black; text-align:center;"><%= button_to "Delete", occupational_exam_item_path(occupational_exam_item), method: :delete, class:"btn btn-sm btn-danger" %></td>
-                </tr>
-            </body>
-        <% end %>
-    </table>
-</div>  
-<div></br></div>  
+<hr>
+<div class="row">
+    <div class="col-12 col-md-6">
+        <% if @occupational_exam.present? %>  
+            <%= form_with url: occupational_exam_path(@occupational_exam.id), method: :get do |form| %>
+                <h5 scope="col">Filtrar por Empleado: </h5>
+                <%= form.collection_select :user_application, @empleados, :id, :name, { prompt: '--Seleccionar Empleado--' },
+                    { class: 'form-control input-sm select2' , onChange: 'this.form.requestSubmit()', value: params[:id] } if @empleados.present? %>
+                    <%= form.hidden_field :entity_id, :value => @occupational_exam.entity_id, class: "form-control" if @occupational_exam.present? %>
+                <% end %> 
+            <% end %>     
+    </div>  
+    <div class="col-12 col-md-6">
+        <% if @occupational_exam.present? %> 
+                <%= form_with url: occupational_exam_path(@occupational_exam.id), method: :get do |form| %>
+                    <h5 scope="col">Filtrar Estado:</h5>
+                    <%= form.select :state_exam,[['Todos'],['Pendiente'], ['Realizado'], ['Cancelado']],{ prompt: '--Seleccionar--' },
+                    { class: 'form-control input-sm select2' , onChange: 'this.form.requestSubmit()', value: params[:state_exam] }  %>
+                    <%= form.hidden_field :entity_id, :value => @occupational_exam.entity_id, class: "form-control" if @occupational_exam.present? %>
+                <% end %> 
+            <% end %>     
+    </div>
+</div>         
+<div class="card shadow">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-primary">
+                    <tr>
+                        <th>FECHA EXAMEN</th>
+                        <th>FECHA DE VENCIMIENTO</th>
+                        <th>TIPO DE EXAMEN</th>
+                        <th>APELLIDOS Y NOMBRES  </th>
+                        <th>CARGO  </th>
+                        <th>CONCEPTO  </th>
+                        <th>DIRECCIONAMIENTO A EPS, ARL, o IPS   </th>
+                        <th>RECOMENDACIONES MEDICAS  </th>
+                        <th>RESTRICCIONES MEDICAS  </th>
+                        <th>ESTADO DEL EXAMEN</th>
+                        <th>ÉNFASIS</th>
+                        <th>EDITAR</th>
+                        <th>ELIMINAR</th>
+                    </tr>   
+                </thead>
+                <% @occupational_exam_items.each do |occupational_exam_item| %>             
+                    <tbody>
+                        <tr>
+                            <td><%= occupational_exam_item.fec_exam %></td>
+                            <td><%= occupational_exam_item.fec_venc %></td>
+                            <td><%= occupational_exam_item.label_exam_type(occupational_exam_item.exam_type) %></td>
+                            <td><%= occupational_exam_item.name %></td>
+                            <td><%= occupational_exam_item.post %></td>
+                            <td><%= occupational_exam_item.concept %></td>
+                            <td><%= occupational_exam_item.addressing %></td>
+                            <td><%= occupational_exam_item.recommendations %></td>
+                            <td><%= occupational_exam_item.restrictions %></td>
+                            <td><%= OccupationalExamItem.label_state_exam(occupational_exam_item.state_exam) %></td>
+                            <td><%= occupational_exam_item.emphasis %></td>
+                            <td style=" text-align:center;">
+                                <% if Current.user.level > 0 && Current.user.level < 4 %>
+                                    <%= link_to edit_occupational_exam_item_path(occupational_exam_item), class:"btn btn-warning btn-sm" do %>
+                                        <i class="bi bi-pencil-square"></i>
+                                    <% end %>                    
+                                <% end %>    
+                            </td>
+                            <td style="text-align:center;">
+                                <% if Current.user.level > 0 && Current.user.level < 4 %>
+                                    <%= button_to occupational_exam_item_path(occupational_exam_item), method: :delete, class:"btn btn-danger btn-sm", form: {data: {turbo_confirm:"¿Desea eliminar este registro? Esta acción no se puede deshacer."}} do %>
+                                        <i class="bi bi-trash"></i>
+                                    <% end %>
+                                <% end %>    
+                            </td>
+                        </tr> 
+                    </body>
+                <% end %>
+            </table>
+        </div>
+    </div>
+    <hr class="my-5">
+</div>
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+            <%= link_to occupational_exams_path(entity_id: @occupational_exam.entity.id), class:"btn btn-secondary" do %>
+                <i class="bi bi-arrow-left-circle"></i>Retornar
+            <% end %>
+            <%= link_to ver_occupational_occupational_exams_path(@occupational_exam.id, format: 'pdf'), class:"btn btn-danger" do %>
+                <i class="bi bi-file-earmark-pdf"></i>PDF
+            <% end %> 
+        </div>
+    </div>
+</div>

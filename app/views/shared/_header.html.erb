@@ -116,132 +116,151 @@
        </div>
      </div>
    </div>
-   
-   <div class="row" >  
-      <div align="right"; class="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-            
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                  <div class="modal-content">
-                     <div class="modal-header">
-                       <h1 class="modal-title fs-5" id="exampleModalLabel"><strong>Notificaciones</strong></h1>
-                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                     </div>
-                     <div class="modal-body">
-                        <table>
-                           <tr>     
-                              <td style="border:0px solid black; width: 25%"><strong>Origen</strong></td>
-                              <td style="border:0px solid black; width: 25%"><strong>Empresa</strong></td>
-                              <td style="border:0px solid black; width: 35%"><strong>Actividad</strong></td>
-                              <td style="border:0px solid black; width: 15%"><strong>Fecha o Mes</strong></td>
-                              <td style="border:0px solid black; width: 15%"><strong>Ver</strong></td>
-                           </tr>    
-                           
- 
-                           <% i = 0 %>
-                           <% if @cant_noti.present? %>
-                              <% while i < @cant_noti %>
-                                 <% if @notificaciones[i][3] < Time.now %>
-                                    <tr>    
-                                       <td style="border:0px solid black; width: 25%;padding: 5px;color:#FF0000"><%= @notificaciones[i][0] %></td>
-                                       <td style="border:0px solid black; width: 25%;padding: 5px;color:#FF0000"><%= @notificaciones[i][1] %></td>
-                                       <td style="border:0px solid black; width: 35%;padding: 5px;color:#FF0000"><%= @notificaciones[i][2] %></td>
-                                       <td style="border:0px solid black; width: 15%;padding: 5px;color:#FF0000"><%= @notificaciones[i][3] %></td>
-                                       <% if @notificaciones[i][0] == "Plan anual de trabajo" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", edit_annual_work_plan_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td>
-                                       <% elsif @notificaciones[i][0] == "Matriz de Peligros y Riesgos" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", edit_matrix_danger_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Matriz ACPM" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", edit_matrix_action_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Matriz Actos y Condiciones Inseguras" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", edit_matrix_unsafe_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Compromiso Acta de Reunión COPASST - VIGÍA" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", edit_commitment_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Citación" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", activity_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Lista Chequeo Moto" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", moto_checklist_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Lista Chequeo Automóvil" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", car_checklist_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Solicitud de EPP" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", edit_epp_recuest_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Extintor" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", adm_extinguisher_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% end %>
-                                    </tr>
-                                 <% end %>       
-                                 <% if @notificaciones[i][3] == Time.now %>
-                                    <tr>    
-                                       <td style="border:0px solid black; width: 25%;padding: 5px;color:#FFF00"><%= @notificaciones[i][0] %></td>
-                                       <td style="border:0px solid black; width: 25%;padding: 5px;color:#FFF00"><%= @notificaciones[i][1] %></td>
-                                       <td style="border:0px solid black; width: 35%;padding: 5px;color:#FFF00"><%= @notificaciones[i][2] %></td>
-                                       <td style="border:0px solid black; width: 15%;padding: 5px;color:#FFF00"><%= @notificaciones[i][3] %></td>
-                                       <% if @notificaciones[i][0] == "Plan anual de trabajo" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", edit_annual_work_plan_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td>
-                                       <% elsif @notificaciones[i][0] == "Matriz de Peligros y Riesgos" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", edit_matrix_danger_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Matriz ACPM" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", edit_matrix_action_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Matriz Actos y Condiciones Inseguras" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", edit_matrix_unsafe_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Compromiso Acta de Reunión COPASST - VIGÍA" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", edit_commitment_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Citación" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", activity_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Lista Chequeo Moto" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", moto_checklist_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Lista Chequeo Automóvil" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", car_checklist_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Solicitud de EPP" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", edit_epp_recuest_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Extintor" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", adm_extinguisher_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% end %>
-                                    </tr>  
-                                 <% end %>       
-                                 <% if @notificaciones[i][3] > Time.now %>
-                                    <tr>    
-                                       <td style="border:0px solid black; width: 25%;padding: 5px;color:#008000"><%= @notificaciones[i][0] %></td>
-                                       <td style="border:0px solid black; width: 25%;padding: 5px;color:#008000"><%= @notificaciones[i][1] %></td>
-                                       <td style="border:0px solid black; width: 35%;padding: 5px;color:#008000"><%= @notificaciones[i][2] %></td>
-                                       <td style="border:0px solid black; width: 15%;padding: 5px;color:#008000"><%= @notificaciones[i][3] %></td>
-                                       <% if @notificaciones[i][0] == "Plan anual de trabajo" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", edit_annual_work_plan_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td>
-                                       <% elsif @notificaciones[i][0] == "Matriz de Peligros y Riesgos" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", edit_matrix_danger_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Matriz ACPM" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", edit_matrix_action_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Matriz Actos y Condiciones Inseguras" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", edit_matrix_unsafe_item_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Compromiso Acta de Reunión COPASST - VIGÍA" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", edit_commitment_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Citación" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", activity_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Lista Chequeo Moto" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", moto_checklist_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Lista Chequeo Automóvil" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", car_checklist_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Solicitud de EPP" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", edit_epp_recuest_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% elsif @notificaciones[i][0] == "Extintor" %>
-                                          <td style="border:0px solid black"><%= link_to "Ver", adm_extinguisher_path(@notificaciones[i][4]), class: 'btn btn-sm btn-primary'  %></td> 
-                                       <% end %>
-                                    </tr>  
+   <div class="row">
+      <div class="col-12 d-flex justify-content-end">
+
+         <!-- Modal -->
+         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+               <div class="modal-content shadow">
+                   <div class="modal-header bg-light">
+                     <h5 class="modal-title fw-semibold" id="exampleModalLabel">
+                        <i class="bi bi-bell-fill me-2"></i>
+                        Notificaciones
+                        <% if @cant_noti.present? && @cant_noti.to_i > 0 %>
+                            <span class="badge bg-danger ms-2">
+                              <%= @cant_noti %>
+                           </span>
+                        <% end %>
+                     </h5>
+                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                  </div>
+                  <div class="modal-body p-2 p-md-3">
+                     <% if @cant_noti.present? && @cant_noti.to_i > 0 %>
+                        <div class="table-responsive">
+                           <table class="table table-hover table-striped align-middle mb-0">
+                              <thead class="table-light">
+                                <tr>
+                                     <th scope="col"><i class="bi bi-diagram-3 me-1"></i>Origen</th>
+                                     <th scope="col"><i class="bi bi-building me-1"></i>Empresa</th>
+                                     <th scope="col"><i class="bi bi-clipboard-check me-1"></i>Actividad</th>
+                                     <th scope="col" class="text-nowrap"><i class="bi bi-calendar-event me-1"></i>Fecha / Mes</th>
+                                     <th scope="col" class="text-center">Acción</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 <% i = 0 %>
+                                 <% while i < @cant_noti.to_i %>
+                                    <% notificacion = @notificaciones[i] %>
+                                    <% fecha_notificacion = notificacion[3] %>
+                                    <% if fecha_notificacion.present? %>
+                                          <%
+                                             estado =
+                                             if fecha_notificacion < Time.current
+                                                "vencida"
+                                             elsif fecha_notificacion.to_date == Date.current
+                                                "hoy"
+                                             else
+                                             "pendiente"
+                                             end
+                                          %>                                    
+                                          <tr>
+                                             <td><span class="fw-semibold"><%= notificacion[0] %></span></td>
+                                             <td><%= notificacion[1] %></td>
+                                             <td><%= notificacion[2] %></td>
+                                             <td class="text-nowrap">
+                                                 <% if estado == "vencida" %>
+                                                   <span class="badge bg-danger"><i class="bi bi-exclamation-circle me-1"></i><%= fecha_notificacion %></span>
+                                                <% elsif estado == "hoy" %>
+                                                   <span class="badge bg-warning text-dark"><i class="bi bi-clock me-1"></i><%= fecha_notificacion %></span>
+                                                 <% else %>
+                                                   <span class="badge bg-success"><i class="bi bi-calendar-check me-1"></i><%= fecha_notificacion %></span>
+                                                 <% end %>
+                                             </td>
+                                             <td class="text-center">
+                                                 <% if notificacion[0] == "Plan anual de trabajo" %>
+                                                      <%= link_to edit_annual_work_plan_item_path(notificacion[4]), class: "btn btn-sm btn-outline-primary", title: "Ver notificación", data: {bs_toggle: "tooltip"} do %>
+                                                         <i class="bi bi-eye"></i>
+                                                            <span class="d-none d-md-inline ms-1">Ver</span>
+                                                      <% end %>
+                                                <% elsif notificacion[0] == "Matriz de Peligros y Riesgos" %>
+                                                   <%= link_to edit_matrix_danger_item_path(notificacion[4]), class: "btn btn-sm btn-outline-primary", title: "Ver notificación", data: {bs_toggle: "tooltip"} do %>
+                                                        <i class="bi bi-eye"></i>
+                                                            <span class="d-none d-md-inline ms-1">Ver</span>
+                                                   <% end %>
+                                                <% elsif notificacion[0] == "Matriz ACPM" %>
+                                                   <%= link_to edit_matrix_action_item_path(notificacion[4]), class: "btn btn-sm btn-outline-primary", title: "Ver notificación", data: {bs_toggle: "tooltip"} do %>
+                                                        <i class="bi bi-eye"></i>
+                                                            <span class="d-none d-md-inline ms-1">Ver</span>
+                                                   <% end %>
+                                                <% elsif notificacion[0] == "Matriz Actos y Condiciones Inseguras" %>
+                                                   <%= link_to edit_matrix_unsafe_item_path(notificacion[4]), class: "btn btn-sm btn-outline-primary", title: "Ver notificación", data: {bs_toggle: "tooltip"} do %>
+                                                        <i class="bi bi-eye"></i>
+                                                            <span class="d-none d-md-inline ms-1">Ver</span>
+                                                   <% end %>
+                                                <% elsif notificacion[0] == "Compromiso Acta de Reunión COPASST - VIGÍA" %>
+                                                   <%= link_to edit_commitment_path(notificacion[4]), class: "btn btn-sm btn-outline-primary", title: "Ver notificación", data: {bs_toggle: "tooltip"} do %>
+                                                        <i class="bi bi-eye"></i>
+                                                            <span class="d-none d-md-inline ms-1">Ver</span>
+                                                   <% end %>
+                                                <% elsif notificacion[0] == "Citación" %>
+                                                   <%= link_to activity_path(notificacion[4]), class: "btn btn-sm btn-outline-primary", title: "Ver notificación", data: {bs_toggle: "tooltip"} do %>
+                                                        <i class="bi bi-eye"></i>
+                                                            <span class="d-none d-md-inline ms-1">Ver</span>
+                                                   <% end %>
+                                                <% elsif notificacion[0] == "Lista Chequeo Moto" %>
+                                                   <%= link_to moto_checklist_path(notificacion[4]), class: "btn btn-sm btn-outline-primary", title: "Ver notificación", data: {bs_toggle: "tooltip"} do %>
+                                                        <i class="bi bi-eye"></i>
+                                                            <span class="d-none d-md-inline ms-1">Ver</span>
+                                                   <% end %>
+                                                <% elsif notificacion[0] == "Lista Chequeo Automóvil" %>
+                                                   <%= link_to car_checklist_path(notificacion[4]), class: "btn btn-sm btn-outline-primary", title: "Ver notificación", data: {bs_toggle: "tooltip"} do %>
+                                                        <i class="bi bi-eye"></i>
+                                                            <span class="d-none d-md-inline ms-1">Ver</span>
+                                                   <% end %>
+                                                <% elsif notificacion[0] == "Solicitud de EPP" %>
+                                                   <%= link_to edit_epp_recuest_path(notificacion[4]), class: "btn btn-sm btn-outline-primary", title: "Ver notificación", data: {bs_toggle: "tooltip"} do %>
+                                                        <i class="bi bi-eye"></i>
+                                                            <span class="d-none d-md-inline ms-1">Ver</span>
+                                                   <% end %>
+                                                <% elsif notificacion[0] == "Extintor" %>
+                                                   <%= link_to adm_extinguisher_path(notificacion[4]), class: "btn btn-sm btn-outline-primary", title: "Ver notificación", data: {bs_toggle: "tooltip"} do %>
+                                                      <i class="bi bi-eye"></i>
+                                                      <span class="d-none d-md-inline ms-1">Ver</span>
+                                                   <% end %>
+                                                <% end %>
+                                             </td>
+                                          </tr>
+                                    <% end %>
+                                    <% i += 1 %>
                                  <% end %>
-                                 <% i = i + 1 %>
-                              <% end %>   
-                           <% end %>
-                        </table>
-                     </div>
-                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                     </div>
+                              </tbody>
+                           </table>
+                        </div>
+                        <div class="mt-3">
+                           <div class="d-flex flex-wrap justify-content-center gap-2 small">
+                              <span class="badge bg-danger"><i class="bi bi-exclamation-circle me-1"></i>Vencida</span>
+                              <span class="badge bg-warning text-dark"><i class="bi bi-clock me-1"></i>Hoy</span>
+                              <span class="badge bg-success"><i class="bi bi-calendar-check me-1"></i>Pendiente</span>
+                           </div>
+                        </div>
+                     <% else %>
+                          <div class="text-center py-5">
+                               <i class="bi bi-bell-slash display-4 text-muted"></i>
+                                 <h5 class="mt-3">No hay notificaciones</h5>
+                                 <p class="text-muted mb-0">Actualmente no tiene notificaciones pendientes.</p>
+                          </div>
+                     <% end %>
+                  </div>
+                  <div class="modal-footer d-flex justify-content-center">
+                     <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i>Cerrar
+                     </button>
                   </div>
                </div>
             </div>
+         </div>
       </div>
    </div>
-</div> 
-
+</div>
 

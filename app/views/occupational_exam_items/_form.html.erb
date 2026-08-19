@@ -1,91 +1,184 @@
-<div class="container col-12 card p-5">
-    <br>
-    <%= form_with model: @occupational_exam_item do |form| %>
-        <% @occupational_exam_item.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %>    
-
-        <div class="row g-2">
-            <div class="col-sm-3">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar la fecha que se realiza el examen."><%= t('.fec_exam') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-                <%= form.date_field :fec_exam,  class: "form-control" %>
-            </div>  
-            <div class="col-sm-3">
-            </div>  
-            <div class="col-sm-4"> 
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar la fecha de vencimiento del examen."><%= t('.fec_venc') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button> <br>          
-                <%= form.date_field :fec_venc,  class: "form-control" %>
-            </div>        
-        </div>   
-        </br>
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingresar énfasis."><%= t('.emphasis') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :emphasis,  class: "form-control" %>
+<div class="container-fluid px-2 px-md-4 my-3">
+    <div class="card shadow-sm mx-auto" style="max-width: 1200px;">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">
+                <i class="bi bi-heart-pulse me-2"></i>
+                Examen Ocupacional
+            </h5>
         </div>
-        </br>
-        <div class="row g-2">
-            <div class="col-sm-6"> 
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la acción que se va a realizar."><%= t('.exam_type') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-                <%= form.select(:exam_type, [['Preingreso', 0], ['Periódicos', 1], ['Egreso', 2], ['Post incapacidad', 3], ['Retorno laboral', 4], ['Seguimiento/Control', 5]]) %>
-            </div>
-            <div class="col-sm-6"> 
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar el estado del exámen."><%= t('.state_exam') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-                <%= form.select(:state_exam, [['Pendiente', 0], ['Realizado', 1], ['Cancelado', 2]]) %>
-            </div>
-        </div>   
-        <br>
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el empleado.">Empleado:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                <%= form.collection_select :user_application, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
+        <div class="card-body p-3 p-md-4">
+            <%= form_with model: @occupational_exam_item do |form| %>
+                <% if @occupational_exam_item.errors.any? %>
+                    <div class="alert alert-danger" role="alert">
+                        <div class="fw-bold mb-2">
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                            Se encontraron los siguientes errores:
+                        </div>
+                        <ul class="mb-0">
+                            <% @occupational_exam_item.errors.full_messages.each do |error| %>
+                                <li><%= error %></li>
+                            <% end %>
+                        </ul>
+                    </div>
+                <% end %>
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-md-6">
+                        <label class="form-label fw-semibold">
+                            <i class="bi bi-calendar-check me-1"></i>
+                            <%= t('.fec_exam') %>
+                            <button type="button" class="btn btn-sm btn-light ms-1 p-1" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar la fecha que se realiza el examen.">
+                                <%= image_tag 'ayuda.png', width: 20, height: 20, alt: "Ayuda" %>
+                            </button>
+                        </label>
+                        <%= form.date_field :fec_exam, class: "form-control" %>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label fw-semibold">
+                            <i class="bi bi-calendar-x me-1"></i>
+                            <%= t('.fec_venc') %>
+                            <button type="button"  class="btn btn-sm btn-light ms-1 p-1" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar la fecha de vencimiento del examen.">
+                                <%= image_tag 'ayuda.png', width: 20,  height: 20, alt: "Ayuda" %>
+                            </button> 
+                        </label>
+                        <%= form.date_field :fec_venc, class: "form-control" %>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">
+                        <i class="bi bi-search-heart me-1"></i>
+                        <%= t('.emphasis') %>
+                        <button type="button" class="btn btn-sm btn-light ms-1 p-1" data-bs-toggle="tooltip" data-bs-html="true" title="Ingresar énfasis.">
+                            <%= image_tag 'ayuda.png', width: 20, height: 20, alt: "Ayuda" %>
+                        </button>
+                    </label>
+                    <%= form.text_field :emphasis, class: "form-control" %>
+                </div>
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-md-6">
+                        <label class="form-label fw-semibold">
+                            <i class="bi bi-clipboard2-pulse me-1"></i>
+                            <%= t('.exam_type') %>
+                            <button type="button" class="btn btn-sm btn-light ms-1 p-1" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la acción que se va a realizar.">
+                                <%= image_tag 'ayuda.png',  width: 20, height: 20, alt: "Ayuda" %>
+                            </button>
+                        </label>
+                        <%= form.select :exam_type, [['Preingreso', 0], ['Periódicos', 1], ['Egreso', 2], ['Post incapacidad', 3], ['Retorno laboral', 4], ['Seguimiento/Control', 5]], {}, class: "form-select" %>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label fw-semibold">
+                            <i class="bi bi-clipboard-check me-1"></i>
+                            <%= t('.state_exam') %>
+                            <button type="button" class="btn btn-sm btn-light ms-1 p-1" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar el estado del examen.">
+                                <%= image_tag 'ayuda.png', width: 20, height: 20, alt: "Ayuda" %>
+                            </button>
+                        </label>
+                        <%= form.select :state_exam, [['Pendiente', 0], ['Realizado', 1], ['Cancelado', 2]], {}, class: "form-select" %>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">
+                        <i class="bi bi-person-badge me-1"></i>
+                        Empleado
+                        <button type="button" class="btn btn-sm btn-light ms-1 p-1" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el empleado.">
+                            <%= image_tag 'ayuda.png',  width: 20, height: 20, alt: "Ayuda" %>
+                        </button>
+                    </label>
+                    <%= form.collection_select :user_application, User.usuarios_empresa.order(id: :asc),:id, :name, {}, class: "form-select" %>
+                </div>
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-md-4">
+                        <label class="form-label fw-semibold">
+                            <i class="bi bi-person-vcard me-1"></i>
+                            <%= t('.nro_identification') %>
+                            <button type="button" class="btn btn-sm btn-light ms-1 p-1"  data-bs-toggle="tooltip" data-bs-html="true" title="Indicar el número de identificación del empleado.">
+                                <%= image_tag 'ayuda.png',  width: 20, height: 20, alt: "Ayuda" %>
+                            </button>
+                        </label>
+                        <%= form.text_field :nro_identification, class: "form-control" %>
+                    </div>
+                    <div class="col-12 col-md-8">
+                        <label class="form-label fw-semibold">
+                            <i class="bi bi-person-lines-fill me-1"></i>
+                            <%= t('.name') %>
+                            <button type="button" class="btn btn-sm btn-light ms-1 p-1" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar los apellidos y nombres del empleado.">
+                                <%= image_tag 'ayuda.png',  width: 20, height: 20, alt: "Ayuda" %>
+                            </button>
+                        </label>
+                        <%= form.text_field :name, class: "form-control" %>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">
+                        <i class="bi bi-briefcase me-1"></i>
+                        <%= t('.post') %>
+                        <button type="button" class="btn btn-sm btn-light ms-1 p-1" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar el cargo del empleado.">
+                            <%= image_tag 'ayuda.png', width: 20, height: 20, alt: "Ayuda" %>
+                        </button>
+                    </label>
+                    <%= form.text_field :post, class: "form-control" %>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">
+                        <i class="bi bi-file-earmark-medical me-1"></i>
+                        <%= t('.concept') %>
+                        <button type="button" class="btn btn-sm btn-light ms-1 p-1" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar el concepto.">
+                            <%= image_tag 'ayuda.png', width: 20, height: 20, alt: "Ayuda" %>
+                        </button>
+                    </label>
+                    <%= form.text_field :concept, class: "form-control" %>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">
+                        <i class="bi bi-signpost-2 me-1"></i>
+                        <%= t('.addressing') %>
+                        <button type="button" class="btn btn-sm btn-light ms-1 p-1" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar el direccionamiento.">
+                            <%= image_tag 'ayuda.png', width: 20, height: 20, alt: "Ayuda" %>
+                        </button>
+                    </label>
+                    <%= form.text_field :addressing, class: "form-control" %>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">
+                        <i class="bi bi-chat-square-text me-1"></i>
+                        <%= t('.recommendations') %>
+                        <button type="button" class="btn btn-sm btn-light ms-1 p-1" data-bs-toggle="tooltip" data-bs-html="true" title="Ingresar las recomendaciones médicas.">
+                            <%= image_tag 'ayuda.png',  width: 20,  height: 20, alt: "Ayuda" %>
+                        </button>
+                    </label>
+                    <%= form.text_field :recommendations, class: "form-control" %>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">
+                        <i class="bi bi-exclamation-octagon me-1"></i>
+                        <%= t('.restrictions') %>
+                            <button type="button" class="btn btn-sm btn-light ms-1 p-1" data-bs-toggle="tooltip" data-bs-html="true" title="Ingresar las restricciones médicas.">
+                                <%= image_tag 'ayuda.png', width: 20, height: 20, alt: "Ayuda" %>
+                            </button>
+                    </label>
+                    <%= form.text_field :restrictions, class: "form-control" %>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">
+                        <i class="bi bi-activity me-1"></i>
+                        <%= t('.sve') %>
+                        <button type="button" class="btn btn-sm btn-light ms-1 p-1" data-bs-toggle="tooltip" data-bs-html="true" title="Ingresar el SVE (Sistema de Vigilancia Epidemiológica).">
+                            <%= image_tag 'ayuda.png', width: 20, height: 20,  alt: "Ayuda" %>
+                        </button>
+                    </label>
+                    <%= form.text_field :sve,  class: "form-control" %>
+                </div>
+                <hr class="my-4">
+                <div class="d-flex flex-column flex-sm-row justify-content-center gap-2">
+                    <%= form.button type: "submit", class: "btn btn-success px-4" do %>
+                        <i class="bi bi-check-circle me-1"></i>
+                        <%= t('common.submit') %>
+                    <% end %>
+                    <%= link_to :back, class: "btn btn-secondary px-4" do %>
+                        <i class="bi bi-arrow-left-circle me-1"></i>
+                        Retornar
+                    <% end %>
+                </div>
+            <% end %>
         </div>
-        </br>
-        <div class="row g-2">
-            <div class="col-sm-3">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar la número de identificación del empleado."><%= t('.nro_identification') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-                <%= form.text_field :nro_identification,  class: "form-control" %>
-            </div>  
-            <div class="col-sm-3">
-            </div>  
-            <div class="col-sm-4"> 
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar los apellídos y nombres del empleado."><%= t('.name') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button> <br>          
-                <%= form.text_field :name,  class: "form-control" %>
-            </div>        
-        </div>   
-        </br>
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar el cargo del empleado."><%= t('.post') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :post,  class: "form-control" %>
-        </div>
-        </br>
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar el concepto."><%= t('.concept') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :concept,  class: "form-control" %>
-        </div>
-        </br>
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Indicar el direccionamiento."><%= t('.addressing') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :addressing,  class: "form-control" %>
-        </div>
-        </br>
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingresar las recomendaciones médicas."><%= t('.recommendations') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :recommendations,  class: "form-control" %>
-        </div>
-        </br>
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingresar las restricciones médicas."><%= t('.restrictions') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :restrictions,  class: "form-control" %>
-        </div>
-        </br>
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingresar el SVE(Sistema de Vigilancia Epidemiológica)."><%= t('.sve') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :sve,  class: "form-control" %>
-        </div>
-        <br>    
-        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
-    <% end %>
-
+    </div>
 </div>
-<br>

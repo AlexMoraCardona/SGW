@@ -25,7 +25,7 @@ class ExtinguishersController < ApplicationController
         @adm_extinguisher = AdmExtinguisher.find(@extinguisher.adm_extinguisher_id) if @extinguisher.present?
 
         if @extinguisher.save then
-            redirect_to adm_extinguishers_path(entity_id: @adm_extinguisher.entity_id), notice: 'Inspección de extintor creado correctamente'
+            redirect_to adm_extinguisher_path(id: @adm_extinguisher.id, extinguisher_id: @extinguisher.id, photo_question: true), notice: 'Inspección de extintor creada correctamente'
         else
             render :edit, status: :unprocessable_entity
         end    

@@ -17,6 +17,14 @@ class AdmExtinguishersController < ApplicationController
     end  
     
     def show
+
+        if params[:photo_question] == "true" && params[:extinguisher_id].present?
+            @extinguisher = Extinguisher.find(params[:extinguisher_id]) if params[:extinguisher_id].present?
+            redirect_to extinguisher_foto_path(params[:extinguisher_id])
+            return
+        end
+
+        
         @adm_extinguisher = AdmExtinguisher.find(params[:id])
         @extinguishers = Extinguisher.where("adm_extinguisher_id = ?", @adm_extinguisher.id).order(:nro) if @adm_extinguisher.present?
         @template = Template.where("format_number = ? and document_vigente = ?",61,1).last  

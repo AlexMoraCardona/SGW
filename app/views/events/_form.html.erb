@@ -260,6 +260,33 @@
                         </div>
                     </div>
                 </div>
+<div class="col-12 col-md-6">
+    <%= form.label :detail_disease_id,
+        "Enfermedad asociada a SVE",
+        class: "form-label fw-semibold" %>
+
+    <%= form.select :detail_disease_id,
+        options_for_select(
+            @sve_diseases.map do |disease|
+                [
+                    "#{disease.name} — #{disease.surveillance_configuration.name}",
+                    disease.id
+                ]
+            end,
+            @event.detail_disease_id
+        ),
+        {
+            include_blank: "-- Sin asociación a SVE --"
+        },
+        {
+            class: "form-select"
+        } %>
+
+    <div class="form-text">
+        <i class="bi bi-shield-check me-1"></i>
+        Seleccione solamente cuando la enfermedad esté relacionada con un SVE.
+    </div>
+</div>                
                 <!-- CAMPOS OCULTOS -->
                 <%= form.hidden_field :user_reports, value: Current.user.id %>
                 <%= form.hidden_field :entity_id, value: Current.user.entity %>

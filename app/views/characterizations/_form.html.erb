@@ -1,0 +1,177 @@
+<%= form_with(
+      model: @characterization,
+      url: @characterization.new_record? ?
+        epidemiological_surveillance_program_surveillance_worker_characterization_path(
+          @epidemiological_surveillance_program,
+          @surveillance_worker
+        ) :
+        epidemiological_surveillance_program_surveillance_worker_characterization_path(
+          @epidemiological_surveillance_program,
+          @surveillance_worker
+        ),
+      method: @characterization.new_record? ? :post : :patch,
+      local: true
+    ) do |form| %>
+        
+
+  <% if @characterization.errors.any? %>
+
+    <div class="alert alert-danger">
+
+      <strong>
+        No fue posible guardar la caracterización:
+      </strong>
+
+      <ul class="mb-0 mt-2">
+
+        <% @characterization.errors.full_messages.each do |error| %>
+
+          <li>
+            <%= error %>
+          </li>
+
+        <% end %>
+
+      </ul>
+
+    </div>
+
+  <% end %>
+
+
+  <!-- GRUPO PVE -->
+
+  <div class="mb-3">
+
+    <%= form.label(
+          :pve_group,
+          "Grupo PVE",
+          class: "form-label fw-semibold"
+        ) %>
+
+    <%= form.select(
+          :pve_group,
+          Characterization.pve_group_options,
+          {},
+          class: "form-select"
+        ) %>
+
+  </div>
+
+
+  <!-- EXPOSICIÓN -->
+
+  <div class="mb-3">
+
+    <%= form.label(
+          :principal_exposure,
+          "Exposición principal",
+          class: "form-label fw-semibold"
+        ) %>
+
+    <%= form.select(
+          :principal_exposure,
+          Characterization.principal_exposure_options,
+          {},
+          class: "form-select"
+        ) %>
+
+  </div>
+
+
+  <!-- FRECUENCIA -->
+
+  <div class="mb-3">
+
+    <%= form.label(
+          :frequency,
+          "Frecuencia",
+          class: "form-label fw-semibold"
+        ) %>
+
+    <%= form.select(
+          :frequency,
+          Characterization.frequency_options,
+          {},
+          class: "form-select"
+        ) %>
+
+  </div>
+
+
+  <!-- RESPIRADOR -->
+
+  <div class="mb-3">
+
+    <%= form.label(
+          :respirator_required,
+          "Respirador requerido",
+          class: "form-label fw-semibold"
+        ) %>
+
+    <div class="form-check form-switch">
+
+      <%= form.check_box(
+            :respirator_required,
+            class: "form-check-input",
+            role: "switch"
+          ) %>
+
+      <%= form.label(
+            :respirator_required,
+            "Sí",
+            class: "form-check-label"
+          ) %>
+
+    </div>
+
+  </div>
+
+
+  <!-- ESTADO -->
+
+  <div class="mb-4">
+
+    <%= form.label(
+          :characterization_status,
+          "Estado caracterización",
+          class: "form-label fw-semibold"
+        ) %>
+
+    <%= form.select(
+          :characterization_status,
+          Characterization.characterization_status_options,
+          {},
+          class: "form-select"
+        ) %>
+
+  </div>
+
+
+  <!-- BOTONES -->
+
+<div class="d-flex flex-wrap justify-content-center gap-2">
+
+  <%= form.submit(
+        @characterization.persisted? ?
+          "Actualizar caracterización" :
+          "Guardar caracterización",
+        class: "btn btn-primary"
+      ) %>
+
+  <%= link_to(
+        epidemiological_surveillance_program_surveillance_worker_path(
+          @epidemiological_surveillance_program,
+          @surveillance_worker
+        ),
+        class: "btn btn-outline-secondary"
+      ) do %>
+
+    <i class="bi bi-x-circle me-1"></i>
+    Cancelar
+
+  <% end %>
+
+</div>
+
+<% end %>

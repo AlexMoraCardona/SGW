@@ -10,6 +10,30 @@ class User < ApplicationRecord
     has_many :habil_votes
     has_many :votes
     has_many :epp_recuests
+    has_many :epidemiological_surveillance_programs,
+         foreign_key: :responsible_id,
+         dependent: :nullify
+
+    has_many :surveillance_surveys_created,
+         class_name: 'SurveillanceSurvey',
+         foreign_key: :created_by_id,
+         dependent: :nullify   
+         
+    has_many :surveillance_survey_responses,
+         dependent: :restrict_with_error
+
+    has_many :surveillance_survey_reviews,
+         class_name: 'SurveillanceSurveyResponse',
+         foreign_key: :reviewed_by_id,
+         dependent: :nullify     
+         
+    has_many :epidemiological_surveillance_cases,
+         dependent: :restrict_with_error
+
+    has_many :epidemiological_surveillance_cases_as_responsible,
+         class_name: 'EpidemiologicalSurveillanceCase',
+         foreign_key: :responsible_id,
+         dependent: :nullify         
     
     #validates :document, name, username, email, password_digest,  presence: true #Validar la presencia
     validates :document,  presence: true #Validar la presencia

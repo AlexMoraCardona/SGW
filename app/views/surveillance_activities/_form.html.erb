@@ -1,0 +1,240 @@
+<%= form_with(
+      model: [
+        @epidemiological_surveillance_program,
+        @surveillance_activity
+      ],
+      local: true
+    ) do |form| %>
+
+  <% if @surveillance_activity.errors.any? %>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <div class="fw-semibold mb-2">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        No fue posible guardar la actividad.
+      </div>
+
+      <ul class="mb-0">
+        <% @surveillance_activity.errors.full_messages.each do |error| %>
+          <li><%= error %></li>
+        <% end %>
+      </ul>
+
+      <button type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Cerrar"></button>
+    </div>
+  <% end %>
+
+
+  <!-- INFORMACIÓN GENERAL -->
+  <div class="card border-0 shadow-sm mb-4">
+
+    <div class="card-header bg-light">
+      <h5 class="mb-0">
+        <i class="bi bi-info-circle me-2 text-primary"></i>
+        Información general
+      </h5>
+    </div>
+
+    <div class="card-body">
+
+      <div class="row g-3">
+
+        <!-- NOMBRE -->
+        <div class="col-12">
+
+          <%= form.label :name, "Nombre de la actividad",
+                class: "form-label fw-semibold" %>
+
+          <%= form.text_field :name,
+                class: "form-control",
+                placeholder: "Ingrese el nombre de la actividad",
+                maxlength: 255,
+                required: true %>
+
+        </div>
+
+
+        <!-- DESCRIPCIÓN -->
+        <div class="col-12">
+
+          <%= form.label :description, "Descripción",
+                class: "form-label fw-semibold" %>
+
+          <%= form.text_area :description,
+                class: "form-control",
+                rows: 4,
+                placeholder: "Describa la actividad que se realizará..." %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- RESPONSABLE Y ESTADO -->
+  <div class="card border-0 shadow-sm mb-4">
+
+    <div class="card-header bg-light">
+      <h5 class="mb-0">
+        <i class="bi bi-person-check me-2 text-primary"></i>
+        Responsable y estado
+      </h5>
+    </div>
+
+    <div class="card-body">
+
+      <div class="row g-3">
+
+        <!-- RESPONSABLE -->
+        <div class="col-12 col-md-6">
+
+          <%= form.label :responsible_id, "Responsable",
+                class: "form-label fw-semibold" %>
+
+          <%= form.collection_select(
+                :responsible_id,
+                User.where(
+                  entity: @epidemiological_surveillance_program.entity_id
+                ).order(:name),
+                :id,
+                :name,
+                { include_blank: "Seleccione el responsable" },
+                { class: "form-select" }
+              ) %>
+
+        </div>
+
+
+        <!-- ESTADO -->
+        <div class="col-12 col-md-6">
+
+          <%= form.label :status, "Estado",
+                class: "form-label fw-semibold" %>
+
+          <%= form.select(
+                :status,
+                [
+                  ["Pendiente", "pending"],
+                  ["En ejecución", "in_progress"],
+                  ["Completada", "completed"],
+                  ["Cancelada", "cancelled"]
+                ],
+                {},
+                class: "form-select"
+              ) %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- FECHAS -->
+  <div class="card border-0 shadow-sm mb-4">
+
+    <div class="card-header bg-light">
+      <h5 class="mb-0">
+        <i class="bi bi-calendar3 me-2 text-primary"></i>
+        Planificación y ejecución
+      </h5>
+    </div>
+
+    <div class="card-body">
+
+      <div class="row g-3">
+
+        <!-- FECHA PROGRAMADA -->
+        <div class="col-12 col-md-6">
+
+          <%= form.label :planned_date, "Fecha programada",
+                class: "form-label fw-semibold" %>
+
+          <%= form.date_field :planned_date,
+                class: "form-control" %>
+
+        </div>
+
+
+        <!-- FECHA EJECUCIÓN -->
+        <div class="col-12 col-md-6">
+
+          <%= form.label :execution_date, "Fecha de ejecución",
+                class: "form-label fw-semibold" %>
+
+          <%= form.date_field :execution_date,
+                class: "form-control" %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- OBSERVACIONES -->
+  <div class="card border-0 shadow-sm mb-4">
+
+    <div class="card-header bg-light">
+      <h5 class="mb-0">
+        <i class="bi bi-chat-left-text me-2 text-primary"></i>
+        Observaciones
+      </h5>
+    </div>
+
+    <div class="card-body">
+
+      <%= form.text_area :observations,
+            class: "form-control",
+            rows: 5,
+            placeholder: "Ingrese observaciones, resultados o información adicional..." %>
+
+    </div>
+
+  </div>
+
+
+  <!-- BOTONERA -->
+  <div class="d-flex flex-wrap justify-content-center gap-2 mb-3">
+
+    <%= form.submit(
+          @surveillance_activity.persisted? ?
+            "Actualizar actividad" :
+            "Guardar actividad",
+          class: "btn btn-primary"
+        ) do %>
+
+      <i class="bi bi-check-circle me-1"></i>
+
+    <% end %>
+
+
+    <%= link_to(
+          @surveillance_activity.persisted? ?
+            epidemiological_surveillance_program_surveillance_activity_path(
+              @epidemiological_surveillance_program,
+              @surveillance_activity
+            ) :
+            epidemiological_surveillance_program_surveillance_activities_path(
+              @epidemiological_surveillance_program
+            ),
+          class: "btn btn-outline-secondary"
+        ) do %>
+
+      <i class="bi bi-x-circle me-1"></i>
+      Cancelar
+
+    <% end %>
+
+  </div>
+
+<% end %>

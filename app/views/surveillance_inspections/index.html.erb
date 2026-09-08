@@ -1,0 +1,470 @@
+<div class="container-fluid py-3">
+
+  <!-- ENCABEZADO -->
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+
+      <div class="d-flex flex-column flex-md-row
+                  justify-content-between align-items-md-center gap-3">
+
+        <div>
+          <h4 class="mb-1">
+            <i class="bi bi-clipboard2-check me-2"></i>
+            Inspecciones SVE
+          </h4>
+
+          <div class="text-muted">
+            <i class="bi bi-shield-check me-1"></i>
+            <%= @epidemiological_surveillance_program.name %>
+          </div>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+
+          <%= link_to new_epidemiological_surveillance_program_surveillance_inspection_path(
+                @epidemiological_surveillance_program
+              ),
+              class: "btn btn-primary" do %>
+            <i class="bi bi-plus-circle me-1"></i>
+            Nueva inspección
+          <% end %>
+
+          <%= link_to epidemiological_surveillance_program_path(
+                @epidemiological_surveillance_program
+              ),
+              class: "btn btn-outline-secondary" do %>
+            <i class="bi bi-arrow-left me-1"></i>
+            Volver al programa
+          <% end %>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- RESUMEN -->
+  <div class="row g-3 mb-4">
+
+    <div class="col-6 col-md-3">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body text-center">
+
+          <div class="fs-2 text-primary">
+            <i class="bi bi-clipboard2-check"></i>
+          </div>
+
+          <div class="text-muted small">
+            Total inspecciones
+          </div>
+
+          <div class="fs-4 fw-bold">
+            <%= @surveillance_inspections.count %>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-6 col-md-3">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body text-center">
+
+          <div class="fs-2 text-warning">
+            <i class="bi bi-exclamation-circle"></i>
+          </div>
+
+          <div class="text-muted small">
+            Abiertas
+          </div>
+
+          <div class="fs-4 fw-bold">
+            <%= @surveillance_inspections.count(&:abierta?) %>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-6 col-md-3">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body text-center">
+
+          <div class="fs-2 text-info">
+            <i class="bi bi-hourglass-split"></i>
+          </div>
+
+          <div class="text-muted small">
+            En ejecución
+          </div>
+
+          <div class="fs-4 fw-bold">
+            <%= @surveillance_inspections.count(&:en_ejecucion?) %>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-6 col-md-3">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body text-center">
+
+          <div class="fs-2 text-success">
+            <i class="bi bi-check-circle"></i>
+          </div>
+
+          <div class="text-muted small">
+            Cerradas
+          </div>
+
+          <div class="fs-4 fw-bold">
+            <%= @surveillance_inspections.count(&:cerrada?) %>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- LISTADO -->
+  <div class="card shadow-sm border-0">
+
+    <div class="card-header bg-light border-0">
+      <div class="d-flex justify-content-between align-items-center">
+
+        <h5 class="mb-0">
+          <i class="bi bi-list-check me-2"></i>
+          Listado de inspecciones
+        </h5>
+
+        <span class="badge bg-secondary">
+          <%= @surveillance_inspections.count %>
+        </span>
+
+      </div>
+    </div>
+
+
+    <div class="card-body p-0">
+
+      <% if @surveillance_inspections.present? %>
+
+        <!-- VISTA PC -->
+        <div class="table-responsive d-none d-md-block">
+
+          <table class="table table-hover align-middle mb-0">
+
+            <thead class="table-light">
+
+              <tr>
+                <th class="text-center">Fecha</th>
+                <th>Área</th>
+                <th>Inspector</th>
+                <th>Fuente de emisión</th>
+                <th class="text-center">Estado</th>
+                <th class="text-center">Fecha límite</th>
+                <th class="text-center">Acciones</th>
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <% @surveillance_inspections.each do |inspection| %>
+
+                <tr>
+
+                  <td class="text-center">
+                    <%= inspection.fecha&.strftime("%d/%m/%Y") %>
+                  </td>
+
+                  <td>
+                    <i class="bi bi-building me-1"></i>
+                    <%= inspection.company_area.name %>
+                  </td>
+
+                  <td>
+                    <%= inspection.inspector %>
+                  </td>
+
+                  <td>
+                    <%= inspection.fuente_emision %>
+                  </td>
+
+                  <td class="text-center">
+
+                    <% estado_class =
+                      case inspection.estado
+                      when "abierta"
+                        "bg-warning text-dark"
+                      when "en_ejecucion"
+                        "bg-info text-dark"
+                      when "verificacion"
+                        "bg-primary"
+                      when "cerrada"
+                        "bg-success"
+                      when "vencida"
+                        "bg-danger"
+                      end
+                    %>
+
+                    <span class="badge <%= estado_class %>">
+                      <%= inspection.estado.humanize %>
+                    </span>
+
+                  </td>
+
+                  <td class="text-center">
+
+                    <% if inspection.fecha_limite.present? %>
+                      <%= inspection.fecha_limite.strftime("%d/%m/%Y") %>
+                    <% else %>
+                      <span class="text-muted">—</span>
+                    <% end %>
+
+                  </td>
+
+                  <td>
+
+                    <div class="d-flex justify-content-center gap-1">
+
+                      <%= link_to(
+                            epidemiological_surveillance_program_surveillance_inspection_path(
+                              @epidemiological_surveillance_program,
+                              inspection
+                            ),
+                            class: "btn btn-sm btn-outline-primary",
+                            title: "Ver inspección"
+                          ) do %>
+                        <i class="bi bi-eye"></i>
+                      <% end %>
+
+
+                      <%= link_to(
+                            edit_epidemiological_surveillance_program_surveillance_inspection_path(
+                              @epidemiological_surveillance_program,
+                              inspection
+                            ),
+                            class: "btn btn-sm btn-outline-warning",
+                            title: "Editar inspección"
+                          ) do %>
+                        <i class="bi bi-pencil-square"></i>
+                      <% end %>
+
+
+                      <%= link_to(
+                            epidemiological_surveillance_program_surveillance_inspection_path(
+                              @epidemiological_surveillance_program,
+                              inspection
+                            ),
+                            data: {
+                              turbo_method: :delete,
+                              turbo_confirm: "¿Está seguro de eliminar esta inspección?"
+                            },
+                            class: "btn btn-sm btn-outline-danger",
+                            title: "Eliminar inspección"
+                          ) do %>
+                        <i class="bi bi-trash"></i>
+                      <% end %>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+              <% end %>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+
+        <!-- VISTA CELULAR -->
+        <div class="d-md-none p-3">
+
+          <% @surveillance_inspections.each do |inspection| %>
+
+            <div class="card border shadow-sm mb-3">
+
+              <div class="card-body">
+
+                <div class="d-flex justify-content-between
+                            align-items-start mb-3">
+
+                  <div>
+
+                    <div class="fw-bold">
+                      <i class="bi bi-calendar3 me-1"></i>
+                      <%= inspection.fecha&.strftime("%d/%m/%Y") %>
+                    </div>
+
+                    <div class="text-muted small mt-1">
+                      <i class="bi bi-building me-1"></i>
+                      <%= inspection.company_area.name %>
+                    </div>
+
+                  </div>
+
+
+                  <% estado_class =
+                    case inspection.estado
+                    when "abierta"
+                      "bg-warning text-dark"
+                    when "en_ejecucion"
+                      "bg-info text-dark"
+                    when "verificacion"
+                      "bg-primary"
+                    when "cerrada"
+                      "bg-success"
+                    when "vencida"
+                      "bg-danger"
+                    end
+                  %>
+
+                  <span class="badge <%= estado_class %>">
+                    <%= inspection.estado.humanize %>
+                  </span>
+
+                </div>
+
+
+                <div class="mb-2">
+
+                  <div class="text-muted small">
+                    Inspector
+                  </div>
+
+                  <div>
+                    <i class="bi bi-person-badge me-1"></i>
+                    <%= inspection.inspector %>
+                  </div>
+
+                </div>
+
+
+                <div class="mb-2">
+
+                  <div class="text-muted small">
+                    Fuente de emisión
+                  </div>
+
+                  <div>
+                    <%= inspection.fuente_emision %>
+                  </div>
+
+                </div>
+
+
+                <% if inspection.fecha_limite.present? %>
+
+                  <div class="mb-3">
+
+                    <div class="text-muted small">
+                      Fecha límite
+                    </div>
+
+                    <div>
+                      <i class="bi bi-calendar-event me-1"></i>
+                      <%= inspection.fecha_limite.strftime("%d/%m/%Y") %>
+                    </div>
+
+                  </div>
+
+                <% end %>
+
+
+                <hr>
+
+
+                <div class="d-flex justify-content-center gap-2">
+
+                  <%= link_to(
+                        epidemiological_surveillance_program_surveillance_inspection_path(
+                          @epidemiological_surveillance_program,
+                          inspection
+                        ),
+                        class: "btn btn-sm btn-outline-primary"
+                      ) do %>
+                    <i class="bi bi-eye me-1"></i>
+                    Ver
+                  <% end %>
+
+
+                  <%= link_to(
+                        edit_epidemiological_surveillance_program_surveillance_inspection_path(
+                          @epidemiological_surveillance_program,
+                          inspection
+                        ),
+                        class: "btn btn-sm btn-outline-warning"
+                      ) do %>
+                    <i class="bi bi-pencil-square me-1"></i>
+                    Editar
+                  <% end %>
+
+
+                  <%= link_to(
+                        epidemiological_surveillance_program_surveillance_inspection_path(
+                          @epidemiological_surveillance_program,
+                          inspection
+                        ),
+                        data: {
+                          turbo_method: :delete,
+                          turbo_confirm: "¿Está seguro de eliminar esta inspección?"
+                        },
+                        class: "btn btn-sm btn-outline-danger"
+                      ) do %>
+                    <i class="bi bi-trash"></i>
+                  <% end %>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          <% end %>
+
+        </div>
+
+      <% else %>
+
+        <div class="text-center py-5 px-3">
+
+          <div class="fs-1 text-muted mb-3">
+            <i class="bi bi-clipboard2-x"></i>
+          </div>
+
+          <h5>No hay inspecciones registradas</h5>
+
+          <p class="text-muted mb-4">
+            Este programa SVE todavía no tiene inspecciones registradas.
+          </p>
+
+          <%= link_to new_epidemiological_surveillance_program_surveillance_inspection_path(
+                @epidemiological_surveillance_program
+              ),
+              class: "btn btn-primary" do %>
+            <i class="bi bi-plus-circle me-1"></i>
+            Registrar primera inspección
+          <% end %>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>

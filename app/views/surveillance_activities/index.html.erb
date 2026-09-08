@@ -1,0 +1,361 @@
+<div class="container-fluid py-3">
+
+  <!-- ENCABEZADO -->
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+
+      <div class="d-flex flex-column flex-md-row
+                  justify-content-between
+                  align-items-md-center
+                  gap-3">
+
+        <div>
+          <h4 class="mb-1">
+            <i class="bi bi-calendar-check me-2"></i>
+            Actividades del programa SVE
+          </h4>
+
+          <p class="text-muted mb-0">
+            <%= @epidemiological_surveillance_program.name %>
+          </p>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+
+          <%= link_to(
+                new_epidemiological_surveillance_program_surveillance_activity_path(
+                  @epidemiological_surveillance_program
+                ),
+                class: "btn btn-primary"
+              ) do %>
+            <i class="bi bi-plus-circle me-1"></i>
+            <span>Nueva actividad</span>
+          <% end %>
+
+          <%= link_to(
+                epidemiological_surveillance_program_path(
+                  @epidemiological_surveillance_program
+                ),
+                class: "btn btn-outline-secondary"
+              ) do %>
+            <i class="bi bi-arrow-left me-1"></i>
+            <span>Volver</span>
+          <% end %>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- RESUMEN -->
+  <div class="row g-3 mb-4">
+
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+
+          <div class="fs-3 text-primary mb-2">
+            <i class="bi bi-list-check"></i>
+          </div>
+
+          <h6 class="text-muted mb-1">
+            Total actividades
+          </h6>
+
+          <h3 class="mb-0">
+            <%= @surveillance_activities.count %>
+          </h3>
+
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+
+          <div class="fs-3 text-secondary mb-2">
+            <i class="bi bi-hourglass-split"></i>
+          </div>
+
+          <h6 class="text-muted mb-1">
+            Pendientes
+          </h6>
+
+          <h3 class="mb-0">
+            <%= @surveillance_activities.count(&:pending?) %>
+          </h3>
+
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+
+          <div class="fs-3 text-warning mb-2">
+            <i class="bi bi-arrow-repeat"></i>
+          </div>
+
+          <h6 class="text-muted mb-1">
+            En ejecución
+          </h6>
+
+          <h3 class="mb-0">
+            <%= @surveillance_activities.count(&:in_progress?) %>
+          </h3>
+
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+
+          <div class="fs-3 text-success mb-2">
+            <i class="bi bi-check-circle"></i>
+          </div>
+
+          <h6 class="text-muted mb-1">
+            Completadas
+          </h6>
+
+          <h3 class="mb-0">
+            <%= @surveillance_activities.count(&:completed?) %>
+          </h3>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- TABLA DE ACTIVIDADES -->
+  <div class="card shadow-sm border-0">
+
+    <div class="card-header bg-light border-0 py-3">
+      <h5 class="mb-0">
+        <i class="bi bi-list-task me-2"></i>
+        Actividades registradas
+      </h5>
+    </div>
+
+    <div class="card-body">
+
+      <% if @surveillance_activities.present? %>
+
+        <div class="table-responsive">
+
+          <table class="table table-hover table-sm align-middle mb-0">
+
+            <thead class="table-light">
+              <tr>
+                <th>Actividad</th>
+                <th>Responsable</th>
+                <th>Fecha programada</th>
+                <th>Fecha ejecución</th>
+                <th>Estado</th>
+                <th class="text-center">Acciones</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <% @surveillance_activities.each do |activity| %>
+
+                <tr>
+
+                  <td>
+                    <div class="fw-semibold">
+                      <%= activity.name %>
+                    </div>
+
+                    <% if activity.description.present? %>
+                      <small class="text-muted">
+                        <%= truncate(activity.description, length: 80) %>
+                      </small>
+                    <% end %>
+                  </td>
+
+
+                  <td>
+                    <% if activity.responsible.present? %>
+                      <i class="bi bi-person me-1"></i>
+                      <%= activity.responsible.name %>
+                    <% else %>
+                      <span class="text-muted">
+                        Sin responsable
+                      </span>
+                    <% end %>
+                  </td>
+
+
+                  <td>
+                    <% if activity.planned_date.present? %>
+                      <%= l(activity.planned_date, format: :short) %>
+                    <% else %>
+                      <span class="text-muted">—</span>
+                    <% end %>
+                  </td>
+
+
+                  <td>
+                    <% if activity.execution_date.present? %>
+                      <%= l(activity.execution_date, format: :short) %>
+                    <% else %>
+                      <span class="text-muted">—</span>
+                    <% end %>
+                  </td>
+
+
+                  <td>
+
+                    <% if activity.pending? %>
+
+                      <span class="badge text-bg-secondary">
+                        Pendiente
+                      </span>
+
+                    <% elsif activity.in_progress? %>
+
+                      <span class="badge text-bg-warning">
+                        En ejecución
+                      </span>
+
+                    <% elsif activity.completed? %>
+
+                      <span class="badge text-bg-success">
+                        Completada
+                      </span>
+
+                    <% elsif activity.cancelled? %>
+
+                      <span class="badge text-bg-danger">
+                        Cancelada
+                      </span>
+
+                    <% else %>
+
+                      <span class="badge text-bg-secondary">
+                        <%= activity.status.humanize %>
+                      </span>
+
+                    <% end %>
+
+                  </td>
+
+
+                  <td class="text-center">
+
+                    <div class="d-flex
+                                justify-content-center
+                                gap-1">
+
+                      <%= link_to(
+                            epidemiological_surveillance_program_surveillance_activity_path(
+                              @epidemiological_surveillance_program,
+                              activity
+                            ),
+                            class: "btn btn-sm btn-outline-primary",
+                            title: "Ver actividad"
+                          ) do %>
+                        <i class="bi bi-eye"></i>
+                        <span class="d-none d-md-inline ms-1">
+                          Ver
+                        </span>
+                      <% end %>
+
+
+                      <%= link_to(
+                            edit_epidemiological_surveillance_program_surveillance_activity_path(
+                              @epidemiological_surveillance_program,
+                              activity
+                            ),
+                            class: "btn btn-sm btn-outline-warning",
+                            title: "Editar actividad"
+                          ) do %>
+                        <i class="bi bi-pencil"></i>
+                        <span class="d-none d-md-inline ms-1">
+                          Editar
+                        </span>
+                      <% end %>
+
+
+                      <%= button_to(
+                            epidemiological_surveillance_program_surveillance_activity_path(
+                              @epidemiological_surveillance_program,
+                              activity
+                            ),
+                            method: :delete,
+                            class: "btn btn-sm btn-outline-danger",
+                            title: "Eliminar actividad",
+                            form: {
+                              data: {
+                                turbo_confirm: "¿Está seguro de eliminar esta actividad?"
+                              }
+                            }
+                          ) do %>
+                        <i class="bi bi-trash"></i>
+                        <span class="d-none d-md-inline ms-1">
+                          Eliminar
+                        </span>
+                      <% end %>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+              <% end %>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      <% else %>
+
+        <div class="text-center py-5">
+
+          <div class="fs-1 text-muted mb-3">
+            <i class="bi bi-calendar-x"></i>
+          </div>
+
+          <h5 class="text-muted">
+            No hay actividades registradas
+          </h5>
+
+          <p class="text-muted mb-4">
+            Este programa SVE todavía no tiene actividades.
+          </p>
+
+          <%= link_to(
+                new_epidemiological_surveillance_program_surveillance_activity_path(
+                  @epidemiological_surveillance_program
+                ),
+                class: "btn btn-primary"
+              ) do %>
+            <i class="bi bi-plus-circle me-1"></i>
+            Crear primera actividad
+          <% end %>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>

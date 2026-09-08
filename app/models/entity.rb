@@ -6,6 +6,13 @@ class Entity < ApplicationRecord
     has_many :admin_extent_dangers  
     has_many :adm_votes 
     has_many :epp_recuests
+    has_many :epidemiological_surveillance_programs,
+         dependent: :destroy
+    has_many :surveillance_survey_responses,
+         dependent: :restrict_with_error      
+         
+    has_many :epidemiological_surveillance_cases,
+         dependent: :restrict_with_error
     
     validates :email_entity, presence: true 
     validates :tax_regime, presence: true 

@@ -1,7 +1,10 @@
 class Event < ApplicationRecord
     belongs_to :entity
     belongs_to :user
+    belongs_to :detail_disease, optional: true
     validate :date_new_cannot_be_in_the_future
+    has_one :epidemiological_surveillance_case,
+        dependent: :nullify    
 
     def date_new_cannot_be_in_the_future
         return if date_new.blank?

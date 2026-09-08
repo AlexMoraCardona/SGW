@@ -1,0 +1,57 @@
+<%= form_with(model: [@epidemiological_surveillance_program, @surveillance_worker], local: true) do |form| %>
+  <% if @surveillance_worker.errors.any? %>
+    <div class="alert alert-danger">
+      <h6 class="fw-bold">
+        <i class="bi bi-exclamation-triangle me-1"></i>
+        No fue posible guardar la información
+      </h6>
+      <ul class="mb-0">
+        <% @surveillance_worker.errors.full_messages.each do |error| %>
+          <li>
+            <%= error %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <!-- TRABAJADOR -->
+  <div class="mb-3">
+    <%= form.label :user_id, "Trabajador", class: "form-label fw-semibold" %>
+      <%= form.collection_select(:user_id, User.where(state: 1).order(:name), :id, :name, {prompt: "Seleccione el trabajador"}, {class: "form-select", required: true}) %>
+  </div>
+  <!-- ESTADO Y FECHA DE INGRESO -->
+  <div class="row">
+    <div class="col-12 col-md-6 mb-3">
+      <%= form.label :status, "Estado", class: "form-label fw-semibold" %>
+      <%= form.select(:status, [["Activo", "active"], ["Inactivo", "inactive"]], {}, class: "form-select", required: true) %>
+    </div>
+    <div class="col-12 col-md-6 mb-3">
+      <%= form.label :entry_date, "Fecha de ingreso", class: "form-label fw-semibold" %>
+      <%= form.date_field :entry_date, class: "form-control", required: true %>
+    </div>
+  </div>
+  <!-- FECHA DE SALIDA -->
+  <div class="mb-3">
+    <%= form.label :exit_date, "Fecha de salida", class: "form-label fw-semibold" %>
+    <%= form.date_field :exit_date, class: "form-control" %>
+  </div>
+  <!-- OBSERVACIONES -->
+  <div class="mb-4">
+    <%= form.label :observations, "Observaciones", class: "form-label fw-semibold" %>
+    <%= form.text_area :observations, class: "form-control", rows: 4, placeholder: "Registre observaciones relacionadas con el trabajador..." %>
+  </div>
+  <hr>
+  <!-- BOTONERA -->
+  <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-2">
+    <%= form.button(type: "submit", class: "btn btn-primary") do %>
+      <i class="bi bi-check-circle me-1"></i>
+      <%= @surveillance_worker.new_record? ?
+        "Vincular trabajador" :
+        "Actualizar trabajador" %>
+      <% end %>
+      <%= link_to(epidemiological_surveillance_program_surveillance_workers_path(@epidemiological_surveillance_program), class: "btn btn-outline-secondary") do %>
+      <i class="bi bi-x-circle me-1"></i>
+      Cancelar
+    <% end %>
+  </div>
+<% end %>

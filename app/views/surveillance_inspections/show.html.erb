@@ -1,0 +1,435 @@
+<div class="container-fluid px-2 px-md-4 py-3">
+
+  <!-- ENCABEZADO -->
+
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-light">
+      <div class="d-flex flex-column flex-md-row
+                  justify-content-between align-items-md-center gap-2">
+
+
+    <div>
+      <h4 class="mb-1">
+        <i class="bi bi-clipboard-check me-2"></i>
+        Inspección SVE
+      </h4>
+
+      <small class="text-muted">
+        Programa:
+        <strong>
+          <%= @epidemiological_surveillance_program.name %>
+        </strong>
+      </small>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2">
+
+      <%= link_to(
+            edit_epidemiological_surveillance_program_surveillance_inspection_path(
+              @epidemiological_surveillance_program,
+              @surveillance_inspection
+            ),
+            class: "btn btn-outline-primary btn-sm"
+          ) do %>
+        <i class="bi bi-pencil-square me-1"></i>
+        Editar
+      <% end %>
+
+      <%= link_to(
+            epidemiological_surveillance_program_surveillance_inspections_path(
+              @epidemiological_surveillance_program
+            ),
+            class: "btn btn-outline-secondary btn-sm"
+          ) do %>
+        <i class="bi bi-arrow-left me-1"></i>
+        Inspecciones
+      <% end %>
+
+    </div>
+  </div>
+</div>
+
+
+  </div>
+
+  <!-- INFORMACIÓN GENERAL -->
+
+  <div class="card shadow-sm border-0 mb-4">
+
+
+<div class="card-header bg-light fw-bold">
+  <i class="bi bi-info-circle me-2"></i>
+  Información general
+</div>
+
+<div class="card-body">
+
+  <div class="row g-3">
+
+    <div class="col-12 col-md-4">
+      <div class="small text-muted">
+        Fecha de inspección
+      </div>
+
+      <div class="fw-semibold">
+        <i class="bi bi-calendar3 me-1"></i>
+        <%= l(
+              @surveillance_inspection.fecha,
+              format: :long
+            ) %>
+      </div>
+    </div>
+
+
+    <div class="col-12 col-md-4">
+      <div class="small text-muted">
+        Área inspeccionada
+      </div>
+
+      <div class="fw-semibold">
+        <i class="bi bi-building me-1"></i>
+        <%= @surveillance_inspection.company_area.name %>
+      </div>
+    </div>
+
+
+    <div class="col-12 col-md-4">
+      <div class="small text-muted">
+        Inspector
+      </div>
+
+      <div class="fw-semibold">
+        <i class="bi bi-person-badge me-1"></i>
+        <%= @surveillance_inspection.inspector %>
+      </div>
+    </div>
+
+
+    <div class="col-12">
+      <div class="small text-muted">
+        Fuente de emisión
+      </div>
+
+      <div class="fw-semibold">
+        <i class="bi bi-cloud-haze2 me-1"></i>
+        <%= @surveillance_inspection.fuente_emision %>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+  </div>
+
+  <!-- LISTA DE VERIFICACIÓN -->
+
+  <div class="card shadow-sm border-0 mb-4">
+
+
+<div class="card-header bg-light fw-bold">
+  <i class="bi bi-list-check me-2"></i>
+  Lista de verificación
+</div>
+
+<div class="card-body">
+
+  <div class="row g-3">
+
+    <% controles = [
+      [:control_fuente, "Control en la fuente"],
+      [:extraccion_operativa, "Extracción operativa"],
+      [:sin_obstrucciones, "Sin obstrucciones"],
+      [:mantenimiento_vigente, "Mantenimiento vigente"],
+      [:fugas_derrames_controlados, "Fugas y derrames controlados"],
+      [:almacenamiento_adecuado, "Almacenamiento adecuado"],
+      [:epp_disponible, "EPP disponible"],
+      [:uso_adecuado, "Uso adecuado del EPP"],
+      [:ventilacion_areas_comunes, "Ventilación de áreas comunes"]
+    ] %>
+
+    <% controles.each do |campo, titulo| %>
+
+      <% valor = @surveillance_inspection.public_send(campo) %>
+
+      <div class="col-12 col-md-6">
+
+        <div class="border rounded p-3 h-100">
+
+          <div class="d-flex justify-content-between
+                      align-items-center gap-2">
+
+            <span class="fw-semibold">
+              <%= titulo %>
+            </span>
+
+            <% case valor %>
+            <% when "si" %>
+
+              <span class="badge text-bg-success">
+                <i class="bi bi-check-circle me-1"></i>
+                Sí
+              </span>
+
+            <% when "no" %>
+
+              <span class="badge text-bg-danger">
+                <i class="bi bi-x-circle me-1"></i>
+                No
+              </span>
+
+            <% else %>
+
+              <span class="badge text-bg-secondary">
+                NA
+              </span>
+
+            <% end %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>
+
+
+  </div>
+
+  <!-- HALLAZGOS -->
+
+  <div class="card shadow-sm border-0 mb-4">
+
+
+<div class="card-header bg-light fw-bold">
+  <i class="bi bi-exclamation-diamond me-2"></i>
+  Hallazgos y acciones
+</div>
+
+<div class="card-body">
+
+  <div class="row g-4">
+
+    <div class="col-12">
+
+      <div class="small text-muted mb-1">
+        Hallazgo crítico
+      </div>
+
+      <% if @surveillance_inspection.hallazgo_critico.present? %>
+
+        <div class="border rounded p-3 bg-light">
+          <%= simple_format(
+                @surveillance_inspection.hallazgo_critico
+              ) %>
+        </div>
+
+      <% else %>
+
+        <div class="text-muted fst-italic">
+          No se registraron hallazgos críticos.
+        </div>
+
+      <% end %>
+
+    </div>
+
+
+    <div class="col-12">
+
+      <div class="small text-muted mb-1">
+        Acción
+      </div>
+
+      <% if @surveillance_inspection.accion.present? %>
+
+        <div class="border rounded p-3 bg-light">
+          <%= simple_format(
+                @surveillance_inspection.accion
+              ) %>
+        </div>
+
+      <% else %>
+
+        <div class="text-muted fst-italic">
+          No se registraron acciones.
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+  </div>
+
+  <!-- SEGUIMIENTO -->
+
+  <div class="card shadow-sm border-0 mb-4">
+
+
+<div class="card-header bg-light fw-bold">
+  <i class="bi bi-calendar-check me-2"></i>
+  Seguimiento
+</div>
+
+<div class="card-body">
+
+  <div class="row g-3">
+
+    <div class="col-12 col-md-4">
+
+      <div class="small text-muted">
+        Responsable
+      </div>
+
+      <div class="fw-semibold">
+        <%= @surveillance_inspection.responsable.presence || "No definido" %>
+      </div>
+
+    </div>
+
+
+    <div class="col-12 col-md-4">
+
+      <div class="small text-muted">
+        Fecha límite
+      </div>
+
+      <div class="fw-semibold">
+
+        <% if @surveillance_inspection.fecha_limite.present? %>
+
+          <i class="bi bi-calendar-event me-1"></i>
+          <%= l(
+                @surveillance_inspection.fecha_limite,
+                format: :long
+              ) %>
+
+        <% else %>
+
+          <span class="text-muted">
+            No definida
+          </span>
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+
+    <div class="col-12 col-md-4">
+
+      <div class="small text-muted">
+        Estado
+      </div>
+
+      <div class="mt-1">
+
+<% if @surveillance_inspection.estado == "abierta" %>
+
+  <span class="badge text-bg-warning">
+    <i class="bi bi-folder2-open me-1"></i>
+    Abierta
+  </span>
+
+<% elsif @surveillance_inspection.estado == "en_ejecucion" %>
+
+  <span class="badge text-bg-primary">
+    <i class="bi bi-arrow-repeat me-1"></i>
+    En ejecución
+  </span>
+
+<% elsif @surveillance_inspection.estado == "verificacion" %>
+
+  <span class="badge text-bg-info">
+    <i class="bi bi-search me-1"></i>
+    Verificación
+  </span>
+
+<% elsif @surveillance_inspection.estado == "cerrada" %>
+
+  <span class="badge text-bg-success">
+    <i class="bi bi-check-circle me-1"></i>
+    Cerrada
+  </span>
+
+<% elsif @surveillance_inspection.estado == "vencida" %>
+
+  <span class="badge text-bg-danger">
+    <i class="bi bi-exclamation-triangle me-1"></i>
+    Vencida
+  </span>
+
+<% else %>
+
+  <span class="badge text-bg-secondary">
+    <i class="bi bi-question-circle me-1"></i>
+    Sin estado
+  </span>
+
+<% end %>      
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+  </div>
+
+  <!-- BOTONERA -->
+
+  <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+
+
+<%= link_to(
+      edit_epidemiological_surveillance_program_surveillance_inspection_path(
+        @epidemiological_surveillance_program,
+        @surveillance_inspection
+      ),
+      class: "btn btn-primary"
+    ) do %>
+  <i class="bi bi-pencil-square me-1"></i>
+  Editar
+<% end %>
+
+
+<%= link_to(
+      epidemiological_surveillance_program_surveillance_inspections_path(
+        @epidemiological_surveillance_program
+      ),
+      class: "btn btn-outline-secondary"
+    ) do %>
+  <i class="bi bi-list-ul me-1"></i>
+  Ver inspecciones
+<% end %>
+
+
+<%= link_to(
+      epidemiological_surveillance_program_path(
+        @epidemiological_surveillance_program
+      ),
+      class: "btn btn-outline-dark"
+    ) do %>
+  <i class="bi bi-arrow-left me-1"></i>
+  Programa SVE
+<% end %>
+
+
+  </div>
+
+</div>

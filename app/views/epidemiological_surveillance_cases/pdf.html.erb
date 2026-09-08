@@ -1,0 +1,362 @@
+<div class="header">
+  <h1>
+    Caso SVE #<%= @epidemiological_surveillance_case.id %>
+  </h1>
+  <div class="muted">
+    Programa:
+    <strong>
+      <%= @epidemiological_surveillance_program.name %>
+    </strong>
+  </div>
+</div>
+
+<!-- ================================================= -->
+<!-- INFORMACIÓN GENERAL -->
+<!-- ================================================= -->
+<div class="section">
+  <h2>1. Información general del caso</h2>
+  <table>
+    <tr>
+      <th width="25%">
+        Trabajador
+      </th>
+      <td>
+        <%= @epidemiological_surveillance_case.user&.name ||
+            "No registrado" %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        Entidad
+      </th>
+      <td>
+        <%= @epidemiological_surveillance_case.entity&.business_name ||
+            "No registrada" %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        Responsable
+      </th>
+      <td>
+        <%= @epidemiological_surveillance_case.responsible&.name || "Sin asignar" %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        Fecha de apertura
+      </th>
+      <td>
+        <%= @epidemiological_surveillance_case.opened_at&.strftime("%d/%m/%Y %H:%M") || "No registrada" %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        Estado
+      </th>
+      <td class="badge">
+        <% case @epidemiological_surveillance_case.status
+           when "identified" %>
+          Identificado
+        <% when "in_evaluation" %>
+          En evaluación
+        <% when "in_follow_up" %>
+          En seguimiento
+        <% when "closed" %>
+          Cerrado
+        <% when "not_case" %>
+          No es caso
+        <% else %>
+          No especificado
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        Origen
+      </th>
+      <td>
+        <% case @epidemiological_surveillance_case.source_type
+           when "survey" %>
+          Encuesta
+        <% when "event" %>
+          Evento
+        <% when "other" %>
+          Otro
+        <% else %>
+          No especificado
+        <% end %>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<!-- ================================================= -->
+<!-- OBSERVACIONES -->
+<!-- ================================================= -->
+<div class="section">
+  <h2>2. Observaciones iniciales</h2>
+  <% if @epidemiological_surveillance_case.observations.present? %>
+    <table>
+      <tr>
+        <td>
+          <%= simple_format(@epidemiological_surveillance_case.observations) %>
+        </td>
+      </tr>
+    </table>
+  <% else %>
+    <p class="muted">
+      No se registraron observaciones.
+    </p>
+  <% end %>
+</div>
+
+<!-- ================================================= -->
+<!-- ENCUESTA -->
+<!-- ================================================= -->
+<% response = @epidemiological_surveillance_case.surveillance_survey_response %>
+<% if response.present? %>
+  <div class="section">
+    <h2>3. Encuesta que originó el caso</h2>
+    <table>
+      <tr>
+        <th width="25%">
+          Encuesta
+        </th>
+        <td>
+          <%= response.surveillance_survey.name %>
+        </td>
+      </tr>
+      <tr>
+        <th>
+          Fecha de respuesta
+        </th>
+        <td>
+          <%= response.response_date&.strftime("%d/%m/%Y %H:%M") || "No registrada" %>
+        </td>
+      </tr>
+    </table>
+    <h3>
+      Respuestas registradas
+    </h3>
+    <table>
+      <thead>
+        <tr>
+          <th width="55%">
+            Pregunta
+          </th>
+          <th>
+            Respuesta
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% response.surveillance_answers.each do |answer| %>
+          <tr>
+            <td>
+              <strong>
+                <%= answer.surveillance_question.question %>
+              </strong>
+            </td>
+            <td>
+              <% if answer.answer_text.present? %>
+                <%= answer.answer_text %>
+              <% elsif !answer.answer_boolean.nil? %>
+                <%= answer.answer_boolean ? "Sí" : "No" %>
+              <% elsif answer.answer_number.present? %>
+                <%= answer.answer_number %>
+              <% elsif answer.surveillance_answer_options.any? %>
+                <% answer.surveillance_answer_options.each_with_index do |selected_option, index| %>
+                  <% if index > 0 %>
+                    ,
+                  <% end %>
+                  <%= selected_option.surveillance_question_option.option_text %>
+                <% end %>
+              <% else %>
+                <span class="muted">
+                  Sin respuesta
+                </span>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
+
+<!-- ================================================= -->
+<!-- SEGUIMIENTOS -->
+<!-- ================================================= -->
+<div class="section">
+  <h2>4. Historial de seguimiento</h2>
+  <% follow_ups = @epidemiological_surveillance_case.follow_ups.sort_by(&:follow_up_date).reverse %>
+  <% if follow_ups.any? %>
+    <table>
+      <thead>
+        <tr>
+          <th>
+            Fecha
+          </th>
+          <th>
+            Tipo
+          </th>
+          <th>
+            Estado
+          </th>
+          <th>
+            Resultado
+          </th>
+          <th>
+            Próximo seguimiento
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% follow_ups.each do |follow_up| %>
+          <tr>
+            <td>
+              <%= follow_up.follow_up_date&.strftime("%d/%m/%Y %H:%M") || "No registrada" %>
+            </td>
+            <td>
+              <% case follow_up.follow_up_type
+                 when "identification" %>
+                Identificación
+              <% when "initial_evaluation" %>
+                Evaluación inicial
+              <% when "follow_up" %>
+                Seguimiento
+              <% when "visit" %>
+                Visita
+              <% when "phone_contact" %>
+                Contacto telefónico
+              <% when "document_review" %>
+                Revisión documental
+              <% when "closure" %>
+                Cierre
+              <% else %>
+                <%= follow_up.follow_up_type %>
+              <% end %>
+            </td>
+            <td>
+              <% case follow_up.status
+                 when "identified" %>
+                Identificado
+              <% when "in_evaluation" %>
+                En evaluación
+              <% when "in_follow_up" %>
+                En seguimiento
+              <% when "closed" %>
+                Cerrado
+              <% when "not_case" %>
+                No es caso
+              <% else %>
+                <%= follow_up.status %>
+              <% end %>
+            </td>
+            <td>
+              <%= follow_up.result.presence || "Sin resultado registrado" %>
+            </td>
+            <td>
+              <% if follow_up.next_follow_up_date.present? %>
+                <%= follow_up.next_follow_up_date.strftime("%d/%m/%Y") %>
+              <% else %>
+                —
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="muted">
+      Este caso todavía no tiene seguimientos registrados.
+    </p>
+  <% end %>
+</div>
+
+<!-- ================================================= -->
+<!-- HISTORIAL DEL CASO -->
+<!-- ================================================= -->
+<div class="section">
+  <h2>5. Historial del caso</h2>
+  <% histories =  @epidemiological_surveillance_case.epidemiological_surveillance_case_histories.sort_by(&:changed_at).reverse %>
+  <% if histories.any? %>
+    <table>
+      <thead>
+        <tr>
+          <th>
+            Fecha
+          </th>
+          <th>
+            Estado anterior
+          </th>
+          <th>
+            Nuevo estado
+          </th>
+          <th>
+            Usuario
+          </th>
+          <th>
+            Observaciones
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% histories.each do |history| %>
+          <tr>
+            <td>
+              <%= history.changed_at&.strftime("%d/%m/%Y %H:%M") || "No registrada" %>
+            </td>
+            <td>
+              <% if history.previous_status.present? %>
+                <%= case history.previous_status
+                    when 0 then "Identificado"
+                    when 1 then "En evaluación"
+                    when 2 then "En seguimiento"
+                    when 3 then "Cerrado"
+                    when 4 then "No es caso"
+                    else history.previous_status.to_s
+                    end %>
+              <% else %>
+                <span class="muted">
+                  Sin estado anterior
+                </span>
+              <% end %>
+            </td>
+            <td>
+              <%= case history.new_status
+                  when 0 then "Identificado"
+                  when 1 then "En evaluación"
+                  when 2 then "En seguimiento"
+                  when 3 then "Cerrado"
+                  when 4 then "No es caso"
+                  else history.new_status.to_s
+                  end %>
+            </td>
+            <td>
+              <%= history.user&.name || "No disponible" %>
+            </td>
+            <td>
+              <%= history.observations.presence || "Sin observaciones" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="muted">
+      No hay cambios de estado registrados.
+    </p>
+  <% end %>
+</div>
+
+<!-- ================================================= -->
+<!-- PIE DEL DOCUMENTO -->
+<!-- ================================================= -->
+<div style="margin-top: 25px; border-top: 1px solid #ccc; padding-top: 8px; font-size: 9px; color: #777;">
+  Documento generado por el Sistema de Gestión SST.
+  <span style="float: right;">
+    Caso SVE #<%= @epidemiological_surveillance_case.id %>
+  </span>
+</div>

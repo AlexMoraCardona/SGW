@@ -21,10 +21,47 @@
           </h2>
         </div>
         <div class="col-12 col-md-auto text-center text-md-end">
-          <%= link_to events_path, class: "btn btn-secondary px-4" do %>
-            <i class="bi bi-arrow-left me-1"></i>
-            Retornar
-          <% end %>
+<div class="d-flex flex-wrap justify-content-center justify-content-md-end gap-2">
+
+  <% if @event.epidemiological_surveillance_case.present? %>
+
+    <%= link_to(
+          epidemiological_surveillance_program_epidemiological_surveillance_case_path(
+            @event.epidemiological_surveillance_case.epidemiological_surveillance_program,
+            @event.epidemiological_surveillance_case
+          ),
+          class: "btn btn-success"
+        ) do %>
+
+      <i class="bi bi-heart-pulse me-1"></i>
+      Ver caso SVE
+
+    <% end %>
+
+  <% else %>
+
+    <%= link_to(
+          new_sve_case_event_path(@event),
+          class: "btn btn-primary"
+        ) do %>
+
+      <i class="bi bi-plus-circle me-1"></i>
+      Crear caso SVE
+
+    <% end %>
+
+  <% end %>
+
+
+  <%= link_to events_path,
+        class: "btn btn-secondary" do %>
+
+    <i class="bi bi-arrow-left me-1"></i>
+    Retornar
+
+  <% end %>
+
+</div>
         </div>
       </div>
     </div>
@@ -284,5 +321,56 @@
         </div>
       </div>
     </div>
+<div class="border rounded p-3 mb-4">
+    <h5 class="mb-3">
+        <i class="bi bi-shield-check me-1"></i>
+        Enfermedad asociada a SVE
+    </h5>
+
+    <% if @event.detail_disease.present? %>
+
+        <div class="row g-3">
+
+            <div class="col-12 col-md-6">
+                <div class="form-label fw-semibold">
+                    Enfermedad
+                </div>
+
+                <div class="form-control bg-light">
+                    <i class="bi bi-heart-pulse-fill me-1"></i>
+                    <%= @event.detail_disease.name %>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <div class="form-label fw-semibold">
+                    SVE asociado
+                </div>
+
+                <div class="form-control bg-light">
+                    <i class="bi bi-shield-check me-1"></i>
+
+                    <% if @event.detail_disease.surveillance_configuration.present? %>
+                        <%= @event.detail_disease.surveillance_configuration.name %>
+                    <% else %>
+                        <span class="text-muted">
+                            Sin SVE asociado
+                        </span>
+                    <% end %>
+                </div>
+            </div>
+
+        </div>
+
+    <% else %>
+
+        <div class="alert alert-light border mb-0">
+            <i class="bi bi-info-circle me-1"></i>
+            Este evento no tiene una enfermedad asociada a un SVE.
+        </div>
+
+    <% end %>
+</div>
+
   </div>
 </div>

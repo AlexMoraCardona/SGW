@@ -1,0 +1,174 @@
+<div class="container-fluid py-3">
+  <div align="left"; class="container col-12">
+    <a class="navbar-brand" href="/">
+        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+    </a>
+  </div>
+  <div class="card shadow-sm border-0">
+  <!-- ENCABEZADO -->
+    <div class="card-header bg-light">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        <div class="d-flex align-items-center">
+          <i class="bi bi-people fs-3 me-2"></i>
+          <div>
+            <h4 class="mb-0">
+              Trabajadores del programa SVE
+            </h4>
+            <small class="text-muted">
+              <%= @epidemiological_surveillance_program.name %>
+            </small>
+          </div>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          <%= link_to(new_epidemiological_surveillance_program_surveillance_worker_path(@epidemiological_surveillance_program), class: "btn btn-primary") do %>
+            <i class="bi bi-person-plus me-1"></i>
+            Vincular trabajador
+          <% end %>
+          <%= link_to(@epidemiological_surveillance_program, class: "btn btn-outline-secondary") do %>
+            <i class="bi bi-arrow-left me-1"></i>
+            Volver al programa
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- CONTENIDO -->
+    <div class="card-body">
+      <% if @surveillance_workers.present? %>
+        <!-- RESUMEN -->
+        <div class="row g-3 mb-4">
+          <div class="col-12 col-md-4">
+            <div class="card border-0 bg-light h-100">
+              <div class="card-body text-center">
+                <i class="bi bi-people fs-2"></i>
+                <div class="small text-muted mt-2">
+                  Total trabajadores
+                </div>
+                <div class="fs-3 fw-bold">
+                  <%= @surveillance_workers.count %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <div class="card border-0 bg-light h-100">
+              <div class="card-body text-center">
+                <i class="bi bi-person-check fs-2 text-success"></i>
+                <div class="small text-muted mt-2">
+                  Trabajadores activos
+                </div>
+                <div class="fs-3 fw-bold text-success">
+                  <%= @surveillance_workers.count(&:active?) %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <div class="card border-0 bg-light h-100">
+              <div class="card-body text-center">
+                <i class="bi bi-person-dash fs-2 text-secondary"></i>
+                <div class="small text-muted mt-2">
+                  Trabajadores inactivos
+                </div>
+                <div class="fs-3 fw-bold text-secondary">
+                  <%= @surveillance_workers.count(&:inactive?) %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- TABLA -->
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>
+                  Trabajador
+                </th>
+                <th class="text-center">
+                  Estado
+                </th>
+                <th>
+                  Fecha ingreso
+                </th>
+                <th>
+                  Fecha salida
+                </th>
+                <th class="text-center">
+                  Acciones
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @surveillance_workers.each do |worker| %>
+                <tr>
+                  <!-- TRABAJADOR -->
+                  <td>
+                    <div class="fw-semibold">
+                      <%= worker.user&.name.presence || "Sin usuario" %>
+                    </div>
+                    <% if worker.user&.email.present? %>
+                      <small class="text-muted">
+                          <%= worker.user.email %>
+                      </small>
+                    <% end %>
+                  </td>
+                  <!-- ESTADO -->
+                  <td class="text-center">
+                    <% if worker.active? %>
+                      <span class="badge bg-success">
+                        <i class="bi bi-check-circle me-1"></i>
+                        Activo
+                      </span>
+                    <% else %>
+                      <span class="badge bg-secondary">
+                        <i class="bi bi-dash-circle me-1"></i>
+                        Inactivo
+                      </span>
+                    <% end %>
+                  </td>
+                  <!-- FECHA INGRESO -->
+                  <td>
+                    <%= worker.entry_date.present? ? l(worker.entry_date, format: :long) : "—" %>
+                  </td>
+                  <!-- FECHA SALIDA -->
+                  <td>
+                    <%= worker.exit_date.present? ?  l(worker.exit_date, format: :long) : "—" %>
+                  </td>
+                  <!-- ACCIONES -->
+                  <td>
+                    <div class="d-flex flex-wrap justify-content-center gap-1">
+                      <%= link_to(epidemiological_surveillance_program_surveillance_worker_path(@epidemiological_surveillance_program, worker), class: "btn btn-sm btn-outline-primary", title: "Ver trabajador") do %>
+                        <i class="bi bi-eye"></i>
+                      <% end %>
+                      <%= link_to(edit_epidemiological_surveillance_program_surveillance_worker_path(@epidemiological_surveillance_program, worker), class: "btn btn-sm btn-outline-warning", title: "Editar trabajador") do %>
+                        <i class="bi bi-pencil"></i>
+                      <% end %>
+                      <%= button_to(epidemiological_surveillance_program_surveillance_worker_path(@epidemiological_surveillance_program, worker), method: :delete, class: "btn btn-sm btn-outline-danger", title: "Retirar trabajador", data: {turbo_confirm: "¿Está seguro de retirar este trabajador del programa SVE?"}) do %>
+                        <i class="bi bi-person-x"></i>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="text-center py-5">
+          <i class="bi bi-people fs-1 text-muted"></i>
+          <h5 class="mt-3">
+            No hay trabajadores vinculados
+          </h5>
+          <p class="text-muted mb-4">
+            Actualmente no existen trabajadores registrados
+            en este programa de vigilancia epidemiológica.
+          </p>
+          <%= link_to(new_epidemiological_surveillance_program_surveillance_worker_path(@epidemiological_surveillance_program), class: "btn btn-primary") do %>
+            <i class="bi bi-person-plus me-1"></i>
+            Vincular primer trabajador
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

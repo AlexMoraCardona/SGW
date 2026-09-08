@@ -2,7 +2,13 @@
     <td><%= detail_disease.id %></td>
     <td><%= highlight detail_disease.name, params.dig(:q, :name_cont) %></td>
     <td><%= detail_disease.table_disease.clasification_disease %></td>
-
+    <td>
+        <% if detail_disease.surveillance_configuration.present? %> 
+            <span class="badge bg-info text-dark"> <i class="bi bi-shield-check me-1"></i> <%= detail_disease.surveillance_configuration.name %> </span> 
+        <% else %> 
+            <span class="badge bg-light text-secondary border"> Sin SVE </span> 
+        <% end %>    
+    </td>
     <td><%= link_to t('common.edit'), edit_detail_disease_path(detail_disease), class: 'btn btn-sm btn-primary' if Current.user.level > 0 &&  Current.user.level < 2 %></td>
     
 </tr>

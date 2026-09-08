@@ -170,6 +170,28 @@ class Calendar < ApplicationRecord
         @entity = Entity.find(Current.user.entity) if Current.user.entity > 0 
 
         if Current.user.level == 1 || Current.user.level == 2 then
+            
+            #Encuesta SVE
+            @surveillance_workers = SurveillanceWorker.where("user_id = ? and status = ?", Current.user.id ,0)
+            if @surveillance_workers.present?
+                @surveillance_workers.each do |surveillance_worker|
+                    if surveillance_worker.epidemiological_surveillance_program.status == "active" 
+                        surveillance_surveys = SurveillanceSurvey.where("epidemiological_surveillance_program_id = ? and active = ?",surveillance_worker.epidemiological_surveillance_program_id, true)
+                        if surveillance_surveys.present?
+                            surveillance_surveys.each do |surveillance_survey|
+                                surveillance_survey_responses = nil
+                                surveillance_survey_responses = SurveillanceSurveyResponse.where("user_id = ? and surveillance_survey_id = ?",surveillance_worker.user_id, surveillance_survey.id)
+                                if !surveillance_survey_responses.exists?
+                                    fecha = surveillance_worker.created_at.to_date
+                                    @notificaciones << ["Encuesta SVE", surveillance_worker.epidemiological_surveillance_program.entity.business_name, surveillance_survey.name, fecha, surveillance_worker.user_id, surveillance_worker.epidemiological_surveillance_program_id, surveillance_survey.id]
+                                end
+                            end     
+                        end    
+                    end    
+                end    
+            end    
+
+
             @annual_work_plans = nil
             @annual_work_plan_items = nil
             @annual_work_plans = AnnualWorkPlan.where("year = ?", @year_noti)

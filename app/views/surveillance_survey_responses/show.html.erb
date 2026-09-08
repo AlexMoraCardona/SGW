@@ -1,0 +1,555 @@
+<div class="container-fluid py-3">
+
+  <div class="card shadow-sm border-0">
+
+    <!-- ENCABEZADO -->
+
+    <div class="card-header bg-light">
+
+      <div class="d-flex flex-column flex-md-row
+                  justify-content-between
+                  align-items-md-center
+                  gap-2">
+
+        <div>
+
+          <h4 class="mb-1">
+            <i class="bi bi-clipboard2-data me-2"></i>
+            Respuesta de encuesta
+          </h4>
+
+          <small class="text-muted">
+            <%= @surveillance_survey.name %>
+          </small>
+
+        </div>
+
+        <div>
+
+
+<% if @surveillance_survey_response.review_status == "review_pending" %>
+
+  <div class="alert alert-warning">
+
+    <div class="d-flex align-items-start">
+
+      <i class="bi bi-exclamation-triangle-fill fs-4 me-2"></i>
+
+      <div>
+
+        <strong>Respuesta pendiente de revisión</strong>
+
+        <div class="mt-1">
+          Esta respuesta debe ser evaluada para determinar si el
+          trabajador debe ingresar al seguimiento del SVE.
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="card border-primary mt-3">
+
+    <div class="card-body">
+
+      <h6 class="fw-bold mb-3">
+
+        <i class="bi bi-clipboard-check me-2"></i>
+
+        Decisión epidemiológica
+
+      </h6>
+
+
+      <%= form_with(
+            url: review_epidemiological_surveillance_program_surveillance_survey_surveillance_survey_response_path(
+              @epidemiological_surveillance_program,
+              @surveillance_survey,
+              @surveillance_survey_response
+            ),
+            method: :patch,
+            local: true
+          ) do |form| %>
+
+
+        <div class="mb-3">
+
+          <%= form.label :observations,
+                         "Observaciones de la revisión",
+                         class: "form-label fw-semibold" %>
+
+          <%= form.text_area :observations,
+                             rows: 4,
+                             class: "form-control",
+                             placeholder: "Ingrese las observaciones o justificación de la decisión..." %>
+
+        </div>
+
+
+        <div class="d-flex flex-column flex-md-row
+                    justify-content-center
+                    gap-2">
+
+
+          <button type="submit"
+                  name="decision"
+                  value="select"
+                  class="btn btn-success"
+                  onclick="return confirm('¿Confirma que desea seleccionar este trabajador para el SVE?');">
+
+            <i class="bi bi-check-circle me-1"></i>
+
+            Seleccionar para SVE
+
+          </button>
+
+
+          <button type="submit"
+                  name="decision"
+                  value="not_candidate"
+                  class="btn btn-outline-secondary"
+                  onclick="return confirm('¿Confirma que desea marcar esta respuesta como no candidata para el SVE?');">
+
+            <i class="bi bi-x-circle me-1"></i>
+
+            Marcar como no candidato
+
+          </button>
+
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+
+<% else %>
+
+  <div class="row g-3">
+
+    <div class="col-12 col-md-4">
+
+      <strong>
+        Seleccionado para SVE:
+      </strong>
+
+      <% if @surveillance_survey_response.selected_for_sve? %>
+
+        <span class="badge bg-success">
+          Sí
+        </span>
+
+      <% else %>
+
+        <span class="badge bg-secondary">
+          No
+        </span>
+
+      <% end %>
+
+    </div>
+
+
+    <div class="col-12 col-md-4">
+
+      <strong>
+        Revisado por:
+      </strong>
+
+      <%= @surveillance_survey_response.reviewed_by&.name ||
+          "No registrado" %>
+
+    </div>
+
+
+    <div class="col-12 col-md-4">
+
+      <strong>
+        Fecha de revisión:
+      </strong>
+
+      <%= @surveillance_survey_response.reviewed_at&.strftime(
+            "%d/%m/%Y %H:%M"
+          ) || "No registrada" %>
+
+    </div>
+
+
+    <% if @surveillance_survey_response.observations.present? %>
+
+      <div class="col-12">
+
+        <strong>
+          Observaciones:
+        </strong>
+
+        <div class="mt-2 p-3 bg-light rounded">
+
+          <%= @surveillance_survey_response.observations %>
+
+        </div>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+<% end %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="card-body">
+
+      <!-- DATOS DEL TRABAJADOR -->
+
+      <div class="row g-3">
+
+        <div class="col-12 col-md-6">
+
+          <label class="form-label fw-semibold text-muted">
+            Trabajador
+          </label>
+
+          <div class="fs-5">
+
+            <i class="bi bi-person me-1"></i>
+
+            <%= @surveillance_survey_response.user&.name ||
+                "Sin trabajador" %>
+
+          </div>
+
+        </div>
+
+
+        <div class="col-12 col-md-3">
+
+          <label class="form-label fw-semibold text-muted">
+            Fecha de respuesta
+          </label>
+
+          <div>
+
+            <%= @surveillance_survey_response.response_date&.strftime(
+                  "%d/%m/%Y %H:%M"
+                ) %>
+
+          </div>
+
+        </div>
+
+
+        <div class="col-12 col-md-3">
+
+          <label class="form-label fw-semibold text-muted">
+            Estado
+          </label>
+
+          <div>
+
+            <% if @surveillance_survey_response.status == "pending" %>
+
+              <span class="badge bg-warning text-dark">
+                Pendiente
+              </span>
+
+            <% elsif @surveillance_survey_response.status == "in_evaluation" %>
+
+              <span class="badge bg-info text-dark">
+                En evaluación
+              </span>
+
+            <% elsif @surveillance_survey_response.status == "in_follow_up" %>
+
+              <span class="badge bg-primary">
+                En seguimiento
+              </span>
+
+            <% elsif @surveillance_survey_response.status == "closed" %>
+
+              <span class="badge bg-success">
+                Cerrada
+              </span>
+
+            <% elsif @surveillance_survey_response.status == "not_candidate" %>
+
+              <span class="badge bg-secondary">
+                No candidato
+              </span>
+
+            <% end %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <hr class="my-4">
+
+
+      <!-- RESPUESTAS -->
+
+      <h5 class="mb-3">
+
+        <i class="bi bi-list-check me-2"></i>
+        Respuestas
+
+      </h5>
+
+
+      <% @surveillance_survey_response.surveillance_answers
+                                      .sort_by { |answer|
+                                        answer.surveillance_question.position
+                                      }
+                                      .each do |answer| %>
+
+        <% question = answer.surveillance_question %>
+
+        <div class="card border mb-3">
+
+          <div class="card-body">
+
+            <div class="fw-semibold">
+
+              <span class="badge bg-secondary rounded-pill me-2">
+                <%= question.position %>
+              </span>
+
+              <%= question.question %>
+
+              <% if question.required? %>
+
+                <span class="text-danger">*</span>
+
+              <% end %>
+
+            </div>
+
+
+            <div class="mt-3">
+
+              <% if question.question_type == "open_text" %>
+
+                <div class="p-3 bg-light rounded">
+
+                  <%= answer.answer_text.presence ||
+                      "Sin respuesta" %>
+
+                </div>
+
+
+              <% elsif question.question_type == "boolean" %>
+
+                <% if answer.answer_boolean == true %>
+
+                  <span class="badge bg-success fs-6">
+                    Sí
+                  </span>
+
+                <% elsif answer.answer_boolean == false %>
+
+                  <span class="badge bg-secondary fs-6">
+                    No
+                  </span>
+
+                <% else %>
+
+                  <span class="text-muted">
+                    Sin respuesta
+                  </span>
+
+                <% end %>
+
+
+              <% elsif question.question_type == "single_choice" ||
+                       question.question_type == "multiple_choice" %>
+
+                <% if answer.surveillance_answer_options.any? %>
+
+                  <div class="d-flex flex-wrap gap-2">
+
+                    <% answer.surveillance_answer_options.each do |answer_option| %>
+
+                      <span class="badge bg-light text-dark border fs-6">
+
+                        <i class="bi bi-check2 me-1"></i>
+
+                        <%= answer_option
+                              .surveillance_question_option
+                              .option_text %>
+
+                      </span>
+
+                    <% end %>
+
+                  </div>
+
+                <% else %>
+
+                  <span class="text-muted">
+                    Sin respuesta
+                  </span>
+
+                <% end %>
+
+              <% end %>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+
+      <hr class="my-4">
+
+
+      <!-- INFORMACIÓN DE REVISIÓN -->
+
+      <div class="card border-warning">
+
+        <div class="card-header bg-light">
+
+          <h5 class="mb-0">
+
+            <i class="bi bi-clipboard-check me-2"></i>
+            Revisión epidemiológica
+
+          </h5>
+
+        </div>
+
+        <div class="card-body">
+
+          <% if @surveillance_survey_response.review_status == "review_pending" %>
+
+            <div class="alert alert-warning mb-0">
+
+              <i class="bi bi-exclamation-triangle me-2"></i>
+
+              Esta respuesta está pendiente de revisión por el
+              responsable del programa SVE.
+
+            </div>
+
+          <% else %>
+
+            <div class="row g-3">
+
+              <div class="col-12 col-md-4">
+
+                <strong>
+                  Seleccionado para SVE:
+                </strong>
+
+                <% if @surveillance_survey_response.selected_for_sve? %>
+
+                  <span class="badge bg-success">
+                    Sí
+                  </span>
+
+                <% else %>
+
+                  <span class="badge bg-secondary">
+                    No
+                  </span>
+
+                <% end %>
+
+              </div>
+
+
+              <div class="col-12 col-md-4">
+
+                <strong>
+                  Revisado por:
+                </strong>
+
+                <%= @surveillance_survey_response.reviewed_by&.name ||
+                    "No registrado" %>
+
+              </div>
+
+
+              <div class="col-12 col-md-4">
+
+                <strong>
+                  Fecha de revisión:
+                </strong>
+
+                <%= @surveillance_survey_response.reviewed_at&.strftime(
+                      "%d/%m/%Y %H:%M"
+                    ) || "No registrada" %>
+
+              </div>
+
+
+              <% if @surveillance_survey_response.observations.present? %>
+
+                <div class="col-12">
+
+                  <strong>
+                    Observaciones:
+                  </strong>
+
+                  <div class="mt-2 p-3 bg-light rounded">
+
+                    <%= @surveillance_survey_response.observations %>
+
+                  </div>
+
+                </div>
+
+              <% end %>
+
+            </div>
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+
+      <!-- BOTONERA -->
+
+      <div class="d-flex flex-wrap
+                  justify-content-center
+                  gap-2 mt-4">
+
+        <%= link_to(
+              epidemiological_surveillance_program_surveillance_survey_surveillance_survey_responses_path(
+                @epidemiological_surveillance_program,
+                @surveillance_survey
+              ),
+              class: "btn btn-outline-secondary"
+            ) do %>
+
+          <i class="bi bi-arrow-left me-1"></i>
+          Volver a respuestas
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,31 +1,88 @@
-<div class="container col-11 card p-5">
-    <br>
-    <%= form_with model: @detail_disease do |form| %>
-        <% @detail_disease.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %>    
-        <div class="form-group">    
-            <%= form.label :name, style: "display: block" %>
-            <%= form.text_field :name,  class: "form-control" %>
-        </div>
-        <div class="form-group">    
-            <%= form.label :code_disease, style: "display: block" %>
-            <%= form.text_field :code_disease,  class: "form-control" %>
-        </div>
+<div class="container col-11 col-lg-8 card shadow-sm p-4 p-md-5 my-4">
 
-        <div class="row g-3">
-            <div class="col-sm-8">
-                <%= form.label :table_disease_id, style: "display: block" %>
-                <%= form.collection_select :table_disease_id, TableDisease.all.order(id: :asc), :id, :clasification_disease, { prompt: '--Seleccionar--' },
-                { class: 'form-control input-sm select2' } %>
-            </div>        
-        </div>  
+  <%= form_with model: @detail_disease do |form| %>
 
-        <br>    
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, detail_diseases_path %>
+    <% if @detail_disease.errors.any? %>
+      <div class="alert alert-danger" role="alert">
+        <h6 class="alert-heading">
+          <i class="bi bi-exclamation-triangle-fill me-1"></i>
+          Se encontraron los siguientes errores:
+        </h6>
+
+        <ul class="mb-0">
+          <% @detail_disease.errors.full_messages.each do |error| %>
+            <li><%= error %></li>
+          <% end %>
+        </ul>
+      </div>
     <% end %>
-</div> 
-<br>
+
+    <!-- Nombre -->
+    <div class="mb-3">
+      <%= form.label :name, "Nombre de la enfermedad", class: "form-label fw-semibold" %>
+      <%= form.text_field :name,
+            class: "form-control",
+            placeholder: "Ingrese el nombre de la enfermedad" %>
+    </div>
+
+    <!-- Código -->
+    <div class="mb-3">
+      <%= form.label :code_disease, "Código de la enfermedad", class: "form-label fw-semibold" %>
+      <%= form.text_field :code_disease,
+            class: "form-control",
+            placeholder: "Ingrese el código" %>
+    </div>
+
+    <!-- Clasificación -->
+    <div class="mb-3">
+      <%= form.label :table_disease_id,
+            "Clasificación de la enfermedad",
+            class: "form-label fw-semibold" %>
+
+      <%= form.collection_select :table_disease_id,
+            TableDisease.all.order(id: :asc),
+            :id,
+            :clasification_disease,
+            { prompt: "-- Seleccionar clasificación --" },
+            { class: "form-select select2" } %>
+    </div>
+
+    <!-- SVE -->
+    <div class="mb-3">
+      <%= form.label :surveillance_configuration_id,
+            "Sistema de Vigilancia Epidemiológica",
+            class: "form-label fw-semibold" %>
+
+      <%= form.collection_select :surveillance_configuration_id,
+            @sve.order(id: :asc),
+            :id,
+            :name,
+            { prompt: "-- Sin SVE asociado --" },
+            { class: "form-select select2" } %>
+
+      <div class="form-text">
+        <i class="bi bi-info-circle me-1"></i>
+        Este campo es opcional. Seleccione un SVE únicamente si esta enfermedad
+        hace parte de un Sistema de Vigilancia Epidemiológica.
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+
+      <%= form.button type: "submit", class: "btn btn-primary btn-sm px-4" do %>
+        <i class="bi bi-check-circle me-1"></i>
+        <%= t('common.submit') %>
+      <% end %>
+
+      <%= link_to detail_diseases_path,
+            class: "btn btn-secondary btn-sm px-4" do %>
+        <i class="bi bi-arrow-left me-1"></i>
+        Retornar
+      <% end %>
+
+    </div>
+
+  <% end %>
+
+</div>

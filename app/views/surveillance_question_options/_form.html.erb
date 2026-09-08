@@ -1,0 +1,130 @@
+<%= form_with(
+      model: @surveillance_question_option,
+      url: @surveillance_question_option.new_record? ?
+        epidemiological_surveillance_program_surveillance_survey_surveillance_question_surveillance_question_options_path(
+          @epidemiological_surveillance_program,
+          @surveillance_survey,
+          @surveillance_question
+        ) :
+        epidemiological_surveillance_program_surveillance_survey_surveillance_question_surveillance_question_option_path(
+          @epidemiological_surveillance_program,
+          @surveillance_survey,
+          @surveillance_question,
+          @surveillance_question_option
+        ),
+      local: true
+    ) do |form| %>
+
+  <% if @surveillance_question_option.errors.any? %>
+
+    <div class="alert alert-danger">
+
+      <strong>
+        No fue posible guardar la opción.
+      </strong>
+
+      <ul class="mb-0 mt-2">
+
+        <% @surveillance_question_option.errors.full_messages.each do |error| %>
+          <li><%= error %></li>
+        <% end %>
+
+      </ul>
+
+    </div>
+
+  <% end %>
+
+
+  <div class="row g-3">
+
+    <!-- TEXTO DE LA OPCIÓN -->
+
+    <div class="col-12 col-md-8">
+
+      <%= form.label :option_text,
+            "Texto de la opción",
+            class: "form-label fw-semibold" %>
+
+      <%= form.text_field :option_text,
+            class: "form-control",
+            maxlength: 150,
+            required: true,
+            placeholder: "Ejemplo: Dolor de pecho" %>
+
+    </div>
+
+
+    <!-- POSICIÓN -->
+
+    <div class="col-12 col-md-4">
+
+      <%= form.label :position,
+            "Posición",
+            class: "form-label fw-semibold" %>
+
+      <%= form.number_field :position,
+            class: "form-control",
+            min: 1,
+            required: true %>
+
+    </div>
+
+
+    <!-- ESTADO -->
+
+    <div class="col-12 col-md-4">
+
+      <%= form.label :active,
+            "Estado",
+            class: "form-label fw-semibold" %>
+
+      <div class="form-check form-switch mt-2">
+
+        <%= form.check_box :active,
+              class: "form-check-input" %>
+
+        <%= form.label :active,
+              "Opción activa",
+              class: "form-check-label" %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- BOTONERA -->
+
+  <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+
+    <%= form.submit(
+          @surveillance_question_option.new_record? ?
+            "Guardar opción" :
+            "Actualizar opción",
+          class: "btn btn-primary"
+        ) do %>
+
+      <i class="bi bi-check-circle me-1"></i>
+
+    <% end %>
+
+
+    <%= link_to(
+          epidemiological_surveillance_program_surveillance_survey_surveillance_question_surveillance_question_options_path(
+            @epidemiological_surveillance_program,
+            @surveillance_survey,
+            @surveillance_question
+          ),
+          class: "btn btn-outline-secondary"
+        ) do %>
+
+      <i class="bi bi-arrow-left me-1"></i>
+      Cancelar
+
+    <% end %>
+
+  </div>
+
+<% end %>

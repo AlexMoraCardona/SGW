@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'surveillance_workers/index'
+  get 'surveillance_workers/show'
+  get 'surveillance_workers/new'
+  get 'surveillance_workers/edit'
   
   root :to =>  'homes#index' 
   get 'home', to:  "homes#index"
@@ -17,7 +21,12 @@ Rails.application.routes.draw do
   end  
   
 
-  
+  resources :events do
+    member do
+      get :new_sve_case
+      post :create_sve_case
+    end
+  end
 
   resources :entities 
   resources :levels
@@ -36,7 +45,6 @@ Rails.application.routes.draw do
   resources :meeting_commitments
   resources :assistants
   resources :employee_news
-  resources :events
   resources :indicators
   resources :firms
   resources :participants
@@ -274,6 +282,54 @@ Rails.application.routes.draw do
   get '/extinguishers/extinguisher_foto/:id', to: 'extinguishers#extinguisher_foto', as: 'extinguisher_foto'
   get '/kits/kit_foto/:id', to: 'kits#kit_foto', as: 'kit_foto'
 
+  resources :epidemiological_surveillance_programs do
+    resources :surveillance_activities
+    resources :surveillance_inspections
+    resource :surveillance_report, only: [:new, :create, :show, :edit, :update, :destroy] do
+      member do
+        patch :autorizar_firma
+        patch :quitar_autorizacion_firma
+        patch :finalizar
+      end
+    end
+    resources :surveillance_workers do
+      resource :characterization,
+               only: [:new, :create, :edit, :update]
+      resource :sintoma,
+              only: [:new, :create, :edit, :update]               
+    end
+    resources :epidemiological_surveillance_cases,
+              only: [:index, :show, :edit, :update] do
+      member do
+        get :pdf
+      end
+      resources :epidemiological_surveillance_case_follow_ups do
+        member do
+          delete :destroy_attachment
+        end
+      end
+    end
+    resources :surveillance_surveys do
+      resources :surveillance_survey_responses,
+                only: [:index, :new, :create, :show] do
+        member do
+          patch :review
+        end
+      end
+      resources :surveillance_questions do
+        resources :surveillance_question_options
+      end
+    end
+    member do
+      get :novedades_empleados
+    end
+  end
+
+  resources :surveillance_configurations do
+    resources :surveillance_configuration_questions do
+      resources :surveillance_configuration_question_options
+    end
+  end
 
   resources :admin_extent_dangers do
     collection do

@@ -1,0 +1,328 @@
+<div class="container-fluid py-3">
+
+  <!-- ENCABEZADO -->
+  <div class="card shadow-sm border-0 mb-4">
+
+    <div class="card-header bg-light">
+
+      <div class="d-flex flex-column flex-md-row
+                  justify-content-between
+                  align-items-md-center
+                  gap-3">
+
+        <div>
+
+          <div class="d-flex align-items-center">
+
+            <i class="bi bi-list-ul fs-3 me-2"></i>
+
+            <div>
+
+              <h4 class="mb-0">
+                Opciones de respuesta
+              </h4>
+
+              <div class="text-muted small">
+                Pregunta <%= @surveillance_question.position %>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="mt-2">
+
+            <strong>
+              <%= @surveillance_question.question %>
+            </strong>
+
+          </div>
+
+          <div class="small text-muted mt-1">
+
+            Encuesta:
+            <%= @surveillance_survey.name %>
+
+          </div>
+
+        </div>
+
+
+        <!-- NUEVA OPCIÓN -->
+
+        <div>
+
+          <%= link_to(
+                new_epidemiological_surveillance_program_surveillance_survey_surveillance_question_surveillance_question_option_path(
+                  @epidemiological_surveillance_program,
+                  @surveillance_survey,
+                  @surveillance_question
+                ),
+                class: "btn btn-primary"
+              ) do %>
+
+            <i class="bi bi-plus-circle me-1"></i>
+            Nueva opción
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- INFORMACIÓN DEL TIPO DE PREGUNTA -->
+
+  <div class="alert alert-info shadow-sm">
+
+    <i class="bi bi-info-circle me-1"></i>
+
+    <strong>Tipo de pregunta:</strong>
+<div class="alert alert-info shadow-sm">
+
+  <i class="bi bi-info-circle me-1"></i>
+
+  <strong>Tipo de pregunta:</strong>
+
+  <% if @surveillance_question.open_text? %>
+
+    Texto abierto
+
+  <% elsif @surveillance_question.boolean? %>
+
+    Sí / No
+
+  <% elsif @surveillance_question.single_choice? %>
+
+    Selección única
+
+  <% elsif @surveillance_question.multiple_choice? %>
+
+    Selección múltiple
+
+  <% end %>
+
+</div>
+
+  </div>
+
+
+  <!-- LISTADO DE OPCIONES -->
+
+  <% if @surveillance_question_options.present? %>
+
+    <div class="row g-3">
+
+      <% @surveillance_question_options.each do |option| %>
+
+        <div class="col-12 col-md-6 col-xl-4">
+
+          <div class="card h-100 shadow-sm border-0">
+
+            <div class="card-body">
+
+              <!-- POSICIÓN -->
+
+              <div class="d-flex justify-content-between
+                          align-items-start mb-3">
+
+                <span class="badge bg-dark fs-6">
+
+                  Opción <%= option.position %>
+
+                </span>
+
+
+                <!-- ESTADO -->
+
+                <% if option.active? %>
+
+                  <span class="badge bg-success">
+
+                    Activa
+
+                  </span>
+
+                <% else %>
+
+                  <span class="badge bg-secondary">
+
+                    Inactiva
+
+                  </span>
+
+                <% end %>
+
+              </div>
+
+
+              <!-- TEXTO -->
+
+              <h5 class="card-title">
+
+                <%= option.option_text %>
+
+              </h5>
+
+
+              <!-- VALOR -->
+
+              <div class="small text-muted mb-3">
+
+                <i class="bi bi-code-square me-1"></i>
+
+                <strong>Valor:</strong>
+
+                <code>
+                  <%= option.option_value %>
+                </code>
+
+              </div>
+
+
+              <!-- BOTONERA -->
+
+              <div class="d-flex flex-wrap
+                          justify-content-center
+                          gap-2">
+
+                <!-- VER -->
+
+                <%= link_to(
+                      epidemiological_surveillance_program_surveillance_survey_surveillance_question_surveillance_question_option_path(
+                        @epidemiological_surveillance_program,
+                        @surveillance_survey,
+                        @surveillance_question,
+                        option
+                      ),
+                      class: "btn btn-outline-primary btn-sm",
+                      title: "Ver opción"
+                    ) do %>
+
+                  <i class="bi bi-eye"></i>
+                  Ver
+
+                <% end %>
+
+
+                <!-- EDITAR -->
+
+                <%= link_to(
+                      edit_epidemiological_surveillance_program_surveillance_survey_surveillance_question_surveillance_question_option_path(
+                        @epidemiological_surveillance_program,
+                        @surveillance_survey,
+                        @surveillance_question,
+                        option
+                      ),
+                      class: "btn btn-outline-secondary btn-sm",
+                      title: "Editar opción"
+                    ) do %>
+
+                  <i class="bi bi-pencil"></i>
+                  Editar
+
+                <% end %>
+
+
+                <!-- ELIMINAR -->
+
+                <%= button_to(
+                      epidemiological_surveillance_program_surveillance_survey_surveillance_question_surveillance_question_option_path(
+                        @epidemiological_surveillance_program,
+                        @surveillance_survey,
+                        @surveillance_question,
+                        option
+                      ),
+                      method: :delete,
+                      class: "btn btn-outline-danger btn-sm",
+                      form: {
+                        data: {
+                          turbo_confirm:
+                            "¿Está seguro de eliminar esta opción?"
+                        }
+                      },
+                      title: "Eliminar opción"
+                    ) do %>
+
+                  <i class="bi bi-trash"></i>
+                  Eliminar
+
+                <% end %>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  <% else %>
+
+    <!-- SIN OPCIONES -->
+
+    <div class="card shadow-sm border-0">
+
+      <div class="card-body text-center py-5">
+
+        <i class="bi bi-list-ul display-4 text-muted"></i>
+
+        <h5 class="mt-3">
+          No hay opciones registradas
+        </h5>
+
+        <p class="text-muted">
+          Esta pregunta todavía no tiene opciones configuradas.
+        </p>
+
+        <%= link_to(
+              new_epidemiological_surveillance_program_surveillance_survey_surveillance_question_surveillance_question_option_path(
+                @epidemiological_surveillance_program,
+                @surveillance_survey,
+                @surveillance_question
+              ),
+              class: "btn btn-primary"
+            ) do %>
+
+          <i class="bi bi-plus-circle me-1"></i>
+          Crear primera opción
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+  <% end %>
+
+
+  <!-- BOTONERA INFERIOR -->
+
+  <div class="d-flex flex-wrap
+              justify-content-center
+              gap-2 mt-4">
+
+    <%= link_to(
+          epidemiological_surveillance_program_surveillance_survey_surveillance_questions_path(
+            @epidemiological_surveillance_program,
+            @surveillance_survey
+          ),
+          class: "btn btn-outline-primary"
+        ) do %>
+
+      <i class="bi bi-arrow-left me-1"></i>
+      Volver a preguntas
+
+    <% end %>
+
+  </div>
+
+</div>

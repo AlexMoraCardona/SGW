@@ -1,0 +1,265 @@
+<div class="container-fluid px-3 px-md-4 py-4">
+
+  <div class="card shadow-sm border-0">
+
+    <!-- ENCABEZADO -->
+    <div class="card-header bg-light">
+
+      <div class="d-flex flex-column flex-md-row
+                  justify-content-between
+                  align-items-md-center
+                  gap-2">
+
+        <div>
+
+          <h5 class="mb-1">
+
+            <i class="bi bi-heart-pulse me-2"></i>
+
+            Crear caso SVE
+
+          </h5>
+
+          <small class="text-muted">
+
+            Evento #<%= @event.id %>
+
+          </small>
+
+        </div>
+
+        <div>
+
+          <%= link_to event_path(@event),
+                class: "btn btn-outline-secondary btn-sm" do %>
+
+            <i class="bi bi-arrow-left me-1"></i>
+
+            Volver al evento
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- CUERPO -->
+    <div class="card-body">
+
+      <div class="alert alert-info">
+
+        <i class="bi bi-info-circle me-2"></i>
+
+        Este evento puede ser asociado a un caso de
+        Vigilancia Epidemiológica.
+
+      </div>
+
+
+      <!-- INFORMACIÓN DEL EVENTO -->
+      <div class="card mb-4">
+
+        <div class="card-header bg-light">
+
+          <strong>
+
+            <i class="bi bi-clipboard2-pulse me-2"></i>
+
+            Información del evento
+
+          </strong>
+
+        </div>
+
+
+        <div class="card-body">
+
+          <div class="row g-3">
+
+            <div class="col-12 col-md-4">
+
+              <label class="form-label text-muted">
+                Evento
+              </label>
+
+              <div class="form-control bg-light">
+
+                #<%= @event.id %>
+
+              </div>
+
+            </div>
+
+
+            <div class="col-12 col-md-4">
+
+              <label class="form-label text-muted">
+                Fecha
+              </label>
+
+              <div class="form-control bg-light">
+
+                <%= @event.date_new %>
+
+              </div>
+
+            </div>
+
+
+            <div class="col-12 col-md-4">
+
+              <label class="form-label text-muted">
+                Trabajador
+              </label>
+
+              <div class="form-control bg-light">
+
+                <%= @event.user.name if @event.user.present? %>
+
+              </div>
+
+            </div>
+
+
+            <div class="col-12">
+
+              <label class="form-label text-muted">
+                Empresa
+              </label>
+
+              <div class="form-control bg-light">
+
+                <%= @event.entity.business_name %>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- SELECCIÓN DEL PROGRAMA -->
+      <%= form_with(
+            url: create_sve_case_event_path(@event),
+            method: :post,
+            local: true
+          ) do |form| %>
+
+
+        <div class="card mb-4">
+
+          <div class="card-header bg-light">
+
+            <strong>
+
+              <i class="bi bi-shield-check me-2"></i>
+
+              Programa de Vigilancia Epidemiológica
+
+            </strong>
+
+          </div>
+
+
+          <div class="card-body">
+
+            <% if @epidemiological_surveillance_programs.any? %>
+
+              <div class="mb-3">
+
+                <%= form.label(
+                      :epidemiological_surveillance_program_id,
+                      "Seleccione el programa SVE",
+                      class: "form-label fw-semibold"
+                    ) %>
+
+
+                <%= form.collection_select(
+                      :epidemiological_surveillance_program_id,
+                      @epidemiological_surveillance_programs,
+                      :id,
+                      :name,
+                      {
+                        prompt: "Seleccione un programa SVE"
+                      },
+                      {
+                        class: "form-select"
+                      }
+                    ) %>
+
+              </div>
+
+
+              <div class="alert alert-light border mb-0">
+
+                <i class="bi bi-info-circle me-2"></i>
+
+                Solo se muestran los programas SVE
+                activos correspondientes a esta empresa.
+
+              </div>
+
+            <% else %>
+
+              <div class="alert alert-warning mb-0">
+
+                <i class="bi bi-exclamation-triangle me-2"></i>
+
+                No existen programas SVE activos para esta empresa.
+
+              </div>
+
+            <% end %>
+
+          </div>
+
+        </div>
+
+
+        <!-- BOTONES -->
+        <div class="d-flex flex-wrap
+                    justify-content-center
+                    gap-2">
+
+          <%= link_to event_path(@event),
+                class: "btn btn-outline-secondary" do %>
+
+            <i class="bi bi-x-circle me-1"></i>
+
+            Cancelar
+
+          <% end %>
+
+
+          <% if @epidemiological_surveillance_programs.any? %>
+
+            <%= form.button(
+                  type: "submit",
+                  class: "btn btn-primary"
+                ) do %>
+
+              <i class="bi bi-check-circle me-1"></i>
+
+              Crear caso SVE
+
+            <% end %>
+
+          <% end %>
+
+        </div>
+
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,1908 @@
+<!-- ============================================================
+     SHOW - REPORTE SVE RESPIRATORIO
+     app/views/surveillance_reports/show.html.erb
+     ============================================================ -->
+
+<style>
+  .sve-report {
+    font-size: 0.95rem;
+  }
+
+  .sve-section {
+    margin-bottom: 1.5rem;
+    break-inside: avoid;
+  }
+
+  .sve-section-title {
+    background: #f1f3f5;
+    border-left: 5px solid #6c757d;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: #343a40;
+  }
+
+  .sve-subtitle {
+    font-weight: 600;
+    color: #495057;
+    margin-top: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .sve-info-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #6c757d;
+    text-transform: uppercase;
+    margin-bottom: 0.15rem;
+  }
+
+  .sve-info-value {
+    font-weight: 500;
+    color: #212529;
+    word-break: break-word;
+  }
+
+  .sve-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    vertical-align: middle;
+  }
+
+  .sve-table td {
+    vertical-align: middle;
+  }
+
+  .sve-fixed-content {
+    line-height: 1.65;
+    text-align: justify;
+  }
+
+  .sve-fixed-content li {
+    margin-bottom: 0.45rem;
+  }
+
+  .sve-signature {
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    text-align: center;
+  }
+
+  .sve-signature img {
+    max-width: 220px;
+    max-height: 90px;
+    object-fit: contain;
+    margin-bottom: 0.5rem;
+  }
+
+  .sve-signature-line {
+    width: 280px;
+    max-width: 90%;
+    border-top: 1px solid #212529;
+    margin-top: 0.5rem;
+    padding-top: 0.4rem;
+  }
+
+  .sve-toolbar .btn {
+    margin-bottom: 0.35rem;
+  }
+
+  @media (max-width: 767.98px) {
+    .sve-report {
+      font-size: 0.9rem;
+    }
+
+    .sve-section-title {
+      font-size: 1rem;
+    }
+
+    .sve-table {
+      min-width: 650px;
+    }
+
+    .table-responsive {
+      border-radius: 0.5rem;
+    }
+
+    .sve-signature-line {
+      width: 220px;
+    }
+  }
+
+  @media print {
+    body {
+      background: #fff !important;
+    }
+
+    .sve-toolbar,
+    .no-print {
+      display: none !important;
+    }
+
+    .sve-section {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .card {
+      border: 1px solid #dee2e6 !important;
+      box-shadow: none !important;
+    }
+
+    .sve-section-title {
+      background: #f1f3f5 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .sve-table th {
+      background: #f8f9fa !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+</style>
+
+
+<div class="container-fluid px-2 px-md-4 py-3 sve-report">
+
+  <!-- ==========================================================
+       BARRA DE ACCIONES
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 mb-3 no-print sve-toolbar">
+    <div class="card-body">
+
+      <div class="d-flex flex-column flex-md-row
+                  justify-content-between
+                  align-items-center
+                  gap-2">
+
+        <div class="text-center text-md-start">
+          <h5 class="mb-1">
+            <i class="bi bi-file-earmark-medical me-2"></i>
+            Reporte SVE
+          </h5>
+
+          <small class="text-muted">
+            Sistema de Vigilancia Epidemiológica
+          </small>
+        </div>
+
+<div class="d-flex flex-wrap justify-content-center gap-2">
+
+  <!-- EDITAR -->
+  <% unless @surveillance_report.finalized? %>
+
+    <%= link_to(
+          edit_epidemiological_surveillance_program_surveillance_report_path(
+            @epidemiological_surveillance_program
+          ),
+          class: "btn btn-outline-primary btn-sm"
+        ) do %>
+
+      <i class="bi bi-pencil-square me-1"></i>
+      Editar
+
+    <% end %>
+
+  <% end %>
+
+
+  <!-- AUTORIZAR FIRMA -->
+  <% unless @surveillance_report.autoriza_firma? %>
+
+    <%= button_to(
+          autorizar_firma_epidemiological_surveillance_program_surveillance_report_path(
+            @epidemiological_surveillance_program
+          ),
+          method: :patch,
+          class: "btn btn-outline-success btn-sm",
+          form: {
+            data: {
+              turbo_confirm:
+                "¿Está seguro de autorizar la firma de este reporte?"
+            }
+          }
+        ) do %>
+
+      <i class="bi bi-pen me-1"></i>
+      Autorizar firma
+
+    <% end %>
+
+<% if @surveillance_report.autoriza_firma? &&
+      !@surveillance_report.finalized? %>
+
+  <%= button_to(
+        finalizar_epidemiological_surveillance_program_surveillance_report_path(
+          @epidemiological_surveillance_program
+        ),
+        method: :patch,
+        class: "btn btn-outline-success btn-sm",
+        form: {
+          data: {
+            turbo_confirm:
+              "¿Está seguro de finalizar este reporte SVE? " \
+              "Una vez finalizado no podrá ser modificado."
+          }
+        }
+      ) do %>
+
+    <i class="bi bi-lock-fill me-1"></i>
+    Finalizar reporte
+
+  <% end %>
+
+<% end %>    
+
+  <% else %>
+
+    <!-- QUITAR AUTORIZACIÓN -->
+    <%= button_to(
+          quitar_autorizacion_firma_epidemiological_surveillance_program_surveillance_report_path(
+            @epidemiological_surveillance_program
+          ),
+          method: :patch,
+          class: "btn btn-outline-warning btn-sm",
+          form: {
+            data: {
+              turbo_confirm:
+                "¿Está seguro de retirar la autorización de firma?"
+            }
+          }
+        ) do %>
+
+      <i class="bi bi-x-circle me-1"></i>
+      Quitar firma
+
+    <% end %>
+
+  <% end %>
+
+
+  <!-- IMPRIMIR -->
+  <button type="button"
+          class="btn btn-outline-secondary btn-sm"
+          onclick="window.print()">
+
+    <i class="bi bi-printer me-1"></i>
+    Imprimir
+
+  </button>
+
+
+  <!-- VOLVER -->
+  <%= link_to(
+        epidemiological_surveillance_program_path(
+          @epidemiological_surveillance_program
+        ),
+        class: "btn btn-outline-dark btn-sm"
+      ) do %>
+
+    <i class="bi bi-arrow-left me-1"></i>
+    Volver
+
+  <% end %>
+
+
+  <!-- ELIMINAR -->
+  <% unless @surveillance_report.finalized? %>
+
+    <%= button_to(
+          epidemiological_surveillance_program_surveillance_report_path(
+            @epidemiological_surveillance_program
+          ),
+          method: :delete,
+          class: "btn btn-outline-danger btn-sm",
+          form: {
+            data: {
+              turbo_confirm:
+                "¿Está seguro de eliminar este reporte SVE?"
+            }
+          }
+        ) do %>
+
+      <i class="bi bi-trash me-1"></i>
+      Eliminar
+
+    <% end %>
+
+  <% end %>
+
+</div>        
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ==========================================================
+       ENCABEZADO DEL REPORTE
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body p-3 p-md-4">
+
+      <div class="row align-items-center">
+
+        <div class="col-12 col-md-8 text-center text-md-start">
+
+          <div class="d-flex
+                      flex-column
+                      flex-md-row
+                      align-items-center
+                      gap-3">
+
+            <% if @entity&.logo.present? %>
+              <%= image_tag(
+                    @entity.logo,
+                    style: "max-width:100px; max-height:80px; object-fit:contain;"
+                  ) %>
+            <% end %>
+
+            <div>
+
+              <h3 class="mb-1 fw-bold">
+                SISTEMA DE VIGILANCIA EPIDEMIOLÓGICA
+              </h3>
+
+              <div class="fw-semibold">
+                <%= @epidemiological_surveillance_program.name %>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="col-12 col-md-4 mt-3 mt-md-0 text-center text-md-end">
+
+<% if @surveillance_report.finalized? %>
+
+  <span class="badge bg-success fs-6 px-3 py-2">
+    <i class="bi bi-lock-fill me-1"></i>
+    REPORTE FINALIZADO
+  </span>
+
+<% elsif @surveillance_report.autoriza_firma? %>
+
+  <span class="badge bg-primary fs-6 px-3 py-2">
+    <i class="bi bi-pen-fill me-1"></i>
+    FIRMA AUTORIZADA
+  </span>
+
+<% else %>
+
+  <span class="badge bg-secondary fs-6 px-3 py-2">
+    <i class="bi bi-pencil me-1"></i>
+    BORRADOR
+  </span>
+
+<% end %>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ==========================================================
+       1. INTRODUCCIÓN
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        1. INTRODUCCIÓN
+      </div>
+
+      <div class="sve-fixed-content">
+
+        <p>
+          El Sistema de Vigilancia Epidemiológica para la prevención de
+          enfermedades respiratorias tiene como propósito establecer
+          mecanismos para la identificación, valoración, seguimiento y
+          control de los factores relacionados con la aparición de
+          alteraciones respiratorias en la población trabajadora.
+        </p>
+
+        <p>
+          El sistema permite orientar las acciones de promoción,
+          prevención, vigilancia e intervención de acuerdo con las
+          condiciones particulares de la organización y los factores
+          de riesgo identificados.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       2. JUSTIFICACIÓN
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        2. JUSTIFICACIÓN
+      </div>
+
+      <div class="sve-fixed-content">
+
+        <p>
+          La identificación oportuna de los factores de riesgo
+          asociados a enfermedades respiratorias permite establecer
+          medidas de control orientadas a prevenir la aparición de
+          enfermedades laborales y favorecer condiciones de trabajo
+          saludables.
+        </p>
+
+        <p>
+          El Sistema de Vigilancia Epidemiológica constituye una
+          herramienta para realizar seguimiento a la población
+          expuesta, fortalecer las medidas de prevención y apoyar la
+          toma de decisiones dentro del Sistema de Gestión de
+          Seguridad y Salud en el Trabajo.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       3. OBJETIVO
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        3. OBJETIVO
+      </div>
+
+      <div class="sve-fixed-content">
+
+        <p>
+          Identificar, evaluar, intervenir y realizar seguimiento a
+          los factores de riesgo relacionados con enfermedades
+          respiratorias presentes en los ambientes laborales, con el
+          fin de prevenir alteraciones en la salud de los trabajadores.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       4. ALCANCE
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        4. ALCANCE
+      </div>
+
+      <div class="sve-fixed-content">
+
+        <p>
+          El Sistema de Vigilancia Epidemiológica aplica a los
+          trabajadores y demás personas expuestas a factores de riesgo
+          respiratorio derivados de las actividades desarrolladas por
+          la organización.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       5. MARCO LEGAL
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        5. MARCO LEGAL
+      </div>
+
+      <div class="sve-fixed-content">
+
+        <ul>
+
+          <li>
+            Decreto 1072 de 2015 – Decreto Único Reglamentario del
+            Sector Trabajo.
+          </li>
+
+          <li>
+            Resolución 0312 de 2019 – Estándares Mínimos del Sistema
+            de Gestión de Seguridad y Salud en el Trabajo.
+          </li>
+
+          <li>
+            Resolución 2346 de 2007 – Evaluaciones médicas
+            ocupacionales.
+          </li>
+
+          <li>
+            Resolución 2646 de 2008 – Identificación, evaluación,
+            prevención, intervención y monitoreo de factores de riesgo.
+          </li>
+
+          <li>
+            Demás normas legales y técnicas aplicables a la
+            organización de acuerdo con los peligros identificados.
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       6. DEFINICIONES
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        6. DEFINICIONES
+      </div>
+
+      <div class="sve-fixed-content">
+
+        <p>
+          <strong>Vigilancia epidemiológica:</strong>
+          proceso sistemático de recolección, análisis,
+          interpretación y seguimiento de información relacionada
+          con las condiciones de salud y exposición de la población
+          trabajadora.
+        </p>
+
+        <p>
+          <strong>Factor de riesgo:</strong>
+          condición, situación o agente que puede generar efectos
+          adversos sobre la salud.
+        </p>
+
+        <p>
+          <strong>Exposición:</strong>
+          contacto de una persona con un factor de riesgo durante el
+          desarrollo de sus actividades.
+        </p>
+
+        <p>
+          <strong>Enfermedad respiratoria:</strong>
+          alteración de la salud que compromete las vías respiratorias
+          o el sistema respiratorio.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       7. CARACTERIZACIÓN GENERAL DE LA EMPRESA
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        7. CARACTERIZACIÓN GENERAL DE LA EMPRESA
+      </div>
+
+      <div class="row g-3">
+
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="sve-info-label">Nombre de la empresa</div>
+          <div class="sve-info-value">
+            <%= @entity&.business_name.presence || "No registrado" %>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="sve-info-label">NIT</div>
+          <div class="sve-info-value">
+            <%= @nit_empresa.presence || "No registrado" %>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="sve-info-label">Código CIIU</div>
+          <div class="sve-info-value">
+            <%= @economic_activity_code&.ciu_code.presence || "No registrado" %>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <div class="sve-info-label">Actividad económica</div>
+          <div class="sve-info-value">
+            <%= @economic_activity_code&.economic_activity_description.presence ||
+                "No registrado" %>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <div class="sve-info-label">Dirección</div>
+          <div class="sve-info-value">
+            <%= @entity&.entity_address.presence || "No registrado" %>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <div class="sve-info-label">Municipio</div>
+          <div class="sve-info-value">
+            <%= @municipality.presence || "No registrado" %>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <div class="sve-info-label">Representante legal</div>
+          <div class="sve-info-value">
+            <%= @legal_representative.presence || "No registrado" %>
+          </div>
+        </div>
+
+<div class="col-12 col-md-6">
+  <div class="sve-info-label">Responsable SG-SST</div>
+  <div class="sve-info-value">
+    <%= @surveillance_report.responsible_name.presence ||
+        @responsible&.name ||
+        "No registrado" %>
+  </div>
+</div>
+        <div class="col-12 col-md-6">
+          <div class="sve-info-label">ARL</div>
+          <div class="sve-info-value">
+            <%= @occupational_risk_manager&.name.presence || "No registrado" %>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <div class="sve-info-label">Número de trabajadores</div>
+          <div class="sve-info-value">
+            <%= @surveillance_report.number_of_workers.presence || "No registrado" %>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       8. DISTRIBUCIÓN DE LOS TRABAJADORES EXPUESTOS
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        8. DISTRIBUCIÓN DE LOS TRABAJADORES EXPUESTOS
+      </div>
+
+      <div class="table-responsive">
+
+        <table class="table table-bordered table-hover sve-table mb-0">
+
+          <thead>
+            <tr>
+              <th style="width: 20%;">Prioridad</th>
+              <th style="width: 55%;">Exposición</th>
+              <th style="width: 25%;" class="text-center">
+                Número de expuestos
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <% if @surveillance_report.surveillance_report_populations.any? %>
+
+              <% @surveillance_report
+                   .surveillance_report_populations
+                   .order(position: :asc)
+                   .each do |population| %>
+
+                <tr>
+
+                  <td>
+                    <%= population.priority.presence || "-" %>
+                  </td>
+
+                  <td>
+                    <%= population.exposure.presence || "-" %>
+                  </td>
+
+                  <td class="text-center">
+                    <%= population.number_exposed.presence || 0 %>
+                  </td>
+
+                </tr>
+
+              <% end %>
+
+            <% else %>
+
+              <tr>
+                <td colspan="3" class="text-center text-muted">
+                  No se registraron datos.
+                </td>
+              </tr>
+
+            <% end %>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       9. PROCESO PRODUCTIVO Y PELIGROS
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        9. PROCESO PRODUCTIVO Y PELIGROS IDENTIFICADOS
+      </div>
+
+      <div class="table-responsive">
+
+        <table class="table table-bordered table-hover sve-table mb-0">
+
+          <thead>
+            <tr>
+              <th style="width: 40%;">Proceso</th>
+              <th style="width: 60%;">Riesgos identificados</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <% if @surveillance_report.surveillance_report_processes.any? %>
+
+              <% @surveillance_report
+                   .surveillance_report_processes
+                   .order(position: :asc)
+                   .each do |process| %>
+
+                <tr>
+                  <td>
+                    <%= process.process_name.presence || "-" %>
+                  </td>
+
+                  <td>
+                    <%= process.risks.presence || "-" %>
+                  </td>
+                </tr>
+
+              <% end %>
+
+            <% else %>
+
+              <tr>
+                <td colspan="2" class="text-center text-muted">
+                  No se registraron procesos.
+                </td>
+              </tr>
+
+            <% end %>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       9.1 AGENTES / SUSTANCIAS
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-subtitle">
+        9.1 Agentes, sustancias y productos relacionados
+      </div>
+
+      <div class="table-responsive">
+
+        <table class="table table-bordered table-hover sve-table mb-0">
+
+          <thead>
+            <tr>
+              <th>Agente</th>
+              <th>Sustancia / Producto</th>
+              <th>Posibles efectos</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <% if @surveillance_report.surveillance_report_hazards.any? %>
+
+              <% @surveillance_report
+                   .surveillance_report_hazards
+                   .order(position: :asc)
+                   .each do |hazard| %>
+
+                <tr>
+
+                  <td>
+                    <%= hazard.agent.presence || "-" %>
+                  </td>
+
+                  <td>
+                    <%= hazard.substance_product.presence || "-" %>
+                  </td>
+
+                  <td>
+                    <%= hazard.possible_effects.presence || "-" %>
+                  </td>
+
+                </tr>
+
+              <% end %>
+
+            <% else %>
+
+              <tr>
+                <td colspan="3" class="text-center text-muted">
+                  No se registraron agentes o sustancias.
+                </td>
+              </tr>
+
+            <% end %>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       9.2 AGENTES BIOLÓGICOS
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-subtitle">
+        9.2 Agentes biológicos
+      </div>
+
+      <div class="sve-fixed-content">
+
+        <p>
+          Se deberán identificar las condiciones de exposición a
+          agentes biológicos que puedan generar afectaciones
+          respiratorias, considerando las actividades desarrolladas,
+          ambientes de trabajo, contacto con personas, animales,
+          residuos, material contaminado u otras fuentes de exposición
+          presentes en la organización.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       9.3 FACTORES INDIVIDUALES
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-subtitle">
+        9.3 Factores individuales
+      </div>
+
+      <div class="sve-fixed-content">
+
+        <ul>
+
+          <li>
+            Antecedentes de enfermedades respiratorias.
+          </li>
+
+          <li>
+            Hábitos y estilos de vida relacionados con la salud
+            respiratoria.
+          </li>
+
+          <li>
+            Antecedentes de tabaquismo o exposición a humo.
+          </li>
+
+          <li>
+            Condiciones individuales que puedan aumentar la
+            susceptibilidad a los factores de riesgo identificados.
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       9.4 FACTORES AMBIENTALES
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-subtitle">
+        9.4 Factores ambientales
+      </div>
+
+      <div class="sve-fixed-content">
+
+        <ul>
+
+          <li>Ventilación de las áreas de trabajo.</li>
+
+          <li>Condiciones de temperatura y humedad.</li>
+
+          <li>Presencia de material particulado.</li>
+
+          <li>Gases, vapores, humos o aerosoles.</li>
+
+          <li>Condiciones de limpieza y mantenimiento.</li>
+
+          <li>Condiciones de almacenamiento.</li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       10. METODOLOGÍA
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        10. METODOLOGÍA
+      </div>
+
+      <div class="sve-fixed-content">
+
+        <p>
+          La metodología del Sistema de Vigilancia Epidemiológica
+          contempla la identificación de la población objeto,
+          identificación de peligros y factores de riesgo, valoración
+          de la exposición, vigilancia de las condiciones de salud,
+          intervención y seguimiento.
+        </p>
+
+        <p>
+          La información obtenida mediante las diferentes actividades
+          de vigilancia deberá permitir establecer prioridades de
+          intervención y realizar seguimiento a las medidas
+          implementadas.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       11. POBLACIÓN OBJETO
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        11. POBLACIÓN OBJETO
+      </div>
+
+      <div class="sve-fixed-content">
+
+        <p>
+          La población objeto corresponde a los trabajadores y demás
+          personas que se encuentren expuestos a los factores de
+          riesgo respiratorio identificados en la organización.
+        </p>
+
+        <p>
+          La priorización se realiza teniendo en cuenta las condiciones
+          de exposición y el número de personas expuestas.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       12. VIGILANCIA MÉDICA
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        12. VIGILANCIA MÉDICA
+      </div>
+
+      <div class="sve-fixed-content">
+
+        <p>
+          La vigilancia médica estará orientada a identificar
+          oportunamente signos y síntomas relacionados con alteraciones
+          respiratorias y realizar seguimiento a los trabajadores
+          expuestos.
+        </p>
+
+        <ul>
+
+          <li>
+            Evaluaciones médicas ocupacionales.
+          </li>
+
+          <li>
+            Seguimiento a trabajadores expuestos.
+          </li>
+
+          <li>
+            Identificación de signos y síntomas respiratorios.
+          </li>
+
+          <li>
+            Seguimiento a recomendaciones médicas.
+          </li>
+
+          <li>
+            Análisis de los resultados de las evaluaciones de salud.
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       13. VIGILANCIA AMBIENTAL
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        13. VIGILANCIA AMBIENTAL
+      </div>
+
+      <div class="sve-fixed-content">
+
+        <p>
+          La vigilancia ambiental comprende la identificación y
+          seguimiento de las condiciones presentes en los ambientes
+          de trabajo que puedan favorecer la aparición de enfermedades
+          respiratorias.
+        </p>
+
+        <ul>
+
+          <li>Identificación de fuentes de exposición.</li>
+
+          <li>Evaluación de condiciones de ventilación.</li>
+
+          <li>Seguimiento a condiciones de limpieza.</li>
+
+          <li>Control de contaminantes.</li>
+
+          <li>Seguimiento a medidas de control implementadas.</li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       14. VIGILANCIA EPIDEMIOLÓGICA
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        14. VIGILANCIA EPIDEMIOLÓGICA
+      </div>
+
+      <div class="sve-fixed-content">
+
+        <p>
+          El componente epidemiológico permitirá realizar seguimiento
+          a la ocurrencia de eventos relacionados con enfermedades
+          respiratorias, identificar tendencias y establecer medidas
+          de intervención de acuerdo con los resultados obtenidos.
+        </p>
+
+        <ul>
+
+          <li>
+            Seguimiento a casos identificados.
+          </li>
+
+          <li>
+            Seguimiento a signos y síntomas.
+          </li>
+
+          <li>
+            Análisis de ausentismo relacionado.
+          </li>
+
+          <li>
+            Identificación de población priorizada.
+          </li>
+
+          <li>
+            Seguimiento a las intervenciones realizadas.
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       15. INTERVENCIÓN
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        15. INTERVENCIÓN
+      </div>
+
+      <div class="sve-fixed-content">
+
+        <p>
+          Las medidas de intervención deberán priorizarse de acuerdo
+          con la jerarquía de controles y las condiciones identificadas
+          durante el proceso de vigilancia.
+        </p>
+
+        <ul>
+
+          <li>
+            Eliminación o sustitución cuando sea técnicamente posible.
+          </li>
+
+          <li>
+            Controles de ingeniería.
+          </li>
+
+          <li>
+            Controles administrativos.
+          </li>
+
+          <li>
+            Capacitación y sensibilización.
+          </li>
+
+          <li>
+            Uso adecuado de elementos de protección personal.
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       16. BIOSEGURIDAD
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        16. BIOSEGURIDAD
+      </div>
+
+      <div class="sve-fixed-content">
+
+        <p>
+          Se deberán implementar las medidas de bioseguridad
+          correspondientes a las actividades desarrolladas y a los
+          factores de riesgo identificados.
+        </p>
+
+        <ul>
+
+          <li>
+            Higiene adecuada de manos.
+          </li>
+
+          <li>
+            Limpieza y desinfección de áreas y superficies.
+          </li>
+
+          <li>
+            Manejo adecuado de residuos.
+          </li>
+
+          <li>
+            Uso adecuado de elementos de protección personal.
+          </li>
+
+          <li>
+            Cumplimiento de los protocolos establecidos.
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       17. MANEJO DE CASOS
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        17. MANEJO DE CASOS
+      </div>
+
+      <div class="sve-fixed-content">
+
+        <p>
+          Los trabajadores que presenten signos, síntomas o
+          diagnósticos relacionados con enfermedades respiratorias
+          deberán recibir el seguimiento correspondiente de acuerdo
+          con los procedimientos establecidos por la organización.
+        </p>
+
+        <ul>
+
+          <li>Identificación del caso.</li>
+
+          <li>Valoración y orientación correspondiente.</li>
+
+          <li>Seguimiento de recomendaciones.</li>
+
+          <li>Seguimiento a restricciones laborales cuando aplique.</li>
+
+          <li>Registro y análisis del caso.</li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       18. CAPACITACIÓN
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        18. CAPACITACIÓN Y SENSIBILIZACIÓN
+      </div>
+
+      <div class="sve-fixed-content">
+
+        <p>
+          La organización desarrollará actividades de capacitación y
+          sensibilización dirigidas a la población trabajadora de
+          acuerdo con los factores de riesgo identificados.
+        </p>
+
+        <ul>
+
+          <li>
+            Prevención de enfermedades respiratorias.
+          </li>
+
+          <li>
+            Identificación de signos y síntomas.
+          </li>
+
+          <li>
+            Hábitos de vida saludable.
+          </li>
+
+          <li>
+            Higiene respiratoria.
+          </li>
+
+          <li>
+            Uso adecuado de elementos de protección personal.
+          </li>
+
+          <li>
+            Medidas de control de exposición.
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       19. INDICADORES
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        19. INDICADORES
+      </div>
+
+      <div class="sve-fixed-content">
+
+        <p>
+          El Sistema de Vigilancia Epidemiológica contempla
+          indicadores de estructura, proceso y resultado para evaluar
+          el desarrollo y cumplimiento de las actividades previstas.
+        </p>
+
+      </div>
+
+      <div class="table-responsive">
+
+        <table class="table table-bordered sve-table">
+
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th>Indicador</th>
+              <th>Objetivo</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <tr>
+              <td> Estructura </td>
+              <td>
+                Recursos disponibles para la implementación del SVE
+              </td>
+              <td>
+                Verificar disponibilidad de recursos.
+              </td>
+            </tr>
+
+            <tr>
+              <td> Proceso </td>
+              <td>
+                Cumplimiento de actividades programadas
+              </td>
+              <td>
+                Evaluar la ejecución del programa.
+              </td>
+            </tr>
+
+            <tr>
+              <td> Resultado </td>
+              <td>
+                Resultados derivados de las actividades de vigilancia
+              </td>
+              <td>
+                Evaluar los efectos de las intervenciones.
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      <div class="alert alert-light border mb-0">
+        <i class="bi bi-info-circle me-2"></i>
+        Los indicadores definidos para este reporte corresponden al
+        contenido establecido en el programa SVE.
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       20. RESPONSABILIDADES
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        20. RESPONSABILIDADES
+      </div>
+
+      <div class="sve-fixed-content">
+
+        <p>
+          La implementación y seguimiento del Sistema de Vigilancia
+          Epidemiológica requiere la participación de los diferentes
+          niveles de la organización.
+        </p>
+
+        <ul>
+
+          <li>
+            <strong>Empleador:</strong>
+            proporcionar los recursos necesarios para la
+            implementación del programa.
+          </li>
+
+          <li>
+            <strong>Responsable del SG-SST:</strong>
+            coordinar y realizar seguimiento a las actividades.
+          </li>
+
+          <li>
+            <strong>Trabajadores:</strong>
+            participar en las actividades de vigilancia y cumplir las
+            medidas de prevención establecidas.
+          </li>
+
+          <li>
+            <strong>ARL:</strong>
+            brindar la asesoría y acompañamiento que corresponda.
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       21. CRONOGRAMA ANUAL
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        21. CRONOGRAMA ANUAL DE ACTIVIDADES
+      </div>
+
+      <div class="table-responsive">
+
+        <table class="table table-bordered sve-table">
+
+          <thead>
+
+            <tr>
+              <th>Actividad</th>
+              <th>Responsable</th>
+              <th>Periodicidad</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <tr>
+              <td>
+                Identificación y actualización de la población expuesta
+              </td>
+              <td>
+                Responsable SG-SST
+              </td>
+              <td>
+                Anual / cuando se presenten cambios
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                Seguimiento de condiciones de salud
+              </td>
+              <td>
+                Responsable SG-SST / Médico
+              </td>
+              <td>
+                Según programación
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                Inspecciones y seguimiento ambiental
+              </td>
+              <td>
+                Responsable SG-SST
+              </td>
+              <td>
+                Según programación
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                Capacitación
+              </td>
+              <td>
+                Responsable SG-SST
+              </td>
+              <td>
+                Según cronograma
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                Evaluación del programa
+              </td>
+              <td>
+                Responsable SG-SST
+              </td>
+              <td>
+                Anual
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       22. AUDITORÍA Y REVISIÓN
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        22. AUDITORÍA, SEGUIMIENTO Y REVISIÓN
+      </div>
+
+      <div class="sve-fixed-content">
+
+        <p>
+          El Sistema de Vigilancia Epidemiológica deberá ser revisado
+          periódicamente con el propósito de verificar el cumplimiento
+          de las actividades programadas, evaluar los resultados
+          obtenidos y determinar las oportunidades de mejora.
+        </p>
+
+        <p>
+          La revisión deberá considerar los cambios en los procesos,
+          condiciones de exposición, población trabajadora, resultados
+          de las actividades de vigilancia y demás elementos que puedan
+          afectar el funcionamiento del programa.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       INFORMACIÓN DEL RESPONSABLE
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        RESPONSABLE DEL SISTEMA DE VIGILANCIA EPIDEMIOLÓGICA
+      </div>
+
+      <div class="row g-4">
+
+        <div class="col-12 col-md-4">
+
+          <div class="sve-info-label">
+            Responsable
+          </div>
+
+          <div class="sve-info-value">
+            <%= @surveillance_report.responsible_name.presence ||
+                @responsible&.name ||
+                "No registrado" %>
+          </div>
+
+        </div>
+
+        <div class="col-12 col-md-4">
+
+          <div class="sve-info-label">
+            Cargo
+          </div>
+
+          <div class="sve-info-value">
+            <%= @surveillance_report.responsible_position.presence ||
+                @responsible_position&.name ||
+                "No registrado" %>
+          </div>
+
+        </div>
+
+        <div class="col-12 col-md-4">
+
+          <div class="sve-info-label">
+            Licencia
+          </div>
+
+          <div class="sve-info-value">
+            <%= @surveillance_report.responsible_license.presence ||
+                @responsible&.license ||
+                "No registrada" %>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       FIRMA
+       ========================================================== -->
+
+  <div class="card shadow-sm border-0 sve-section">
+
+    <div class="card-body">
+
+      <div class="sve-section-title">
+        FIRMA Y AUTORIZACIÓN
+      </div>
+
+      <div class="row justify-content-center">
+
+        <div class="col-12 col-md-6">
+
+          <div class="sve-signature">
+
+            <% if @surveillance_report.autoriza_firma? %>
+
+              <% if @responsible&.firm&.attached? %>
+
+                <%= image_tag(
+                      @responsible.firm,
+                      class: "img-fluid"
+                    ) %>
+
+              <% else %>
+
+                <div class="text-muted mb-4">
+                  <i class="bi bi-pen fs-2"></i>
+                  <div>
+                    Firma no cargada
+                  </div>
+                </div>
+
+              <% end %>
+
+              <div class="sve-signature-line">
+
+                <strong>
+                  <%= @surveillance_report.responsible_name.presence ||
+                      @responsible&.name ||
+                      "Responsable SVE" %>
+                </strong>
+
+                <br>
+
+                <small>
+                  <%= @surveillance_report.responsible_position.presence ||
+                      @responsible_position&.name ||
+                      "" %>
+                </small>
+
+                <br>
+
+                <small>
+                  Licencia:
+                  <%= @surveillance_report.responsible_license.presence ||
+                      @responsible&.license ||
+                      "No registrada" %>
+                </small>
+
+              </div>
+
+              <% if @surveillance_report.fecha_firma.present? %>
+
+                <div class="mt-3 text-muted">
+
+                  <i class="bi bi-calendar3 me-1"></i>
+
+                  Fecha de firma:
+                  <%= l(
+                        @surveillance_report.fecha_firma,
+                        format: :long
+                      ) %>
+
+                </div>
+
+              <% end %>
+
+            <% else %>
+
+              <div class="text-center text-muted py-4">
+
+                <i class="bi bi-file-earmark-lock fs-1"></i>
+
+                <p class="mt-2 mb-0">
+                  El responsable no autorizó la firma del reporte.
+                </p>
+
+              </div>
+
+            <% end %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==========================================================
+       PIE DEL REPORTE
+       ========================================================== -->
+
+  <div class="text-center text-muted py-3">
+
+    <small>
+      Sistema de Vigilancia Epidemiológica –
+      <%= @entity&.business_name %>
+    </small>
+
+    <br>
+
+    <small>
+      Documento generado desde el sistema de gestión.
+    </small>
+
+  </div>
+
+
+</div>

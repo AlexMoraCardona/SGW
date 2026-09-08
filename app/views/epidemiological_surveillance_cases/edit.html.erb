@@ -1,0 +1,331 @@
+<div class="container-fluid px-2 px-md-4 py-3">
+  <div align="left"; class="container col-12">
+    <a class="navbar-brand" href="/">
+        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+    </a>
+  </div>
+  <div class="card shadow-sm">
+    <!-- ENCABEZADO -->
+    <div class="card-header bg-light">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+        <div>
+          <h5 class="mb-1">
+            <i class="bi bi-pencil-square me-2"></i>
+            Editar Caso SVE
+          </h5>
+          <small class="text-muted">
+            Caso #<%= @epidemiological_surveillance_case.id %>
+          </small>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          <%= link_to(epidemiological_surveillance_program_epidemiological_surveillance_case_path(@epidemiological_surveillance_program, @epidemiological_surveillance_case), class: "btn btn-outline-secondary btn-sm") do %>
+            <i class="bi bi-arrow-left me-1"></i>
+            Volver al caso
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- FORMULARIO -->
+    <div class="card-body">
+      <%= form_with(model: [@epidemiological_surveillance_program, @epidemiological_surveillance_case], local: true) do |form| %>
+        <!-- ERRORES -->
+        <% if @epidemiological_surveillance_case.errors.any? %>
+          <div class="alert alert-danger">
+            <strong>No fue posible guardar los cambios:</strong>
+            <ul class="mb-0 mt-2">
+              <% @epidemiological_surveillance_case.errors.full_messages.each do |error| %>
+                <li><%= error %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <!-- INFORMACIÓN -->
+        <div class="card mb-4">
+          <div class="card-header bg-light">
+            <strong><i class="bi bi-info-circle me-2"></i>Información del caso</strong>
+          </div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-12 col-md-6">
+                <label class="form-label">Caso</label>
+                <div class="form-control bg-light">
+                  #<%= @epidemiological_surveillance_case.id %>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="form-label">Fecha de apertura</label>
+                <div class="form-control bg-light">
+                  <%= l(@epidemiological_surveillance_case.opened_at, format: :long) if @epidemiological_surveillance_case.opened_at.present? %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- INFORMACIÓN CLÍNICA -->
+        <div class="card mb-4">
+          <div class="card-header bg-light">
+            <strong>
+              <i class="bi bi-heart-pulse me-2"></i>
+              Información clínica y reintegro
+            </strong>
+          </div>
+          <div class="card-body">
+            <div class="row g-3">
+              <!-- INICIO SÍNTOMAS -->
+              <div class="col-12 col-md-6">
+                <%= form.label(:symptom_onset, "Inicio síntomas", class: "form-label") %>
+                <%= form.text_field(:symptom_onset, class: "form-control", maxlength: 255, placeholder: "Ej. Hace 3 días, súbito, gradual...") %>
+              </div>
+              <!-- FECHA INICIO SÍNTOMAS -->
+              <div class="col-12 col-md-6">
+                <%= form.label(:symptom_start_date, "Fecha inicio de síntomas", class: "form-label") %>
+                <%= form.date_field(:symptom_start_date, class: "form-control",  max: Date.current) %>
+              </div>
+              <!-- SÍNTOMAS -->
+              <div class="col-12">
+                <%= form.label(:symptoms,  "Síntomas",  class: "form-label") %>
+                <%= form.text_field(:symptoms, class: "form-control", maxlength: 255, placeholder: "Describa los síntomas presentados...") %>
+              </div>
+              <!-- DIAGNÓSTICO INFORMADO -->
+              <div class="col-12">
+                <%= form.label(:reported_diagnosis, "Diagnóstico informado", class: "form-label") %>
+                <%= form.text_field(:reported_diagnosis, class: "form-control", maxlength: 255, placeholder: "Registre el diagnóstico informado...") %>
+              </div>
+              <!-- DÍAS INCAPACIDAD -->
+              <div class="col-12 col-md-4">
+                <%= form.label(:disability_days, "Días incapacidad", class: "form-label") %>
+                <%= form.number_field(:disability_days, class: "form-control", min: 0, step: 1) %>
+              </div>
+              <!-- EXPOSICIÓN LABORAL -->
+              <div class="col-12 col-md-4">
+                  <label class="form-label d-block">
+                    Posible exposición laboral
+                  </label>
+              <div class="form-check form-switch mt-2">
+                  <%= form.check_box(:possible_occupational_exposure, class: "form-check-input", role: "switch") %>
+                  <%= form.label(:possible_occupational_exposure, "Sí", class: "form-check-label") %>
+              </div>
+            </div>
+            <!-- CONTACTO -->
+            <div class="col-12 col-md-4">
+                <label class="form-label d-block">
+                  Contacto con personas con síntomas
+                </label>
+                <div class="form-check form-switch mt-2">
+                  <%= form.check_box(:contact_with_symptomatic_people,  class: "form-check-input", role: "switch") %>
+                  <%= form.label(:contact_with_symptomatic_people, "Sí", class: "form-check-label") %>
+                </div>
+              </div>
+              <!-- MEDIDAS INICIALES -->
+              <div class="col-12">
+                <%= form.label(:initial_measures, "Medidas iniciales",  class: "form-label") %>
+                <%= form.text_field(:initial_measures, class: "form-control", maxlength: 255,  placeholder: "Registre las medidas iniciales adoptadas...") %>
+              </div>
+              <!-- REINTEGRO -->
+              <div class="col-12">
+                <%= form.label(:return_to_work,  "Reintegro", class: "form-label") %>
+                <%= form.select(:return_to_work, [["No aplica", "not_applicable"], ["Pendiente de reintegro", "pending_return"], ["Reintegro sin restricciones", "return_without_restrictions"], ["Reintegro con recomendaciones/restricciones", "return_with_recommendations"], ["Pendiente concepto médico", "pending_medical_opinion"]], {}, class: "form-select") %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ESTADO Y RESPONSABLE -->
+        <div class="card mb-4">
+          <div class="card-header bg-light">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <h5 class="mb-0">
+                <i class="bi bi-clipboard-check me-1"></i>
+                Gestión del caso
+              </h5>
+              <!-- BOTÓN INFORMACIÓN -->
+              <button type="button" class="btn btn-sm btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#modalEstadosCaso" title="Información sobre los estados del caso" style="width: 32px; height: 32px;">
+                <i class="bi bi-info-lg"></i>
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row g-3">
+              <!-- ESTADO -->
+              <div class="col-12 col-md-6">
+                <%= form.label(:status, "Estado del caso", class: "form-label") %>
+                <%= form.select(:status, [["Identificado", "identified"], ["En evaluación", "in_evaluation"], ["En seguimiento", "in_follow_up"], ["Cerrado", "closed"], ["No es caso", "not_case"]], {}, class: "form-select") %>
+              </div>
+              <!-- RESPONSABLE -->
+              <div class="col-12 col-md-6">
+                <%= form.label(:responsible_id, "Responsable", class: "form-label") %>
+                <%= form.collection_select(:responsible_id, User.where(entity: @epidemiological_surveillance_program.entity).where(state: 1).order(:name), :id, :name, {include_blank: "Seleccione un responsable"}, {class: "form-select"}) %>
+              </div>
+              <!-- OBSERVACIONES -->
+              <div class="col-12">
+                <%= form.label(:observations, "Observaciones", class: "form-label") %>
+                <%= form.text_area(:observations, rows: 5, class: "form-control", placeholder: "Registre las observaciones relacionadas con la gestión del caso...") %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- BOTONES -->
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+          <%= form.button(type: "submit", class: "btn btn-primary") do %>
+            <i class="bi bi-check-circle me-1"></i>
+            Guardar cambios
+          <% end %>
+          <%= link_to(epidemiological_surveillance_program_epidemiological_surveillance_case_path(@epidemiological_surveillance_program, @epidemiological_surveillance_case), class: "btn btn-outline-secondary") do %>
+            <i class="bi bi-x-circle me-1"></i>
+            Cancelar
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <!-- ========================================================= -->
+  <!-- MODAL INFORMACIÓN ESTADOS DEL CASO SVE -->
+  <!-- ========================================================= -->
+  <div class="modal fade" id="modalEstadosCaso" tabindex="-1" aria-labelledby="modalEstadosCasoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <!-- ENCABEZADO -->
+        <div class="modal-header bg-light">
+          <h5 class="modal-title" id="modalEstadosCasoLabel">
+            <i class="bi bi-clipboard-check text-primary me-2"></i>
+            Gestión del caso SVE
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <!-- CONTENIDO -->
+        <div class="modal-body">
+          <div class="alert alert-light border mb-4">
+            <div class="d-flex align-items-start">
+              <i class="bi bi-info-circle text-primary fs-4 me-2"></i>
+              <div>
+                <strong>¿Qué significan los estados del caso?</strong>
+                <p class="mb-0 mt-1">
+                  Los estados representan el ciclo de vida del caso dentro del Sistema de Vigilancia Epidemiológica (SVE), desde su identificación hasta su cierre o descarte.
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- IDENTIFICADO -->
+          <div class="card border mb-3">
+            <div class="card-body">
+              <div class="d-flex align-items-start">
+                <span class="badge bg-warning text-dark me-3 mt-1">
+                  Identificado
+                </span>
+                <div>
+                  <h6 class="fw-bold mb-1">
+                    Se detectó una situación que debe revisarse
+                  </h6>
+                  <p class="mb-0 text-muted">
+                    Existe una situación, evento, resultado de encuesta u otra señal que amerita atención, pero todavía no se ha realizado la evaluación suficiente para determinar si corresponde a un caso del programa SVE.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- EN EVALUACIÓN -->
+          <div class="card border mb-3">
+            <div class="card-body">
+              <div class="d-flex align-items-start">
+                <span class="badge bg-primary me-3 mt-1">
+                  En evaluación
+                </span>
+                <div>
+                  <h6 class="fw-bold mb-1">
+                    Se está analizando la situación
+                  </h6>
+                  <p class="mb-0 text-muted">
+                    El responsable del SVE está revisando la información disponible para determinar qué está ocurriendo, si existe una condición relacionada con el riesgo vigilado y qué acciones deben realizarse.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- EN SEGUIMIENTO -->
+          <div class="card border mb-3">
+            <div class="card-body">
+              <div class="d-flex align-items-start">
+                <span class="badge bg-success me-3 mt-1">En seguimiento</span>
+                <div>
+                  <h6 class="fw-bold mb-1">El caso requiere seguimiento</h6>
+                  <p class="mb-0 text-muted">
+                    Se determinó que el caso requiere vigilancia o intervención continua. Pueden realizarse varios seguimientos para controlar su evolución, registrar resultados, recomendaciones, evidencias y próximas actividades.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- NO ES CASO -->
+          <div class="card border mb-3">
+            <div class="card-body">
+              <div class="d-flex align-items-start">
+                <span class="badge bg-secondary me-3 mt-1">
+                  No es caso
+                </span>
+                <div>
+                  <h6 class="fw-bold mb-1">
+                    La situación fue descartada como caso SVE
+                  </h6>
+                  <p class="mb-0 text-muted">
+                    Después de realizar la evaluación se determinó que la situación no cumple los criterios para continuar como caso dentro del programa de vigilancia.
+                    El registro permanece para conservar la trazabilidad.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- CERRADO -->
+          <div class="card border mb-3">
+            <div class="card-body">
+              <div class="d-flex align-items-start">
+                <span class="badge bg-dark me-3 mt-1">Cerrado</span>
+                <div>
+                    <h6 class="fw-bold mb-1">El proceso de seguimiento terminó</h6>
+                    <p class="mb-0 text-muted">
+                      El caso finalizó su proceso dentro del programa SVE y no requiere nuevos seguimientos o actividades.
+                      Se conserva toda la información y el historial para mantener la trazabilidad.
+                    </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- FLUJO -->
+          <div class="alert alert-light border mt-4 mb-0">
+            <h6 class="fw-bold">
+              <i class="bi bi-arrow-right-circle me-1"></i>
+              Flujo habitual
+            </h6>
+            <div class="text-center mt-3">
+              <span class="badge bg-warning text-dark">
+                Identificado
+              </span>
+              <i class="bi bi-arrow-right mx-1"></i>
+              <span class="badge bg-primary">
+                En evaluación
+              </span>
+              <i class="bi bi-arrow-right mx-1"></i>
+              <span class="badge bg-success">
+                En seguimiento
+              </span>
+              <i class="bi bi-arrow-right mx-1"></i>
+              <span class="badge bg-dark">
+                Cerrado
+              </span>
+            </div>
+            <div class="text-center mt-2">
+              <small class="text-muted">
+                Durante la evaluación, el caso también puede pasar a <strong>“No es caso”</strong> cuando se determina que no cumple los criterios del programa.
+              </small>
+            </div>
+          </div>
+        </div>
+        <!-- PIE -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+              <i class="bi bi-x-circle me-1"></i>
+              Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,196 @@
+<div class="container-fluid py-3">
+  <div align="left"; class="container col-12">
+    <a class="navbar-brand" href="/">
+        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+    </a>
+  </div>
+  <!-- ENCABEZADO -->
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-light border-bottom">
+      <div class="d-flex flex-column flex-md-row justify-content-between  align-items-center gap-2">
+        <div class="text-center text-md-start">
+          <h4 class="mb-1">
+            <i class="bi bi-clipboard2-pulse me-2"></i>
+            Sistemas de Vigilancia Epidemiológica
+          </h4>
+          <small class="text-muted">
+            Administración de programas de vigilancia epidemiológica
+          </small>
+        </div>
+        <div>
+          <%= link_to new_epidemiological_surveillance_program_path, class: "btn btn-primary" do %>
+            <i class="bi bi-plus-circle me-1"></i>
+            Nuevo programa
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- CONTENIDO -->
+    <div class="card-body">
+      <% if @epidemiological_surveillance_programs.present? %>
+        <!-- VISTA PARA PC -->
+        <div class="table-responsive d-none d-md-block">
+          <table class="table table-hover align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Código</th>
+                <th>Programa</th>
+                <th>Entidad</th>
+                <th>Responsable</th>
+                <th class="text-center">Estado</th>
+                <th class="text-center">Inicio</th>
+                <th class="text-center">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @epidemiological_surveillance_programs.each do |program| %>
+                <tr>
+                  <td>
+                    <strong>
+                      <%= program.code %>
+                    </strong>
+                  </td>
+                  <td>
+                    <%= program.name %>
+                  </td>
+                  <td>
+                    <%= program.entity&.business_name.presence || program.entity&.first_name %>
+                  </td>
+                  <td>
+                    <%= program.responsible&.name || "Sin asignar" %>
+                  </td>
+                  <td class="text-center">
+                    <% case program.status %>
+                    <% when "draft" %>
+                      <span class="badge bg-secondary">
+                        Borrador
+                      </span>
+                    <% when "active" %>
+                      <span class="badge bg-success">
+                        Activo
+                      </span>
+                    <% when "closed" %>
+                      <span class="badge bg-dark">
+                        Cerrado
+                      </span>
+                    <% when "inactive" %>
+                      <span class="badge bg-warning text-dark">
+                        Inactivo
+                      </span>
+                    <% end %>
+                  </td>
+                  <td class="text-center">
+                    <%= program.start_date&.strftime("%d/%m/%Y") || "-" %>
+                  </td>
+                  <td>
+                    <div class="d-flex justify-content-center gap-1">
+                      <%= link_to program, class: "btn btn-sm btn-outline-primary", title: "Ver programa" do %>
+                        <i class="bi bi-eye"></i>
+                      <% end %>
+                      <%= link_to edit_epidemiological_surveillance_program_path(program), class: "btn btn-sm btn-outline-secondary", title: "Editar programa" do %>
+                        <i class="bi bi-pencil"></i>
+                      <% end %>
+                      <%= button_to program, method: :delete, class: "btn btn-sm btn-outline-danger", title: "Eliminar programa", form: {data: {turbo_confirm: "¿Está seguro de eliminar este programa?"}} do %>
+                        <i class="bi bi-trash"></i>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <!-- VISTA PARA CELULAR -->
+        <div class="d-md-none">
+          <% @epidemiological_surveillance_programs.each do |program| %>
+            <div class="card border mb-3 shadow-sm">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <div>
+                    <h6 class="fw-bold mb-1">
+                      <%= program.code %>
+                    </h6>
+                    <div>
+                      <%= program.name %>
+                    </div>
+                  </div>
+                  <div>
+                    <% case program.status %>
+                    <% when "draft" %>
+                      <span class="badge bg-secondary">
+                        Borrador
+                      </span>
+                    <% when "active" %>
+                      <span class="badge bg-success">
+                        Activo
+                      </span>
+                    <% when "closed" %>
+                      <span class="badge bg-dark">
+                        Cerrado
+                      </span>
+                    <% when "inactive" %>
+                      <span class="badge bg-warning text-dark">
+                        Inactivo
+                      </span>
+                    <% end %>
+                  </div>
+                </div>
+                <hr>
+                <div class="small">
+                  <div class="mb-2">
+                    <strong>
+                      <i class="bi bi-building me-1"></i>
+                      Entidad:
+                    </strong>
+                    <%= program.entity&.business_name.presence || program.entity&.first_name ||
+                        "Sin entidad" %>
+                  </div>
+                  <div class="mb-2">
+                    <strong>
+                      <i class="bi bi-person-badge me-1"></i>
+                      Responsable:
+                    </strong>
+                    <%= program.responsible&.name || "Sin asignar" %>
+                  </div>
+                  <div>
+                    <strong>
+                      <i class="bi bi-calendar3 me-1"></i>
+                      Inicio:
+                    </strong>
+                    <%= program.start_date&.strftime("%d/%m/%Y") || "-" %>
+                  </div>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-center gap-2">
+                  <%= link_to program,  class: "btn btn-sm btn-outline-primary", title: "Ver programa" do %>
+                    <i class="bi bi-eye"></i>
+                  <% end %>
+                  <%= link_to edit_epidemiological_surveillance_program_path(program), class: "btn btn-sm btn-outline-secondary", title: "Editar programa" do %>
+                    <i class="bi bi-pencil"></i>
+                  <% end %>
+                  <%= button_to program, method: :delete, class: "btn btn-sm btn-outline-danger", title: "Eliminar programa", form: {data: {turbo_confirm: "¿Está seguro de eliminar este programa?"}} do %>
+                    <i class="bi bi-trash"></i>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-5">
+          <i class="bi bi-clipboard2-x display-4 text-muted"></i>
+          <h5 class="mt-3">
+            No hay programas de vigilancia epidemiológica
+          </h5>
+          <p class="text-muted">
+            Actualmente no existen programas registrados.
+          </p>
+          <%= link_to new_epidemiological_surveillance_program_path, class: "btn btn-primary" do %>
+            <i class="bi bi-plus-circle me-1"></i>
+            Crear primer programa
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

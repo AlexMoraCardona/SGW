@@ -1,0 +1,853 @@
+<div class="container-fluid px-2 px-md-4 py-3">
+  <div align="left"; class="container col-12">
+    <a class="navbar-brand" href="/">
+        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+    </a>
+  </div>
+  <!-- ENCABEZADO -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-light">
+      <div class="d-flex flex-column flex-md-row justify-content-between  align-items-md-center gap-2">
+        <div>
+          <h5 class="mb-1">
+            <i class="bi bi-clipboard2-pulse me-2"></i>
+            Caso SVE #<%= @epidemiological_surveillance_case.id %>
+          </h5>
+          <small class="text-muted">
+            <%= @epidemiological_surveillance_program.name %>
+          </small>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          <%= link_to(epidemiological_surveillance_program_epidemiological_surveillance_cases_path(@epidemiological_surveillance_program), class: "btn btn-outline-secondary btn-sm") do %>
+            <i class="bi bi-arrow-left me-1"></i>
+            Volver a casos
+          <% end %>
+          <%= link_to(edit_epidemiological_surveillance_program_epidemiological_surveillance_case_path(@epidemiological_surveillance_program, @epidemiological_surveillance_case), class: "btn btn-outline-primary btn-sm") do %>
+            <i class="bi bi-pencil-square me-1"></i>
+            Editar caso
+          <% end %>          
+          <% unless @epidemiological_surveillance_case.closed? %>
+            <%= link_to(new_epidemiological_surveillance_program_epidemiological_surveillance_case_epidemiological_surveillance_case_follow_up_path(@epidemiological_surveillance_program, @epidemiological_surveillance_case), class: "btn btn-primary btn-sm") do %>
+              <i class="bi bi-plus-circle me-1"></i>
+              Nuevo seguimiento
+            <% end %>
+          <% end %>
+          <%= link_to(epidemiological_surveillance_program_epidemiological_surveillance_case_epidemiological_surveillance_case_follow_ups_path(@epidemiological_surveillance_program, @epidemiological_surveillance_case), class: "btn btn-outline-primary btn-sm") do %>
+            <i class="bi bi-clock-history me-1"></i>
+            Ver seguimientos
+          <% end %>
+          <%= link_to(pdf_epidemiological_surveillance_program_epidemiological_surveillance_case_path(@epidemiological_surveillance_program, @epidemiological_surveillance_case), class: "btn btn-outline-danger", target: "_blank") do %>
+            <i class="bi bi-file-earmark-pdf me-1"></i>
+            PDF
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row g-3">
+        <!-- ESTADO -->
+        <div class="col-12 col-md-4">
+          <div class="border rounded p-3 h-100">
+            <small class="text-muted d-block mb-1">
+              Estado del caso
+            </small>
+            <% case @epidemiological_surveillance_case.status
+               when "identified" %>
+              <span class="badge bg-secondary fs-6">
+                Identificado
+              </span>
+            <% when "in_evaluation" %>
+              <span class="badge bg-warning text-dark fs-6">
+                En evaluación
+              </span>
+            <% when "in_follow_up" %>
+              <span class="badge bg-primary fs-6">
+                En seguimiento
+              </span>
+            <% when "closed" %>
+              <span class="badge bg-success fs-6">
+                Cerrado
+              </span>
+            <% when "not_case" %>
+              <span class="badge bg-dark fs-6">
+                No es caso
+              </span>
+            <% else %>
+              <span class="badge bg-secondary fs-6">
+                Sin estado
+              </span>
+            <% end %>
+          </div>
+        </div>
+        <!-- FECHA APERTURA -->
+        <div class="col-12 col-md-4">
+          <div class="border rounded p-3 h-100">
+            <small class="text-muted d-block mb-1">
+              Fecha de apertura
+            </small>
+            <strong>
+              <%= @epidemiological_surveillance_case.opened_at&.strftime("%d/%m/%Y %H:%M") || "No registrada" %>
+            </strong>
+          </div>
+        </div>
+        <!-- FECHA CIERRE -->
+        <div class="col-12 col-md-4">
+          <div class="border rounded p-3 h-100">
+            <small class="text-muted d-block mb-1">
+              Fecha de cierre
+            </small>
+            <strong>
+              <% if @epidemiological_surveillance_case.closed_at.present? %>
+                <%= @epidemiological_surveillance_case.closed_at.strftime("%d/%m/%Y %H:%M") %>
+              <% else %>
+                <span class="text-muted">
+                  Caso abierto
+                </span>
+              <% end %>
+            </strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INFORMACIÓN DEL TRABAJADOR -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-light">
+      <h6 class="mb-0">
+        <i class="bi bi-person-badge me-2"></i>
+        Información del trabajador
+      </h6>
+    </div>
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-12 col-md-6">
+          <label class="form-label text-muted mb-1">
+            Trabajador
+          </label>
+          <div class="fw-semibold">
+            <%= @epidemiological_surveillance_case.user&.name || "No registrado" %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <label class="form-label text-muted mb-1">
+            Entidad
+          </label>
+          <div class="fw-semibold">
+            <%= @epidemiological_surveillance_case.entity&.business_name || "No registrada" %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <label class="form-label text-muted mb-1">
+            Responsable del caso
+          </label>
+          <div>
+            <%= @epidemiological_surveillance_case.responsible&.name || "Sin asignar" %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <label class="form-label text-muted mb-1">
+            Usuario que generó el caso
+          </label>
+          <div>
+            <%= @epidemiological_surveillance_case.user&.name || "No registrado" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- ORIGEN DEL CASO -->
+<div class="card shadow-sm mb-4">
+  <div class="card-header bg-light">
+    <h6 class="mb-0">
+      <i class="bi bi-diagram-3 me-2"></i>
+      Origen del caso
+    </h6>
+  </div>
+  <div class="card-body">
+    <div class="row g-3">
+      <!-- TIPO DE ORIGEN -->
+      <div class="col-12 col-md-4">
+        <small class="text-muted d-block mb-1">
+         Tipo de origen
+        </small>
+        <% case @epidemiological_surveillance_case.source_type
+           when "survey" %>
+            <span class="badge bg-info text-dark fs-6">
+              <i class="bi bi-ui-checks me-1"></i>
+              Encuesta
+            </span>
+        <% when "event" %>
+            <span class="badge bg-warning text-dark fs-6">
+              <i class="bi bi-exclamation-triangle me-1"></i>
+              Evento
+            </span>
+        <% when "other" %>
+            <span class="badge bg-secondary fs-6">
+              <i class="bi bi-three-dots me-1"></i>
+              Otro
+            </span>
+        <% else %>
+            <span class="badge bg-secondary fs-6">
+              No especificado
+            </span>
+        <% end %>
+      </div>
+      <!-- DETALLE DEL ORIGEN -->
+      <div class="col-12 col-md-8">
+        <% case @epidemiological_surveillance_case.source_type
+           # ==================================================
+           # ORIGEN: ENCUESTA
+           # ==================================================
+           when "survey" %>
+          <% if @epidemiological_surveillance_case.surveillance_survey_response.present? %>
+            <small class="text-muted d-block mb-1">
+              Respuesta de encuesta
+            </small>
+            <%= link_to(epidemiological_surveillance_program_surveillance_survey_surveillance_survey_response_path(@epidemiological_surveillance_program, @epidemiological_surveillance_case.surveillance_survey_response.surveillance_survey, @epidemiological_surveillance_case.surveillance_survey_response), class: "btn btn-outline-info btn-sm") do %>
+              <i class="bi bi-eye me-1"></i>
+              Ver encuesta realizada
+            <% end %>
+          <% else %>
+            <small class="text-muted">
+              Este caso no tiene una respuesta de encuesta asociada.
+            </small>
+          <% end %>
+
+          <% # ==================================================
+             # ORIGEN: EVENTO
+             # ==================================================
+             when "event" %>
+            <% if @epidemiological_surveillance_case.event.present? %>
+              <small class="text-muted d-block mb-1">
+                Evento asociado
+              </small>
+              <div class="d-flex flex-column flex-sm-row align-items-sm-center gap-2">
+                <span class="fw-semibold">
+                  <i class="bi bi-calendar-event me-1"></i>
+                  Evento
+                  #<%= @epidemiological_surveillance_case.event.id %>
+                </span>
+                <%= link_to(event_path(@epidemiological_surveillance_case.event), class: "btn btn-outline-warning btn-sm") do %>
+                  <i class="bi bi-eye me-1"></i>
+                  Ver evento
+                <% end %>
+              </div>
+            <% else %>
+              <small class="text-muted">
+                Este caso tiene origen en un evento,
+                pero no existe un evento asociado.
+              </small>
+            <% end %>
+
+          <% # ==================================================
+             # ORIGEN: OTRO
+             # ==================================================
+             when "other" %>
+            <small class="text-muted">
+              Este caso fue creado desde otra fuente.
+            </small>
+
+          <% # ==================================================
+             # SIN ORIGEN
+             # ==================================================
+             else %>
+            <small class="text-muted">
+              No existe información adicional sobre el origen.
+            </small>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- OBSERVACIONES -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-light">
+      <h6 class="mb-0">
+        <i class="bi bi-chat-left-text me-2"></i>
+        Observaciones iniciales
+      </h6>
+    </div>
+    <div class="card-body">
+      <% if @epidemiological_surveillance_case.observations.present? %>
+        <div class="bg-light border rounded p-3">
+          <%= simple_format(@epidemiological_surveillance_case.observations) %>
+        </div>
+      <% else %>
+        <span class="text-muted">
+          No se registraron observaciones.
+        </span>
+      <% end %>
+    </div>
+  </div>
+  <!-- ========================================================= -->
+  <!-- INFORMACIÓN CLÍNICA -->
+  <!-- ========================================================= -->
+
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-light">
+      <h5 class="mb-0">
+        <i class="bi bi-heart-pulse me-2"></i>
+        Información clínica y reintegro
+      </h5>
+    </div>
+    <div class="card-body">
+      <div class="row g-3">
+        <!-- INICIO SÍNTOMAS -->
+        <div class="col-12 col-md-6">
+          <div class="small text-muted">
+            Inicio síntomas
+          </div>
+          <div class="fw-semibold">
+            <%= @epidemiological_surveillance_case.symptom_onset.presence || "No registrado" %>
+          </div>
+        </div>
+        <!-- FECHA INICIO -->
+        <div class="col-12 col-md-6">
+          <div class="small text-muted">
+            Fecha inicio de síntomas
+          </div>
+          <div class="fw-semibold">
+            <% if @epidemiological_surveillance_case.symptom_start_date.present? %>
+              <%= l(@epidemiological_surveillance_case.symptom_start_date, format: :default) %>
+            <% else %>
+              No registrada
+            <% end %>
+          </div>
+        </div>
+        <!-- SÍNTOMAS -->
+        <div class="col-12 col-md-6">
+          <div class="small text-muted">
+             Síntomas
+          </div>
+          <div class="fw-semibold">
+            <%= @epidemiological_surveillance_case.symptoms.presence || "No registrados" %>
+          </div>
+        </div>
+        <!-- DIAGNÓSTICO -->
+        <div class="col-12 col-md-6">
+          <div class="small text-muted">
+            Diagnóstico informado
+          </div>
+          <div class="fw-semibold">
+            <%= @epidemiological_surveillance_case.reported_diagnosis.presence || "No registrado" %>
+          </div>
+        </div>
+        <!-- DÍAS INCAPACIDAD -->
+        <div class="col-12 col-md-4">
+          <div class="small text-muted">
+            Días incapacidad
+          </div>
+          <div class="fw-semibold">
+            <%= @epidemiological_surveillance_case.disability_days || 0 %>
+          </div>
+        </div>
+        <!-- EXPOSICIÓN LABORAL -->
+        <div class="col-12 col-md-4">
+          <div class="small text-muted">
+            Posible exposición laboral
+          </div>
+          <div class="mt-1">
+            <% if @epidemiological_surveillance_case.possible_occupational_exposure? %>
+              <span class="badge text-bg-warning">
+                Sí
+              </span>
+            <% else %>
+              <span class="badge text-bg-secondary">
+                No
+              </span>
+            <% end %>
+          </div>
+        </div>
+        <!-- CONTACTO -->
+        <div class="col-12 col-md-4">
+          <div class="small text-muted">
+            Contacto con personas con síntomas
+          </div>
+          <div class="mt-1">
+            <% if @epidemiological_surveillance_case.contact_with_symptomatic_people? %>
+              <span class="badge text-bg-warning">
+                Sí
+              </span>
+            <% else %>
+              <span class="badge text-bg-secondary">
+                No
+              </span>
+            <% end %>
+          </div>
+        </div>
+        <!-- MEDIDAS INICIALES -->
+        <div class="col-12">
+          <div class="small text-muted">
+            Medidas iniciales
+          </div>
+          <div class="fw-semibold">
+            <%= @epidemiological_surveillance_case.initial_measures.presence || "No registradas" %>
+          </div>
+        </div>
+        <!-- REINTEGRO -->
+        <div class="col-12">
+          <div class="small text-muted">
+            Reintegro
+          </div>
+          <div class="mt-1">
+            <% if @epidemiological_surveillance_case.not_applicable? %>
+              <span class="badge text-bg-secondary">
+                No aplica
+              </span>
+            <% elsif @epidemiological_surveillance_case.pending_return? %>
+              <span class="badge text-bg-warning">
+                Pendiente de reintegro
+              </span>
+            <% elsif @epidemiological_surveillance_case.return_without_restrictions? %>
+              <span class="badge text-bg-success">
+                Reintegro sin restricciones
+              </span>
+            <% elsif @epidemiological_surveillance_case.return_with_recommendations? %>
+              <span class="badge text-bg-info">
+                Reintegro con recomendaciones/restricciones
+              </span>
+            <% elsif @epidemiological_surveillance_case.pending_medical_opinion? %>
+              <span class="badge text-bg-danger">
+                Pendiente concepto médico
+              </span>
+            <% else %>
+              <span class="badge text-bg-secondary">
+                No registrado
+              </span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card shadow-sm mt-4">
+    <div class="card-header bg-light">
+      <h6 class="mb-0">
+        <i class="bi bi-ui-checks me-2"></i>
+        Encuesta que originó el caso
+      </h6>
+    </div>
+    <div class="card-body">
+      <% response = @epidemiological_surveillance_case.surveillance_survey_response %>
+      <% if response.present? %>
+        <div class="row g-3">
+          <div class="col-12 col-md-6">
+            <div class="text-muted small">
+              Encuesta
+            </div>
+            <div class="fw-semibold">
+              <%= response.surveillance_survey.name %>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="text-muted small">
+              Fecha de respuesta
+            </div>
+            <div class="fw-semibold">
+              <%= l(response.response_date, format: :long) if response.response_date.present? %>
+            </div>
+          </div>
+        </div>
+        <hr class="my-4">
+        <h6 class="fw-semibold mb-3">
+            <i class="bi bi-list-check me-2"></i>
+            Respuestas registradas
+        </h6>
+        <div class="row g-3">
+          <% response.surveillance_answers.each do |answer| %>
+            <div class="col-12">
+              <div class="border rounded p-3">
+                <div class="fw-semibold mb-2">
+                  <%= answer.surveillance_question.question %>
+                </div>
+                <% if answer.answer_text.present? %>
+                  <div>
+                    <span class="text-muted">Respuesta:</span>
+                    <%= answer.answer_text %>
+                  </div>
+                <% elsif !answer.answer_boolean.nil? %>
+                  <div>
+                    <span class="text-muted">
+                      Respuesta:
+                    </span>
+                    <%= answer.answer_boolean ? "Sí" : "No" %>
+                  </div>
+                <% elsif answer.answer_number.present? %>
+                  <div>
+                    <span class="text-muted">
+                      Respuesta:
+                    </span>
+                    <%= answer.answer_number %>
+                  </div>
+                <% elsif answer.surveillance_answer_options.any? %>
+                  <div>
+                    <span class="text-muted">
+                      Respuesta:
+                    </span>
+                    <div class="mt-1">
+                      <% answer.surveillance_answer_options.each do |selected_option| %>
+                        <span class="badge bg-primary me-1 mb-1">
+                          <%= selected_option.surveillance_question_option.option_text %>
+                        </span>
+                      <% end %>
+                    </div>
+                  </div>
+                <% else %>
+                  <span class="text-muted">
+                    Sin respuesta
+                  </span>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>      
+      <% else %>
+        <div class="text-muted">
+          <i class="bi bi-info-circle me-1"></i>
+          Este caso no tiene una encuesta asociada.
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <!-- HISTORIAL DE SEGUIMIENTOS -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-light">
+      <div class="d-flex justify-content-between align-items-center">
+        <h6 class="mb-0">
+          <i class="bi bi-clock-history me-2"></i>
+          Historial de seguimiento
+        </h6>
+        <span class="badge bg-secondary">
+          <%= @epidemiological_surveillance_case.follow_ups.size %>
+          seguimiento(s)
+        </span>
+      </div>
+    </div>
+    <div class="card-body">
+      <% if @epidemiological_surveillance_case.follow_ups.any? %>
+        <div class="table-responsive">
+          <table class="table table-hover table-bordered align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>
+                  Fecha
+                </th>
+                <th>
+                  Tipo
+                </th>
+                <th class="text-center">
+                  Estado
+                </th>
+                <th>
+                  Resultado
+                </th>
+                <th>
+                  Próximo seguimiento
+                </th>
+                <th class="text-center">
+                  Evidencias
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @epidemiological_surveillance_case.follow_ups.sort_by(&:follow_up_date).reverse.each do |follow_up| %>
+                <tr>
+                  <td class="text-nowrap">
+                    <%= follow_up.follow_up_date&.strftime("%d/%m/%Y %H:%M") || "No registrada" %>
+                  </td>
+                  <td>
+                    <% case follow_up.follow_up_type
+                       when "identification" %>
+                      Identificación
+                    <% when "initial_evaluation" %>
+                      Evaluación inicial
+                    <% when "follow_up" %>
+                      Seguimiento
+                    <% when "visit" %>
+                      Visita
+                    <% when "phone_contact" %>
+                      Contacto telefónico
+                    <% when "document_review" %>
+                      Revisión documental
+                    <% when "closure" %>
+                      Cierre
+                    <% else %>
+                      <%= follow_up.follow_up_type %>
+                    <% end %>
+                  </td>
+                  <td class="text-center">
+                    <% case follow_up.status
+                       when "identified" %>
+                      <span class="badge bg-secondary">
+                        Identificado
+                      </span>
+                    <% when "in_evaluation" %>
+                      <span class="badge bg-warning text-dark">
+                        En evaluación
+                      </span>
+                    <% when "in_follow_up" %>
+                      <span class="badge bg-primary">
+                        En seguimiento
+                      </span>
+                    <% when "closed" %>
+                      <span class="badge bg-success">
+                        Cerrado
+                      </span>
+                    <% when "not_case" %>
+                      <span class="badge bg-dark">
+                        No es caso
+                      </span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <%= follow_up.result.presence || "Sin resultado registrado" %>
+                  </td>
+                  <td class="text-nowrap">
+                    <% if follow_up.next_follow_up_date.present? %>
+                      <%= follow_up.next_follow_up_date.strftime("%d/%m/%Y") %>
+                    <% else %>
+                      <span class="text-muted">
+                        —
+                      </span>
+                    <% end %>
+                  </td>
+                  <td class="text-center">
+                    <% if follow_up.follow_up_files.attached? %>
+                      <%= link_to(epidemiological_surveillance_program_epidemiological_surveillance_case_epidemiological_surveillance_case_follow_up_path(@epidemiological_surveillance_program, @epidemiological_surveillance_case, follow_up), class: "btn btn-outline-primary btn-sm") do %>
+                        <i class="bi bi-paperclip me-1"></i>
+                        <%= follow_up.follow_up_files.count %>
+                      <% end %>
+                    <% else %>
+                      <span class="text-muted">
+                          —
+                      </span>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="text-center py-4">
+          <i class="bi bi-clock-history display-6 text-muted"></i>
+          <p class="mt-3 mb-0 text-muted">
+            Este caso todavía no tiene seguimientos registrados.
+          </p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="card shadow-sm mt-4">
+    <div class="card-header bg-light">
+      <h6 class="mb-0">
+        <i class="bi bi-clock-history me-2"></i>
+        Historial del caso
+      </h6>
+    </div>
+    <div class="card-body">
+      <% histories = @epidemiological_surveillance_case.epidemiological_surveillance_case_histories.sort_by(&:changed_at).reverse %>
+      <% if histories.present? %>
+        <div class="table-responsive d-none d-md-block">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>
+                  Fecha
+                </th>
+                <th>
+                  Estado anterior
+                </th>
+                <th>
+                  Nuevo estado
+                </th>
+                <th>
+                  Usuario
+                </th>
+                <th>
+                  Observaciones
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% histories.each do |history| %>
+                <tr>
+                  <!-- FECHA -->
+                  <td>
+                    <%= l(history.changed_at, format: :short) if history.changed_at.present? %>
+                  </td>
+                  <!-- ESTADO ANTERIOR -->
+                  <td>
+                    <% if history.previous_status.present? %>
+                      <%= case history.previous_status
+                          when 0
+                            "Identificado"
+                          when 1
+                            "En evaluación"
+                          when 2
+                            "En seguimiento"
+                          when 3
+                            "Cerrado"
+                          when 4
+                            "No es caso"
+                          else
+                            history.previous_status.to_s
+                          end %>
+                    <% else %>
+                      <span class="text-muted">
+                        Sin estado anterior
+                      </span>
+                    <% end %>
+                  </td>
+                  <!-- NUEVO ESTADO -->
+                  <td>
+                    <% case history.new_status
+                       when 0 %>
+                      <span class="badge bg-secondary">
+                        Identificado
+                      </span>
+                    <% when 1 %>
+                      <span class="badge bg-info text-dark">
+                        En evaluación
+                      </span>
+                    <% when 2 %>
+                      <span class="badge bg-primary">
+                        En seguimiento
+                      </span>
+                    <% when 3 %>
+                      <span class="badge bg-success">
+                        Cerrado
+                      </span>
+                    <% when 4 %>
+                      <span class="badge bg-dark">
+                        No es caso
+                      </span>
+                    <% else %>
+                      <span class="badge bg-light text-dark border">
+                        <%= history.new_status %>
+                      </span>
+                    <% end %>
+                  </td>
+                  <!-- USUARIO -->
+                  <td>
+                    <% if history.user.present? %>
+                      <%= history.user.name %>
+                    <% else %>
+                      <span class="text-muted">
+                        No disponible
+                      </span>
+                    <% end %>
+                  </td>
+                  <!-- OBSERVACIONES -->
+                  <td>
+                    <% if history.observations.present? %>
+                      <%= history.observations %>
+                    <% else %>
+                      <span class="text-muted">
+                       Sin observaciones
+                      </span>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <!-- ================================= -->
+        <!-- VISTA MÓVIL -->
+        <!-- ================================= -->
+        <div class="d-md-none">
+          <% histories.each do |history| %>
+            <div class="border rounded p-3 mb-3">
+              <div class="small text-muted mb-2">
+                <i class="bi bi-calendar3 me-1"></i>
+                <%= l(history.changed_at, format: :short) if history.changed_at.present? %>
+              </div>
+              <div class="mb-2">
+                <strong>
+                  Cambio de estado
+                </strong>
+              </div>
+              <div class="mb-2">
+                <span class="text-muted">
+                  De:
+                </span>
+                <% if history.previous_status.present? %>
+                  <%= case history.previous_status
+                      when 0 then "Identificado"
+                      when 1 then "En evaluación"
+                      when 2 then "En seguimiento"
+                      when 3 then "Cerrado"
+                      when 4 then "No es caso"
+                      else history.previous_status.to_s
+                      end %>
+                <% else %>
+                  <span class="text-muted">
+                    Sin estado anterior
+                  </span>
+                <% end %>
+              </div>
+              <div class="mb-2">
+                <span class="text-muted">
+                  A:
+                </span>
+                <% case history.new_status
+                   when 0 %>
+                  <span class="badge bg-secondary">
+                    Identificado
+                  </span>
+                <% when 1 %>
+                  <span class="badge bg-info text-dark">
+                    En evaluación
+                  </span>
+                <% when 2 %>
+                  <span class="badge bg-primary">
+                    En seguimiento
+                  </span>
+                <% when 3 %>
+                  <span class="badge bg-success">
+                    Cerrado
+                  </span>
+                <% when 4 %>
+                  <span class="badge bg-dark">
+                    No es caso
+                  </span>
+                <% end %>
+              </div>
+              <div class="mb-2">
+                <span class="text-muted">
+                  Usuario:
+                </span>
+                <%= history.user.name if history.user.present? %>
+              </div>
+              <% if history.observations.present? %>
+                <div>
+                  <span class="text-muted">
+                    Observaciones:
+                  </span>
+                  <div class="mt-1">
+                    <%= history.observations %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-muted">
+          <i class="bi bi-info-circle me-1"></i>
+          No hay cambios de estado registrados.
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <!-- PIE -->
+  <div class="d-flex flex-wrap justify-content-center gap-2 mb-3">
+    <%= link_to(epidemiological_surveillance_program_epidemiological_surveillance_cases_path(@epidemiological_surveillance_program), class: "btn btn-outline-secondary") do %>
+      <i class="bi bi-arrow-left me-1"></i>
+      Volver a casos
+    <% end %>
+  </div>
+</div>

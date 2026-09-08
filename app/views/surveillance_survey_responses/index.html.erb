@@ -1,0 +1,199 @@
+<div class="container-fluid py-3">
+
+  <div class="card shadow-sm border-0">
+
+    <div class="card-header bg-light">
+
+      <div class="d-flex flex-column flex-md-row
+                  justify-content-between
+                  align-items-md-center
+                  gap-2">
+
+        <div>
+
+          <h4 class="mb-1">
+            <i class="bi bi-clipboard2-data me-2"></i>
+            Encuestas realizadas
+          </h4>
+
+          <small class="text-muted">
+            <%= @surveillance_survey.name %>
+          </small>
+
+        </div>
+
+        <span class="badge bg-primary fs-6">
+          <%= @surveillance_survey_responses.count %>
+          respuesta(s)
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="card-body">
+
+      <% if @surveillance_survey_responses.any? %>
+
+        <div class="table-responsive">
+
+          <table class="table table-hover align-middle">
+
+            <thead class="table-light">
+
+              <tr>
+
+                <th>Trabajador</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Revisión</th>
+                <th class="text-center">Acción</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <% @surveillance_survey_responses.each do |response| %>
+
+                <tr>
+
+                  <td>
+
+                    <i class="bi bi-person me-1"></i>
+
+                    <%= response.user&.name || "Sin trabajador" %>
+
+                  </td>
+
+
+                  <td>
+
+                    <%= response.response_date&.strftime("%d/%m/%Y %H:%M") %>
+
+                  </td>
+
+
+                  <td>
+
+                    <% if response.status == "pending" %>
+
+                      <span class="badge bg-warning text-dark">
+                        Pendiente
+                      </span>
+
+                    <% elsif response.status == "in_evaluation" %>
+
+                      <span class="badge bg-info text-dark">
+                        En evaluación
+                      </span>
+
+                    <% elsif response.status == "in_follow_up" %>
+
+                      <span class="badge bg-primary">
+                        En seguimiento
+                      </span>
+
+                    <% elsif response.status == "closed" %>
+
+                      <span class="badge bg-success">
+                        Cerrada
+                      </span>
+
+                    <% elsif response.status == "not_candidate" %>
+
+                      <span class="badge bg-secondary">
+                        No candidato
+                      </span>
+
+                    <% end %>
+
+                  </td>
+
+
+                  <td>
+
+                    <% if response.review_status == "review_pending" %>
+
+                      <span class="badge bg-warning text-dark">
+                        Pendiente de revisión
+                      </span>
+
+                    <% elsif response.review_status == "reviewed" %>
+
+                      <span class="badge bg-success">
+                        Revisada
+                      </span>
+
+                    <% end %>
+
+                  </td>
+
+
+                  <td class="text-center">
+
+                    <%= link_to(
+                          epidemiological_surveillance_program_surveillance_survey_surveillance_survey_response_path(
+                            @epidemiological_surveillance_program,
+                            @surveillance_survey,
+                            response
+                          ),
+                          class: "btn btn-sm btn-outline-primary"
+                        ) do %>
+
+                      <i class="bi bi-eye me-1"></i>
+                      Ver
+
+                    <% end %>
+
+                  </td>
+
+                </tr>
+
+              <% end %>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      <% else %>
+
+        <div class="alert alert-info mb-0">
+
+          <i class="bi bi-info-circle me-2"></i>
+
+          Esta encuesta todavía no tiene respuestas realizadas.
+
+        </div>
+
+      <% end %>
+
+
+      <div class="d-flex flex-wrap
+                  justify-content-center
+                  gap-2 mt-4">
+
+        <%= link_to(
+              epidemiological_surveillance_program_surveillance_survey_path(
+                @epidemiological_surveillance_program,
+                @surveillance_survey
+              ),
+              class: "btn btn-outline-secondary"
+            ) do %>
+
+          <i class="bi bi-arrow-left me-1"></i>
+          Volver a la encuesta
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

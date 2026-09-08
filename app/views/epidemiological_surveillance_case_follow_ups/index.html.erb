@@ -1,0 +1,209 @@
+<div class="container-fluid px-2 px-md-4 py-3">
+  <div align="left"; class="container col-12">
+    <a class="navbar-brand" href="/">
+        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+    </a>
+  </div>
+  <div class="card shadow-sm">
+    <!-- ENCABEZADO -->
+    <div class="card-header bg-light">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+        <div>
+          <h5 class="mb-1"><i class="bi bi-clock-history me-2"></i>Historial de seguimientos</h5>
+          <small class="text-muted">Caso SVE #<%= @epidemiological_surveillance_case.id %></small>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          <%= link_to(epidemiological_surveillance_program_epidemiological_surveillance_case_path(@epidemiological_surveillance_program, @epidemiological_surveillance_case), class: "btn btn-outline-secondary btn-sm") do %>
+            <i class="bi bi-arrow-left me-1"></i>
+            Volver al caso
+          <% end %>
+          <%= link_to(new_epidemiological_surveillance_program_epidemiological_surveillance_case_epidemiological_surveillance_case_follow_up_path(@epidemiological_surveillance_program, @epidemiological_surveillance_case), class: "btn btn-primary btn-sm") do %>
+            <i class="bi bi-plus-circle me-1"></i>
+            Nuevo seguimiento
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- CONTENIDO -->
+    <div class="card-body">
+      <% if @follow_ups.present? %>
+        <!-- ========================= -->
+        <!-- PC -->
+        <!-- ========================= -->
+        <div class="table-responsive d-none d-md-block">
+          <table class="table table-hover align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Fecha</th>
+                <th>Tipo</th>
+                <th>Estado</th>
+                <th>Responsable</th>
+                <th>Resultado</th>
+                <th class="text-center">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @follow_ups.each do |follow_up| %>
+                <tr>
+                  <!-- FECHA -->
+                  <td>
+                    <% if follow_up.follow_up_date.present? %>
+                      <%= l(follow_up.follow_up_date, format: :short) %>
+                    <% end %>
+                  </td>
+                  <!-- TIPO -->
+                  <td>
+                     <% if follow_up.follow_up_type == "initial_evaluation" %>
+                        <span class="badge bg-info text-dark">
+                          Evaluación inicial
+                        </span>
+                     <% elsif follow_up.follow_up_type == "follow_up" %>
+                        <span class="badge bg-primary">
+                          Seguimiento
+                        </span>
+                      <% elsif follow_up.follow_up_type == "visit" %>
+                        <span class="badge bg-success">
+                          Visita
+                        </span>
+                      <% elsif follow_up.follow_up_type == "phone_contact" %>
+                        <span class="badge bg-secondary">
+                          Contacto telefónico
+                        </span>
+                      <% elsif follow_up.follow_up_type == "document_review" %>
+                        <span class="badge bg-warning text-dark">
+                          Revisión documental
+                        </span>
+                      <% elsif follow_up.follow_up_type == "closure" %>
+                        <span class="badge bg-dark">
+                          Cierre
+                        </span>
+                      <% else %>
+                        <span class="badge bg-light text-dark border">
+                          <%= follow_up.follow_up_type %>
+                        </span>
+                      <% end %>
+                  </td>
+                  <!-- ESTADO -->
+                  <td>
+                    <% if follow_up.status == "identified" %>
+                      <span class="badge bg-secondary">
+                        Identificado
+                      </span>
+                    <% elsif follow_up.status == "in_evaluation" %>
+                      <span class="badge bg-warning text-dark">
+                        En evaluación
+                      </span>
+                    <% elsif follow_up.status == "in_follow_up" %>
+                      <span class="badge bg-primary">
+                        En seguimiento
+                      </span>
+                    <% elsif follow_up.status == "closed" %>
+                      <span class="badge bg-success">
+                        Cerrado
+                      </span>
+                    <% elsif follow_up.status == "not_case" %>
+                      <span class="badge bg-dark">
+                        No es caso
+                      </span>
+                    <% else %>
+                      <span class="badge bg-light text-dark border">
+                        <%= follow_up.status %>
+                      </span>
+                    <% end %>
+                  </td>
+                  <!-- RESPONSABLE -->
+                  <td>
+                    <%= follow_up.user&.name %>
+                  </td>
+                  <!-- RESULTADO -->
+                  <td>
+                    <% if follow_up.result.present? %>
+                      <%= truncate(follow_up.result, length: 70) %>
+                    <% else %>
+                      <span class="text-muted">Sin resultado</span>
+                    <% end %>
+                  </td>
+                  <!-- ACCIONES -->
+                  <td class="text-center">
+                    <%= link_to(epidemiological_surveillance_program_epidemiological_surveillance_case_epidemiological_surveillance_case_follow_up_path(@epidemiological_surveillance_program, @epidemiological_surveillance_case, follow_up), class: "btn btn-outline-primary btn-sm", title: "Ver seguimiento") do %>
+                      <i class="bi bi-eye"></i>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <!-- ========================= -->
+        <!-- CELULAR -->
+        <!-- ========================= -->
+        <div class="d-md-none">
+          <% @follow_ups.each do |follow_up| %>
+            <div class="card mb-3">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                  <strong>
+                    <i class="bi bi-calendar3 me-1"></i>
+                    <% if follow_up.follow_up_date.present? %>
+                      <%= l(follow_up.follow_up_date, format: :short) %>
+                    <% end %>
+                  </strong>
+                  <% if follow_up.status == "identified" %>
+                    <span class="badge bg-secondary">Identificado</span>
+                  <% elsif follow_up.status == "in_evaluation" %>
+                    <span class="badge bg-warning text-dark">En evaluación</span>
+                  <% elsif follow_up.status == "in_follow_up" %>
+                    <span class="badge bg-primary">En seguimiento</span>
+                  <% elsif follow_up.status == "closed" %>
+                    <span class="badge bg-success">Cerrado</span>
+                  <% elsif follow_up.status == "not_case" %>
+                    <span class="badge bg-dark">No es caso</span>
+                  <% else %>
+                    <span class="badge bg-light text-dark border"><%= follow_up.status %></span>
+                  <% end %>
+                </div>
+                <p class="mb-2">
+                  <strong>Tipo:</strong>
+                  <%= follow_up.follow_up_type %>
+                </p>
+                <p class="mb-2">
+                  <strong>Responsable:</strong>
+                  <%= follow_up.user&.name %>
+                </p>
+                <p class="mb-3">
+                  <strong>Resultado:</strong><br>
+                  <% if follow_up.result.present? %>
+                    <%= follow_up.result %>
+                  <% else %>
+                    <span class="text-muted">Sin resultado</span>
+                  <% end %>
+                </p>
+                <div class="text-end">
+                  <%= link_to(epidemiological_surveillance_program_epidemiological_surveillance_case_epidemiological_surveillance_case_follow_up_path(@epidemiological_surveillance_program, @epidemiological_surveillance_case, follow_up), class: "btn btn-outline-primary btn-sm") do %>
+                    <i class="bi bi-eye me-1"></i>
+                    Ver
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <!-- SIN SEGUIMIENTOS -->
+        <div class="text-center py-5">
+          <i class="bi bi-clock-history display-4 text-muted"></i>
+          <h5 class="mt-3">
+            No hay seguimientos registrados
+          </h5>
+          <p class="text-muted">
+            Este caso todavía no tiene seguimientos registrados.
+          </p>
+          <%= link_to(new_epidemiological_surveillance_program_epidemiological_surveillance_case_epidemiological_surveillance_case_follow_up_path(@epidemiological_surveillance_program, @epidemiological_surveillance_case), class: "btn btn-primary" ) do %>
+            <i class="bi bi-plus-circle me-1"></i>
+            Registrar seguimiento
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

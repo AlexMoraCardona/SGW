@@ -1,0 +1,39 @@
+<%= form_with model: @surveillance_configuration, local: true do |form| %>
+  <% if @surveillance_configuration.errors.any? %>
+    <div class="alert alert-danger">
+      <h6 class="fw-bold">
+        <i class="bi bi-exclamation-triangle me-1"></i>
+        No fue posible guardar la configuración
+      </h6>
+      <ul class="mb-0">
+        <% @surveillance_configuration.errors.full_messages.each do |message| %>
+          <li>
+            <%= message %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <!-- NOMBRE -->
+  <div class="mb-4">
+    <%= form.label :name, "Nombre de la configuración", class: "form-label fw-semibold" %>
+    <%= form.text_field :name, class: "form-control", placeholder: "Ejemplo: SVE Riesgo Respiratorio", maxlength: 200, required: true %>
+    <div class="form-text">
+      Nombre que identificará esta plantilla de vigilancia epidemiológica.
+    </div>
+  </div>
+  <!-- ESTADO -->
+  <div class="mb-4">
+    <%= form.label :status, "Estado", class: "form-label fw-semibold" %>
+    <%= form.select :status, SurveillanceConfiguration.statuses.keys.map { |status| [status == "active" ? "Activa" : "Inactiva", status]}, { prompt: "Seleccione el estado" }, {class: "form-select", required: true} %>
+  </div>
+  <hr>
+  <!-- BOTONERA -->
+  <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-2">
+    <%= form.submit(@surveillance_configuration.new_record? ? "Crear configuración" :  "Actualizar configuración", class: "btn btn-primary") %>
+    <%= link_to surveillance_configurations_path, class: "btn btn-outline-secondary" do %>
+      <i class="bi bi-arrow-left me-1"></i>
+      Volver
+    <% end %>
+  </div>
+<% end %>

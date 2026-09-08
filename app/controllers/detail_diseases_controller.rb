@@ -1,25 +1,27 @@
 class DetailDiseasesController < ApplicationController
     def index
-        if  Current.user && Current.user.level == 1
-            if params[:format].present?
-                @detail_diseases = DetailDisease.where("table_disease_id = ?", params[:format].to_i)
+      if Current.user && Current.user.level == 1
 
-                @q = @detail_diseases.ransack(params[:q])
-                @pagy, @detail_diseases = pagy(@q.result(table_disease_id: :desc), items: 3)
-            else
-                @detail_diseases = DetailDisease.all
-                @q = DetailDisease.ransack(params[:q])
-                @pagy, @detail_diseases = pagy(@q.result(id: :desc), items: 3)                
-            end    
-         else
-             redirect_to new_session_path, alert: t('common.not_logged_in')     
-             session.delete(:user_id) 
-         end           
-         
-    end    
+        @detail_diseases = DetailDisease.includes(:table_disease, :surveillance_configuration)
+
+        if params[:format].present?
+          @detail_diseases = @detail_diseases.where(table_disease_id: params[:format].to_i)
+        end
+
+        @q = @detail_diseases.ransack(params[:q])
+
+        @pagy, @detail_diseases = pagy(@q.result.order(id: :desc), items: 3)
+
+        @sve = SurveillanceConfiguration.all
+      else
+        redirect_to new_session_path, alert: t('common.not_logged_in')
+        session.delete(:user_id)
+      end
+    end 
 
     def new
       @detail_disease  = DetailDisease.new  
+      @sve = SurveillanceConfiguration.all 
     end    
 
     def create
@@ -34,6 +36,7 @@ class DetailDiseasesController < ApplicationController
  
     def edit
         @detail_disease = DetailDisease.find(params[:id].to_i)
+        @sve = SurveillanceConfiguration.all
     end
     
     def update
@@ -54,7 +57,7 @@ class DetailDiseasesController < ApplicationController
     private
 
     def detail_disease_params
-        params.require(:detail_disease).permit(:name, :code_disease, :table_disease_id)
+        params.require(:detail_disease).permit(:name, :code_disease, :table_disease_id, :surveillance_configuration_id)
     end 
 
 end  

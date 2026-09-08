@@ -1,0 +1,1105 @@
+<div class="container-fluid px-2 px-md-4 py-3">
+
+  <!-- ENCABEZADO -->
+  <div class="card shadow-sm border-0 mb-4">
+
+    <div class="card-body">
+
+      <div class="d-flex flex-column flex-md-row
+                  justify-content-between
+                  align-items-center
+                  gap-3">
+
+        <div class="text-center text-md-start">
+
+          <h4 class="mb-1">
+            <i class="bi bi-pencil-square me-2"></i>
+            Editar reporte SVE
+          </h4>
+
+          <div class="text-muted">
+            <%= @epidemiological_surveillance_program.name %>
+          </div>
+
+        </div>
+
+        <div>
+
+          <span class="badge bg-secondary px-3 py-2">
+            <i class="bi bi-pencil me-1"></i>
+            Edición
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ERRORES -->
+  <% if @surveillance_report.errors.any? %>
+
+    <div class="alert alert-danger">
+
+      <h6 class="alert-heading">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        No fue posible guardar el reporte
+      </h6>
+
+      <ul class="mb-0">
+
+        <% @surveillance_report.errors.full_messages.each do |error| %>
+
+          <li>
+            <%= error %>
+          </li>
+
+        <% end %>
+
+      </ul>
+
+    </div>
+
+  <% end %>
+
+
+  <%= form_with(
+        model: [
+          @epidemiological_surveillance_program,
+          @surveillance_report
+        ],
+        local: true
+      ) do |form| %>
+
+
+    <!-- ======================================================
+         1. INFORMACIÓN AUTOMÁTICA
+         ====================================================== -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+      <div class="card-body">
+
+        <div class="mb-3">
+
+          <h5 class="border-start border-4 border-secondary ps-3">
+            <i class="bi bi-building me-2"></i>
+            Información general de la empresa
+          </h5>
+
+        </div>
+
+
+        <div class="row g-3">
+
+          <div class="col-12 col-md-6 col-lg-4">
+
+            <div class="form-label fw-semibold">
+              Empresa
+            </div>
+
+            <div class="form-control bg-light">
+              <%= @entity&.business_name.presence || "No registrado" %>
+            </div>
+
+          </div>
+
+
+          <div class="col-12 col-md-6 col-lg-4">
+
+            <div class="form-label fw-semibold">
+              NIT
+            </div>
+
+            <div class="form-control bg-light">
+              <%= @nit_empresa.presence || "No registrado" %>
+            </div>
+
+          </div>
+
+
+          <div class="col-12 col-md-6 col-lg-4">
+
+            <div class="form-label fw-semibold">
+              Código CIIU
+            </div>
+
+            <div class="form-control bg-light">
+              <%= @economic_activity_code&.ciu_code.presence ||
+                  "No registrado" %>
+            </div>
+
+          </div>
+
+
+          <div class="col-12 col-md-6">
+
+            <div class="form-label fw-semibold">
+              Actividad económica
+            </div>
+
+            <div class="form-control bg-light">
+              <%= @economic_activity_code
+                    &.economic_activity_description
+                    .presence || "No registrado" %>
+            </div>
+
+          </div>
+
+
+          <div class="col-12 col-md-6">
+
+            <div class="form-label fw-semibold">
+              Dirección
+            </div>
+
+            <div class="form-control bg-light">
+              <%= @entity&.entity_address.presence ||
+                  "No registrado" %>
+            </div>
+
+          </div>
+
+
+          <div class="col-12 col-md-6">
+
+            <div class="form-label fw-semibold">
+              Municipio
+            </div>
+
+            <div class="form-control bg-light">
+              <%= @municipality.presence || "No registrado" %>
+            </div>
+
+          </div>
+
+
+          <div class="col-12 col-md-6">
+
+            <div class="form-label fw-semibold">
+              Representante legal
+            </div>
+
+            <div class="form-control bg-light">
+              <%= @legal_representative.presence ||
+                  "No registrado" %>
+            </div>
+
+          </div>
+
+
+          <div class="col-12 col-md-6">
+
+            <div class="form-label fw-semibold">
+              Responsable SG-SST
+            </div>
+
+            <div class="form-control bg-light">
+              <%= @surveillance_report.responsible_name.presence ||
+                  @responsible&.name ||
+                  "No registrado" %>
+            </div>
+
+          </div>
+
+
+          <div class="col-12 col-md-6">
+
+            <div class="form-label fw-semibold">
+              ARL
+            </div>
+
+            <div class="form-control bg-light">
+              <%= @occupational_risk_manager&.name.presence ||
+                  "No registrado" %>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         2. DATOS DEL RESPONSABLE
+         ====================================================== -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+      <div class="card-body">
+
+        <h5 class="border-start border-4 border-secondary ps-3 mb-4">
+
+          <i class="bi bi-person-badge me-2"></i>
+
+          Responsable del SVE
+
+        </h5>
+
+
+        <div class="row g-3">
+
+          <div class="col-12 col-md-4">
+
+            <label class="form-label fw-semibold">
+              Nombre
+            </label>
+
+            <div class="form-control bg-light">
+
+              <%= @surveillance_report.responsible_name.presence ||
+                  @responsible&.name ||
+                  "No registrado" %>
+
+            </div>
+
+          </div>
+
+
+          <div class="col-12 col-md-4">
+
+            <label class="form-label fw-semibold">
+              Cargo
+            </label>
+
+            <div class="form-control bg-light">
+
+              <%= @surveillance_report.responsible_position.presence ||
+                  @responsible_position&.name ||
+                  "No registrado" %>
+
+            </div>
+
+          </div>
+
+
+          <div class="col-12 col-md-4">
+
+            <label class="form-label fw-semibold">
+              Licencia
+            </label>
+
+            <div class="form-control bg-light">
+
+              <%= @surveillance_report.responsible_license.presence ||
+                  @responsible&.license ||
+                  "No registrada" %>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         3. NÚMERO DE TRABAJADORES
+         ====================================================== -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+      <div class="card-body">
+
+        <h5 class="border-start border-4 border-secondary ps-3 mb-4">
+
+          <i class="bi bi-people me-2"></i>
+
+          Población trabajadora
+
+        </h5>
+
+
+        <div class="row">
+
+          <div class="col-12 col-md-6 col-lg-4">
+
+            <%= form.label(
+                  :number_of_workers,
+                  "Número de trabajadores",
+                  class: "form-label fw-semibold"
+                ) %>
+
+            <%= form.number_field(
+                  :number_of_workers,
+                  class: "form-control",
+                  min: 0
+                ) %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+<!-- ===================================================== -->
+<!-- 11. POBLACIÓN OBJETO -->
+<!-- ===================================================== -->
+
+<div class="sve-section mt-4">
+
+  <div class="sve-section-title">
+    <i class="bi bi-people-fill me-2"></i>
+    11. POBLACIÓN OBJETO
+  </div>
+
+  <div
+    data-controller="nested-fields"
+    class="mt-3"
+  >
+
+    <div
+      data-nested-fields-target="container"
+    >
+
+      <%= form.fields_for :surveillance_report_populations do |population_form| %>
+
+        <div
+          data-nested-fields-row
+          class="card border-0 shadow-sm mb-3"
+        >
+
+          <div class="card-body">
+
+            <%= population_form.hidden_field :id %>
+
+            <%= population_form.hidden_field :position %>
+
+            <div class="row g-3">
+
+              <!-- PRIORIDAD -->
+              <div class="col-12 col-md-4">
+
+                <%= population_form.label :priority,
+                    "Prioridad",
+                    class: "form-label fw-semibold" %>
+
+                <%= population_form.text_field :priority,
+                    class: "form-control",
+                    placeholder: "Ej. Alta, Media, Baja" %>
+
+              </div>
+
+              <!-- EXPOSICIÓN -->
+              <div class="col-12 col-md-4">
+
+                <%= population_form.label :exposure,
+                    "Exposición",
+                    class: "form-label fw-semibold" %>
+
+                <%= population_form.text_field :exposure,
+                    class: "form-control",
+                    placeholder: "Descripción de la exposición" %>
+
+              </div>
+
+              <!-- NÚMERO DE EXPUESTOS -->
+              <div class="col-12 col-md-3">
+
+                <%= population_form.label :number_exposed,
+                    "Número de expuestos",
+                    class: "form-label fw-semibold" %>
+
+                <%= population_form.number_field :number_exposed,
+                    class: "form-control",
+                    min: 0,
+                    placeholder: "Cantidad" %>
+
+              </div>
+
+              <!-- ELIMINAR -->
+              <div class="col-12 col-md-1 d-flex align-items-end">
+
+                <button
+                  type="button"
+                  class="btn btn-outline-danger w-100"
+                  data-action="click->nested-fields#remove"
+                  title="Eliminar fila"
+                >
+                  <i class="bi bi-trash"></i>
+                </button>
+
+              </div>
+
+            </div>
+
+            <%= population_form.hidden_field :_destroy %>
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- PLANTILLA PARA NUEVAS FILAS -->
+    <!-- ================================================= -->
+
+    <template data-nested-fields-target="template">
+
+      <div
+        data-nested-fields-row
+        class="card border-0 shadow-sm mb-3"
+      >
+
+        <div class="card-body">
+
+          <div class="row g-3">
+
+            <!-- PRIORIDAD -->
+            <div class="col-12 col-md-4">
+
+              <label class="form-label fw-semibold">
+                Prioridad
+              </label>
+
+              <input
+                type="text"
+                name="surveillance_report[surveillance_report_populations_attributes][NEW_RECORD][priority]"
+                class="form-control"
+                placeholder="Ej. Alta, Media, Baja"
+              >
+
+            </div>
+
+            <!-- EXPOSICIÓN -->
+            <div class="col-12 col-md-4">
+
+              <label class="form-label fw-semibold">
+                Exposición
+              </label>
+
+              <input
+                type="text"
+                name="surveillance_report[surveillance_report_populations_attributes][NEW_RECORD][exposure]"
+                class="form-control"
+                placeholder="Descripción de la exposición"
+              >
+
+            </div>
+
+            <!-- NÚMERO EXPUESTOS -->
+            <div class="col-12 col-md-3">
+
+              <label class="form-label fw-semibold">
+                Número de expuestos
+              </label>
+
+              <input
+                type="number"
+                name="surveillance_report[surveillance_report_populations_attributes][NEW_RECORD][number_exposed]"
+                class="form-control"
+                min="0"
+                placeholder="Cantidad"
+              >
+
+            </div>
+
+            <!-- ELIMINAR -->
+            <div class="col-12 col-md-1 d-flex align-items-end">
+
+              <button
+                type="button"
+                class="btn btn-outline-danger w-100"
+                data-action="click->nested-fields#remove"
+                title="Eliminar fila"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+
+            </div>
+
+          </div>
+
+          <input
+            type="hidden"
+            name="surveillance_report[surveillance_report_populations_attributes][NEW_RECORD][_destroy]"
+            value="0"
+          >
+
+          <input
+            type="hidden"
+            name="surveillance_report[surveillance_report_populations_attributes][NEW_RECORD][position]"
+            value=""
+          >
+
+        </div>
+
+      </div>
+
+    </template>
+
+
+    <!-- ================================================= -->
+    <!-- BOTÓN AGREGAR -->
+    <!-- ================================================= -->
+
+    <div class="text-center mt-3">
+
+      <button
+        type="button"
+        class="btn btn-outline-primary"
+        data-action="click->nested-fields#add"
+      >
+        <i class="bi bi-plus-circle me-1"></i>
+        Agregar población
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- 9. PROCESO PRODUCTIVO Y RIESGOS -->
+<!-- ===================================================== -->
+
+<div class="sve-section mt-4">
+
+  <div class="sve-section-title">
+    <i class="bi bi-diagram-3-fill me-2"></i>
+    9. PROCESO PRODUCTIVO Y RIESGOS
+  </div>
+
+  <div
+    data-controller="nested-fields"
+    class="mt-3"
+  >
+
+    <!-- CONTENEDOR DE FILAS -->
+    <div data-nested-fields-target="container">
+
+      <%= form.fields_for :surveillance_report_processes do |process_form| %>
+
+        <div
+          data-nested-fields-row
+          class="card border-0 shadow-sm mb-3"
+        >
+
+          <div class="card-body">
+
+            <%= process_form.hidden_field :id %>
+            <%= process_form.hidden_field :position %>
+
+            <div class="row g-3">
+
+              <!-- PROCESO -->
+              <div class="col-12 col-md-5">
+
+                <%= process_form.label :process_name,
+                    "Proceso",
+                    class: "form-label fw-semibold" %>
+
+                <%= process_form.text_field :process_name,
+                    class: "form-control",
+                    placeholder: "Nombre del proceso" %>
+
+              </div>
+
+              <!-- RIESGOS -->
+              <div class="col-12 col-md-6">
+
+                <%= process_form.label :risks,
+                    "Riesgos",
+                    class: "form-label fw-semibold" %>
+
+                <%= process_form.text_field :risks,
+                    class: "form-control",
+                    placeholder: "Descripción de los riesgos identificados" %>
+
+              </div>
+
+              <!-- ELIMINAR -->
+              <div class="col-12 col-md-1 d-flex align-items-end">
+
+                <button
+                  type="button"
+                  class="btn btn-outline-danger w-100"
+                  data-action="click->nested-fields#remove"
+                  title="Eliminar proceso"
+                >
+                  <i class="bi bi-trash"></i>
+                </button>
+
+              </div>
+
+            </div>
+
+            <%= process_form.hidden_field :_destroy %>
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- PLANTILLA PARA NUEVAS FILAS -->
+    <!-- ================================================= -->
+
+    <template data-nested-fields-target="template">
+
+      <div
+        data-nested-fields-row
+        class="card border-0 shadow-sm mb-3"
+      >
+
+        <div class="card-body">
+
+          <div class="row g-3">
+
+            <!-- PROCESO -->
+            <div class="col-12 col-md-5">
+
+              <label class="form-label fw-semibold">
+                Proceso
+              </label>
+
+              <input
+                type="text"
+                name="surveillance_report[surveillance_report_processes_attributes][NEW_RECORD][process_name]"
+                class="form-control"
+                placeholder="Nombre del proceso"
+              >
+
+            </div>
+
+            <!-- RIESGOS -->
+            <div class="col-12 col-md-6">
+
+              <label class="form-label fw-semibold">
+                Riesgos
+              </label>
+
+              <input
+                type="text"
+                name="surveillance_report[surveillance_report_processes_attributes][NEW_RECORD][risks]"
+                class="form-control"
+                placeholder="Descripción de los riesgos identificados"
+              >
+
+            </div>
+
+            <!-- ELIMINAR -->
+            <div class="col-12 col-md-1 d-flex align-items-end">
+
+              <button
+                type="button"
+                class="btn btn-outline-danger w-100"
+                data-action="click->nested-fields#remove"
+                title="Eliminar proceso"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+
+            </div>
+
+          </div>
+
+          <input
+            type="hidden"
+            name="surveillance_report[surveillance_report_processes_attributes][NEW_RECORD][_destroy]"
+            value="0"
+          >
+
+          <input
+            type="hidden"
+            name="surveillance_report[surveillance_report_processes_attributes][NEW_RECORD][position]"
+            value=""
+          >
+
+        </div>
+
+      </div>
+
+    </template>
+
+
+    <!-- ================================================= -->
+    <!-- BOTÓN AGREGAR -->
+    <!-- ================================================= -->
+
+    <div class="text-center mt-3">
+
+      <button
+        type="button"
+        class="btn btn-outline-primary"
+        data-action="click->nested-fields#add"
+      >
+        <i class="bi bi-plus-circle me-1"></i>
+        Agregar proceso
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- 9.1 AGENTES / SUSTANCIAS / PRODUCTOS -->
+<!-- ===================================================== -->
+
+<div class="sve-section mt-4">
+
+  <div class="sve-section-title">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+    9.1. AGENTES / SUSTANCIAS / PRODUCTOS
+  </div>
+
+  <div
+    data-controller="nested-fields"
+    class="mt-3"
+  >
+
+    <!-- CONTENEDOR DE FILAS -->
+    <div data-nested-fields-target="container">
+
+      <%= form.fields_for :surveillance_report_hazards do |hazard_form| %>
+
+        <div
+          data-nested-fields-row
+          class="card border-0 shadow-sm mb-3"
+        >
+
+          <div class="card-body">
+
+            <%= hazard_form.hidden_field :id %>
+            <%= hazard_form.hidden_field :position %>
+
+            <div class="row g-3">
+
+              <!-- AGENTE -->
+              <div class="col-12 col-md-4">
+
+                <%= hazard_form.label :agent,
+                    "Agente",
+                    class: "form-label fw-semibold" %>
+
+                <%= hazard_form.text_field :agent,
+                    class: "form-control",
+                    placeholder: "Ej. Químico, polvo, humo, biológico..." %>
+
+              </div>
+
+              <!-- SUSTANCIA / PRODUCTO -->
+              <div class="col-12 col-md-4">
+
+                <%= hazard_form.label :substance_product,
+                    "Sustancia / Producto",
+                    class: "form-label fw-semibold" %>
+
+                <%= hazard_form.text_field :substance_product,
+                    class: "form-control",
+                    placeholder: "Nombre de la sustancia o producto" %>
+
+              </div>
+
+              <!-- POSIBLES EFECTOS -->
+              <div class="col-12 col-md-3">
+
+                <%= hazard_form.label :possible_effects,
+                    "Posibles efectos",
+                    class: "form-label fw-semibold" %>
+
+                <%= hazard_form.text_field :possible_effects,
+                    class: "form-control",
+                    placeholder: "Posibles efectos sobre la salud" %>
+
+              </div>
+
+              <!-- ELIMINAR -->
+              <div class="col-12 col-md-1 d-flex align-items-end">
+
+                <button
+                  type="button"
+                  class="btn btn-outline-danger w-100"
+                  data-action="click->nested-fields#remove"
+                  title="Eliminar registro"
+                >
+                  <i class="bi bi-trash"></i>
+                </button>
+
+              </div>
+
+            </div>
+
+            <%= hazard_form.hidden_field :_destroy %>
+
+          </div>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- PLANTILLA PARA NUEVAS FILAS -->
+    <!-- ================================================= -->
+
+    <template data-nested-fields-target="template">
+
+      <div
+        data-nested-fields-row
+        class="card border-0 shadow-sm mb-3"
+      >
+
+        <div class="card-body">
+
+          <div class="row g-3">
+
+            <!-- AGENTE -->
+            <div class="col-12 col-md-4">
+
+              <label class="form-label fw-semibold">
+                Agente
+              </label>
+
+              <input
+                type="text"
+                name="surveillance_report[surveillance_report_hazards_attributes][NEW_RECORD][agent]"
+                class="form-control"
+                placeholder="Ej. Químico, polvo, humo, biológico..."
+              >
+
+            </div>
+
+            <!-- SUSTANCIA / PRODUCTO -->
+            <div class="col-12 col-md-4">
+
+              <label class="form-label fw-semibold">
+                Sustancia / Producto
+              </label>
+
+              <input
+                type="text"
+                name="surveillance_report[surveillance_report_hazards_attributes][NEW_RECORD][substance_product]"
+                class="form-control"
+                placeholder="Nombre de la sustancia o producto"
+              >
+
+            </div>
+
+            <!-- POSIBLES EFECTOS -->
+            <div class="col-12 col-md-3">
+
+              <label class="form-label fw-semibold">
+                Posibles efectos
+              </label>
+
+              <input
+                type="text"
+                name="surveillance_report[surveillance_report_hazards_attributes][NEW_RECORD][possible_effects]"
+                class="form-control"
+                placeholder="Posibles efectos sobre la salud"
+              >
+
+            </div>
+
+            <!-- ELIMINAR -->
+            <div class="col-12 col-md-1 d-flex align-items-end">
+
+              <button
+                type="button"
+                class="btn btn-outline-danger w-100"
+                data-action="click->nested-fields#remove"
+                title="Eliminar registro"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+
+            </div>
+
+          </div>
+
+          <input
+            type="hidden"
+            name="surveillance_report[surveillance_report_hazards_attributes][NEW_RECORD][_destroy]"
+            value="0"
+          >
+
+          <input
+            type="hidden"
+            name="surveillance_report[surveillance_report_hazards_attributes][NEW_RECORD][position]"
+            value=""
+          >
+
+        </div>
+
+      </div>
+
+    </template>
+
+
+    <!-- ================================================= -->
+    <!-- BOTÓN AGREGAR -->
+    <!-- ================================================= -->
+
+    <div class="text-center mt-3">
+
+      <button
+        type="button"
+        class="btn btn-outline-primary"
+        data-action="click->nested-fields#add"
+      >
+        <i class="bi bi-plus-circle me-1"></i>
+        Agregar agente / sustancia
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+    <!-- ======================================================
+         7. FIRMA
+         ====================================================== -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+      <div class="card-body">
+
+        <h5 class="border-start border-4 border-secondary ps-3 mb-4">
+
+          <i class="bi bi-pen me-2"></i>
+
+          Firma y autorización
+
+        </h5>
+
+
+        <div class="row g-4 align-items-center">
+
+
+          <div class="col-12 col-md-6">
+
+            <div class="form-check form-switch">
+
+              <%= form.check_box(
+                    :autoriza_firma,
+                    class: "form-check-input",
+                    role: "switch",
+                    id: "surveillance_report_autoriza_firma"
+                  ) %>
+
+              <%= form.label(
+                    :autoriza_firma,
+                    "Autorizar firma del responsable",
+                    class: "form-check-label fw-semibold"
+                  ) %>
+
+            </div>
+
+            <small class="text-muted">
+
+              Al autorizar la firma se utilizará la firma registrada
+              del responsable del SVE.
+
+            </small>
+
+          </div>
+
+
+          <div class="col-12 col-md-6">
+
+            <%= form.label(
+                  :fecha_firma,
+                  "Fecha de firma",
+                  class: "form-label fw-semibold"
+                ) %>
+
+            <%= form.date_field(
+                  :fecha_firma,
+                  class: "form-control"
+                ) %>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         BOTONERA
+         ====================================================== -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+      <div class="card-body">
+
+        <div class="d-flex flex-wrap
+                    justify-content-center
+                    gap-2">
+
+          <%= form.button(
+                type: "submit",
+                class: "btn btn-primary"
+              ) do %>
+
+            <i class="bi bi-check-circle me-1"></i>
+            Guardar cambios
+
+          <% end %>
+
+
+          <%= link_to(
+                epidemiological_surveillance_program_surveillance_report_path(
+                  @epidemiological_surveillance_program
+                ),
+                class: "btn btn-outline-secondary"
+              ) do %>
+
+            <i class="bi bi-x-circle me-1"></i>
+            Cancelar
+
+          <% end %>
+
+
+          <%= link_to(
+                epidemiological_surveillance_program_path(
+                  @epidemiological_surveillance_program
+                ),
+                class: "btn btn-outline-dark"
+              ) do %>
+
+            <i class="bi bi-arrow-left me-1"></i>
+            Volver al programa
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+  <% end %>
+
+</div>

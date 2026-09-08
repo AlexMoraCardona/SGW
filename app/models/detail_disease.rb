@@ -1,5 +1,6 @@
 class DetailDisease < ApplicationRecord
     belongs_to :table_disease
+    belongs_to :surveillance_configuration, optional: true
 
     def self.ransackable_attributes(auth_object = nil)
         ["name"]
@@ -18,6 +19,6 @@ class DetailDisease < ApplicationRecord
         end    
         return nombre;
     end   
-    
 
+    
 end

@@ -1,0 +1,332 @@
+<%= form_with(
+model: [
+@epidemiological_surveillance_program,
+@surveillance_inspection
+],
+local: true
+) do |form| %>
+
+<% if @surveillance_inspection.errors.any? %> <div class="alert alert-danger shadow-sm mb-4"> <div class="fw-bold mb-2"> <i class="bi bi-exclamation-triangle-fill me-2"></i>
+No fue posible guardar la inspección </div>
+
+
+  <ul class="mb-0">
+    <% @surveillance_inspection.errors.full_messages.each do |error| %>
+      <li><%= error %></li>
+    <% end %>
+  </ul>
+</div>
+
+
+<% end %>
+
+  <!-- INFORMACIÓN GENERAL -->
+
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-light fw-bold">
+      <i class="bi bi-clipboard-check me-2"></i>
+      Información general de la inspección
+    </div>
+
+
+<div class="card-body">
+  <div class="row g-3">
+
+    <!-- Fecha -->
+    <div class="col-12 col-md-4">
+      <%= form.label :fecha, "Fecha de inspección",
+            class: "form-label fw-semibold" %>
+
+      <%= form.date_field :fecha,
+            class: "form-control",
+            max: Date.current %>
+    </div>
+
+    <!-- Área -->
+    <div class="col-12 col-md-8">
+      <%= form.label :company_area_id, "Área inspeccionada",
+            class: "form-label fw-semibold" %>
+
+      <%= form.collection_select(
+            :company_area_id,
+            @company_areas,
+            :id,
+            :name,
+            { prompt: "Seleccione el área" },
+            { class: "form-select" }
+          ) %>
+    </div>
+
+    <!-- Inspector -->
+    <div class="col-12 col-md-6">
+      <%= form.label :inspector, "Inspector",
+            class: "form-label fw-semibold" %>
+
+      <%= form.text_field :inspector,
+            class: "form-control",
+            maxlength: 150,
+            placeholder: "Nombre del inspector" %>
+    </div>
+
+    <!-- Fuente de emisión -->
+    <div class="col-12 col-md-6">
+      <%= form.label :fuente_emision, "Fuente de emisión",
+            class: "form-label fw-semibold" %>
+
+      <%= form.text_field :fuente_emision,
+            class: "form-control",
+            maxlength: 200,
+            placeholder: "Describa la fuente de emisión" %>
+    </div>
+
+  </div>
+</div>
+
+
+  </div>
+
+  <!-- LISTA DE VERIFICACIÓN -->
+
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-light fw-bold">
+      <i class="bi bi-list-check me-2"></i>
+      Lista de verificación
+    </div>
+
+
+<div class="card-body">
+
+  <div class="row g-3">
+
+    <!-- Control de fuente -->
+    <div class="col-12 col-md-6">
+      <%= form.label :control_fuente,
+            "¿Existe control en la fuente?",
+            class: "form-label fw-semibold" %>
+
+      <%= form.select :control_fuente,
+            SurveillanceInspection.si_no_na_options,
+            {},
+            class: "form-select" %>
+    </div>
+
+    <!-- Extracción -->
+    <div class="col-12 col-md-6">
+      <%= form.label :extraccion_operativa,
+            "¿La extracción está operativa?",
+            class: "form-label fw-semibold" %>
+
+      <%= form.select :extraccion_operativa,
+            SurveillanceInspection.si_no_na_options,
+            {},
+            class: "form-select" %>
+    </div>
+
+    <!-- Sin obstrucciones -->
+    <div class="col-12 col-md-6">
+      <%= form.label :sin_obstrucciones,
+            "¿Los sistemas se encuentran sin obstrucciones?",
+            class: "form-label fw-semibold" %>
+
+      <%= form.select :sin_obstrucciones,
+            SurveillanceInspection.si_no_na_options,
+            {},
+            class: "form-select" %>
+    </div>
+
+    <!-- Mantenimiento -->
+    <div class="col-12 col-md-6">
+      <%= form.label :mantenimiento_vigente,
+            "¿El mantenimiento se encuentra vigente?",
+            class: "form-label fw-semibold" %>
+
+      <%= form.select :mantenimiento_vigente,
+            SurveillanceInspection.si_no_na_options,
+            {},
+            class: "form-select" %>
+    </div>
+
+    <!-- Fugas -->
+    <div class="col-12 col-md-6">
+      <%= form.label :fugas_derrames_controlados,
+            "¿Las fugas y derrames están controlados?",
+            class: "form-label fw-semibold" %>
+
+      <%= form.select :fugas_derrames_controlados,
+            SurveillanceInspection.si_no_na_options,
+            {},
+            class: "form-select" %>
+    </div>
+
+    <!-- Almacenamiento -->
+    <div class="col-12 col-md-6">
+      <%= form.label :almacenamiento_adecuado,
+            "¿El almacenamiento es adecuado?",
+            class: "form-label fw-semibold" %>
+
+      <%= form.select :almacenamiento_adecuado,
+            SurveillanceInspection.si_no_na_options,
+            {},
+            class: "form-select" %>
+    </div>
+
+    <!-- EPP disponible -->
+    <div class="col-12 col-md-6">
+      <%= form.label :epp_disponible,
+            "¿El EPP requerido está disponible?",
+            class: "form-label fw-semibold" %>
+
+      <%= form.select :epp_disponible,
+            SurveillanceInspection.si_no_na_options,
+            {},
+            class: "form-select" %>
+    </div>
+
+    <!-- Uso EPP -->
+    <div class="col-12 col-md-6">
+      <%= form.label :uso_adecuado,
+            "¿El uso del EPP es adecuado?",
+            class: "form-label fw-semibold" %>
+
+      <%= form.select :uso_adecuado,
+            SurveillanceInspection.si_no_na_options,
+            {},
+            class: "form-select" %>
+    </div>
+
+    <!-- Ventilación -->
+    <div class="col-12 col-md-6">
+      <%= form.label :ventilacion_areas_comunes,
+            "¿La ventilación de las áreas comunes es adecuada?",
+            class: "form-label fw-semibold" %>
+
+      <%= form.select :ventilacion_areas_comunes,
+            SurveillanceInspection.si_no_na_options,
+            {},
+            class: "form-select" %>
+    </div>
+
+  </div>
+</div>
+
+
+  </div>
+
+  <!-- HALLAZGOS Y ACCIONES -->
+
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-light fw-bold">
+      <i class="bi bi-exclamation-diamond me-2"></i>
+      Hallazgos y acciones
+    </div>
+
+
+<div class="card-body">
+  <div class="row g-3">
+
+    <!-- Hallazgo -->
+    <div class="col-12">
+      <%= form.label :hallazgo_critico,
+            "Hallazgo crítico",
+            class: "form-label fw-semibold" %>
+
+      <%= form.text_area :hallazgo_critico,
+            class: "form-control",
+            rows: 4,
+            placeholder: "Describa los hallazgos identificados..." %>
+    </div>
+
+    <!-- Acción -->
+    <div class="col-12">
+      <%= form.label :accion,
+            "Acción",
+            class: "form-label fw-semibold" %>
+
+      <%= form.text_area :accion,
+            class: "form-control",
+            rows: 4,
+            placeholder: "Describa la acción requerida..." %>
+    </div>
+
+  </div>
+</div>
+
+
+  </div>
+
+  <!-- SEGUIMIENTO -->
+
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-light fw-bold">
+      <i class="bi bi-calendar-check me-2"></i>
+      Seguimiento
+    </div>
+
+
+<div class="card-body">
+  <div class="row g-3">
+
+    <!-- Responsable -->
+    <div class="col-12 col-md-6">
+      <%= form.label :responsable,
+            "Responsable",
+            class: "form-label fw-semibold" %>
+
+      <%= form.text_field :responsable,
+            class: "form-control",
+            maxlength: 150,
+            placeholder: "Responsable de la acción" %>
+    </div>
+
+    <!-- Fecha límite -->
+    <div class="col-12 col-md-6">
+      <%= form.label :fecha_limite,
+            "Fecha límite",
+            class: "form-label fw-semibold" %>
+
+      <%= form.date_field :fecha_limite,
+            class: "form-control" %>
+    </div>
+
+    <!-- Estado -->
+    <div class="col-12 col-md-6">
+      <%= form.label :estado,
+            "Estado",
+            class: "form-label fw-semibold" %>
+
+      <%= form.select :estado,
+            SurveillanceInspection.estado_options,
+            {},
+            class: "form-select" %>
+    </div>
+
+  </div>
+</div>
+
+
+  </div>
+
+  <!-- BOTONES -->
+
+  <div class="d-flex flex-column flex-sm-row justify-content-center gap-2 mb-4">
+
+
+<%= form.submit(
+      @surveillance_inspection.new_record? ?
+      "Registrar inspección" :
+      "Actualizar inspección",
+      class: "btn btn-primary px-4"
+    ) %>
+
+<%= link_to(
+      "Cancelar",
+      epidemiological_surveillance_program_surveillance_inspections_path(
+        @epidemiological_surveillance_program
+      ),
+      class: "btn btn-outline-secondary px-4"
+    ) %>
+
+
+  </div>
+
+<% end %>

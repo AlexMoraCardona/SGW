@@ -1,6 +1,6 @@
 class CompanyArea < ApplicationRecord
     belongs_to :entity
-
+    has_many :surveillance_inspections, dependent: :restrict_with_error
 
     def self.name_area(dato)
         name = 'No encontrado'

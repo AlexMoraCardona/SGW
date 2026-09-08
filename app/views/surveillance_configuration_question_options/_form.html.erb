@@ -1,0 +1,40 @@
+<%= form_with(model: [@surveillance_configuration, @surveillance_configuration_question, @surveillance_configuration_question_option]) do |form| %>
+  <% if @surveillance_configuration_question_option.errors.any? %>
+    <div class="alert alert-danger">
+      <div class="fw-semibold mb-2">
+        <i class="bi bi-exclamation-triangle me-1"></i>
+        No fue posible guardar la opción.
+      </div>
+      <ul class="mb-0">
+        <% @surveillance_configuration_question_option.errors.full_messages.each do |error| %>
+          <li><%= error %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="mb-4">
+    <%= form.label :option, "Texto de la opción", class: "form-label fw-semibold" %>
+    <%= form.text_field :option, class: "form-control", maxlength: 255, required: true, placeholder: "Ejemplo: Dolor de cabeza" %>
+  </div>
+  <div class="row g-3">
+    <div class="col-12 col-md-6">
+      <%= form.label :position, "Orden",  class: "form-label fw-semibold" %>
+      <%= form.number_field :position, class: "form-control", min: 1, required: true %>
+    </div>
+    <div class="col-12 col-md-6">
+      <%= form.label :status, "Estado", class: "form-label fw-semibold" %>
+      <%= form.select :status, [["Activa", "active"], ["Inactiva", "inactive"]], {}, class: "form-select" %>
+    </div>
+  </div>
+  <hr class="my-4">
+  <div class="d-flex flex-column flex-sm-row gap-2 justify-content-end">
+    <%= link_to surveillance_configuration_path(@surveillance_configuration), class: "btn btn-outline-secondary" do %>
+      <i class="bi bi-arrow-left me-1"></i>
+      Cancelar
+    <% end %>
+    <%= form.button(type: "submit", class: "btn btn-primary") do %>
+      <i class="bi bi-check-circle me-1"></i>
+      <%= @surveillance_configuration_question_option.new_record? ?  "Crear opción" :  "Actualizar opción" %>
+    <% end %>
+  </div>
+<% end %>

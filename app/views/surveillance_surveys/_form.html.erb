@@ -1,0 +1,114 @@
+<%= form_with(
+      model: [
+        @epidemiological_surveillance_program,
+        @surveillance_survey
+      ],
+      local: true
+    ) do |form| %>
+
+  <% if @surveillance_survey.errors.any? %>
+
+    <div class="alert alert-danger">
+
+      <h6 class="fw-bold">
+        No fue posible guardar la encuesta:
+      </h6>
+
+      <ul class="mb-0">
+        <% @surveillance_survey.errors.full_messages.each do |error| %>
+          <li><%= error %></li>
+        <% end %>
+      </ul>
+
+    </div>
+
+  <% end %>
+
+
+  <!-- NOMBRE -->
+
+  <div class="mb-4">
+
+    <%= form.label :name,
+          "Nombre de la encuesta",
+          class: "form-label fw-semibold" %>
+
+    <%= form.text_field :name,
+          class: "form-control",
+          required: true,
+          maxlength: 200,
+          placeholder: "Ejemplo: Encuesta de síntomas respiratorios" %>
+
+  </div>
+
+
+  <!-- DESCRIPCIÓN -->
+
+  <div class="mb-4">
+
+    <%= form.label :description,
+          "Descripción",
+          class: "form-label fw-semibold" %>
+
+    <%= form.text_area :description,
+          class: "form-control",
+          rows: 4,
+          placeholder: "Descripción de la encuesta..." %>
+
+  </div>
+
+
+  <!-- ESTADO -->
+
+  <div class="mb-4">
+
+    <div class="form-check">
+
+      <%= form.check_box :active,
+            class: "form-check-input" %>
+
+      <%= form.label :active,
+            "Encuesta activa",
+            class: "form-check-label fw-semibold" %>
+
+    </div>
+
+    <div class="form-text">
+      Las encuestas activas pueden utilizarse para aplicar
+      evaluaciones a los trabajadores vinculados al programa SVE.
+    </div>
+
+  </div>
+
+
+  <!-- BOTONERA -->
+
+  <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+
+    <%= form.button type: "submit",
+          class: "btn btn-primary" do %>
+
+      <i class="bi bi-check-circle me-1"></i>
+
+      <%= @surveillance_survey.persisted? ?
+            "Actualizar encuesta" :
+            "Crear encuesta" %>
+
+    <% end %>
+
+
+    <%= link_to(
+          epidemiological_surveillance_program_surveillance_surveys_path(
+            @epidemiological_surveillance_program
+          ),
+          class: "btn btn-outline-secondary"
+        ) do %>
+
+      <i class="bi bi-arrow-left me-1"></i>
+      Cancelar
+
+    <% end %>
+
+  </div>
+
+<% end %>

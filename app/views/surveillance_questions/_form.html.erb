@@ -1,0 +1,169 @@
+<%= form_with(
+      model: [
+        @epidemiological_surveillance_program,
+        @surveillance_survey,
+        @surveillance_question
+      ],
+      local: true
+    ) do |form| %>
+
+  <% if @surveillance_question.errors.any? %>
+
+    <div class="alert alert-danger">
+
+      <h6 class="fw-bold">
+        <i class="bi bi-exclamation-triangle me-1"></i>
+        No fue posible guardar la pregunta
+      </h6>
+
+      <ul class="mb-0">
+
+        <% @surveillance_question.errors.full_messages.each do |error| %>
+
+          <li>
+            <%= error %>
+          </li>
+
+        <% end %>
+
+      </ul>
+
+    </div>
+
+  <% end %>
+
+
+  <!-- PREGUNTA -->
+
+  <div class="mb-3">
+
+    <%= form.label :question,
+                   "Pregunta",
+                   class: "form-label fw-bold" %>
+
+    <%= form.text_area :question,
+                       class: "form-control",
+                       rows: 3,
+                       required: true,
+                       placeholder:
+                         "Escriba la pregunta que desea realizar..." %>
+
+  </div>
+
+
+  <!-- TIPO DE PREGUNTA -->
+
+  <div class="mb-3">
+
+    <%= form.label :question_type,
+                   "Tipo de pregunta",
+                   class: "form-label fw-bold" %>
+
+    <%= form.select(
+          :question_type,
+          [
+            ["Texto abierto", "open_text"],
+            ["Sí / No", "boolean"],
+            ["Selección única", "single_choice"],
+            ["Selección múltiple", "multiple_choice"]
+          ],
+          {},
+          class: "form-select",
+          required: true
+        ) %>
+
+  </div>
+
+
+  <!-- POSICIÓN -->
+
+  <div class="mb-3">
+
+    <%= form.label :position,
+                   "Posición",
+                   class: "form-label fw-bold" %>
+
+    <%= form.number_field :position,
+                          class: "form-control",
+                          min: 1,
+                          required: true %>
+
+    <div class="form-text">
+      Define el orden en que aparecerá la pregunta en la encuesta.
+    </div>
+
+  </div>
+
+
+  <!-- OPCIONES -->
+
+  <div class="row">
+
+    <div class="col-12 col-md-6 mb-3">
+
+      <div class="form-check">
+
+        <%= form.check_box :required,
+                           class: "form-check-input" %>
+
+        <%= form.label :required,
+                       "Pregunta obligatoria",
+                       class: "form-check-label" %>
+
+      </div>
+
+    </div>
+
+
+    <div class="col-12 col-md-6 mb-3">
+
+      <div class="form-check">
+
+        <%= form.check_box :active,
+                           class: "form-check-input" %>
+
+        <%= form.label :active,
+                       "Pregunta activa",
+                       class: "form-check-label" %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <hr class="my-4">
+
+
+  <!-- BOTONERA -->
+
+  <div class="d-flex flex-column flex-sm-row
+              justify-content-center
+              align-items-center
+              gap-2">
+
+    <%= form.submit(
+          @surveillance_question.new_record? ?
+          "Guardar pregunta" :
+          "Actualizar pregunta",
+          class: "btn btn-primary"
+        ) %>
+
+
+    <%= link_to(
+          epidemiological_surveillance_program_surveillance_survey_surveillance_questions_path(
+            @epidemiological_surveillance_program,
+            @surveillance_survey
+          ),
+          class: "btn btn-outline-secondary"
+        ) do %>
+
+      <i class="bi bi-arrow-left me-1"></i>
+      Cancelar
+
+    <% end %>
+
+  </div>
+
+<% end %>

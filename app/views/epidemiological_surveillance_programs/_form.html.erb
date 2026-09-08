@@ -1,0 +1,95 @@
+<%= form_with(model: @epidemiological_surveillance_program, local: true) do |form| %>
+  <% if @epidemiological_surveillance_program.errors.any? %>
+    <div class="alert alert-danger">
+      <h6 class="fw-bold">
+        <i class="bi bi-exclamation-triangle me-1"></i>
+        No fue posible guardar el programa
+      </h6>
+      <ul class="mb-0">
+        <% @epidemiological_surveillance_program.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <!-- ENTIDAD -->
+  <div class="mb-3">
+    <%= form.label :entity_id, "Entidad", class: "form-label fw-semibold" %>
+    <%= form.collection_select :entity_id,  @entities, :id, :business_name, { prompt: "Seleccione la entidad" }, { class: "form-select", required: true } %>
+  </div>
+  <!-- CONFIGURACIÓN SVE -->
+  <div class="mb-4">
+    <%= form.label :surveillance_configuration_id, "Configuración del programa SVE", class: "form-label fw-semibold" %>
+    <%= form.collection_select :surveillance_configuration_id, @surveillance_configurations, :id, :name, {prompt: "Seleccione la configuración SVE"}, {class: "form-select", required: true} %>
+      <div class="form-text">
+        <i class="bi bi-info-circle me-1"></i>
+        La configuración seleccionada determinará las preguntas de la encuesta
+        que se crearán automáticamente para este programa.
+      </div>
+  </div>
+  <!-- CÓDIGO Y ESTADO -->
+  <div class="row">
+    <div class="col-12 col-md-6 mb-3">
+      <%= form.label :code, "Código", class: "form-label fw-semibold" %>
+      <%= form.text_field :code, class: "form-control",  placeholder: "Ejemplo: SVE-RESP", maxlength: 50, required: true %>
+    </div>
+    <div class="col-12 col-md-6 mb-3">
+      <%= form.label :status, "Estado", class: "form-label fw-semibold" %>
+      <%= form.select :status, EpidemiologicalSurveillanceProgram.statuses.keys.map {
+                        |status|
+                        [
+                          case status
+                          when "draft" then "Borrador"
+                          when "active" then "Activo"
+                          when "closed" then "Cerrado"
+                          when "inactive" then "Inactivo"
+                          end,
+                          status
+                        ]
+                      },
+                      { prompt: "Seleccione el estado" },
+                      { class: "form-select", required: true } %>
+    </div>
+  </div>
+  <!-- NOMBRE -->
+  <div class="mb-3">
+    <%= form.label :name, "Nombre del programa", class: "form-label fw-semibold" %>
+    <%= form.text_field :name, class: "form-control", placeholder: "Ejemplo: Sistema de Vigilancia Epidemiológica para Riesgo Respiratorio", maxlength: 200, required: true %>
+  </div>
+  <!-- DESCRIPCIÓN -->
+  <div class="mb-3">
+    <%= form.label :description, "Descripción",  class: "form-label fw-semibold" %>
+    <%= form.text_area :description, class: "form-control", rows: 4, placeholder: "Describa el alcance y características del programa..." %>
+  </div>
+  <!-- OBJETIVO -->
+  <div class="mb-3">
+    <%= form.label :objective, "Objetivo", class: "form-label fw-semibold" %>
+    <%= form.text_area :objective, class: "form-control", rows: 4, placeholder: "Defina el objetivo del programa..." %>
+  </div>
+  <!-- FECHAS -->
+  <div class="row">
+    <div class="col-12 col-md-6 mb-3">
+      <%= form.label :start_date, "Fecha de inicio",  class: "form-label fw-semibold" %>
+      <%= form.date_field :start_date, class: "form-control", required: true %>
+    </div>
+    <div class="col-12 col-md-6 mb-3">
+      <%= form.label :end_date, "Fecha de finalización", class: "form-label fw-semibold" %>
+      <%= form.date_field :end_date, class: "form-control" %>
+    </div>
+  </div>
+  <!-- RESPONSABLE -->
+  <div class="mb-4">
+    <%= form.label :responsible_id, "Responsable del programa",  class: "form-label fw-semibold" %>
+    <%= form.collection_select :responsible_id, @users, :id, :name, { prompt: "Seleccione el responsable" }, { class: "form-select" } %>
+  </div>
+  <hr>
+  <!-- BOTONERA -->
+  <hr>
+  <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-2">
+    <%= form.submit(@epidemiological_surveillance_program.new_record? ?  "Crear programa" : "Actualizar programa", class: "btn btn-primary") %>
+    <%= link_to epidemiological_surveillance_programs_path, class: "btn btn-outline-secondary" do %>
+      <i class="bi bi-arrow-left me-1"></i>
+      Volver
+    <% end %>
+  </div>
+<% end %>

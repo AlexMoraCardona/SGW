@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_07_28_020231) do
+ActiveRecord::Schema[7.0].define(version: 2026_09_06_211303) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -444,6 +444,18 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_28_020231) do
     t.index ["entity_id"], name: "index_change_managements_on_entity_id"
   end
 
+  create_table "characterizations", force: :cascade do |t|
+    t.bigint "surveillance_worker_id", null: false
+    t.integer "pve_group", default: 0, null: false
+    t.integer "principal_exposure", default: 0, null: false
+    t.integer "frequency", default: 0, null: false
+    t.boolean "respirator_required", default: false, null: false
+    t.integer "characterization_status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["surveillance_worker_id"], name: "idx_characterizations_worker_unique", unique: true
+  end
+
   create_table "check_list_items", force: :cascade do |t|
     t.string "name"
     t.integer "clasification", default: 0
@@ -603,6 +615,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_28_020231) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.bigint "table_disease_id"
+    t.bigint "surveillance_configuration_id"
+    t.index ["surveillance_configuration_id"], name: "index_detail_diseases_on_surveillance_configuration_id"
     t.index ["table_disease_id"], name: "index_detail_diseases_on_table_disease_id"
   end
 
@@ -873,6 +887,86 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_28_020231) do
     t.index ["email_entity"], name: "index_entities_on_email_entity", unique: true
   end
 
+  create_table "epidemiological_surveillance_case_follow_ups", force: :cascade do |t|
+    t.bigint "epidemiological_surveillance_case_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "follow_up_date", null: false
+    t.integer "follow_up_type", default: 2, null: false
+    t.integer "status", default: 2, null: false
+    t.text "result"
+    t.text "observations"
+    t.datetime "next_follow_up_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["epidemiological_surveillance_case_id", "follow_up_date"], name: "idx_sve_followup_case_date", unique: true
+    t.index ["epidemiological_surveillance_case_id"], name: "idx_sve_followup_case"
+    t.index ["user_id"], name: "idx_sve_followup_user"
+  end
+
+  create_table "epidemiological_surveillance_case_histories", force: :cascade do |t|
+    t.bigint "epidemiological_surveillance_case_id", null: false
+    t.bigint "user_id", null: false
+    t.integer "previous_status"
+    t.integer "new_status", null: false
+    t.datetime "changed_at", null: false
+    t.text "observations"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["epidemiological_surveillance_case_id", "changed_at"], name: "idx_sve_histories_case_date"
+    t.index ["epidemiological_surveillance_case_id"], name: "idx_sve_histories_case"
+    t.index ["user_id"], name: "idx_sve_histories_user"
+  end
+
+  create_table "epidemiological_surveillance_cases", force: :cascade do |t|
+    t.bigint "epidemiological_surveillance_program_id", null: false
+    t.bigint "entity_id", null: false
+    t.bigint "user_id", null: false
+    t.integer "source_type", default: 0, null: false
+    t.bigint "event_id"
+    t.bigint "surveillance_survey_response_id"
+    t.datetime "opened_at", null: false
+    t.datetime "closed_at"
+    t.integer "status", default: 0, null: false
+    t.bigint "responsible_id"
+    t.text "observations"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "symptom_onset"
+    t.date "symptom_start_date"
+    t.string "symptoms"
+    t.string "reported_diagnosis"
+    t.integer "disability_days"
+    t.boolean "possible_occupational_exposure", default: false
+    t.boolean "contact_with_symptomatic_people", default: false
+    t.string "initial_measures"
+    t.integer "return_to_work", default: 0, null: false
+    t.index ["entity_id"], name: "idx_sve_case_entity"
+    t.index ["epidemiological_surveillance_program_id"], name: "idx_sve_case_program"
+    t.index ["event_id"], name: "idx_sve_case_event"
+    t.index ["responsible_id"], name: "idx_sve_case_responsible"
+    t.index ["surveillance_survey_response_id"], name: "idx_sve_case_response"
+    t.index ["user_id"], name: "idx_sve_case_user"
+  end
+
+  create_table "epidemiological_surveillance_programs", force: :cascade do |t|
+    t.bigint "entity_id", null: false
+    t.string "code"
+    t.string "name", null: false
+    t.text "description"
+    t.text "objective"
+    t.date "start_date"
+    t.date "end_date"
+    t.integer "status", default: 0, null: false
+    t.bigint "responsible_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "surveillance_configuration_id"
+    t.index ["entity_id", "code"], name: "idx_sve_entity_code", unique: true
+    t.index ["entity_id"], name: "index_epidemiological_surveillance_programs_on_entity_id"
+    t.index ["responsible_id"], name: "index_epidemiological_surveillance_programs_on_responsible_id"
+    t.index ["surveillance_configuration_id"], name: "idx_sve_programs_configuration"
+  end
+
   create_table "epp_recuests", force: :cascade do |t|
     t.date "date_recuest"
     t.integer "cantidad", default: 0
@@ -975,6 +1069,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_28_020231) do
     t.integer "accident_mechanism", default: 0
     t.integer "name_disease", default: 0
     t.integer "continuous", default: 0
+    t.bigint "detail_disease_id"
+    t.index ["detail_disease_id"], name: "index_events_on_detail_disease_id"
     t.index ["entity_id"], name: "index_events_on_entity_id"
     t.index ["user_id"], name: "index_events_on_user_id"
   end
@@ -2429,6 +2525,33 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_28_020231) do
     t.index ["entity_id"], name: "index_simulacrums_on_entity_id"
   end
 
+  create_table "sintomas", force: :cascade do |t|
+    t.bigint "surveillance_worker_id", null: false
+    t.boolean "fiebre", default: false, null: false
+    t.boolean "tos", default: false, null: false
+    t.boolean "dolor_garganta", default: false, null: false
+    t.boolean "congestion_nasal", default: false, null: false
+    t.boolean "dificultad_respirar", default: false, null: false
+    t.boolean "dolor_pecho", default: false, null: false
+    t.boolean "dolor_cabeza", default: false, null: false
+    t.boolean "dolores_musculares", default: false, null: false
+    t.boolean "escalofrios", default: false, null: false
+    t.boolean "fatiga_cansancio_inusual", default: false, null: false
+    t.boolean "nauseas_vomito", default: false, null: false
+    t.boolean "diarrea", default: false, null: false
+    t.boolean "otro", default: false, null: false
+    t.string "otro_cual"
+    t.boolean "ninguno_anteriores", default: false, null: false
+    t.boolean "incapacidad", default: false, null: false
+    t.boolean "contacto_respiratorio", default: false, null: false
+    t.boolean "irritacion_asociada_trabajo", default: false, null: false
+    t.integer "accion_sst", default: 0, null: false
+    t.integer "seguimiento", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["surveillance_worker_id"], name: "idx_sintomas_worker_unique", unique: true
+  end
+
   create_table "situation_conditions", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -2472,6 +2595,231 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_28_020231) do
     t.datetime "updated_at", null: false
     t.bigint "rule_id"
     t.index ["rule_id"], name: "index_standars_on_rule_id"
+  end
+
+  create_table "surveillance_activities", force: :cascade do |t|
+    t.bigint "epidemiological_surveillance_program_id", null: false
+    t.bigint "responsible_id"
+    t.string "name", null: false
+    t.text "description"
+    t.date "planned_date"
+    t.date "execution_date"
+    t.integer "status", default: 0, null: false
+    t.text "observations"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["epidemiological_surveillance_program_id", "planned_date"], name: "idx_sve_activities_program_date"
+    t.index ["epidemiological_surveillance_program_id"], name: "idx_sve_activities_program"
+    t.index ["responsible_id"], name: "index_surveillance_activities_on_responsible_id"
+  end
+
+  create_table "surveillance_answer_options", force: :cascade do |t|
+    t.bigint "surveillance_answer_id", null: false
+    t.bigint "surveillance_question_option_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["surveillance_answer_id", "surveillance_question_option_id"], name: "idx_answer_option_unique", unique: true
+    t.index ["surveillance_answer_id"], name: "idx_answer_option_answer"
+    t.index ["surveillance_question_option_id"], name: "idx_answer_option_option"
+  end
+
+  create_table "surveillance_answers", force: :cascade do |t|
+    t.bigint "surveillance_survey_response_id", null: false
+    t.bigint "surveillance_question_id", null: false
+    t.text "answer_text"
+    t.boolean "answer_boolean"
+    t.decimal "answer_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["surveillance_question_id"], name: "idx_answer_question"
+    t.index ["surveillance_survey_response_id", "surveillance_question_id"], name: "idx_answer_response_question", unique: true
+    t.index ["surveillance_survey_response_id"], name: "idx_answer_response"
+  end
+
+  create_table "surveillance_configuration_question_options", force: :cascade do |t|
+    t.bigint "surveillance_configuration_question_id", null: false
+    t.string "option", null: false
+    t.integer "position", default: 0, null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["surveillance_configuration_question_id", "position"], name: "idx_surv_config_question_options_position"
+    t.index ["surveillance_configuration_question_id"], name: "idx_surv_config_question_options_question"
+  end
+
+  create_table "surveillance_configuration_questions", force: :cascade do |t|
+    t.bigint "surveillance_configuration_id", null: false
+    t.text "question", null: false
+    t.integer "question_type", default: 0, null: false
+    t.integer "position", default: 0, null: false
+    t.boolean "required", default: false, null: false
+    t.text "help_text"
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["surveillance_configuration_id", "position"], name: "idx_surv_config_questions_position"
+    t.index ["surveillance_configuration_id"], name: "idx_surv_config_questions_config"
+  end
+
+  create_table "surveillance_configurations", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_surveillance_configurations_on_name", unique: true
+    t.index ["status"], name: "index_surveillance_configurations_on_status"
+  end
+
+  create_table "surveillance_inspections", force: :cascade do |t|
+    t.bigint "epidemiological_surveillance_program_id", null: false
+    t.date "fecha", null: false
+    t.bigint "company_area_id", null: false
+    t.string "inspector", null: false
+    t.string "fuente_emision", null: false
+    t.integer "control_fuente", default: 2, null: false
+    t.integer "extraccion_operativa", default: 2, null: false
+    t.integer "sin_obstrucciones", default: 2, null: false
+    t.integer "mantenimiento_vigente", default: 2, null: false
+    t.integer "fugas_derrames_controlados", default: 2, null: false
+    t.integer "almacenamiento_adecuado", default: 2, null: false
+    t.integer "epp_disponible", default: 2, null: false
+    t.integer "uso_adecuado", default: 2, null: false
+    t.integer "ventilacion_areas_comunes", default: 2, null: false
+    t.text "hallazgo_critico"
+    t.text "accion"
+    t.string "responsable"
+    t.date "fecha_limite"
+    t.integer "estado", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_area_id"], name: "index_surveillance_inspections_on_company_area_id"
+    t.index ["epidemiological_surveillance_program_id", "fecha"], name: "idx_surv_inspections_program_fecha"
+    t.index ["epidemiological_surveillance_program_id"], name: "idx_surv_inspections_program"
+  end
+
+  create_table "surveillance_question_options", force: :cascade do |t|
+    t.bigint "surveillance_question_id", null: false
+    t.string "option_text", null: false
+    t.string "option_value"
+    t.integer "position", default: 0, null: false
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["surveillance_question_id", "option_text"], name: "idx_option_question_text", unique: true
+    t.index ["surveillance_question_id"], name: "idx_option_question"
+  end
+
+  create_table "surveillance_questions", force: :cascade do |t|
+    t.bigint "surveillance_survey_id", null: false
+    t.text "question", null: false
+    t.integer "question_type", default: 0, null: false
+    t.integer "position", default: 0, null: false
+    t.boolean "required", default: false, null: false
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "help_text"
+    t.index ["surveillance_survey_id", "position"], name: "idx_question_survey_position", unique: true
+    t.index ["surveillance_survey_id"], name: "idx_question_survey"
+  end
+
+  create_table "surveillance_report_hazards", force: :cascade do |t|
+    t.bigint "surveillance_report_id", null: false
+    t.string "agent"
+    t.string "substance_product"
+    t.text "possible_effects"
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["surveillance_report_id", "position"], name: "idx_sve_report_hazards_position"
+    t.index ["surveillance_report_id"], name: "idx_sve_report_hazards_report"
+  end
+
+  create_table "surveillance_report_populations", force: :cascade do |t|
+    t.bigint "surveillance_report_id", null: false
+    t.string "priority"
+    t.string "exposure"
+    t.integer "number_exposed"
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["surveillance_report_id", "position"], name: "idx_sve_report_populations_position"
+    t.index ["surveillance_report_id"], name: "idx_sve_report_populations_report"
+  end
+
+  create_table "surveillance_report_processes", force: :cascade do |t|
+    t.bigint "surveillance_report_id", null: false
+    t.string "process_name"
+    t.text "risks"
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["surveillance_report_id", "position"], name: "idx_sve_report_processes_position"
+    t.index ["surveillance_report_id"], name: "idx_sve_report_processes_report"
+  end
+
+  create_table "surveillance_reports", force: :cascade do |t|
+    t.bigint "epidemiological_surveillance_program_id", null: false
+    t.string "responsible_name"
+    t.string "responsible_position"
+    t.string "responsible_license"
+    t.integer "number_of_workers"
+    t.boolean "autoriza_firma", default: false, null: false
+    t.date "fecha_firma"
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["epidemiological_surveillance_program_id"], name: "idx_sve_reports_program"
+    t.index ["epidemiological_surveillance_program_id"], name: "idx_sve_reports_program_unique", unique: true
+  end
+
+  create_table "surveillance_survey_responses", force: :cascade do |t|
+    t.bigint "surveillance_survey_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "entity_id", null: false
+    t.datetime "response_date", null: false
+    t.integer "review_status", default: 0, null: false
+    t.bigint "reviewed_by_id"
+    t.datetime "reviewed_at"
+    t.boolean "selected_for_sve", default: false, null: false
+    t.datetime "selected_at"
+    t.integer "status", default: 0, null: false
+    t.text "observations"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["entity_id"], name: "idx_response_entity"
+    t.index ["reviewed_by_id"], name: "idx_response_reviewer"
+    t.index ["surveillance_survey_id", "user_id", "response_date"], name: "idx_response_survey_user_date", unique: true
+    t.index ["surveillance_survey_id"], name: "idx_response_survey"
+    t.index ["user_id"], name: "idx_response_user"
+  end
+
+  create_table "surveillance_surveys", force: :cascade do |t|
+    t.bigint "epidemiological_surveillance_program_id", null: false
+    t.string "name", null: false
+    t.text "description"
+    t.string "version", default: "1.0", null: false
+    t.boolean "active", default: true, null: false
+    t.bigint "created_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by_id"], name: "index_surveillance_surveys_on_created_by_id"
+    t.index ["epidemiological_surveillance_program_id", "name", "version"], name: "idx_survey_program_name_version", unique: true
+    t.index ["epidemiological_surveillance_program_id"], name: "idx_survey_program"
+  end
+
+  create_table "surveillance_workers", force: :cascade do |t|
+    t.bigint "epidemiological_surveillance_program_id", null: false
+    t.bigint "user_id", null: false
+    t.integer "status", default: 0, null: false
+    t.date "entry_date", null: false
+    t.date "exit_date"
+    t.text "observations"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["epidemiological_surveillance_program_id", "user_id"], name: "idx_survey_workers_program_user", unique: true
+    t.index ["epidemiological_surveillance_program_id"], name: "idx_survey_workers_program"
+    t.index ["user_id"], name: "idx_survey_workers_user"
   end
 
   create_table "survey_profiles", force: :cascade do |t|
@@ -2774,6 +3122,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_28_020231) do
   add_foreign_key "car_checklists", "users"
   add_foreign_key "change_management_items", "change_managements"
   add_foreign_key "change_managements", "entities"
+  add_foreign_key "characterizations", "surveillance_workers"
   add_foreign_key "check_list_items", "check_lists"
   add_foreign_key "clasification_danger_details", "clasification_dangers"
   add_foreign_key "commitments", "evidences"
@@ -2784,8 +3133,22 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_28_020231) do
   add_foreign_key "danger_detail_risks", "clasification_danger_details"
   add_foreign_key "danger_preventions", "clasification_danger_details"
   add_foreign_key "description_jobs", "entities"
+  add_foreign_key "detail_diseases", "surveillance_configurations"
   add_foreign_key "direction_reviews", "entities"
   add_foreign_key "emergency_plans", "entities"
+  add_foreign_key "epidemiological_surveillance_case_follow_ups", "epidemiological_surveillance_cases"
+  add_foreign_key "epidemiological_surveillance_case_follow_ups", "users"
+  add_foreign_key "epidemiological_surveillance_case_histories", "epidemiological_surveillance_cases", name: "fk_sve_case_histories_case"
+  add_foreign_key "epidemiological_surveillance_case_histories", "users"
+  add_foreign_key "epidemiological_surveillance_cases", "entities"
+  add_foreign_key "epidemiological_surveillance_cases", "epidemiological_surveillance_programs"
+  add_foreign_key "epidemiological_surveillance_cases", "events"
+  add_foreign_key "epidemiological_surveillance_cases", "surveillance_survey_responses"
+  add_foreign_key "epidemiological_surveillance_cases", "users"
+  add_foreign_key "epidemiological_surveillance_cases", "users", column: "responsible_id"
+  add_foreign_key "epidemiological_surveillance_programs", "entities"
+  add_foreign_key "epidemiological_surveillance_programs", "surveillance_configurations"
+  add_foreign_key "epidemiological_surveillance_programs", "users", column: "responsible_id"
   add_foreign_key "epp_recuests", "entities"
   add_foreign_key "epp_recuests", "protection_elements"
   add_foreign_key "epp_recuests", "users"
@@ -2795,6 +3158,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_28_020231) do
   add_foreign_key "evaluations", "entities"
   add_foreign_key "evaluations", "risk_levels"
   add_foreign_key "evaluations", "rules"
+  add_foreign_key "events", "detail_diseases"
   add_foreign_key "evidences", "entities"
   add_foreign_key "evidences", "evaluation_rule_details"
   add_foreign_key "evidences", "templates"
@@ -2894,10 +3258,35 @@ ActiveRecord::Schema[7.0].define(version: 2026_07_28_020231) do
   add_foreign_key "security_standards", "entities"
   add_foreign_key "simulacrum_items", "simulacrums"
   add_foreign_key "simulacrums", "entities"
+  add_foreign_key "sintomas", "surveillance_workers"
   add_foreign_key "situation_conditions", "type_condition_inspections"
   add_foreign_key "standar_detail_items", "standar_details"
   add_foreign_key "standar_details", "standars"
   add_foreign_key "standars", "rules"
+  add_foreign_key "surveillance_activities", "epidemiological_surveillance_programs"
+  add_foreign_key "surveillance_activities", "users", column: "responsible_id"
+  add_foreign_key "surveillance_answer_options", "surveillance_answers"
+  add_foreign_key "surveillance_answer_options", "surveillance_question_options"
+  add_foreign_key "surveillance_answers", "surveillance_questions"
+  add_foreign_key "surveillance_answers", "surveillance_survey_responses"
+  add_foreign_key "surveillance_configuration_question_options", "surveillance_configuration_questions"
+  add_foreign_key "surveillance_configuration_questions", "surveillance_configurations"
+  add_foreign_key "surveillance_inspections", "company_areas"
+  add_foreign_key "surveillance_inspections", "epidemiological_surveillance_programs"
+  add_foreign_key "surveillance_question_options", "surveillance_questions"
+  add_foreign_key "surveillance_questions", "surveillance_surveys"
+  add_foreign_key "surveillance_report_hazards", "surveillance_reports"
+  add_foreign_key "surveillance_report_populations", "surveillance_reports"
+  add_foreign_key "surveillance_report_processes", "surveillance_reports"
+  add_foreign_key "surveillance_reports", "epidemiological_surveillance_programs"
+  add_foreign_key "surveillance_survey_responses", "entities"
+  add_foreign_key "surveillance_survey_responses", "surveillance_surveys"
+  add_foreign_key "surveillance_survey_responses", "users"
+  add_foreign_key "surveillance_survey_responses", "users", column: "reviewed_by_id"
+  add_foreign_key "surveillance_surveys", "epidemiological_surveillance_programs"
+  add_foreign_key "surveillance_surveys", "users", column: "created_by_id"
+  add_foreign_key "surveillance_workers", "epidemiological_surveillance_programs"
+  add_foreign_key "surveillance_workers", "users"
   add_foreign_key "survey_profiles", "entities"
   add_foreign_key "templates", "standar_detail_items"
   add_foreign_key "training_items", "trainings"

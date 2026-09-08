@@ -1,0 +1,123 @@
+<div class="container-fluid py-3">
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-light">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+        <div>
+          <h5 class="mb-1">
+            <i class="bi bi-person-lines-fill me-2"></i>
+            Novedades Empleados
+          </h5>
+          <div class="text-muted small">
+            <%= @epidemiological_surveillance_program.name %>
+          </div>
+        </div>
+        <%= link_to epidemiological_surveillance_program_path(@epidemiological_surveillance_program), class: "btn btn-sm btn-outline-secondary" do %>
+          <i class="bi bi-arrow-left me-1"></i>
+          Volver al SVE
+        <% end %>
+      </div>
+    </div>
+    <div class="card-body">
+      <% if @events.any? %>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Fecha</th>
+                <th>Trabajador</th>
+                <th>Tipo</th>
+                <th>Enfermedad</th>
+                <th>Accidente laboral</th>
+                <th>Incapacidad</th>
+                <th class="text-center">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @events.each do |event| %>
+                <tr>
+                  <td>
+                    <%= event.date_new.present? ? l(event.date_new, format: :short) : "-" %>
+                  </td>
+                  <td>
+                    <% if event.user.present? %>
+                      <strong>
+                        <%= event.user.name %>
+                      </strong>
+                    <% else %>
+                      -
+                    <% end %>
+                  </td>
+                  <td>
+                    <% if event.occupational_disease.to_i == 1 %>
+                      <span class="badge bg-warning text-dark">
+                        <i class="bi bi-heart-pulse me-1"></i>
+                        Enfermedad laboral
+                      </span>
+                    <% elsif event.work_accident.to_i == 1 %>
+                      <span class="badge bg-danger">
+                        <i class="bi bi-exclamation-triangle me-1"></i>
+                        Accidente de trabajo
+                      </span>
+                    <% else %>
+                      <span class="badge bg-secondary">
+                        Novedad
+                      </span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <% if event.detail_disease.present? %>
+                      <div>
+                        <strong>
+                          <%= event.detail_disease.name %>
+                        </strong>
+                      </div>
+                      <% if event.detail_disease.surveillance_configuration.present? %>
+                        <small class="text-muted">
+                          <i class="bi bi-shield-check me-1"></i>
+                          <%= event.detail_disease.surveillance_configuration.name %>
+                        </small>
+                      <% end %>
+                    <% else %>
+                      <span class="text-muted">
+                        Sin enfermedad asociada
+                      </span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <% if event.work_accident.to_i == 1 %>
+                      <span class="badge bg-danger">Sí</span>
+                    <% else %>
+                      <span class="badge bg-light text-dark border">No</span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <% if event.disability_start_date.present? %>
+                      <span class="badge bg-info text-dark">
+                        <i class="bi bi-calendar-check me-1"></i>
+                        <%= event.days_absenteeism || 0 %> días
+                      </span>
+                    <% else %>
+                      <span class="text-muted">Sin incapacidad</span>
+                    <% end %>
+                  </td>
+                  <td class="text-center">
+                    <%= link_to event_path(event), class: "btn btn-sm btn-outline-primary", title: "Ver novedad" do %>
+                      <i class="bi bi-eye me-1"></i>
+                      Ver
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="alert alert-light border text-center mb-0">
+          <i class="bi bi-info-circle me-2"></i>
+          No existen novedades de empleados asociadas
+          a este SVE.
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,354 @@
+<%= form_with(
+      model: @sintoma,
+      url: epidemiological_surveillance_program_surveillance_worker_sintoma_path(
+        @epidemiological_surveillance_program,
+        @surveillance_worker
+      ),
+      local: true
+    ) do |form| %>
+
+
+  <% if @sintoma.errors.any? %>
+
+    <div class="alert alert-danger">
+
+      <strong>
+        No fue posible guardar el registro de síntomas:
+      </strong>
+
+      <ul class="mb-0 mt-2">
+
+        <% @sintoma.errors.full_messages.each do |error| %>
+
+          <li>
+            <%= error %>
+          </li>
+
+        <% end %>
+
+      </ul>
+
+    </div>
+
+  <% end %>
+
+
+  <!-- ========================= -->
+  <!-- SÍNTOMAS -->
+  <!-- ========================= -->
+
+  <div class="card shadow-sm mb-4">
+
+    <div class="card-header bg-light">
+
+      <h6 class="mb-0">
+        <i class="bi bi-thermometer-half me-1"></i>
+        Síntomas
+      </h6>
+
+    </div>
+
+
+    <div class="card-body">
+
+      <div class="row g-3">
+
+
+        <% [
+          [:fiebre, "Fiebre"],
+          [:tos, "Tos"],
+          [:dolor_garganta, "Dolor de garganta"],
+          [:congestion_nasal, "Congestión nasal"],
+          [:dificultad_respirar, "Dificultad para respirar"],
+          [:dolor_pecho, "Dolor en el pecho"],
+          [:dolor_cabeza, "Dolor de cabeza"],
+          [:dolores_musculares, "Dolores musculares"],
+          [:escalofrios, "Escalofríos"],
+          [:fatiga_cansancio_inusual, "Fatiga o cansancio inusual"],
+          [:nauseas_vomito, "Náuseas o vómito"],
+          [:diarrea, "Diarrea"]
+        ].each do |campo, etiqueta| %>
+
+
+          <div class="col-12 col-md-6 col-lg-4">
+
+            <div class="form-check form-switch">
+
+              <%= form.check_box(
+                    campo,
+                    class: "form-check-input",
+                    role: "switch"
+                  ) %>
+
+              <%= form.label(
+                    campo,
+                    etiqueta,
+                    class: "form-check-label"
+                  ) %>
+
+            </div>
+
+          </div>
+
+
+        <% end %>
+
+
+        <!-- OTRO -->
+
+        <div class="col-12 col-md-6 col-lg-4">
+
+          <div class="form-check form-switch">
+
+            <%= form.check_box(
+                  :otro,
+                  class: "form-check-input",
+                  role: "switch"
+                ) %>
+
+            <%= form.label(
+                  :otro,
+                  "Otro",
+                  class: "form-check-label"
+                ) %>
+
+          </div>
+
+        </div>
+
+
+        <!-- NINGUNO -->
+
+        <div class="col-12 col-md-6 col-lg-4">
+
+          <div class="form-check form-switch">
+
+            <%= form.check_box(
+                  :ninguno_anteriores,
+                  class: "form-check-input",
+                  role: "switch"
+                ) %>
+
+            <%= form.label(
+                  :ninguno_anteriores,
+                  "Ninguno de los anteriores",
+                  class: "form-check-label"
+                ) %>
+
+          </div>
+
+        </div>
+
+
+        <!-- OTRO CUAL -->
+
+        <div class="col-12">
+
+          <%= form.label(
+                :otro_cual,
+                "Otro, ¿cuál?",
+                class: "form-label fw-semibold"
+              ) %>
+
+          <%= form.text_field(
+                :otro_cual,
+                class: "form-control",
+                maxlength: 255
+              ) %>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ========================= -->
+  <!-- CONDICIONES -->
+  <!-- ========================= -->
+
+  <div class="card shadow-sm mb-4">
+
+    <div class="card-header bg-light">
+
+      <h6 class="mb-0">
+        <i class="bi bi-clipboard-pulse me-1"></i>
+        Condiciones y exposición
+      </h6>
+
+    </div>
+
+
+    <div class="card-body">
+
+      <div class="row g-3">
+
+
+        <div class="col-12 col-md-4">
+
+          <div class="form-check form-switch">
+
+            <%= form.check_box(
+                  :incapacidad,
+                  class: "form-check-input",
+                  role: "switch"
+                ) %>
+
+            <%= form.label(
+                  :incapacidad,
+                  "Incapacidad",
+                  class: "form-check-label"
+                ) %>
+
+          </div>
+
+        </div>
+
+
+        <div class="col-12 col-md-4">
+
+          <div class="form-check form-switch">
+
+            <%= form.check_box(
+                  :contacto_respiratorio,
+                  class: "form-check-input",
+                  role: "switch"
+                ) %>
+
+            <%= form.label(
+                  :contacto_respiratorio,
+                  "Contacto respiratorio",
+                  class: "form-check-label"
+                ) %>
+
+          </div>
+
+        </div>
+
+
+        <div class="col-12 col-md-4">
+
+          <div class="form-check form-switch">
+
+            <%= form.check_box(
+                  :irritacion_asociada_trabajo,
+                  class: "form-check-input",
+                  role: "switch"
+                ) %>
+
+            <%= form.label(
+                  :irritacion_asociada_trabajo,
+                  "Irritación asociada al trabajo",
+                  class: "form-check-label"
+                ) %>
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ========================= -->
+  <!-- GESTIÓN SST -->
+  <!-- ========================= -->
+
+  <div class="card shadow-sm mb-4">
+
+    <div class="card-header bg-light">
+
+      <h6 class="mb-0">
+        <i class="bi bi-shield-check me-1"></i>
+        Gestión SST
+      </h6>
+
+    </div>
+
+
+    <div class="card-body">
+
+      <div class="row g-3">
+
+
+        <div class="col-12 col-md-6">
+
+          <%= form.label(
+                :accion_sst,
+                "Acción SST",
+                class: "form-label fw-semibold"
+              ) %>
+
+          <%= form.select(
+                :accion_sst,
+                Sintoma.accion_sst_options,
+                {},
+                class: "form-select"
+              ) %>
+
+        </div>
+
+
+        <div class="col-12 col-md-6">
+
+          <%= form.label(
+                :seguimiento,
+                "Seguimiento",
+                class: "form-label fw-semibold"
+              ) %>
+
+          <%= form.select(
+                :seguimiento,
+                Sintoma.seguimiento_options,
+                {},
+                class: "form-select"
+              ) %>
+
+        </div>
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ========================= -->
+  <!-- BOTONES -->
+  <!-- ========================= -->
+
+  <div class="d-flex flex-wrap justify-content-center gap-2">
+
+    <%= form.submit(
+          @sintoma.persisted? ?
+            "Actualizar síntomas" :
+            "Guardar síntomas",
+          class: "btn btn-primary"
+        ) %>
+
+
+    <%= link_to(
+          epidemiological_surveillance_program_surveillance_worker_path(
+            @epidemiological_surveillance_program,
+            @surveillance_worker
+          ),
+          class: "btn btn-outline-secondary"
+        ) do %>
+
+      <i class="bi bi-x-circle me-1"></i>
+      Cancelar
+
+    <% end %>
+
+  </div>
+
+
+<% end %>

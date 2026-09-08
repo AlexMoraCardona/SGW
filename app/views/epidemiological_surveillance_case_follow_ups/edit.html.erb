@@ -1,0 +1,296 @@
+<div class="container-fluid px-2 px-md-4 py-3">
+  <div class="card shadow-sm">
+    <div class="card-header bg-light">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+          <div>
+              <h5 class="mb-1">
+                <i class="bi bi-pencil-square me-2"></i>
+                Editar seguimiento
+              </h5>
+              <small class="text-muted">
+                Caso SVE #<%= @epidemiological_surveillance_case.id %>
+              </small>
+          </div>
+          <%= link_to(epidemiological_surveillance_program_epidemiological_surveillance_case_epidemiological_surveillance_case_follow_up_path(@epidemiological_surveillance_program, @epidemiological_surveillance_case, @follow_up), class: "btn btn-outline-secondary btn-sm") do %>
+              <i class="bi bi-arrow-left me-1"></i>
+              Cancelar
+          <% end %>
+      </div>
+    </div>
+    <div class="card-body">
+      <%= form_with(model: @follow_up, html: { multipart: true }, url: epidemiological_surveillance_program_epidemiological_surveillance_case_epidemiological_surveillance_case_follow_up_path(@epidemiological_surveillance_program, @epidemiological_surveillance_case, @follow_up), method: :patch ) do |form| %>
+        <% if @follow_up.errors.any? %>
+          <div class="alert alert-danger">
+            <strong>
+                No fue posible actualizar el seguimiento.
+            </strong>
+            <ul class="mb-0 mt-2">
+              <% @follow_up.errors.full_messages.each do |error| %>
+                <li><%= error %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <div class="row g-3">
+          <!-- FECHA -->
+          <div class="col-12 col-md-6">
+            <%= form.label :follow_up_date, "Fecha del seguimiento", class: "form-label fw-semibold" %>
+            <%= form.datetime_local_field(:follow_up_date,  class: "form-control") %>
+          </div>
+          <!-- PRÓXIMA FECHA -->
+          <div class="col-12 col-md-6">
+            <%= form.label :next_follow_up_date, "Próximo seguimiento", class: "form-label fw-semibold" %>
+            <%= form.date_field(:next_follow_up_date, class: "form-control") %>
+          </div>
+          <!-- TIPO -->
+          <div class="col-12 col-md-6">
+            <button type="button" class="btn btn-sm btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#modalInformacionSeguimiento" title="Información sobre los tipos de seguimiento" style="width: 30px; height: 30px;" > <i class="bi bi-info-lg"></i> </button>
+            <%= form.label :follow_up_type, "Tipo de seguimiento", class: "form-label fw-semibold" %>
+            <%= form.select(:follow_up_type,
+                  [
+                    ["Evaluación inicial", "initial_evaluation"],
+                    ["Seguimiento", "follow_up"],
+                    ["Visita", "visit"],
+                    ["Contacto telefónico", "phone_contact"],
+                    ["Revisión documental", "document_review"],
+                    ["Cierre", "closure"]
+                  ],
+                  { include_blank: "Seleccione..." },
+                  class: "form-select"
+                ) %>
+          </div>
+          <!-- ESTADO -->
+          <div class="col-12 col-md-6">
+            <button type="button" class="btn btn-sm btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#modalInformacionSeguimiento" title="Información sobre los estados resultantes" style="width: 30px; height: 30px;" > <i class="bi bi-info-lg"></i> </button>
+            <%= form.label :status, "Estado", class: "form-label fw-semibold" %>
+            <%= form.select(
+                  :status,
+                  [
+                    ["Identificado", "identified"],
+                    ["En evaluación", "in_evaluation"],
+                    ["En seguimiento", "in_follow_up"],
+                    ["Cerrado", "closed"],
+                    ["No es caso", "not_case"]
+                  ],
+                  { include_blank: "Seleccione..." },
+                  class: "form-select"
+                ) %>
+          </div>
+          <!-- RESULTADO -->
+          <div class="col-12">
+            <%= form.label :result, "Resultado", class: "form-label fw-semibold" %>
+            <%= form.text_area(:result, rows: 4, class: "form-control", placeholder: "Describa el resultado del seguimiento..." ) %>
+          </div>
+          <!-- OBSERVACIONES -->
+          <div class="col-12">
+            <%= form.label :observations, "Observaciones", class: "form-label fw-semibold" %>
+            <%= form.text_area(:observations, rows: 4, class: "form-control", placeholder: "Registre observaciones adicionales..." ) %>
+          </div>
+          <!-- ARCHIVOS ADJUNTOS -->
+          <div class="col-12">
+             <%= form.label :follow_up_files, "Agregar evidencias / archivos adjuntos", class: "form-label fw-semibold" %>
+             <%= form.file_field(:follow_up_files,  multiple: true, class: "form-control", accept: ".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png") %>
+            <div class="form-text">
+                Puede agregar nuevos documentos o imágenes relacionados con este seguimiento.
+            </div>
+          </div>
+        </div>
+        <hr class="my-4">
+        <!-- BOTONERA -->
+        <div class="d-flex flex-column flex-sm-row justify-content-center gap-2">
+            <%= link_to(epidemiological_surveillance_program_epidemiological_surveillance_case_epidemiological_surveillance_case_follow_up_path(@epidemiological_surveillance_program, @epidemiological_surveillance_case, @follow_up), class: "btn btn-outline-secondary") do %>
+                <i class="bi bi-x-circle me-1"></i>
+                Cancelar
+            <% end %>
+            <%= form.button(type: "submit",  class: "btn btn-primary") do %>
+                <i class="bi bi-check-circle me-1"></i>
+                Guardar cambios
+            <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <!-- ========================================================= -->
+  <!-- MODAL INFORMACIÓN SOBRE SEGUIMIENTOS SVE -->
+  <!-- ========================================================= -->
+  <div class="modal fade" id="modalInformacionSeguimiento" tabindex="-1" aria-labelledby="modalInformacionSeguimientoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <!-- ENCABEZADO -->
+        <div class="modal-header bg-light">
+          <h5 class="modal-title" id="modalInformacionSeguimientoLabel">
+            <i class="bi bi-clipboard-pulse text-primary me-2"></i>
+            Información del seguimiento SVE
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <!-- CONTENIDO -->
+        <div class="modal-body">
+          <!-- INTRODUCCIÓN -->
+          <div class="alert alert-light border mb-4">
+            <div class="d-flex align-items-start">
+              <i class="bi bi-info-circle text-primary fs-4 me-2"></i>
+              <div>
+                <strong>¿Cómo registrar un seguimiento?</strong>
+                <p class="mb-0 mt-1">
+                  El seguimiento permite registrar las acciones realizadas sobre un caso SVE, los resultados obtenidos y la decisión sobre el estado en que debe continuar el caso.
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- ===================================================== -->
+          <!-- TIPO DE SEGUIMIENTO -->
+          <!-- ===================================================== -->
+          <h5 class="fw-bold mb-3">
+            <i class="bi bi-arrow-repeat text-primary me-2"></i>
+            Tipo de seguimiento
+          </h5>
+          <!-- SEGUIMIENTO TELEFÓNICO -->
+          <div class="card border mb-3">
+            <div class="card-body">
+              <div class="d-flex align-items-start">
+                <span class="badge bg-primary me-3 mt-1">
+                  Telefónico
+                </span>
+                <div>
+                  <h6 class="fw-bold mb-1">Seguimiento telefónico</h6>
+                  <p class="mb-0 text-muted">
+                    Se utiliza cuando el seguimiento se realiza mediante una llamada telefónica o contacto remoto con el trabajador.
+
+                    Permite registrar información sobre evolución, síntomas, cumplimiento de recomendaciones o novedades.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- SEGUIMIENTO PRESENCIAL -->
+          <div class="card border mb-3">
+            <div class="card-body">
+              <div class="d-flex align-items-start">
+                <span class="badge bg-success me-3 mt-1">
+                  Presencial
+                </span>
+                <div>
+                  <h6 class="fw-bold mb-1">Seguimiento presencial</h6>
+                  <p class="mb-0 text-muted">
+                    Se utiliza cuando el responsable realiza el seguimiento directamente con el trabajador, mediante una atención, entrevista o revisión presencial.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- SEGUIMIENTO DOCUMENTAL -->
+          <div class="card border mb-3">
+            <div class="card-body">
+              <div class="d-flex align-items-start">
+                  <span class="badge bg-secondary me-3 mt-1">Documental</span>
+                  <div>
+                    <h6 class="fw-bold mb-1">Seguimiento documental</h6>
+                    <p class="mb-0 text-muted">
+                      Se utiliza cuando el seguimiento se realiza mediante revisión de documentos, resultados, incapacidades, recomendaciones, soportes o evidencias relacionadas con el caso.
+                    </p>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <!-- OTRO -->
+          <div class="card border mb-4">
+             <div class="card-body">
+                <div class="d-flex align-items-start">
+                  <span class="badge bg-dark me-3 mt-1">Otro</span>
+                  <div>
+                    <h6 class="fw-bold mb-1">Otro tipo de seguimiento</h6>
+                    <p class="mb-0 text-muted">
+                      Se utiliza cuando la actividad realizada no corresponde a los tipos anteriores. Debe describirse claramente en las observaciones del seguimiento.
+                    </p>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <!-- ===================================================== -->
+          <!-- ESTADO RESULTANTE -->
+          <!-- ===================================================== -->
+          <h5 class="fw-bold mb-3">
+              <i class="bi bi-flag text-primary me-2"></i>
+              Estado resultante
+          </h5>
+          <div class="alert alert-light border mb-3">
+              <i class="bi bi-lightbulb text-warning me-2"></i>
+              <strong>Importante:</strong>
+              El estado resultante indica cómo debe continuar el caso  después del seguimiento realizado.
+          </div>
+          <!-- CONTINÚA EN SEGUIMIENTO -->
+          <div class="card border mb-3">
+            <div class="card-body">
+                <div class="d-flex align-items-start">
+                   <span class="badge bg-success me-3 mt-1">En seguimiento</span>
+                  <div>
+                    <h6 class="fw-bold mb-1">El caso continúa en seguimiento</h6>
+                    <p class="mb-0 text-muted">
+                      Se utiliza cuando el caso todavía requiere nuevas actividades, controles o verificaciones.
+
+                      En este caso se recomienda registrar una <strong>próxima fecha de seguimiento</strong>.
+                    </p>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <!-- CERRADO -->
+          <div class="card border mb-3">
+            <div class="card-body">
+                <div class="d-flex align-items-start">
+                  <span class="badge bg-dark me-3 mt-1">Cerrado</span>
+                  <div>
+                    <h6 class="fw-bold mb-1">El caso puede cerrarse</h6>
+                    <p class="mb-0 text-muted">
+                      Se utiliza cuando el proceso de seguimiento terminó y no se requieren nuevas actividades dentro del programa SVE.
+
+                      Debe existir una justificación clara en el resultado u observaciones.
+                    </p>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <!-- NO ES CASO -->
+          <div class="card border mb-3">
+            <div class="card-body">
+              <div class="d-flex align-items-start">
+                  <span class="badge bg-secondary me-3 mt-1">No es caso</span>
+                  <div>
+                      <h6 class="fw-bold mb-1">El caso es descartado</h6>
+                      <p class="mb-0 text-muted">
+                          Se utiliza cuando, como resultado de la evaluación o seguimiento, se determina que la situación no cumple los criterios para continuar como caso SVE.
+                      </p>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <!-- RESUMEN -->
+          <div class="alert alert-light border mt-4 mb-0">
+            <h6 class="fw-bold">
+              <i class="bi bi-diagram-3 me-1"></i>
+              Ejemplo
+            </h6>
+            <div class="text-center mt-3">
+              <span class="badge bg-success">En seguimiento</span>
+              <i class="bi bi-arrow-right mx-2"></i>
+              <span class="badge bg-success">En seguimiento</span>
+              <i class="bi bi-arrow-right mx-2"></i>
+              <span class="badge bg-dark">Cerrado</span>
+            </div>
+            <p class="text-muted small text-center mt-3 mb-0">
+              El caso puede tener varios seguimientos mientras sea necesario. Cuando ya no requiere nuevas actividades, puede pasar a <strong>Cerrado</strong>.
+            </p>
+          </div>
+        </div>
+        <!-- PIE -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+            <i class="bi bi-x-circle me-1"></i>
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

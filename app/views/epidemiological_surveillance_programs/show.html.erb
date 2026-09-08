@@ -1,0 +1,2422 @@
+<%= javascript_include_tag "https://www.google.com/jsapi" %>
+<%= wicked_pdf_javascript_include_tag "chartkick" %>
+<%= wicked_pdf_javascript_include_tag "application", "chartkick" %>
+
+<div class="container-fluid py-3">
+  <div align="left"; class="container col-12">
+    <a class="navbar-brand" href="/">
+        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+    </a>
+  </div>
+  <!-- ENCABEZADO -->
+  <div class="card shadow-sm border-0 mb-4">
+
+    <div class="card-header bg-light">
+
+      <div class="d-flex flex-column flex-md-row
+                  justify-content-between
+                  align-items-md-center
+                  gap-3">
+
+        <div>
+
+          <div class="d-flex align-items-center mb-1">
+
+            <i class="bi bi-clipboard2-pulse fs-3 me-2"></i>
+
+            <h4 class="mb-0">
+              <%= @epidemiological_surveillance_program.name %>
+            </h4>
+
+          </div>
+
+          <div class="text-muted">
+
+            <strong>Código:</strong>
+            <%= @epidemiological_surveillance_program.code %>
+
+          </div>
+
+        </div>
+
+<% unless @epidemiological_surveillance_program.surveillance_report.present? %>
+
+  <%= link_to new_epidemiological_surveillance_program_surveillance_report_path(
+        @epidemiological_surveillance_program
+      ),
+      class: "btn btn-outline-primary" do %>
+
+    <i class="bi bi-file-earmark-medical me-1"></i>
+    Nuevo Reporte SVE
+
+  <% end %>
+
+<% else %>
+
+  <%= link_to epidemiological_surveillance_program_surveillance_report_path(
+        @epidemiological_surveillance_program
+      ),
+      class: "btn btn-outline-success" do %>
+
+    <i class="bi bi-file-earmark-text me-1"></i>
+    Ver Reporte SVE
+
+  <% end %>
+
+<% end %>
+
+
+
+
+        <!-- ESTADO -->
+        <div>
+<% if @epidemiological_surveillance_program.draft? %>
+
+  <span class="badge bg-secondary fs-6">
+    Borrador
+  </span>
+
+<% elsif @epidemiological_surveillance_program.active? %>
+
+  <span class="badge bg-success fs-6">
+    Activo
+  </span>
+
+<% elsif @epidemiological_surveillance_program.closed? %>
+
+  <span class="badge bg-dark fs-6">
+    Cerrado
+  </span>
+
+<% elsif @epidemiological_surveillance_program.inactive? %>
+
+  <span class="badge bg-warning text-dark fs-6">
+    Inactivo
+  </span>
+
+<% end %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- INFORMACIÓN DEL PROGRAMA -->
+    <div class="card-body">
+
+      <div class="row">
+
+        <!-- ENTIDAD -->
+        <div class="col-12 col-md-6 col-lg-4 mb-3">
+
+          <div class="text-muted small">
+            <i class="bi bi-building me-1"></i>
+            Entidad
+          </div>
+
+          <div class="fw-semibold">
+
+            <%= @epidemiological_surveillance_program
+                  .entity
+                  &.business_name.presence ||
+                @epidemiological_surveillance_program
+                  .entity
+                  &.first_name ||
+                "Sin entidad" %>
+
+          </div>
+
+        </div>
+
+
+        <!-- RESPONSABLE -->
+        <div class="col-12 col-md-6 col-lg-4 mb-3">
+
+          <div class="text-muted small">
+            <i class="bi bi-person-badge me-1"></i>
+            Responsable
+          </div>
+
+          <div class="fw-semibold">
+
+            <%= @epidemiological_surveillance_program
+                  .responsible
+                  &.name || "Sin responsable" %>
+
+          </div>
+
+        </div>
+
+
+        <!-- FECHA INICIO -->
+        <div class="col-12 col-md-6 col-lg-2 mb-3">
+
+          <div class="text-muted small">
+            <i class="bi bi-calendar-event me-1"></i>
+            Fecha inicio
+          </div>
+
+          <div class="fw-semibold">
+
+            <%= @epidemiological_surveillance_program
+                  .start_date
+                  &.strftime("%d/%m/%Y") || "-" %>
+
+          </div>
+
+        </div>
+
+
+        <!-- FECHA FIN -->
+        <div class="col-12 col-md-6 col-lg-2 mb-3">
+
+          <div class="text-muted small">
+            <i class="bi bi-calendar-check me-1"></i>
+            Fecha final
+          </div>
+
+          <div class="fw-semibold">
+
+            <%= @epidemiological_surveillance_program
+                  .end_date
+                  &.strftime("%d/%m/%Y") || "Vigente" %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <hr>
+
+
+      <!-- DESCRIPCIÓN -->
+      <div class="mb-4">
+
+        <h6 class="fw-bold">
+          <i class="bi bi-card-text me-1"></i>
+          Descripción
+        </h6>
+
+        <div class="text-muted">
+
+          <%= simple_format(
+                @epidemiological_surveillance_program.description.presence ||
+                "Sin descripción registrada."
+              ) %>
+
+        </div>
+
+      </div>
+
+
+      <!-- OBJETIVO -->
+      <div>
+
+        <h6 class="fw-bold">
+          <i class="bi bi-bullseye me-1"></i>
+          Objetivo
+        </h6>
+
+        <div class="text-muted">
+
+          <%= simple_format(
+                @epidemiological_surveillance_program.objective.presence ||
+                "Sin objetivo registrado."
+              ) %>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- MÓDULOS DEL PROGRAMA -->
+  <div class="row g-3 mb-4">
+    <!-- ENCUESTAS -->
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body text-center">
+          <div class="fs-1 text-primary mb-3">
+            <i class="bi bi-ui-checks display-5"></i>
+          </div>  
+          <h5 class="mt-2">
+            Encuestas
+          </h5>
+          <div class="display-6 fw-bold">
+            <%= @surveillance_surveys.count %>
+          </div>
+          <p class="text-muted small">
+            Encuestas asociadas al programa
+          </p>
+          <%= link_to(epidemiological_surveillance_program_surveillance_surveys_path(@epidemiological_surveillance_program), class: "btn btn-outline-primary btn-sm") do %>
+              <i class="bi bi-list-check me-1"></i>
+              Administrar encuestas
+          <% end %>
+          <%= link_to(epidemiological_surveillance_program_epidemiological_surveillance_cases_path(@epidemiological_surveillance_program), class: "btn btn-outline-primary") do %>
+            <i class="bi bi-clipboard2-pulse me-1"></i>
+            Casos del SVE
+            <% if @epidemiological_surveillance_program.epidemiological_surveillance_cases.where.not(status: :closed).exists? %>
+                <span class="badge bg-danger ms-1">
+                    <%= @epidemiological_surveillance_program.epidemiological_surveillance_cases.where.not(status: :closed).count %>
+                </span>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- TRABAJADORES -->
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body text-center">
+          <div class="fs-1 text-primary mb-3">
+            <i class="bi bi-people display-5"></i>
+          </div>
+          <h5 class="mt-2">
+            Trabajadores
+          </h5>
+          <div class="display-6 fw-bold">
+              <%= @surveillance_workers.size %>
+          </div>
+          <p class="text-muted small">
+            Trabajadores vinculados al SVE
+          </p>
+          <%= link_to(epidemiological_surveillance_program_surveillance_workers_path(@epidemiological_surveillance_program), class: "btn btn-outline-primary") do %>
+              <i class="bi bi-people me-1"></i>
+              Administrar trabajadores
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- CASOS -->
+    <div class="col-12 col-md-6 col-lg-2">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body text-center">
+          <div class="fs-1 text-primary mb-3">
+            <i class="bi bi-clipboard2-pulse display-5"></i>
+          </div>  
+          <h5 class="mt-2">
+            Casos epidemiológicos
+          </h5>
+          <div class="display-6 fw-bold">
+            <%= @surveillance_cases.count %>
+          </div>
+          <p class="text-muted small">
+            Casos registrados en el programa
+          </p>
+
+          <%= link_to(epidemiological_surveillance_program_epidemiological_surveillance_cases_path(@epidemiological_surveillance_program), class: "btn btn-outline-primary btn-sm") do %>
+            <i class="bi bi-folder2-open me-1"></i>
+            Administrar casos
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-2">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body text-center">
+          <div class="fs-1 text-primary mb-3">
+            <i class="bi bi-calendar-check"></i>
+          </div>
+          <h5 class="card-title">
+            Actividades
+          </h5>
+          <div class="display-6 fw-bold">
+            <%= @surveillance_activities.count %>
+          </div>
+          <p class="card-text text-muted">
+            Administración de las actividades
+          </p>
+          <%= link_to(epidemiological_surveillance_program_surveillance_activities_path(@epidemiological_surveillance_program), class: "btn btn-outline-primary") do %>
+            <i class="bi bi-calendar-check me-1"></i>
+            Ver actividades
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-2">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body text-center">
+          <div class="fs-1 text-primary mb-3">
+            <i class="bi bi-calendar-check"></i>
+          </div>
+          <h5 class="card-title">
+            Novedades Empleados
+          </h5>
+          <div class="display-6 fw-bold">
+            <%= @cant_novedades_empleados %>
+          </div>
+          <p class="card-text text-muted">
+            Novedades relacionadas con SVE
+          </p>
+          <%= link_to(novedades_empleados_epidemiological_surveillance_program_path(@epidemiological_surveillance_program), class: "btn btn-outline-primary") do %>
+            <i class="bi bi-person-lines-fill me-1"></i>
+            Ver novedades
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENCUESTAS REGISTRADAS -->
+  <div class="card shadow-sm border-0 mb-4">
+
+    <div class="card-header bg-light">
+
+      <h5 class="mb-0">
+
+        <i class="bi bi-ui-checks me-2"></i>
+        Encuestas del programa
+
+      </h5>
+
+    </div>
+
+    <div class="card-body">
+
+      <% if @surveillance_surveys.present? %>
+
+        <div class="table-responsive">
+
+          <table class="table table-hover align-middle">
+
+            <thead class="table-light">
+
+              <tr>
+                <th>Encuesta</th>
+                <th class="text-center">Versión</th>
+                <th class="text-center">Estado</th>
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <% @surveillance_surveys.each do |survey| %>
+
+                <tr>
+
+                  <td>
+
+                    <div class="fw-semibold">
+                      <%= survey.name %>
+                    </div>
+
+                    <% if survey.description.present? %>
+                      <small class="text-muted">
+                        <%= survey.description %>
+                      </small>
+                    <% end %>
+
+                  </td>
+
+                  <td class="text-center">
+                    <span class="badge bg-secondary">
+                      v<%= survey.version %>
+                    </span>
+                  </td>
+
+                  <td class="text-center">
+
+                    <% if survey.active? %>
+
+                      <span class="badge bg-success">
+                        Activa
+                      </span>
+
+                    <% else %>
+
+                      <span class="badge bg-secondary">
+                        Inactiva
+                      </span>
+
+                    <% end %>
+
+                  </td>
+
+                </tr>
+
+              <% end %>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      <% else %>
+
+        <div class="text-center py-4">
+
+          <i class="bi bi-ui-checks display-6 text-muted"></i>
+
+          <p class="text-muted mt-2 mb-0">
+            Este programa todavía no tiene encuestas configuradas.
+          </p>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+
+  <!-- CASOS -->
+  <div class="card shadow-sm border-0 mb-4">
+
+    <div class="card-header bg-light">
+
+      <h5 class="mb-0">
+
+        <i class="bi bi-clipboard2-pulse me-2"></i>
+        Casos epidemiológicos
+
+      </h5>
+
+    </div>
+
+    <div class="card-body">
+
+      <% if @surveillance_cases.present? %>
+
+        <div class="table-responsive">
+
+          <table class="table table-hover align-middle">
+
+            <thead class="table-light">
+
+              <tr>
+                <th>Trabajador</th>
+                <th>Origen</th>
+                <th>Fecha apertura</th>
+                <th class="text-center">Estado</th>
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <% @surveillance_cases.each do |sve_case| %>
+
+                <tr>
+
+                  <td>
+                    <%= sve_case.user&.name || "Sin trabajador" %>
+                  </td>
+
+                  <td>
+
+                    <% if sve_case.source_type == "survey" %>
+
+                      <span class="badge bg-info text-dark">
+                        Encuesta
+                      </span>
+
+                    <% elsif sve_case.source_type == "event" %>
+
+                      <span class="badge bg-warning text-dark">
+                        Evento
+                      </span>
+
+                    <% else %>
+
+                      <span class="badge bg-secondary">
+                        Otro
+                      </span>
+
+                    <% end %>
+
+                  </td>
+
+                  <td>
+                    <%= sve_case.opened_at&.strftime("%d/%m/%Y") || "-" %>
+                  </td>
+
+                  <td class="text-center">
+<% if sve_case.identified? %>
+
+  <span class="badge bg-secondary">
+    Identificado
+  </span>
+
+<% elsif sve_case.in_evaluation? %>
+
+  <span class="badge bg-warning text-dark">
+    En evaluación
+  </span>
+
+<% elsif sve_case.in_follow_up? %>
+
+  <span class="badge bg-info text-dark">
+    En seguimiento
+  </span>
+
+<% elsif sve_case.closed? %>
+
+  <span class="badge bg-success">
+    Cerrado
+  </span>
+
+<% elsif sve_case.not_case? %>
+
+  <span class="badge bg-dark">
+    No caso
+  </span>
+
+<% else %>
+
+  <span class="badge bg-secondary">
+    Sin estado
+  </span>
+
+<% end %>
+
+                  </td>
+
+                </tr>
+
+              <% end %>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      <% else %>
+
+        <div class="text-center py-4">
+
+          <i class="bi bi-folder-x display-6 text-muted"></i>
+
+          <p class="text-muted mt-2 mb-0">
+            No hay casos epidemiológicos registrados.
+          </p>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+    <!-- ============================= -->
+    <!-- INSPECCIONES SVE -->
+    <!-- ============================= -->
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-header bg-light">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+          <div>
+            <h5 class="mb-1">
+              <i class="bi bi-clipboard-check me-2"></i>
+              Inspecciones
+            </h5>
+            <small class="text-muted">
+              Inspecciones realizadas dentro del programa de vigilancia epidemiológica.
+            </small>
+          </div>
+        <div class="d-flex align-items-center gap-2">
+          <span class="badge text-bg-secondary">
+              <i class="bi bi-clipboard-data me-1"></i>
+              <%= @cant_inspecciones %>
+          </span>
+          <%= link_to(new_epidemiological_surveillance_program_surveillance_inspection_path(@epidemiological_surveillance_program), class: "btn btn-primary btn-sm") do %>
+            <i class="bi bi-plus-circle me-1"></i>
+            Nueva inspección
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <% if @surveillance_inspections.present? %>
+        <div class="row g-3">
+          <% @surveillance_inspections.limit(5).each do |inspection| %>
+            <div class="col-12 col-lg-6">
+              <div class="border rounded p-3 h-100">
+                <!-- CABECERA DE INSPECCIÓN -->
+                <div class="d-flex justify-content-between align-items-start gap-2 mb-3">
+                  <div>
+                    <div class="fw-semibold">
+                      <i class="bi bi-calendar3 me-1"></i>
+                      <%= l(inspection.fecha, format: :long) %>
+                    </div>
+                    <small class="text-muted">
+                      <i class="bi bi-building me-1"></i>
+                      <%= inspection.company_area.name %>
+                    </small>
+                  </div>
+                  <!-- ESTADO -->
+                  <div>
+                    <% case inspection.estado %>
+                      <% when "abierta" %>
+                        <span class="badge text-bg-warning">
+                          Abierta
+                        </span>
+                      <% when "en_ejecucion" %>
+                        <span class="badge text-bg-primary">
+                          En ejecución
+                        </span>
+                      <% when "verificacion" %>
+                        <span class="badge text-bg-info">
+                          Verificación
+                        </span>
+                      <% when "cerrada" %>
+                        <span class="badge text-bg-success">
+                          Cerrada
+                        </span>
+                      <% when "vencida" %>
+                        <span class="badge text-bg-danger">
+                          Vencida
+                        </span>
+                      <% end %>
+                    </div>
+                  </div>
+                  <!-- INFORMACIÓN -->
+                  <div class="small mb-3">
+                    <div class="mb-1">
+                      <strong>Inspector:</strong>
+                      <%= inspection.inspector %>
+                    </div>
+                  <div>
+                    <strong>Fuente:</strong>
+                      <%= inspection.fuente_emision %>
+                  </div>
+                </div>
+                <!-- BOTONES -->
+                <div class="d-flex flex-wrap gap-2">
+                  <%= link_to(epidemiological_surveillance_program_surveillance_inspection_path(@epidemiological_surveillance_program, inspection), class: "btn btn-outline-primary btn-sm") do %>
+                      <i class="bi bi-eye me-1"></i>
+                      Ver
+                  <% end %>
+                  <%= link_to(edit_epidemiological_surveillance_program_surveillance_inspection_path(@epidemiological_surveillance_program, inspection), class: "btn btn-outline-secondary btn-sm") do %>
+                    <i class="bi bi-pencil-square me-1"></i>
+                    Editar
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <!-- VER TODAS -->
+        <% if @cant_inspecciones > 5 %>
+          <div class="text-center mt-4">
+            <%= link_to(epidemiological_surveillance_program_surveillance_inspections_path(@epidemiological_surveillance_program), class: "btn btn-outline-primary") do %>
+              <i class="bi bi-list-ul me-1"></i>
+              Ver todas las inspecciones
+              <span class="badge text-bg-primary ms-1">
+                <%= @cant_inspecciones %>
+              </span>
+            <% end %>
+          </div>
+        <% end %>
+        <% else %>
+          <!-- SIN INSPECCIONES -->
+          <div class="text-center py-4">
+            <i class="bi bi-clipboard-x fs-1 text-muted"></i>
+            <h6 class="mt-3">
+              No hay inspecciones registradas
+            </h6>
+            <p class="text-muted mb-3">
+              Aún no se han registrado inspecciones para este programa SVE.
+            </p>
+            <%= link_to(new_epidemiological_surveillance_program_surveillance_inspection_path(@epidemiological_surveillance_program), class: "btn btn-primary") do %>
+              <i class="bi bi-plus-circle me-1"></i>
+              Registrar primera inspección
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+<!-- ========================================================= -->
+<!-- INDICADORES DEL PROGRAMA SVE - ACORDEÓN -->
+<!-- ========================================================= -->
+
+<div class="accordion mb-4" id="sveIndicadoresAccordion">
+
+  <!-- ======================================================= -->
+  <!-- 1. RESUMEN GENERAL -->
+  <!-- ======================================================= -->
+
+  <div class="accordion-item shadow-sm border-0 mb-2">
+
+    <h2 class="accordion-header" id="headingResumenSVE">
+
+      <button class="accordion-button"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseResumenSVE"
+              aria-expanded="true"
+              aria-controls="collapseResumenSVE">
+
+        <i class="bi bi-speedometer2 me-2"></i>
+        <strong>Resumen general</strong>
+
+      </button>
+
+    </h2>
+
+    <div id="collapseResumenSVE"
+         class="accordion-collapse collapse show"
+         aria-labelledby="headingResumenSVE"
+         data-bs-parent="#sveIndicadoresAccordion">
+
+      <div class="accordion-body">
+
+        <!-- ======================================================= -->
+<!-- INDICADORES - RESUMEN GENERAL -->
+<!-- ======================================================= -->
+
+<div class="row g-3">
+
+  <!-- TOTAL DE CASOS -->
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card h-100 shadow-sm border-0">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between">
+
+          <div>
+            <div class="text-muted small">
+              Total de casos
+            </div>
+
+            <div class="fs-3 fw-bold">
+              <%= @total_cases %>
+            </div>
+          </div>
+
+          <div class="fs-1 text-primary">
+            <i class="bi bi-clipboard2-pulse"></i>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- CASOS ACTIVOS -->
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card h-100 shadow-sm border-0">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between">
+
+          <div>
+            <div class="text-muted small">
+              Casos activos
+            </div>
+
+            <div class="fs-3 fw-bold">
+              <%= @active_cases %>
+            </div>
+
+            <div class="text-muted small">
+              <%= @active_cases_percentage %>% del total
+            </div>
+          </div>
+
+          <div class="fs-1 text-warning">
+            <i class="bi bi-exclamation-circle"></i>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- EN EVALUACIÓN -->
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card h-100 shadow-sm border-0">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between">
+
+          <div>
+            <div class="text-muted small">
+              En evaluación
+            </div>
+
+            <div class="fs-3 fw-bold">
+              <%= @cases_in_evaluation %>
+            </div>
+          </div>
+
+          <div class="fs-1 text-info">
+            <i class="bi bi-search"></i>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- EN SEGUIMIENTO -->
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card h-100 shadow-sm border-0">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between">
+
+          <div>
+            <div class="text-muted small">
+              En seguimiento
+            </div>
+
+            <div class="fs-3 fw-bold">
+              <%= @cases_in_follow_up %>
+            </div>
+          </div>
+
+          <div class="fs-1 text-success">
+            <i class="bi bi-arrow-repeat"></i>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- CASOS CERRADOS -->
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card h-100 shadow-sm border-0">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between">
+
+          <div>
+            <div class="text-muted small">
+              Casos cerrados
+            </div>
+
+            <div class="fs-3 fw-bold">
+              <%= @cases_closed %>
+            </div>
+          </div>
+
+          <div class="fs-1 text-success">
+            <i class="bi bi-check-circle"></i>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- NO ES CASO -->
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card h-100 shadow-sm border-0">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between">
+
+          <div>
+            <div class="text-muted small">
+              No es caso
+            </div>
+
+            <div class="fs-3 fw-bold">
+              <%= @cases_not_case %>
+            </div>
+
+            <div class="text-muted small">
+              <%= @not_case_percentage %>% del total
+            </div>
+          </div>
+
+          <div class="fs-1 text-secondary">
+            <i class="bi bi-x-circle"></i>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- PORCENTAJE DE CIERRE -->
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card h-100 shadow-sm border-0">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between">
+
+          <div>
+            <div class="text-muted small">
+              Porcentaje de cierre
+            </div>
+
+            <div class="fs-3 fw-bold">
+              <%= @closure_percentage %>%
+            </div>
+
+            <div class="text-muted small">
+              <%= @cases_closed %> casos cerrados
+            </div>
+          </div>
+
+          <div class="fs-1 text-success">
+            <i class="bi bi-graph-up-arrow"></i>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- PORCENTAJE DE CASOS ACTIVOS -->
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card h-100 shadow-sm border-0">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between">
+
+          <div>
+            <div class="text-muted small">
+              Porcentaje de casos activos
+            </div>
+
+            <div class="fs-3 fw-bold">
+              <%= @active_cases_percentage %>%
+            </div>
+
+            <div class="text-muted small">
+              <%= @active_cases %> casos activos
+            </div>
+          </div>
+
+          <div class="fs-1 text-warning">
+            <i class="bi bi-pie-chart"></i>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ======================================================= -->
+  <!-- 2. GESTIÓN DE SEGUIMIENTOS -->
+  <!-- ======================================================= -->
+
+  <div class="accordion-item shadow-sm border-0 mb-2">
+
+    <h2 class="accordion-header" id="headingSeguimientosSVE">
+
+      <button class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseSeguimientosSVE"
+              aria-expanded="false"
+              aria-controls="collapseSeguimientosSVE">
+
+        <i class="bi bi-arrow-repeat me-2"></i>
+        <strong>Gestión de seguimientos</strong>
+
+      </button>
+
+    </h2>
+
+    <div id="collapseSeguimientosSVE"
+         class="accordion-collapse collapse"
+         aria-labelledby="headingSeguimientosSVE"
+         data-bs-parent="#sveIndicadoresAccordion">
+
+      <div class="accordion-body">
+
+        <!-- ======================================================= -->
+<!-- GESTIÓN DE SEGUIMIENTOS -->
+<!-- ======================================================= -->
+
+<div class="row g-3">
+
+  <!-- TOTAL DE SEGUIMIENTOS -->
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card h-100 shadow-sm border-0">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between">
+
+          <div>
+            <div class="text-muted small">
+              Total de seguimientos
+            </div>
+
+            <div class="fs-3 fw-bold">
+              <%= @total_follow_ups %>
+            </div>
+          </div>
+
+          <div class="fs-1 text-primary">
+            <i class="bi bi-list-check"></i>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- CASOS CON SEGUIMIENTO -->
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card h-100 shadow-sm border-0">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between">
+
+          <div>
+            <div class="text-muted small">
+              Casos con seguimiento
+            </div>
+
+            <div class="fs-3 fw-bold">
+              <%= @cases_with_follow_ups %>
+            </div>
+
+            <div class="text-muted small">
+              De los casos activos
+            </div>
+          </div>
+
+          <div class="fs-1 text-success">
+            <i class="bi bi-person-check"></i>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- COBERTURA DE SEGUIMIENTO -->
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card h-100 shadow-sm border-0">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between">
+
+          <div>
+            <div class="text-muted small">
+              Cobertura de seguimiento
+            </div>
+
+            <div class="fs-3 fw-bold">
+              <%= @follow_up_coverage_percentage %>%
+            </div>
+
+            <div class="text-muted small">
+              Casos activos con seguimiento
+            </div>
+          </div>
+
+          <div class="fs-1 text-info">
+            <i class="bi bi-bar-chart-line"></i>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- PROMEDIO DE SEGUIMIENTOS POR CASO -->
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card h-100 shadow-sm border-0">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between">
+
+          <div>
+            <div class="text-muted small">
+              Promedio de seguimientos por caso
+            </div>
+
+            <div class="fs-3 fw-bold">
+              <%= @average_follow_ups_per_case %>
+            </div>
+
+            <div class="text-muted small">
+              Seguimientos por caso
+            </div>
+          </div>
+
+          <div class="fs-1 text-primary">
+            <i class="bi bi-arrow-repeat"></i>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- CASOS SIN PRÓXIMO SEGUIMIENTO -->
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card h-100 shadow-sm border-0">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between">
+
+          <div>
+            <div class="text-muted small">
+              Casos sin próximo seguimiento
+            </div>
+
+            <div class="fs-3 fw-bold">
+              <%= @cases_without_next_follow_up.count %>
+            </div>
+
+            <div class="text-muted small">
+              Requieren programación
+            </div>
+          </div>
+
+          <div class="fs-1 text-danger">
+            <i class="bi bi-calendar-x"></i>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- SEGUIMIENTOS VENCIDOS -->
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card h-100 shadow-sm border-0">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between">
+
+          <div>
+            <div class="text-muted small">
+              Seguimientos vencidos
+            </div>
+
+            <div class="fs-3 fw-bold">
+              <%= @follow_ups_overdue %>
+            </div>
+
+            <div class="text-muted small">
+              Requieren atención
+            </div>
+          </div>
+
+          <div class="fs-1 text-danger">
+            <i class="bi bi-calendar-x"></i>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- PRÓXIMOS 7 DÍAS -->
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card h-100 shadow-sm border-0">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between">
+
+          <div>
+            <div class="text-muted small">
+              Próximos 7 días
+            </div>
+
+            <div class="fs-3 fw-bold">
+              <%= @follow_ups_upcoming %>
+            </div>
+
+            <div class="text-muted small">
+              Seguimientos programados
+            </div>
+          </div>
+
+          <div class="fs-1 text-warning">
+            <i class="bi bi-calendar-event"></i>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- SEGUIMIENTOS PROGRAMADOS -->
+  <div class="col-12 col-sm-6 col-xl-3">
+    <div class="card h-100 shadow-sm border-0">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between">
+
+          <div>
+            <div class="text-muted small">
+              Seguimientos programados
+            </div>
+
+            <div class="fs-3 fw-bold">
+              <%= @follow_ups_scheduled %>
+            </div>
+
+            <div class="text-muted small">
+              Más de 7 días
+            </div>
+          </div>
+
+          <div class="fs-1 text-info">
+            <i class="bi bi-calendar-check"></i>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+<hr class="my-4">
+
+<!-- ======================================================= -->
+<!-- DETALLE DE SEGUIMIENTOS QUE REQUIEREN ATENCIÓN -->
+<!-- ======================================================= -->
+
+<div class="card shadow-sm border-0 mb-4">
+
+  <div class="card-header bg-light">
+
+    <div class="d-flex align-items-center">
+
+      <i class="bi bi-exclamation-triangle text-warning fs-4 me-2"></i>
+
+      <h6 class="mb-0 fw-bold">
+        Seguimientos que requieren atención
+      </h6>
+
+    </div>
+
+  </div>
+
+  <div class="card-body">
+
+    <% if @follow_ups_alerts.present? %>
+
+      <div class="table-responsive">
+<div class="table-responsive">
+  <table class="table table-hover table-sm align-middle mb-0">
+    <thead class="table-light">
+      <tr>
+        <th>Trabajador</th>
+        <th>Tipo</th>
+        <th>Fecha seguimiento</th>
+        <th>Próximo seguimiento</th>
+        <th>Estado</th>
+        <th class="text-center">Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @follow_ups_alerts.each do |follow_up| %>
+        <tr>
+          <td>
+            <i class="bi bi-person me-1"></i>
+            <%= follow_up.user&.name || "Sin trabajador" %>
+          </td>
+
+          <td>
+            <%= @follow_up_type_names[follow_up.follow_up_type] || "Sin tipo" %>
+          </td>
+
+          <td>
+            <%= follow_up.follow_up_date.present? ? l(follow_up.follow_up_date, format: :short) : "—" %>
+          </td>
+
+          <td>
+            <%= follow_up.next_follow_up_date.present? ? l(follow_up.next_follow_up_date, format: :short) : "—" %>
+          </td>
+
+          <td>
+            <% if follow_up.next_follow_up_date.present? &&
+                  follow_up.next_follow_up_date.to_date < Date.current %>
+
+              <span class="badge text-bg-danger">
+                Vencido
+              </span>
+
+            <% elsif follow_up.next_follow_up_date.present? &&
+                     follow_up.next_follow_up_date.to_date <= Date.current + 7.days %>
+
+              <span class="badge text-bg-warning">
+                Próximo
+              </span>
+
+            <% else %>
+
+              <span class="badge text-bg-secondary">
+                Programado
+              </span>
+
+            <% end %>
+          </td>
+
+          <td class="text-center">
+            <%= link_to(
+                  epidemiological_surveillance_program_epidemiological_surveillance_case_path(
+                    @epidemiological_surveillance_program,
+                    follow_up.epidemiological_surveillance_case
+                  ),
+                  class: "btn btn-sm btn-outline-primary",
+                  title: "Ver caso"
+                ) do %>
+              <i class="bi bi-eye"></i>
+              <span class="d-none d-md-inline ms-1">Ver</span>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+      </div>
+
+    <% else %>
+
+      <div class="text-center text-muted py-4">
+
+        <i class="bi bi-check-circle fs-1 d-block mb-2"></i>
+
+        <div>
+          No hay seguimientos que requieran atención.
+        </div>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>
+
+<!-- ======================================================= -->
+<!-- CASOS ABIERTOS SIN PRÓXIMO SEGUIMIENTO -->
+<!-- ======================================================= -->
+
+<div class="card shadow-sm border-0">
+
+  <div class="card-header bg-light">
+
+    <div class="d-flex align-items-center">
+
+      <i class="bi bi-calendar-x text-danger fs-4 me-2"></i>
+
+      <h6 class="mb-0 fw-bold">
+        Casos abiertos sin próximo seguimiento
+      </h6>
+
+    </div>
+
+  </div>
+
+  <div class="card-body">
+
+    <% if @cases_without_next_follow_up.present? %>
+
+      <div class="table-responsive">
+
+<div class="table-responsive">
+  <table class="table table-hover table-sm align-middle mb-0">
+    <thead class="table-light">
+      <tr>
+        <th>Trabajador</th>
+        <th>Estado del caso</th>
+        <th>Fecha de apertura</th>
+        <th>Responsable</th>
+        <th class="text-center">Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @cases_without_next_follow_up.each do |sve_case| %>
+        <tr>
+          <td>
+            <i class="bi bi-person me-1"></i>
+            <%= sve_case.user&.name || "Sin trabajador" %>
+          </td>
+
+          <td>
+            <% if sve_case.identified? %>
+              <span class="badge text-bg-secondary">
+                Identificado
+              </span>
+
+            <% elsif sve_case.in_evaluation? %>
+              <span class="badge text-bg-warning">
+                En evaluación
+              </span>
+
+            <% elsif sve_case.in_follow_up? %>
+              <span class="badge text-bg-info">
+                En seguimiento
+              </span>
+
+            <% elsif sve_case.closed? %>
+              <span class="badge text-bg-success">
+                Cerrado
+              </span>
+
+            <% elsif sve_case.not_case? %>
+              <span class="badge text-bg-light text-dark border">
+                No es caso
+              </span>
+
+            <% else %>
+              <span class="badge text-bg-secondary">
+                <%= sve_case.status.humanize %>
+              </span>
+            <% end %>
+          </td>
+
+          <td>
+            <%= sve_case.opened_at.present? ? l(sve_case.opened_at, format: :short) : "—" %>
+          </td>
+
+          <td>
+            <%= sve_case.responsible&.name || "Sin responsable" %>
+          </td>
+
+          <td class="text-center">
+            <%= link_to(
+                  epidemiological_surveillance_program_epidemiological_surveillance_case_path(
+                    @epidemiological_surveillance_program,
+                    sve_case
+                  ),
+                  class: "btn btn-sm btn-outline-primary",
+                  title: "Ver caso"
+                ) do %>
+              <i class="bi bi-eye"></i>
+              <span class="d-none d-md-inline ms-1">Ver</span>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+      </div>
+
+    <% else %>
+
+      <div class="text-center text-muted py-4">
+
+        <i class="bi bi-check-circle fs-1 d-block mb-2"></i>
+
+        <div>
+          Todos los casos abiertos tienen un próximo seguimiento programado.
+        </div>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>
+
+</div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+<!-- ========================================================= -->
+<!-- ACTIVIDADES DEL PROGRAMA SVE -->
+<!-- ========================================================= -->
+
+<div class="accordion-item">
+
+  <h2 class="accordion-header" id="headingActivities">
+
+    <button class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseActivities"
+            aria-expanded="false"
+            aria-controls="collapseActivities">
+
+      <i class="bi bi-calendar-check me-2 text-primary"></i>
+
+      <strong>
+        Actividades del programa
+      </strong>
+
+    </button>
+
+  </h2>
+
+
+  <div id="collapseActivities"
+       class="accordion-collapse collapse"
+       aria-labelledby="headingActivities">
+
+    <div class="accordion-body">
+
+
+      <!-- ===================================================== -->
+      <!-- INDICADORES -->
+      <!-- ===================================================== -->
+
+      <div class="row g-3 mb-4">
+
+
+        <!-- TOTAL -->
+        <div class="col-6 col-md-3">
+
+          <div class="card border-0 shadow-sm h-100">
+
+            <div class="card-body text-center">
+
+              <div class="text-muted small">
+                Total
+              </div>
+
+              <div class="fs-3 fw-bold">
+                <%= @activities_total %>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- PENDIENTES -->
+        <div class="col-6 col-md-3">
+
+          <div class="card border-0 shadow-sm h-100">
+
+            <div class="card-body text-center">
+
+              <div class="text-muted small">
+                Pendientes
+              </div>
+
+              <div class="fs-3 fw-bold text-warning">
+                <%= @activities_pending %>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- EN EJECUCIÓN -->
+        <div class="col-6 col-md-3">
+
+          <div class="card border-0 shadow-sm h-100">
+
+            <div class="card-body text-center">
+
+              <div class="text-muted small">
+                En ejecución
+              </div>
+
+              <div class="fs-3 fw-bold text-primary">
+                <%= @activities_in_progress %>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- COMPLETADAS -->
+        <div class="col-6 col-md-3">
+
+          <div class="card border-0 shadow-sm h-100">
+
+            <div class="card-body text-center">
+
+              <div class="text-muted small">
+                Completadas
+              </div>
+
+              <div class="fs-3 fw-bold text-success">
+                <%= @activities_completed %>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ATRASADAS -->
+        <div class="col-6 col-md-4">
+
+          <div class="card border-0 shadow-sm h-100">
+
+            <div class="card-body text-center">
+
+              <div class="text-muted small">
+                Atrasadas
+              </div>
+
+              <div class="fs-3 fw-bold text-danger">
+                <%= @activities_overdue.count %>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- PRÓXIMAS -->
+        <div class="col-6 col-md-4">
+
+          <div class="card border-0 shadow-sm h-100">
+
+            <div class="card-body text-center">
+
+              <div class="text-muted small">
+                Próximas 7 días
+              </div>
+
+              <div class="fs-3 fw-bold text-warning">
+                <%= @activities_upcoming.count %>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- CUMPLIMIENTO -->
+        <div class="col-12 col-md-4">
+
+          <div class="card border-0 shadow-sm h-100">
+
+            <div class="card-body text-center">
+
+              <div class="text-muted small">
+                Cumplimiento
+              </div>
+
+              <div class="fs-3 fw-bold text-success">
+
+                <%= @activities_completion_percentage %>%
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ===================================================== -->
+      <!-- BOTÓN ACTIVIDADES -->
+      <!-- ===================================================== -->
+
+      <div class="d-flex justify-content-end mb-4">
+
+        <%= link_to(
+              epidemiological_surveillance_program_surveillance_activities_path(
+                @epidemiological_surveillance_program
+              ),
+              class: "btn btn-outline-primary"
+            ) do %>
+
+          <i class="bi bi-calendar-check me-1"></i>
+          Administrar actividades
+
+        <% end %>
+
+      </div>
+
+
+      <!-- ===================================================== -->
+      <!-- ACTIVIDADES QUE REQUIEREN ATENCIÓN -->
+      <!-- ===================================================== -->
+
+      <h5 class="border-bottom pb-2 mb-3">
+
+        <i class="bi bi-exclamation-triangle me-2 text-danger"></i>
+
+        Actividades que requieren atención
+
+      </h5>
+
+
+      <% if @activities_overdue.any? %>
+
+        <div class="table-responsive">
+
+          <table class="table table-hover table-sm align-middle">
+
+            <thead class="table-light">
+
+              <tr>
+
+                <th>Actividad</th>
+                <th>Responsable</th>
+                <th>Fecha programada</th>
+                <th>Estado</th>
+                <th class="text-center">Acción</th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              <% @activities_overdue.each do |activity| %>
+
+                <tr>
+
+                  <td>
+                    <strong>
+                      <%= activity.name %>
+                    </strong>
+                  </td>
+
+
+                  <td>
+                    <%= activity.responsible&.name || "Sin asignar" %>
+                  </td>
+
+
+                  <td>
+                    <%= l(
+                          activity.planned_date,
+                          format: :short
+                        ) %>
+                  </td>
+
+
+                  <td>
+
+                    <% if activity.pending? %>
+
+                      <span class="badge text-bg-warning">
+                        Pendiente
+                      </span>
+
+                    <% elsif activity.in_progress? %>
+
+                      <span class="badge text-bg-primary">
+                        En ejecución
+                      </span>
+
+                    <% end %>
+
+                  </td>
+
+
+                  <td class="text-center">
+
+                    <%= link_to(
+                          epidemiological_surveillance_program_surveillance_activity_path(
+                            @epidemiological_surveillance_program,
+                            activity
+                          ),
+                          class: "btn btn-sm btn-outline-primary",
+                          title: "Ver actividad"
+                        ) do %>
+
+                      <i class="bi bi-eye"></i>
+
+                    <% end %>
+
+                  </td>
+
+                </tr>
+
+              <% end %>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      <% else %>
+
+        <div class="alert alert-success">
+
+          <i class="bi bi-check-circle me-2"></i>
+
+          No existen actividades atrasadas que requieran atención.
+
+        </div>
+
+      <% end %>
+
+
+      <!-- ===================================================== -->
+      <!-- PRÓXIMAS ACTIVIDADES -->
+      <!-- ===================================================== -->
+
+      <h5 class="border-bottom pb-2 mb-3 mt-4">
+
+        <i class="bi bi-calendar-event me-2 text-primary"></i>
+
+        Próximas actividades
+
+      </h5>
+
+
+      <% if @activities_upcoming.any? %>
+
+        <div class="table-responsive">
+
+          <table class="table table-hover table-sm align-middle">
+
+            <thead class="table-light">
+
+              <tr>
+
+                <th>Actividad</th>
+                <th>Responsable</th>
+                <th>Fecha</th>
+                <th class="text-center">Acción</th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              <% @activities_upcoming.each do |activity| %>
+
+                <tr>
+
+                  <td>
+                    <%= activity.name %>
+                  </td>
+
+                  <td>
+                    <%= activity.responsible&.name || "Sin asignar" %>
+                  </td>
+
+                  <td>
+
+                    <%= l(
+                          activity.planned_date,
+                          format: :short
+                        ) %>
+
+                  </td>
+
+
+                  <td class="text-center">
+
+                    <%= link_to(
+                          epidemiological_surveillance_program_surveillance_activity_path(
+                            @epidemiological_surveillance_program,
+                            activity
+                          ),
+                          class: "btn btn-sm btn-outline-primary",
+                          title: "Ver actividad"
+                        ) do %>
+
+                      <i class="bi bi-eye"></i>
+
+                    <% end %>
+
+                  </td>
+
+                </tr>
+
+              <% end %>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      <% else %>
+
+        <div class="alert alert-light border">
+
+          <i class="bi bi-calendar-x me-2"></i>
+
+          No hay actividades programadas para los próximos 7 días.
+
+        </div>
+
+      <% end %>
+
+
+      <!-- ===================================================== -->
+      <!-- GRÁFICO -->
+      <!-- ===================================================== -->
+
+      <% if @activities_planned_chart.present? %>
+
+        <div class="mt-4">
+
+          <h5 class="border-bottom pb-2 mb-3">
+
+            <i class="bi bi-bar-chart me-2 text-primary"></i>
+
+            Actividades programadas y completadas
+
+          </h5>
+
+
+          <%= column_chart(
+                [
+                  {
+                    name: "Programadas",
+                    data: @activities_planned_chart
+                  },
+                  {
+                    name: "Completadas",
+                    data: @activities_completed_chart
+                  }
+                ],
+                title: "Ejecución de actividades",
+                xtitle: "Mes",
+                ytitle: "Cantidad",
+                download: {
+                  filename: "actividades_sve"
+                }
+              ) %>
+
+        </div>
+
+      <% end %>
+
+
+    </div>
+
+  </div>
+
+</div>
+
+  <!-- ======================================================= -->
+  <!-- 3. TIEMPOS DE ATENCIÓN -->
+  <!-- ======================================================= -->
+
+  <div class="accordion-item shadow-sm border-0 mb-2">
+
+    <h2 class="accordion-header" id="headingTiemposSVE">
+
+      <button class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseTiemposSVE"
+              aria-expanded="false"
+              aria-controls="collapseTiemposSVE">
+
+        <i class="bi bi-clock-history me-2"></i>
+        <strong>Tiempos de atención</strong>
+
+      </button>
+
+    </h2>
+
+    <div id="collapseTiemposSVE"
+         class="accordion-collapse collapse"
+         aria-labelledby="headingTiemposSVE"
+         data-bs-parent="#sveIndicadoresAccordion">
+
+      <div class="accordion-body">
+
+        <!-- ======================================================= -->
+<!-- TIEMPOS DE ATENCIÓN -->
+<!-- ======================================================= -->
+
+<div class="row g-3">
+
+  <!-- DÍAS PROMEDIO HASTA EL PRIMER SEGUIMIENTO -->
+  <div class="col-12 col-sm-6 col-xl-6">
+
+    <div class="card h-100 shadow-sm border-0">
+
+      <div class="card-body">
+
+        <div class="d-flex align-items-center justify-content-between">
+
+          <div>
+            <div class="text-muted small">
+              Días promedio hasta el primer seguimiento
+            </div>
+
+            <div class="fs-2 fw-bold">
+              <%= @average_days_to_first_follow_up %>
+            </div>
+
+            <div class="text-muted small">
+              Días desde la apertura del caso
+            </div>
+          </div>
+
+          <div class="fs-1 text-primary">
+            <i class="bi bi-hourglass-split"></i>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- DÍAS PROMEDIO DE ATENCIÓN DEL CASO -->
+  <div class="col-12 col-sm-6 col-xl-6">
+
+    <div class="card h-100 shadow-sm border-0">
+
+      <div class="card-body">
+
+        <div class="d-flex align-items-center justify-content-between">
+
+          <div>
+            <div class="text-muted small">
+              Días promedio de atención del caso
+            </div>
+
+            <div class="fs-2 fw-bold">
+              <%= @average_case_attention_days %>
+            </div>
+
+            <div class="text-muted small">
+              Días desde apertura hasta cierre
+            </div>
+          </div>
+
+          <div class="fs-1 text-success">
+            <i class="bi bi-calendar2-check"></i>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ======================================================= -->
+  <!-- 4. ANÁLISIS Y DISTRIBUCIÓN -->
+  <!-- ======================================================= -->
+
+  <div class="accordion-item shadow-sm border-0 mb-2">
+
+    <h2 class="accordion-header" id="headingAnalisisSVE">
+
+      <button class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseAnalisisSVE"
+              aria-expanded="false"
+              aria-controls="collapseAnalisisSVE">
+
+        <i class="bi bi-bar-chart-line me-2"></i>
+        <strong>Análisis y distribución</strong>
+
+      </button>
+
+    </h2>
+
+    <div id="collapseAnalisisSVE"
+         class="accordion-collapse collapse"
+         aria-labelledby="headingAnalisisSVE"
+         data-bs-parent="#sveIndicadoresAccordion">
+
+      <div class="accordion-body">
+
+        <!-- ======================================================= -->
+<!-- ANÁLISIS Y DISTRIBUCIÓN -->
+<!-- ======================================================= -->
+
+<div class="row g-3">
+
+  <!-- ===================================================== -->
+  <!-- DISTRIBUCIÓN DE CASOS POR ESTADO -->
+  <!-- ===================================================== -->
+
+  <div class="col-12 col-lg-6">
+
+    <div class="card h-100 shadow-sm border-0">
+
+      <div class="card-body">
+
+        <div class="d-flex align-items-center mb-3">
+          <i class="bi bi-bar-chart-line text-primary fs-4 me-2"></i>
+
+          <h6 class="mb-0 fw-bold">
+            Distribución de casos por estado
+          </h6>
+        </div>
+
+        <%= column_chart @cases_by_status,
+              height: "300px",
+              legend: false,
+              library: {
+                plugins: {
+                  legend: {
+                    display: false
+                  }
+                }
+              } %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ===================================================== -->
+  <!-- PORCENTAJE DE CASOS POR ESTADO -->
+  <!-- ===================================================== -->
+
+  <div class="col-12 col-lg-6">
+
+    <div class="card h-100 shadow-sm border-0">
+
+      <div class="card-body">
+
+        <div class="d-flex align-items-center mb-3">
+          <i class="bi bi-pie-chart text-success fs-4 me-2"></i>
+
+          <h6 class="mb-0 fw-bold">
+            Porcentaje de casos por estado
+          </h6>
+        </div>
+
+        <%= pie_chart @cases_by_status,
+              donut: true,
+              height: "300px" %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ===================================================== -->
+  <!-- CASOS POR FUENTE DE IDENTIFICACIÓN -->
+  <!-- ===================================================== -->
+
+  <div class="col-12 col-lg-6">
+
+    <div class="card h-100 shadow-sm border-0">
+
+      <div class="card-body">
+
+        <div class="d-flex align-items-center mb-3">
+          <i class="bi bi-diagram-3 text-info fs-4 me-2"></i>
+
+          <h6 class="mb-0 fw-bold">
+            Casos por fuente de identificación
+          </h6>
+        </div>
+
+        <%= pie_chart @cases_by_source,
+              donut: true,
+              height: "300px" %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ===================================================== -->
+  <!-- SEGUIMIENTOS POR TIPO -->
+  <!-- ===================================================== -->
+
+  <div class="col-12 col-lg-6">
+
+    <div class="card h-100 shadow-sm border-0">
+
+      <div class="card-body">
+
+        <div class="d-flex align-items-center mb-3">
+          <i class="bi bi-list-check text-primary fs-4 me-2"></i>
+
+          <h6 class="mb-0 fw-bold">
+            Seguimientos por tipo
+          </h6>
+        </div>
+
+        <%= column_chart @follow_ups_by_type,
+              height: "300px",
+              legend: false %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ===================================================== -->
+  <!-- CASOS POR ÁREA -->
+  <!-- ===================================================== -->
+
+  <div class="col-12 col-lg-6">
+
+    <div class="card h-100 shadow-sm border-0">
+
+      <div class="card-body">
+
+        <div class="d-flex align-items-center mb-3">
+          <i class="bi bi-building text-warning fs-4 me-2"></i>
+
+          <h6 class="mb-0 fw-bold">
+            Casos por área
+          </h6>
+        </div>
+
+        <%= column_chart @cases_by_area,
+              height: "300px",
+              legend: false %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ===================================================== -->
+  <!-- CASOS POR CARGO -->
+  <!-- ===================================================== -->
+
+  <div class="col-12 col-lg-6">
+
+    <div class="card h-100 shadow-sm border-0">
+
+      <div class="card-body">
+
+        <div class="d-flex align-items-center mb-3">
+          <i class="bi bi-person-badge text-secondary fs-4 me-2"></i>
+
+          <h6 class="mb-0 fw-bold">
+            Casos por cargo
+          </h6>
+        </div>
+
+        <%= column_chart @cases_by_position,
+              height: "300px",
+              legend: false %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ===================================================== -->
+  <!-- EVOLUCIÓN DE CASOS SVE -->
+  <!-- ===================================================== -->
+
+  <div class="col-12">
+
+    <div class="card shadow-sm border-0">
+
+      <div class="card-body">
+
+        <div class="d-flex align-items-center mb-3">
+          <i class="bi bi-graph-up-arrow text-success fs-4 me-2"></i>
+
+          <h6 class="mb-0 fw-bold">
+            Evolución de casos SVE
+          </h6>
+        </div>
+
+        <%= line_chart @cases_by_month,
+              height: "320px",
+              curve: true,
+              points: true,
+              legend: false %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ========================================================= -->
+<!-- FIN ACORDEÓN INDICADORES SVE -->
+<!-- ========================================================= -->
+
+  <!-- BOTONERA -->
+  <div class="d-flex flex-column flex-sm-row
+              justify-content-center
+              align-items-center
+              gap-2 mb-4">
+
+    <%= link_to edit_epidemiological_surveillance_program_path(
+                  @epidemiological_surveillance_program
+                ),
+                class: "btn btn-outline-secondary" do %>
+
+      <i class="bi bi-pencil me-1"></i>
+      Editar
+
+    <% end %>
+
+
+    <%= link_to epidemiological_surveillance_programs_path,
+                class: "btn btn-outline-primary" do %>
+
+      <i class="bi bi-arrow-left me-1"></i>
+      Volver
+
+    <% end %>
+
+  </div>
+
+</div>

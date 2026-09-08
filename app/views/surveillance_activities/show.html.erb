@@ -1,0 +1,551 @@
+<div class="container-fluid px-2 px-md-4 py-3">
+
+  <!-- ENCABEZADO -->
+  <div class="card shadow-sm border-0 mb-4">
+
+    <div class="card-header bg-light border-0 py-3">
+      <div class="d-flex flex-column flex-md-row
+                  justify-content-between align-items-md-center gap-3">
+
+        <div>
+          <h4 class="mb-1">
+            <i class="bi bi-calendar-check me-2 text-primary"></i>
+            Detalle de actividad
+          </h4>
+
+          <div class="text-muted small">
+            Programa de Vigilancia Epidemiológica
+          </div>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+
+          <%= link_to(
+                edit_epidemiological_surveillance_program_surveillance_activity_path(
+                  @epidemiological_surveillance_program,
+                  @surveillance_activity
+                ),
+                class: "btn btn-primary"
+              ) do %>
+            <i class="bi bi-pencil-square me-1"></i>
+            <span class="d-none d-md-inline">Editar</span>
+          <% end %>
+
+          <%= link_to(
+                epidemiological_surveillance_program_surveillance_activities_path(
+                  @epidemiological_surveillance_program
+                ),
+                class: "btn btn-outline-secondary"
+              ) do %>
+            <i class="bi bi-arrow-left me-1"></i>
+            <span class="d-none d-md-inline">Volver</span>
+          <% end %>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="card-body">
+
+      <!-- PROGRAMA -->
+      <div class="alert alert-light border mb-4">
+
+        <div class="row g-3 align-items-center">
+
+          <div class="col-12 col-md-8">
+            <div class="small text-muted mb-1">
+              Programa SVE
+            </div>
+
+            <div class="fw-semibold">
+              <%= @epidemiological_surveillance_program.name %>
+            </div>
+          </div>
+<div class="col-12 col-md-4 text-md-end">
+
+  <div class="small text-muted mb-2">
+    Estado de la actividad
+  </div>
+
+  <% if @surveillance_activity.pending? %>
+
+    <span class="badge text-bg-warning fs-6">
+      <i class="bi bi-clock me-1"></i>
+      Pendiente
+    </span>
+
+  <% elsif @surveillance_activity.in_progress? %>
+
+    <span class="badge text-bg-primary fs-6">
+      <i class="bi bi-arrow-repeat me-1"></i>
+      En ejecución
+    </span>
+
+  <% elsif @surveillance_activity.completed? %>
+
+    <span class="badge text-bg-success fs-6">
+      <i class="bi bi-check-circle me-1"></i>
+      Completada
+    </span>
+
+  <% elsif @surveillance_activity.cancelled? %>
+
+    <span class="badge text-bg-secondary fs-6">
+      <i class="bi bi-x-circle me-1"></i>
+      Cancelada
+    </span>
+
+  <% end %>
+
+</div>
+<div class="row g-3 mt-2">
+
+  <% if @surveillance_activity.planned_date.present? %>
+
+    <div class="col-12 col-md-4">
+
+      <div class="card border-0 bg-light h-100">
+        <div class="card-body">
+
+          <div class="small text-muted mb-1">
+            <i class="bi bi-calendar-event me-1"></i>
+            Fecha programada
+          </div>
+
+          <div class="fw-semibold">
+            <%= l(@surveillance_activity.planned_date, format: :long) %>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  <% end %>
+
+
+  <% if @surveillance_activity.execution_date.present? %>
+
+    <div class="col-12 col-md-4">
+
+      <div class="card border-0 bg-light h-100">
+        <div class="card-body">
+
+          <div class="small text-muted mb-1">
+            <i class="bi bi-check2-square me-1"></i>
+            Fecha de ejecución
+          </div>
+
+          <div class="fw-semibold">
+            <%= l(@surveillance_activity.execution_date, format: :long) %>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  <% end %>
+
+
+  <!-- SITUACIÓN -->
+  <div class="col-12 col-md-4">
+
+    <div class="card border-0 bg-light h-100">
+      <div class="card-body">
+
+        <div class="small text-muted mb-1">
+          <i class="bi bi-activity me-1"></i>
+          Situación
+        </div>
+
+        <% if @surveillance_activity.cancelled? %>
+
+          <span class="badge text-bg-secondary">
+            Cancelada
+          </span>
+
+        <% elsif @surveillance_activity.completed? %>
+
+          <span class="badge text-bg-success">
+            <i class="bi bi-check-circle me-1"></i>
+            Cumplida
+          </span>
+
+        <% elsif @surveillance_activity.planned_date.present? &&
+                 @surveillance_activity.planned_date < Date.current %>
+
+          <span class="badge text-bg-danger">
+            <i class="bi bi-exclamation-circle me-1"></i>
+            Atrasada
+          </span>
+
+        <% elsif @surveillance_activity.planned_date.present? &&
+                 @surveillance_activity.planned_date <= Date.current + 7.days %>
+
+          <span class="badge text-bg-warning">
+            <i class="bi bi-calendar2-week me-1"></i>
+            Próxima
+          </span>
+
+        <% else %>
+
+          <span class="badge text-bg-primary">
+            <i class="bi bi-calendar-check me-1"></i>
+            Programada
+          </span>
+
+        <% end %>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+        </div>
+
+      </div>
+
+
+      <!-- INFORMACIÓN GENERAL -->
+      <div class="mb-4">
+
+        <h5 class="border-bottom pb-2 mb-3">
+          <i class="bi bi-info-circle me-2 text-primary"></i>
+          Información general
+        </h5>
+
+        <div class="row g-3">
+
+          <!-- NOMBRE -->
+          <div class="col-12">
+            <div class="card border-0 bg-light h-100">
+              <div class="card-body">
+
+                <div class="small text-muted mb-1">
+                  Nombre de la actividad
+                </div>
+
+                <div class="fs-5 fw-semibold">
+                  <%= @surveillance_activity.name %>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+          <!-- DESCRIPCIÓN -->
+          <div class="col-12">
+
+            <div class="card border h-100">
+
+              <div class="card-body">
+
+                <div class="small text-muted mb-2">
+                  <i class="bi bi-card-text me-1"></i>
+                  Descripción
+                </div>
+
+                <% if @surveillance_activity.description.present? %>
+
+                  <div class="text-break">
+                    <%= simple_format(@surveillance_activity.description) %>
+                  </div>
+
+                <% else %>
+
+                  <div class="text-muted fst-italic">
+                    No se registró una descripción.
+                  </div>
+
+                <% end %>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- PLANIFICACIÓN Y EJECUCIÓN -->
+      <div class="mb-4">
+
+        <h5 class="border-bottom pb-2 mb-3">
+          <i class="bi bi-calendar3 me-2 text-primary"></i>
+          Planificación y ejecución
+        </h5>
+
+        <div class="row g-3">
+
+          <!-- FECHA PROGRAMADA -->
+          <div class="col-12 col-md-6">
+
+            <div class="card border-0 bg-light h-100">
+
+              <div class="card-body">
+
+                <div class="small text-muted mb-1">
+                  Fecha programada
+                </div>
+
+                <% if @surveillance_activity.planned_date.present? %>
+
+                  <div class="fs-5 fw-semibold">
+                    <i class="bi bi-calendar-event me-2 text-primary"></i>
+                    <%= l(
+                          @surveillance_activity.planned_date,
+                          format: :long
+                        ) %>
+                  </div>
+
+                <% else %>
+
+                  <div class="text-muted fst-italic">
+                    Sin fecha programada
+                  </div>
+
+                <% end %>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- FECHA EJECUCIÓN -->
+          <div class="col-12 col-md-6">
+
+            <div class="card border-0 bg-light h-100">
+
+              <div class="card-body">
+
+                <div class="small text-muted mb-1">
+                  Fecha de ejecución
+                </div>
+
+                <% if @surveillance_activity.execution_date.present? %>
+
+                  <div class="fs-5 fw-semibold">
+                    <i class="bi bi-check2-square me-2 text-success"></i>
+                    <%= l(
+                          @surveillance_activity.execution_date,
+                          format: :long
+                        ) %>
+                  </div>
+
+                <% else %>
+
+                  <div class="text-muted fst-italic">
+                    La actividad aún no ha sido ejecutada.
+                  </div>
+
+                <% end %>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- RESPONSABLE -->
+      <div class="mb-4">
+
+        <h5 class="border-bottom pb-2 mb-3">
+          <i class="bi bi-person-badge me-2 text-primary"></i>
+          Responsable
+        </h5>
+
+        <div class="card border-0 bg-light">
+
+          <div class="card-body">
+
+            <% if @surveillance_activity.responsible.present? %>
+
+              <div class="d-flex align-items-center">
+
+                <div class="me-3">
+                  <i class="bi bi-person-circle fs-1 text-primary"></i>
+                </div>
+
+                <div>
+
+                  <div class="fw-semibold fs-5">
+                    <%= @surveillance_activity.responsible.name %>
+                  </div>
+
+                  <div class="small text-muted">
+                    Responsable de la actividad SVE
+                  </div>
+
+                </div>
+
+              </div>
+
+            <% else %>
+
+              <div class="text-muted fst-italic">
+                <i class="bi bi-person-x me-1"></i>
+                No se ha asignado un responsable.
+              </div>
+
+            <% end %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- OBSERVACIONES -->
+      <div class="mb-4">
+
+        <h5 class="border-bottom pb-2 mb-3">
+          <i class="bi bi-chat-left-text me-2 text-primary"></i>
+          Observaciones
+        </h5>
+
+        <div class="card border">
+
+          <div class="card-body">
+
+            <% if @surveillance_activity.observations.present? %>
+
+              <div class="text-break">
+                <%= simple_format(@surveillance_activity.observations) %>
+              </div>
+
+            <% else %>
+
+              <div class="text-muted fst-italic">
+                No se registraron observaciones.
+              </div>
+
+            <% end %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- INFORMACIÓN DE REGISTRO -->
+      <div>
+
+        <h5 class="border-bottom pb-2 mb-3">
+          <i class="bi bi-clock-history me-2 text-primary"></i>
+          Información del registro
+        </h5>
+
+        <div class="row g-3">
+
+          <div class="col-12 col-md-6">
+
+            <div class="small text-muted">
+              Creada
+            </div>
+
+            <div class="fw-semibold">
+              <%= l(
+                    @surveillance_activity.created_at,
+                    format: :long
+                  ) %>
+            </div>
+
+          </div>
+
+          <div class="col-12 col-md-6">
+
+            <div class="small text-muted">
+              Última actualización
+            </div>
+
+            <div class="fw-semibold">
+              <%= l(
+                    @surveillance_activity.updated_at,
+                    format: :long
+                  ) %>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- BOTONERA INFERIOR -->
+    <div class="card-footer bg-light border-0">
+
+      <div class="d-flex flex-wrap justify-content-center gap-2">
+
+        <%= link_to(
+              edit_epidemiological_surveillance_program_surveillance_activity_path(
+                @epidemiological_surveillance_program,
+                @surveillance_activity
+              ),
+              class: "btn btn-primary"
+            ) do %>
+
+          <i class="bi bi-pencil-square me-1"></i>
+          Editar
+
+        <% end %>
+
+
+        <%= button_to(
+              epidemiological_surveillance_program_surveillance_activity_path(
+                @epidemiological_surveillance_program,
+                @surveillance_activity
+              ),
+              method: :delete,
+              class: "btn btn-outline-danger",
+              form: {
+                data: {
+                  turbo_confirm: "¿Está seguro de eliminar esta actividad?"
+                }
+              }
+            ) do %>
+
+          <i class="bi bi-trash me-1"></i>
+          Eliminar
+
+        <% end %>
+
+
+        <%= link_to(
+              epidemiological_surveillance_program_surveillance_activities_path(
+                @epidemiological_surveillance_program
+              ),
+              class: "btn btn-outline-secondary"
+            ) do %>
+
+          <i class="bi bi-arrow-left me-1"></i>
+          Volver a actividades
+
+        <% end %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,560 @@
+<div class="container-fluid py-3">
+
+  <!-- ENCABEZADO -->
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-light border-bottom">
+      <div class="d-flex align-items-center">
+        <i class="bi bi-file-earmark-medical fs-4 me-2"></i>
+        <div>
+          <h5 class="mb-0">REPORTE DEL SISTEMA DE VIGILANCIA EPIDEMIOLÓGICA</h5>
+          <small class="text-muted">
+            <%= @epidemiological_surveillance_program.name %>
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+
+<%= form_with model: @surveillance_report,
+      url: epidemiological_surveillance_program_surveillance_report_path(
+        @epidemiological_surveillance_program
+      ),
+      method: :post,
+      local: true do |form| %>
+
+        <% if @surveillance_report.errors.any? %>
+          <div class="alert alert-danger">
+            <h6 class="alert-heading">
+              <i class="bi bi-exclamation-triangle me-1"></i>
+              Se encontraron errores:
+            </h6>
+
+            <ul class="mb-0">
+              <% @surveillance_report.errors.full_messages.each do |error| %>
+                <li><%= error %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <!-- ====================================================== -->
+        <!-- DATOS GENERALES -->
+        <!-- ====================================================== -->
+
+        <div class="mb-4">
+          <h6 class="fw-bold border-bottom pb-2">
+            <i class="bi bi-building me-2"></i>
+            1. DATOS GENERALES DE LA EMPRESA
+          </h6>
+        </div>
+
+        <div class="row g-3">
+
+          <!-- Nombre empresa -->
+          <div class="col-12 col-md-6">
+            <div class="form-floating">
+              <input type="text"
+                     class="form-control"
+                     value="<%= @entity.business_name %>"
+                     readonly>
+              <label>Nombre de la empresa</label>
+            </div>
+          </div>
+
+          <!-- NIT -->
+          <div class="col-12 col-md-6">
+            <div class="form-floating">
+              <input type="text"
+                     class="form-control"
+                     value="<%= @nit_empresa %>"
+                     readonly>
+              <label>NIT</label>
+            </div>
+          </div>
+
+          <!-- Código CIIU -->
+          <div class="col-12 col-md-4">
+            <div class="form-floating">
+              <input type="text"
+                     class="form-control"
+                     value="<%= @economic_activity_code&.ciu_code %>"
+                     readonly>
+              <label>Código CIIU</label>
+            </div>
+          </div>
+
+          <!-- Actividad económica -->
+          <div class="col-12 col-md-8">
+            <div class="form-floating">
+              <input type="text"
+                     class="form-control"
+                     value="<%= @economic_activity_code&.economic_activity_description %>"
+                     readonly>
+              <label>Actividad económica</label>
+            </div>
+          </div>
+
+          <!-- Dirección -->
+          <div class="col-12 col-md-8">
+            <div class="form-floating">
+              <input type="text"
+                     class="form-control"
+                     value="<%= @entity.entity_address %>"
+                     readonly>
+              <label>Dirección</label>
+            </div>
+          </div>
+
+          <!-- Municipio -->
+          <div class="col-12 col-md-4">
+            <div class="form-floating">
+              <input type="text"
+                     class="form-control"
+                     value="<%= @municipality %>"
+                     readonly>
+              <label>Municipio</label>
+            </div>
+          </div>
+
+          <!-- Representante legal -->
+          <div class="col-12 col-md-6">
+            <div class="form-floating">
+              <input type="text"
+                     class="form-control"
+                     value="<%= @legal_representative %>"
+                     readonly>
+              <label>Representante legal</label>
+            </div>
+          </div>
+
+          <!-- ARL -->
+          <div class="col-12 col-md-6">
+            <div class="form-floating">
+              <input type="text"
+                     class="form-control"
+                     value="<%= @occupational_risk_manager&.name %>"
+                     readonly>
+              <label>ARL</label>
+            </div>
+          </div>
+
+          <!-- Responsable SVE -->
+          <div class="col-12 col-md-6">
+            <div class="form-floating">
+              <input type="text"
+                     class="form-control"
+                     value="<%= @responsible&.name %>"
+                     readonly>
+              <label>Responsable del SVE</label>
+            </div>
+          </div>
+
+          <!-- Cargo -->
+          <div class="col-12 col-md-6">
+            <div class="form-floating">
+              <input type="text"
+                     class="form-control"
+                     value="<%= @responsible_position&.name %>"
+                     readonly>
+              <label>Cargo del responsable</label>
+            </div>
+          </div>
+
+          <!-- Licencia -->
+          <div class="col-12 col-md-6">
+            <div class="form-floating">
+              <input type="text"
+                     class="form-control"
+                     value="<%= @responsible&.license %>"
+                     readonly>
+              <label>Licencia SST</label>
+            </div>
+          </div>
+
+          <!-- Número trabajadores MANUAL -->
+          <div class="col-12 col-md-6">
+            <div class="form-floating">
+              <%= form.number_field :number_of_workers,
+                    class: "form-control",
+                    min: 0,
+                    required: true %>
+              <%= form.label :number_of_workers,
+                    "Número de trabajadores" %>
+            </div>
+
+            <small class="text-muted">
+              Este dato debe ser ingresado manualmente.
+            </small>
+          </div>
+
+        </div>
+
+        <!-- ====================================================== -->
+        <!-- POBLACIÓN OBJETO -->
+        <!-- ====================================================== -->
+
+        <div class="mt-5 mb-3">
+          <h6 class="fw-bold border-bottom pb-2">
+            <i class="bi bi-people me-2"></i>
+            2. POBLACIÓN OBJETO
+          </h6>
+
+          <p class="text-muted small mb-3">
+            Registre las áreas o grupos objeto de vigilancia,
+            indicando prioridad, exposición y número de trabajadores expuestos.
+          </p>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle">
+            <thead class="table-light text-center">
+              <tr>
+                <th style="width: 25%;">Prioridad</th>
+                <th style="width: 45%;">Exposición</th>
+                <th style="width: 20%;">Número de expuestos</th>
+                <th style="width: 10%;">Acción</th>
+              </tr>
+            </thead>
+
+            <tbody id="population_fields">
+
+              <%= form.fields_for :surveillance_report_populations do |population_form| %>
+
+                <tr>
+                  <td>
+                    <%= population_form.text_field :priority,
+                          class: "form-control",
+                          placeholder: "Ej. Alta" %>
+                  </td>
+
+                  <td>
+                    <%= population_form.text_field :exposure,
+                          class: "form-control",
+                          placeholder: "Área / grupo expuesto" %>
+                  </td>
+
+                  <td>
+                    <%= population_form.number_field :number_exposed,
+                          class: "form-control",
+                          min: 0 %>
+                  </td>
+
+                  <td class="text-center">
+                    <button type="button"
+                            class="btn btn-outline-danger btn-sm"
+                            onclick="this.closest('tr').remove();">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+
+              <% end %>
+
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mb-4">
+          <button type="button"
+                  class="btn btn-outline-primary btn-sm"
+                  onclick="addPopulationRow();">
+            <i class="bi bi-plus-circle me-1"></i>
+            Agregar población
+          </button>
+        </div>
+
+        <!-- ====================================================== -->
+        <!-- PROCESO PRODUCTIVO -->
+        <!-- ====================================================== -->
+
+        <div class="mt-5 mb-3">
+          <h6 class="fw-bold border-bottom pb-2">
+            <i class="bi bi-diagram-3 me-2"></i>
+            3. PROCESO PRODUCTIVO
+          </h6>
+
+          <p class="text-muted small">
+            Ingrese manualmente los procesos productivos y sus respectivos riesgos.
+          </p>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle">
+
+            <thead class="table-light text-center">
+              <tr>
+                <th>Proceso</th>
+                <th>Riesgos</th>
+                <th style="width: 70px;">Acción</th>
+              </tr>
+            </thead>
+
+            <tbody id="process_fields">
+
+              <%= form.fields_for :surveillance_report_processes do |process_form| %>
+
+                <tr>
+                  <td>
+                    <%= process_form.text_field :process_name,
+                          class: "form-control",
+                          placeholder: "Nombre del proceso" %>
+                  </td>
+
+                  <td>
+                    <%= process_form.text_area :risks,
+                          class: "form-control",
+                          rows: 2,
+                          placeholder: "Riesgos identificados" %>
+                  </td>
+
+                  <td class="text-center">
+                    <button type="button"
+                            class="btn btn-outline-danger btn-sm"
+                            onclick="this.closest('tr').remove();">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+
+              <% end %>
+
+            </tbody>
+
+          </table>
+        </div>
+
+        <div class="mb-4">
+          <button type="button"
+                  class="btn btn-outline-primary btn-sm"
+                  onclick="addProcessRow();">
+            <i class="bi bi-plus-circle me-1"></i>
+            Agregar proceso
+          </button>
+        </div>
+
+        <!-- ====================================================== -->
+        <!-- AGENTES DE RIESGO -->
+        <!-- ====================================================== -->
+
+        <div class="mt-5 mb-3">
+          <h6 class="fw-bold border-bottom pb-2">
+            <i class="bi bi-lungs me-2"></i>
+            4. AGENTES DE RIESGO RESPIRATORIO
+          </h6>
+
+          <p class="text-muted small">
+            Registre manualmente los agentes, sustancias o productos y
+            sus posibles efectos.
+          </p>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle">
+
+            <thead class="table-light text-center">
+              <tr>
+                <th>Agente</th>
+                <th>Sustancia / Producto</th>
+                <th>Posibles efectos</th>
+                <th style="width: 70px;">Acción</th>
+              </tr>
+            </thead>
+
+            <tbody id="hazard_fields">
+
+              <%= form.fields_for :surveillance_report_hazards do |hazard_form| %>
+
+                <tr>
+                  <td>
+                    <%= hazard_form.text_field :agent,
+                          class: "form-control",
+                          placeholder: "Agente" %>
+                  </td>
+
+                  <td>
+                    <%= hazard_form.text_field :substance_product,
+                          class: "form-control",
+                          placeholder: "Sustancia o producto" %>
+                  </td>
+
+                  <td>
+                    <%= hazard_form.text_area :possible_effects,
+                          class: "form-control",
+                          rows: 2,
+                          placeholder: "Posibles efectos" %>
+                  </td>
+
+                  <td class="text-center">
+                    <button type="button"
+                            class="btn btn-outline-danger btn-sm"
+                            onclick="this.closest('tr').remove();">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+
+              <% end %>
+
+            </tbody>
+
+          </table>
+        </div>
+
+        <div class="mb-4">
+          <button type="button"
+                  class="btn btn-outline-primary btn-sm"
+                  onclick="addHazardRow();">
+            <i class="bi bi-plus-circle me-1"></i>
+            Agregar agente
+          </button>
+        </div>
+
+        <!-- ====================================================== -->
+        <!-- BOTONERA -->
+        <!-- ====================================================== -->
+
+        <hr class="my-4">
+
+<div class="d-flex flex-column flex-sm-row justify-content-center gap-2 mt-4">
+
+<%= form.submit "Guardar Reporte",
+class: "btn btn-primary" do %> <i class="bi bi-save me-1"></i>
+Guardar Reporte
+<% end %>
+
+<%= link_to epidemiological_surveillance_program_path(
+@epidemiological_surveillance_program
+),
+class: "btn btn-outline-secondary" do %> <i class="bi bi-arrow-left me-1"></i>
+Regresar al módulo principal
+<% end %>
+
+</div>
+
+      <% end %>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================================================ -->
+<!-- JAVASCRIPT PARA AGREGAR FILAS -->
+<!-- ============================================================ -->
+
+<script>
+  function addPopulationRow() {
+    const tbody = document.getElementById("population_fields");
+
+    const index = Date.now();
+
+    tbody.insertAdjacentHTML("beforeend", `
+      <tr>
+        <td>
+          <input type="text"
+                 name="surveillance_report[surveillance_report_populations_attributes][${index}][priority]"
+                 class="form-control"
+                 placeholder="Ej. Alta">
+        </td>
+
+        <td>
+          <input type="text"
+                 name="surveillance_report[surveillance_report_populations_attributes][${index}][exposure]"
+                 class="form-control"
+                 placeholder="Área / grupo expuesto">
+        </td>
+
+        <td>
+          <input type="number"
+                 name="surveillance_report[surveillance_report_populations_attributes][${index}][number_exposed]"
+                 class="form-control"
+                 min="0">
+        </td>
+
+        <td class="text-center">
+          <button type="button"
+                  class="btn btn-outline-danger btn-sm"
+                  onclick="this.closest('tr').remove();">
+            <i class="bi bi-trash"></i>
+          </button>
+        </td>
+      </tr>
+    `);
+  }
+
+
+  function addProcessRow() {
+    const tbody = document.getElementById("process_fields");
+
+    const index = Date.now();
+
+    tbody.insertAdjacentHTML("beforeend", `
+      <tr>
+        <td>
+          <input type="text"
+                 name="surveillance_report[surveillance_report_processes_attributes][${index}][process_name]"
+                 class="form-control"
+                 placeholder="Nombre del proceso">
+        </td>
+
+        <td>
+          <textarea
+            name="surveillance_report[surveillance_report_processes_attributes][${index}][risks]"
+            class="form-control"
+            rows="2"
+            placeholder="Riesgos identificados"></textarea>
+        </td>
+
+        <td class="text-center">
+          <button type="button"
+                  class="btn btn-outline-danger btn-sm"
+                  onclick="this.closest('tr').remove();">
+            <i class="bi bi-trash"></i>
+          </button>
+        </td>
+      </tr>
+    `);
+  }
+
+
+  function addHazardRow() {
+    const tbody = document.getElementById("hazard_fields");
+
+    const index = Date.now();
+
+    tbody.insertAdjacentHTML("beforeend", `
+      <tr>
+        <td>
+          <input type="text"
+                 name="surveillance_report[surveillance_report_hazards_attributes][${index}][agent]"
+                 class="form-control"
+                 placeholder="Agente">
+        </td>
+
+        <td>
+          <input type="text"
+                 name="surveillance_report[surveillance_report_hazards_attributes][${index}][substance_product]"
+                 class="form-control"
+                 placeholder="Sustancia o producto">
+        </td>
+
+        <td>
+          <textarea
+            name="surveillance_report[surveillance_report_hazards_attributes][${index}][possible_effects]"
+            class="form-control"
+            rows="2"
+            placeholder="Posibles efectos"></textarea>
+        </td>
+
+        <td class="text-center">
+          <button type="button"
+                  class="btn btn-outline-danger btn-sm"
+                  onclick="this.closest('tr').remove();">
+            <i class="bi bi-trash"></i>
+          </button>
+        </td>
+      </tr>
+    `);
+  }
+</script>

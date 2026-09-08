@@ -1,0 +1,316 @@
+<div class="container-fluid py-3">
+  <!-- ENCABEZADO -->
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-light">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        <div class="d-flex align-items-center">
+          <i class="bi bi-gear-wide-connected fs-3 me-2"></i>
+          <div>
+            <h4 class="mb-0">
+              <%= @surveillance_configuration.name %>
+            </h4>
+            <small class="text-muted">
+              Configuración de vigilancia epidemiológica
+            </small>
+          </div>
+        </div>
+        <!-- ESTADO -->
+        <div>
+          <% if @surveillance_configuration.active? %>
+            <span class="badge bg-success fs-6">
+              <i class="bi bi-check-circle me-1"></i>
+              Activa
+            </span>
+          <% else %>
+            <span class="badge bg-secondary fs-6">
+              <i class="bi bi-x-circle me-1"></i>
+              Inactiva
+            </span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- BOTONERA -->
+    <div class="card-body">
+      <div class="d-flex flex-wrap justify-content-center justify-content-md-end gap-2">
+        <%= link_to new_surveillance_configuration_surveillance_configuration_question_path(@surveillance_configuration), class: "btn btn-primary" do %>
+          <i class="bi bi-plus-circle me-1"></i>
+          Nueva pregunta
+        <% end %>
+        <%= link_to edit_surveillance_configuration_path(@surveillance_configuration), class: "btn btn-outline-warning" do %>
+          <i class="bi bi-pencil me-1"></i>
+          Editar configuración
+        <% end %>
+        <%= link_to surveillance_configurations_path, class: "btn btn-outline-secondary" do %>
+          <i class="bi bi-arrow-left me-1"></i>
+          Volver
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <!-- INFORMACIÓN GENERAL -->
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-md-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+          <i class="bi bi-question-circle display-6 text-muted"></i>
+          <h3 class="mt-2 mb-0">
+            <%= @surveillance_configuration_questions.size %>
+          </h3>
+          <small class="text-muted">
+            Preguntas configuradas
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+          <i class="bi bi-check-circle display-6 text-muted"></i>
+          <h3 class="mt-2 mb-0">
+            <%= @surveillance_configuration_questions.count(&:active?) %>
+          </h3>
+          <small class="text-muted">
+            Preguntas activas
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+          <i class="bi bi-list-check display-6 text-muted"></i>
+          <h3 class="mt-2 mb-0">
+            <%= @surveillance_configuration_questions.sum do |question| question.surveillance_configuration_question_options.size end %>
+          </h3>
+          <small class="text-muted">
+            Opciones configuradas
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- PREGUNTAS -->
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-light">
+      <div class="d-flex align-items-center">
+        <i class="bi bi-list-check fs-4 me-2"></i>
+        <div>
+          <h5 class="mb-0">
+            Preguntas de la configuración
+          </h5>
+          <small class="text-muted">
+            Preguntas que serán utilizadas al crear la encuesta SVE
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <% if @surveillance_configuration_questions.present? %>
+        <div class="accordion" id="questionsAccordion">
+          <% @surveillance_configuration_questions.each_with_index do |question, index| %>
+            <div class="accordion-item mb-2 border rounded">
+              <h2 class="accordion-header" id="heading<%= question.id %>">
+                <button class="accordion-button
+                               <%= "collapsed" unless index.zero? %>"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapse<%= question.id %>"
+                        aria-expanded="<%= index.zero? %>"
+                        aria-controls="collapse<%= question.id %>">
+                  <div class="d-flex align-items-center w-100">
+                    <span class="badge bg-primary me-2">
+                      <%= question.position %>
+                    </span>
+                    <span class="fw-semibold text-start">
+                      <%= question.question %>
+                    </span>
+                  </div>
+                </button>
+              </h2>
+              <div id="collapse<%= question.id %>"
+                   class="accordion-collapse collapse <%= "show" if index.zero? %>"
+                   aria-labelledby="heading<%= question.id %>"
+                   data-bs-parent="#questionsAccordion">
+                <div class="accordion-body">
+                  <!-- INFORMACIÓN DE LA PREGUNTA -->
+                  <div class="row g-3 mb-3">
+                    <div class="col-12 col-md-4">
+                      <small class="text-muted d-block">
+                        Tipo de pregunta
+                      </small>
+                      <span class="badge bg-secondary">
+                        <%= case question.question_type
+                            when "open_text"
+                              "Respuesta abierta"
+                            when "boolean"
+                              "Verdadero / Falso"
+                            when "single_choice"
+                              "Selección única"
+                            when "multiple_choice"
+                              "Selección múltiple"
+                            else
+                              question.question_type
+                            end %>
+                      </span>
+                    </div>
+                    <div class="col-12 col-md-4">
+                      <small class="text-muted d-block">
+                        Estado
+                      </small>
+                      <% if question.active? %>
+                        <span class="badge bg-success">
+                          Activa
+                        </span>
+                      <% else %>
+                        <span class="badge bg-secondary">
+                          Inactiva
+                        </span>
+                      <% end %>
+                    </div>
+                    <div class="col-12 col-md-4">
+                      <small class="text-muted d-block">
+                        Obligatoria
+                      </small>
+                      <% if question.required? %>
+                        <span class="badge bg-danger">
+                          Sí
+                        </span>
+                      <% else %>
+                        <span class="badge bg-secondary">
+                          No
+                        </span>
+                      <% end %>
+                    </div>
+                  </div>
+                  <!-- TEXTO DE AYUDA -->
+                  <% if question.help_text.present? %>
+                    <div class="alert alert-light border">
+                      <i class="bi bi-info-circle me-1"></i>
+                      <strong>Ayuda:</strong>
+                      <%= question.help_text %>
+                    </div>
+                  <% end %>
+                  <!-- OPCIONES -->
+                  <% if question.surveillance_configuration_question_options.present? %>
+                    <div class="mb-3">
+                      <h6 class="fw-semibold">
+                        <i class="bi bi-list-ul me-1"></i>
+                        Opciones
+                      </h6>
+                      <ol class="list-group list-group-numbered">
+                        <% question.surveillance_configuration_question_options.each do |option| %>
+                          <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>
+                              <%= option.option %>
+                            </span>
+                            <% if option.active? %>
+                              <span class="badge bg-success">
+                                Activa
+                              </span>
+                            <% else %>
+                              <span class="badge bg-secondary">
+                                Inactiva
+                              </span>
+                            <% end %>
+                          </li>
+                        <% end %>
+                      </ol>
+                    </div>
+                  <% end %>
+                  <!-- BOTONES DE LA PREGUNTA -->
+                  <div class="d-flex flex-wrap justify-content-center justify-content-md-end gap-2">
+                    <%= link_to edit_surveillance_configuration_surveillance_configuration_question_path(@surveillance_configuration, question), class: "btn btn-sm btn-outline-warning" do %>
+                      <i class="bi bi-pencil me-1"></i>
+                      Editar
+                    <% end %>
+                    <%= link_to new_surveillance_configuration_surveillance_configuration_question_surveillance_configuration_question_option_path(@surveillance_configuration, question), class: "btn btn-sm btn-outline-primary" do %>
+                      <i class="bi bi-plus-circle me-1"></i>
+                      Nueva opción
+                    <% end %>
+                    <%= link_to surveillance_configuration_surveillance_configuration_question_path(@surveillance_configuration, question), data: {turbo_method: :delete, turbo_confirm: "¿Está seguro de eliminar esta pregunta?"}, class: "btn btn-sm btn-outline-danger" do %>
+                      <i class="bi bi-trash me-1"></i>
+                      Eliminar
+                    <% end %>
+                  </div>
+                  <% if question.surveillance_configuration_question_options.any? %>
+                    <div class="mt-3">
+                      <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="fw-semibold">
+                          <i class="bi bi-list-ul me-1"></i>
+                          Opciones de respuesta
+                        </div>
+                        <%= link_to new_surveillance_configuration_surveillance_configuration_question_surveillance_configuration_question_option_path(@surveillance_configuration, question), class: "btn btn-sm btn-outline-primary" do %>
+                          <i class="bi bi-plus-circle me-1"></i>
+                          Agregar opción
+                        <% end %>
+                      </div>
+                      <div class="list-group">
+                        <% question.surveillance_configuration_question_options.each do |option| %>
+                          <div class="list-group-item">
+                            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+                              <div>
+                                <span class="badge text-bg-light me-2">
+                                  <%= option.position %>
+                                </span>
+                                <span>
+                                  <%= option.option %>
+                                </span>
+                                <% if option.active? %>
+                                  <span class="badge text-bg-success ms-2">
+                                    Activa
+                                  </span>
+                                <% else %>
+                                  <span class="badge text-bg-secondary ms-2">
+                                    Inactiva
+                                  </span>
+                                <% end %>
+                              </div>
+                              <div class="d-flex gap-1">
+                                <%= link_to edit_surveillance_configuration_surveillance_configuration_question_surveillance_configuration_question_option_path(@surveillance_configuration, question, option), class: "btn btn-sm btn-outline-primary", title: "Editar" do %>
+                                  <i class="bi bi-pencil"></i>
+                                <% end %>
+                                <%= button_to surveillance_configuration_surveillance_configuration_question_surveillance_configuration_question_option_path(@surveillance_configuration, question, option), method: :delete, class: "btn btn-sm btn-outline-danger", form: {data: {turbo_confirm: "¿Está seguro de eliminar esta opción?"}}, title: "Eliminar" do %>
+                                  <i class="bi bi-trash"></i>
+                                <% end %>
+                              </div>
+                            </div>
+                          </div>
+                        <% end %>
+                      </div>
+                    </div>
+                  <% elsif ["single_choice", "multiple_choice"].include?(question.question_type) %>
+                    <div class="mt-3">
+                      <div class="alert alert-warning mb-0">
+                        <i class="bi bi-exclamation-triangle me-1"></i>
+                        Esta pregunta requiere opciones de respuesta.
+                        <%= link_to new_surveillance_configuration_surveillance_configuration_question_surveillance_configuration_question_option_path(@surveillance_configuration, question), class: "btn btn-sm btn-warning ms-2" do %>
+                          <i class="bi bi-plus-circle me-1"></i>
+                          Agregar opción
+                        <% end %>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-5">
+          <i class="bi bi-question-circle display-5 text-muted"></i>
+          <h5 class="mt-3">
+            No hay preguntas configuradas
+          </h5>
+          <p class="text-muted">
+            Agregue las preguntas que utilizará esta configuración SVE.
+          </p>
+          <%= link_to new_surveillance_configuration_surveillance_configuration_question_path(@surveillance_configuration), class: "btn btn-primary" do %>
+            <i class="bi bi-plus-circle me-1"></i>
+            Crear primera pregunta
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

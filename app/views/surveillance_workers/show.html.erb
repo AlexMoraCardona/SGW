@@ -1,0 +1,362 @@
+<div class="container-fluid py-3">
+  <div align="left"; class="container col-12">
+    <a class="navbar-brand" href="/">
+        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
+    </a>
+  </div>
+  <div class="card shadow-sm border-0">
+    <!-- ENCABEZADO -->
+    <div class="card-header bg-light">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        <div class="d-flex align-items-center">
+          <i class="bi bi-person-vcard fs-3 me-2"></i>
+          <div>
+            <h4 class="mb-0">
+              Información del trabajador
+            </h4>
+            <small class="text-muted">
+              <%= @epidemiological_surveillance_program.name %>
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- CONTENIDO -->
+    <div class="card-body">
+      <!-- DATOS DEL TRABAJADOR -->
+      <div class="row g-3">
+        <div class="col-12 col-md-6">
+          <div class="border rounded p-3 h-100">
+            <div class="small text-muted mb-1">
+              Trabajador
+            </div>
+            <div class="fw-semibold fs-5">
+              <%= @surveillance_worker.user&.name.presence || "Sin usuario" %>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="border rounded p-3 h-100">
+            <div class="small text-muted mb-1">
+              Correo electrónico
+            </div>
+            <div class="fw-semibold">
+              <%= @surveillance_worker.user&.email.presence || "No registrado" %>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="border rounded p-3 h-100">
+            <div class="small text-muted mb-1">
+              Estado
+            </div>
+            <% if @surveillance_worker.active? %>
+              <span class="badge bg-success">
+                <i class="bi bi-check-circle me-1"></i>
+                Activo
+              </span>
+            <% else %>
+              <span class="badge bg-secondary">
+                <i class="bi bi-dash-circle me-1"></i>
+                Inactivo
+              </span>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="border rounded p-3 h-100">
+            <div class="small text-muted mb-1">
+              Fecha de ingreso
+            </div>
+            <div class="fw-semibold">
+              <%= @surveillance_worker.entry_date.present? ? l(@surveillance_worker.entry_date, format: :long) : "—" %>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="border rounded p-3 h-100">
+            <div class="small text-muted mb-1">
+              Fecha de salida
+            </div>
+            <div class="fw-semibold">
+              <%= @surveillance_worker.exit_date.present? ? l(@surveillance_worker.exit_date, format: :long) : "—" %>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="border rounded p-3">
+            <div class="small text-muted mb-1">
+              Observaciones
+            </div>
+            <div>
+              <%= @surveillance_worker.observations.present? ? simple_format(@surveillance_worker.observations) : "No se registraron observaciones." %>
+            </div>
+          </div>
+        </div>
+        <!-- ========================================================= -->
+        <!-- CARACTERIZACIÓN SVE -->
+        <!-- ========================================================= -->
+        <div class="card shadow-sm border-0 mb-4">
+          <div class="card-header bg-light">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+              <div>
+                <h5 class="mb-1">
+                  <i class="bi bi-person-vcard me-2"></i>
+                  Caracterización SVE
+                </h5>
+                <small class="text-muted">
+                  Caracterización del trabajador dentro del programa
+                </small>
+              </div>
+              <div>
+                <% if @surveillance_worker.characterization.present? %>
+                  <%= link_to(edit_epidemiological_surveillance_program_surveillance_worker_characterization_path(@epidemiological_surveillance_program, @surveillance_worker), class: "btn btn-outline-primary btn-sm") do %>
+                    <i class="bi bi-pencil-square me-1"></i>
+                    Editar caracterización
+                  <% end %>
+                <% else %>
+                  <%= link_to(new_epidemiological_surveillance_program_surveillance_worker_characterization_path(@epidemiological_surveillance_program, @surveillance_worker), class: "btn btn-primary btn-sm") do %>
+                    <i class="bi bi-plus-circle me-1"></i>
+                    Crear caracterización
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <% if @surveillance_worker.characterization.present? %>
+              <% characterization = @surveillance_worker.characterization %>
+              <div class="row g-3">
+                <!-- GRUPO PVE -->
+                <div class="col-12 col-md-4">
+                  <div class="small text-muted">
+                    Grupo PVE
+                  </div>
+                  <div class="mt-1">
+                    <% if characterization.high? %>
+                      <span class="badge text-bg-danger">
+                        A - Alta
+                      </span>
+                    <% elsif characterization.medium? %>
+                      <span class="badge text-bg-warning">
+                        M - Media
+                      </span>
+                    <% elsif characterization.low? %>
+                      <span class="badge text-bg-success">
+                        B - Baja
+                      </span>
+                    <% end %>
+                  </div>
+                </div>
+                <!-- FRECUENCIA -->
+                <div class="col-12 col-md-4">
+                  <div class="small text-muted">
+                    Frecuencia
+                  </div>
+                  <div class="fw-semibold">
+                    <%= characterization.permanent? ?
+                      "Permanente" :
+                      "Ocasional" %>
+                  </div>
+                </div>
+                <!-- RESPIRADOR -->
+                <div class="col-12 col-md-4">
+                  <div class="small text-muted">
+                    Respirador requerido
+                  </div>
+                  <div class="mt-1">
+                    <% if characterization.respirator_required? %>
+                      <span class="badge text-bg-warning">
+                        Sí
+                      </span>
+                    <% else %>
+                      <span class="badge text-bg-secondary">
+                        No
+                      </span>
+                    <% end %>
+                  </div>
+                </div>
+                <!-- EXPOSICIÓN -->
+                <div class="col-12">
+                  <div class="small text-muted">
+                    Exposición principal
+                  </div>
+                  <div class="fw-semibold">
+                    <%= Characterization.principal_exposure_options.to_h[characterization.principal_exposure] || "No registrada" %>
+                  </div>
+                </div>
+                <!-- ESTADO -->
+                <div class="col-12">
+                  <div class="small text-muted">
+                    Estado caracterización
+                  </div>
+                  <div class="mt-1">
+                    <% if characterization.current? %>
+                      <span class="badge text-bg-success">
+                        Vigente
+                      </span>
+                    <% elsif characterization.pending? %>
+                      <span class="badge text-bg-warning">
+                        Pendiente
+                      </span>
+                    <% elsif characterization.retired? %>
+                      <span class="badge text-bg-secondary">
+                        Retirado
+                      </span>
+                    <% elsif characterization.relocated? %>
+                      <span class="badge text-bg-info">
+                        Reubicado
+                      </span>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            <% else %>
+              <div class="text-center py-4">
+                <i class="bi bi-person-vcard fs-1 text-muted"></i>
+                <h6 class="mt-3">
+                  Trabajador sin caracterización
+                </h6>
+                <p class="text-muted mb-3">
+                  Este trabajador todavía no tiene una caracterización
+                  registrada dentro del programa SVE.
+                </p>
+                <%= link_to(new_epidemiological_surveillance_program_surveillance_worker_characterization_path(@epidemiological_surveillance_program, @surveillance_worker), class: "btn btn-primary") do %>
+                  <i class="bi bi-plus-circle me-1"></i>
+                  Crear caracterización
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <div class="card shadow-sm mb-4">
+          <div class="card-header bg-light">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+              <h5 class="mb-0">
+                <i class="bi bi-clipboard2-pulse me-1"></i>
+                Síntomas
+              </h5>
+              <% if @surveillance_worker.sintoma.present? %>
+                <%= link_to(edit_epidemiological_surveillance_program_surveillance_worker_sintoma_path(@epidemiological_surveillance_program, @surveillance_worker), class: "btn btn-sm btn-outline-primary") do %>
+                  <i class="bi bi-pencil-square me-1"></i>
+                  Editar síntomas
+                <% end %>
+              <% else %>
+                <%= link_to(new_epidemiological_surveillance_program_surveillance_worker_sintoma_path(@epidemiological_surveillance_program, @surveillance_worker), class: "btn btn-sm btn-primary") do %>
+                  <i class="bi bi-plus-circle me-1"></i>
+                  Crear síntomas
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+          <div class="card-body">
+            <% if @surveillance_worker.sintoma.present? %>
+              <% sintoma = @surveillance_worker.sintoma %>
+              <div class="row g-3">
+                <div class="col-12 col-md-6">
+                  <strong>Acción SST:</strong><br>
+                  <%= sintoma.accion_sst.humanize %>
+                </div>
+                <div class="col-12 col-md-6">
+                  <strong>Seguimiento:</strong><br>
+                  <%= sintoma.seguimiento.humanize %>
+                </div>
+                <div class="col-12">
+                  <strong>Síntomas reportados:</strong>
+                  <div class="mt-2">
+                    <% sintomas = [] %>
+                    <% sintomas << "Fiebre" if sintoma.fiebre? %>
+                    <% sintomas << "Tos" if sintoma.tos? %>
+                    <% sintomas << "Dolor de garganta" if sintoma.dolor_garganta? %>
+                    <% sintomas << "Congestión nasal" if sintoma.congestion_nasal? %>
+                    <% sintomas << "Dificultad para respirar" if sintoma.dificultad_respirar? %>
+                    <% sintomas << "Dolor en el pecho" if sintoma.dolor_pecho? %>
+                    <% sintomas << "Dolor de cabeza" if sintoma.dolor_cabeza? %>
+                    <% sintomas << "Dolores musculares" if sintoma.dolores_musculares? %>
+                    <% sintomas << "Escalofríos" if sintoma.escalofrios? %>
+                    <% sintomas << "Fatiga o cansancio inusual" if sintoma.fatiga_cansancio_inusual? %>
+                    <% sintomas << "Náuseas o vómito" if sintoma.nauseas_vomito? %>
+                    <% sintomas << "Diarrea" if sintoma.diarrea? %>
+                    <% if sintoma.otro? %>
+                      <% sintomas << "Otro: #{sintoma.otro_cual}" %>
+                    <% end %>
+                    <% if sintoma.ninguno_anteriores? %>
+                      <span class="badge text-bg-success">
+                        Ninguno de los anteriores
+                      </span>
+                    <% elsif sintomas.any? %>
+                      <% sintomas.each do |nombre| %>
+                        <span class="badge text-bg-warning me-1 mb-1">
+                          <%= nombre %>
+                        </span>
+                      <% end %>
+                    <% else %>
+                      <span class="text-muted">
+                        No se han registrado síntomas.
+                      </span>
+                    <% end %>
+                  </div>
+                </div>
+                <div class="col-12 col-md-4">
+                  <strong>Incapacidad:</strong><br>
+                  <% if sintoma.incapacidad? %>
+                    <span class="badge text-bg-danger">
+                      Sí
+                    </span>
+                  <% else %>
+                    <span class="badge text-bg-secondary">
+                      No
+                    </span>
+                  <% end %>
+                </div>
+                <div class="col-12 col-md-4">
+                  <strong>Contacto respiratorio:</strong><br>
+                  <% if sintoma.contacto_respiratorio? %>
+                    <span class="badge text-bg-warning">
+                      Sí
+                    </span>
+                  <% else %>
+                    <span class="badge text-bg-secondary">
+                      No
+                    </span>
+                  <% end %>
+                </div>
+                <div class="col-12 col-md-4">
+                  <strong>Irritación asociada al trabajo:</strong><br>
+                  <% if sintoma.irritacion_asociada_trabajo? %>
+                    <span class="badge text-bg-warning">
+                      Sí
+                    </span>
+                  <% else %>
+                    <span class="badge text-bg-secondary">
+                      No
+                    </span>
+                  <% end %>
+                </div>
+              </div>
+            <% else %>
+              <div class="text-center text-muted py-3">
+                <i class="bi bi-clipboard-x fs-3"></i>
+                <p class="mb-0 mt-2">
+                    El trabajador no tiene un registro de síntomas.
+                </p>
+              </div>
+            <% end %>
+          </div>
+        </div>    
+      </div>
+      <hr class="my-4">
+      <!-- BOTONERA -->
+      <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-2">
+        <%= link_to(edit_epidemiological_surveillance_program_surveillance_worker_path(@epidemiological_surveillance_program, @surveillance_worker), class: "btn btn-outline-warning") do %>
+          <i class="bi bi-pencil me-1"></i>
+          Editar
+        <% end %>
+        <%= link_to(epidemiological_surveillance_program_surveillance_workers_path(@epidemiological_surveillance_program), class: "btn btn-outline-secondary") do %>
+          <i class="bi bi-arrow-left me-1"></i>
+          Volver
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

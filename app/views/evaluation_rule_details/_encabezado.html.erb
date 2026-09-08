@@ -1,49 +1,318 @@
-<table style="border:0px solid black">
-    <tr>
-        <td rowspan="2" style="border:1px solid black; width: 20%; text-align:center">
-            <% if @evidence.entity.logo.present? then %>
-                <%=  image_tag  @evidence.entity.logo, class: "image_peq" %>
-            <% end %>   
-        </td>
-        <td style="border:1px solid black; text-align:center">
-            <div class="col-10"><h6 style="text-transform:uppercase;"><%= @evidence.entity.business_name if @evidence.present? %></h6></div>
-        </td>
-    </tr>
-    <tr>    
-        <td style="border:1px solid black; text-align:center">
-            <div class="col-10"><h6><%= @evidence.template.name if @evidence.present? %></h6></div>
-        </td>
-    </tr>
-</table>
-<table>
-    <tr>    
-        <td style="border:1px solid black; width: 25%">
-            <h6>CÓDIGO: </h6>                
-        </td>
-        <td style="border:1px solid black; width: 25%">
-            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @evidence.template.reference if @evidence.present? %></small></h6>                
-        </td>
+<!-- =========================================================
+     ENCABEZADO DEL DOCUMENTO
+========================================================= -->
+<div class="document-header mb-3">
+    <!-- ENCABEZADO PRINCIPAL -->
+    <div class="document-header-main">
+        <!-- LOGO -->
+        <div class="document-logo">
+            <% if @evidence&.entity&.logo.present? %>
+                <%= image_tag @evidence.entity.logo,  class: "document-logo-img", alt: "Logo de la empresa" %>
+            <% end %>
+        </div>
+        <!-- EMPRESA Y DOCUMENTO -->
+        <div class="document-title">
+            <div class="document-company">
+                <%= @evidence&.entity&.business_name %>
+            </div>
+            <div class="document-name">
+                <%= @evidence&.template&.name %>
+            </div>
+        </div>
+    </div>
+    <!-- =====================================================
+         INFORMACIÓN DEL DOCUMENTO
+    ====================================================== -->
+    <div class="document-info">
+        <!-- CÓDIGO -->
+        <div class="document-info-item">
+            <div class="document-info-label">
+                <i class="bi bi-upc-scan me-1"></i>
+                Código
+            </div>
+            <div class="document-info-value">
+                <%= @evidence&.template&.reference %>
+            </div>
+        </div>
+        <!-- VERSIÓN -->
+        <div class="document-info-item">
+            <div class="document-info-label">
+                <i class="bi bi-layers me-1"></i>
+                Versión
+            </div>
+            <div class="document-info-value">
+                <%= @evidence&.template&.version %>
+            </div>
+        </div>
+        <!-- FECHA DE ELABORACIÓN -->
+        <div class="document-info-item">
+            <div class="document-info-label">
+                <i class="bi bi-calendar3 me-1"></i>
+                Fecha de elaboración
+            </div>
+            <div class="document-info-value">
+                <%= @evidence&.template&.date %>
+            </div>
+        </div>
+        <!-- FECHA DE ACTUALIZACIÓN -->
+        <div class="document-info-item">
+            <div class="document-info-label">
+                <i class="bi bi-calendar-check me-1"></i>
+                Fecha de actualización
+            </div>
+            <div class="document-info-value">
+                <%= @evidence&.template&.date_updated %>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =========================================================
+     ESTILOS
+========================================================= -->
+<style>
+    /* CONTENEDOR GENERAL */
+    .document-header {
+        width: 100%;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #ffffff;
+        box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
 
-        <td style="border:1px solid black; width: 25%">
-            <h6>VERSIÓN: </h6>                
-        </td>
-        <td style="border:1px solid black; width: 25%">
-            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @evidence.template.version if @evidence.present? %></small></h6>                
-        </td>
-    </tr>
-    <tr>    
-        <td style="border:1px solid black; width: 25%">
-            <h6>FECHA DE ELABORACIÓN: </h6>                
-        </td>
-        <td style="border:1px solid black; width: 25%">
-            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @evidence.template.date if @evidence.present? %></small></h6>                
-        </td>
+    /* =====================================================
+       ENCABEZADO PRINCIPAL
+    ====================================================== */
+    .document-header-main {
+        display: flex;
+        width: 100%;
+        min-height: 105px;
+        align-items: stretch;
+    }
 
-        <td style="border:1px solid black; width: 25%">
-            <h6>FECHA DE ACTUALIZACIÓN: </h6>                
-        </td>
-        <td style="border:1px solid black; width: 25%">
-            <h6>&nbsp;&nbsp;<small class="text-muted"><%= @evidence.template.date_updated if @evidence.present? %></small></h6>                
-        </td>
-    </tr>
-</table>
+    /* LOGO */
+    .document-logo {
+        width: 18%;
+        min-width: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        border-right: 1px solid #dee2e6;
+        background: #fafafa;
+    }
+
+    .document-logo-img {
+        max-width: 85px;
+        max-height: 85px;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+    }
+
+
+    /* TÍTULOS */
+
+    .document-title {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 15px 20px;
+    }
+
+
+    .document-company {
+        font-size: 16px;
+        font-weight: 700;
+        text-transform: uppercase;
+        line-height: 1.3;
+        margin-bottom: 7px;
+    }
+
+
+    .document-name {
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: uppercase;
+        line-height: 1.4;
+    }
+
+
+    /* =====================================================
+       INFORMACIÓN
+    ====================================================== */
+
+    .document-info {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        width: 100%;
+        border-top: 1px solid #dee2e6;
+    }
+
+
+    .document-info-item {
+        min-height: 55px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 7px 12px;
+        border-right: 1px solid #dee2e6;
+    }
+
+
+    .document-info-item:last-child {
+        border-right: none;
+    }
+
+
+    .document-info-label {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #495057;
+        margin-bottom: 3px;
+    }
+
+
+    .document-info-value {
+        font-size: 12px;
+        color: #212529;
+        font-weight: 500;
+    }
+
+
+    /* =====================================================
+       TABLET
+    ====================================================== */
+
+    @media (max-width: 768px) {
+
+        .document-logo {
+            width: 22%;
+            min-width: 95px;
+        }
+
+        .document-logo-img {
+            max-width: 70px;
+            max-height: 70px;
+        }
+
+        .document-company {
+            font-size: 14px;
+        }
+
+        .document-name {
+            font-size: 12px;
+        }
+
+        .document-info {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .document-info-item:nth-child(2) {
+            border-right: none;
+        }
+
+        .document-info-item:nth-child(-n+2) {
+            border-bottom: 1px solid #dee2e6;
+        }
+    }
+
+
+    /* =====================================================
+       CELULAR
+    ====================================================== */
+
+    @media (max-width: 576px) {
+
+        .document-header {
+            border-radius: 7px;
+        }
+
+        .document-header-main {
+            min-height: 90px;
+        }
+
+        .document-logo {
+            width: 25%;
+            min-width: 80px;
+            padding: 7px;
+        }
+
+        .document-logo-img {
+            max-width: 55px;
+            max-height: 55px;
+        }
+
+        .document-title {
+            padding: 8px 10px;
+        }
+
+        .document-company {
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .document-name {
+            font-size: 10px;
+        }
+
+        .document-info {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .document-info-item {
+            min-height: 50px;
+            padding: 6px 8px;
+        }
+
+        .document-info-label {
+            font-size: 9px;
+        }
+
+        .document-info-value {
+            font-size: 10px;
+        }
+    }
+
+
+    /* =====================================================
+       CELULARES MUY PEQUEÑOS
+    ====================================================== */
+
+    @media (max-width: 400px) {
+
+        .document-header-main {
+            min-height: 80px;
+        }
+
+        .document-logo {
+            width: 23%;
+            min-width: 70px;
+        }
+
+        .document-logo-img {
+            max-width: 45px;
+            max-height: 45px;
+        }
+
+        .document-company {
+            font-size: 10px;
+        }
+
+        .document-name {
+            font-size: 9px;
+        }
+
+        .document-info-label {
+            font-size: 8px;
+        }
+
+        .document-info-value {
+            font-size: 9px;
+        }
+    }
+</style>

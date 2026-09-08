@@ -1,0 +1,88 @@
+<%= form_with(model: [@surveillance_configuration, @surveillance_configuration_question], local: true) do |form| %>
+  <% if @surveillance_configuration_question.errors.any? %>
+    <div class="alert alert-danger">
+      <h6 class="fw-bold">
+        <i class="bi bi-exclamation-triangle me-1"></i>
+        No fue posible guardar la pregunta
+      </h6>
+      <ul class="mb-0">
+        <% @surveillance_configuration_question.errors.full_messages.each do |message| %>
+          <li>
+            <%= message %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <!-- PREGUNTA -->
+  <div class="mb-4">
+    <%= form.label :question, "Pregunta", class: "form-label fw-semibold" %>
+    <%= form.text_area :question, class: "form-control", rows: 3, placeholder: "Escriba la pregunta que aparecerá en la encuesta...", required: true %>
+  </div>
+  <!-- TIPO Y POSICIÓN -->
+  <div class="row">
+    <div class="col-12 col-md-8 mb-3">
+      <%= form.label :question_type, "Tipo de pregunta", class: "form-label fw-semibold" %>
+      <%= form.select(
+            :question_type,
+            SurveillanceConfigurationQuestion
+              .question_types
+              .keys
+              .map do |type|
+                label =
+                  case type
+                  when "open_text"
+                    "Respuesta abierta"
+                  when "boolean"
+                    "Verdadero / Falso"
+                  when "single_choice"
+                    "Selección única"
+                  when "multiple_choice"
+                    "Selección múltiple"
+                  else
+                    type.humanize
+                  end
+                [label, type]
+              end,
+            { prompt: "Seleccione el tipo de pregunta" },
+            {
+              class: "form-select",
+              required: true
+            }
+          ) %>
+    </div>
+    <div class="col-12 col-md-4 mb-3">
+      <%= form.label :position, "Orden", class: "form-label fw-semibold" %>
+      <%= form.number_field :position, class: "form-control",  min: 1, required: true %>
+    </div>
+  </div>
+  <!-- OBLIGATORIA -->
+  <div class="mb-4">
+    <div class="form-check">
+      <%= form.check_box :required, class: "form-check-input" %>
+      <%= form.label :required, "Pregunta obligatoria",  class: "form-check-label fw-semibold" %>
+    </div>
+    <div class="form-text">
+      Si está activa, el trabajador deberá responder esta pregunta.
+    </div>
+  </div>
+  <!-- TEXTO DE AYUDA -->
+  <div class="mb-4">
+    <%= form.label :help_text, "Texto de ayuda", class: "form-label fw-semibold" %>
+    <%= form.text_area :help_text, class: "form-control", rows: 3, placeholder: "Información adicional o instrucciones para responder la pregunta..." %>
+  </div>
+  <!-- ESTADO -->
+  <div class="mb-4">
+    <%= form.label :status, "Estado", class: "form-label fw-semibold" %>
+    <%= form.select(:status, [["Activa", "active"], ["Inactiva", "inactive"]], { prompt: "Seleccione el estado" }, {class: "form-select", required: true}) %>
+  </div>
+  <hr>
+  <!-- BOTONERA -->
+  <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-2">
+    <%= form.submit(@surveillance_configuration_question.new_record? ? "Crear pregunta" : "Actualizar pregunta", class: "btn btn-primary" ) %>
+    <%= link_to surveillance_configuration_path(@surveillance_configuration), class: "btn btn-outline-secondary" do %>
+      <i class="bi bi-arrow-left me-1"></i>
+      Volver
+    <% end %>
+  </div>
+<% end %>

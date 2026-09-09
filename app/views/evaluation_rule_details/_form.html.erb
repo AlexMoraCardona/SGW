@@ -1,121 +1,315 @@
-<div class="container col-11 card p-5">
-    <br>
-    <%= form_with model: @evaluation_rule_detail do |form| %>
-        <% @evaluation_rule_detail.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
+<div class="container-fluid px-2 px-md-4 py-3">
+  <!-- ===================================================== -->
+  <!-- TARJETA PRINCIPAL -->
+  <!-- ===================================================== -->
+  <div class="card border-0 shadow-sm mx-auto" style="max-width: 1200px;">
+    <!-- ENCABEZADO -->
+    <div class="card-header bg-light border-bottom py-3">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        <div class="d-flex align-items-center gap-3">
+          <div class="bg-primary bg-opacity-10 rounded-circle p-2">
+            <i class="bi bi-clipboard-check fs-4 text-primary"></i>
+          </div>
+          <div>
+            <h4 class="mb-0 fw-bold">
+              Detalle de evaluación
+            </h4>
+            <small class="text-muted">
+              Información y resultados del criterio evaluado
+            </small>
+          </div>
+        </div>
+        <!-- BOTONERA PRINCIPAL -->
+        <div class="d-flex flex-wrap gap-2">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmarEdicionModal">
+            <i class="bi bi-check-lg me-1"></i>
+            Guardar cambios
+          </button>
+          <%= link_to evaluation_path(@evaluation_rule_detail.evaluation_id), class: "btn btn-outline-secondary" do %>
+            <i class="bi bi-arrow-left me-1"></i>
+            Retornar
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- ===================================================== -->
+    <!-- CUERPO -->
+    <!-- ===================================================== -->
+    <div class="card-body p-3 p-md-4">
+      <%= form_with model: @evaluation_rule_detail do |form| %>
+        <!-- ================================================= -->
+        <!-- ERRORES -->
+        <!-- ================================================= -->
+        <% if @evaluation_rule_detail.errors.any? %>
+          <div class="alert alert-danger border-0 shadow-sm mb-4">
+            <div class="d-flex align-items-start">
+              <i class="bi bi-exclamation-triangle-fill fs-5 me-2"></i>
+              <div>
+                <h6 class="fw-bold mb-2">
+                  No fue posible guardar los cambios
+                </h6>
+                <ul class="mb-0 ps-3">
+                  <% @evaluation_rule_detail.errors.full_messages.each do |error| %>
+                    <li><%= error %></li>
+                  <% end %>
+                </ul>
+              </div>
             </div>
+          </div>
         <% end %>
-
-
-
-        
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          Editar
-        </button>
-        
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Editar</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                Por favor confirmar que desea guardar cambios...
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="submit" class="btn btn-sm btn-primary">Aceptar</button>
+        <!-- ================================================= -->
+        <!-- RESULTADO DE LA EVALUACIÓN -->
+        <!-- ================================================= -->
+        <div class="mb-4">
+          <div class="d-flex align-items-center mb-3">
+            <i class="bi bi-bar-chart-line me-2 text-primary"></i>
+            <h5 class="mb-0 fw-bold">
+              Resultado de la evaluación
+            </h5>
+          </div>
+          <div class="row g-3">
+            <!-- APLICA -->
+            <div class="col-12 col-md-4">
+              <div class="card h-100 border">
+                <div class="card-body">
+                  <h6 class="fw-bold mb-3">
+                    <i class="bi bi-check2-circle me-1"></i>
+                    Aplicabilidad
+                  </h6>
+                  <div class="d-flex flex-wrap gap-3">
+                    <div class="form-check">
+                      <%= form.radio_button :apply, 0, disabled: true, class: "form-check-input" %>
+                      <%= form.label :apply_0, t('common.no_aplica'), class: "form-check-label" %>
+                    </div>
+                    <div class="form-check">
+                      <%= form.radio_button :apply, 1, disabled: true, class: "form-check-input" %>
+                      <%= form.label :apply_1, t('common.si_aplica'), class: "form-check-label" %>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div> 
+            <!-- PUNTAJE -->
+            <div class="col-12 col-md-4">
+              <div class="card h-100 border">
+                <div class="card-body">
+                  <h6 class="fw-bold mb-3">
+                    <i class="bi bi-123 me-1"></i>
+                    Puntaje obtenido
+                  </h6>
+                  <div class="display-6 fw-bold text-primary">
+                    <%= @evaluation_rule_detail.score %>
+                  </div>
+                  <small class="text-muted">
+                    Puntaje obtenido en el criterio
+                  </small>
+                </div>
+              </div>
+            </div>
+            <!-- MÁXIMO PUNTAJE -->
+            <div class="col-12 col-md-4">
+              <div class="card h-100 border">
+                <div class="card-body">
+                  <h6 class="fw-bold mb-3">
+                    <i class="bi bi-bullseye me-1"></i>
+                    Máximo puntaje
+                  </h6>
+                  <div class="display-6 fw-bold text-secondary">
+                    <%= @evaluation_rule_detail.standar_detail_item.maximun_value %>
+                  </div>
+                  <small class="text-muted">
+                    Puntaje máximo permitido
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-  
-        <%= link_to 'Retornar', evaluation_path(@evaluation_rule_detail.evaluation_id), class: 'btn btn-sm btn-primary'  %>
-        <br>    
-        <br>    
-        
-        <div class="row g-3">
-            <div class="col-sm-4">
-                <h5><%= form.label :apply,  style: "display: block" %></h5> 
-                <%= form.radio_button :apply, 0, disabled: true %>
-                <label for="no_aplica"><%= t('common.no_aplica') %></label>
-                <%= form.radio_button :apply, 1, disabled: true %>
-                <label for="si_aplica"><%= t('common.si_aplica') %></label>
-            </div> 
-
-            <div class="col-sm-4">
-                <h5><%= form.label :score,  style: "display: block" %></h5>
-                <small class="text-muted"><%= @evaluation_rule_detail.score %></small>
-                <h6>Máximo Puntaje:
-                  <small class="text-muted"><%= @evaluation_rule_detail.standar_detail_item.maximun_value %></small>
-                </h6>                    
-            </div> 
-
-          </div>        
-
-        <div class="form-group">    
-            <h5><%= form.label :observation, style: "display: block" %></h5>
-            <%= form.text_field :observation,  class: "form-control" %>
+        <hr class="my-4">
+        <!-- ================================================= -->
+        <!-- INFORMACIÓN DEL CRITERIO -->
+        <!-- ================================================= -->
+        <div class="mb-4">
+          <div class="d-flex align-items-center mb-3">
+            <i class="bi bi-info-circle me-2 text-primary"></i>
+            <h5 class="mb-0 fw-bold">
+              Información del criterio
+            </h5>
+          </div>
+          <div class="row g-3">
+            <!-- CRITERIO -->
+            <div class="col-12">
+              <div class="card border-0 bg-light">
+                <div class="card-body">
+                  <h6 class="fw-bold">
+                    <i class="bi bi-check2-square me-1"></i>
+                    Criterio
+                  </h6>
+                  <div class="text-muted"
+                       style="white-space: pre-line;">
+                    <%= @evaluation_rule_detail.standar_detail_item.criterion %>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- MODO DE VERIFICACIÓN -->
+            <div class="col-12">
+              <div class="card border-0 bg-light">
+                <div class="card-body">
+                  <h6 class="fw-bold">
+                    <i class="bi bi-search me-1"></i>
+                    Modo de verificación
+                  </h6>
+                  <div class="text-muted" style="white-space: pre-line;">
+                    <%= @evaluation_rule_detail.standar_detail_item.verification_mode %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <br>
-        <div class="form-group">    
-            <h5><%= form.label :description, style: "display: block" %></h5>
-            <%= form.text_field :description,  class: "form-control" %>
+        <hr class="my-4">
+        <!-- ================================================= -->
+        <!-- OBSERVACIÓN -->
+        <!-- ================================================= -->
+        <div class="mb-4">
+          <div class="d-flex align-items-center mb-3">
+            <i class="bi bi-chat-left-text me-2 text-primary"></i>
+            <h5 class="mb-0 fw-bold">
+              Observación
+            </h5>
+          </div>
+          <%= form.label :observation, "Observación de la evaluación", class: "form-label fw-semibold" %>
+          <%= form.text_field :observation, class: "form-control", placeholder: "Ingrese la observación..." %>
         </div>
-
-        <hr>
-        <div class="col-sm-11">
-          <h5><%= form.label :criterion,  style: "display: block" %></h5>
-          <small class="text-muted"><%= @evaluation_rule_detail.standar_detail_item.criterion %></small>
-        </div> 
-
-        <div class="col-sm-11">
-          <h5><%= form.label :verification_mode,  style: "display: block" %></h5>
-          <small class="text-muted"><%= @evaluation_rule_detail.standar_detail_item.verification_mode  %></small>
-        </div> 
-        <br>
-    <% end %>
-</div>  
-<br> 
-<% if @evidences.present? %>
-  <%= render partial: 'evidences'  %> 
-<% end %> 
-
-<% if @evidencias_total.present? %>
-   <%= render partial: 'procedimientos'  %> 
-<% end %> 
-
-<% if @safety_inspections.present? %>
-   <%= render partial: 'safety_inspections'  %> 
-<% end %> 
-
-<% if @templates.present? %>
-  <%= render partial: 'templates'  %> 
-<% end %>
-
-<%= render 'evaluation_rule_details/attachment', post: @evaluation_rule_detail%>
-
+        <!-- ================================================= -->
+        <!-- DESCRIPCIÓN -->
+        <!-- ================================================= -->
+        <div class="mb-4">
+          <%= form.label :description, "Descripción", class: "form-label fw-semibold" %>
+          <%= form.text_field :description, class: "form-control", placeholder: "Ingrese una descripción..." %>
+        </div>
+        <!-- ================================================= -->
+        <!-- BOTONERA INFERIOR -->
+        <!-- ================================================= -->
+        <div class="border-top pt-4 mt-4">
+          <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-md-end gap-2">
+            <%= link_to evaluation_path(@evaluation_rule_detail.evaluation_id), class: "btn btn-outline-secondary px-4" do %>
+              <i class="bi bi-arrow-left me-1"></i>
+              Retornar
+            <% end %>
+            <button type="button" class="btn btn-primary px-4" data-bs-toggle="modal" data-bs-target="#confirmarEdicionModal">
+              <i class="bi bi-save me-1"></i>
+              Guardar cambios
+            </button>
+          </div>
+        </div>
+        <!-- ================================================= -->
+        <!-- MODAL DE CONFIRMACIÓN -->
+        <!-- ================================================= -->
+        <div class="modal fade" id="confirmarEdicionModal" tabindex="-1" aria-labelledby="confirmarEdicionModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+              <div class="modal-header bg-light">
+                <h5 class="modal-title fw-bold"
+                    id="confirmarEdicionModalLabel">
+                  <i class="bi bi-question-circle me-2"></i>
+                  Confirmar cambios
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+              </div>
+              <div class="modal-body text-center py-4">
+                <i class="bi bi-save2 fs-1 text-primary mb-3"></i>
+                <p class="mb-0">
+                  ¿Está seguro de que desea guardar los cambios
+                  realizados en este criterio?
+                </p>
+              </div>
+              <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                  <i class="bi bi-x-circle me-1"></i>
+                  Cancelar
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  <i class="bi bi-check-lg me-1"></i>
+                  Aceptar y guardar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <!-- ===================================================== -->
+  <!-- EVIDENCIAS -->
+  <!-- ===================================================== -->
+  <% if @evidences.present? %>
+    <div class="mt-4">
+      <%= render partial: 'evidences' %>
+    </div>
+  <% end %>
+  <!-- ===================================================== -->
+  <!-- PROCEDIMIENTOS -->
+  <!-- ===================================================== -->
+  <% if @evidencias_total.present? %>
+    <div class="mt-4">
+      <%= render partial: 'procedimientos' %>
+    </div>
+  <% end %>
+  <!-- ===================================================== -->
+  <!-- INSPECCIONES -->
+  <!-- ===================================================== -->
+  <% if @safety_inspections.present? %>
+    <div class="mt-4">
+      <%= render partial: 'safety_inspections' %>
+    </div>
+  <% end %>
+  <!-- ===================================================== -->
+  <!-- PLANTILLAS -->
+  <!-- ===================================================== -->
+  <% if @templates.present? %>
+    <div class="mt-4">
+      <%= render partial: 'templates' %>
+    </div>
+  <% end %>
+  <!-- ===================================================== -->
+  <!-- ADJUNTOS -->
+  <!-- ===================================================== -->
+  <div class="mt-4">
+    <%= render 'evaluation_rule_details/attachment', post: @evaluation_rule_detail %>
+  </div>
+  <!-- ===================================================== -->
+  <!-- CARGAR ARCHIVOS -->
+  <!-- ===================================================== -->
+  <div class="card border-0 shadow-sm mt-4 mx-auto" style="max-width: 1200px;">
+    <div class="card-header bg-light border-bottom py-3">
+      <div class="d-flex align-items-center">
+        <i class="bi bi-paperclip fs-5 me-2 text-primary"></i>
+        <h5 class="mb-0 fw-bold">
+          Adjuntar archivos
+        </h5>
+      </div>
+    </div>
+    <div class="card-body p-3 p-md-4">
+      <%= form_for @evaluation_rule_detail do |f| %>
+        <div class="row g-3 align-items-end">
+          <div class="col-12 col-md-8">
+            <%= f.label :files, "Seleccionar archivos", class: "form-label fw-semibold" %>
+            <%= f.file_field :files, multiple: true, class: "form-control" %>
+            <div class="form-text">
+              Puede seleccionar uno o varios archivos.
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="bi bi-cloud-arrow-up me-1"></i>
+              Subir archivos
+            </button>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
 <br>
-<div class="container col-11 card p-5">
-    <%= form_for @evaluation_rule_detail do |f| %>
-       <div class="row">
-          <div class="form-group">
-            <h5><%= f.label :"Adjuntar_Archivos:", style: "display: block" %></h5>
-            <%= f.file_field :files, multiple: true %>
-
-            <%= f.submit 'Subir Archivos', class: 'btn btn-primary' %>
-          </div> 
-        </div>
-    <% end %>
-    <br> 
-</div>  
-<br>
-
-
-
-
-

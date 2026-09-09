@@ -1,73 +1,229 @@
-<div class="container col-11 card p-5">
-    <br>
-    <%= form_with model: @evaluation do |form| %>
-        <% @evaluation.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %>   
-        
-        <div class="row g-2">
-            <div class="col-sm-6">
-                <%= form.label :entity_id, style: "display: block" %>
-                <%= form.collection_select :entity_id, Entity.all.order(id: :asc), :id, :business_name, { prompt: '--Seleccionar--' },
-                { class: 'form-control input-sm select2' } %>
-            </div>        
-            <div class="col-sm-5">
-                <%= form.label :date_evaluation, style: "display: block" %>
-                <%= form.date_field :date_evaluation,  class: "form-control" %>
-            </div>        
-        </div>   
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-6">    
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Empleador o Contratante.">Empleador o Contratante:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                <%= form.collection_select :user_representante, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-            </div>
-            <div class="col-sm-5">    
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Responsable de la ejecución del SG-SST.">Responsable de la ejecución del SG-SST:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                <%= form.collection_select :user_responsible, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-            </div>
-        </div>   
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-6">
-                <%= form.label :number_employees, style: "display: block" %>
-                <%= form.number_field :number_employees,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-5">
-                <%= form.label :risk_level_id, style: "display: block" %>
-                <%= form.collection_select :risk_level_id, RiskLevel.all.order(id: :asc), :id, :name, { prompt: '--Seleccionar--' },
-                { class: 'form-control input-sm select2' } %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-6">
-                <%= form.label :expected_goald, style: "display: block" %>
-                <%= form.number_field :expected_goald, in: 0.05..100.0, step: 0.01,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-5">
-            </div>        
-        </div>  
-        <br>
-
-        <div class="form-group">    
-            <%= form.label :rule_id, style: "display: block" %>
-            <%= form.collection_select :rule_id, Rule.all.order(id: :asc), :id, :name, { prompt: '--Seleccionar--' },
-            { class: 'form-control input-sm select2' } %>
+<div class="container-fluid px-2 px-md-4 py-3">
+  <div class="card border-0 shadow-sm mx-auto" style="max-width: 1100px;">
+    <!-- ===================================================== -->
+    <!-- ENCABEZADO -->
+    <!-- ===================================================== -->
+    <div class="card-header bg-light border-bottom py-3">
+      <div class="d-flex align-items-center gap-3">
+        <div class="bg-primary bg-opacity-10 rounded-circle p-2">
+          <i class="bi bi-clipboard2-check fs-4 text-primary"></i>
         </div>
-
-        <div class="form-group">
-            
-            <%= form.label :observation, style: "display: block" %>
-            <%= form.rich_text_area :observation,  class: "form-control" %>
+        <div>
+          <h4 class="mb-0 fw-bold">
+            <%= @evaluation.new_record? ? "Nueva evaluación" : "Editar evaluación" %>
+          </h4>
+          <small class="text-muted">
+            Complete la información requerida para la evaluación.
+          </small>
         </div>
-
-
-        <br>    
-        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, evaluations_path %>
-    <% end %>
-</div>     
-<br>
+      </div>
+    </div>
+    <!-- ===================================================== -->
+    <!-- FORMULARIO -->
+    <!-- ===================================================== -->
+    <div class="card-body p-3 p-md-4">
+      <%= form_with model: @evaluation do |form| %>
+        <!-- ================================================= -->
+        <!-- ERRORES -->
+        <!-- ================================================= -->
+        <% if @evaluation.errors.any? %>
+          <div class="alert alert-danger border-0 shadow-sm mb-4" role="alert">
+            <div class="d-flex align-items-start">
+              <i class="bi bi-exclamation-triangle-fill fs-5 me-2"></i>
+              <div>
+                <h6 class="fw-bold mb-2">
+                  No fue posible guardar la evaluación
+                </h6>
+                <ul class="mb-0 ps-3">
+                  <% @evaluation.errors.full_messages.each do |error| %>
+                    <li><%= error %></li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <!-- ================================================= -->
+        <!-- INFORMACIÓN GENERAL -->
+        <!-- ================================================= -->
+        <div class="mb-4">
+          <div class="d-flex align-items-center mb-3">
+            <i class="bi bi-info-circle me-2 text-primary"></i>
+            <h5 class="mb-0 fw-bold">
+              Información general
+            </h5>
+          </div>
+          <div class="row g-3">
+            <!-- ENTIDAD -->
+            <div class="col-12 col-md-7">
+              <%= form.label :entity_id, class: "form-label fw-semibold" do %>
+                <i class="bi bi-building me-1"></i>
+                Entidad
+              <% end %>
+              <%= form.collection_select(:entity_id, Entity.order(id: :asc), :id, :business_name, { prompt: "-- Seleccionar entidad --" }, {class: "form-select select2"}) %>
+            </div>
+            <!-- FECHA -->
+            <div class="col-12 col-md-5">
+              <%= form.label :date_evaluation, class: "form-label fw-semibold" do %>
+                <i class="bi bi-calendar3 me-1"></i>
+                Fecha de evaluación
+              <% end %>
+              <%= form.date_field(:date_evaluation, class: "form-control") %>
+            </div>
+          </div>
+        </div>
+        <hr class="my-4">
+        <!-- ================================================= -->
+        <!-- RESPONSABLES -->
+        <!-- ================================================= -->
+        <div class="mb-4">
+          <div class="d-flex align-items-center mb-3">
+            <i class="bi bi-people me-2 text-primary"></i>
+            <h5 class="mb-0 fw-bold">
+              Responsables
+            </h5>
+          </div>
+          <div class="row g-3">
+            <!-- EMPLEADOR -->
+            <div class="col-12 col-md-6">
+              <%= form.label :user_representante, class: "form-label fw-semibold" do %>
+                <i class="bi bi-person-badge me-1"></i>
+                Empleador o contratante
+              <% end %>
+              <div class="input-group">
+                <%= form.collection_select(:user_representante, User.usuarios_empresa.order(id: :asc), :id, :name, { prompt: "-- Seleccionar --" }, { class: "form-select select2" }) %>
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Seleccione el nombre del Empleador o Contratante.">
+                  <i class="bi bi-question-circle"></i>
+                </button>
+              </div>
+            </div>
+            <!-- RESPONSABLE SG-SST -->
+            <div class="col-12 col-md-6">
+              <%= form.label :user_responsible, class: "form-label fw-semibold" do %>
+                <i class="bi bi-person-workspace me-1"></i>
+                Responsable de la ejecución del SG-SST
+              <% end %>
+              <div class="input-group">
+                <%= form.collection_select(:user_responsible, User.usuarios_empresa.order(id: :asc), :id, :name, { prompt: "-- Seleccionar --" }, { class: "form-select select2" }) %>
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Seleccione el nombre del Responsable de la ejecución del SG-SST.">
+                  <i class="bi bi-question-circle"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr class="my-4">
+        <!-- ================================================= -->
+        <!-- CARACTERÍSTICAS DE LA EMPRESA -->
+        <!-- ================================================= -->
+        <div class="mb-4">
+          <div class="d-flex align-items-center mb-3">
+            <i class="bi bi-bar-chart-line me-2 text-primary"></i>
+            <h5 class="mb-0 fw-bold">
+              Características de la empresa
+            </h5>
+          </div>
+          <div class="row g-3">
+            <!-- NÚMERO DE TRABAJADORES -->
+            <div class="col-12 col-md-6">
+              <%= form.label :number_employees, class: "form-label fw-semibold" do %>
+                <i class="bi bi-person-lines-fill me-1"></i>
+                Número de trabajadores
+              <% end %>
+              <%= form.number_field(:number_employees, class: "form-control", min: 0) %>
+            </div>
+            <!-- NIVEL DE RIESGO -->
+            <div class="col-12 col-md-6">
+              <%= form.label :risk_level_id, class: "form-label fw-semibold" do %>
+                <i class="bi bi-shield-exclamation me-1"></i>
+                Nivel de riesgo
+              <% end %>
+              <%= form.collection_select(:risk_level_id, RiskLevel.order(id: :asc), :id, :name, { prompt: "-- Seleccionar nivel de riesgo --" }, {class: "form-select select2"}) %>
+            </div>
+          </div>
+        </div>
+        <!-- ================================================= -->
+        <!-- META ESPERADA -->
+        <!-- ================================================= -->
+        <div class="mb-4">
+          <div class="d-flex align-items-center mb-3">
+            <i class="bi bi-bullseye me-2 text-primary"></i>
+            <h5 class="mb-0 fw-bold">
+              Objetivo de la evaluación
+            </h5>
+          </div>
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <%= form.label :expected_goald, class: "form-label fw-semibold" do %>
+                Meta esperada (%)
+              <% end %>
+              <div class="input-group">
+                <%= form.number_field(:expected_goald, in: 0.05..100.0, step: 0.01, class: "form-control") %>
+                <span class="input-group-text">
+                  %
+                </span>
+              </div>
+              <div class="form-text">
+                Ingrese un valor entre 0,05 % y 100 %.
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr class="my-4">
+        <!-- ================================================= -->
+        <!-- NORMATIVIDAD -->
+        <!-- ================================================= -->
+        <div class="mb-4">
+          <div class="d-flex align-items-center mb-3">
+            <i class="bi bi-journal-text me-2 text-primary"></i>
+            <h5 class="mb-0 fw-bold">
+              Normatividad
+            </h5>
+          </div>
+          <%= form.label :rule_id, class: "form-label fw-semibold" do %>
+            <i class="bi bi-bookmark-check me-1"></i>
+            Norma / regla aplicable
+          <% end %>
+          <%= form.collection_select(:rule_id, Rule.order(id: :asc), :id, :name, { prompt: "-- Seleccionar norma --" }, {class: "form-select select2"}) %>
+        </div>
+        <hr class="my-4">
+        <!-- ================================================= -->
+        <!-- OBSERVACIONES -->
+        <!-- ================================================= -->
+        <div class="mb-4">
+          <div class="d-flex align-items-center mb-3">
+            <i class="bi bi-chat-left-text me-2 text-primary"></i>
+            <h5 class="mb-0 fw-bold">
+              Observaciones
+            </h5>
+          </div>
+          <%= form.label :observation, class: "form-label fw-semibold" do %>
+            Observaciones de la evaluación
+          <% end %>
+          <div class="border rounded-3 overflow-hidden">
+            <%= form.rich_text_area(:observation, class: "form-control border-0") %>
+          </div>
+          <div class="form-text mt-2">
+            Registre las observaciones, comentarios o información adicional
+            relacionada con la evaluación.
+          </div>
+        </div>
+        <!-- ================================================= -->
+        <!-- BOTONERA -->
+        <!-- ================================================= -->
+        <div class="border-top pt-4 mt-4">
+          <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-md-end gap-2">
+            <%= link_to evaluations_path, class: "btn btn-outline-secondary px-4" do %>
+              <i class="bi bi-arrow-left me-1"></i>
+              Retornar
+            <% end %>
+            <button type="submit" class="btn btn-primary px-4">
+              <i class="bi bi-check-lg me-1"></i>
+              <%= t('common.submit') %>
+            </button>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

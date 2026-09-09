@@ -1,364 +1,607 @@
-<div class="container col-11 card p-5">
-    <div class="bg-info">
-        <p><%=@evidence.template.filing if @evidence.present? %></p>
+<div class="container-fluid px-2 px-md-3 mb-4">
+  <!-- ============================================================
+       ENCABEZADO / AYUDA DE LA EVIDENCIA
+       ============================================================ -->
+  <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+    <div class="card-header bg-light border-0 py-3 px-3 px-md-4">
+      <div class="d-flex align-items-center">
+        <div class="bg-white rounded-circle shadow-sm p-2 me-3">
+          <i class="bi bi-people fs-5 text-secondary"></i>
+        </div>
+        <div>
+          <h5 class="mb-1 fw-bold text-dark">
+            Funcionarios relacionados
+          </h5>
+          <small class="text-muted">
+            Registro de funcionarios asociados a la evidencia
+          </small>
+        </div>
+      </div>
     </div>
-    <br>
-    <%= form_with model: @participant do |form| %>
-        <% @participant.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
+    <% if @evidence.present? && @evidence.template.filing.present? %>
+      <div class="card-body">
+        <div class="alert alert-info border-0 rounded-3 mb-0">
+          <div class="d-flex align-items-start">
+            <i class="bi bi-info-circle fs-5 me-2"></i>
+            <div>
+              <div class="fw-semibold mb-1">
+                Instrucciones para diligenciar
+              </div>
+              <div class="small">
+                <%= @evidence.template.filing %>
+              </div>
             </div>
-        <% end %>
-
-        <table style="width:100%">
-            <% if @evidence.template.format_number == 2 || @evidence.template.format_number == 4 || @evidence.template.format_number == 6 || @evidence.template.format_number == 38 then %>
-                <tr>
-                    <td style="width:50%">
-                        <%= form.label :user_id,  style: "display: block" %>
-                        <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-                    </td> 
-                    <td style="width:50%">
-                        <%= form.label :collaborator,  style: "display: block" %>
-                        <%= form.radio_button :collaborator, 0 %>
-                        <label for="No">NO</label>
-                        <%= form.radio_button :collaborator, 1 %>
-                        <label for="Si">SI</label>
-                    </td>
-                </tr>
-            <% end %>
-
-            <% if @evidence.template.format_number == 10 then %>
-                <tr>
-                    <td style="width:50%">
-                        <%= form.label :arl_activity_report,  style: "display: block" %>
-                        <%= form.radio_button :arl_activity_report, 0 %>
-                        <label for="No">NO</label>
-                        <%= form.radio_button :arl_activity_report, 1 %>
-                        <label for="Si">SI</label>
-                    </td>
-                    <td style="width:50%">
-                        <%= form.label :quote_10_aditional_points,  style: "display: block" %>
-                        <%= form.radio_button :quote_10_aditional_points, 0 %>
-                        <label for="No">NO</label>
-                        <%= form.radio_button :quote_10_aditional_points, 1 %>
-                        <label for="Si">SI</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:50%">
-                        <%= form.label :employees_activity, style: "display: block" %>
-                        <%= form.text_field :employees_activity,  class: "form-control" %>
-                    </td>
-                    <td style="width:50%">
-                        <%= form.label :reported_activity, style: "display: block" %>
-                        <%= form.select(:reported_activity, [['Trabajos en minería con servicio en socavones o en subterráneos.', 'Trabajos en minería con servicio en socavones o en subterráneos.'], ['Trabajos con exposición a altas temperaturas.', 'Trabajos con exposición a altas temperaturas.'], ['Trabajos con exposición a radiaciones ionizantes.', 'Trabajos con exposición a radiaciones ionizantes.'], ['Trabajos con exposición a sustancias comprobadamente cancerígenas.', 'Trabajos con exposición a sustancias comprobadamente cancerígenas.'], ['Actividades de los técnicos aeronáuticos.', 'Actividades de los técnicos aeronáuticos.'], ['Cuerpos de Bomberos - Función específica en operaciones de extinción de incendios.', 'Cuerpos de Bomberos - Función específica en operaciones de extinción de incendios.'], ['INPEC - Actividad dedicada a la custodia y vigilancia de los internos.', 'INPEC - Actividad dedicada a la custodia y vigilancia de los internos.']]) %>
-                    </td>
-                </tr>
-                <%= form.hidden_field :user_id, :value => @representante.id, class: "form-control" if @representante.present? %>
-            <% end %>
-
-            <% if @evidence.template.format_number == 11 then %>
-                <tr>
-                    <td style="width:50%">
-                        <%= form.label :user_id,  style: "display: block" %>
-                        <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-                    </td>
-                    <td style="width:50%">
-
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:50%">
-                        <%= form.label :jury_voting,  style: "display: block" %>
-                        <%= form.radio_button :jury_voting, 0 %>
-                        <label for="No">NO</label>
-                        <%= form.radio_button :jury_voting, 1 %>
-                        <label for="Si">SI</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:50%">
-                        <%= form.label :candidate,  style: "display: block" %>
-                        <%= form.radio_button :candidate, 0 %>
-                       <label for="No">NO</label>
-                        <%= form.radio_button :candidate, 1 %>
-                        <label for="Si">SI</label>
-                    </td>
-                    <td style="width:50%">
-                        <%= form.label :number_votes, style: "display: block" %>
-                        <%= form.number_field :number_votes,  class: "form-control" %>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:50%">
-                        <%= form.label :workers_representative,  style: "display: block" %>
-                        <%= form.radio_button :workers_representative, 0 %>
-                       <label for="No">NO</label>
-                        <%= form.radio_button :workers_representative, 1 %>
-                        <label for="Si">SI</label>
-                    </td>
-                    <td style="width:50%">
-                        <%= form.label :company_representative,  style: "display: block" %>
-                        <%= form.radio_button :company_representative, 0 %>
-                       <label for="No">NO</label>
-                        <%= form.radio_button :company_representative, 1 %>
-                        <label for="Si">SI</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:50%">
-                        <%= form.label :choose,  style: "display: block" %>
-                        <%= form.radio_button :choose, 0 %>
-                       <label for="No">NO</label>
-                        <%= form.radio_button :choose, 1 %>
-                        <label for="Si">SI</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:50%">
-                        <%= form.label :joint_committee_president,  style: "display: block" %>
-                        <%= form.radio_button :joint_committee_president, 0 %>
-                        <label for="No">NO</label>
-                        <%= form.radio_button :joint_committee_president, 1 %>
-                        <label for="Si">SI</label>
-                    </td>
-                    <td style="width:50%">
-                        <%= form.label :joint_committee_secretary,  style: "display: block" %>
-                        <%= form.radio_button :joint_committee_secretary, 0 %>
-                        <label for="No">NO</label>
-                        <%= form.radio_button :joint_committee_secretary, 1 %>
-                        <label for="Si">SI</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:50%">
-                        <%= form.label :post_copasst, style: "display: block" %>
-                        <%= form.select(:post_copasst, [['', ''],['Representante Legal', 'Representante Legal'], ['Responsable SG-SST', 'Responsable SG-SST'], ['Asesor externo SG-SST', 'Asesor externo SG-SST'], ['REPRESENTANTE EMPLEADOR', 'REPRESENTANTE EMPLEADOR'], ['SUPLENTE REPRESENTANTE EMPLEADOR ', 'SUPLENTE REPRESENTANTE EMPLEADOR '], ['REPRESENTANTE  EMPLEADOS', 'REPRESENTANTE  EMPLEADOS'], ['SUPLENTE REPRESENTANTE EMPLEADOS', 'SUPLENTE REPRESENTANTE EMPLEADOS'], ['Presidente COPASST', 'Presidente COPASST'], ['Secretario(a) COPASST ', 'Secretario COPASST '], ['Presidente COMITÉ DE CONVIVENCIA LABORAL', 'Presidente COMITÉ DE CONVIVENCIA LABORAL'], ['Secretario(a) COMITÉ DE CONVIVENCIA LABORAL', 'Secretario COMITÉ DE CONVIVENCIA LABORAL'], ['Vigía SG-SST', 'Vigía SG-SST'], ['Colaborador', 'Colaborador'], ['COLABORADOR', 'COLABORADOR']]) %>
-                    </td>
-                    <td style="width:50%">
-                    </td>
-                </tr>
-
-            <% end %>
-        
-            <% if @evidence.template.format_number == 14 then %>
-                <tr>
-                    <td style="width:50%">
-                        <%= form.label :user_id,  style: "display: block" %>
-                        <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-                    </td> 
-                    <td style="width:50%">
-                        <%= form.label :jury_voting,  style: "display: block" %>
-                        <%= form.radio_button :jury_voting, 0 %>
-                        <label for="No">NO</label>
-                        <%= form.radio_button :jury_voting, 1 %>
-                        <label for="Si">SI</label>
-                    </td>
-                </tr>
-            <% end %>
-
-            <% if @evidence.template.format_number == 15 then %>
-                <tr>
-                    <td style="width:50%">
-                        <%= form.label :user_id,  style: "display: block" %>
-                        <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-                    </td> 
-                    <td style="width:50%">
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:50%">
-                        <%= form.label :jury_voting,  style: "display: block" %>
-                        <%= form.radio_button :jury_voting, 0 %>
-                        <label for="No">NO</label>
-                        <%= form.radio_button :jury_voting, 1 %>
-                        <label for="Si">SI</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:50%">
-                        <%= form.label :candidate,  style: "display: block" %>
-                        <%= form.radio_button :candidate, 0 %>
-                       <label for="No">NO</label>
-                        <%= form.radio_button :candidate, 1 %>
-                        <label for="Si">SI</label>
-                    </td>
-                    <td style="width:50%">
-                        <%= form.label :number_votes, style: "display: block" %>
-                        <%= form.number_field :number_votes,  class: "form-control" %>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:50%">
-                        <%= form.label :workers_representative,  style: "display: block" %>
-                        <%= form.radio_button :workers_representative, 0 %>
-                       <label for="No">NO</label>
-                        <%= form.radio_button :workers_representative, 1 %>
-                        <label for="Si">SI</label>
-                    </td>
-                    <td style="width:50%">
-                        <%= form.label :company_representative,  style: "display: block" %>
-                        <%= form.radio_button :company_representative, 0 %>
-                       <label for="No">NO</label>
-                        <%= form.radio_button :company_representative, 1 %>
-                        <label for="Si">SI</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:50%">
-                        <%= form.label :choose,  style: "display: block" %>
-                        <%= form.radio_button :choose, 0 %>
-                       <label for="No">NO</label>
-                        <%= form.radio_button :choose, 1 %>
-                        <label for="Si">SI</label>
-                    </td>
-                    <td style="width:50%"> 
-                        <%= form.label :post_copasst, style: "display: block" %>
-                        <%= form.select(:post_copasst, [['', ''],['Representante Legal', 'Representante Legal'], ['Responsable SG-SST', 'Responsable SG-SST'], ['Asesor externo SG-SST', 'Asesor externo SG-SST'], ['REPRESENTANTE EMPLEADOR', 'REPRESENTANTE EMPLEADOR'], ['SUPLENTE REPRESENTANTE EMPLEADOR ', 'SUPLENTE REPRESENTANTE EMPLEADOR '], ['REPRESENTANTE  EMPLEADOS', 'REPRESENTANTE  EMPLEADOS'], ['SUPLENTE REPRESENTANTE EMPLEADOS', 'SUPLENTE REPRESENTANTE EMPLEADOS'], ['Presidente COPASST', 'Presidente COPASST'], ['Secretario(a) COPASST ', 'Secretario COPASST '], ['Presidente COMITÉ DE CONVIVENCIA LABORAL', 'Presidente COMITÉ DE CONVIVENCIA LABORAL'], ['Secretario(a) COMITÉ DE CONVIVENCIA LABORAL', 'Secretario COMITÉ DE CONVIVENCIA LABORAL'], ['Vigía SG-SST', 'Vigía SG-SST'], ['Colaborador', 'Colaborador'], ['COLABORADOR', 'COLABORADOR']]) %>
-                    </td> 
-                </tr>
-
-            <% end %>
-
-            <% if @evidence.template.format_number == 16 then %>
-                <tr>
-                    <td style="width:50%">
-                        <%= form.label :user_id,  style: "display: block" %>
-                        <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-                    </td> 
-                    <td style="width:50%">
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:50%">
-                        <%= form.label :workers_representative,  style: "display: block" %>
-                        <%= form.radio_button :workers_representative, 0 %>
-                       <label for="No">NO</label>
-                        <%= form.radio_button :workers_representative, 1 %>
-                        <label for="Si">SI</label>
-                    </td>
-                    <td style="width:50%">
-                        <%= form.label :company_representative,  style: "display: block" %>
-                        <%= form.radio_button :company_representative, 0 %>
-                       <label for="No">NO</label>
-                        <%= form.radio_button :company_representative, 1 %>
-                        <label for="Si">SI</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:50%"> 
-                        <%= form.label :post_copasst, style: "display: block" %>
-                        <%= form.select(:post_copasst, [['', ''],['Representante Legal', 'Representante Legal'], ['Responsable SG-SST', 'Responsable SG-SST'], ['Asesor externo SG-SST', 'Asesor externo SG-SST'], ['REPRESENTANTE EMPLEADOR', 'REPRESENTANTE EMPLEADOR'], ['SUPLENTE REPRESENTANTE EMPLEADOR ', 'SUPLENTE REPRESENTANTE EMPLEADOR '], ['REPRESENTANTE  EMPLEADOS', 'REPRESENTANTE  EMPLEADOS'], ['SUPLENTE REPRESENTANTE EMPLEADOS', 'SUPLENTE REPRESENTANTE EMPLEADOS'], ['Presidente COPASST', 'Presidente COPASST'], ['Secretario(a) COPASST ', 'Secretario COPASST '], ['Presidente COMITÉ DE CONVIVENCIA LABORAL', 'Presidente COMITÉ DE CONVIVENCIA LABORAL'], ['Secretario(a) COMITÉ DE CONVIVENCIA LABORAL', 'Secretario COMITÉ DE CONVIVENCIA LABORAL'], ['Vigía SG-SST', 'Vigía SG-SST'], ['Colaborador', 'Colaborador'], ['COLABORADOR', 'COLABORADOR']]) %>
-                    </td> 
-                    <td style="width:50%">
-                    </td>
-                </tr>
-
-            <% end %>
-
-            <% if @evidence.template.format_number == 17 then %>
-                <tr>
-                    <td style="width:50%">
-                        <%= form.label :user_id,  style: "display: block" %>
-                        <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-                    </td> 
-                    <td style="width:50%">
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width:50%"> 
-                        <%= form.label :post_copasst, style: "display: block" %>
-                        <%= form.select(:post_copasst, [['', ''],['Representante Legal', 'Representante Legal'], ['Responsable SG-SST', 'Responsable SG-SST'], ['Asesor externo SG-SST', 'Asesor externo SG-SST'], ['REPRESENTANTE EMPLEADOR', 'REPRESENTANTE EMPLEADOR'], ['SUPLENTE REPRESENTANTE EMPLEADOR ', 'SUPLENTE REPRESENTANTE EMPLEADOR '], ['REPRESENTANTE  EMPLEADOS', 'REPRESENTANTE  EMPLEADOS'], ['SUPLENTE REPRESENTANTE EMPLEADOS', 'SUPLENTE REPRESENTANTE EMPLEADOS'], ['Presidente COPASST', 'Presidente COPASST'], ['Secretario(a) COPASST ', 'Secretario COPASST '], ['Presidente COMITÉ DE CONVIVENCIA LABORAL', 'Presidente COMITÉ DE CONVIVENCIA LABORAL'], ['Secretario(a) COMITÉ DE CONVIVENCIA LABORAL', 'Secretario COMITÉ DE CONVIVENCIA LABORAL'], ['Vigía SG-SST', 'Vigía SG-SST'], ['Colaborador', 'Colaborador'], ['COLABORADOR', 'COLABORADOR']]) %>
-                    </td> 
-                    <td style="width:50%">
-                        <%= form.label :collaborator,  style: "display: block" %>
-                        <%= form.radio_button :collaborator, 0 %>
-                        <label for="No">NO</label>
-                        <%= form.radio_button :collaborator, 1 %>
-                        <label for="Si">SI</label>
-                    </td>
-                </tr>
-
-            <% end %>
-            
-            <% if @evidence.template.format_number == 59 then %>
-                <tr>
-                    <td style="width:50%">
-                        <%= form.label :user_id,  style: "display: block" %>
-                        <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-                    </td> 
-                    <td style="width:50%">
-                        <%= form.label :brigade_personnel,  style: "display: block" %>
-                        <%= form.radio_button :brigade_personnel, 0 %>
-                        <label for="No">NO</label>
-                        <%= form.radio_button :brigade_personnel, 1 %>
-                        <label for="Si">SI</label>
-                    </td>
-                </tr>
-            <% end %>
-
-            <% if @evidence.template.format_number == 74 then %>
-                <tr>
-                    <td style="width:50%">
-                        <%= form.label :user_id,  style: "display: block" %>
-                        <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-                    </td> 
-                </tr>
-            <% end %>
-
-            <% if @evidence.template.format_number == 116 then %>
-                <tr>
-                    <td style="width:50%">
-                        <%= form.label :user_id,  style: "display: block" %>
-                        <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-                    </td> 
-                </tr>
-            <% end %>
-
-        </table>
-
-        <%= form.hidden_field :evidence_id, :value => params[:id].to_s, class: "form-control" %>
-
-        <br>    
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
+          </div>
+        </div>
+      </div>
     <% end %>
-    <hr>
-    <br>
-    <br>
-    <div class="d-flex">
-        <div class="container">
-            <h class="display-6">Funcionarios relacionados en la evidencia:</h>
-        </div> 
+  </div>
+  <!-- ============================================================
+       FORMULARIO
+       ============================================================ -->
+  <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+    <div class="card-header bg-light border-0 py-3 px-3 px-md-4">
+      <div class="d-flex align-items-center">
+        <i class="bi bi-person-plus fs-5 text-secondary me-2"></i>
+        <div>
+          <h5 class="mb-0 fw-bold text-dark">
+            Agregar funcionario
+          </h5>
+          <small class="text-muted">
+            Complete la información solicitada
+          </small>
+        </div>
+      </div>
     </div>
-    <hr>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">Fecha Evidencia</th>
-                <th scope="col">Nro.Evidencia</th>
-                <th scope="col">Nombre Evidencia</th>
-                <th scope="col">Funcionario</th>
-                <th scope="col">Editar</th>
-                <th scope="col">Eliminar</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% @participants.each do |participant| %> 
+    <div class="card-body p-3 p-md-4">
+      <%= form_with model: @participant do |form| %>
+        <!-- ======================================================
+             ERRORES
+             ====================================================== -->
+        <% if @participant.errors.any? %>
+          <div class="alert alert-danger rounded-3 border-0">
+            <div class="d-flex align-items-start">
+              <i class="bi bi-exclamation-triangle fs-5 me-2"></i>
+              <div>
+                <div class="fw-bold mb-1">
+                  No fue posible guardar el registro
+                </div>
+                <ul class="mb-0 ps-3">
+                  <% @participant.errors.full_messages.each do |error| %>
+                    <li>
+                      <%= error %>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <!-- ======================================================
+             FORMATO 2, 4, 6
+             ====================================================== -->
+        <% if [2, 4, 6].include?(@evidence.template.format_number) %>
+          <div class="row g-4">
+            <div class="col-12 col-lg-6">
+              <div class="form-floating">
+                <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id, :name, { prompt: "-- Seleccionar funcionario --" }, { class: "form-select", required: true } %>
+                <%= form.label :user_id, "Funcionario" %>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <label class="form-label fw-semibold d-block">
+                <i class="bi bi-person-check me-1"></i>
+                ¿Es colaborador?
+              </label>
+              <div class="d-flex gap-4 mt-2">
+                <div class="form-check">
+                  <%= form.radio_button :collaborator, 0, class: "form-check-input", id: "participant_collaborator_no" %>
+                  <%= form.label :collaborator, "NO",  value: 0, for: "participant_collaborator_no", class: "form-check-label" %>
+                </div>
+                <div class="form-check">
+                  <%= form.radio_button :collaborator, 1, class: "form-check-input", id: "participant_collaborator_yes" %>
+                  <%= form.label :collaborator, "SI", value: 1, for: "participant_collaborator_yes", class: "form-check-label" %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <!-- ======================================================
+             FORMATO 10
+             ====================================================== -->
+        <% if @evidence.template.format_number == 10 %>
+          <div class="row g-4">
+            <div class="col-12 col-lg-6">
+              <label class="form-label fw-semibold d-block">
+                <i class="bi bi-file-earmark-check me-1"></i>
+                Reporte de actividad ARL
+              </label>
+              <div class="d-flex gap-4">
+                <div class="form-check">
+                  <%= form.radio_button :arl_activity_report, 0, class: "form-check-input", id: "arl_activity_report_no" %>
+                  <%= form.label :arl_activity_report, "NO", value: 0, for: "arl_activity_report_no", class: "form-check-label" %>
+                </div>
+                <div class="form-check">
+                  <%= form.radio_button :arl_activity_report, 1, class: "form-check-input", id: "arl_activity_report_yes" %>
+                  <%= form.label :arl_activity_report, "SI", value: 1, for: "arl_activity_report_yes", class: "form-check-label" %>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <label class="form-label fw-semibold d-block">
+                <i class="bi bi-plus-circle me-1"></i>
+                Cotiza 10 puntos adicionales
+              </label>
+              <div class="d-flex gap-4">
+                <div class="form-check">
+                  <%= form.radio_button :quote_10_aditional_points, 0, class: "form-check-input", id: "quote_10_points_no" %>
+                  <%= form.label :quote_10_aditional_points, "NO", value: 0, for: "quote_10_points_no", class: "form-check-label" %>
+                </div>
+                <div class="form-check">
+                  <%= form.radio_button :quote_10_aditional_points, 1, class: "form-check-input", id: "quote_10_points_yes" %>
+                  <%= form.label :quote_10_aditional_points, "SI", value: 1, for: "quote_10_points_yes", class: "form-check-label" %>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="form-floating">
+                <%= form.text_field :employees_activity, class: "form-control", placeholder: "Número de trabajadores" %>
+                <%= form.label :employees_activity, "Trabajadores de la actividad" %>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="form-floating">
+                <%= form.select :reported_activity,
+                            [
+                              ['Trabajos en minería con servicio en socavones o en subterráneos.', 'Trabajos en minería con servicio en socavones o en subterráneos.'],
+                              ['Trabajos con exposición a altas temperaturas.', 'Trabajos con exposición a altas temperaturas.'],
+                              ['Trabajos con exposición a radiaciones ionizantes.', 'Trabajos con exposición a radiaciones ionizantes.'],
+                              ['Trabajos con exposición a sustancias comprobadamente cancerígenas.', 'Trabajos con exposición a sustancias comprobadamente cancerígenas.'],
+                              ['Actividades de los técnicos aeronáuticos.', 'Actividades de los técnicos aeronáuticos.'],
+                              ['Cuerpos de Bomberos - Función específica en operaciones de extinción de incendios.', 'Cuerpos de Bomberos - Función específica en operaciones de extinción de incendios.'],
+                              ['INPEC - Actividad dedicada a la custodia y vigilancia de los internos.', 'INPEC - Actividad dedicada a la custodia y vigilancia de los internos.']
+                            ],
+                            { include_blank: "Seleccionar actividad" },
+                            { class: "form-select" } %>
+                <%= form.label :reported_activity, "Actividad reportada" %>
+              </div>
+            </div>
+          </div>
+          <%= form.hidden_field :user_id, value: @representante.id if @representante.present? %>
+        <% end %>
+        <!-- ======================================================
+             FORMATO 11
+             ====================================================== -->
+        <% if @evidence.template.format_number == 11 %>
+          <div class="row g-4">
+            <div class="col-12">
+              <div class="form-floating">
+                <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id, :name, { prompt: "-- Seleccionar funcionario --" }, { class: "form-select", required: true } %>
+                <%= form.label :user_id, "Funcionario" %>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <%= render "participants_radio", form: form, field: :jury_voting, label: "Votación del jurado" %>
+            </div>
+            <div class="col-12 col-lg-6">
+              <%= render "participants_radio", form: form, field: :candidate, label: "Es candidato" %>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="form-floating">
+                <%= form.number_field :number_votes, class: "form-control", placeholder: "Número de votos" %>
+                <%= form.label :number_votes, "Número de votos" %>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <%= render "participants_radio", form: form, field: :workers_representative, label: "Representante de los trabajadores" %>
+            </div>
+            <div class="col-12 col-lg-6">
+              <%= render "participants_radio", form: form, field: :company_representative, label: "Representante de la empresa" %>
+            </div>
+            <div class="col-12 col-lg-6">
+              <%= render "participants_radio", form: form, field: :choose, label: "Elegido" %>
+            </div>
+            <div class="col-12 col-lg-6">
+              <%= render "participants_radio", form: form, field: :joint_committee_president, label: "Presidente del comité" %>
+            </div>
+            <div class="col-12 col-lg-6">
+              <%= render "participants_radio", form: form, field: :joint_committee_secretary, label: "Secretario del comité" %>
+            </div>
+            <div class="col-12">
+              <div class="form-floating">
+                <%= form.select :post_copasst,
+                            [
+                              ['', ''],
+                              ['Representante Legal', 'Representante Legal'],
+                              ['Responsable SG-SST', 'Responsable SG-SST'],
+                              ['Asesor externo SG-SST', 'Asesor externo SG-SST'],
+                              ['REPRESENTANTE EMPLEADOR', 'REPRESENTANTE EMPLEADOR'],
+                              ['SUPLENTE REPRESENTANTE EMPLEADOR ', 'SUPLENTE REPRESENTANTE EMPLEADOR '],
+                              ['REPRESENTANTE EMPLEADOS', 'REPRESENTANTE EMPLEADOS'],
+                              ['SUPLENTE REPRESENTANTE EMPLEADOS', 'SUPLENTE REPRESENTANTE EMPLEADOS'],
+                              ['Presidente COPASST', 'Presidente COPASST'],
+                              ['Secretario(a) COPASST ', 'Secretario COPASST '],
+                              ['Presidente COMITÉ DE CONVIVENCIA LABORAL', 'Presidente COMITÉ DE CONVIVENCIA LABORAL'],
+                              ['Secretario(a) COMITÉ DE CONVIVENCIA LABORAL', 'Secretario COMITÉ DE CONVIVENCIA LABORAL'],
+                              ['Vigía SG-SST', 'Vigía SG-SST'],
+                              ['Colaborador', 'Colaborador'],
+                              ['COLABORADOR', 'COLABORADOR']
+                            ],
+                            {},
+                            { class: "form-select" } %>
+                <%= form.label :post_copasst, "Cargo dentro del comité" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <!-- ======================================================
+             FORMATOS 14
+             ====================================================== -->
+        <% if @evidence.template.format_number == 14 %>
+          <div class="row g-4">
+            <div class="col-12 col-lg-6">
+              <div class="form-floating">
+                <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id, :name, { prompt: "-- Seleccionar funcionario --" }, { class: "form-select", required: true } %>
+                <%= form.label :user_id, "Funcionario" %>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <%= render "participants_radio", form: form, field: :jury_voting, label: "Votación del jurado" %>
+            </div>
+          </div>
+        <% end %>
+        <!-- ======================================================
+             FORMATO 15
+             ====================================================== -->
+        <% if @evidence.template.format_number == 15 %>
+          <div class="row g-4">
+            <div class="col-12">
+              <div class="form-floating">
+                <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id, :name, { prompt: "-- Seleccionar funcionario --" }, { class: "form-select", required: true } %>
+                <%= form.label :user_id, "Funcionario" %>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <%= render "participants_radio", form: form, field: :jury_voting, label: "Votación del jurado" %>
+            </div>
+            <div class="col-12 col-lg-6">
+              <%= render "participants_radio", form: form, field: :candidate, label: "Es candidato" %>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="form-floating">
+                <%= form.number_field :number_votes, class: "form-control", placeholder: "Número de votos" %>
+                <%= form.label :number_votes, "Número de votos" %>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <%= render "participants_radio", form: form, field: :workers_representative, label: "Representante de los trabajadores" %>
+            </div>
+            <div class="col-12 col-lg-6">
+              <%= render "participants_radio", form: form, field: :company_representative, label: "Representante de la empresa" %>
+            </div>
+            <div class="col-12 col-lg-6">
+              <%= render "participants_radio", form: form, field: :choose, label: "Elegido" %>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="form-floating">
+                <%= form.select :post_copasst,
+                            [
+                              ['', ''],
+                              ['Representante Legal', 'Representante Legal'],
+                              ['Responsable SG-SST', 'Responsable SG-SST'],
+                              ['Asesor externo SG-SST', 'Asesor externo SG-SST'],
+                              ['REPRESENTANTE EMPLEADOR', 'REPRESENTANTE EMPLEADOR'],
+                              ['SUPLENTE REPRESENTANTE EMPLEADOR ', 'SUPLENTE REPRESENTANTE EMPLEADOR '],
+                              ['REPRESENTANTE EMPLEADOS', 'REPRESENTANTE EMPLEADOS'],
+                              ['SUPLENTE REPRESENTANTE EMPLEADOS', 'SUPLENTE REPRESENTANTE EMPLEADOS'],
+                              ['Presidente COPASST', 'Presidente COPASST'],
+                              ['Secretario(a) COPASST ', 'Secretario COPASST '],
+                              ['Presidente COMITÉ DE CONVIVENCIA LABORAL', 'Presidente COMITÉ DE CONVIVENCIA LABORAL'],
+                              ['Secretario(a) COMITÉ DE CONVIVENCIA LABORAL', 'Secretario COMITÉ DE CONVIVENCIA LABORAL'],
+                              ['Vigía SG-SST', 'Vigía SG-SST'],
+                              ['Colaborador', 'Colaborador'],
+                              ['COLABORADOR', 'COLABORADOR']
+                            ],
+                            {},
+                            { class: "form-select" } %>
+
+                <%= form.label :post_copasst, "Cargo dentro del comité" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <!-- ======================================================
+             FORMATO 16
+             ====================================================== -->
+        <% if @evidence.template.format_number == 16 %>
+          <div class="row g-4">
+            <div class="col-12">
+              <div class="form-floating">
+                <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id, :name, { prompt: "-- Seleccionar funcionario --" }, { class: "form-select", required: true } %>
+                <%= form.label :user_id, "Funcionario" %>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <%= render "participants_radio", form: form, field: :workers_representative, label: "Representante de los trabajadores" %>
+            </div>
+            <div class="col-12 col-lg-6">
+              <%= render "participants_radio", form: form, field: :company_representative, label: "Representante de la empresa" %>
+            </div>
+            <div class="col-12">
+              <div class="form-floating">
+                <%= form.select :post_copasst,
+                            [
+                              ['', ''],
+                              ['Representante Legal', 'Representante Legal'],
+                              ['Responsable SG-SST', 'Responsable SG-SST'],
+                              ['Asesor externo SG-SST', 'Asesor externo SG-SST'],
+                              ['REPRESENTANTE EMPLEADOR', 'REPRESENTANTE EMPLEADOR'],
+                              ['SUPLENTE REPRESENTANTE EMPLEADOR ', 'SUPLENTE REPRESENTANTE EMPLEADOR '],
+                              ['REPRESENTANTE EMPLEADOS', 'REPRESENTANTE EMPLEADOS'],
+                              ['SUPLENTE REPRESENTANTE EMPLEADOS', 'SUPLENTE REPRESENTANTE EMPLEADOS'],
+                              ['Presidente COPASST', 'Presidente COPASST'],
+                              ['Secretario(a) COPASST ', 'Secretario COPASST '],
+                              ['Presidente COMITÉ DE CONVIVENCIA LABORAL', 'Presidente COMITÉ DE CONVIVENCIA LABORAL'],
+                              ['Secretario(a) COMITÉ DE CONVIVENCIA LABORAL', 'Secretario COMITÉ DE CONVIVENCIA LABORAL'],
+                              ['Vigía SG-SST', 'Vigía SG-SST'],
+                              ['Colaborador', 'Colaborador'],
+                              ['COLABORADOR', 'COLABORADOR']
+                            ],
+                            {},
+                            { class: "form-select" } %>
+                <%= form.label :post_copasst, "Cargo dentro del comité" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <!-- ======================================================
+             FORMATO 17
+             ====================================================== -->
+        <% if @evidence.template.format_number == 17 %>
+          <div class="row g-4">
+            <div class="col-12">
+              <div class="form-floating">
+                <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id, :name, { prompt: "-- Seleccionar funcionario --" }, { class: "form-select", required: true } %>
+                <%= form.label :user_id, "Funcionario" %>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="form-floating">
+                <%= form.select :post_copasst,
+                            [
+                              ['', ''],
+                              ['Representante Legal', 'Representante Legal'],
+                              ['Responsable SG-SST', 'Responsable SG-SST'],
+                              ['Asesor externo SG-SST', 'Asesor externo SG-SST'],
+                              ['REPRESENTANTE EMPLEADOR', 'REPRESENTANTE EMPLEADOR'],
+                              ['SUPLENTE REPRESENTANTE EMPLEADOR ', 'SUPLENTE REPRESENTANTE EMPLEADOR '],
+                              ['REPRESENTANTE EMPLEADOS', 'REPRESENTANTE EMPLEADOS'],
+                              ['SUPLENTE REPRESENTANTE EMPLEADOS', 'SUPLENTE REPRESENTANTE EMPLEADOS'],
+                              ['Presidente COPASST', 'Presidente COPASST'],
+                              ['Secretario(a) COPASST ', 'Secretario COPASST '],
+                              ['Presidente COMITÉ DE CONVIVENCIA LABORAL', 'Presidente COMITÉ DE CONVIVENCIA LABORAL'],
+                              ['Secretario(a) COMITÉ DE CONVIVENCIA LABORAL', 'Secretario COMITÉ DE CONVIVENCIA LABORAL'],
+                              ['Vigía SG-SST', 'Vigía SG-SST'],
+                              ['Colaborador', 'Colaborador'],
+                              ['COLABORADOR', 'COLABORADOR']
+                            ],
+                            {},
+                            { class: "form-select" } %>
+                <%= form.label :post_copasst, "Cargo dentro del comité" %>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <%= render "participants_radio", form: form, field: :collaborator, label: "¿Es colaborador?" %>
+            </div>
+          </div>
+        <% end %>
+        <!-- ======================================================
+             FORMATO 59
+             ====================================================== -->
+        <% if @evidence.template.format_number == 59 %>
+          <div class="row g-4">
+            <div class="col-12 col-lg-6">
+              <div class="form-floating">
+                <%= form.collection_select :user_id,
+                                       User.usuarios_empresa.order(id: :asc),
+                                       :id,
+                                       :name,
+                                       { prompt: "-- Seleccionar funcionario --" },
+                                       { class: "form-select", required: true } %>
+                <%= form.label :user_id, "Funcionario" %>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <%= render "participants/participants_radio", form: form, field: :brigade_personnel, label: "¿Pertenece al personal de brigada?" %>
+            </div>            
+          </div>
+        <% end %>
+        <!-- ======================================================
+             FORMATOS 74 Y 116
+             ====================================================== -->
+        <% if [74, 116].include?(@evidence.template.format_number) %>
+          <div class="row g-4">
+            <div class="col-12">
+              <div class="form-floating">
+                <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id, :name, { prompt: "-- Seleccionar funcionario --" }, { class: "form-select", required: true } %>
+                <%= form.label :user_id, "Funcionario" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <!-- ======================================================
+             CAMPO OCULTO
+             ====================================================== -->
+        <%= form.hidden_field :evidence_id, value: params[:id].to_s %>
+        <!-- ======================================================
+             BOTONERA
+             ====================================================== -->
+        <div class="d-flex flex-column flex-sm-row gap-2 justify-content-end mt-4 pt-3 border-top">
+          <%= link_to "javascript:history.back();", class: "btn btn-outline-secondary rounded-pill px-4" do %>
+            <i class="bi bi-arrow-left me-1"></i>
+            Retornar
+          <% end %>
+          <% if [2, 4, 6, 10, 11, 14, 15, 16, 17, 59, 74, 116].include?(@evidence.template.format_number) %>
+            <button type="submit" class="btn btn-success rounded-pill px-4">
+              <i class="bi bi-check-circle me-1"></i>
+              <%= t("common.submit") %>
+            </button>
+          <% end %>  
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <!-- ============================================================
+       FUNCIONARIOS RELACIONADOS
+       ============================================================ -->
+  <div class="card border-0 shadow-sm rounded-4 overflow-hidden mt-4">
+    <div class="card-header bg-light border-0 py-3 px-3 px-md-4">
+      <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
+        <div class="d-flex align-items-center">
+          <div class="bg-white rounded-circle shadow-sm p-2 me-3">
+            <i class="bi bi-people-fill fs-5 text-secondary"></i>
+          </div>
+          <div>
+            <h5 class="mb-1 fw-bold text-dark">
+              Funcionarios relacionados en la evidencia
+            </h5>
+            <small class="text-muted">
+              Personas actualmente asociadas a esta evidencia
+            </small>
+          </div>
+        </div>
+        <span class="badge rounded-pill text-bg-secondary px-3 py-2">
+          <i class="bi bi-people me-1"></i>
+          <%= @participants.to_a.count %>
+        </span>
+      </div>
+    </div>
+    <div class="card-body p-0">
+      <% if @participants.present? %>
+        <!-- ======================================================
+             TABLA PC / TABLET
+             ====================================================== -->
+        <div class="table-responsive d-none d-md-block">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th class="px-4 py-3">
+                  <i class="bi bi-calendar3 me-1"></i>
+                  Fecha evidencia
+                </th>
+                <th class="py-3">
+                  Nro. evidencia
+                </th>
+                <th class="py-3">
+                  Evidencia
+                </th>
+                <th class="py-3">
+                  Funcionario
+                </th>
+                <th class="text-center py-3">
+                  Editar
+                </th>
+                <th class="text-center py-3">
+                  Eliminar
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+            <% @participants.each do |participant| %>
                 <tr>
-                    <td><%= participant.evidence.date %></td>
-                    <td><%= participant.evidence_id %></td>
-                    <td><%= participant.evidence.template.name %></td>
-                    <td><%= participant.user.name %></td>
-                    <td><%= link_to t('common.edit'), edit_participant_path(participant), class: 'btn btn-sm btn-primary' %></td>
-                    <td><%= button_to "Delete", participant, method: :delete, class:"btn btn-sm btn-danger" %></td>
-                        
+                  <td class="px-4 text-muted">
+                    <i class="bi bi-calendar-event me-1"></i>
+                    <%= participant.evidence.date %>
+                  </td>
+                  <td>
+                    <span class="badge rounded-pill text-bg-light border">
+                      <%= participant.evidence_id %>
+                    </span>
+                  </td>
+                  <td>
+                    <div class="fw-semibold text-dark">
+                      <i class="bi bi-file-earmark-text text-secondary me-2"></i>
+                      <%= participant.evidence.template.name %>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="fw-semibold">
+                      <i class="bi bi-person me-2 text-secondary"></i>
+                      <%= participant.user.name %>
+                    </div>
+                  </td>
+                  <td class="text-center">
+                    <%= link_to edit_participant_path(participant), class: "btn btn-sm btn-outline-primary rounded-circle", title: "Editar funcionario" do %>
+                      <i class="bi bi-pencil"></i>
+                    <% end %>
+                  </td>
+                  <td class="text-center">
+                    <%= button_to participant, method: :delete, class: "btn btn-sm btn-outline-danger rounded-circle", title: "Eliminar funcionario", form: {data: {turbo_confirm: "¿Está seguro de eliminar este funcionario?"}} do %>
+                      <i class="bi bi-trash"></i>
+                    <% end %>
+                  </td>
                 </tr>
-            <% end %>     
-        </tbody>      
-    </table>
-    <br>
-        
-</div>        
-<br>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <!-- ======================================================
+             TARJETAS CELULAR
+             ====================================================== -->
+        <div class="d-md-none">
+          <% @participants.each do |participant| %>
+            <div class="border-bottom p-3">
+              <div class="d-flex align-items-start gap-3">
+                <div class="bg-light rounded-3 p-2 flex-shrink-0">
+                  <i class="bi bi-person fs-5 text-secondary"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <div class="fw-semibold text-dark mb-2">
+                    <%= participant.user.name %>
+                  </div>
+                  <div class="small text-muted mb-1">
+                    <i class="bi bi-calendar3 me-1"></i>
+                    <%= participant.evidence.date %>
+                  </div>
+                  <div class="small text-muted mb-1">
+                    <i class="bi bi-hash me-1"></i>
+                    Evidencia #<%= participant.evidence_id %>
+                  </div>
+                  <div class="small text-secondary mb-3">
+                    <i class="bi bi-file-earmark-text me-1"></i>
+                    <%= participant.evidence.template.name %>
+                  </div>
+                  <div class="d-flex flex-wrap gap-2">
+                    <%= link_to edit_participant_path(participant), class: "btn btn-sm btn-outline-primary rounded-pill px-3" do %>
+                      <i class="bi bi-pencil me-1"></i>
+                      Editar
+                    <% end %>
+                    <%= button_to participant, method: :delete, class: "btn btn-sm btn-outline-danger rounded-pill px-3", form: {data: {turbo_confirm: "¿Está seguro de eliminar este funcionario?"}} do %>
+                      <i class="bi bi-trash me-1"></i>
+                      Eliminar
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-5 px-3">
+          <div class="mb-3">
+            <i class="bi bi-people display-5 text-muted"></i>
+          </div>
+          <h6 class="fw-bold text-secondary mb-1">
+            No hay funcionarios relacionados
+          </h6>
+          <p class="text-muted small mb-0">
+            Todavía no se han asociado funcionarios a esta evidencia.
+          </p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
 
 

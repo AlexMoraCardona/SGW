@@ -1,302 +1,737 @@
-
 <%= javascript_include_tag "https://www.google.com/jsapi" %>
 <%= wicked_pdf_javascript_include_tag "chartkick" %>
 
-<div align="left"; class="container col-12">
-    <a class="navbar-brand" href="/">
-        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-    </a>
-</div>
-<div class="container col-12"> 
-    <div class="row g-2">
-        <div class="col-sm-10"> 
-            <h2 class="display-5"><%= t('.title')%> Nro: <%= @evaluation.id  %></h2>
-            <%= link_to "PDF", ver_evaluation_pdf_evaluations_path(@evaluation.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;
-            <%= link_to 'Exportar a excel', evaluation_path(@evaluation, @evaluation_items, format: :xlsx), class: 'btn btn-sm btn-success' %>
-            <%= link_to "Crear evidencias", crear_evidencias_evaluations_path(@evaluation.id), class: 'btn btn-sm btn-success' if Current.user.level > 0 && Current.user.level < 3  %> &nbsp;
-
-        </div>         
-        <div class="col-sm-1">
-           <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, evaluations_path %>
-        </div> 
-        <hr>
-    </div> 
-    <br>
-
-    <div class="row g-4">
-        <div class="col-sm-3">
-            <strong>Empleador o Contratante</strong><br>
-            <%=  @evaluation.name_user(@evaluation.user_representante)  %> 
-        </div>        
-        <div class="col-sm-3">
-            <strong>Firma</strong><br>
-            <%= @evaluation.label_firm(@evaluation.firm_representante) %> 
-        </div>        
-        <div class="col-sm-3">
-            <strong><%= t('.date_firm_representante') %></strong><br>
-            <%= @evaluation.date_firm_representante %> 
+<div class="container-fluid px-2 px-md-4 pb-5">
+  <!-- ========================================================= -->
+  <!-- ENCABEZADO -->
+  <!-- ========================================================= -->
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+      <div class="row align-items-center g-3">
+        <!-- LOGO -->
+        <div class="col-12 col-md-2 text-center text-md-start">
+          <%= link_to root_path, class: "d-inline-block" do %>
+            <%= image_tag 'LogoConesst202305232.png', class: "img-fluid", style: "max-width:100px; height:auto;" %>
+          <% end %>
         </div>
-        <div class="col-sm-3">
+        <!-- TITULO -->
+        <div class="col-12 col-md-6 text-center text-md-start">
+          <div class="d-flex flex-column">
+            <span class="text-muted small">
+              EVALUACIÓN DEL SG-SST
+            </span>
+            <h2 class="fw-semibold mb-0">
+              <i class="bi bi-clipboard-check me-2"></i>
+              <%= t('.title') %>
+              <span class="text-muted">
+                N.º <%= @evaluation.id %>
+              </span>
+            </h2>
+          </div>
+        </div>
+        <!-- BOTONERA PRINCIPAL -->
+        <div class="col-12 col-md-4">
+          <div class="d-flex flex-wrap justify-content-center justify-content-md-end gap-2">
+            <!-- PDF -->
+            <%= link_to ver_evaluation_pdf_evaluations_path(@evaluation.id, format: 'pdf'), class: "btn btn-sm btn-outline-danger", title: "Generar PDF", data: { bs_toggle: "tooltip" } do %>
+              <i class="bi bi-file-earmark-pdf me-1"></i>
+              <span class="d-none d-lg-inline">PDF</span>
+            <% end %>
+            <!-- EXCEL -->
+            <%= link_to evaluation_path(@evaluation, @evaluation_items, format: :xlsx), class: "btn btn-sm btn-outline-success", title: "Exportar a Excel", data: { bs_toggle: "tooltip" } do %>
+              <i class="bi bi-file-earmark-excel me-1"></i>
+              <span class="d-none d-lg-inline">Excel</span>
+            <% end %>
+            <!-- CREAR EVIDENCIAS -->
+            <% if Current.user.level > 0 && Current.user.level < 3 %>
+              <%= link_to crear_evidencias_evaluations_path(@evaluation.id), class: "btn btn-sm btn-outline-primary", title: "Crear evidencias", data: { bs_toggle: "tooltip" } do %>
+                <i class="bi bi-camera me-1"></i>
+                <span class="d-none d-lg-inline">Evidencias</span>
+              <% end %>
+            <% end %>
+            <!-- RETORNAR -->
+            <%= link_to evaluations_path, class: "btn btn-sm btn-primary",  title: "Retornar", data: { bs_toggle: "tooltip" } do %>
+              <i class="bi bi-arrow-left me-1"></i>
+              <span class="d-none d-lg-inline">Retornar</span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ========================================================= -->
+  <!-- INFORMACIÓN DE FIRMAS -->
+  <!-- ========================================================= -->
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-light border-0">
+      <h5 class="mb-0 fw-semibold">
+        <i class="bi bi-pen me-2"></i>
+        Responsables y firmas
+      </h5>
+    </div>
+    <div class="card-body">
+      <div class="row g-4">
+        <!-- REPRESENTANTE -->
+        <div class="col-12 col-lg-6">
+          <div class="border rounded-3 p-3 h-100">
+            <div class="d-flex align-items-center mb-3">
+              <div class="me-2">
+                <i class="bi bi-person-badge fs-4"></i>
+              </div>
+              <div>
+                <h6 class="mb-0 fw-semibold">
+                  Empleador o Contratante
+                </h6>
+                <small class="text-muted">
+                  Responsable de la evaluación
+                </small>
+              </div>
+            </div>
+            <div class="row g-3">
+              <div class="col-12 col-md-5">
+                <small class="text-muted d-block">
+                  Nombre
+                </small>
+                <strong>
+                  <%= @evaluation.name_user(@evaluation.user_representante) %>
+                </strong>
+              </div>
+              <div class="col-12 col-md-3">
+                <small class="text-muted d-block">
+                  Firma
+                </small>
+                <strong>
+                  <%= @evaluation.label_firm(@evaluation.firm_representante) %>
+                </strong>
+              </div>
+              <div class="col-12 col-md-4">
+                <small class="text-muted d-block">
+                  <%= t('.date_firm_representante') %>
+                </small>
+                <strong>
+                  <%= @evaluation.date_firm_representante %>
+                </strong>
+              </div>
+            </div>
             <% if @evaluation.firm_representante.to_i == 0 %>
-                <%= link_to t('common.firmar'), firmar_representante_evaluation_path(@evaluation.id, 1), class: 'btn btn-sm btn btn-warning' %>
-            <% end %>    
+              <div class="mt-3">
+                <%= link_to firmar_representante_evaluation_path(@evaluation.id, 1), class: "btn btn-sm btn-warning" do %>
+                  <i class="bi bi-pen me-1"></i>
+                  <%= t('common.firmar') %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
         </div>
-    </div>
-    <div class="row g-4">
-        <div class="col-sm-3">
-            <strong>Asesor externo de apoyo en la ejecución del SG-SST</strong><br>
-            <%= @evaluation.name_user(@evaluation.user_responsible) %> 
-        </div>        
-        <div class="col-sm-3">
-            <strong><%= t('.firm_responsible') %></strong><br>
-            <%= @evaluation.label_firm(@evaluation.firm_responsible) %> 
-        </div>        
-        <div class="col-sm-3">
-            <strong><%= t('.date_firm_responsible') %></strong><br>
-            <%= @evaluation.date_firm_responsible %> 
-        </div>
-        <div class="col-sm-3">
+        <!-- RESPONSABLE -->
+        <div class="col-12 col-lg-6">
+          <div class="border rounded-3 p-3 h-100">
+            <div class="d-flex align-items-center mb-3">
+              <div class="me-2">
+                <i class="bi bi-person-workspace fs-4"></i>
+              </div>
+              <div>
+                <h6 class="mb-0 fw-semibold">
+                  Asesor externo de apoyo en la ejecución del SG-SST
+                </h6>
+                <small class="text-muted">
+                  Responsable de la ejecución
+                </small>
+              </div>
+            </div>
+            <div class="row g-3">
+              <div class="col-12 col-md-5">
+                <small class="text-muted d-block">
+                  Nombre
+                </small>
+                <strong>
+                  <%= @evaluation.name_user(@evaluation.user_responsible) %>
+                </strong>
+              </div>
+              <div class="col-12 col-md-3">
+                <small class="text-muted d-block">
+                  Firma
+                </small>
+                <strong>
+                  <%= @evaluation.label_firm(@evaluation.firm_responsible) %>
+                </strong>
+              </div>
+              <div class="col-12 col-md-4">
+                <small class="text-muted d-block">
+                  <%= t('.date_firm_responsible') %>
+                </small>
+                <strong>
+                  <%= @evaluation.date_firm_responsible %>
+                </strong>
+              </div>
+            </div>
             <% if @evaluation.firm_responsible.to_i == 0 %>
-                <%= link_to t('common.firmar'), firmar_responsable_evaluation_path(@evaluation.id, 2), class: 'btn btn-sm btn btn-warning' %>
-            <% end %>    
+              <div class="mt-3">
+                <%= link_to firmar_responsable_evaluation_path(@evaluation.id, 2), class: "btn btn-sm btn-warning" do %>
+                  <i class="bi bi-pen me-1"></i>
+                  <%= t('common.firmar') %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
         </div>
+      </div>
     </div>
-</div>  
-
-<div class="container col-12">
-    <br>
-        <div class="row g-3">
-            <div class="col-sm-5">
-                <strong><%= t('.entity') %></strong>
-                <%= @evaluation.entity.business_name %> 
-            </div>        
-            <div class="col-sm-3">
-               <strong><%= t('.date_evaluation') %></strong>
-               <%= @evaluation.date_evaluation %>
-            </div>        
-        </div>   
-        
-        <div class="row g-3">
-            <div class="col-sm-3">
-                <strong><%= t('.number_employees') %></strong>
-                <%= @evaluation.number_employees %>
-            </div>        
-            <div class="col-sm-6">
-                <strong><%= t('.risk_level') %></strong>
-                <%= @evaluation.risk_level.name %> 
-            </div>        
-        </div>  
-
-        <div class="form-group">    
-            <strong><%= t('.rule') %></strong>
+  </div>
+  <!-- ========================================================= -->
+  <!-- INFORMACIÓN GENERAL -->
+  <!-- ========================================================= -->
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-light border-0">
+      <h5 class="mb-0 fw-semibold">
+        <i class="bi bi-info-circle me-2"></i>
+        Información de la evaluación
+      </h5>
+    </div>
+    <div class="card-body">
+      <div class="row g-4">
+        <div class="col-12 col-md-6 col-lg-5">
+          <small class="text-muted d-block">
+            <%= t('.entity') %>
+          </small>
+          <div class="fw-semibold">
+            <i class="bi bi-building me-1"></i>
+            <%= @evaluation.entity.business_name %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <small class="text-muted d-block">
+            <%= t('.date_evaluation') %>
+          </small>
+          <strong>
+            <i class="bi bi-calendar-event me-1"></i>
+            <%= @evaluation.date_evaluation %>
+          </strong>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+          <small class="text-muted d-block">
+            <%= t('.number_employees') %>
+          </small>
+          <strong>
+            <i class="bi bi-people me-1"></i>
+            <%= @evaluation.number_employees %>
+          </strong>
+        </div>
+        <div class="col-12 col-md-6">
+          <small class="text-muted d-block">
+            <%= t('.risk_level') %>
+          </small>
+          <span class="badge text-bg-secondary">
+            <%= @evaluation.risk_level.name %>
+          </span>
+        </div>
+        <div class="col-12 col-md-6">
+          <small class="text-muted d-block">
+            <%= t('.rule') %>
+          </small>
+          <strong>
+            <i class="bi bi-journal-text me-1"></i>
             <%= @evaluation.rule.name %>
+          </strong>
         </div>
-
-        <div class="row g-3">
-            <div class="col-sm-4">
-               <strong><%= t('.score') %></strong>
-               <%= @evaluation.score  %>%
-            </div>        
-            <div class="col-sm-4">
-                <strong><%= t('.percentage') %></strong>
-                <%= @evaluation.percentage %>%
-            </div>        
-            <div class="col-sm-4">
-                <strong><%= t('.result') %></strong>
-                <% if @evaluation.result.to_s == 'ACEPTABLE'  %>
-                    <div style="color:#008000";><%= @evaluation.result %> </div>
-                <% end  %>    
-                <% if @evaluation.result.to_s == 'MODERADAMENTE ACEPTABLE'  %>
-                    <div style="color:#FFD200";><%= @evaluation.result %> </div>
-                <% end  %>    
-                <% if @evaluation.result.to_s == 'CRÍTICO'  %>
-                    <div style="color:#FF0000";><%= @evaluation.result %> </div>
-                <% end  %>    
-
-            </div>        
-        </div>  
-
-        <div class="row g-3">
-            <div class="col-sm-4">
-                <strong><%= t('.expected_goald') %></strong>
-                <%= @evaluation.expected_goald if @evaluation.present? %>
-            </div>        
-            <div class="col-sm-4">
-            </div>        
-            <div class="col-sm-4"> 
-            </div>        
-        </div>  
-
-
-        <div class="form-group">    
-            <strong><%= t('.observation') %></strong>
+      </div>
+    </div>
+  </div>
+  <!-- ========================================================= -->
+  <!-- RESULTADO -->
+  <!-- ========================================================= -->
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-light border-0">
+      <h5 class="mb-0 fw-semibold">
+        <i class="bi bi-speedometer2 me-2"></i>
+        Resultado de la evaluación
+      </h5>
+    </div>
+    <div class="card-body">
+      <div class="row g-4 align-items-center">
+        <!-- SCORE -->
+        <div class="col-12 col-md-4">
+          <div class="border rounded-3 p-3 text-center h-100">
+            <small class="text-muted d-block">
+              <%= t('.score') %>
+            </small>
+            <div class="fs-2 fw-bold">
+              <%= @evaluation.score %>%
+            </div>
+          </div>
+        </div>
+        <!-- PORCENTAJE -->
+        <div class="col-12 col-md-4">
+          <div class="border rounded-3 p-3 text-center h-100">
+            <small class="text-muted d-block">
+              <%= t('.percentage') %>
+            </small>
+            <div class="fs-2 fw-bold">
+              <%= @evaluation.percentage %>%
+            </div>
+          </div>
+        </div>
+        <!-- RESULTADO -->
+        <div class="col-12 col-md-4">
+          <div class="border rounded-3 p-3 text-center h-100">
+            <small class="text-muted d-block">
+              <%= t('.result') %>
+            </small>
+            <% if @evaluation.result.to_s == 'ACEPTABLE' %>
+              <span class="badge rounded-pill text-bg-success fs-6 px-3 py-2">
+                <i class="bi bi-check-circle me-1"></i>
+                ACEPTABLE
+              </span>
+            <% elsif @evaluation.result.to_s == 'MODERADAMENTE ACEPTABLE' %>
+              <span class="badge rounded-pill text-bg-warning fs-6 px-3 py-2">
+                <i class="bi bi-exclamation-circle me-1"></i>
+                MODERADAMENTE ACEPTABLE
+              </span>
+            <% elsif @evaluation.result.to_s == 'CRÍTICO' %>
+                <span class="badge rounded-pill text-bg-danger fs-6 px-3 py-2">
+                  <i class="bi bi-x-circle me-1"></i>
+                  CRÍTICO
+                </span>
+            <% else %>
+              <span class="badge rounded-pill text-bg-secondary fs-6 px-3 py-2">
+                <%= @evaluation.result %>
+              </span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <!-- META -->
+      <div class="mt-4">
+        <div class="border rounded-3 p-3">
+          <small class="text-muted d-block">
+            <%= t('.expected_goald') %>
+          </small>
+          <span>
+            <%= @evaluation.expected_goald if @evaluation.present? %>
+          </span>
+        </div>
+      </div>
+      <!-- OBSERVACIÓN -->
+      <div class="mt-3">
+        <div class="border rounded-3 p-3">
+          <small class="text-muted d-block mb-1">
+            <i class="bi bi-chat-left-text me-1"></i>
+            <%= t('.observation') %>
+          </small>
+          <div>
             <%= @evaluation.observation %>
+          </div>
         </div>
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-10"> 
-                <%= pie_chart  @evaluation.calculo_porcentaje_general(@evaluation.id), title: "Puntaje Estándares Aplicables", download: {filename: "GraficaCiclo"}, download: {background: "#FFFFFF"}, xtitle: "Estándares Cumplidos", ytitle: "Porcentaje", prefix: "Porcentaje: ", suffix: "%", colors: ["#008000", "#FF0000"], donut: true, label: 'true', library: {plotOptions: { pie: { dataLabels: { enabled: true }}}} if @evaluation.present? %>
-            </div>           
-        </div>           
-
-        <br>
- 
-
-        <div class="row g-3">
-            <div class="col-sm-5">
-                <%= column_chart  @evaluation.calculo_porcentaje_ciclo(@evaluation.id), title: "Porcentaje de cumplimiento por ciclo", download: {filename: "GraficaCiclo"}, download: {background: "#FFFFFF"}, xtitle: "Ciclo", ytitle: "Porcentaje", prefix: "Porcentaje: ", suffix: "%", colors: ["#008000"] if @evaluation.present? %>
-            </div>           
-            <div class="col-sm-3">
-                <%= column_chart  @evaluation.calculo_cumplidos_evaluacion(@evaluation.id), colors: ["#008000"], title: "Estándares cumplidos por ciclo", download: {filename: "GraficaCiclo"}, download: {background: "#FFFFFF"}, xtitle: "Ciclo", ytitle: "Items cumplidos" if @evaluation.present? %>
-            </div>           
-            <div class="col-sm-3">
-                <%= column_chart  @evaluation.calculo_pendientes_evaluacion(@evaluation.id), colors: ["#b00"], title: "Estándares pendientes por ciclo", download: {filename: "GraficaCiclo"}, download: {background: "#FFFFFF"}, xtitle: "Ciclo", ytitle: "Items pendientes" if @evaluation.present? %>
-            </div>           
-        </div>           
-       
-</div>    
-<br>
-<div class="container col-12" 
-    <br>
-    <h2 class="display-5"><%= t('.title_detail_apply') %></h2> 
-
-    <input type="button" value="Actualizar Estándares" onClick="location.reload();" style="width: 200px; height: 30px; background: #6699FF; color: #ffffff; cursor: pointer; border: 0px;"/>
-    <hr>
-</div> 
-<br>  
-
-<div class="container col-12">  
-    </br>        
-
-    <table class="table table-hover">
-        <thead>
-            <tr>  
-                <th scope="col">Ciclo</th>
-                <th scope="col">Item</th>
-                <th scope="col">Descripción</th>
-                <th scope="col">Cumple</th>
-                <th scope="col">Aplica Norma</th>
-                <th scope="col">Puntaje</th>
-                <th scope="col">Criterio</th> 
-                <th scope="col">Ver</th> 
+      </div>
+    </div>
+  </div>
+  <!-- ========================================================= -->
+  <!-- GRÁFICOS -->
+  <!-- ========================================================= -->
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-light border-0">
+      <h5 class="mb-0 fw-semibold">
+        <i class="bi bi-bar-chart-line me-2"></i>
+        Indicadores de la evaluación
+      </h5>
+    </div>
+    <div class="card-body">
+      <!-- GRAFICO GENERAL -->
+      <div class="row">
+        <div class="col-12">
+          <div class="border rounded-3 p-2 p-md-3">
+            <%= pie_chart(@evaluation.calculo_porcentaje_general(@evaluation.id), title: "Puntaje Estándares Aplicables", download: {filename: "GraficaCiclo", background: "#FFFFFF"}) %>
+          </div>
+        </div>
+      </div>
+      <!-- GRAFICOS POR CICLO -->
+      <div class="row g-4 mt-1">
+        <div class="col-12 col-lg-4">
+          <div class="border rounded-3 p-2 p-md-3 h-100">
+            <%= column_chart(@evaluation.calculo_porcentaje_ciclo(@evaluation.id), title: "Porcentaje de cumplimiento por ciclo", download: {filename: "GraficaCiclo", background: "#FFFFFF"}, xtitle: "Ciclo", ytitle: "Porcentaje", prefix: "Porcentaje: ", suffix: "%", colors: ["#008000"]) if @evaluation.present? %>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4">
+          <div class="border rounded-3 p-2 p-md-3 h-100">
+            <%= column_chart(@evaluation.calculo_cumplidos_evaluacion(@evaluation.id), colors: ["#008000"], title: "Estándares cumplidos por ciclo", download: {filename: "GraficaCumplidos", background: "#FFFFFF"}, xtitle: "Ciclo", ytitle: "Items cumplidos") if @evaluation.present? %>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4">
+          <div class="border rounded-3 p-2 p-md-3 h-100">
+            <%= column_chart(@evaluation.calculo_pendientes_evaluacion(@evaluation.id), colors: ["#b00"], title: "Estándares pendientes por ciclo", download: {filename: "GraficaPendientes", background: "#FFFFFF"}, xtitle: "Ciclo", ytitle: "Items pendientes") if @evaluation.present? %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ========================================================= -->
+  <!-- ESTÁNDARES APLICABLES -->
+  <!-- ========================================================= -->
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-light border-0">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+        <h5 class="mb-0 fw-semibold">
+          <i class="bi bi-list-check me-2"></i>
+          <%= t('.title_detail_apply') %>
+        </h5>
+        <!-- ACTUALIZAR -->
+        <button type="button" class="btn btn-sm btn-outline-primary" onclick="location.reload();">
+          <i class="bi bi-arrow-clockwise me-1"></i>
+          Actualizar estándares
+        </button>
+      </div>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th class="text-nowrap">
+                Ciclo
+              </th>
+              <th class="text-nowrap">
+                Item
+              </th>
+              <th>
+                Descripción
+              </th>
+              <th class="text-center text-nowrap">
+                Cumple
+              </th>
+              <th class="text-center text-nowrap">
+                Aplica Norma
+              </th>
+              <th class="text-center">
+                Puntaje
+              </th>
+              <th class="text-center">
+                Criterio
+              </th>
+              <th class="text-center">
+                Acción
+              </th>
             </tr>
-        </thead>  
-        <tbody> 
-            <% @evaluation_itemstotal.each do |evaluation_items| %> 
-
-                    <tr> 
-                        <td><%= Standar.label_cycle(evaluation_items.standar_detail_item.standar_detail.standar.cycle) %></td>
-                        <td><%= evaluation_items.standar_detail_item.item_nro %></td>
-                        <td><%= evaluation_items.standar_detail_item.description%></td>
-                        <td style="width:150px;">
-                                <%= form_with model: evaluation_items, data: { turbo: false }, class: "d-flex flex-wrap gap-2 align-items-center" do |form| %> 
-                                     <div class="form-check"> <%= form.radio_button :meets, 1, class: "form-check-input", onchange: "this.form.requestSubmit();" %> 
-                                         <%= form.label :meets, "SI", value: 1, class: "form-check-label" %> 
-                                     </div> 
-                                     <div class="form-check"> 
-                                         <%= form.radio_button :meets, 0, class: "form-check-input", onchange: "this.form.requestSubmit();" %> 
-                                         <%= form.label :meets, "NO", value: 0, class: "form-check-label" %> 
-                                     </div>
-                               <% end %>
-                        </td>
-                        <td><%= EvaluationRuleDetail.label_apply(evaluation_items.apply) %></td>
-                        <td><%= evaluation_items.score %></td>
-                        <td>
-                            <button type="button" class="btn btn-sm btn-light" 
-                                data-bs-toggle="popover"
-                                title="<%=evaluation_items.standar_detail_item.description%>"
-                                data-bs-content="CRITERIO: <%=evaluation_items.standar_detail_item.criterion%> 
-                                MODO DE VERIFICACIÓN:  <%= evaluation_items.standar_detail_item.verification_mode %>" ><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-    
-                        </td>
-    
-                        <td><%= link_to t('common.veritem'), edit_evaluation_rule_detail_path(evaluation_items), class: 'btn btn-sm btn-primary'  %></td>
-                    </tr>  
-            <% end %> 
-        </tbody>   
- 
-    </table>
-    </br>  
-    <br>
-    <h2 class="display-5"><%= t('.title_detail_no_apply') %></h2> 
-    <hr>
-    <div class="row g-3">
-        <div class="col-sm-4">
-           <strong><%= t('.score_int') %>:</strong>
-           <%= @evaluation.score_int  %>%
-        </div>        
-        <div class="col-sm-4">
-            <strong>Estado:</strong>
-            <% if  @evaluation.score_int > 85.99  %>
-                <div style="color:#008000";>ACEPTABLE</div>
-            <% end  %>    
-            <% if @evaluation.score_int > 60.99 && @evaluation.score_int < 86  %>
-                <div style="color:#FFD200";>MODERADAMENTE ACEPTABLE</div>
-            <% end  %>    
-            <% if @evaluation.score_int < 61 %>
-                <div style="color:#FF0000";>CRÍTICO</div>
-            <% end  %>    
-        </div>        
-    </div>  
-
-    <table class="table table-hover">
-        <thead>
-            <tr>  
-                <th scope="col">Ciclo</th>
-                <th scope="col">Item</th>
-                <th scope="col">Descripción</th>
-                <th scope="col">Cumple</th>
-                <th scope="col">Aplica Norma</th>
-                <th scope="col">Puntaje</th>
-                <th scope="col">Criterio</th> 
-                <th scope="col">Ver</th> 
+          </thead>
+          <tbody>
+            <% @evaluation_itemstotal.each do |evaluation_items| %>
+              <tr>
+                <!-- CICLO -->
+                <td class="text-nowrap">
+                  <span class="badge text-bg-light border">
+                    <%= Standar.label_cycle(evaluation_items.standar_detail_item.standar_detail.standar.cycle) %>
+                  </span>
+                </td>
+                <!-- ITEM -->
+                <td class="fw-semibold text-nowrap">
+                  <%= evaluation_items.standar_detail_item.item_nro %>
+                </td>
+                <!-- DESCRIPCION -->
+                <td style="min-width:280px;">
+                  <%= evaluation_items.standar_detail_item.description %>
+                </td>
+                <!-- CUMPLE -->
+                <td class="text-center">
+                  <%= form_with model: evaluation_items, data: { turbo: false }, class: "d-flex justify-content-center gap-3" do |form| %>
+                    <div class="form-check">
+                      <%= form.radio_button :meets, 1, class: "form-check-input", onchange: "this.form.requestSubmit();" %>
+                      <%= form.label :meets, "SI", value: 1, class: "form-check-label fw-semibold" %>
+                    </div>
+                    <div class="form-check">
+                      <%= form.radio_button :meets, 0, class: "form-check-input", onchange: "this.form.requestSubmit();" %>
+                      <%= form.label :meets, "NO", value: 0, class: "form-check-label fw-semibold" %>
+                    </div>
+                  <% end %>
+                </td>
+                <!-- APLICA -->
+                <td class="text-center text-nowrap">
+                  <%= EvaluationRuleDetail.label_apply(evaluation_items.apply) %>
+                </td>
+                <!-- PUNTAJE -->
+                <td class="text-center fw-semibold">
+                  <%= evaluation_items.score %>
+                </td>
+                <!-- CRITERIO -->
+                <td class="text-center align-middle">
+                  <button type="button" class="btn btn-sm btn-outline-secondary rounded-circle" data-bs-toggle="modal" data-bs-target="#criterioModal" data-description="<%= evaluation_items.standar_detail_item.description %>" data-criterion="<%= evaluation_items.standar_detail_item.criterion %>" data-verification="<%= evaluation_items.standar_detail_item.verification_mode %>" title="Ver información del criterio">
+                    <i class="bi bi-info-circle"></i>
+                  </button>
+                </td>
+                <!-- VER / EDITAR -->
+                <td class="text-center">
+                  <%= link_to edit_evaluation_rule_detail_path(evaluation_items), class: "btn btn-sm btn-outline-primary", title: t('common.veritem'), data: { bs_toggle: "tooltip" } do %>
+                    <i class="bi bi-eye"></i>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- ========================================================= -->
+  <!-- ESTÁNDARES NO APLICABLES -->
+  <!-- ========================================================= -->
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-light border-0">
+      <h5 class="mb-0 fw-semibold">
+        <i class="bi bi-list-ul me-2"></i>
+        <%= t('.title_detail_no_apply') %>
+      </h5>
+    </div>
+    <div class="card-body">
+      <!-- RESULTADO -->
+      <div class="row g-3 mb-4">
+        <div class="col-12 col-md-4">
+          <div class="border rounded-3 p-3 text-center h-100">
+            <small class="text-muted d-block">
+              <%= t('.score_int') %>
+            </small>
+            <div class="fs-3 fw-bold">
+              <%= @evaluation.score_int %>%
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-8">
+          <div class="border rounded-3 p-3 text-center h-100">
+            <small class="text-muted d-block mb-2">
+              Estado
+            </small>
+            <% if @evaluation.score_int > 85.99 %>
+              <span class="badge rounded-pill text-bg-success fs-6 px-3 py-2">
+                <i class="bi bi-check-circle me-1"></i>
+                ACEPTABLE
+              </span>
+            <% elsif @evaluation.score_int > 60.99 && @evaluation.score_int < 86 %>
+              <span class="badge rounded-pill text-bg-warning fs-6 px-3 py-2">
+                <i class="bi bi-exclamation-circle me-1"></i>
+                MODERADAMENTE ACEPTABLE
+              </span>
+            <% elsif @evaluation.score_int < 61 %>
+              <span class="badge rounded-pill text-bg-danger fs-6 px-3 py-2">
+                <i class="bi bi-x-circle me-1"></i>
+                CRÍTICO
+              </span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <!-- TABLA NO APLICABLE -->
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th class="text-nowrap">
+                Ciclo
+              </th>
+              <th class="text-nowrap">
+                Item
+              </th>
+              <th>
+                Descripción
+              </th>
+              <th class="text-center text-nowrap">
+                Cumple
+              </th>
+              <th class="text-center text-nowrap">
+                Aplica Norma
+              </th>
+              <th class="text-center">
+                Puntaje
+              </th>
+              <th class="text-center">
+                Criterio
+              </th>
+              <th class="text-center">
+                Acción
+              </th>
             </tr>
-        </thead>  
-        <tbody> 
-            <% @evaluation_itemstotalno.each do |evaluation_items| %> 
+          </thead>
+          <tbody>
+            <% @evaluation_itemstotalno.each do |evaluation_items| %>
+              <tr>
+                <!-- CICLO -->
+                <td class="text-nowrap">
+                  <span class="badge text-bg-light border">
+                    <%= Standar.label_cycle(evaluation_items.standar_detail_item.standar_detail.standar.cycle) %>
+                  </span>
+                </td>
+                <!-- ITEM -->
+                <td class="fw-semibold text-nowrap">
+                  <%= evaluation_items.standar_detail_item.item_nro %>
+                </td>
+                <!-- DESCRIPCION -->
+                <td style="min-width:280px;">
+                  <%= evaluation_items.standar_detail_item.description %>
+                </td>
+                <!-- CUMPLE -->
+                <td class="text-center">
+                  <%= form_with model: evaluation_items, data: { turbo: false }, class: "d-flex justify-content-center gap-3" do |form| %>
+                    <div class="form-check">
+                      <%= form.radio_button :meets, 1, class: "form-check-input", onchange: "this.form.requestSubmit();" %>
+                      <%= form.label :meets, "SI", value: 1, class: "form-check-label fw-semibold" %>
+                    </div>
+                    <div class="form-check">
+                      <%= form.radio_button :meets, 0, class: "form-check-input", onchange: "this.form.requestSubmit();" %>
+                      <%= form.label :meets, "NO", value: 0, class: "form-check-label fw-semibold" %>
+                    </div>
+                  <% end %>
+                </td>
+                <!-- APLICA -->
+                <td class="text-center text-nowrap">
+                  <%= EvaluationRuleDetail.label_apply(evaluation_items.apply) %>
+                </td>
+                <!-- PUNTAJE -->
+                <td class="text-center fw-semibold">
+                  <%= evaluation_items.score %>
+                </td>
+                <!-- CRITERIO -->
+                <td class="text-center align-middle">
+                  <button type="button" class="btn btn-sm btn-outline-secondary rounded-circle" data-bs-toggle="modal" data-bs-target="#criterioModal" data-description="<%= evaluation_items.standar_detail_item.description %>"          data-criterion="<%= evaluation_items.standar_detail_item.criterion %>" data-verification="<%= evaluation_items.standar_detail_item.verification_mode %>" title="Ver información del criterio">
+                   <i class="bi bi-info-circle"></i>
+                  </button>
+                </td>
+                <!-- ACCION -->
+                <td class="text-center">
+                  <%= link_to edit_evaluation_rule_detail_path(evaluation_items), class: "btn btn-sm btn-outline-primary", title: t('common.veritem'), data: { bs_toggle: "tooltip" } do %>
+                    <i class="bi bi-eye"></i>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- ========================================================= -->
+  <!-- MODAL INFORMACIÓN DEL CRITERIO                            -->
+  <!-- ========================================================= -->
 
-                    <tr> 
-                        <td><%= Standar.label_cycle(evaluation_items.standar_detail_item.standar_detail.standar.cycle) %></td>
-                        <td><%= evaluation_items.standar_detail_item.item_nro %></td>
-                        <td><%= evaluation_items.standar_detail_item.description%></td>
-                        <td style="width:150px;">
-                            <%= form_with model: evaluation_items, data: { turbo: false }, class: "d-flex flex-wrap gap-2 align-items-center" do |form| %>
-                                  <div class="form-check"> <%= form.radio_button :meets, 1, class: "form-check-input", onchange: "this.form.requestSubmit();" %> 
-                                      <%= form.label :meets, "SI", value: 1, class: "form-check-label" %> 
-                                  </div> 
-                                  <div class="form-check"> <%= form.radio_button :meets, 0, class: "form-check-input", onchange: "this.form.requestSubmit();" %> 
-                                     <%= form.label :meets, "NO", value: 0, class: "form-check-label" %>
-                                  </div>
-                            <% end %>
-                        </td>
-                        <td><%= EvaluationRuleDetail.label_apply(evaluation_items.apply) %></td>
-                        <td><%= evaluation_items.score %></td>
-                        <td>
-                            <button type="button" class="btn btn-sm btn-light" 
-                                data-bs-toggle="popover"
-                                title="<%=evaluation_items.standar_detail_item.description%>"
-                                data-bs-content="CRITERIO: <%=evaluation_items.standar_detail_item.criterion%> 
-                                MODO DE VERIFICACIÓN:  <%= evaluation_items.standar_detail_item.verification_mode %>" ><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-    
-                        </td>
-    
-                        <td><%= link_to t('common.veritem'), edit_evaluation_rule_detail_path(evaluation_items), class: 'btn btn-sm btn-primary'  %></td>
-                    </tr>  
-                 
-            <% end %> 
-        </tbody>   
- 
-    </table>
-    </br>  
-    
-    
+  <div class="modal fade"
+     id="criterioModal"
+     tabindex="-1"
+     aria-labelledby="criterioModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow">
+        <!-- ENCABEZADO -->
+        <div class="modal-header bg-light border-bottom">
+          <h5 class="modal-title fw-bold text-dark"
+            id="criterioModalLabel">
+            <i class="bi bi-info-circle me-2"></i>
+            Información del criterio
+          </h5>
+          <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Cerrar">
+          </button>
+        </div>
+        <!-- CONTENIDO -->
+        <div class="modal-body">
+          <!-- DESCRIPCIÓN -->
+          <div class="mb-4">
+            <div class="d-flex align-items-center mb-2">
+              <i class="bi bi-file-text me-2 text-secondary"></i>
+              <h6 class="mb-0 fw-bold">
+                Descripción
+              </h6>
+            </div>
+            <div class="bg-light rounded-3 p-3">
+              <p id="modalDescription"
+                 class="mb-0 text-secondary"
+                 style="white-space: pre-line;">
+              </p>
+            </div>
+          </div>
+          <!-- CRITERIO -->
+          <div class="mb-4">
+            <div class="d-flex align-items-center mb-2">
+              <i class="bi bi-check2-square me-2 text-secondary"></i>
+              <h6 class="mb-0 fw-bold">
+                Criterio
+              </h6>
+            </div>
+            <div class="bg-light rounded-3 p-3">
+              <p id="modalCriterion"
+               class="mb-0 text-secondary"
+               style="white-space: pre-line;">
+              </p>
+            </div>
+          </div>
+          <!-- MODO DE VERIFICACIÓN -->
+          <div>
+            <div class="d-flex align-items-center mb-2">
+              <i class="bi bi-search me-2 text-secondary"></i>
+              <h6 class="mb-0 fw-bold">
+                Modo de verificación
+              </h6>
+            </div>
+            <div class="bg-light rounded-3 p-3">
+              <p id="modalVerification"
+                 class="mb-0 text-secondary"
+                 style="white-space: pre-line;">
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- PIE -->
+        <div class="modal-footer bg-light border-top">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle me-1"></i>
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener("turbo:load", function () {
+    const criterioModal = document.getElementById("criterioModal");
+    if (!criterioModal) return;
+    criterioModal.addEventListener("show.bs.modal", function (event) {
+      const button = event.relatedTarget;
+      if (!button) return;
+      const description = button.getAttribute("data-description") || "";
+      const criterion = button.getAttribute("data-criterion") || "";
+      const verification = button.getAttribute("data-verification") || "";
+      document.getElementById("modalDescription").textContent = description;
+      document.getElementById("modalCriterion").textContent = criterion;
+      document.getElementById("modalVerification").textContent = verification;
+    });
 
-    <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, evaluations_path %>
-    
-</div>  
-<br> 
+  });
+</script>
+  <!-- ========================================================= -->
+  <!-- RETORNAR -->
+  <!-- ========================================================= -->
+  <div class="d-flex justify-content-center justify-content-md-end mt-4">
+    <%= link_to evaluations_path, class: "btn btn-primary px-4" do %>
+      <i class="bi bi-arrow-left me-2"></i>
+      Retornar a evaluaciones
+    <% end %>
+  </div>
+</div>
+<!-- ========================================================= -->
+<!-- ACTIVAR TOOLTIPS Y POPOVERS -->
+<!-- ========================================================= -->
+<script>
+  document.addEventListener("turbo:load", function () {
+    document
+      .querySelectorAll('[data-bs-toggle="tooltip"]')
+      .forEach(function (element) {
+        new bootstrap.Tooltip(element);
+      });
 
+    document
+      .querySelectorAll('[data-bs-toggle="popover"]')
+      .forEach(function (element) {
+        new bootstrap.Popover(element);
+      });
 
+  });
+</script>
 
 
 

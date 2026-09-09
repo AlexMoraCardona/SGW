@@ -1,38 +1,224 @@
-<div class="container col-11 card p-5">
-    <br>
-    <h5 class="table-success">Formatos para la creación de evidencias </h5>
-    <hr>
-    <table class="table table-Light table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Formato Nro.</th>
-                <th scope="col">Nombre del formato</th>
-                <th scope="col">Referencia</th>
-                <th scope="col">Descripción</th>
-                <th scope="col">Crear Evidencia</th>
-                <th scope="col">Descargar Formato</th>
-                <th scope="col">Ayuda</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% @templates.each do |template| %> 
+<div class="container-fluid px-2 px-md-3 mb-4">
+  <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+    <!-- ==================================================
+         ENCABEZADO
+        ================================================== -->
+    <div class="card-header bg-light border-0 py-3 px-3 px-md-4">
+      <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
+        <div class="d-flex align-items-center">
+          <div class="bg-white rounded-circle shadow-sm p-2 me-3">
+            <i class="bi bi-file-earmark-plus fs-5 text-secondary"></i>
+          </div>
+          <div>
+            <h5 class="mb-1 fw-bold text-dark">
+              Formatos para la creación de evidencias
+            </h5>
+            <small class="text-muted">
+              Seleccione un formato para crear o descargar una evidencia
+            </small>
+          </div>
+        </div>
+        <span class="badge rounded-pill text-bg-secondary px-3 py-2">
+          <i class="bi bi-files me-1"></i>
+          <%= @templates.to_a.count %>
+        </span>
+      </div>
+    </div>
+    <!-- ==================================================
+         CONTENIDO
+        ================================================== -->
+    <div class="card-body p-0">
+      <% if @templates.present? %>
+        <!-- ==================================================
+             VISTA PC / TABLET
+             ================================================== -->
+        <div class="table-responsive d-none d-md-block">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th class="px-4 py-3" style="width: 100px;">
+                  <i class="bi bi-hash me-1"></i>
+                  Formato
+                </th>
+                <th class="py-3">
+                  <i class="bi bi-file-earmark-text me-1"></i>
+                  Nombre del formato
+                </th>
+                <th class="py-3">
+                  <i class="bi bi-bookmark me-1"></i>
+                  Referencia
+                </th>
+                <th class="py-3">
+                  <i class="bi bi-card-text me-1"></i>
+                  Descripción
+                </th>
+                <th class="text-center py-3" style="width: 150px;">
+                  Crear
+                </th>
+                <th class="text-center py-3" style="width: 150px;">
+                  Descargar
+                </th>
+                <th class="text-center py-3" style="width: 100px;">
+                  Ayuda
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @templates.each do |template| %>
                 <tr>
-                    <td><%= template.format_number %></td>
-                    <td><%= template.name %></td>
-                    <td><%= template.reference %></td>
-                    <td><%= template.description %></td> 
-                                                                                        
-                    <td><%= link_to "Crear Evidencia", crear_evidencia_evaluation_rule_detail_path(evaluacion_rule_detail_id:  @evaluation_rule_detail.id, template_id: template.id, entity_id: @evaluation_rule_detail.evaluation.entity_id), class: 'btn btn-sm btn-success' if Current.user.level == 1 || Current.user.level == 2 || (Current.user.level == 3 && (template.standar_detail_item_id == 17 || template.standar_detail_item_id == 76 || template.standar_detail_item_id == 145)) || (Current.user.level == 5 && (Current.user.copasst == 1 || Current.user.ccl == 1) && (template.standar_detail_item_id == 17 || template.standar_detail_item_id == 76 || template.standar_detail_item_id == 145)) %> </td>
-                    <td><%= link_to "Descargar Formato", rails_blob_path(template.file, disposition: 'attachment'), class: 'btn btn-sm btn-success' if template.file.present?%> </td>
-                    <td><button type="button" class: 'btn btn-sm btn-success' 
-                    data-bs-toggle="popover"
-                    title="Diligenciamiento de la evidencia"
-                    data-bs-content="<%=template.filing %>" >Ayuda</button></td>
+                  <!-- Número -->
+                  <td class="px-4">
+                    <span class="badge rounded-pill text-bg-light border px-3 py-2">
+                      <%= template.format_number %>
+                    </span>
+                  </td>
+                  <!-- Nombre -->
+                  <td>
+                    <div class="fw-semibold text-dark">
+                      <i class="bi bi-file-earmark-text text-secondary me-2"></i>
+                      <%= template.name %>
+                    </div>
+                  </td>
+                  <!-- Referencia -->
+                  <td>
+                    <% if template.reference.present? %>
+                      <span class="text-muted">
+                        <i class="bi bi-bookmark me-1"></i>
+                        <%= template.reference %>
+                      </span>
+                    <% else %>
+                      <span class="text-muted">—</span>
+                    <% end %>
+                  </td>
+                  <!-- Descripción -->
+                  <td>
+                    <% if template.description.present? %>
+                      <div class="text-secondary" style="max-width: 350px; white-space: normal;">
+                        <%= template.description %>
+                      </div>
+                    <% else %>
+                      <span class="text-muted">Sin descripción</span>
+                    <% end %>
+                  </td>
+                  <!-- Crear evidencia -->
+                  <td class="text-center">
+                    <% if Current.user.level == 1 ||  Current.user.level == 2 || (Current.user.level == 3 && [17, 76, 145].include?(template.standar_detail_item_id)) || (Current.user.level == 5 && (Current.user.copasst == 1 || Current.user.ccl == 1) && [17, 76, 145].include?(template.standar_detail_item_id)) %>
+                      <%= link_to crear_evidencia_evaluation_rule_detail_path(evaluacion_rule_detail_id: @evaluation_rule_detail.id, template_id: template.id, entity_id: @evaluation_rule_detail.evaluation.entity_id), class: "btn btn-sm btn-outline-success rounded-pill px-3", title: "Crear evidencia" do %>
+                        <i class="bi bi-plus-circle me-1"></i>
+                        Crear
+                      <% end %>
+                    <% end %>
+                  </td>
+                  <!-- Descargar -->
+                  <td class="text-center">
+                    <% if template.file.present? %>
+                      <%= link_to rails_blob_path(template.file, disposition: "attachment"), class: "btn btn-sm btn-outline-primary rounded-pill px-3", title: "Descargar formato" do %>
+                        <i class="bi bi-download me-1"></i>
+                        Descargar
+                      <% end %>
+                    <% else %>
+                      <span class="text-muted small">
+                        <i class="bi bi-file-earmark-x me-1"></i>
+                        No disponible
+                      </span>
+                    <% end %>
+                  </td>
+                  <!-- Ayuda -->
+                  <td class="text-center">
+                    <button type="button" class="btn btn-sm btn-outline-secondary rounded-circle" data-bs-toggle="popover" data-bs-placement="left" data-bs-trigger="focus" title="Diligenciamiento de la evidencia"  data-bs-content="<%= template.filing %>">
+                      <i class="bi bi-question-circle"></i>
+                    </button>
+                  </td>
                 </tr>
-            <% end %>
-        </tbody>      
-    </table>
-</div>  
-<br>
-
-
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <!-- ==================================================
+         VISTA CELULAR
+         ================================================== -->
+        <div class="d-md-none">
+          <% @templates.each do |template| %>
+            <div class="border-bottom p-3">
+              <div class="d-flex align-items-start gap-3">
+                <!-- Icono -->
+                <div class="bg-light rounded-3 p-2 flex-shrink-0">
+                  <i class="bi bi-file-earmark-text fs-5 text-secondary"></i>
+                </div>
+                <!-- Información -->
+                <div class="flex-grow-1">
+                  <!-- Número y nombre -->
+                  <div class="mb-2">
+                    <span class="badge rounded-pill text-bg-light border me-1">
+                      <%= template.format_number %>
+                    </span>
+                    <span class="fw-semibold text-dark">
+                      <%= template.name %>
+                    </span>
+                  </div>
+                  <!-- Referencia -->
+                  <% if template.reference.present? %>
+                    <div class="small text-muted mb-1">
+                      <i class="bi bi-bookmark me-1"></i>
+                      <%= template.reference %>
+                    </div>
+                  <% end %>
+                  <!-- Descripción -->
+                  <% if template.description.present? %>
+                    <div class="small text-secondary mb-3">
+                      <%= template.description %>
+                    </div>
+                  <% end %>
+                  <!-- Botonera -->
+                  <div class="d-flex flex-wrap gap-2">
+                    <% if Current.user.level == 1 || Current.user.level == 2 || (Current.user.level == 3 && [17, 76, 145].include?(template.standar_detail_item_id)) || (Current.user.level == 5 &&  (Current.user.copasst == 1 || Current.user.ccl == 1) && [17, 76, 145].include?(template.standar_detail_item_id)) %>
+                      <%= link_to crear_evidencia_evaluation_rule_detail_path(evaluacion_rule_detail_id: @evaluation_rule_detail.id, template_id: template.id, entity_id: @evaluation_rule_detail.evaluation.entity_id), class: "btn btn-sm btn-outline-success rounded-pill px-3" do %>
+                        <i class="bi bi-plus-circle me-1"></i>
+                        Crear evidencia
+                      <% end %>
+                    <% end %>
+                    <% if template.file.present? %>
+                      <%= link_to rails_blob_path(template.file, disposition: "attachment"), class: "btn btn-sm btn-outline-primary rounded-pill px-3" do %>
+                        <i class="bi bi-download me-1"></i>
+                        Descargar
+                      <% end %>
+                    <% end %>
+                    <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" data-bs-toggle="popover" data-bs-placement="top" data-bs-trigger="focus" title="Diligenciamiento de la evidencia" data-bs-content="<%= template.filing %>">
+                      <i class="bi bi-question-circle me-1"></i>
+                      Ayuda
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <!-- ==================================================
+             ESTADO VACÍO
+            ================================================== -->
+        <div class="text-center py-5 px-3">
+          <div class="mb-3">
+            <i class="bi bi-file-earmark-x display-5 text-muted"></i>
+          </div>
+          <h6 class="fw-bold text-secondary mb-1">
+            No hay formatos disponibles
+          </h6>
+          <p class="text-muted small mb-0">
+            No se encontraron formatos disponibles para la creación de evidencias.
+          </p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<!-- ============================================================
+     INICIALIZACIÓN DE POPOVERS
+     ============================================================ -->
+<script>
+  document.addEventListener("turbo:load", function () {const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+    popoverTriggerList.forEach(function (popoverTriggerEl) {
+      new bootstrap.Popover(popoverTriggerEl);
+    });
+  });
+</script>

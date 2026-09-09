@@ -1,41 +1,119 @@
-<div class="container col-11 card p-5">
-    <br>
-    <%= form_with model: @commitment do |form| %>
-        <% @commitment.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %>  
-  
+<div class="container-fluid py-3 px-2 px-md-4">
+  <div class="card shadow-sm border-0 mx-auto" style="max-width: 1100px;">
+    <!-- ENCABEZADO -->
+    <div class="card-header bg-light border-bottom py-3">
+      <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
         <div>
-            <div class="form-group">    
-                <%= form.label :activity, style: "display: block" %>
-                <%= form.text_area :activity,  class: "form-control" %>
+          <h4 class="mb-1">
+            <i class="bi bi-pencil-square me-2"></i>
+            Editar compromiso
+          </h4>
+          <small class="text-muted">
+            Actualice la información y el estado del compromiso
+          </small>
+        </div>
+        <span class="badge bg-secondary">
+          <i class="bi bi-clipboard-check me-1"></i>
+          Compromiso
+        </span>
+      </div>
+    </div>
+    <!-- CONTENIDO -->
+    <div class="card-body p-3 p-md-4">
+      <%= form_with model: @commitment do |form| %>
+        <!-- ERRORES -->
+        <% if @commitment.errors.any? %>
+          <div class="alert alert-danger" role="alert">
+            <div class="fw-semibold mb-2">
+              <i class="bi bi-exclamation-triangle me-1"></i>
+              No fue posible actualizar el compromiso:
             </div>
-            </br>
-            <div class="form-group">    
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del usuario responsable.">Usuario responsable:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                    <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-            </div>
-            </br>
-            <div class="row g-2">
-                <div class="col-sm-5">
-                    <%= form.label :date_ejecution, style: "display: block" %>
-                    <%= form.date_field :date_ejecution,  class: "form-control" %>
+            <ul class="mb-0">
+              <% @commitment.errors.full_messages.each do |error| %>
+                <li><%= error %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <!-- INFORMACIÓN DEL COMPROMISO -->
+        <div class="card border-0 bg-light mb-4">
+          <div class="card-header bg-light border-bottom">
+            <h5 class="mb-0">
+              <i class="bi bi-card-text me-2"></i>
+              Información del compromiso
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="row g-3">
+              <!-- ACTIVIDAD -->
+              <div class="col-12">
+                <%= form.label :activity, class: "form-label fw-semibold" do %>
+                  <i class="bi bi-list-task me-1"></i>
+                  Actividad / Compromiso
+                <% end %>
+                <%= form.text_area :activity, class: "form-control", rows: 5, placeholder: "Describa la actividad o compromiso..." %>
+              </div>
+              <!-- RESPONSABLE -->
+              <div class="col-12 col-md-7">
+                <div class="d-flex align-items-center gap-2 mb-1">
+                  <%= form.label :user_id, class: "form-label fw-semibold mb-0" do %>
+                    <i class="bi bi-person-check me-1"></i>
+                    Usuario responsable
+                  <% end %>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Seleccione el usuario responsable del cumplimiento del compromiso.">
+                    <i class="bi bi-question-circle"></i>
+                  </button>
                 </div>
-                <div class="col-sm-4">
-                    <%= form.label :state_commitment,  style: "display: block" %>
-                    <%= form.radio_button :state_commitment, 0, disabled: false %>
-                    <label for="pendiente">Pendiente</label>
-                    <%= form.radio_button :state_commitment, 1, disabled: false %>
-                    <label for="ejecutado">Ejecutado</label>
-                </div> 
-            </div>        
-            <br>
-            <br>
-            <%= form.submit 'Guardar', class: "btn btn-sm btn-primary", data: { turbo_confirm: 'Desea guardar los cambios?' }  %>     
-            <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back  %>
-        </div>            
-    <% end %>
-
+                <%= form.collection_select(:user_id, User.usuarios_empresa.order(id: :asc), :id, :name, { prompt: "Seleccione un usuario responsable" }, { class: "form-select" }) %>
+              </div>
+              <!-- FECHA -->
+              <div class="col-12 col-md-5">
+                <%= form.label :date_ejecution, class: "form-label fw-semibold" do %>
+                  <i class="bi bi-calendar-event me-1"></i>
+                  Fecha de ejecución
+                <% end %>
+                <%= form.date_field :date_ejecution, class: "form-control" %>
+              </div>
+              <!-- ESTADO -->
+              <div class="col-12">
+                <%= form.label :state_commitment, "Estado del compromiso", class: "form-label fw-semibold d-block" %>
+                <div class="d-flex flex-column flex-sm-row gap-3">
+                  <!-- PENDIENTE -->
+                  <div class="form-check">
+                    <%= form.radio_button :state_commitment, 0, class: "form-check-input", id: "commitment_state_pending" %>
+                    <%= form.label :state_commitment, "Pendiente", value: 0, for: "commitment_state_pending", class: "form-check-label" do %>
+                      <span class="badge bg-warning text-dark">
+                        <i class="bi bi-clock me-1"></i>
+                        Pendiente
+                      </span>
+                    <% end %>
+                  </div>
+                  <!-- EJECUTADO -->
+                  <div class="form-check">
+                    <%= form.radio_button :state_commitment, 1, class: "form-check-input", id: "commitment_state_executed" %>
+                    <%= form.label :state_commitment, "Ejecutado", value: 1, for: "commitment_state_executed", class: "form-check-label" do %>
+                      <span class="badge bg-success">
+                        <i class="bi bi-check-circle me-1"></i>
+                        Ejecutado
+                      </span>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- BOTONERA -->
+        <div class="border-top pt-3">
+          <div class="d-flex flex-column flex-sm-row justify-content-center align-items-stretch align-items-sm-center gap-2">
+            <%= form.submit "Guardar cambios", class: "btn btn-primary px-4", data: {turbo_confirm: "¿Desea guardar los cambios?"} %>
+            <%= link_to :back, class: "btn btn-outline-secondary px-4" do %>
+              <i class="bi bi-arrow-left me-1"></i>
+              Retornar
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>

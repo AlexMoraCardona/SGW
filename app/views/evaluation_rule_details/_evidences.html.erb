@@ -1,50 +1,194 @@
-<div class="container col-11 card p-5">
-    <br>
-    <h5 class="table-success">Evidencias </h5>
-    <hr>
-    <% @evidences.each do |evidence| %> 
-        <div>
-                <strong><%= evidence.template.name %></strong></br> <%= evidence.date %>
-        </div>         
-        <div>
-                <%= link_to "Ver", ver_evidencia_evaluation_rule_detail_path(evidence.id), class: 'btn btn-sm btn-success' %> 
-                <%= link_to "Editar", edit_evidence_path(evidence), class: 'btn btn-sm btn-success' if Current.user.level > 0 && Current.user.level < 3  || (Current.user.level == 3 && (evidence.template.standar_detail_item_id == 17 || evidence.template.standar_detail_item_id == 76 || evidence.template.standar_detail_item_id == 145)) || (Current.user.level == 5 && (Current.user.copasst == 1 || Current.user.ccl == 1) && (evidence.template.standar_detail_item_id == 17 || evidence.template.standar_detail_item_id == 76 || evidence.template.standar_detail_item_id == 145))%> 
-                <%= link_to "Integrantes", crear_participant_evaluation_rule_detail_path(evidence.id), class: 'btn btn-sm btn-success' if Current.user.level > 0 && Current.user.level < 3 || (Current.user.level == 3 && (evidence.template.standar_detail_item_id == 17 || evidence.template.standar_detail_item_id == 76 || evidence.template.standar_detail_item_id == 145)) || (Current.user.level == 5 && (Current.user.copasst == 1 || Current.user.ccl == 1) && (evidence.template.standar_detail_item_id == 17 || evidence.template.standar_detail_item_id == 76 || evidence.template.standar_detail_item_id == 145)) %> 
-                <%= link_to "Firmas", crear_firma_evaluation_rule_detail_path(evidence.id), class: 'btn btn-sm btn-success' if Current.user.level > 0 && Current.user.level < 3 || (Current.user.level == 3 && (evidence.template.standar_detail_item_id == 17 || evidence.template.standar_detail_item_id == 76 || evidence.template.standar_detail_item_id == 145)) || (Current.user.level == 5 && (Current.user.copasst == 1 || Current.user.ccl == 1) && (evidence.template.standar_detail_item_id == 17 || evidence.template.standar_detail_item_id == 76 || evidence.template.standar_detail_item_id == 145)) %> 
-                <%= link_to "Compromisos", crear_compromiso_evaluation_rule_detail_path(evidence.id), class: 'btn btn-sm btn-success' if Current.user.level > 0 && Current.user.level < 3 || (Current.user.level == 3 && (evidence.template.standar_detail_item_id == 17 || evidence.template.standar_detail_item_id == 76 || evidence.template.standar_detail_item_id == 145)) || (Current.user.level == 5 && (Current.user.copasst == 1 || Current.user.ccl == 1) && (evidence.template.standar_detail_item_id == 17 || evidence.template.standar_detail_item_id == 76 || evidence.template.standar_detail_item_id == 145)) %>
-                <%= link_to "PDF", ver_evidencia_evaluation_rule_detail_path(evidence.id, format: 'pdf'), class: 'btn btn-sm btn-success' %>
-                <button type="button" class: 'btn btn-sm btn-success' 
-                    data-bs-toggle="popover"
-                    title="Diligenciamiento de la evidencia"
-                    data-bs-content="<%=evidence.template.filing %>" >Ayuda</button>
+<div class="container-fluid px-2 px-md-4 py-3">
+  <div class="card border-0 shadow-sm mx-auto" style="max-width: 1200px;">
+    <!-- ===================================================== -->
+    <!-- ENCABEZADO -->
+    <!-- ===================================================== -->
+    <div class="card-header bg-light border-bottom py-3">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+        <div class="d-flex align-items-center gap-3">
+          <div class="bg-success bg-opacity-10 rounded-circle p-2">
+            <i class="bi bi-folder-check fs-4 text-success"></i>
+          </div>
+          <div>
+            <h5 class="mb-0 fw-bold">
+              Evidencias
+            </h5>
+            <small class="text-muted">
+              Evidencias asociadas a la evaluación
+            </small>
+          </div>
         </div>
-        <div></br></div>         
-        <div>
-            <div>
-                <strong>Funcionarios que firman evidencia:</strong>
-            </div> 
-            <table class="table table-hover">
-                <% @firms = Firm.firmas(evidence) %>
+        <span class="badge rounded-pill text-bg-success px-3 py-2">
+          <i class="bi bi-files me-1"></i>
+          <%= @evidences.count %>
+        </span>
+      </div>
+    </div>
+    <!-- ===================================================== -->
+    <!-- LISTADO DE EVIDENCIAS -->
+    <!-- ===================================================== -->
+    <div class="card-body p-3 p-md-4">
+      <% @evidences.each do |evidence| %>
+        <div class="card border shadow-sm mb-4">
+          <!-- =============================================== -->
+          <!-- CABECERA DE LA EVIDENCIA -->
+          <!-- =============================================== -->
+          <div class="card-header bg-light py-3">
+            <div class="row g-2 align-items-center">
+              <div class="col-12 col-md-8">
+                <div class="d-flex align-items-start gap-2">
+                  <i class="bi bi-file-earmark-check
+                            text-success fs-5 mt-1"></i>
+                  <div>
+                    <div class="fw-bold">
+                      <%= evidence.template.name %>
+                    </div>
+                    <small class="text-muted">
+                      <i class="bi bi-calendar3 me-1"></i>
+                      <%= evidence.date %>
+                    </small>
+                  </div>
+                </div>
+              </div>
+              <!-- AYUDA -->
+              <div class="col-12 col-md-4 text-md-end">
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="popover" data-bs-placement="left" data-bs-trigger="focus" data-bs-html="true" title="Diligenciamiento de la evidencia" data-bs-content="<%= evidence.template.filing %>">
+                  <i class="bi bi-question-circle me-1"></i>
+                  Ayuda
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- =============================================== -->
+          <!-- BOTONERA -->
+          <!-- =============================================== -->
+          <div class="card-body">
+            <div class="d-flex flex-wrap gap-2 mb-4">
+              <!-- VER -->
+              <%= link_to ver_evidencia_evaluation_rule_detail_path(evidence.id), class: "btn btn-sm btn-success" do %>
+                <i class="bi bi-eye me-1"></i>
+                Ver
+              <% end %>
+              <!-- EDITAR -->
+              <% if Current.user.level > 0 && Current.user.level < 3 || (Current.user.level == 3 && [17, 76, 145].include?(evidence.template.standar_detail_item_id)) || (Current.user.level == 5 && (Current.user.copasst == 1 || Current.user.ccl == 1) && [17, 76, 145].include?(evidence.template.standar_detail_item_id)) %>
+                <%= link_to edit_evidence_path(evidence), class: "btn btn-sm btn-outline-primary" do %>
+                  <i class="bi bi-pencil-square me-1"></i>
+                  Editar
+                <% end %>
+              <% end %>
+              <!-- INTEGRANTES -->
+              <% if Current.user.level > 0 && Current.user.level < 3 || (Current.user.level == 3 && [17, 76, 145].include?(evidence.template.standar_detail_item_id)) || (Current.user.level == 5 && (Current.user.copasst == 1 || Current.user.ccl == 1) && [17, 76, 145].include?(evidence.template.standar_detail_item_id)) %>
+                <%= link_to crear_participant_evaluation_rule_detail_path(evidence.id), class: "btn btn-sm btn-outline-primary" do %>
+                  <i class="bi bi-people me-1"></i>
+                  Integrantes
+                <% end %>
+              <% end %>
+              <!-- FIRMAS -->
+              <% if Current.user.level > 0 && Current.user.level < 3 || (Current.user.level == 3 && [17, 76, 145].include?(evidence.template.standar_detail_item_id)) || (Current.user.level == 5 && (Current.user.copasst == 1 || Current.user.ccl == 1) && [17, 76, 145].include?(evidence.template.standar_detail_item_id)) %>
+                <%= link_to crear_firma_evaluation_rule_detail_path(evidence.id), class: "btn btn-sm btn-outline-primary" do %>
+                  <i class="bi bi-pen me-1"></i>
+                  Firmas
+                <% end %>
+              <% end %>
+              <!-- COMPROMISOS -->
+              <% if Current.user.level > 0 && Current.user.level < 3 || (Current.user.level == 3 && [17, 76, 145].include?(evidence.template.standar_detail_item_id)) || (Current.user.level == 5 && (Current.user.copasst == 1 || Current.user.ccl == 1) && [17, 76, 145].include?(evidence.template.standar_detail_item_id)) %>
+                <%= link_to crear_compromiso_evaluation_rule_detail_path(evidence.id), class: "btn btn-sm btn-outline-primary" do %>
+                  <i class="bi bi-list-check me-1"></i>
+                  Compromisos
+                <% end %>
+              <% end %>
+              <!-- PDF -->
+              <%= link_to ver_evidencia_evaluation_rule_detail_path(evidence.id, format: "pdf"), class: "btn btn-sm btn-outline-danger" do %>
+                <i class="bi bi-file-earmark-pdf me-1"></i>
+                PDF
+              <% end %>
+            </div>
+            <!-- ============================================= -->
+            <!-- FIRMANTES -->
+            <!-- ============================================= -->
+            <% @firms = Firm.firmas(evidence) %>
+              <div class="border-top pt-3">
+                <div class="d-flex align-items-center mb-3">
+                  <i class="bi bi-pen me-2 text-primary"></i>
+                  <h6 class="mb-0 fw-bold">
+                    Funcionarios que firman la evidencia
+                  </h6>
+                </div>
                 <% if @firms.present? %>
-                    <% @firms.each do |firma| %>
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                      <tr>
+                        <th>
+                          <i class="bi bi-person me-1"></i>
+                          Funcionario
+                        </th>
+                        <th class="text-center">
+                          <i class="bi bi-pencil-square me-1"></i>
+                          Estado
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% @firms.each do |firma| %>
                         <tr>
-                            <td><%= firma.user.name %></td>
-                            <td> 
-                                <% if firma.authorize_firm == 0 %>
-                                    <%= link_to t('common.firmar'), firma_fecha_path(firma), class: 'btn btn-sm btn btn-warning' %>
-                                <% else %>
-                                    <%= firma.date_authorize_firm %>
-                                <% end %>
-                            </td>
+                          <td>
+                            <div class="d-flex align-items-center">
+                              <div class="bg-light rounded-circle p-2 me-2">
+                                <i class="bi bi-person"></i>
+                              </div>
+                              <span>
+                                <%= firma.user.name %>
+                              </span>
+                            </div>
+                          </td>
+                          <td class="text-center">
+                            <% if firma.authorize_firm == 0 %>
+                              <%= link_to firma_fecha_path(firma), class: "btn btn-sm btn-warning" do %>
+                                <i class="bi bi-pen me-1"></i>
+                                Firmar
+                              <% end %>
+                            <% else %>
+                              <span class="badge text-bg-success">
+                                <i class="bi bi-check-circle me-1"></i>
+                                <%= firma.date_authorize_firm %>
+                              </span>
+                            <% end %>
+                          </td>
                         </tr>
-                    <% end %>
-                <% end %>         
-            </table>
-            <br>
-        </div>  
-        <hr>      
-    <% end %>
-</div>   
-<br>
-
-
+                      <% end %>
+                    </tbody>
+                  </table>
+                </div>
+              <% else %>
+                <div class="alert alert-light border mb-0">
+                  <i class="bi bi-info-circle me-2"></i>
+                  No hay funcionarios registrados para firmar esta evidencia.
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <!-- ================================================= -->
+      <!-- SIN EVIDENCIAS -->
+      <!-- ================================================= -->
+      <% if @evidences.blank? %>
+        <div class="text-center py-5">
+          <i class="bi bi-folder2-open display-4 text-muted"></i>
+          <h5 class="mt-3 text-muted">
+            No hay evidencias registradas
+          </h5>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<!-- ========================================================= -->
+<!-- INICIALIZACIÓN DE POPOVERS                                -->
+<!-- ========================================================= -->
+<script>
+  document.addEventListener("turbo:load", function () {
+    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+    popoverTriggerList.forEach(function (popoverTriggerEl) {new bootstrap.Popover(popoverTriggerEl);});});
+</script>

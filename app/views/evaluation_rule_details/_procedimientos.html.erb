@@ -1,58 +1,240 @@
-<div class="container col-11 card p-5">
-    <br>
-    <h5 class="table-success">Procedimientos </h5>
-    <hr>
-    <table class="table table-Light table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Fecha.</th>
-                <th scope="col">Evidencia</th>
-                <th scope="col">Ver</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% if @evidencias_total.present? %>
-                <% @evidencias_total.each do |evi| %> 
-                    <% if evi.template.type_document == 4 && evi.evaluation_rule_detail.evaluation_id == @evaluation_rule_detail.evaluation_id %>
-                        <tr>
-                            <td><%= evi.date %></td>
-                            <td><%= evi.template.name %></td>
-                            <td><%= link_to "Ver", ver_evidencia_evaluation_rule_detail_path(evi.id), class: 'btn btn-sm btn-success' %></td> 
-                        </tr>
-                    <% end %>    
-                <% end %>
-            <% end %>    
-        </tbody>      
-    </table>
-</div>  
-<br>
-<div class="container col-11 card p-5">
-    <br>
-    <h5 class="table-success">Programas </h5>
-    <hr>
-    <table class="table table-Light table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Fecha.</th>
-                <th scope="col">Evidencia</th>
-                <th scope="col">Ver</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% if @evidencias_total.present? %>
-                <% @evidencias_total.each do |evi| %> 
-                    <% if evi.template.type_document == 8 && evi.evaluation_rule_detail.evaluation_id == @evaluation_rule_detail.evaluation_id %>
-                        <tr>
-                            <td><%= evi.date %></td>
-                            <td><%= evi.template.name %></td>
-                            <td><%= link_to "Ver", ver_evidencia_evaluation_rule_detail_path(evi.id), class: 'btn btn-sm btn-success' %></td> 
-                        </tr>
-                    <% end %>    
-                <% end %>
-            <% end %>    
-        </tbody>      
-    </table>
-</div>  
-<br>
+<%# ============================================================
+PROCEDIMIENTOS
+type_document = 4
+============================================================ %>
 
+<% procedimientos = @evidencias_total.to_a.select do |evi| evi.template.type_document == 4 && evi.evaluation_rule_detail.evaluation_id == @evaluation_rule_detail.evaluation_id end %>
 
+<div class="container-fluid px-2 px-md-3 mb-4">
+  <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+    <!-- Encabezado -->
+    <div class="card-header bg-light border-0 py-3 px-3 px-md-4">
+      <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
+        <div class="d-flex align-items-center">
+          <div class="bg-white rounded-circle shadow-sm p-2 me-3">
+            <i class="bi bi-journal-text fs-5 text-secondary"></i>
+          </div>
+          <div>
+            <h5 class="mb-1 fw-bold text-dark">
+              Procedimientos
+            </h5>
+            <small class="text-muted">
+              Documentos relacionados con la evaluación
+            </small>
+          </div>
+        </div>
+        <span class="badge rounded-pill text-bg-secondary px-3 py-2">
+          <i class="bi bi-files me-1"></i>
+          <%= procedimientos.count %>
+        </span>
+      </div>
+    </div>
+    <!-- Contenido -->
+    <div class="card-body p-0">
+      <% if procedimientos.present? %>
+        <!-- Vista para PC -->
+        <div class="table-responsive d-none d-md-block">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th class="px-4 py-3">
+                  <i class="bi bi-calendar3 me-1"></i>
+                  Fecha
+                </th>
+                <th class="py-3">
+                  <i class="bi bi-file-earmark-text me-1"></i>
+                  Evidencia
+                </th>
+                <th class="text-center py-3" style="width: 120px;">
+                  Acción
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% procedimientos.each do |evi| %>
+                <tr>
+                  <td class="px-4">
+                    <span class="text-muted">
+                      <i class="bi bi-calendar-event me-1"></i>
+                      <%= evi.date %>
+                    </span>
+                  </td>
+                  <td>
+                    <div class="fw-semibold text-dark">
+                      <i class="bi bi-file-earmark-text text-secondary me-2"></i>
+                      <%= evi.template.name %>
+                    </div>
+                  </td>
+                  <td class="text-center">
+                    <%= link_to ver_evidencia_evaluation_rule_detail_path(evi.id), class: "btn btn-sm btn-outline-success rounded-pill px-3", title: "Ver procedimiento" do %>
+                      <i class="bi bi-eye me-1"></i>
+                      Ver
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <!-- Vista para celular -->
+        <div class="d-md-none">
+          <% procedimientos.each do |evi| %>
+            <div class="border-bottom p-3">
+              <div class="d-flex align-items-start gap-3">
+                <div class="bg-light rounded-3 p-2 flex-shrink-0">
+                  <i class="bi bi-file-earmark-text fs-5 text-secondary"></i>
+                </div>
+                <div class="flex-grow-1 min-width-0">
+                  <div class="fw-semibold text-dark mb-2">
+                    <%= evi.template.name %>
+                  </div>
+                  <div class="small text-muted mb-3">
+                    <i class="bi bi-calendar3 me-1"></i>
+                    <%= evi.date %>
+                  </div>
+                  <%= link_to ver_evidencia_evaluation_rule_detail_path(evi.id), class: "btn btn-sm btn-outline-success rounded-pill px-3" do %>
+                    <i class="bi bi-eye me-1"></i>
+                    Ver procedimiento
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <!-- Estado vacío -->
+        <div class="text-center py-5 px-3">
+          <div class="mb-3">
+            <i class="bi bi-journal-x display-5 text-muted"></i>
+          </div>
+          <h6 class="fw-bold text-secondary mb-1">
+            No hay procedimientos registrados
+          </h6>
+          <p class="text-muted small mb-0">
+            No se encontraron procedimientos asociados a esta evaluación.
+          </p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<%# ============================================================
+PROGRAMAS
+type_document = 8
+============================================================ %>
+
+<% programas = @evidencias_total.to_a.select do |evi| evi.template.type_document == 8 && evi.evaluation_rule_detail.evaluation_id == @evaluation_rule_detail.evaluation_id end %>
+<div class="container-fluid px-2 px-md-3 mb-4">
+  <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+    <!-- Encabezado -->
+    <div class="card-header bg-light border-0 py-3 px-3 px-md-4">
+      <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
+        <div class="d-flex align-items-center">
+          <div class="bg-white rounded-circle shadow-sm p-2 me-3">
+            <i class="bi bi-diagram-3 fs-5 text-secondary"></i>
+          </div>
+          <div>
+            <h5 class="mb-1 fw-bold text-dark">
+              Programas
+            </h5>
+            <small class="text-muted">
+              Programas relacionados con la evaluación
+            </small>
+          </div>
+        </div>
+        <span class="badge rounded-pill text-bg-secondary px-3 py-2">
+          <i class="bi bi-files me-1"></i>
+          <%= programas.count %>
+        </span>
+      </div>
+    </div>
+    <!-- Contenido -->
+    <div class="card-body p-0">
+      <% if programas.present? %>
+        <!-- Vista para PC -->
+        <div class="table-responsive d-none d-md-block">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th class="px-4 py-3">
+                  <i class="bi bi-calendar3 me-1"></i>
+                  Fecha
+                </th>
+                <th class="py-3">
+                  <i class="bi bi-file-earmark-text me-1"></i>
+                  Evidencia
+                </th>
+                <th class="text-center py-3" style="width: 120px;">
+                  Acción
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% programas.each do |evi| %>
+                <tr>
+                  <td class="px-4">
+                    <span class="text-muted">
+                      <i class="bi bi-calendar-event me-1"></i>
+                      <%= evi.date %>
+                    </span>
+                  </td>
+                  <td>
+                    <div class="fw-semibold text-dark">
+                      <i class="bi bi-file-earmark-text text-secondary me-2"></i>
+                      <%= evi.template.name %>
+                    </div>
+                  </td>
+                  <td class="text-center">
+                    <%= link_to ver_evidencia_evaluation_rule_detail_path(evi.id), class: "btn btn-sm btn-outline-success rounded-pill px-3", title: "Ver programa" do %>
+                      <i class="bi bi-eye me-1"></i>
+                      Ver
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <!-- Vista para celular -->
+        <div class="d-md-none">
+          <% programas.each do |evi| %>
+            <div class="border-bottom p-3">
+              <div class="d-flex align-items-start gap-3">
+                <div class="bg-light rounded-3 p-2 flex-shrink-0">
+                  <i class="bi bi-file-earmark-text fs-5 text-secondary"></i>
+                </div>
+                <div class="flex-grow-1 min-width-0">
+                  <div class="fw-semibold text-dark mb-2">
+                    <%= evi.template.name %>
+                  </div>
+                  <div class="small text-muted mb-3">
+                    <i class="bi bi-calendar3 me-1"></i>
+                    <%= evi.date %>
+                  </div>
+                  <%= link_to ver_evidencia_evaluation_rule_detail_path(evi.id), class: "btn btn-sm btn-outline-success rounded-pill px-3" do %>
+                    <i class="bi bi-eye me-1"></i>
+                    Ver programa
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <!-- Estado vacío -->
+        <div class="text-center py-5 px-3">
+          <div class="mb-3">
+            <i class="bi bi-diagram-3 display-5 text-muted"></i>
+          </div>
+          <h6 class="fw-bold text-secondary mb-1">
+            No hay programas registrados
+          </h6>
+          <p class="text-muted small mb-0">
+            No se encontraron programas asociados a esta evaluación.
+          </p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

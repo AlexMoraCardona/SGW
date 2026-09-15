@@ -1,0 +1,226 @@
+<head>
+  <meta charset="utf-8">
+  <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+  <style>
+    @page {
+      margin: 5mm 5mm 8mm 5mm;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 7px;
+      color: #222;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* =========================================================
+       TABLA PRINCIPAL
+       ========================================================= */
+
+    .master-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      page-break-inside: auto;
+    }
+
+    /*
+     * Hace que el encabezado de columnas se repita
+     * automáticamente cuando la tabla pasa a otra página.
+     */
+    .master-table thead {
+      display: table-header-group;
+    }
+
+    .master-table tbody {
+      display: table-row-group;
+    }
+
+    .master-table tr {
+      page-break-inside: avoid;
+    }
+
+    .master-table th {
+      border: 1px solid #444;
+      background: #e9ecef;
+      color: #111;
+      font-size: 6.5px;
+      font-weight: bold;
+      text-align: center;
+      vertical-align: middle;
+      padding: 4px 2px;
+      line-height: 1.1;
+    }
+
+    .master-table td {
+      border: 1px solid #666;
+      font-size: 6.5px;
+      text-align: center;
+      vertical-align: middle;
+      padding: 3px 2px;
+      line-height: 1.15;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+
+    /* =========================================================
+       ANCHOS DE LAS 13 COLUMNAS
+       ========================================================= */
+    .proceso {
+      width: 7%;
+    }
+    .nombre {
+      width: 12%;
+    }
+    .tipo {
+      width: 7%;
+    }
+    .codigo {
+      width: 7%;
+    }
+    .soporte {
+      width: 7%;
+    }
+    .fecha {
+      width: 8%;
+    }
+    .version {
+      width: 5%;
+    }
+    .estado {
+      width: 7%;
+    }
+    .conservacion {
+      width: 7%;
+    }
+    .ubicacion {
+      width: 9%;
+    }
+    .medio {
+      width: 7%;
+    }
+    .observaciones {
+      width: 9%;
+    }
+    .cambios {
+      width: 8%;
+    }
+    /* =========================================================
+       ALINEACIÓN
+       ========================================================= */
+    .text-left {
+      text-align: left !important;
+    }
+    .text-center {
+      text-align: center !important;
+    }
+    /* =========================================================
+       CONTROL DE CAMBIOS
+       ========================================================= */
+    .control-cambios {
+      page-break-before: always;
+    }
+  </style>
+</head>
+<!-- =========================================================
+     TABLA DEL LISTADO MAESTRO
+     ========================================================= -->
+<table class="master-table">
+  <thead>
+    <tr>
+      <th class="proceso">
+        PROCESO pdf
+      </th>
+      <th class="nombre">
+        NOMBRE DEL DOCUMENTO
+      </th>
+      <th class="tipo">
+        TIPO DE DOCUMENTO
+      </th>
+      <th class="codigo">
+        CÓDIGO DEL DOCUMENTO
+      </th>
+      <th class="soporte">
+        TIPO DE SOPORTE
+      </th>
+      <th class="fecha">
+        FECHA VERSIÓN VIGENTE
+      </th>
+      <th class="version">
+        VERSIÓN
+      </th>
+      <th class="estado">
+        ESTADO DEL DOCUMENTO
+      </th>
+      <th class="conservacion">
+        TIEMPO DE CONSERVACIÓN
+      </th>
+      <th class="ubicacion">
+        UBICACIÓN DEL DOCUMENTO
+      </th>
+      <th class="medio">
+        MEDIO DE ALMACENAMIENTO
+      </th>
+      <th class="observaciones">
+        OBSERVACIONES
+      </th>
+      <th class="cambios">
+        CAMBIOS VERSIÓN
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @consultas.present? %>
+      <% @consultas.first(@valor.to_i).each do |consulta| %>
+        <tr>
+          <td>
+            <%= consulta[0] %>
+          </td>
+          <td class="text-left">
+            <%= consulta[1] %>
+          </td>
+          <td>
+            <%= consulta[2] %>
+          </td>
+          <td>
+            <%= consulta[3] %>
+          </td>
+          <td>
+            <%= consulta[4] %>
+          </td>
+          <td>
+            <%= consulta[5] %>
+          </td>
+          <td>
+            <%= consulta[6] %>
+          </td>
+          <td>
+            <%= consulta[7] %>
+          </td>
+          <td>
+            <%= consulta[11] %>
+          </td>
+          <td class="text-left">
+            <%= consulta[12] %>
+          </td>
+          <td>
+            <%= consulta[13] %>
+          </td>
+          <td class="text-left">
+            <%= consulta[8] %>
+          </td>
+          <td class="text-left">
+            <%= consulta[10] %>
+          </td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan="13">
+          No existen documentos registrados.
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

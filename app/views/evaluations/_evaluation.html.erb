@@ -17,30 +17,42 @@
   <!-- ACCIONES -->
   <td>
     <div class="d-flex flex-wrap justify-content-center gap-1">
-      <!-- EDITAR -->
-      <%= link_to edit_evaluation_path(evaluation), class: "btn btn-sm btn-outline-primary", title: t('common.edit'), data: { bs_toggle: "tooltip" } do %>
-        <i class="bi bi-pencil-square"></i>
-      <% end %>
-      <!-- VER -->
-      <%= link_to evaluation_path(evaluation), class: "btn btn-sm btn-outline-secondary", title: t('common.show'), data: { bs_toggle: "tooltip" } do %>
-        <i class="bi bi-eye"></i>
-      <% end %>
-      <!-- ELIMINAR -->
-      <%= link_to evaluation_path(evaluation), class: "btn btn-sm btn-outline-danger", title: t('common.delete'), data: {turbo_method: :delete, turbo_confirm: "¿Está seguro de eliminar esta evaluación?", bs_toggle: "tooltip"} do %>
-        <i class="bi bi-trash"></i>
-      <% end %>
-      <!-- CREAR ITEMS -->
-      <%= link_to crear_evaluacion_evaluations_path(evaluation), class: "btn btn-sm btn-outline-success", title: t('common.create_items_evaluation'), data: { bs_toggle: "tooltip" } do %>
-        <i class="bi bi-list-check"></i>
-      <% end %>
-      <!-- GUARDAR HISTORIAL -->
-      <%= link_to crear_historia_evaluations_path(evaluation), class: "btn btn-sm btn-outline-warning", title: t('common.save_history'), data: { bs_toggle: "tooltip" } do %>
-        <i class="bi bi-clock-history"></i>
-      <% end %>
-      <!-- VER HISTORIAL -->
-      <%= link_to ver_history_evaluations_path(evaluation), class: "btn btn-sm btn-outline-dark", title: t('common.see_history'), data: { bs_toggle: "tooltip" } do %>
-        <i class="bi bi-calendar3"></i>
-      <% end %>
+      <% if Current.user.level > 0 && Current.user.level < 3 %>
+        <!-- EDITAR -->
+        <%= link_to edit_evaluation_path(evaluation), class: "btn btn-sm btn-outline-primary", title: t('common.edit'), data: { bs_toggle: "tooltip" } do %>
+          <i class="bi bi-pencil-square"></i>
+        <% end %>
+        <!-- VER -->
+        <%= link_to evaluation_path(evaluation), class: "btn btn-sm btn-outline-secondary", title: t('common.show'), data: { bs_toggle: "tooltip" } do %>
+          <i class="bi bi-eye"></i>
+        <% end %>
+        <!-- ELIMINAR -->
+        <%= link_to evaluation_path(evaluation), class: "btn btn-sm btn-outline-danger", title: t('common.delete'), data: {turbo_method: :delete, turbo_confirm: "¿Está seguro de eliminar esta evaluación?", bs_toggle: "tooltip"} do %>
+          <i class="bi bi-trash"></i>
+        <% end %>
+        <!-- CREAR ITEMS -->
+        <%= link_to crear_evaluacion_evaluations_path(evaluation), class: "btn btn-sm btn-outline-success", title: t('common.create_items_evaluation'), data: { bs_toggle: "tooltip" } do %>
+          <i class="bi bi-list-check"></i>
+        <% end %>
+        <!-- GUARDAR HISTORIAL -->
+        <%= link_to crear_historia_evaluations_path(evaluation), class: "btn btn-sm btn-outline-warning", title: t('common.save_history'), data: { bs_toggle: "tooltip" } do %>
+          <i class="bi bi-clock-history"></i>
+        <% end %>
+        <!-- VER HISTORIAL -->
+        <%= link_to ver_history_evaluations_path(evaluation), class: "btn btn-sm btn-outline-dark", title: t('common.see_history'), data: { bs_toggle: "tooltip" } do %>
+          <i class="bi bi-calendar3"></i>
+        <% end %>
+      <% else %>        
+        <!-- VER -->
+        <%= link_to evaluation_path(evaluation), class: "btn btn-sm btn-outline-secondary", title: t('common.show'), data: { bs_toggle: "tooltip" } do %>
+          <i class="bi bi-eye"></i>
+        <% end %>
+        <!-- VER HISTORIAL -->
+        <%= link_to ver_history_evaluations_path(evaluation), class: "btn btn-sm btn-outline-dark", title: t('common.see_history'), data: { bs_toggle: "tooltip" } do %>
+          <i class="bi bi-calendar3"></i>
+        <% end %>
+      <% end %>        
+
     </div>
   </td>
 </tr>

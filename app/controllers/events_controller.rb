@@ -79,7 +79,8 @@ class EventsController < ApplicationController
         end
         @epidemiological_surveillance_program = EpidemiologicalSurveillanceProgram.where(entity_id: @event.entity_id, status: :active).find(params[:epidemiological_surveillance_program_id])
         ActiveRecord::Base.transaction do
-            @epidemiological_surveillance_case = EpidemiologicalSurveillanceCase.create!(epidemiological_surveillance_program: @epidemiological_surveillance_program, entity_id: @event.entity_id, user_id: @event.user_id, source_type: :event, event_id: @event.id, opened_at: Time.current, status: :identified, responsible_id: @epidemiological_surveillance_program.responsible_id, observations: "Caso creado a partir del evento ##{@event.id}.")
+            surveillance_worker = SurveillanceWorker.find_by(user_id: @event.user_id, epidemiological_surveillance_program_id: @epidemiological_surveillance_program.id)
+            @epidemiological_surveillance_case = EpidemiologicalSurveillanceCase.create!(epidemiological_surveillance_program: @epidemiological_surveillance_program, entity_id: @event.entity_id, user_id: @event.user_id, surveillance_worker_id: surveillance_worker&.id, source_type: :event, event_id: @event.id, opened_at: Time.current, status: :identified, responsible_id: @epidemiological_surveillance_program.responsible_id, observations: "Caso creado a partir del evento ##{@event.id}.")
             EpidemiologicalSurveillanceCaseHistory.create!(epidemiological_surveillance_case: @epidemiological_surveillance_case, user: Current.user, previous_status: nil, new_status: EpidemiologicalSurveillanceCase.statuses[:identified], changed_at: Time.current, observations: "Caso creado a partir del evento ##{@event.id}.")
         end
 

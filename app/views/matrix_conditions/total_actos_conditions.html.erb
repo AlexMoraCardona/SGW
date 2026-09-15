@@ -27,7 +27,7 @@
                 </thead>
                 <% if @matrix_unsafe_items.present? %>
                     <body>
-                        <% @matrix_unsafe_items.where(clasification_unsafe: params[:format].to_i).each do |matrix_unsafe_item| %>
+                        <% @matrix_unsafe_items.where(clasification_unsafe: params[:format].to_i).order(:date_item).each do |matrix_unsafe_item| %>
                             <tr>
                                 <td scope="col"><%= matrix_unsafe_item.date_item %></td>  
                                 <td scope="col"><%= MatrixCondition.name_user(matrix_unsafe_item.user_reporta)%></td>

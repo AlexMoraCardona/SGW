@@ -1,0 +1,536 @@
+<!-- =========================================================
+     CONTROL DE CAMBIOS
+========================================================= -->
+
+<div class="container-fluid px-2 px-md-4 py-3">
+
+    <!-- ENCABEZADO -->
+    <div class="card border-0 shadow-sm mb-4 control-cambios-header">
+
+        <div class="card-body d-flex flex-column flex-md-row
+                    align-items-center justify-content-between gap-3">
+
+            <div class="d-flex align-items-center gap-3">
+
+                <div class="control-cambios-icon">
+                    <i class="bi bi-clock-history"></i>
+                </div>
+
+                <div>
+                    <h4 class="mb-1 fw-bold">
+                        Control de cambios
+                    </h4>
+
+                    <div class="text-muted small">
+                        Historial de versiones y modificaciones del documento
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- BOTÓN RETORNAR -->
+            <div>
+                <%= link_to :back,
+                    class: "btn btn-outline-secondary btn-sm px-3" do %>
+
+                    <i class="bi bi-arrow-left me-1"></i>
+                    Retornar
+
+                <% end %>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         RECORRIDO DE VERSIONES
+    ====================================================== -->
+
+    <% if @templates_versiones.present? %>
+
+        <% @templates_versiones.each_with_index do |template, index| %>
+
+            <div class="card border-0 shadow-sm mb-4 control-cambios-card">
+
+                <!-- NOMBRE DEL DOCUMENTO -->
+                <div class="card-header bg-light border-bottom">
+
+                    <div class="d-flex align-items-start gap-2">
+
+                        <i class="bi bi-file-earmark-text
+                                  text-secondary fs-5 mt-1"></i>
+
+                        <div class="flex-grow-1">
+
+                            <div class="small text-muted mb-1">
+                                Nombre de documento
+                            </div>
+
+                            <div class="fw-bold document-name">
+                                <%= template.name %>
+                            </div>
+
+                        </div>
+                        <div class="flex-grow-1">
+
+                            <div class="small text-muted mb-1">
+                                Código
+                            </div>
+
+                            <div class="fw-bold document-name">
+                                <%= template.reference %>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- INFORMACIÓN DE LA VERSIÓN -->
+                <div class="card-body">
+
+                    <div class="row g-3">
+
+                        <!-- ITEM -->
+                        <div class="col-12 col-md-6 col-lg-3">
+
+                            <div class="change-field">
+
+                                <div class="change-label">
+                                    <i class="bi bi-list-ol me-1"></i>
+                                    Item
+                                </div>
+
+                                <div class="change-value">
+                                    <%= index + 1 %>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- FECHA DE VERSIÓN -->
+                        <div class="col-12 col-md-6 col-lg-3">
+
+                            <div class="change-field">
+
+                                <div class="change-label">
+                                    <i class="bi bi-calendar3 me-1"></i>
+                                    Fecha de versión
+                                </div>
+
+                                <div class="change-value">
+
+                                    <% if template.date.present? %>
+                                        <%= template.date.strftime("%d/%m/%Y") %>
+                                    <% else %>
+                                        <span class="text-muted">
+                                            No registrada
+                                        </span>
+                                    <% end %>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- VERSIÓN -->
+                        <div class="col-12 col-md-6 col-lg-3">
+
+                            <div class="change-field">
+
+                                <div class="change-label">
+                                    <i class="bi bi-layers me-1"></i>
+                                    Versión
+                                </div>
+
+                                <div class="change-value">
+
+                                    <span class="badge rounded-pill
+                                                 bg-secondary">
+
+                                        <%= template.version %>
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- DOCUMENTO VIGENTE -->
+                        <div class="col-12 col-md-6 col-lg-3">
+
+                            <div class="change-field">
+
+                                <div class="change-label">
+                                    <i class="bi bi-check-circle me-1"></i>
+                                    Documento vigente
+                                </div>
+
+                                <div class="change-value">
+
+                                    <% if template.document_vigente.to_i == 1 %>
+
+                                        <span class="badge rounded-pill
+                                                     text-bg-success">
+
+                                            <i class="bi bi-check-lg me-1"></i>
+                                            Vigente
+
+                                        </span>
+
+                                    <% else %>
+
+                                        <span class="badge rounded-pill
+                                                     text-bg-secondary">
+
+                                            <i class="bi bi-x-lg me-1"></i>
+                                            No vigente
+
+                                        </span>
+
+                                    <% end %>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- FECHA DE NO VIGENCIA -->
+                        <div class="col-12 col-md-6">
+
+                            <div class="change-field">
+
+                                <div class="change-label">
+                                    <i class="bi bi-calendar-x me-1"></i>
+                                    Fecha de no vigencia
+                                </div>
+
+                                <div class="change-value">
+
+                                    <% if template.not_current.present? %>
+
+                                        <%= template.not_current.strftime("%d/%m/%Y") %>
+
+                                    <% else %>
+
+                                        <span class="text-muted">
+                                            —
+                                        </span>
+
+                                    <% end %>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- MOTIVO -->
+                        <div class="col-12 col-md-6">
+
+                            <div class="change-field">
+
+                                <div class="change-label">
+                                    <i class="bi bi-chat-left-text me-1"></i>
+                                    Motivo
+                                </div>
+
+                                <div class="change-value text-break">
+
+                                    <% if template.observations.present? %>
+
+                                        <%= template.observations %>
+
+                                    <% else %>
+
+                                        <span class="text-muted">
+                                            No registrado
+                                        </span>
+
+                                    <% end %>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- DESCRIPCIÓN -->
+                        <div class="col-12">
+
+                            <div class="change-field">
+
+                                <div class="change-label">
+                                    <i class="bi bi-card-text me-1"></i>
+                                    Descripción
+                                </div>
+
+                                <div class="change-value text-break">
+
+                                    <% if template.control_changes.present? %>
+
+                                        <%= template.control_changes %>
+
+                                    <% else %>
+
+                                        <span class="text-muted">
+                                            No registrada
+                                        </span>
+
+                                    <% end %>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        <% end %>
+
+    <% else %>
+
+        <!-- SIN VERSIONES -->
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-body text-center py-5">
+
+                <i class="bi bi-info-circle fs-1 text-muted"></i>
+
+                <h5 class="mt-3">
+                    No hay versiones registradas
+                </h5>
+
+                <p class="text-muted mb-0">
+                    No se encontraron registros para el control de cambios.
+                </p>
+
+            </div>
+
+        </div>
+
+    <% end %>
+
+</div>
+
+
+<!-- =========================================================
+     ESTILOS
+========================================================= -->
+
+<style>
+
+    /* =====================================================
+       ENCABEZADO
+    ===================================================== */
+
+    .control-cambios-header {
+        border-radius: 12px;
+    }
+
+    .control-cambios-icon {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 12px;
+
+        background: #f1f3f5;
+        color: #495057;
+
+        font-size: 22px;
+    }
+
+
+    /* =====================================================
+       TARJETA DE VERSION
+    ===================================================== */
+
+    .control-cambios-card {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .control-cambios-card .card-header {
+        padding: 14px 18px;
+    }
+
+    .control-cambios-card .card-body {
+        padding: 18px;
+    }
+
+
+    /* =====================================================
+       NOMBRE DOCUMENTO
+    ===================================================== */
+
+    .document-name {
+        font-size: 15px;
+        line-height: 1.4;
+
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+
+    /* =====================================================
+       CAMPOS
+    ===================================================== */
+
+    .change-field {
+        height: 100%;
+
+        padding: 12px 14px;
+
+        border: 1px solid #e1e5e8;
+        border-radius: 9px;
+
+        background: #ffffff;
+    }
+
+    .change-label {
+        font-size: 11px;
+        font-weight: 700;
+
+        color: #6c757d;
+
+        text-transform: uppercase;
+
+        margin-bottom: 6px;
+    }
+
+    .change-value {
+        font-size: 13px;
+        line-height: 1.5;
+
+        color: #212529;
+
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+
+    /* =====================================================
+       TABLET
+    ===================================================== */
+
+    @media (max-width: 768px) {
+
+        .control-cambios-header .card-body {
+            align-items: stretch !important;
+        }
+
+        .control-cambios-header .btn {
+            width: 100%;
+        }
+
+        .control-cambios-card .card-body {
+            padding: 14px;
+        }
+
+    }
+
+
+    /* =====================================================
+       CELULAR
+    ===================================================== */
+
+    @media (max-width: 576px) {
+
+        .container-fluid {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+        }
+
+        .control-cambios-header {
+            border-radius: 10px;
+        }
+
+        .control-cambios-header .card-body {
+            padding: 15px;
+        }
+
+        .control-cambios-icon {
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
+
+            font-size: 19px;
+        }
+
+        .control-cambios-header h4 {
+            font-size: 18px;
+        }
+
+        .control-cambios-card {
+            border-radius: 10px;
+        }
+
+        .control-cambios-card .card-header {
+            padding: 12px 14px;
+        }
+
+        .control-cambios-card .card-body {
+            padding: 10px;
+        }
+
+        .change-field {
+            padding: 11px 12px;
+        }
+
+        .change-label {
+            font-size: 10px;
+        }
+
+        .change-value {
+            font-size: 12px;
+        }
+
+    }
+
+
+    /* =====================================================
+       CELULAR PEQUEÑO
+    ===================================================== */
+
+    @media (max-width: 400px) {
+
+        .control-cambios-header h4 {
+            font-size: 17px;
+        }
+
+        .document-name {
+            font-size: 13px;
+        }
+
+        .change-value {
+            font-size: 11px;
+        }
+
+    }
+
+</style>

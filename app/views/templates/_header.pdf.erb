@@ -187,10 +187,10 @@
             <!-- LOGO -->
             <td class="logo">
 
-                <% if @evidence&.entity&.logo.present? %>
+                <% if @entity&.logo.present? %>
 
                     <%= image_tag(
-                        Evaluation.wicked_blob_path(@evidence.entity.logo),
+                        Evaluation.wicked_blob_path(@entity.logo),
                         width: 75,
                         height: 75,
                         alt: "Logo"
@@ -204,11 +204,11 @@
             <td class="titulo">
 
                 <div class="empresa">
-                    <%= @evidence&.entity&.business_name %>
+                    <%= @entity&.business_name %>
                 </div>
 
                 <div class="nombre-formato">
-                    <%= @evidence&.template&.name %>
+                    <%= @template&.name %>
                 </div>
 
             </td>
@@ -230,7 +230,7 @@
             </td>
 
             <td class="valor">
-                <%= @evidence&.template&.reference %>
+                <%= @template&.reference %>
             </td>
 
             <td class="etiqueta">
@@ -238,7 +238,7 @@
             </td>
 
             <td class="valor">
-                <%= @evidence&.template&.version %>
+                <%= @template&.version %>
             </td>
 
         </tr>
@@ -249,8 +249,8 @@
             </td>
             <td class="valor">
                 <%
-                    fecha_template = @evidence&.template&.date
-                    fecha_empresa  = @evidence&.entity&.created_at
+                    fecha_template = @template&.date
+                    fecha_empresa  = @entity&.created_at
                     fecha_elaboracion =
                         if fecha_template.present? && fecha_empresa.present?
                             fecha_template.to_date < fecha_empresa.to_date ? fecha_empresa.to_date : fecha_template.to_date

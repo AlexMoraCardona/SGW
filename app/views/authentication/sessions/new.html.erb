@@ -1,175 +1,1162 @@
-<br>
-<div  style="background-color: #0090e4;border-top-right-radius: 20px;border-bottom-right-radius: 0px;border-top-left-radius: 20px;border-bottom-left-radius: 0px;padding: 10px;", class="container col-xs-2 col-sm-12 col-md-12 col-lg-12 col-xl-12" >
-    <div class="row" > 
-        <div align="left"; class="col-sm-2">
-            <a class="navbar-brand" href="/">
-                <%= image_tag 'LogoConesst202305232.png', height: "150", width: "auto" %>
-            </a>
-        </div>
-        <div class="col-sm-2 text-center">
-                <a class="nav-link active" aria-current="page" href="/sessions/cambioclave/path" style="color: #FFFFFF; " text-left data-bs-toggle="tooltip" data-bs-placement="top" title="Cambio de clave">Clave
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-key" viewBox="0 0 16 16">
-                        <path d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8m4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5"/>
-                        <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
-                    </svg>
-                </a>
-        </div>
-        <div class="col-sm-2 text-center">
-                <a class="nav-link active" aria-current="page" href="/users/new" style="color: #FFFFFF; " text-left data-bs-toggle="tooltip" data-bs-placement="top" title="Registrarse">Registrarse
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-                    </svg>
-                </a>
-        </div>
+<style>
+    /* =========================================================
+       CONESST - INICIO
+       Diseño moderno / Responsive PC - Tablet - Celular
+       ========================================================= */
+    .conesst-page {
+        min-height: 100vh;
+        background: #f5f8fa;
+    }
+    /* =========================================================
+       ENCABEZADO
+       ========================================================= */
+    .conesst-header {
+        background: linear-gradient(135deg, #0090e4 0%, #006eaf 100%);
+        border-radius: 0 0 28px 28px;
+        padding: 18px 0 30px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, .12);
+    }
+    .conesst-logo {
+        max-height: 90px;
+        max-width: 190px;
+        width: auto;
+        object-fit: contain;
+    }
+    .top-actions {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    .top-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        min-height: 42px;
+        padding: 8px 17px;
+        border: 1px solid rgba(255,255,255,.60);
+        border-radius: 12px;
+        color: #fff;
+        text-decoration: none;
+        font-size: .92rem;
+        font-weight: 600;
+        background: rgba(255,255,255,.08);
+        transition: all .2s ease;
+    }
+    .top-action:hover {
+        color: #0078bd;
+        background: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 13px rgba(0,0,0,.15);
+    }
+    .login-card {
+        background: rgba(255,255,255,.13);
+        border: 1px solid rgba(255,255,255,.30);
+        border-radius: 17px;
+        padding: 13px;
+        backdrop-filter: blur(5px);
+    }
+    .login-card .form-control {
+        border: none;
+        border-radius: 9px;
+        min-height: 39px;
+        box-shadow: none;
+    }
+    .login-card .btn-login {
+        width: 100%;
+        min-height: 39px;
+        border-radius: 9px;
+        font-weight: 700;
+    }
+    .system-title {
+        color: #fff;
+        text-align: center;
+        margin: 25px 0 0;
+        font-size: clamp(1.35rem, 3vw, 2.15rem);
+        font-weight: 700;
+        line-height: 1.25;
+    }
+    .system-subtitle {
+        color: rgba(255,255,255,.90);
+        text-align: center;
+        margin: 8px 0 0;
+        font-size: .96rem;
+    }
+    /* =========================================================
+       CONTENIDO
+       ========================================================= */
+    .main-content {
+        padding: 35px 0 45px;
+    }
+    /* =========================================================
+       BANNER INFORMATIVO
+       ========================================================= */
+    .info-banner {
+        background: #fff;
+        border-left: 5px solid #0090e4;
+        border-radius: 16px;
+        padding: 18px 22px;
+        box-shadow: 0 5px 20px rgba(0,0,0,.07);
 
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+    .info-banner img {
+        width: 48px;
+        height: 48px;
+        flex-shrink: 0;
+    }
+    .info-banner strong {
+        color: #31566f;
+        font-size: .97rem;
+        line-height: 1.55;
+    }
+    /* =========================================================
+       TITULOS
+       ========================================================= */
+    .section-title {
+        color: #245d80;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    .section-title::after {
+        content: "";
+        display: block;
+        width: 55px;
+        height: 3px;
+        background: #0090e4;
+        margin: 10px auto 0;
+        border-radius: 5px;
+    }
+    /* =========================================================
+       SERVICIOS
+       ========================================================= */
+    .services-card {
+        height: 100%;
+        background: #fff;
+        border: none;
+        border-radius: 20px;
+        padding: 24px;
+        box-shadow: 0 5px 20px rgba(0,0,0,.07);
+    }
+    .service-item {
+        position: relative;
 
-        <div class="col-sm-2">
-            <div class="text-white">
-                <%=t('.title')%>
-            </div>     
-        </div>
+        display: flex;
+        align-items: center;
+        gap: 14px;
 
-        <div class="col-sm-2  text-end">
-            <div class="text-white">
-                <%= form_with(url: sessions_path)  do |form| %>
-                    <div class="input-group mb-3">    
-                        <%= form.text_field :login,  class: "form-control form-control-sm", required: true, placeholder: "usuario" %>
-                    </div>
-                    <div class="input-group mb-3">    
-                        <%= form.password_field :password,  class: "form-control form-control-sm", required: true, placeholder: "clave" %>
-                    </div>
-                    
-                    <div>
-                        <button type="submit" class="btn btn-sm btn-outline-light">Ingresar</button>
-                    </div>    
-                <% end %>
-            </div>     
-        </div>
-        <div></br></div>
-        <div class="col-sm-12 text-center text-white">
-            <strong><h2>Sistema de Gestión de Seguridad y Salud en el Trabajo</h2></strong>
-        </div>
+        padding: 11px 12px;
+        margin-bottom: 5px;
 
+        border-radius: 13px;
+
+        color: #4169e1;
+        font-weight: 600;
+
+        cursor: pointer;
+
+        transition:
+            background .25s ease,
+            transform .25s ease,
+            box-shadow .25s ease;
+    }
+    .service-item:hover {
+        background: #eef8fd;
+        transform: translateX(5px);
+        box-shadow: 0 5px 14px rgba(0,144,228,.10);
+    }
+    .service-icon {
+        width: 50px;
+        height: 50px;
+
+        object-fit: contain;
+        flex-shrink: 0;
+
+        transition: transform .25s ease;
+    }
+    .service-item:hover .service-icon {
+        transform: scale(1.08);
+    }
+    .service-name {
+        font-size: .98rem;
+    }
+    /* =========================================================
+       DESCRIPCIÓN DE CADA SERVICIO
+       ========================================================= */
+    .service-description {
+        position: absolute;
+
+        left: 78px;
+        right: 10px;
+        bottom: calc(100% + 8px);
+
+        z-index: 20;
+
+        padding: 13px 15px;
+
+        background: #fff;
+        border: 1px solid #e3edf3;
+        border-radius: 12px;
+
+        color: #506777;
+        font-size: .84rem;
+        font-weight: 400;
+        line-height: 1.45;
+
+        box-shadow: 0 8px 25px rgba(0,0,0,.13);
+
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(8px);
+
+        transition:
+            opacity .2s ease,
+            transform .2s ease,
+            visibility .2s ease;
+
+        pointer-events: none;
+    }
+    .service-description strong {
+        display: block;
+        color: #0078bd;
+        margin-bottom: 4px;
+    }
+    .service-item:hover .service-description {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    /* =========================================================
+       IMAGEN PRINCIPAL
+       ========================================================= */
+    /* =========================================================
+       HERO - IMAGEN PRINCIPAL CONESST
+       ========================================================= */
+    .main-image-card {
+        position: relative;
+        height: 100%;
+        min-height: 500px;
+
+        overflow: hidden;
+
+        /*
+         * Fondo muy limpio para que la fotografía
+         * sea la protagonista.
+         */
+        background:
+            radial-gradient(
+                circle at 70% 45%,
+                #ffffff 0%,
+                #ffffff 45%,
+                #f3f9fc 75%,
+                #e6f2f8 100%
+            );
+
+        border-radius: 24px;
+
+        box-shadow:
+            0 8px 28px rgba(0,0,0,.08);
+
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+
+        padding: 0;
+
+        /*
+         * Importante:
+         * permite que la imagen sobresalga visualmente.
+         */
+        overflow: hidden;
+    }
+    /* Círculo decorativo detrás de la persona */
+    .main-image-card::before {
+        content: "";
+        position: absolute;
+        width: 420px;
+        height: 420px;
+        right: -80px;
+        top: 25px;
+        border-radius: 50%;
+        background:
+            radial-gradient(
+                circle,
+                rgba(255,255,255,.95) 0%,
+                rgba(232,246,253,.75) 60%,
+                rgba(214,237,248,.20) 100%
+            );
+        filter: blur(2px);
+        z-index: 0;
+    }
+    /* Segunda decoración */
+    .main-image-card::after {
+        content: "";
+        position: absolute;
+        width: 230px;
+        height: 230px;
+        left: -100px;
+        bottom: -90px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.75);
+        filter: blur(8px);
+        z-index: 0;
+    }
+    /* =========================================================
+       FOTOGRAFÍA
+       ========================================================= */
+    .hero-woman {
+        position: relative;
+        z-index: 2;
+        /*
+         * Más grande que la tarjeta.
+         */
+        width: 125%;
+        max-width: none;
+        height: auto;
+        max-height: 560px;
+        object-fit: contain;
+        /*
+         * Desplazamiento para dar sensación
+         * de que la persona sale de la tarjeta.
+         */
+        transform:
+            translateX(25px)
+            translateY(15px);
+        /*
+         * Difuminado progresivo en los bordes.
+         */
+        -webkit-mask-image:
+            linear-gradient(
+                to bottom,
+                transparent 0%,
+                #000 8%,
+                #000 82%,
+                transparent 100%
+            );
+        mask-image:
+            linear-gradient(
+                to bottom,
+                transparent 0%,
+                #000 8%,
+                #000 82%,
+                transparent 100%
+            );
+        transition:
+            transform .5s ease,
+            filter .5s ease;
+    }
+    /* Efecto al pasar el mouse */
+    .main-image-card:hover .hero-woman {
+        transform:
+            translateX(25px)
+            translateY(5px)
+            scale(1.025);
+    }
+    /* =========================================================
+       TEXTO HERO
+       ========================================================= */
+    .hero-content {
+        position: absolute;
+        left: 28px;
+        top: 32px;
+        z-index: 4;
+        max-width: 290px;
+    }
+    .hero-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255,255,255,.90);
+        color: #0078bd;
+        border-radius: 30px;
+        padding: 7px 13px;
+        font-size: .76rem;
+        font-weight: 700;
+        letter-spacing: .3px;
+        box-shadow:
+            0 4px 12px rgba(0,0,0,.07);
+    }
+    .hero-content h3 {
+        margin-top: 15px;
+        margin-bottom: 7px;
+        color: #075f91;
+        font-size: clamp(1.45rem, 3vw, 2rem);
+        font-weight: 800;
+        line-height: 1.15;
+    }
+    .hero-content p {
+        margin: 0;
+        color: #5c7180;
+        font-size: .90rem;
+        line-height: 1.5;
+    }
+    /* =========================================================
+       FRASE INFERIOR
+       ========================================================= */
+    .image-message {
+        position: absolute;
+        left: 25px;
+        right: 25px;
+        bottom: 20px;
+        z-index: 5;
+        text-align: center;
+        background: rgba(255,255,255,.90);
+        border: 1px solid rgba(255,255,255,.95);
+        border-radius: 16px;
+        padding: 13px 16px;
+        box-shadow:
+            0 6px 20px rgba(0,0,0,.10);
+        backdrop-filter: blur(7px);
+    }
+    .image-message strong {
+        display: block;
+        color: #006eaf;
+        font-size: 1rem;
+    }
+    .image-message span {
+        display: block;
+        color: #607785;
+        font-size: .80rem;
+        margin-top: 3px;
+    }
+    /* =========================================================
+       TABLET
+       ========================================================= */
+    @media (max-width: 991.98px) {
+        .main-image-card {
+            min-height: 460px;
+        }
+        .hero-woman {
+            width: 120%;
+            transform:
+                translateX(15px)
+                translateY(10px);
+        }
+        .hero-content {
+            left: 23px;
+            top: 25px;
+        }
+    }
+    /* =========================================================
+       CELULAR
+       ========================================================= */
+    @media (max-width: 767.98px) {
+        .main-image-card {
+            min-height: 470px;
+
+            border-radius: 20px;
+        }
+        .hero-content {
+            left: 20px;
+            right: 20px;
+            top: 20px;
+            max-width: none;
+            text-align: center;
+        }
+        .hero-content h3 {
+            font-size: 1.55rem;
+        }
+        .hero-content p {
+            font-size: .84rem;
+        }
+        .hero-woman {
+            width: 125%;
+            max-height: 430px;
+            transform:
+                translateX(10px)
+                translateY(20px);
+        }
+        .main-image-card:hover .hero-woman {
+            transform:
+                translateX(10px)
+                translateY(20px)
+                scale(1);
+        }
+        .image-message {
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            padding: 11px 12px;
+        }
+    }
+    <div class="main-image-card">
+        <!-- =====================================================
+         TEXTO HERO
+         ===================================================== -->
+        <div class="hero-content">
+            <div class="hero-tag">
+                <i class="bi bi-shield-check"></i>
+                Seguridad y Salud en el Trabajo
+            </div>  
+            <h3>
+                Protegemos lo más importante:
+                <br>
+                <span>las personas.</span>
+            </h3>
+            <p>
+                Una gestión SST eficiente para acompañar
+                el crecimiento y bienestar de tu empresa.
+            </p>
+        </div>
+        <!-- =====================================================
+             MUJER CON CASCO
+             ===================================================== -->
+        <%= image_tag 'mujer_log.png', class: "hero-woman", alt: "Profesional de Seguridad y Salud en el Trabajo" %>
+        <!-- =====================================================
+             MENSAJE INFERIOR
+             ===================================================== -->
+        <div class="image-message">
+            <strong>
+                CONESST
+            </strong>
+            <span>
+                Prevención · Cumplimiento · Mejora continua
+            </span>
+        </div>
     </div>
-    <div class="container" style="background-color: #FFFFFF;border-top-right-radius: 20px;border-bottom-right-radius: 0px;border-top-left-radius: 20px;border-bottom-left-radius: 0px;padding: 10px;", class="container col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" >
-        <div class="container col-sm-12 text-center" style="background-color: #0090e4;border-top-right-radius: 20px;border-bottom-right-radius: 20px;border-top-left-radius: 20px;border-bottom-left-radius: 20px;padding: 10px;">
-            <table class="table">
-                <tr>
-                    <td>
-                        <div class="col-sm-12 text-white" align="justify">
-                            <%= image_tag 'info.png',:width => "50",  :height=>"50" %>
-                            <strong>SABÍAS QUE UN SISTEMA DE GESTIÓN DE SEGURIDAD Y SALUD EN EL TRABAJO BIEN IMPLEMENTADO NO SOLO EVITA SANCIONES, SINO QUE TRANSFORMA EL BIENESTAR LABORAL Y MEJORA EL DESEMPEÑO DE TU EMPRESA?</strong>    
-                        </div>                            
-                    </td>
-                </tr>
-            </table>
-        </div>    
-        <div class="container col-sm-10 text-center">    
-            </br>  
-            <table style="width: 100%;"> 
-                <tr>
-                    <td style="text-align:center;width: 50%;color: #4169e1;"    >            
-                        <div align="justify">      
-                            <p><h3><strong>Servicios Ofrecidos</strong></h3>
-                            <p><%= image_tag 'diagnostico.png', data: {previews_target: "preview"}, class: "img-inc-loguin" %> Diagnóstico</p>
-                            <p><%= image_tag 'diseño.png', data: {previews_target: "preview"}, class: "img-inc-loguin" %> Diseño</p>
-                            <p><%= image_tag 'implementacion.png', data: {previews_target: "preview"}, class: "img-inc-loguin" %> Implementación</p>
-                            <p><%= image_tag 'reporte.png', data: {previews_target: "preview"}, class: "img-inc-loguin" %> Reporte al Ministerio de Trabajo</p>
-                            <p><%= image_tag 'seguimiento.png', data: {previews_target: "preview"}, class: "img-inc-loguin" %> Seguimiento</p>
-                            <p><%= image_tag 'capacitaciones.png', data: {previews_target: "preview"}, class: "img-inc-loguin" %> Capacitaciones</p>
-                            <p><%= image_tag 'indicadores.png', data: {previews_target: "preview"}, class: "img-inc-loguin" %> Indicadores de gestión</p>
-                        </div>
-                    </td>
-                    <td style="text-align:center;width: 50%;">
-                        <div class="col-sm-12 text-white" align="center">
-                            <%= image_tag 'mujer_log.png', data: {previews_target: "preview"}, class: "img-loguin" %>
-                        </div>                            
-                    </td>
-                </tr>
-            </table>
-        </div>
+
+    .main-image-card::before {
+        content: "";
+        position: absolute;
+        width: 330px;
+        height: 330px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.75);
+        filter: blur(30px);
+        z-index: 0;
+    }
+    .main-image-card:hover img {
+        transform: scale(1.025);
+    }
+    /* =========================================================
+       MENSAJE SOBRE LA IMAGEN
+       ========================================================= */
+    .image-message {
+        position: absolute;
+        left: 25px;
+        right: 25px;
+        bottom: 25px;
+        z-index: 3;
+        text-align: center;
+        background: rgba(255,255,255,.90);
+        border: 1px solid rgba(255,255,255,.90);
+        border-radius: 15px;
+        padding: 13px 15px;
+        box-shadow: 0 5px 18px rgba(0,0,0,.09);
+        backdrop-filter: blur(6px);
+    }
+    .image-message strong {
+        display: block;
+        color: #006eaf;
+        font-size: 1rem;
+    }
+    .image-message span {
+        display: block;
+        color: #607785;
+        font-size: .80rem;
+        margin-top: 3px;
+    }
+    /* =========================================================
+       MENSAJE DESTACADO
+       ========================================================= */
+    .highlight-message {
+        margin-top: 30px;
+        background:
+            linear-gradient(
+                135deg,
+                #0090e4,
+                #006eaf
+            );
+        color: #fff;
+        border-radius: 18px;
+        padding: 25px;
+        text-align: center;
+        box-shadow: 0 7px 22px rgba(0,0,0,.10);
+    }
+    .highlight-message h3 {
+        margin: 0;
+        font-size: clamp(1.10rem, 2.5vw, 1.55rem);
+        line-height: 1.45;
+        font-weight: 700;
+    }
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+    .conesst-footer {
+        background: #075f91;
+        color: #fff;
+
+        padding: 35px 0 20px;
+    }
+    .footer-title {
+        font-weight: 700;
+        font-size: 1rem;
+        margin-bottom: 15px;
+    }
+    .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    .contact-item img {
+        width: 30px;
+        height: 30px;
+        object-fit: contain;
+    }
+    .contact-item a {
+        color: #fff;
+        text-decoration: none;
+    }
+    .contact-item a:hover {
+        text-decoration: underline;
+    }
+    /* =========================================================
+       BOTONERA FOOTER
+       ========================================================= */
+    .footer-buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .footer-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 10px;
+        font-weight: 600;
+        padding: 9px 15px;
+    }
+    .privacy-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #fff;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .privacy-link:hover {
+        color: #fff;
+        text-decoration: underline;
+    }
+    .footer-bottom {
+        border-top: 1px solid rgba(255,255,255,.20);
+        margin-top: 25px;
+        padding-top: 15px;
+        text-align: center;
+        font-size: .82rem;
+        opacity: .85;
+    }
+    /* =========================================================
+       TABLET
+       ========================================================= */
+    @media (max-width: 991.98px) {
+        .service-description {
+            left: 72px;
+        }
+        .main-image-card {
+            min-height: 400px;
+        }
+    }
+    /* =========================================================
+       CELULAR
+       ========================================================= */
+    @media (max-width: 767.98px) {
+        .conesst-header {
+            border-radius: 0 0 20px 20px;
+            padding: 15px 0 23px;
+        }
+        .conesst-logo {
+            max-height: 75px;
+            max-width: 160px;
+        }
+        .top-actions {
+            margin-top: 15px;
+        }
+        .top-action {
+            flex: 1 1 45%;
+            min-width: 130px;
+            padding: 8px 10px;
+            font-size: .84rem;
+        }
+        .login-card {
+            margin-top: 15px;
+        }
+        .system-title {
+            margin-top: 20px;
+        }
+        .system-subtitle {
+            font-size: .87rem;
+        }
+        .main-content {
+            padding-top: 25px;
+        }
+        .info-banner {
+            align-items: flex-start;
+            padding: 15px;
+        }
+        .info-banner img {
+            width: 40px;
+            height: 40px;
+        }
+        .services-card {
+            padding: 17px;
+        }
+        /*
+         * En celular no dependemos del hover.
+         * La descripción se muestra debajo del servicio.
+         */
+        .service-item {
+            flex-wrap: wrap;
+            padding: 10px;
+        }
+        .service-description {
+            position: static;
+            width: 100%;
+            margin-top: 4px;
+            margin-left: 64px;
+            padding: 0 5px 5px;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            opacity: 1;
+            visibility: visible;
+            transform: none;
+            pointer-events: auto;
+        }
+        .service-description strong {
+            display: none;
+        }
+        .service-item:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        .service-item:hover .service-icon {
+            transform: none;
+        }
+        .main-image-card {
+            min-height: 380px;
+            padding: 15px;
+        }
+        .main-image-card img {
+            max-height: 350px;
+        }
+        .image-message {
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+        }
+        .highlight-message {
+            margin-top: 22px;
+            padding: 20px 16px;
+        }
+        .footer-buttons {
+            align-items: stretch;
+        }
+        .footer-button {
+            justify-content: center;
+        }
+    }
+</style>
 
 
-        <div class="container col-sm-10 text-center" style="color: #4169e1;"> 
-            <h3><strong>Nuestra Asesoría integrada en SST respaldada por un Software Especializado que se adapta a las necesidades de tu empresa.</strong></h3>    
-        </div>
-        </br> 
-    </div>    
-    <div class="row" style="background-color: #0090e4;padding: 10px;">
-          
-                    <div align="left" class="container col-sm-4 text-white">
-                        <p>SOLICITA TU ASESORÍA PERSONALIZADA</p>
-                        <p><%= image_tag 'tel.png', data: {previews_target: "preview"}, class: "img-inc-pie" %> 301-248-5111</p>
-                        <p><%= image_tag 'email.png', data: {previews_target: "preview"}, class: "img-inc-pie" %> conexionestrategicasst@gmail.com</p>
-                        <p><%= image_tag 'what.png', data: {previews_target: "preview"}, class: "img-inc-pie" %> <a href="https://wa.me/573012485111?text=Hola,%20Requiero%20informaci%C3%B3n" class="link-light">Whatsapp</a></p>
-
+<div class="conesst-page">
+    <!-- =====================================================
+         ENCABEZADO
+         ===================================================== -->
+    <header class="conesst-header">
+        <div class="container">
+            <div class="row align-items-center g-3">
+                <!-- LOGO -->
+                <div class="col-12 col-md-3 text-center text-md-start">
+                    <a href="/" class="d-inline-block">
+                        <%= image_tag 'LogoConesst202305232.png', class: "conesst-logo", alt: "CONESST" %>
+                    </a>
+                </div>
+                <!-- BOTONERA -->
+                <div class="col-12 col-md-5">
+                    <div class="top-actions">
+                        <a href="/sessions/cambioclave/path" class="top-action" data-bs-toggle="tooltip" title="Cambiar contraseña">
+                            <i class="bi bi-key fs-5"></i>
+                            <span>Clave</span>
+                        </a>
+                        <a href="/users/new" class="top-action" data-bs-toggle="tooltip" title="Crear una cuenta">
+                            <i class="bi bi-person-plus fs-5"></i>
+                            <span>Registrarse</span>
+                        </a>
                     </div>
-
-                    <div align="left" class="container col-sm-4">
-                        <div align="left">
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-sm btn-outline-light" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                                ¿Por qué elegirnos?
-                            </button>
-                            <!-- Modal -->
-                            <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel1"><strong>CONESST</strong></h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body" align="justify">
-                                        
-                                            <p>Somos una empresa que brinda servicios de asesoría externa en todo lo relacionado con el Sistema de Gestión de Seguridad y Salud en el Trabajo. Contamos con profesionales especializados en el tema, quienes se encargarán de brindarle una asesoría práctica e integral, facilitando todo el proceso de documentación e implementación del Sistema de Gestión en su empresa.  </br>CONESST pone a su disposición una plataforma de servicios vía web, la cual le permitirá acceder a información en tiempo real, administrar la documentación y hacer seguimiento al Sistema de Gestión a través de indicadores que facilitarán la medición del nivel de cumplimiento legal de su empresa.</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                        </div>
-                                    </div>
+                </div>
+                <!-- LOGIN -->
+                <div class="col-12 col-md-4">
+                    <div class="login-card">
+                        <%= form_with(url: sessions_path) do |form| %>
+                            <div class="row g-2">
+                                <div class="col-12 col-sm-5">
+                                    <%= form.text_field :login, class: "form-control form-control-sm", required: true, placeholder: "Usuario", autocomplete: "username" %>
+                                </div>
+                                <div class="col-12 col-sm-5">
+                                    <%= form.password_field :password, class: "form-control form-control-sm", required: true, placeholder: "Clave", autocomplete: "current-password" %>
+                                </div>
+                                <div class="col-12 col-sm-2">
+                                    <button type="submit" class="btn btn-light btn-sm btn-login">
+                                        <i class="bi bi-box-arrow-in-right"></i>
+                                        <span>Ingresar</span>
+                                    </button>
                                 </div>
                             </div>
-                        </div>    
-                        </br>
-                        <div align="left">
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-sm btn-outline-light" data-bs-toggle="modal" data-bs-target="#exampleModal2">
-                                Nuestros objetivos?
-                            </button>
-                            <!-- Modal -->
-                            <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel2"><strong>Nuestros objetivos</strong></h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body" align="justify">
-                                        
-                                            <p>Brindar acompañamiento eficiente en la documentación e implementación del Sistema de Gestión de Seguridad y Salud en el Trabajo según la normatividad legal,  mitigando los riesgos laborales a los que se expone un trabajador. </p>
-                                            <p>
-                                                <ul>
-                                                    <li>Cumplir con la normatividad legal vigente que reglamenta el decreto 1072 de 2015 y la resolución 0312 del 2019.</li>
-                                                    <li>Reducir el ausentismo laboral por causas medicas relacionadas con accidentes de trabajo y enfermedades laborales.</li>
-                                                    <li>Mejorar la productividad y el rendimiento de los trabajadores.</li>
-                                                    <li>Gestionar los reportes internos  y externos del Sistema de Gestión.</li>
-                                                    <li>Identificar peligros y riesgos y establecer controles específicos.</li>
-                                                </ul>
-                                            </p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>    
-                        </div>
-                    </div>    
-
-                    <div align="left" class="container col-sm-4">
-                        <a href="https://www.conesst.com/users/politicas/1" class="link-light">Política de privacidad aquí</a>
+                        <% end %>
                     </div>
+                </div>
+            </div>
+            <!-- TITULO -->
+            <h1 class="system-title">
+                Sistema de Gestión de Seguridad y Salud en el Trabajo
+            </h1>
+            <p class="system-subtitle">
+                Gestión, seguimiento y control de la Seguridad y Salud en el Trabajo
+            </p>
+        </div>
+    </header>
 
+    <!-- =====================================================
+         CONTENIDO
+         ===================================================== -->
+    <main class="main-content">
+        <div class="container">
+            <!-- BANNER -->
+            <div class="info-banner mb-4">
+                <%= image_tag 'info.png', alt: "Información" %>
+                <strong>
+
+                    ¿SABÍAS QUE UN SISTEMA DE GESTIÓN DE SEGURIDAD Y SALUD
+                    EN EL TRABAJO BIEN IMPLEMENTADO NO SOLO EVITA SANCIONES,
+                    SINO QUE TRANSFORMA EL BIENESTAR LABORAL Y MEJORA EL
+                    DESEMPEÑO DE TU EMPRESA?
+
+                </strong>
+            </div>
+            <!-- =================================================
+                 SERVICIOS + FOTO
+                 ================================================= -->
+            <div class="row g-4 align-items-stretch">
+                <!-- SERVICIOS -->
+                <div class="col-12 col-lg-6">
+                    <div class="services-card">
+                        <h2 class="section-title">
+                            Servicios ofrecidos
+                        </h2>
+                        <!-- DIAGNOSTICO -->
+                        <div class="service-item">
+                            <%= image_tag 'diagnostico.png', class: "service-icon", alt: "Diagnóstico" %>
+                            <span class="service-name">
+                                Diagnóstico
+                            </span>
+                            <div class="service-description">
+                                <strong>Diagnóstico</strong>
+                                Conoce el estado actual de tu SG-SST.
+                                Identificamos fortalezas, oportunidades
+                                de mejora y nivel de cumplimiento de tu empresa.
+                            </div>
+                        </div>
+                        <!-- DISEÑO -->
+                        <div class="service-item">
+                            <%= image_tag 'diseño.png', class: "service-icon", alt: "Diseño" %>
+                            <span class="service-name">
+                                Diseño
+                            </span>
+                            <div class="service-description">
+                                <strong>Diseño</strong>
+                                Construimos un SG-SST adaptado a tu empresa.
+                                Diseñamos procesos, procedimientos y
+                                documentación de acuerdo con tus necesidades.
+                            </div>
+                        </div>
+                        <!-- IMPLEMENTACION -->
+                        <div class="service-item">
+                            <%= image_tag 'implementacion.png', class: "service-icon", alt: "Implementación" %>
+                            <span class="service-name">
+                                Implementación
+                            </span>
+                            <div class="service-description">
+                                <strong>Implementación</strong>
+                                Llevamos el sistema a la práctica.
+                                Te acompañamos en la ejecución de las
+                                actividades y controles necesarios para
+                                una gestión efectiva.
+                            </div>
+                        </div>
+                        <!-- REPORTE -->
+                        <div class="service-item">
+                            <%= image_tag 'reporte.png', class: "service-icon", alt: "Reporte al Ministerio de Trabajo" %>
+                            <span class="service-name">
+                                Reporte al Ministerio de Trabajo
+                            </span>
+                            <div class="service-description">
+                                <strong>Reporte al Ministerio de Trabajo</strong>
+
+                                Cumple oportunamente con tus obligaciones.
+                                Facilitamos la preparación y gestión de la
+                                información requerida para los reportes
+                                correspondientes.
+                            </div>
+                        </div>
+                        <!-- SEGUIMIENTO -->
+                        <div class="service-item">
+                            <%= image_tag 'seguimiento.png', class: "service-icon",  alt: "Seguimiento" %>
+                            <span class="service-name">
+                                Seguimiento
+                            </span>
+                            <div class="service-description">
+                                <strong>Seguimiento</strong>
+                                Mide, controla y mejora.
+                                Realizamos seguimiento al cumplimiento
+                                de las actividades y al avance de tu
+                                Sistema de Gestión.
+                            </div>
+                        </div>
+                        <!-- CAPACITACIONES -->
+                        <div class="service-item">
+                            <%= image_tag 'capacitaciones.png', class: "service-icon", alt: "Capacitaciones" %>
+                            <span class="service-name">
+                                Capacitaciones
+                            </span>
+                            <div class="service-description">
+                                <strong>Capacitaciones</strong>
+                                Fortalece el conocimiento de tus trabajadores.
+                                Capacitaciones orientadas a la prevención,
+                                el autocuidado y la seguridad laboral.
+                            </div>
+                        </div>
+                        <!-- INDICADORES -->
+                        <div class="service-item mb-0">
+                            <%= image_tag 'indicadores.png', class: "service-icon", alt: "Indicadores de gestión" %>
+                            <span class="service-name">
+                                Indicadores de gestión
+                            </span>
+                            <div class="service-description">
+                                <strong>Indicadores de gestión</strong>
+                                Convierte tus datos en decisiones.
+                                Analiza indicadores para conocer el desempeño
+                                y orientar la mejora continua del SG-SST.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- =================================================
+                     IMAGEN
+                     ================================================= -->
+                <div class="col-12 col-lg-6">
+                    <div class="main-image-card">
+                        <%= image_tag 'mujer_log.png', class: "img-fluid", alt: "Profesional de Seguridad y Salud en el Trabajo" %>
+                        <div class="image-message">
+                            <strong>
+                                Protegemos lo más importante: las personas.
+                            </strong>
+                            <span>
+                                Gestión SST orientada a la prevención,
+                                el cumplimiento y la mejora continua.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- =================================================
+                 MENSAJE DESTACADO
+                 ================================================= -->
+            <div class="highlight-message">
+                <h3>
+                    Nuestra Asesoría integrada en SST respaldada por un
+                    Software Especializado que se adapta a las necesidades
+                    de tu empresa.
+                </h3>
+            </div>
+        </div>
+    </main>
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+    <footer class="conesst-footer">
+        <div class="container">
+            <div class="row g-4">
+                <!-- CONTACTO -->
+                <div class="col-12 col-md-5">
+                    <div class="footer-title">
+                        SOLICITA TU ASESORÍA PERSONALIZADA
+                    </div>
+                    <div class="contact-item">
+                        <%= image_tag 'tel.png', alt: "Teléfono" %>
+                        <span>
+                            301-248-5111
+                        </span>
+                    </div>
+                    <div class="contact-item">
+                        <%= image_tag 'email.png', alt: "Correo electrónico" %>
+                        <span>
+                            conexionestrategicasst@gmail.com
+                        </span>
+                    </div>
+                    <div class="contact-item">
+                        <%= image_tag 'what.png', alt: "WhatsApp" %>
+                        <a href="https://wa.me/573012485111?text=Hola,%20Requiero%20informaci%C3%B3n"
+                           target="_blank"
+                           rel="noopener">
+
+                            WhatsApp
+
+                        </a>
+                    </div>
+                </div>
+                <!-- INFORMACION -->
+                <div class="col-12 col-md-4">
+                    <div class="footer-title">
+                        CONESST
+                    </div>
+                    <div class="footer-buttons">
+                        <!-- POR QUE ELEGIRNOS -->
+
+                        <button type="button" class="btn btn-outline-light footer-button" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+                            <i class="bi bi-building-check"></i>
+                            ¿Por qué elegirnos?
+                        </button>
+                        <!-- OBJETIVOS -->
+                        <button type="button" class="btn btn-outline-light footer-button" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                            <i class="bi bi-bullseye"></i>
+                            Nuestros objetivos
+                        </button>
+                    </div>
+                </div>
+                <!-- PRIVACIDAD -->
+                <div class="col-12 col-md-3">
+                    <div class="footer-title">
+                        Información
+                    </div>
+                    <a href="https://www.conesst.com/users/politicas/1" class="privacy-link">
+                        <i class="bi bi-shield-lock"></i>
+
+                        Política de privacidad
+                    </a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                © <%= Time.current.year %> CONESST -
+                Sistema de Gestión de Seguridad y Salud en el Trabajo
+            </div>
+        </div>
+    </footer>
+
+    <!-- =====================================================
+         MODAL: POR QUE ELEGIRNOS
+         ===================================================== -->
+    <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header">
+                    <h5 class="modal-title"
+                        id="exampleModalLabel1">
+                        <i class="bi bi-building-check me-2"></i>
+                        <strong>CONESST</strong>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body text-start">
+                    <p>
+
+                        Somos una empresa que brinda servicios de asesoría
+                        externa en todo lo relacionado con el Sistema de
+                        Gestión de Seguridad y Salud en el Trabajo.
+
+                    </p>
+                    <p>
+
+                        Contamos con profesionales especializados en el tema,
+                        quienes se encargarán de brindarle una asesoría
+                        práctica e integral, facilitando todo el proceso de
+                        documentación e implementación del Sistema de Gestión
+                        en su empresa.
+
+                    </p>
+                    <p>
+
+                        CONESST pone a su disposición una plataforma de
+                        servicios vía web, la cual le permitirá acceder a
+                        información en tiempo real, administrar la
+                        documentación y hacer seguimiento al Sistema de
+                        Gestión a través de indicadores que facilitarán la
+                        medición del nivel de cumplimiento legal de su empresa.
+
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         MODAL: OBJETIVOS
+         ===================================================== -->
+    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header">
+                    <h5 class="modal-title"
+                        id="exampleModalLabel2">
+                        <i class="bi bi-bullseye me-2"></i>
+                        <strong>Nuestros objetivos</strong>
+                    </h5>
+                    <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body text-start">
+                    <p>
+
+                        Brindar acompañamiento eficiente en la documentación
+                        e implementación del Sistema de Gestión de Seguridad
+                        y Salud en el Trabajo según la normatividad legal,
+                        mitigando los riesgos laborales a los que se expone
+                        un trabajador.
+
+                    </p>
+                    <ul>
+                        <li>
+                            Cumplir con la normatividad legal vigente que
+                            reglamenta el Decreto 1072 de 2015 y la
+                            Resolución 0312 de 2019.
+                        </li>
+                        <li>
+                            Reducir el ausentismo laboral por causas médicas
+                            relacionadas con accidentes de trabajo y
+                            enfermedades laborales.
+                        </li>
+                        <li>
+                            Mejorar la productividad y el rendimiento de
+                            los trabajadores.
+                        </li>
+                        <li>
+                            Gestionar los reportes internos y externos del
+                            Sistema de Gestión.
+                        </li>
+                        <li>
+                            Identificar peligros y riesgos y establecer
+                            controles específicos.
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

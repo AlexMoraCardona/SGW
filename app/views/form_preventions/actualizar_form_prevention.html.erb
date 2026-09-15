@@ -1,79 +1,281 @@
-<div class="container col-10 card p-5 text-dark">
-    <br>
-
-    <div>    
-        <div>
-            <p><b>PELIGRO / RIESGO</b> </br> <%= @form_prevention.clasification_danger.name if @form_prevention.present? %></p>
-
-            <p><b>DESCRIPCIÓN PELIGRO / RIESGO</b> </br> <%= @form_prevention.clasification_danger_detail.name if @form_prevention.present? %></p>
-        </div> 
-
-        <div>
-            <%= form_with model: @form_prevention do |form| %>
-                <% @form_prevention.errors.full_messages.each do |error| %>
-                    <div class="alert alert-danger" role="alert">
-                        <%= error%> <%= alert %>
-                    </div>
-                <% end %>  
-                        <div style="border:0px solid black;width: 100%;"> 
-                            <b><%= form.label :exposed,  style: "display: block" %></b>
-                            <%= form.radio_button :exposed, 0 %>
-                            <label for="no">No</label></br>
-                            <%= form.radio_button :exposed, 1 %>
-                            <label for="si">Si</label></br>
-                        </div>
-                        <div></br></div>
-                        <div style="border:0px solid black;width: 100%;"> 
-                            <b>Eliminar: </b>
-                            <%= form.radio_button :eli, 0 %>
-                            <label for="no">No</label>
-                            <%= form.radio_button :eli, 1 %>
-                            <label for="si">Si</label></br>
-                        </div>
-                        <div style="border:0px solid black;width: 100%;"> 
-                            <b>Sustitución: </b>
-                            <%= form.radio_button :sus, 0 %>
-                            <label for="no">No</label>
-                            <%= form.radio_button :sus, 1 %>
-                            <label for="si">Si</label></br>
-                        </div>
-                        <div style="border:0px solid black;width: 100%;"> 
-                            <b>Controles de Ingeniería: </b>
-                            <%= form.radio_button :ci, 0 %>
-                            <label for="no">No</label>
-                            <%= form.radio_button :ci, 1 %>
-                            <label for="si">Si</label></br>
-                        </div>
-                        <div style="border:0px solid black;width: 100%;"> 
-                            <b>Controles Administrativos: </b>
-                            <%= form.radio_button :ca, 0 %>
-                            <label for="no">No</label>
-                            <%= form.radio_button :ca, 1 %>
-                            <label for="si">Si</label></br>
-                        </div>
-                        <div style="border:0px solid black;width: 100%;"> 
-                            <b>Elementos de Protección Personal: </b>
-                            <%= form.radio_button :epp, 0 %>
-                            <label for="no">No</label>
-                            <%= form.radio_button :epp, 1 %>
-                            <label for="si">Si</label></br>
-                        </div>
-                        <div style="border:0px solid black;width: 100%;"> 
-                            <b>No aplica: </b>
-                            <%= form.radio_button :no_apply, 0 %>
-                            <label for="no">No</label>
-                            <%= form.radio_button :no_apply, 1 %>
-                            <label for="si">Si</label></br>
-                        </div>
-
-                        <div></br></div>                        
-                        <div style="text-align:center;"> 
-                            <button type="submit" class="btn btn-sm btn-outline-dark"><%=t('common.submit')%></button> 
-                            <%= link_to '<button class="btn btn-sm btn-outline-dark" type="button">Retornar</button>'.html_safe, :back %>
-                        </div>
-            <% end %>    
+<div class="container-fluid px-3 px-md-4 py-4">
+  <div class="card border-0 shadow-sm mx-auto" style="max-width: 950px;">
+    <!-- ===================================================== -->
+    <!-- ENCABEZADO -->
+    <!-- ===================================================== -->
+    <div class="card-header bg-light border-0 p-3 p-md-4">
+      <div class="d-flex align-items-center gap-3">
+        <div class="text-primary fs-2 flex-shrink-0">
+          <i class="bi bi-shield-check"></i>
         </div>
+        <div class="min-w-0">
+          <h1 class="h5 fw-semibold mb-1">
+            Medidas de prevención y control
+          </h1>
+          <p class="text-muted small mb-0">
+            Actualización de controles para el peligro identificado
+          </p>
+        </div>
+      </div>
     </div>
-    <br>  
-</div>        
-<br>
+    <!-- ===================================================== -->
+    <!-- CUERPO -->
+    <!-- ===================================================== -->
+    <div class="card-body p-3 p-md-4">
+      <!-- Información del peligro -->
+      <% if @form_prevention.present? %>
+        <div class="bg-light rounded-3 p-3 p-md-4 mb-4">
+          <div class="row g-3">
+            <div class="col-12 col-md-6">
+              <div class="small text-muted mb-1">
+                <i class="bi bi-exclamation-triangle me-1"></i>
+                Peligro / Riesgo
+              </div>
+              <div class="fw-semibold text-break">
+                <%= @form_prevention.clasification_danger.name %>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="small text-muted mb-1">
+                <i class="bi bi-card-text me-1"></i>
+                Descripción del peligro / riesgo
+              </div>
+              <div class="fw-semibold text-break">
+                <%= @form_prevention.clasification_danger_detail.name %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <!-- =================================================== -->
+      <!-- FORMULARIO -->
+      <!-- =================================================== -->
+      <%= form_with model: @form_prevention do |form| %>
+        <% if @form_prevention.errors.any? %>
+          <div class="alert alert-danger border-0 shadow-sm" role="alert">
+            <div class="d-flex gap-2">
+              <div class="fs-5">
+                <i class="bi bi-exclamation-circle"></i>
+              </div>
+              <div>
+                <div class="fw-semibold mb-1">
+                  No fue posible guardar los cambios
+                </div>
+                <ul class="mb-0 ps-3">
+                  <% @form_prevention.errors.full_messages.each do |error| %>
+                    <li><%= error %></li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <!-- ================================================= -->
+        <!-- EXPOSICIÓN -->
+        <!-- ================================================= -->
+        <div class="mb-4">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="text-primary">
+              <i class="bi bi-person-exclamation"></i>
+            </div>
+            <div>
+              <h2 class="h6 fw-semibold mb-0">
+                Exposición
+              </h2>
+              <div class="small text-muted">
+                ¿Existen trabajadores expuestos al peligro?
+              </div>
+            </div>
+          </div>
+          <div class="row g-2">
+            <div class="col-6">
+              <div class="form-check border rounded-3 p-3 h-100">
+                <%= form.radio_button :exposed, 0, class: "form-check-input", id: "exposed_no" %>
+                <%= form.label :exposed, "No", value: 0, for: "exposed_no", class: "form-check-label fw-semibold ms-1" %>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-check border rounded-3 p-3 h-100">
+                <%= form.radio_button :exposed, 1, class: "form-check-input", id: "exposed_si" %>
+                <%= form.label :exposed, "Sí", value: 1, for: "exposed_si", class: "form-check-label fw-semibold ms-1" %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ================================================= -->
+        <!-- JERARQUÍA DE CONTROLES -->
+        <!-- ================================================= -->
+        <div class="border-top pt-4">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="text-primary">
+              <i class="bi bi-diagram-3"></i>
+            </div>
+            <div>
+              <h2 class="h6 fw-semibold mb-0">
+                Jerarquía de controles
+              </h2>
+              <div class="small text-muted">
+                Indique si aplica cada medida de intervención
+              </div>
+            </div>
+          </div>
+          <div class="row g-3">
+            <!-- ELIMINACIÓN -->
+            <div class="col-12 col-md-6">
+              <div class="card border h-100">
+                <div class="card-body p-3">
+                  <div class="d-flex align-items-center gap-2 mb-3">
+                    <i class="bi bi-trash3 text-primary"></i>
+                    <span class="fw-semibold">
+                      Eliminación
+                    </span>
+                  </div>
+                  <div class="d-flex gap-2 flex-wrap">
+                    <div class="form-check">
+                      <%= form.radio_button :eli, 0, class: "form-check-input",  id: "eli_no" %>
+                      <%= form.label :eli, "No", value: 0, for: "eli_no", class: "form-check-label" %>
+                    </div>
+                    <div class="form-check">
+                      <%= form.radio_button :eli, 1, class: "form-check-input", id: "eli_si" %>
+                      <%= form.label :eli, "Sí", value: 1, for: "eli_si", class: "form-check-label" %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- SUSTITUCIÓN -->
+            <div class="col-12 col-md-6">
+              <div class="card border h-100">
+                <div class="card-body p-3">
+                  <div class="d-flex align-items-center gap-2 mb-3">
+                    <i class="bi bi-arrow-repeat text-primary"></i>
+                    <span class="fw-semibold">
+                      Sustitución
+                    </span>
+                  </div>
+                  <div class="d-flex gap-2 flex-wrap">
+                    <div class="form-check">
+                      <%= form.radio_button :sus, 0, class: "form-check-input", id: "sus_no" %>
+                      <%= form.label :sus, "No", value: 0, for: "sus_no", class: "form-check-label" %>
+                    </div>
+                    <div class="form-check">
+                      <%= form.radio_button :sus, 1, class: "form-check-input", id: "sus_si" %>
+                      <%= form.label :sus, "Sí", value: 1, for: "sus_si", class: "form-check-label" %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- CONTROLES DE INGENIERÍA -->
+            <div class="col-12 col-md-6">
+              <div class="card border h-100">
+                <div class="card-body p-3">
+                  <div class="d-flex align-items-center gap-2 mb-3">
+                    <i class="bi bi-gear text-primary"></i>
+                    <span class="fw-semibold">
+                      Controles de ingeniería
+                    </span>
+                  </div>
+                  <div class="d-flex gap-2 flex-wrap">
+                    <div class="form-check">
+                      <%= form.radio_button :ci, 0, class: "form-check-input", id: "ci_no" %>
+                      <%= form.label :ci, "No", value: 0, for: "ci_no", class: "form-check-label" %>
+                    </div>
+                    <div class="form-check">
+                      <%= form.radio_button :ci, 1, class: "form-check-input", id: "ci_si" %>
+                      <%= form.label :ci, "Sí", value: 1, for: "ci_si", class: "form-check-label" %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- CONTROLES ADMINISTRATIVOS -->
+            <div class="col-12 col-md-6">
+              <div class="card border h-100">
+                <div class="card-body p-3">
+                  <div class="d-flex align-items-center gap-2 mb-3">
+                    <i class="bi bi-clipboard-check text-primary"></i>
+                    <span class="fw-semibold">
+                      Controles administrativos
+                    </span>
+                  </div>
+                  <div class="d-flex gap-2 flex-wrap">
+                    <div class="form-check">
+                      <%= form.radio_button :ca, 0, class: "form-check-input", id: "ca_no" %>
+                      <%= form.label :ca, "No", value: 0, for: "ca_no",  class: "form-check-label" %>
+                    </div>
+                    <div class="form-check">
+                      <%= form.radio_button :ca, 1, class: "form-check-input", id: "ca_si" %>
+                      <%= form.label :ca, "Sí", value: 1, for: "ca_si", class: "form-check-label" %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- EPP -->
+            <div class="col-12 col-md-6">
+              <div class="card border h-100">
+                <div class="card-body p-3">
+                  <div class="d-flex align-items-center gap-2 mb-3">
+                    <i class="bi bi-person-workspace text-primary"></i>
+                    <span class="fw-semibold">
+                      Elementos de Protección Personal
+                    </span>
+                  </div>
+                  <div class="d-flex gap-2 flex-wrap">
+                    <div class="form-check">
+                      <%= form.radio_button :epp, 0, class: "form-check-input", id: "epp_no" %>
+                      <%= form.label :epp, "No", value: 0, for: "epp_no", class: "form-check-label" %>
+                    </div>
+                    <div class="form-check">
+                      <%= form.radio_button :epp, 1, class: "form-check-input", id: "epp_si" %>
+                      <%= form.label :epp, "Sí", value: 1, for: "epp_si", class: "form-check-label" %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- NO APLICA -->
+            <div class="col-12 col-md-6">
+              <div class="card border h-100">
+                <div class="card-body p-3">
+                  <div class="d-flex align-items-center gap-2 mb-3">
+                    <i class="bi bi-slash-circle text-secondary"></i>
+                    <span class="fw-semibold">
+                      No aplica
+                    </span>
+                  </div>
+                  <div class="d-flex gap-2 flex-wrap">
+                    <div class="form-check">
+                      <%= form.radio_button :no_apply, 0, class: "form-check-input", id: "no_apply_no" %>
+                      <%= form.label :no_apply, "No", value: 0, for: "no_apply_no", class: "form-check-label" %>
+                    </div>
+                    <div class="form-check">
+                      <%= form.radio_button :no_apply, 1, class: "form-check-input", id: "no_apply_si" %>
+                      <%= form.label :no_apply, "Sí", value: 1, for: "no_apply_si", class: "form-check-label" %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ================================================= -->
+        <!-- BOTONERA -->
+        <!-- ================================================= -->
+        <div class="border-top mt-4 pt-4">
+          <div class="d-flex flex-column flex-sm-row justify-content-center gap-2">
+            <%= form.button type: "submit", class: "btn btn-primary btn-sm px-4" do %>
+              <i class="bi bi-check2-circle me-1"></i>
+              <%= t('common.submit') %>
+            <% end %>
+            <%= link_to :back, class: "btn btn-outline-secondary btn-sm px-4" do %>
+              <i class="bi bi-arrow-left me-1"></i>
+              Retornar
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

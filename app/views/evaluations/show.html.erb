@@ -431,16 +431,20 @@
                 </td>
                 <!-- CUMPLE -->
                 <td class="text-center">
-                  <%= form_with model: evaluation_items, data: { turbo: false }, class: "d-flex justify-content-center gap-3" do |form| %>
-                    <div class="form-check">
-                      <%= form.radio_button :meets, 1, class: "form-check-input", onchange: "this.form.requestSubmit();" %>
-                      <%= form.label :meets, "SI", value: 1, class: "form-check-label fw-semibold" %>
-                    </div>
-                    <div class="form-check">
-                      <%= form.radio_button :meets, 0, class: "form-check-input", onchange: "this.form.requestSubmit();" %>
-                      <%= form.label :meets, "NO", value: 0, class: "form-check-label fw-semibold" %>
-                    </div>
-                  <% end %>
+                  <% if Current.user.level > 0 && Current.user.level < 3 %>
+                    <%= form_with model: evaluation_items, data: { turbo: false }, class: "d-flex justify-content-center gap-3" do |form| %>
+                      <div class="form-check">
+                        <%= form.radio_button :meets, 1, class: "form-check-input", onchange: "this.form.requestSubmit();" %>
+                        <%= form.label :meets, "SI", value: 1, class: "form-check-label fw-semibold" %>
+                      </div>
+                      <div class="form-check">
+                        <%= form.radio_button :meets, 0, class: "form-check-input", onchange: "this.form.requestSubmit();" %>
+                        <%= form.label :meets, "NO", value: 0, class: "form-check-label fw-semibold" %>
+                      </div>
+                    <% end %>
+                  <% else %>  
+                    <%= EvaluationRuleDetail.label_meets(evaluation_items.meets) %>
+                  <% end %>  
                 </td>
                 <!-- APLICA -->
                 <td class="text-center text-nowrap">
@@ -566,16 +570,20 @@
                 </td>
                 <!-- CUMPLE -->
                 <td class="text-center">
-                  <%= form_with model: evaluation_items, data: { turbo: false }, class: "d-flex justify-content-center gap-3" do |form| %>
-                    <div class="form-check">
-                      <%= form.radio_button :meets, 1, class: "form-check-input", onchange: "this.form.requestSubmit();" %>
-                      <%= form.label :meets, "SI", value: 1, class: "form-check-label fw-semibold" %>
-                    </div>
-                    <div class="form-check">
-                      <%= form.radio_button :meets, 0, class: "form-check-input", onchange: "this.form.requestSubmit();" %>
-                      <%= form.label :meets, "NO", value: 0, class: "form-check-label fw-semibold" %>
-                    </div>
-                  <% end %>
+                  <% if Current.user.level > 0 && Current.user.level < 3 %>
+                    <%= form_with model: evaluation_items, data: { turbo: false }, class: "d-flex justify-content-center gap-3" do |form| %>
+                      <div class="form-check">
+                        <%= form.radio_button :meets, 1, class: "form-check-input", onchange: "this.form.requestSubmit();" %>
+                        <%= form.label :meets, "SI", value: 1, class: "form-check-label fw-semibold" %>
+                      </div>
+                      <div class="form-check">
+                        <%= form.radio_button :meets, 0, class: "form-check-input", onchange: "this.form.requestSubmit();" %>
+                        <%= form.label :meets, "NO", value: 0, class: "form-check-label fw-semibold" %>
+                      </div>
+                    <% end %>
+                  <% else %>  
+                    <%= EvaluationRuleDetail.label_meets(evaluation_items.meets) %>
+                  <% end %>  
                 </td>
                 <!-- APLICA -->
                 <td class="text-center text-nowrap">

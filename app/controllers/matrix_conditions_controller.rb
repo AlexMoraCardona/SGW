@@ -4,18 +4,18 @@ class MatrixConditionsController < ApplicationController
             if params[:entity_id].present?
                 @entity = Entity.find(params[:entity_id].to_i)
                 @matrix_condition = MatrixCondition.find_by(entity_id: params[:entity_id].to_i)
-                @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", @matrix_condition.id) if @matrix_condition.present?
-                @condiciones = @matrix_unsafe_items.where("clasification_unsafe = ?",0) if @matrix_unsafe_items.present?  
-                @actos = @matrix_unsafe_items.where("clasification_unsafe = ?",1)  if @matrix_unsafe_items.present?
+                @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", @matrix_condition.id).order(:date_item) if @matrix_condition.present?
+                @condiciones = @matrix_unsafe_items.where("clasification_unsafe = ?",0).order(:date_item) if @matrix_unsafe_items.present?  
+                @actos = @matrix_unsafe_items.where("clasification_unsafe = ?",1).order(:date_item)  if @matrix_unsafe_items.present?
             else 
                 @entities = Entity.all
             end    
         elsif Current.user && Current.user.level > 2 
             @entity = Entity.find(Current.user.entity)
             @matrix_condition = MatrixCondition.find_by(entity_id: Current.user.entity)
-            @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", @matrix_condition.id) if @matrix_condition.present?
-            @condiciones = @matrix_unsafe_items.where("clasification_unsafe = ?",0) if @matrix_unsafe_items.present?  
-            @actos = @matrix_unsafe_items.where("clasification_unsafe = ?",1)  if @matrix_unsafe_items.present?
+            @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", @matrix_condition.id).order(:date_item) if @matrix_condition.present?
+            @condiciones = @matrix_unsafe_items.where("clasification_unsafe = ?",0).order(:date_item) if @matrix_unsafe_items.present?  
+            @actos = @matrix_unsafe_items.where("clasification_unsafe = ?",1).order(:date_item)  if @matrix_unsafe_items.present?
 
         else
             redirect_to new_session_path, alert: t('common.not_logged_in')    
@@ -27,9 +27,9 @@ class MatrixConditionsController < ApplicationController
     
     def show
         @matrix_condition = MatrixCondition.find(params[:id])
-        @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", @matrix_condition.id) if @matrix_condition.present?
-        @condiciones  =    @matrix_unsafe_items.where("clasification_unsafe = ?",0) if @matrix_unsafe_items.present?  
-        @actos  =    @matrix_unsafe_items.where("clasification_unsafe = ?",1)  if @matrix_unsafe_items.present?
+        @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", @matrix_condition.id).order(:date_item) if @matrix_condition.present?
+        @condiciones  =    @matrix_unsafe_items.where("clasification_unsafe = ?",0).order(:date_item) if @matrix_unsafe_items.present?  
+        @actos  =    @matrix_unsafe_items.where("clasification_unsafe = ?",1).order(:date_item)  if @matrix_unsafe_items.present?
         @template = Template.where("format_number = ? and document_vigente = ?",65,1).last  
         @adv = User.find(@matrix_condition.user_representante) if  @matrix_condition.user_representante.present? && @matrix_condition.user_representante > 0
         @res = User.find(@matrix_condition.user_responsible) if  @matrix_condition.user_responsible.present? && @matrix_condition.user_responsible > 0
@@ -43,7 +43,7 @@ class MatrixConditionsController < ApplicationController
     
     def condition_pdf
         @matrix_condition = MatrixCondition.find(params[:id])
-        @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", @matrix_condition.id) if @matrix_condition.present?
+        @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", @matrix_condition.id).order(:date_item) if @matrix_condition.present?
         @template = Template.where("format_number = ? and document_vigente = ?",65,1).last  
         @adv = User.find(@matrix_condition.user_representante) if  @matrix_condition.user_representante.present? && @matrix_condition.user_representante > 0
         @res = User.find(@matrix_condition.user_responsible) if  @matrix_condition.user_responsible.present? && @matrix_condition.user_responsible > 0

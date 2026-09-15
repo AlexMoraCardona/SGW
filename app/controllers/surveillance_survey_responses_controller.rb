@@ -44,7 +44,11 @@ class SurveillanceSurveyResponsesController < ApplicationController
                  .epidemiological_surveillance_case
                  .present?
 
-          sve_case = EpidemiologicalSurveillanceCase.create!(epidemiological_surveillance_program_id: @epidemiological_surveillance_program.id, entity_id: @surveillance_survey_response.entity_id, user_id: @surveillance_survey_response.user_id, source_type: :survey, surveillance_survey_response_id: @surveillance_survey_response.id, opened_at: Time.current, status: :in_evaluation, responsible_id: Current.user.id, observations: observations.presence || "Caso generado a partir de la encuesta de identificación.")
+
+          # Buscar el trabajador que pertenece al programa SVE
+          surveillance_worker = SurveillanceWorker.find_by(user_id: @surveillance_survey_response.user_id, epidemiological_surveillance_program_id: @epidemiological_surveillance_program.id)
+
+          sve_case = EpidemiologicalSurveillanceCase.create!(epidemiological_surveillance_program_id: @epidemiological_surveillance_program.id, entity_id: @surveillance_survey_response.entity_id, user_id: @surveillance_survey_response.user_id, surveillance_worker_id: surveillance_worker&.id, source_type: :survey, surveillance_survey_response_id: @surveillance_survey_response.id, opened_at: Time.current, status: :in_evaluation, responsible_id: Current.user.id, observations: observations.presence || "Caso generado a partir de la encuesta de identificación.")
 
           # ==========================================
           # HISTORIAL INICIAL DEL CASO

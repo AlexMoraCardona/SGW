@@ -5,6 +5,8 @@ class SurveillanceWorker < ApplicationRecord
 
   has_one :characterization, dependent: :destroy
   has_one :sintoma, dependent: :destroy
+  has_many :epidemiological_surveillance_cases,
+           dependent: :nullify
 
   enum status: {
     active: 0,

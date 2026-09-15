@@ -455,6 +455,7 @@ Rails.application.routes.draw do
       get '/evaluation_rule_details/actualizar_evidencia/:id', to: 'evaluation_rule_details#actualizar_evidencia', as: 'actualizar_evidencia'
       get '/evaluation_rule_details/ver_evidencia/:id', to: 'evaluation_rule_details#ver_evidencia', as: 'ver_evidencia'
       get '/evaluation_rule_details/crear_compromiso/:id', to: 'evaluation_rule_details#crear_compromiso', as: 'crear_compromiso'
+      get '/evaluation_rule_details/control_cambios/:id', to: 'evaluation_rule_details#control_cambios', as: 'control_cambios'
     end
   end
 

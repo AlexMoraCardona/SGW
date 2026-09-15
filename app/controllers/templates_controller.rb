@@ -48,62 +48,92 @@ class TemplatesController < ApplicationController
     def show
         @template = Template.where("format_number = ? and document_vigente = ?",78,1).last  
         @entity = Entity.find(Current.user.entity)
+        evaluation = Evaluation.where(entity_id: @entity.id).last if @entity.present?
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
         #@templates = Template.where("document_vigente = ?",1)  
         @consultas = []
         i = 1
         @valor = 0
-        while i < 100
-            l = 1
-            while l < 5
-                consulta = Template.where("format_number = ? and version = ?",i,l).last
-                if consulta.present?
-                    @valor += 1
-                    @consultas.push([Template.label_proceso(consulta.process_document), consulta.name, Template.label_tipodocumento(consulta.type_document), consulta.reference, Template.label_tiposoporte(consulta.type_soport), consulta.date, consulta.version, Template.label_document_vigente(consulta.document_vigente), consulta.observations, Template.label_dependencia_admin(consulta.dependence_admin), consulta.control_changes]) 
-                end    
-                l += 1
-            end  
-            i += 1
+        p = Template.maximum(:format_number)
+        p = p + 1
+        if evaluation.present?
+            while i < p
+                consultas = Template.where("format_number = ?",i)
+                if consultas.present?
+                    consultas.each do |consulta|
+                        if consulta.standar_detail_item.standar_detail.standar.rule_id == evaluation.rule_id
+                            @valor += 1
+                            ubica = consulta.ubication_document + consulta.format_number.to_s 
+                            @consultas.push([Template.label_proceso(consulta.process_document), consulta.name, Template.label_tipodocumento(consulta.type_document), consulta.reference, Template.label_tiposoporte(consulta.type_soport), consulta.date, consulta.version, Template.label_document_vigente(consulta.document_vigente), consulta.observations, Template.label_dependencia_admin(consulta.dependence_admin), consulta.control_changes, consulta.conservation_time, ubica.to_s, consulta.medium_storage]) 
+                            
+                        end         
+                    end    
+                end
+                i += 1
+            end    
         end  
     end  
-    
+   
+
     def ver_documental
-        @template = Template.where("format_number = ? and document_vigente = ?",78,1).last  
+        @template = Template.where("format_number = ? and document_vigente = ?", 78, 1).last
         @entity = Entity.find(params[:id])
+        evaluation = Evaluation.where(entity_id: @entity.id).last if @entity.present?
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
         @consultas = []
         i = 1
         @valor = 0
-        while i < 100
-            l = 1
-            while l < 5
-                consulta = Template.where("format_number = ? and version = ?",i,l).last
-                if consulta.present?
-                    @valor += 1
-                    @consultas.push([Template.label_proceso(consulta.process_document), consulta.name, Template.label_tipodocumento(consulta.type_document), consulta.reference, Template.label_tiposoporte(consulta.type_soport), consulta.date, consulta.version, Template.label_document_vigente(consulta.document_vigente), consulta.observations, Template.label_dependencia_admin(consulta.dependence_admin), consulta.control_changes]) 
-                end    
-                l += 1
-            end  
-            i += 1
-        end  
+        p = Template.maximum(:format_number).to_i + 1
+        if evaluation.present?
+            while i < p
+                consultas = Template.where("format_number = ?", i)
+                if consultas.present?
+                    consultas.each do |consulta|
+                        if consulta.standar_detail_item.standar_detail.standar.rule_id == evaluation.rule_id
+                            @valor += 1
+                            ubica = consulta.ubication_document.to_s + consulta.format_number.to_s
+                            @consultas.push(
+                            [
+                                Template.label_proceso(consulta.process_document),
+                                consulta.name,
+                                Template.label_tipodocumento(consulta.type_document),
+                                consulta.reference,
+                                Template.label_tiposoporte(consulta.type_soport),
+                                consulta.date,
+                                consulta.version,
+                                Template.label_document_vigente(consulta.document_vigente),
+                                consulta.observations,
+                                Template.label_dependencia_admin(consulta.dependence_admin),
+                                consulta.control_changes,
+                                consulta.conservation_time,
+                                ubica,
+                                consulta.medium_storage
+                            ])
+                        end
+                    end
+                end
+                i += 1
+            end
+        end
 
         nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
                 pdf = WickedPdf.new.pdf_from_string(
                     render_to_string('ver_documental'),
-                    zoom: 1,
                     disable_javascript: true,
-                    margin: {top: 10, bottom: 10, left: 5, right: 5 },
+                    margin: {top: 50, bottom: 15, left: 15, right: 15 },
                     page_size: 'letter',
-                    footer: {right: '[page] de [topage]'}
-                    
-                  )  
-                  send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+                    orientation: 'Landscape',
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
             }
         end    
-
-    end    
+    end
 
     private
 
@@ -113,7 +143,7 @@ class TemplatesController < ApplicationController
         :firm_asesor, :firm_presidente_copasst, :firm_secretario_copasst, :firm_vigia, :participant_responsable, 
         :participant_representante, :participant_asesor, :participant_vigia, :participant_colaborador, 
         :type_document, :process_document, :type_soport, :name_dependence, :observations, :dependence_admin, 
-        :control_changes, :not_current, :document_vigente)
+        :control_changes, :not_current, :document_vigente, :conservation_time, :ubication_document, :medium_storage)
     end 
 
 end  

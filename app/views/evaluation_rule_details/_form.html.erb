@@ -21,10 +21,12 @@
         </div>
         <!-- BOTONERA PRINCIPAL -->
         <div class="d-flex flex-wrap gap-2">
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmarEdicionModal">
-            <i class="bi bi-check-lg me-1"></i>
-            Guardar cambios
-          </button>
+          <% if Current.user.level > 0 && Current.user.level < 3 %>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmarEdicionModal">
+              <i class="bi bi-check-lg me-1"></i>
+              Guardar cambios
+            </button>
+          <% end %>            
           <%= link_to evaluation_path(@evaluation_rule_detail.evaluation_id), class: "btn btn-outline-secondary" do %>
             <i class="bi bi-arrow-left me-1"></i>
             Retornar
@@ -198,10 +200,12 @@
               <i class="bi bi-arrow-left me-1"></i>
               Retornar
             <% end %>
-            <button type="button" class="btn btn-primary px-4" data-bs-toggle="modal" data-bs-target="#confirmarEdicionModal">
-              <i class="bi bi-save me-1"></i>
-              Guardar cambios
-            </button>
+            <% if Current.user.level > 0 && Current.user.level < 3 %>
+              <button type="button" class="btn btn-primary px-4" data-bs-toggle="modal" data-bs-target="#confirmarEdicionModal">
+                <i class="bi bi-save me-1"></i>
+                Guardar cambios
+              </button>
+            <% end %>  
           </div>
         </div>
         <!-- ================================================= -->
@@ -282,34 +286,36 @@
   <!-- ===================================================== -->
   <!-- CARGAR ARCHIVOS -->
   <!-- ===================================================== -->
-  <div class="card border-0 shadow-sm mt-4 mx-auto" style="max-width: 1200px;">
-    <div class="card-header bg-light border-bottom py-3">
-      <div class="d-flex align-items-center">
-        <i class="bi bi-paperclip fs-5 me-2 text-primary"></i>
-        <h5 class="mb-0 fw-bold">
-          Adjuntar archivos
-        </h5>
+  <% if Current.user.level > 0 && Current.user.level < 3 %>
+    <div class="card border-0 shadow-sm mt-4 mx-auto" style="max-width: 1200px;">
+      <div class="card-header bg-light border-bottom py-3">
+        <div class="d-flex align-items-center">
+          <i class="bi bi-paperclip fs-5 me-2 text-primary"></i>
+          <h5 class="mb-0 fw-bold">
+            Adjuntar archivos
+          </h5>
+        </div>
       </div>
-    </div>
-    <div class="card-body p-3 p-md-4">
-      <%= form_for @evaluation_rule_detail do |f| %>
-        <div class="row g-3 align-items-end">
-          <div class="col-12 col-md-8">
-            <%= f.label :files, "Seleccionar archivos", class: "form-label fw-semibold" %>
-            <%= f.file_field :files, multiple: true, class: "form-control" %>
-            <div class="form-text">
-              Puede seleccionar uno o varios archivos.
+      <div class="card-body p-3 p-md-4">
+        <%= form_for @evaluation_rule_detail do |f| %>
+          <div class="row g-3 align-items-end">
+            <div class="col-12 col-md-8">
+              <%= f.label :files, "Seleccionar archivos", class: "form-label fw-semibold" %>
+              <%= f.file_field :files, multiple: true, class: "form-control" %>
+              <div class="form-text">
+                Puede seleccionar uno o varios archivos.
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <button type="submit" class="btn btn-primary w-100">
+                <i class="bi bi-cloud-arrow-up me-1"></i>
+                Subir archivos
+              </button>
             </div>
           </div>
-          <div class="col-12 col-md-4">
-            <button type="submit" class="btn btn-primary w-100">
-              <i class="bi bi-cloud-arrow-up me-1"></i>
-              Subir archivos
-            </button>
-          </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
-  </div>
+  <% end %>  
 </div>
 <br>

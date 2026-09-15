@@ -63,6 +63,7 @@ class EvaluationRuleDetailsController < ApplicationController
         @clasification_dangers = ClasificationDanger.all.order(id: :desc) 
         @danger_detail_risks = DangerDetailRisk.all.order(id: :desc) 
         @entity= Entity.find(@evidence.entity_id)
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
         if @template.format_number == 77 
             @at = EvaluationRuleDetail.calculoat(@evidence.year_initial, @evidence.entity_id)
@@ -92,7 +93,6 @@ class EvaluationRuleDetailsController < ApplicationController
         @footer = 'Nit: ' + @evidence.entity.identification_number.to_s + ', Dirección: ' + @evidence.entity.entity_address.to_s
         nombre_evidencia = @template.reference.to_s + '.pdf'
 
-
         respond_to do |format| 
             format.html
             format.pdf {
@@ -103,9 +103,7 @@ class EvaluationRuleDetailsController < ApplicationController
                     margin: {top: 50, bottom: 15, left: 15, right: 15 },
                     page_size: 'letter',
                     header: {spacing: 5,
-                            content: header_html},
-                    footer: {right: '[page] de [topage]'}
-                    
+                            content: header_html}
                   )  
                   send_data(pdf, filename: nombre_evidencia, disposition: 'attachment')      
             }
@@ -132,6 +130,7 @@ class EvaluationRuleDetailsController < ApplicationController
     def edit
         @evaluation_rule_detail = EvaluationRuleDetail.find(params[:id])
         @templates = Template.where("standar_detail_item_id = ? and document_vigente = ? and state = ?", @evaluation_rule_detail.standar_detail_item_id,1,1)   
+        
         @evidences = Evidence.where("evaluation_rule_detail_id = ?", @evaluation_rule_detail.id).order(id: :desc)
         if @evaluation_rule_detail.standar_detail_item_id == 47 || @evaluation_rule_detail.standar_detail_item_id == 115 || @evaluation_rule_detail.standar_detail_item_id == 175
             @evidencias_total = Evidence.where("entity_id = ?",@evaluation_rule_detail.evaluation.entity_id)
@@ -165,7 +164,12 @@ class EvaluationRuleDetailsController < ApplicationController
         @evaluation_rule_detail = EvaluationRuleDetail.find(params[:id])
         @evaluation_rule_detail.destroy
         redirect_to evaluation_rule_details_path, notice: 'Item evaluación borrado correctamente', status: :see_other
-    end     
+    end   
+    
+    def control_cambios
+        @tem = Template.find(params[:id])
+        @templates_versiones = Template.where("reference = ? and standar_detail_item_id = ?", @tem.reference, @tem.standar_detail_item_id)   
+    end    
 
     private
 

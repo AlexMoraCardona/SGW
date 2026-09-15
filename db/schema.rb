@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_09_06_211303) do
+ActiveRecord::Schema[7.0].define(version: 2026_09_15_053641) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -940,11 +940,13 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_06_211303) do
     t.boolean "contact_with_symptomatic_people", default: false
     t.string "initial_measures"
     t.integer "return_to_work", default: 0, null: false
+    t.bigint "surveillance_worker_id"
     t.index ["entity_id"], name: "idx_sve_case_entity"
     t.index ["epidemiological_surveillance_program_id"], name: "idx_sve_case_program"
     t.index ["event_id"], name: "idx_sve_case_event"
     t.index ["responsible_id"], name: "idx_sve_case_responsible"
     t.index ["surveillance_survey_response_id"], name: "idx_sve_case_response"
+    t.index ["surveillance_worker_id"], name: "idx_sve_case_worker"
     t.index ["user_id"], name: "idx_sve_case_user"
   end
 
@@ -2879,6 +2881,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_06_211303) do
     t.string "control_changes"
     t.date "not_current"
     t.integer "document_vigente", default: 1
+    t.text "conservation_time"
+    t.text "ubication_document"
+    t.text "medium_storage"
     t.index ["standar_detail_item_id"], name: "index_templates_on_standar_detail_item_id"
   end
 
@@ -3144,6 +3149,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_06_211303) do
   add_foreign_key "epidemiological_surveillance_cases", "epidemiological_surveillance_programs"
   add_foreign_key "epidemiological_surveillance_cases", "events"
   add_foreign_key "epidemiological_surveillance_cases", "surveillance_survey_responses"
+  add_foreign_key "epidemiological_surveillance_cases", "surveillance_workers"
   add_foreign_key "epidemiological_surveillance_cases", "users"
   add_foreign_key "epidemiological_surveillance_cases", "users", column: "responsible_id"
   add_foreign_key "epidemiological_surveillance_programs", "entities"

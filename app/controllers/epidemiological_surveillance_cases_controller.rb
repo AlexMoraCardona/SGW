@@ -4,13 +4,27 @@ class EpidemiologicalSurveillanceCasesController < ApplicationController
   before_action :set_epidemiological_surveillance_case, only: [:show, :edit, :update, :pdf]
 
   def index
-    @epidemiological_surveillance_cases = @epidemiological_surveillance_program.epidemiological_surveillance_cases.includes(:entity, :user, :responsible, :surveillance_survey_response).order(opened_at: :desc)
 
+    @epidemiological_surveillance_cases =
+      @epidemiological_surveillance_program
+        .epidemiological_surveillance_cases
+        .includes(
+          :entity,
+          :user,
+          :responsible,
+          :surveillance_worker,
+          :surveillance_survey_response,
+          surveillance_worker: [
+            :characterization,
+            :sintoma
+          ]
+        )
+        .order(opened_at: :desc)
   end
 
   def show
-    @epidemiological_surveillance_case = @epidemiological_surveillance_program.epidemiological_surveillance_cases.includes(:entity, :user, :responsible, {surveillance_survey_response: [:surveillance_survey, {surveillance_answers: [:surveillance_question, {surveillance_answer_options: :surveillance_question_option}]}]}, :follow_ups, {epidemiological_surveillance_case_histories: :user}).find(params[:id])
-  end
+    @epidemiological_surveillance_case = @epidemiological_surveillance_program.epidemiological_surveillance_cases.includes(:entity, :user, :responsible, {surveillance_worker: [:characterization, :sintoma]}, {surveillance_survey_response: [:surveillance_survey, {surveillance_answers: [:surveillance_question, {surveillance_answer_options: :surveillance_question_option}]}]}, :follow_ups, {epidemiological_surveillance_case_histories: :user}).find(params[:id])
+  end  
 
   def edit
   end
@@ -58,8 +72,7 @@ class EpidemiologicalSurveillanceCasesController < ApplicationController
   end
 
   def pdf
-
-    @epidemiological_surveillance_case = @epidemiological_surveillance_program.epidemiological_surveillance_cases.includes(:entity, :user, :responsible, {surveillance_survey_response: [:surveillance_survey, {surveillance_answers: [:surveillance_question, {surveillance_answer_options: :surveillance_question_option}]}]}, :follow_ups, {epidemiological_surveillance_case_histories: :user}).find(params[:id])
+    @epidemiological_surveillance_case = @epidemiological_surveillance_program.epidemiological_surveillance_cases.includes(:entity, :user, :responsible, {surveillance_worker: [:characterization, :sintoma]}, {surveillance_survey_response: [:surveillance_survey, {surveillance_answers: [:surveillance_question, {surveillance_answer_options: :surveillance_question_option}]}]}, :follow_ups, {epidemiological_surveillance_case_histories: :user}).find(params[:id])
 
     html = render_to_string(template: "epidemiological_surveillance_cases/pdf", layout: "pdf")
 
@@ -79,9 +92,10 @@ class EpidemiologicalSurveillanceCasesController < ApplicationController
       )
 
     send_data(pdf, filename: "caso_sve_#{@epidemiological_surveillance_case.id}.pdf", type: "application/pdf", disposition: "inline")
-    rescue ActiveRecord::RecordNotFound
-    redirect_to(epidemiological_surveillance_program_epidemiological_surveillance_cases_path(@epidemiological_surveillance_program), alert: "El caso SVE no fue encontrado.")
 
+    rescue ActiveRecord::RecordNotFound
+
+    redirect_to(epidemiological_surveillance_program_epidemiological_surveillance_cases_path(@epidemiological_surveillance_program), alert: "El caso SVE no fue encontrado.")
   end
 
   private

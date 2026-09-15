@@ -6,6 +6,7 @@ class EpidemiologicalSurveillanceCase < ApplicationRecord
   belongs_to :event, optional: true
   belongs_to :surveillance_survey_response, optional: true
   belongs_to :responsible, class_name: 'User', optional: true
+  belongs_to :surveillance_worker, optional: true
   has_many :follow_ups, class_name: 'EpidemiologicalSurveillanceCaseFollowUp', dependent: :destroy 
   has_many :epidemiological_surveillance_case_histories, dependent: :destroy         
 

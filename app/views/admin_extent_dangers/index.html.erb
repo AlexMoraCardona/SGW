@@ -1,32 +1,62 @@
-<div align="left"; class="container col-12">
-    <a class="navbar-brand" href="/">
-        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-    </a>
-</div>
-<div class="container col-11" 
-    <br>
-    <h2>Administración medidas de prevención y control de peligros y riesgos por parte de los trabajadores</h2>
-    <hr>
-    
-    <br>
- 
-    <% if params[:entity_id].present? || @entity.present? %>
-        <%= render 'admin_extent_dangers' %> 
-    <% else %>
+<div class="container-fluid px-3 px-md-4 py-3">
+  <!-- Encabezado -->
+  <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
+    <div class="d-flex align-items-center">
+      <%= link_to root_path, class: "text-decoration-none" do %>
+        <%= image_tag 'LogoConesst202305232.png', width: 75, height: 75, class: "img-fluid", alt: "CONESST" %>
+      <% end %>
+    </div>
+  </div>
+  <!-- Contenido principal -->
+  <div class="card border-0 shadow-sm">
+    <!-- Título -->
+    <div class="card-header bg-light border-0 py-3 px-3 px-md-4">
+      <div class="d-flex align-items-start gap-3">
+        <div class="text-primary fs-3 flex-shrink-0">
+          <i class="bi bi-shield-check"></i>
+        </div>
+        <div>
+          <h2 class="h4 fw-semibold mb-1">
+            Administración de medidas de prevención y control
+          </h2>
+          <p class="text-muted mb-0 small">
+            Peligros y riesgos por parte de los trabajadores
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- Cuerpo -->
+    <div class="card-body p-3 p-md-4">
+      <% if params[:entity_id].present? || @entity.present? %>
+        <%= render 'admin_extent_dangers' %>
+      <% else %>
         <%= form_with model: @entity, method: :get do |form| %>
-            <div class="row g-2">
-                <div class="col-sm-7">
-                    <h3>Empresa:</h3>
-                    <% if @entities.present? %>
-                        <%= form.collection_select :entity_id, @entities.order(id: :asc), :id, :business_name, { prompt: '--Seleccionar Entidad--' },
-                        { class: 'form-control input-sm select2' } %>
-                    <% else %> 
-                        <%=  @entity.business_name %>
-                        <%= form.hidden_field :entity_id, :value => @entity.id, class: "form-control" %>
-                    <% end %>
+          <div class="row g-3">
+            <div class="col-12 col-md-8 col-lg-6">
+              <%= form.label :entity_id, "Empresa", class: "form-label fw-semibold" %>
+              <% if @entities.present? %>
+                <%= form.collection_select :entity_id, @entities.order(id: :asc), :id, :business_name, { prompt: "-- Seleccionar empresa --" }, {class: "form-select", required: true} %>
+              <% else %>
+                <div class="form-control bg-light">
+                  <%= @entity.business_name %>
                 </div>
-            </div>    
-            <br>    
-            <button type="submit" class="btn btn-sm btn-primary">Consultar</button>
+                <%= form.hidden_field :entity_id, value: @entity.id %>
+              <% end %>
+            </div>
+          </div>
+          <!-- Botonera -->
+          <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-md-start gap-2 mt-4">
+            <%= form.button type: "submit", class: "btn btn-primary btn-sm px-3" do %>
+              <i class="bi bi-search me-1"></i>
+              Consultar
+            <% end %>
+            <%= link_to root_path, class: "btn btn-outline-secondary btn-sm px-3" do %>
+              <i class="bi bi-arrow-left me-1"></i>
+              Regresar
+            <% end %>
+          </div>
         <% end %>
-    <% end %>   
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,111 @@
+<% if @template_versions.present? %>
+
+  <div class="control-cambios">
+
+    <div class="control-cambios-title">
+      <strong>CONTROL DE CAMBIOS</strong>
+    </div>
+
+    <table class="control-cambios-table">
+      <thead>
+        <tr>
+          <th style="width: 8%;">Item</th>
+          <th style="width: 8%;">Código</th>
+          <th style="width: 15%;">Fecha</th>
+          <th style="width: 12%;">Versión</th>
+          <th style="width: 41%;">Descripción</th>
+          <th style="width: 16%;">Responsable</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @template_versions.each_with_index do |template_version, index| %>
+          <tr>
+            <td class="text-center">
+              <%= index + 1 %>
+            </td>
+
+            <td class="text-center">
+              <%= template_version.reference %>
+            </td>
+
+            
+            <td class="text-center">
+              <% if template_version.date.present? %>
+                <%= I18n.l(template_version.date.to_date, format: "%B %Y").capitalize %>
+              <% end %>
+            </td>
+
+            <td class="text-center">
+              <%= template_version.version %>
+            </td>
+
+            <td>
+              <%= template_version.control_changes.presence || "Sin descripción" %>
+            </td>
+
+            <td>
+              Diego Alejandro Londoño Cardona
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+  </div>
+
+  <style>
+    .control-cambios {
+      width: 100%;
+      margin-top: 25px;
+      page-break-inside: avoid;
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+    }
+
+    .control-cambios-title {
+      background-color: #e9ecef;
+      border: 1px solid #adb5bd;
+      padding: 7px;
+      text-align: center;
+      font-size: 12px;
+      letter-spacing: 0.3px;
+    }
+
+    .control-cambios-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .control-cambios-table th {
+      background-color: #f1f3f5;
+      border: 1px solid #adb5bd;
+      padding: 6px;
+      text-align: center;
+      font-weight: 600;
+      vertical-align: middle;
+    }
+
+    .control-cambios-table td {
+      border: 1px solid #adb5bd;
+      padding: 6px;
+      vertical-align: top;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .control-cambios-table .text-center {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    @media print {
+      .control-cambios {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+
+<% end %>
+

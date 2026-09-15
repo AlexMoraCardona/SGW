@@ -1,0 +1,472 @@
+<style>
+    /* =========================================================
+       TABLA - ESCRITORIO
+    ========================================================= */
+
+    .documentos-card {
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .documentos-table {
+        width: 100%;
+        margin-bottom: 0;
+        font-size: 0.86rem;
+    }
+
+    .documentos-table thead th {
+        background-color: #f1f3f5;
+        color: #343a40;
+        font-size: 0.76rem;
+        font-weight: 700;
+        text-align: center;
+        vertical-align: middle;
+        white-space: normal;
+        padding: 10px 7px;
+        border-color: #dee2e6;
+    }
+
+    .documentos-table tbody td {
+        vertical-align: middle;
+        padding: 9px 7px;
+        border-color: #e1e4e7;
+    }
+
+    .documentos-table tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .documento-nombre {
+        font-weight: 600;
+        color: #343a40;
+    }
+
+    .documento-valor {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    .documento-estado {
+        white-space: normal;
+        line-height: 1.25;
+    }
+
+
+    /* =========================================================
+       VISTA MÓVIL
+    ========================================================= */
+
+    .documentos-mobile {
+        display: none;
+    }
+
+
+    /* =========================================================
+       CELULARES
+    ========================================================= */
+
+    @media (max-width: 767.98px) {
+
+        .documentos-card {
+            border-radius: 12px;
+        }
+
+        .documentos-card .card-body {
+            padding: 10px !important;
+        }
+
+        /* Ocultamos la tabla */
+        .documentos-desktop {
+            display: none;
+        }
+
+        /* Mostramos las tarjetas */
+        .documentos-mobile {
+            display: block;
+        }
+
+        .documento-card {
+            border: 1px solid #dee2e6;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        .documento-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .documento-card-header {
+            background: #f1f3f5;
+            padding: 11px 12px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .documento-numero {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .documento-titulo {
+            margin-top: 3px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #212529;
+            line-height: 1.3;
+            overflow-wrap: anywhere;
+        }
+
+        .documento-card-body {
+            padding: 10px 12px;
+        }
+
+        .documento-dato {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 7px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .documento-dato:last-child {
+            border-bottom: none;
+        }
+
+        .documento-label {
+            flex: 0 0 43%;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #6c757d;
+            text-transform: uppercase;
+            line-height: 1.3;
+        }
+
+        .documento-value {
+            flex: 1;
+            min-width: 0;
+            font-size: 0.82rem;
+            color: #212529;
+            line-height: 1.35;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        .documento-proceso {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 20px;
+            background: #e9ecef;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .documento-estado-mobile {
+            display: inline-block;
+            max-width: 100%;
+            padding: 4px 8px;
+            border-radius: 20px;
+            background: #e9ecef;
+            font-size: 0.75rem;
+            line-height: 1.25;
+            overflow-wrap: anywhere;
+        }
+
+        .documento-observacion {
+            white-space: pre-line;
+        }
+    }
+</style>
+
+
+<div class="card documentos-card shadow-sm border-0">
+
+    <div class="card-body p-2 p-md-3">
+
+        <!-- =====================================================
+             ESCRITORIO / TABLET
+        ====================================================== -->
+
+        <div class="table-responsive documentos-desktop">
+
+            <table class="table table-bordered table-hover align-middle documentos-table">
+
+                <thead>
+                    <tr>
+                        <th>PROCESO</th>
+                        <th>NOMBRE DEL DOCUMENTO</th>
+                        <th>TIPO DE DOCUMENTO</th>
+                        <th>CÓDIGO DEL DOCUMENTO</th>
+                        <th>TIPO DE SOPORTE</th>
+                        <th>FECHA VERSIÓN VIGENTE</th>
+                        <th>VERSIÓN</th>
+                        <th>ESTADO DEL DOCUMENTO</th>
+                        <th>TIEMPO DE CONSERVACIÓN</th>
+                        <th>UBICACIÓN DEL DOCUMENTO</th>
+                        <th>MEDIO DE ALMACENAMIENTO</th>
+                        <th>OBSERVACIONES</th>
+                        <th>CAMBIOS VERSIÓN</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <% if @consultas.present? %>
+
+                        <% @consultas.first(@valor.to_i).each do |consulta| %>
+
+                            <tr>
+
+                                <td class="text-center">
+                                    <%= consulta[0] %>
+                                </td>
+
+                                <td class="documento-nombre documento-valor">
+                                    <%= consulta[1] %>
+                                </td>
+
+                                <td class="text-center documento-valor">
+                                    <%= consulta[2] %>
+                                </td>
+
+                                <td class="text-center documento-valor">
+                                    <%= consulta[3] %>
+                                </td>
+
+                                <td class="text-center documento-valor">
+                                    <%= consulta[4] %>
+                                </td>
+
+                                <td class="text-center text-nowrap">
+                                    <%= consulta[5] %>
+                                </td>
+
+                                <td class="text-center">
+                                    <%= consulta[6] %>
+                                </td>
+
+                                <td class="text-center documento-estado documento-valor">
+                                    <%= consulta[7] %>
+                                </td>
+
+                                <td class="text-center documento-valor">
+                                    <%= consulta[11] %>
+                                </td>
+
+                                <td class="documento-valor">
+                                    <%= consulta[12] %>
+                                </td>
+
+                                <td class="documento-valor">
+                                    <%= consulta[13] %>
+                                </td>
+
+                                <td class="documento-valor">
+                                    <%= consulta[8] %>
+                                </td>
+
+                                <td class="documento-valor">
+                                    <%= consulta[10] %>
+                                </td>
+
+                            </tr>
+
+                        <% end %>
+
+                    <% end %>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- =====================================================
+             CELULAR
+        ====================================================== -->
+
+        <div class="documentos-mobile">
+
+            <% if @consultas.present? %>
+
+                <% @consultas.first(@valor.to_i).each_with_index do |consulta, index| %>
+
+                    <div class="documento-card">
+
+                        <!-- CABECERA -->
+                        <div class="documento-card-header">
+
+                            <div class="documento-numero">
+                                Documento <%= index + 1 %>
+                            </div>
+
+                            <div class="documento-titulo">
+                                <%= consulta[1].presence || "Sin nombre" %>
+                            </div>
+
+                        </div>
+
+
+                        <!-- DATOS -->
+                        <div class="documento-card-body">
+
+                            <div class="documento-dato">
+                                <div class="documento-label">
+                                    Proceso
+                                </div>
+
+                                <div class="documento-value">
+                                    <span class="documento-proceso">
+                                        <%= consulta[0] %>
+                                    </span>
+                                </div>
+                            </div>
+
+
+                            <div class="documento-dato">
+                                <div class="documento-label">
+                                    Tipo de documento
+                                </div>
+
+                                <div class="documento-value">
+                                    <%= consulta[2] %>
+                                </div>
+                            </div>
+
+
+                            <div class="documento-dato">
+                                <div class="documento-label">
+                                    Código
+                                </div>
+
+                                <div class="documento-value">
+                                    <%= consulta[3] %>
+                                </div>
+                            </div>
+
+
+                            <div class="documento-dato">
+                                <div class="documento-label">
+                                    Tipo de soporte
+                                </div>
+
+                                <div class="documento-value">
+                                    <%= consulta[4] %>
+                                </div>
+                            </div>
+
+
+                            <div class="documento-dato">
+                                <div class="documento-label">
+                                    Fecha versión vigente
+                                </div>
+
+                                <div class="documento-value">
+                                    <%= consulta[5] %>
+                                </div>
+                            </div>
+
+
+                            <div class="documento-dato">
+                                <div class="documento-label">
+                                    Versión
+                                </div>
+
+                                <div class="documento-value">
+                                    <%= consulta[6] %>
+                                </div>
+                            </div>
+
+
+                            <div class="documento-dato">
+                                <div class="documento-label">
+                                    Estado
+                                </div>
+
+                                <div class="documento-value">
+                                    <span class="documento-estado-mobile">
+                                        <%= consulta[7] %>
+                                    </span>
+                                </div>
+                            </div>
+
+
+                            <div class="documento-dato">
+                                <div class="documento-label">
+                                    Conservación
+                                </div>
+
+                                <div class="documento-value">
+                                    <%= consulta[11] %>
+                                </div>
+                            </div>
+
+
+                            <div class="documento-dato">
+                                <div class="documento-label">
+                                    Ubicación
+                                </div>
+
+                                <div class="documento-value">
+                                    <%= consulta[12] %>
+                                </div>
+                            </div>
+
+
+                            <div class="documento-dato">
+                                <div class="documento-label">
+                                    Medio de almacenamiento
+                                </div>
+
+                                <div class="documento-value">
+                                    <%= consulta[13] %>
+                                </div>
+                            </div>
+
+
+                            <div class="documento-dato">
+                                <div class="documento-label">
+                                    Observaciones
+                                </div>
+
+                                <div class="documento-value documento-observacion">
+                                    <%= consulta[8].presence || "Sin observaciones" %>
+                                </div>
+                            </div>
+
+
+                            <div class="documento-dato">
+                                <div class="documento-label">
+                                    Cambios versión
+                                </div>
+
+                                <div class="documento-value documento-observacion">
+                                    <%= consulta[10].presence || "Sin cambios registrados" %>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                <% end %>
+
+            <% else %>
+
+                <div class="text-center py-4 text-muted">
+                    <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+                    No hay documentos para mostrar.
+                </div>
+
+            <% end %>
+
+        </div>
+
+    </div>
+
+</div>

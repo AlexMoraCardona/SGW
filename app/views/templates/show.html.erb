@@ -1,10 +1,7 @@
 <div class="container-fluid px-2 px-md-4">
+    <%= render 'templates/encabezado' if @template.present? %>
+
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 mb-3">
-        <div class="text-center text-md-start">
-            <%= link_to root_path, class: "navbar-brand" do %>
-                <%= image_tag 'LogoConesst202305232.png', width: 85, height: 85, class: "img-fluid", alt: "CONESST" %>
-            <% end %>
-        </div>
         <div class="d-flex flex-wrap justify-content-center gap-2">
             <%= link_to ver_documental_path(@entity.id, format: 'pdf'), class: "btn btn-danger btn-sm", title: "Generar PDF", data: { bs_toggle: "tooltip" } do %>
                 <i class="bi-file-earmark-pdf"></i>
@@ -16,142 +13,22 @@
             <% end %>
         </div>
     </div>
-    <div class="card shadow-sm border-0">
-        <div class="card-body p-2 p-md-3">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover align-middle mb-0">
-                    <thead>
-                        <tr>
-                            <td rowspan="4" class="text-center align-middle">
-                                <% if @entity.logo.present? %>
-                                    <%= image_tag @entity.logo, class: "img-fluid",  style: "max-width:100px; max-height:100px;", alt: "Logo empresa" %>
-                                <% end %>
-                            </td>
-                            <td rowspan="4" colspan="6" class="text-center align-middle">
-                                <h5 class="fw-bold mb-2">LISTADO MAESTRO DE DOCUMENTOS</h5>
-                                <% if @entity.present? %>
-                                    <h6 class="mb-0">
-                                        <%= @entity.business_name %>
-                                    </h6>
-                                    <small class="text-muted">
-                                        NIT:
-                                        <%= @entity.identification_number %>
-                                    </small>
-                                <% end %>
-                            </td>
-                            <td rowspan="4"></td>
-                            <td colspan="2" class="fw-semibold text-nowrap">
-                                Fecha de Creación:
-                            </td>
-                            <td class="text-center text-nowrap">
-                                <%= @template.date if @template.present? %>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="fw-semibold text-nowrap">
-                                Fecha de Actualización:
-                            </td>
-                            <td class="text-center text-nowrap">
-                                <%= @template.date_updated if @template.present? %>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="fw-semibold">
-                                Versión:
-                            </td>
-                            <td class="text-center">
-                                <%= @template.version if @template.present? %>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="fw-semibold">
-                                Código:
-                            </td>
-                            <td class="text-center">
-                                <%= @template.reference if @template.present? %>
-                            </td>
-                        </tr>
-                        <tr class="table-light">
-                            <th rowspan="2" class="text-center text-nowrap">
-                                PROCESO
-                            </th>
-                            <th rowspan="2" class="text-center text-nowrap">
-                                NOMBRE DEL DOCUMENTO
-                            </th>
-                            <th rowspan="2" class="text-center text-nowrap">
-                                TIPO DE DOCUMENTO
-                            </th>
-                            <th rowspan="2" class="text-center text-nowrap">
-                                CÓDIGO DEL DOCUMENTO
-                            </th>
-                            <th rowspan="2" class="text-center text-nowrap">
-                                TIPO DE SOPORTE
-                            </th>
-                            <th rowspan="2" class="text-center text-nowrap">
-                                FECHA VERSIÓN VIGENTE
-                            </th>
-                            <th rowspan="2" class="text-center text-nowrap">
-                                VERSIÓN
-                            </th>
-                            <th rowspan="2" class="text-center text-nowrap">
-                                ESTADO DEL DOCUMENTO
-                            </th>
-                            <th rowspan="2" class="text-center text-nowrap">
-                                OBSERVACIONES
-                            </th>
-                            <th rowspan="2" class="text-center text-nowrap">
-                                DEPENDENCIA ADMINISTRADORA DEL DOCUMENTO
-                            </th>
-                            <th rowspan="2" class="text-center text-nowrap">
-                                CAMBIOS VERSIÓN
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% if @consultas.present? %>
-                            <% i = 0 %>
-                            <% while i < @valor %>
-                                <tr>
-                                    <td class="text-center align-middle">
-                                        <%= @consultas[i][0] %>
-                                    </td> 
-                                    <td class="align-middle">
-                                        <%= @consultas[i][1] %>
-                                    </td>
-                                    <td class="text-center align-middle">
-                                        <%= @consultas[i][2] %>
-                                    </td>
-                                    <td class="text-center align-middle">
-                                        <%= @consultas[i][3] %>
-                                    </td>
-                                    <td class="text-center align-middle">
-                                        <%= @consultas[i][4] %>
-                                    </td>
-                                    <td class="text-center align-middle text-nowrap">
-                                        <%= @consultas[i][5] %>
-                                    </td>
-                                    <td class="text-center align-middle">
-                                        <%= @consultas[i][6] %>
-                                    </td>
-                                    <td class="text-center align-middle">
-                                        <%= @consultas[i][7] %>
-                                    </td>
-                                    <td class="align-middle">
-                                        <%= @consultas[i][8] %>
-                                    </td>
-                                    <td class="align-middle">
-                                        <%= @consultas[i][9] %>
-                                    </td>
-                                    <td class="align-middle">
-                                        <%= @consultas[i][10] %>
-                                    </td>
-                                </tr>
-                                <% i += 1 %>
-                            <% end %>
-                        <% end %>
-                    </tbody>
-                </table>
+    <% if @template.present? %>
+        <% format_number = @template.format_number.to_i %>
+        <% plantilla = "templates/#{format_number}" %>
+
+        <% if lookup_context.exists?(plantilla, [], true) %>
+            <%= render plantilla, template: @template %>
+        <% else %>
+            <div class="alert alert-warning text-center my-4">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            La plantilla <strong>#{format_number}</strong> aún no tiene
+            un formato de visualización configurado.
             </div>
-        </div>
-    </div>
+        <% end %>
+    <% end %>
+
+    <%= render 'evaluation_rule_details/control_cambios' if @template_versions.present? %>
 </div>
+
+ 

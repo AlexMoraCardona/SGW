@@ -6,17 +6,17 @@
     <div class="document-header-main">
         <!-- LOGO -->
         <div class="document-logo">
-            <% if @evidence&.entity&.logo.present? %>
-                <%= image_tag @evidence.entity.logo,  class: "document-logo-img", alt: "Logo de la empresa" %>
+            <% if @entity&.logo.present? %>
+                <%= image_tag @entity.logo,  class: "document-logo-img", alt: "Logo de la empresa" %>
             <% end %>
         </div>
         <!-- EMPRESA Y DOCUMENTO -->
         <div class="document-title">
             <div class="document-company">
-                <%= @evidence&.entity&.business_name %>
+                <%= @entity&.business_name %>
             </div>
             <div class="document-name">
-                <%= @evidence&.template&.name %>
+                <%= @template&.name %>
             </div>
         </div>
     </div>
@@ -32,7 +32,7 @@
             Código
         </div>
         <div class="document-info-value">
-            <%= @evidence&.template&.reference %>
+            <%= @template&.reference %>
         </div>
     </div>
 
@@ -43,7 +43,7 @@
             Versión
         </div>
         <div class="document-info-value">
-            <%= @evidence&.template&.version %>
+            <%= @template&.version %>
         </div>
     </div>
 
@@ -56,8 +56,8 @@
 
         <div class="document-info-value">
             <%
-                fecha_template = @evidence&.template&.date
-                fecha_empresa  = @evidence&.entity&.created_at
+                fecha_template = @template&.date
+                fecha_empresa  = @entity&.created_at
 
                 fecha_elaboracion =
                     if fecha_template.present? && fecha_empresa.present?

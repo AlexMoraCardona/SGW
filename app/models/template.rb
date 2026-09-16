@@ -32,6 +32,11 @@ class Template < ApplicationRecord
         elsif dato == 1 ; 'Informe'
         elsif dato == 2 ; 'Encuesta'
         elsif dato == 3 ; 'Documento'
+        elsif dato == 4 ; 'Procedimiento'
+        elsif dato == 5 ; 'Instructivo'
+        elsif dato == 6 ; 'Ficha'
+        elsif dato == 7 ; 'Protocolo'
+        elsif dato == 8 ; 'Programa'
         end 
     end  
 

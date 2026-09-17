@@ -1,125 +1,27 @@
-<head>
-    <meta charset='utf-8' />
-    <%= wicked_pdf_stylesheet_link_tag "application" %>
-</head>
-<br>
-<div>
+<% if @template.present? %>
+        <% format_number = @template.format_number.to_i %>
+        <% plantilla = "matrix_protections/#{format_number}" %>
 
-    <table class="table table-hover" style="border:1px solid black;width:100%;"> 
-        <thead>
-            <tr>
-                <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
-                    <% if @entity.logo.present? then %>
-                        <%=  image_tag  @entity.logo, class: "image_peq" %>
-                    <% end %> 
-                </td>
-                <td rowspan="4"; colspan="4"; style="text-align:center; padding-bottom: 40px;">
-                    <div class="col-12"><h5><%= @template.name if @template.present? %></h5><h6><%= @entity.business_name if @entity.present? %> Nit: <%= @entity.identification_number if @entity.present? %> </h6></div>
-                </td>
-                <td rowspan="4";  style="text-align:center"></td>
-
-                <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
-
-                <td  style="border:1px solid black"><h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date if @template.present? %></small></h6></td>
-            </tr>
-            <tr> 
-                <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
-                <td style="border:1px solid black"><h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.date_updated if @template.present? %></small></h6></td>
-            </tr>
-            <tr> 
-                <td colspan="2"; style="border:1px solid black">Versión:</td>
-                <td style="border:1px solid black"><h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.version if @template.present? %></small></h6></td>
-            </tr>
-            <tr> 
-                <td colspan="2"; style="border:1px solid black">Código:</td>
-                <td style="border:1px solid black"><h6>&nbsp;&nbsp;<small class="text-muted"><%= @template.reference if @template.present? %></small></h6></td>
-            </tr>
-
-            <tr>
-                <th style="border:1px solid black">Área/Oficio</th>
-                <th style="border:1px solid black">Equipo de protección </th>
-                <th style="border:1px solid black">Parte de cuerpo a proteger </th>
-                <th style="border:1px solid black">Imagen </th>
-                <th style="border:1px solid black">Norma </th>
-                <th style="border:1px solid black">Durabilidad</th>
-                <th style="border:1px solid black">Ficha Técnica</th>
-                <th style="border:1px solid black">Formato de Entrega</th>
-                <th style="border:1px solid black">Inducción al personal </th>
-            </tr>
-
-        </thead> 
-
-        <% @matrix_protection_items.each do |matrix_protection_item| %>             
-            <tbody>
-                <tr>
-                    <td style="border:1px solid black"><%= matrix_protection_item.areas %></td>
-                    <td style="border:1px solid black"><%= matrix_protection_item.protection_element.name %></td>
-                    <td style="border:1px solid black"><%= matrix_protection_item.protection_element.body_protect %></td>
-                    <td style="border:1px solid black">
-                        <% if matrix_protection_item.protection_element.img_elem.attached? %>
-                            <% if matrix_protection_item.protection_element.img_elem.image? %> 
-                                <%= image_tag matrix_protection_item.protection_element.img_elem, data: {previews_target: "preview"}, class: "image_peq" %>
-                            <% end %>
-                        <% else %> 
-                            <%= image_tag("avatar.jpg", class: "avatar-mini") %>
-                        <% end %>
-                    </td>
-                    <td style="border:1px solid black"><%= matrix_protection_item.protection_element.rule_protection %></td>
-                    <td style="border:1px solid black"><%= matrix_protection_item.durability %></td>
-                    <td style="border:1px solid black"><%= MatrixProtectionItem.label(matrix_protection_item.date_sheet) %></td>
-                    <td style="border:1px solid black"><%= MatrixProtectionItem.label(matrix_protection_item.delivery_format) %></td>
-                    <td style="border:1px solid black"><%= MatrixProtectionItem.label(matrix_protection_item.personal_induction) %></td>
-                </tr>
-            </body>
+        <% if lookup_context.exists?(plantilla, [], true) %>
+            <%= render plantilla, template: @template %>
+        <% else %>
+            <div class="alert alert-warning text-center my-4">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            La plantilla <strong>#{format_number}</strong> aún no tiene
+            un formato de visualización configurado.
+            </div>
         <% end %>
-    </table>
-    <table style="width:100%;">
-        <tr style="border:1px solid black">
-            <td  style="border:1px solid black;width:30%;"><br>
-                <% if @matrix_protection.firm_legal_representative == 1 %>
-                    <% if @rep.present? %>
-                        <% if @rep.firm.attached? %>
-                           <% if @rep.firm.image? %> 
-                                <%= image_tag @rep.firm, class: "firma" %>
-                            <% end %>
-                        <% end %>
-                    <% end %> 
-                <% else %>
-                   <div></br></div>         
-                <% end %>     
-            </td>
-            <td  style="border:1px solid black;width:30%;"><br>
-                <% if @matrix_protection.firm_adviser_sst == 1 %>
-                    <% if @adv.present? %>
-                        <% if @adv.firm.attached? %>
-                            <% if @adv.firm.image? %> 
-                                <%= image_tag @adv.firm, class: "firma" %>
-                            <% end %>
-                        <% end %>
-                    <% end %>     
-                <% else %>
-                    <div></br></div>         
-                <% end %>     
-            </td>
-            <td  style="border:1px solid black;width:30%;"><br>
-                <% if @matrix_protection.firm_responsible_sst == 1 %>
-                    <% if @res.present? %>
-                        <% if @res.firm.attached? %>
-                            <% if @res.firm.image? %> 
-                                <%= image_tag @res.firm, class: "firma" %>
-                            <% end %>
-                        <% end %>
-                    <% end %>     
-                <% else %>
-                    <div></br></div>         
-                <% end %>     
-            </td>
-        </tr> 
-        <tr>
-            <td  style="border:1px solid black;width:30%;"><%= @rep.name %> - Representante Legal</td>
-            <td  style="border:1px solid black;width:30%;"><%= @adv.name %> - Asesor SG-SST</td>
-            <td  style="border:1px solid black;width:40%;"><%= @res.name %> - Responsable SG-SST</td>
-        </tr>
-    </table>
-</div> 
-<div></br></div>   
+<% end %>
+
+<!-- =========================================================
+     CONTROL DE CAMBIOS
+     ========================================================= -->
+
+<% if @template_versions.present? %>
+
+  <div class="control-cambios">
+    <%= render 'evaluation_rule_details/control_cambios' %>
+  </div>
+
+<% end %>
+

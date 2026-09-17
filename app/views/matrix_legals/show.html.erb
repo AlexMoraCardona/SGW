@@ -1,179 +1,22 @@
-<div class="container-fluid mb-4">
-    <div align="left"; class="container col-12">
-        <a class="navbar-brand" href="/">
-            <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-        </a>
-    </div>
-    <div class="row align-items-center">
-        <div class="col-12 col-lg-2 text-center mb-3 mb-lg-0">
-            <% if @entity.logo.present? %>
-                <%= image_tag @entity.logo, class: "img-fluid", style: "max-height:90px;" %>
-            <% end %>
-        </div>
-        <div class="col-12 col-lg-7 text-center">
-            <h3 class="fw-bold mb-2">
-                MATRIZ LEGAL
-            </h3>
-            <h5 class="mb-1">
-                <%=@entity.business_name %>
-            </h5>
-            <small class="text-muted">
-                NIT: <%= @entity.identification_number %>-<%= @entity.verification_digit if @entity.verification_digit.present? %>
-            </small>
-        </div>
-        <div class="col-12 col-lg-3">
-            <div class="row">
-                <div class="col-7 fw-bold">Fecha creación:</div>
-                <div class="col-5"><%= @template.date %></div>
+<div class="container-fluid px-2 px-md-4">
+    <%= render 'templates/encabezado' if @template.present? %>
+
+    <% if @template.present? %>
+        <% format_number = @template.format_number.to_i %>
+        <% plantilla = "matrix_legals/#{format_number}" %>
+
+        <% if lookup_context.exists?(plantilla, [], true) %>
+            <%= render plantilla, template: @template %>
+        <% else %>
+            <div class="alert alert-warning text-center my-4">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            La plantilla <strong>#{format_number}</strong> aún no tiene
+            un formato de visualización configurado.
             </div>
-            <div class="row">
-                <div class="col-7 fw-bold">Actualización:</div>
-                <div class="col-5"><%= @template.date_updated %></div>
-            </div>
-            <div class="row">
-                <div class="col-7 fw-bold">Versión:</div>
-                <div class="col-5"><%= @template.version %></div>
-            </div>
-            <div class="row">
-                <div class="col-7 fw-bold">Código:</div>
-                <div class="col-5"><%= @template.reference %></div>
-            </div>
-        </div>
-    </div>
-</div>
-<hr>
-<div class="card shadow">
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover align-middle">
-                <thead class="table-primary">
-                    <tr>
-                        <th><%= t('.consecutive') %></th>
-                        <th><%= t('.year') %></th>
-                        <th><%= t('.risk_factor') %></th>
-                        <th><%= t('.issuing_entity') %></th>
-                        <th><%= t('.requirement') %></th>
-                        <th><%= t('.rule_name') %></th>
-                        <th><%= t('.applicable_article') %></th>
-                        <th><%= t('.apply') %></th>
-                        <th><%= t('.evidence_compliance') %></th>
-                        <th><%= t('.responsible') %></th>
-                        <th><%= t('.meets') %></th>
-                        <th><%= t('.description_compliance') %></th>
-                        <th><%= t('.attach_evidence') %></th>
-                        <th>Editar</th>
-                        <th>Eliminar</th>
-                    </tr>   
-                </thead>
-                <% n = 0 %>
-                <% @matrix_legal_items.each do |matrix_legal_item| %>    
-                    <% n += 1 %>
-                    <tbody>
-                        <tr>
-                            <td><%= n %></td>
-                            <td><%= matrix_legal_item.year %></td>
-                            <td><%= matrix_legal_item.risk_factor %></td>
-                            <td><%= matrix_legal_item.issuing_entity %></td>
-                            <td><%= matrix_legal_item.requirement %></td>
-                            <td><%= matrix_legal_item.rule_name %></td>
-                            <td><%= matrix_legal_item.applicable_article %></td>
-                            <td><%= matrix_legal_item.label_apply(matrix_legal_item.apply) %></td>
-                            <td><%= matrix_legal_item.evidence_compliance %></td>
-                            <td><%= matrix_legal_item.responsible %></td>
-                            <td><%= matrix_legal_item.label_meets(matrix_legal_item.meets) %></td>
-                            <td>
-                                <small>
-                                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="<%= matrix_legal_item.description_compliance %>"><%= matrix_legal_item.description_compliance.slice(0, 30) %>...</button>
-                                </small>
-                            </td>
-                            <td><%= link_to "Descargar Archivo", rails_blob_path(matrix_legal_item.attach_evidence, disposition: 'attachment'), class: 'btn btn-sm btn-success' if matrix_legal_item.attach_evidence.attached? %></td>    
-                            <td>
-                                <div class="d-flex justify-content-center gap-4 mt-3">
-                                    <% if Current.user.level > 0 && Current.user.level < 4 %>
-                                        <%= link_to edit_matrix_legal_item_path(matrix_legal_item), class: "btn btn-warning btn-sm text-white me-2", title: "Editar", data: { bs_toggle: "tooltip" } do %>
-                                            <i class="bi bi-pencil"></i><span class="d-none d-md-inline"><%= t('common.edit') %></span>
-                                        <% end %>
-                                     <% end  %>    
-                                </div>
-                            </td>
-                            <td>
-                                <div class="d-flex justify-content-center gap-4 mt-3">
-                                    <% if Current.user.level > 0 && Current.user.level < 4 %>
-                                        <%= link_to matrix_legal_item, class: "btn btn-danger", title: "Eliminar", data: {turbo_method: :delete, turbo_confirm: "¿Está seguro de eliminar este registro? Esta acción no se puede deshacer.", bs_toggle: "tooltip"} do %>
-                                            <i class="bi bi-trash"></i><span class="d-none d-md-inline">Eliminar</span>
-                                        <% end %>
-                                    <% end  %>    
-                                </div>
-                            </td>
-                        </tr> 
-                    </body>
-                <% end %>
-            </table>
-        </div>
-    </div>
-    <hr class="my-5">
-    <div class="container-fluid">
-        <div class="row text-center align-items-start">
-            <!-- Representante Legal -->
-            <div class="col-12 col-md-4 mb-5">
-            <div style="height: 90px; display: flex; align-items: center; justify-content: center;">
-                <% if @matrix_legal.firm_legal_representative == 1 && @rep.present? && @rep.firm.attached? && @rep.firm.image? %>
-                        <%= image_tag @rep.firm, style: "max-height:90px; max-width:100%; object-fit:contain;" %>
-                <% end %>
-            </div>
-            <hr class="my-1">
-            <strong>
-                <%= @rep.name %>
-            </strong>
-            <br>
-            <small class="text-muted">
-                Representante Legal
-            </small>
-        </div>
-        <!-- Asesor SST -->
-        <div class="col-12 col-md-4 mb-5">
-            <div style="height: 90px; display: flex; align-items: center; justify-content: center;">
-                <% if @matrix_legal.firm_adviser_sst == 1 && @adv.present? && @adv.firm.attached? && @adv.firm.image? %>
-                    <%= image_tag @adv.firm, style: "max-height:90px; max-width:100%; object-fit:contain;" %>
-                <% end %>
-            </div>
-            <hr class="my-1">
-            <strong>
-                <%= @adv.name %>
-            </strong>
-            <br>
-            <small class="text-muted">
-                Asesor SG-SST
-            </small>
-        </div>
-        <!-- Responsable SG-SST -->
-        <div class="col-12 col-md-4 mb-5">
-            <div style="height: 90px; display: flex; align-items: center; justify-content: center;">
-                <% if @matrix_legal.firm_responsible_sst == 1 && @res.present? && @res.firm.attached? && @res.firm.image? %>
-                    <%= image_tag @res.firm, style: "max-height:90px; max-width:100%; object-fit:contain;" %>
-                <% end %>
-            </div>
-            <hr class="my-1">
-            <strong>
-                <%= @res.name %>
-            </strong>
-            <br>
-            <small class="text-muted">
-                Responsable SG-SST
-            </small>
-        </div>
-    </div>
-</div>
-<div class="card shadow-sm mb-4">
-    <div class="card-body">
-        <div class="d-flex flex-wrap justify-content-center gap-2">
-            <%= link_to matrix_legals_path(entity_id: @matrix_legal.entity.id), class:"btn btn-secondary" do %>
-                <i class="bi bi-arrow-left-circle"></i>Retornar
-            <% end %>
-            <%= link_to ver_matrix_legal_path(@matrix_legal.id, format: 'pdf'), class:"btn btn-danger" do %>
-                <i class="bi bi-file-earmark-pdf"></i>PDF
-            <% end %> 
-        </div>
-    </div>
+        <% end %>
+    <% end %>
+
+    <%= render 'evaluation_rule_details/control_cambios' if @template_versions.present? %>
 </div>
 
+ 

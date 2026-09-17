@@ -1,0 +1,419 @@
+<head>
+  <meta charset="utf-8">
+
+  <%= wicked_pdf_stylesheet_link_tag "application" %>
+
+  <style>
+
+    @page {
+      size: Letter landscape;
+      margin: 10mm 7mm 10mm 7mm;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 8px;
+      color: #000;
+    }
+
+    .pdf-container {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ==========================================
+       TÍTULO
+       ========================================== */
+
+    .pdf-title {
+      text-align: center;
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    /* ==========================================
+       TABLA
+       ========================================== */
+
+    .resource-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-spacing: 0;
+      table-layout: fixed;
+      page-break-inside: auto;
+    }
+
+    .resource-table thead {
+      display: table-header-group;
+    }
+
+    .resource-table tbody {
+      display: table-row-group;
+    }
+
+    .resource-table tr {
+      page-break-inside: avoid;
+      page-break-after: auto;
+    }
+
+    .resource-table th,
+    .resource-table td {
+      border: 1px solid #000;
+      padding: 4px 3px;
+      vertical-align: middle;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      white-space: normal;
+    }
+
+    .resource-table th {
+      text-align: center;
+      font-weight: bold;
+      background-color: #d9eaf7;
+      font-size: 7px;
+    }
+
+    .resource-table td {
+      font-size: 7px;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    /* ==========================================
+       ANCHOS DE COLUMNAS
+       ========================================== */
+
+    .col-number {
+      width: 4%;
+    }
+
+    .col-process {
+      width: 13%;
+    }
+
+    .col-activity {
+      width: 22%;
+    }
+
+    .col-responsible {
+      width: 14%;
+    }
+
+    .col-budget {
+      width: 13%;
+    }
+
+    .col-executed {
+      width: 5%;
+    }
+
+    .col-approved {
+      width: 5%;
+    }
+
+    .col-date {
+      width: 9%;
+    }
+
+    /* ==========================================
+       ENCABEZADOS AGRUPADOS
+       ========================================== */
+
+    .group-header {
+      background-color: #cfe2f3;
+      font-size: 8px !important;
+    }
+
+    .sub-header {
+      background-color: #e9f2f9;
+      font-size: 7px !important;
+    }
+
+    /* ==========================================
+       FIRMAS
+       ========================================== */
+
+    .signatures {
+      width: 100%;
+      margin-top: 18px;
+      page-break-inside: avoid;
+    }
+
+    .signature-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .signature-table td {
+      width: 33.33%;
+      border: 0;
+      text-align: center;
+      vertical-align: bottom;
+      padding: 3px;
+    }
+
+    .signature-space {
+      height: 65px;
+      vertical-align: bottom !important;
+    }
+
+    .signature-image {
+      max-width: 150px;
+      max-height: 55px;
+      display: inline-block;
+    }
+
+    .signature-name {
+      font-size: 8px;
+      font-weight: bold;
+      padding-top: 5px;
+    }
+
+    .signature-role {
+      font-size: 7px;
+      font-weight: normal;
+    }
+
+    /* ==========================================
+       EVITAR SALTOS INNECESARIOS
+       ========================================== */
+
+    .no-break {
+      page-break-inside: avoid;
+    }
+
+  </style>
+</head>
+
+
+<div class="pdf-container">
+
+  <% if @resource_items.present? %>
+
+    <table class="resource-table">
+
+      <thead>
+
+        <tr>
+
+          <th rowspan="2" class="col-number">
+            Nro.
+          </th>
+
+          <th rowspan="2" class="col-process">
+            Proceso
+          </th>
+
+          <th rowspan="2" class="col-activity">
+            Actividad
+          </th>
+
+          <th rowspan="2" class="col-responsible">
+            Responsable
+          </th>
+
+          <th rowspan="2" class="col-budget">
+            Valor presupuestado<br>
+            IVA incluido Año
+          </th>
+
+          <th colspan="2" class="group-header">
+            Ejecutado
+          </th>
+
+          <th colspan="2" class="group-header">
+            Aprobado
+          </th>
+
+          <th rowspan="2" class="col-date">
+            Fecha de Aprobación
+          </th>
+
+        </tr>
+
+
+        <tr>
+
+          <th class="sub-header">
+            SI
+          </th>
+
+          <th class="sub-header">
+            NO
+          </th>
+
+          <th class="sub-header">
+            SI
+          </th>
+
+          <th class="sub-header">
+            NO
+          </th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        <% @resource_items.each do |resource_item| %>
+
+          <tr>
+
+            <td class="center">
+              <%= resource_item.consecutive %>
+            </td>
+
+            <td>
+              <%= resource_item.process %>
+            </td>
+
+            <td>
+              <%= resource_item.activity %>
+            </td>
+
+            <td>
+              <%= resource_item.user.name if resource_item.user.present? %>
+            </td>
+
+            <td class="center">
+              $<%= resource_item.miles(resource_item.value) %>
+            </td>
+
+            <td class="center">
+              <%= resource_item.labelxs(resource_item.executed) %>
+            </td>
+
+            <td class="center">
+              <%= resource_item.labelxn(resource_item.executed) %>
+            </td>
+
+            <td class="center">
+              <%= resource_item.labelxs(resource_item.approved) %>
+            </td>
+
+            <td class="center">
+              <%= resource_item.labelxn(resource_item.approved) %>
+            </td>
+
+            <td class="center">
+              <%= resource_item.date_approved %>
+            </td>
+
+          </tr>
+
+        <% end %>
+
+      </tbody>
+
+    </table>
+
+  <% end %>
+
+
+  <!-- ==========================================
+       FIRMAS
+       ========================================== -->
+
+  <div class="signatures">
+
+    <table class="signature-table">
+
+      <tr>
+
+        <!-- REPRESENTANTE LEGAL -->
+
+        <td class="signature-space">
+
+          <% if @resource.firm_legal_representative == 1 %>
+
+            <% if @rep.present? && @rep.firm.attached? && @rep.firm.image? %>
+
+              <%= image_tag(
+                    Evaluation.wicked_blob_path(@rep.firm),
+                    class: "signature-image"
+                  ) %>
+
+            <% end %>
+
+          <% end %>
+
+        </td>
+
+
+        <!-- ASESOR SG-SST -->
+
+        <td class="signature-space">
+
+          <% if @resource.firm_adviser_sst == 1 %>
+
+            <% if @adv.present? && @adv.firm.attached? && @adv.firm.image? %>
+
+              <%= image_tag(
+                    Evaluation.wicked_blob_path(@adv.firm),
+                    class: "signature-image"
+                  ) %>
+
+            <% end %>
+
+          <% end %>
+
+        </td>
+
+
+        <!-- TERCERA FIRMA -->
+
+        <td class="signature-space">
+        </td>
+
+      </tr>
+
+
+      <tr>
+
+        <td class="signature-name">
+
+          <%= @resource.name_user(
+                @resource.user_legal_representative
+              ) %>
+
+          <div class="signature-role">
+            Representante Legal
+          </div>
+
+        </td>
+
+
+        <td class="signature-name">
+
+          <%= @resource.name_user(
+                @resource.user_adviser_sst
+              ) %>
+
+          <div class="signature-role">
+            Asesor SG-SST
+          </div>
+
+        </td>
+
+
+        <td class="signature-name">
+        </td>
+
+      </tr>
+
+    </table>
+
+  </div>
+
+</div>
+

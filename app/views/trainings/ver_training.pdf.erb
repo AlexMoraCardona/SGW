@@ -1,109 +1,27 @@
-<head>
-    <meta charset='utf-8' />
-    <%= wicked_pdf_stylesheet_link_tag "application" %>
-</head>
+<% if @template.present? %>
+        <% format_number = @template.format_number.to_i %>
+        <% plantilla = "trainings/#{format_number}" %>
 
-<br>
-<div>
-
-    <table class="table table-hover" style="border:1px solid black"> 
-        <thead>
-            <tr>
-                <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
-                    <% if @training.entity.logo.present? then %>
-                        <%=  image_tag  @training.entity.logo, class: "image_peq" %>
-                    <% end %>
-                </td>
-                <td rowspan="4"; colspan="6"; style="text-align:center; padding-bottom: 40px;">
-                    <div><h5>CRONOGRAMA DE CAPACITACIONES Y ACTIVIDADES <%= @training.year if @training.present? %></h5><h6><%= @training.entity.business_name if @training.present? %> Nit: <%= @training.entity.identification_number if @training.present? %> </h6></div>
-                </td>
-                <td rowspan="4";  style="text-align:center"></td>
-
-                <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
-
-                <td style="border:1px solid black"><%= @training.created_at.strftime("%F")  if @training.present? %></td>
-            </tr>
-            <tr> 
-                <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
-                <td style="border:1px solid black"><%= @training.updated_at.strftime("%F")  if @training.present? %></td>
-            </tr>
-            <tr> 
-                <td colspan="2"; style="border:1px solid black">Versión:</td>
-                <td style="border:1px solid black"><%= @training.version if @training.present? %></td>
-            </tr>
-            <tr> 
-                <td colspan="2"; style="border:1px solid black">Código:</td>
-                <td style="border:1px solid black"><%= @training.code if @training.present? %></td>
-            </tr>
-
-
-            <tr>
-                <th style="border:1px solid black; text-align:center">OBJETIVO</th>
-                <th colspan="10" style="border:1px solid black; text-align:center">Generar un proceso educacional estratégico aplicado de manera organizada y sistémica, para proveer, actualizar y ampliar los conocimientos y desarrollar habilidades que cubran la
-                totalidad de requerimientos para el desempeño de puestos y mejoramiento de áreas específicas de la Organización.</th>
-            </tr>
-            <tr>
-                <th style="border:1px solid black">Nro.</th>
-                <th style="border:1px solid black">TEMA DE CAPACITACIÓN</th>
-                <th style="border:1px solid black">DURACIÓN</th>
-                <th style="border:1px solid black">OBJETIVO</th>
-                <th style="border:1px solid black">ALCANCE</th>
-                <th style="border:1px solid black">RECURSOS</th>
-                <th style="border:1px solid black">RESPONSABLE</th>
-                <th style="border:1px solid black">FECHA</th>
-                <th style="border:1px solid black">% DE COBERTURA EN CAPACITACIONES</th>
-                <th style="border:1px solid black">% DE TRABAJADORES CAPACITADOS</th>
-                <th style="border:1px solid black">OBSERVACIONES</th>
-            </tr>   
-        </thead>
-
-        <% @training_items.each do |training_item| %>             
-            <tbody>
-                <tr>
-                    <td style="border:1px solid black"><%= training_item.consecutive %></td>
-                    <td style="border:1px solid black"><%= training_item.training_topic %></td>
-                    <td style="border:1px solid black"><%= training_item.duration %></td>
-                    <td style="border:1px solid black"><%= training_item.goals %></td>
-                    <td style="border:1px solid black"><%= training_item.scope %></td>
-                    <td style="border:1px solid black"><%= training_item.resources %></td>
-                    <td style="border:1px solid black"><%= training_item.responsible %></td>
-                    <td style="border:1px solid black"><%= training_item.date_training  %></td>
-                    <td style="border:1px solid black"><%= training_item.training_coverage_percentage  %></td>
-                    <td style="border:1px solid black"><%= training_item.percentage_trained_workers  %></td>
-                    <td style="border:1px solid black"><%= training_item.observation  %></td>
-                </tr>
-            </body>
+        <% if lookup_context.exists?(plantilla, [], true) %>
+            <%= render plantilla, template: @template %>
+        <% else %>
+            <div class="alert alert-warning text-center my-4">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            La plantilla <strong>#{format_number}</strong> aún no tiene
+            un formato de visualización configurado.
+            </div>
         <% end %>
-        <tr style="border:1px solid black">
-            <td  colspan="4";style="border:1px solid black"><br>
-                <% if @training.firm_legal_representative == 1 %>
-                    <% if @rep.present? %>
-                        <% if @rep.firm.attached? %>
-                           <% if @rep.firm.image? %> 
-                                <%= image_tag(Evaluation.wicked_blob_path(@rep.firm), class: "firmapdf")%>
-                            <% end %>
-                        <% end %>
-                    <% end %>     
-                <% end %>     
-            </td>
-            <td  colspan="4";style="border:1px solid black"><br>
-                <% if @training.firm_adviser_sst == 1 %>
-                    <% if @adv.present? %>
-                        <% if @adv.firm.attached? %>
-                            <% if @adv.firm.image? %> 
-                                <%= image_tag(Evaluation.wicked_blob_path(@adv.firm), class: "firmapdf")%>
-                            <% end %>
-                        <% end %>
-                    <% end %>     
-                <% end %>     
-            </td>
-            <td  colspan="3";style="border:1px solid black"><br>
-            </td>
-        </tr> 
-        <tr>
-            <td  colspan="4"><%= @training.name_user(@training.user_legal_representative) %> - Representante Legal</td>
-            <td  colspan="4"><%= @training.name_user(@training.user_adviser_sst) %> - Asesor SST</td>
-            <td  colspan="3"></td>
-        </tr>
-    </table>
-</div>    
+<% end %>
+
+<!-- =========================================================
+     CONTROL DE CAMBIOS
+     ========================================================= -->
+
+<% if @template_versions.present? %>
+
+  <div class="control-cambios">
+    <%= render 'evaluation_rule_details/control_cambios' %>
+  </div>
+
+<% end %>
+

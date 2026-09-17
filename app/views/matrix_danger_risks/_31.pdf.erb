@@ -1,0 +1,971 @@
+<head>
+    <meta charset="utf-8">
+    <%= wicked_pdf_stylesheet_link_tag "application" %>
+
+<style>
+    @page {
+        size: Letter landscape;
+        margin: 10mm 5mm 10mm 5mm;
+    }
+
+    /* ==========================================
+       CONFIGURACIÓN GENERAL
+       ========================================== */
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 5.5px;
+        color: #000;
+        margin: 0;
+        padding: 0;
+    }
+
+    .pdf-container {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* ==========================================
+       TABLA PRINCIPAL
+       ========================================== */
+
+    .risk-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        margin: 0;
+        padding: 0;
+    }
+
+    /*
+     * TODO el contenido de la tabla utiliza
+     * exactamente el mismo tamaño de letra.
+     */
+    .risk-table th,
+    .risk-table td {
+        border: 1px solid #000;
+        padding: 2px 2px;
+        vertical-align: middle;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        font-size: 5.5px !important;
+        line-height: 1.05;
+    }
+
+    /*
+     * Repite los encabezados en las páginas siguientes.
+     *
+     * Si quieres encabezado únicamente en la primera página,
+     * cambiar table-header-group por table-row-group.
+     */
+    .risk-table thead {
+        display: table-header-group;
+    }
+
+    .risk-table tbody {
+        display: table-row-group;
+    }
+
+    .risk-table tr {
+        page-break-inside: avoid;
+    }
+
+    /* ==========================================
+       ENCABEZADOS
+       ========================================== */
+
+    .group-header {
+        background-color: #00aae4;
+        text-align: center;
+        font-weight: bold;
+
+        /* Igual al cuerpo */
+        font-size: 5.5px !important;
+        line-height: 1.05;
+        vertical-align: middle !important;
+    }
+
+    .column-header {
+        background-color: #00aae4;
+        text-align: center;
+        font-weight: bold;
+
+        /* Igual al cuerpo */
+        font-size: 5.5px !important;
+        line-height: 1.05;
+        vertical-align: middle !important;
+    }
+
+    /* ==========================================
+       ANCHOS DE LAS COLUMNAS
+       
+       25 columnas de información
+       + 2 columnas laterales negras
+       ========================================== */
+
+    .col-date {
+        width: 4%;
+        text-align: center;
+    }
+
+    .col-process {
+        width: 5%;
+    }
+
+    .col-zone {
+        width: 5%;
+    }
+
+    .col-activity {
+        width: 6%;
+    }
+
+    .col-task {
+        width: 6%;
+    }
+
+    .col-routine {
+        width: 4%;
+        text-align: center;
+    }
+
+    .col-danger-class {
+        width: 5%;
+    }
+
+    .col-danger-description {
+        width: 7%;
+    }
+
+    .col-health {
+        width: 7%;
+    }
+
+    .col-source {
+        width: 6%;
+    }
+
+    .col-medium {
+        width: 6%;
+    }
+
+    .col-person {
+        width: 6%;
+    }
+
+    .col-nd {
+        width: 5%;
+        text-align: center;
+    }
+
+    .col-ne {
+        width: 5%;
+        text-align: center;
+    }
+
+    .col-probability {
+        width: 5%;
+        text-align: center;
+    }
+
+    .col-probability-interpretation {
+        width: 6%;
+        text-align: center;
+    }
+
+    .col-consequence {
+        width: 5%;
+        text-align: center;
+    }
+
+    .col-nr {
+        width: 5%;
+        text-align: center;
+    }
+
+    .col-risk-interpretation {
+        width: 6%;
+        text-align: center;
+    }
+
+    .col-acceptability {
+        width: 6%;
+        text-align: center;
+    }
+
+    .col-elimination {
+        width: 6%;
+    }
+
+    .col-replacement {
+        width: 6%;
+    }
+
+    .col-engineering {
+        width: 6%;
+    }
+
+    .col-administrative {
+        width: 7%;
+    }
+
+    .col-ppe {
+        width: 7%;
+    }
+
+    /* ==========================================
+       ALINEACIÓN
+       ========================================== */
+
+    .center {
+        text-align: center;
+        font-size: 5.5px !important;
+    }
+
+    .text-justify {
+        text-align: justify;
+        font-size: 5.5px !important;
+    }
+
+    /* ==========================================
+       COLORES DE VALORACIÓN DEL RIESGO
+       ========================================== */
+
+    .risk-i {
+        background-color: #F03553;
+        text-align: center;
+        font-weight: bold;
+        font-size: 5.5px !important;
+        line-height: 1.05;
+    }
+
+    .risk-ii {
+        background-color: #D98F3B;
+        text-align: center;
+        font-weight: bold;
+        font-size: 5.5px !important;
+        line-height: 1.05;
+    }
+
+    .risk-iii {
+        background-color: #F0E835;
+        text-align: center;
+        font-weight: bold;
+        font-size: 5.5px !important;
+        line-height: 1.05;
+    }
+
+    .risk-iv {
+        background-color: #038018;
+        text-align: center;
+        font-weight: bold;
+        font-size: 5.5px !important;
+        line-height: 1.05;
+    }
+
+    /* ==========================================
+       FIRMAS
+       ========================================== */
+
+    .signatures {
+        width: 100%;
+        margin-top: 12px;
+        page-break-inside: avoid;
+    }
+
+    .signature-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+    }
+
+    .signature-table td {
+        border: 1px solid #000;
+        text-align: center;
+        vertical-align: middle;
+        padding: 2px;
+        font-size: 5.5px !important;
+        line-height: 1.05;
+    }
+
+    .signature-space {
+        height: 50px;
+    }
+
+    .firmapdf {
+        display: block;
+        max-width: 160px;
+        height: 45px;
+        margin: 0 auto;
+        object-fit: contain;
+    }
+
+    .signature-name {
+        font-size: 5.5px !important;
+        line-height: 1.05;
+        height: 22px;
+        vertical-align: middle !important;
+    }
+</style>
+
+
+</head>
+
+
+<div class="pdf-container">
+
+    <!-- ==================================================
+         MATRIZ DE PELIGROS Y VALORACIÓN DEL RIESGO
+         ================================================== -->
+
+    <table class="risk-table">
+
+        <colgroup>
+
+            <col class="col-date">
+            <col class="col-process">
+            <col class="col-zone">
+            <col class="col-activity">
+            <col class="col-task">
+            <col class="col-routine">
+
+            <col class="col-danger-class">
+            <col class="col-danger-description">
+
+            <col class="col-health">
+
+            <col class="col-source">
+            <col class="col-medium">
+            <col class="col-person">
+
+            <col class="col-nd">
+            <col class="col-ne">
+            <col class="col-probability">
+            <col class="col-probability-interpretation">
+            <col class="col-consequence">
+            <col class="col-nr">
+            <col class="col-risk-interpretation">
+            <col class="col-acceptability">
+
+            <col class="col-elimination">
+            <col class="col-replacement">
+            <col class="col-engineering">
+            <col class="col-administrative">
+            <col class="col-ppe">
+
+        </colgroup>
+
+
+        <thead>
+
+            <!-- ==========================================
+                 PRIMER NIVEL DE ENCABEZADOS
+                 ========================================== -->
+
+            <tr>
+
+
+                <th rowspan="2" class="column-header">
+                    Fecha<br>Creación
+                </th>
+
+                <th rowspan="2" class="column-header">
+                    Proceso
+                </th>
+
+                <th rowspan="2" class="column-header">
+                    Zona / Lugar
+                </th>
+
+                <th rowspan="2" class="column-header">
+                    Actividad
+                </th>
+
+                <th rowspan="2" class="column-header">
+                    Tareas
+                </th>
+
+                <th rowspan="2" class="column-header">
+                    Rutinaria:<br>
+                    SI / NO
+                </th>
+
+                <th colspan="2" class="group-header">
+                    PELIGRO
+                </th>
+
+                <th rowspan="2" class="column-header">
+                    Efectos posibles<br>
+                    en la salud
+                </th>
+
+                <th colspan="3" class="group-header">
+                    CONTROLES EXISTENTES
+                </th>
+
+                <th colspan="7" class="group-header">
+                    EVALUACIÓN DEL RIESGO
+                </th>
+
+                <th class="group-header">
+                    VALORACIÓN<br>
+                    DEL RIESGO
+                </th>
+
+                <th colspan="5" class="group-header">
+                    MEDIDAS DE INTERVENCIÓN
+                </th>
+
+
+            </tr>
+
+
+            <!-- ==========================================
+                 SEGUNDO NIVEL DE ENCABEZADOS
+                 ========================================== -->
+
+            <tr>
+
+
+                <th class="column-header">
+                    Clasificación
+                </th>
+
+                <th class="column-header">
+                    Descripción
+                </th>
+
+                <th class="column-header">
+                    Fuente
+                </th>
+
+                <th class="column-header">
+                    Medio
+                </th>
+
+                <th class="column-header">
+                    Individuo
+                </th>
+
+                <th class="column-header">
+                    Nivel de<br>
+                    Deficiencia<br>
+                    (ND)
+                </th>
+
+                <th class="column-header">
+                    Nivel de<br>
+                    Exposición<br>
+                    (NE)
+                </th>
+
+                <th class="column-header">
+                    Nivel de<br>
+                    Probabilidad<br>
+                    (ND × NE)
+                </th>
+
+                <th class="column-header">
+                    Interpretación<br>
+                    del Nivel de<br>
+                    Probabilidad
+                </th>
+
+                <th class="column-header">
+                    Nivel de<br>
+                    Consecuencia
+                </th>
+
+                <th class="column-header">
+                    Nivel de Riesgo<br>
+                    e Intervención<br>
+                    (NR)
+                </th>
+
+                <th class="column-header">
+                    Interpretación<br>
+                    del Nivel de Riesgo
+                </th>
+
+                <th class="column-header">
+                    Aceptabilidad<br>
+                    del Riesgo
+                </th>
+
+                <th class="column-header">
+                    Eliminación
+                </th>
+
+                <th class="column-header">
+                    Sustitución
+                </th>
+
+                <th class="column-header">
+                    Control de<br>
+                    Ingeniería
+                </th>
+
+                <th class="column-header">
+                    Controles Administrativos,<br>
+                    Señalización,<br>
+                    Advertencia
+                </th>
+
+                <th class="column-header">
+                    Equipos / Elementos<br>
+                    de Protección<br>
+                    Personal
+                </th>
+
+
+            </tr>
+
+        </thead>
+
+
+        <!-- ==================================================
+             DATOS
+             ================================================== -->
+
+        <tbody>
+
+            <% @matrix_danger_items.each do |item| %>
+
+                <tr>
+
+                    <!-- FECHA -->
+                    <td class="center">
+                        <%= item.created_at.strftime("%F") %>
+                    </td>
+
+
+                    <!-- PROCESO -->
+                    <td>
+                        <%= item.source_information %>
+                    </td>
+
+
+                    <!-- ZONA / LUGAR -->
+                    <td>
+                        <%= item.origin %>
+                    </td>
+
+
+                    <!-- ACTIVIDAD -->
+                    <td>
+                        <%= item.activity %>
+                    </td>
+
+
+                    <!-- TAREAS -->
+                    <td>
+                        <%= item.task %>
+                    </td>
+
+
+                    <!-- RUTINARIA -->
+                    <td class="center">
+                        <%= item.label_type_task(item.type_task) %>
+                    </td>
+
+
+                    <!-- CLASIFICACIÓN DEL PELIGRO -->
+                    <td>
+                        <% if item.clasification_danger_detail_id.to_i > 0 %>
+                            <%= item.clasification_danger_detail.clasification_danger.name %>
+                        <% end %>
+                    </td>
+
+
+                    <!-- DESCRIPCIÓN DEL PELIGRO -->
+                    <td>
+                        <% if item.clasification_danger_detail.present? %>
+                            <%= item.clasification_danger_detail.name %>
+                        <% end %>
+                    </td>
+
+
+                    <!-- EFECTOS EN LA SALUD -->
+                    <td>
+                        <%= item.possible_effects_health %>
+                    </td>
+
+
+                    <!-- FUENTE -->
+                    <td>
+                        <%= item.description_existing_control_origin %>
+                    </td>
+
+
+                    <!-- MEDIO -->
+                    <td>
+                        <%= item.description_existing_control_medium %>
+                    </td>
+
+
+                    <!-- INDIVIDUO -->
+                    <td>
+                        <%= item.description_existing_control_person %>
+                    </td>
+
+
+                    <!-- ==================================
+                         NIVEL DE DEFICIENCIA
+                         ================================== -->
+
+                    <td class="center">
+
+                        <% if item.deficiency_level == 10 %>
+
+                            Muy Alto - <%= item.deficiency_level %>
+
+                        <% elsif item.deficiency_level == 6 %>
+
+                            Alto - <%= item.deficiency_level %>
+
+                        <% elsif item.deficiency_level == 2 %>
+
+                            Medio - <%= item.deficiency_level %>
+
+                        <% else %>
+
+                            Bajo - <%= item.deficiency_level %>
+
+                        <% end %>
+
+                    </td>
+
+
+                    <!-- ==================================
+                         NIVEL DE EXPOSICIÓN
+                         ================================== -->
+
+                    <td class="center">
+
+                        <% if item.exposure_level == 4 %>
+
+                            Continua - <%= item.exposure_level %>
+
+                        <% elsif item.exposure_level == 3 %>
+
+                            Frecuente - <%= item.exposure_level %>
+
+                        <% elsif item.exposure_level == 2 %>
+
+                            Ocasional - <%= item.exposure_level %>
+
+                        <% else %>
+
+                            Esporádica - <%= item.exposure_level %>
+
+                        <% end %>
+
+                    </td>
+
+
+                    <!-- ==================================
+                         NIVEL DE PROBABILIDAD
+                         ================================== -->
+
+                    <td class="center">
+                        <%= item.probability_level %>
+                    </td>
+
+
+                    <!-- INTERPRETACIÓN PROBABILIDAD -->
+                    <td class="center">
+                        <%= item.interpretation %>
+                    </td>
+
+
+                    <!-- ==================================
+                         NIVEL DE CONSECUENCIA
+                         ================================== -->
+
+                    <td class="center">
+
+                        <% if item.consequence_level == 100 %>
+
+                            Mortal o Catastrófico -
+                            <%= item.consequence_level %>
+
+                        <% elsif item.consequence_level == 60 %>
+
+                            Muy Grave -
+                            <%= item.consequence_level %>
+
+                        <% elsif item.consequence_level == 25 %>
+
+                            Grave -
+                            <%= item.consequence_level %>
+
+                        <% else %>
+
+                            Leve -
+                            <%= item.consequence_level %>
+
+                        <% end %>
+
+                    </td>
+
+
+                    <!-- ==================================
+                         NIVEL DE RIESGO
+                         ================================== -->
+
+                    <td class="center">
+                        <%= item.level_risk_intervention %>
+                    </td>
+
+
+                    <!-- ==================================
+                         INTERPRETACIÓN DEL RIESGO
+                         ================================== -->
+
+                    <% if item.risk_level_interpretation.to_s == "I No Aceptable" %>
+
+                        <td class="center">
+                            <%= item.risk_acceptability %>
+                        </td>
+
+                        <td class="risk-i">
+                            <%= item.risk_level_interpretation %>
+                        </td>
+
+
+                    <% elsif item.risk_level_interpretation.to_s == "II No Aceptable" %>
+
+                        <td class="center">
+                            <%= item.risk_acceptability %>
+                        </td>
+
+                        <td class="risk-ii">
+                            <%= item.risk_level_interpretation %>
+                        </td>
+
+
+                    <% elsif item.risk_level_interpretation.to_s == "III Aceptable" %>
+
+                        <td class="center">
+                            <%= item.risk_acceptability %>
+                        </td>
+
+                        <td class="risk-iii">
+                            <%= item.risk_level_interpretation %>
+                        </td>
+
+
+                    <% elsif item.risk_level_interpretation.to_s == "IV Aceptable" %>
+
+                        <td class="center">
+                            <%= item.risk_acceptability %>
+                        </td>
+
+                        <td class="risk-iv">
+                            <%= item.risk_level_interpretation %>
+                        </td>
+
+
+                    <% else %>
+
+                        <td class="center">
+                            <%= item.risk_acceptability %>
+                        </td>
+
+                        <td class="center">
+                            <%= item.risk_level_interpretation %>
+                        </td>
+
+                    <% end %>
+
+
+                    <!-- ==================================
+                         MEDIDAS DE INTERVENCIÓN
+                         ================================== -->
+
+                    <!-- ELIMINACIÓN -->
+                    <td>
+                        <%= item.intervention_measures_elimination %>
+                    </td>
+
+
+                    <!-- SUSTITUCIÓN -->
+                    <td>
+                        <%= item.intervention_measures_replacement %>
+                    </td>
+
+
+                    <!-- CONTROL DE INGENIERÍA -->
+                    <td>
+                        <%= item.intervention_measures_engineering_control %>
+                    </td>
+
+
+                    <!-- CONTROLES ADMINISTRATIVOS -->
+                    <td>
+                        <%= item.intervention_measures_acsw %>
+                    </td>
+
+
+                    <!-- EPP -->
+                    <td>
+                        <%= item.intervention_measures_ppee %>
+                    </td>
+
+
+                </tr>
+
+            <% end %>
+
+        </tbody>
+
+    </table>
+
+
+    <!-- ==================================================
+         FIRMAS
+         ================================================== -->
+
+    <div class="signatures">
+
+        <table class="signature-table">
+
+            <colgroup>
+                <col style="width: 33.33%">
+                <col style="width: 33.33%">
+                <col style="width: 33.34%">
+            </colgroup>
+
+
+            <!-- ESPACIO PARA FIRMAS -->
+            <tr>
+
+                <!-- REPRESENTANTE LEGAL -->
+                <td class="signature-space">
+
+                    <% if @matrix_danger_risk.firm_legal_representative == 1 %>
+
+                        <% if @rep.present? %>
+
+                            <% if @rep.firm.attached? %>
+
+                                <% if @rep.firm.image? %>
+
+                                    <%= image_tag(
+                                        Evaluation.wicked_blob_path(@rep.firm),
+                                        class: "firmapdf"
+                                    ) %>
+
+                                <% end %>
+
+                            <% end %>
+
+                        <% end %>
+
+                    <% end %>
+
+                </td>
+
+
+                <!-- ASESOR SST -->
+                <td class="signature-space">
+
+                    <% if @matrix_danger_risk.firm_adviser_sst == 1 %>
+
+                        <% if @adv.present? %>
+
+                            <% if @adv.firm.attached? %>
+
+                                <% if @adv.firm.image? %>
+
+                                    <%= image_tag(
+                                        Evaluation.wicked_blob_path(@adv.firm),
+                                        class: "firmapdf"
+                                    ) %>
+
+                                <% end %>
+
+                            <% end %>
+
+                        <% end %>
+
+                    <% end %>
+
+                </td>
+
+
+                <!-- RESPONSABLE SST -->
+                <td class="signature-space">
+
+                    <% if @matrix_danger_risk.firm_responsible_sst == 1 %>
+
+                        <% if @res.present? %>
+
+                            <% if @res.firm.attached? %>
+
+                                <% if @res.firm.image? %>
+
+                                    <%= image_tag(
+                                        Evaluation.wicked_blob_path(@res.firm),
+                                        class: "firmapdf"
+                                    ) %>
+
+                                <% end %>
+
+                            <% end %>
+
+                        <% end %>
+
+                    <% end %>
+
+                </td>
+
+            </tr>
+
+
+            <!-- NOMBRES -->
+            <tr>
+
+                <td class="signature-name">
+
+                    <%= MatrixDangerRisk.name_user(
+                        @matrix_danger_risk.user_legal_representative
+                    ) %>
+
+                    <br>
+                    Representante Legal
+
+                </td>
+
+
+                <td class="signature-name">
+
+                    <%= MatrixDangerRisk.name_user(
+                        @matrix_danger_risk.user_adviser_sst
+                    ) %>
+
+                    <br>
+                    Asesor SST
+
+                </td>
+
+
+                <td class="signature-name">
+
+                    <%= MatrixDangerRisk.name_user(
+                        @matrix_danger_risk.user_responsible_sst
+                    ) %>
+
+                    <br>
+                    Responsable SG-SST
+
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+</div>

@@ -1,0 +1,346 @@
+<head>
+  <meta charset="utf-8">
+
+  <%= wicked_pdf_stylesheet_link_tag "application" %>
+
+  <style>
+    @page {
+      size: Letter landscape;
+      margin: 8mm;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 7px;
+      color: #000;
+    }
+
+    .pdf-container {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .pdf-title {
+      text-align: center;
+      font-size: 11px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border-spacing: 0;
+      table-layout: fixed;
+      page-break-inside: auto;
+    }
+
+    /* IMPORTANTE:
+       No repetir el encabezado en las páginas siguientes */
+    thead {
+      display: table-row-group;
+    }
+
+    tbody {
+      display: table-row-group;
+    }
+
+    tr {
+      page-break-inside: avoid;
+      page-break-after: auto;
+    }
+
+    th,
+    td {
+      border: 1px solid #000;
+      padding: 3px 2px;
+      vertical-align: middle;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      white-space: normal;
+    }
+
+    th {
+      text-align: center;
+      font-weight: bold;
+      background-color: #d9eaf7;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .preventiva {
+      background-color: #038018 !important;
+      color: #fff;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .mejora {
+      background-color: #f0e835 !important;
+      color: #000;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .correctiva {
+      background-color: #f03553 !important;
+      color: #fff;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    /* Anchos relativos de las columnas */
+
+    .col-item {
+      width: 3%;
+    }
+
+    .col-year {
+      width: 3%;
+    }
+
+    .col-number {
+      width: 4%;
+    }
+
+    .col-campus {
+      width: 6%;
+    }
+
+    .col-date {
+      width: 6%;
+    }
+
+    .col-origin {
+      width: 7%;
+    }
+
+    .col-hallazgo {
+      width: 10%;
+    }
+
+    .col-area {
+      width: 6%;
+    }
+
+    .col-description {
+      width: 10%;
+    }
+
+    .col-type {
+      width: 6%;
+    }
+
+    .col-action {
+      width: 9%;
+    }
+
+    .col-responsible {
+      width: 6%;
+    }
+
+    .col-commitment {
+      width: 5%;
+    }
+
+    .col-close {
+      width: 5%;
+    }
+
+    .col-took {
+      width: 5%;
+    }
+
+    .col-state {
+      width: 6%;
+    }
+  </style>
+</head>
+
+<div class="pdf-container">
+
+  <div class="pdf-title">
+    INFORMACIÓN DE ACCIONES CORRECTIVAS, PREVENTIVAS Y DE MEJORA
+  </div>
+
+  <table>
+
+    <thead>
+
+      <tr>
+        <th colspan="10">
+          INFORMACIÓN DE LA ACCIÓN CORRECTIVA, PREVENTIVA Y DE MEJORA
+        </th>
+
+        <th colspan="3">
+          MEDIDAS DE INTERVENCIÓN NECESARIAS
+        </th>
+
+        <th>
+          CIERRE DE LA ACCIÓN CORRECTIVA O DE MEJORA
+        </th>
+
+        <th colspan="2">
+          VERIFICACIÓN DE LA EFICACIA
+        </th>
+      </tr>
+
+      <tr>
+        <th class="col-item">Item</th>
+        <th class="col-year">Año</th>
+        <th class="col-number">N° Acción</th>
+        <th class="col-campus">Centro de Trabajo</th>
+        <th class="col-date">
+          Fecha de la Acción o No Conformidad
+        </th>
+        <th class="col-origin">
+          Origen de la Acción o No Conformidad
+        </th>
+        <th class="col-hallazgo">
+          Hallazgo
+        </th>
+        <th class="col-area">
+          Área donde se Genera la Acción
+        </th>
+        <th class="col-description">
+          Descripción de la Acción
+        </th>
+        <th class="col-type">
+          Tipo de Acción
+        </th>
+
+        <th class="col-action">
+          ACCIÓN A IMPLEMENTAR
+        </th>
+
+        <th class="col-responsible">
+          RESPONSABLE
+        </th>
+
+        <th class="col-commitment">
+          FECHA DE COMPROMISO
+        </th>
+
+        <th class="col-close">
+          FECHA DE CIERRE
+        </th>
+
+        <th class="col-took">
+          Se realizaron las Acciones
+        </th>
+
+        <th class="col-state">
+          Estado de las Acciones
+        </th>
+      </tr>
+
+    </thead>
+
+    <tbody>
+
+      <% @matrix_action_items.each do |item| %>
+
+        <tr>
+
+          <td class="center">
+            <%= item.consecutive %>
+          </td>
+
+          <td class="center">
+            <%= item.year %>
+          </td>
+
+          <td class="center">
+            <%= item.clasification_type_corrective %>
+          </td>
+
+          <td>
+            <%= @locations.find_by(id: item.campus.to_i)&.name_locate if item.campus.to_i > 0 %>
+          </td>
+
+          <td class="center">
+            <%= item.date_action_conformity %>
+          </td>
+
+          <td>
+            <%= item.label_origin_action(item.origin_action) %>
+          </td>
+
+          <td>
+            <%= item.hallazgo %>
+          </td>
+
+          <td>
+            <%= item.area %>
+          </td>
+
+          <td>
+            <%= item.description_action %>
+          </td>
+
+          <% if item.type_corrective.to_i == 0 %>
+
+            <td class="preventiva">
+              Acción Preventiva
+            </td>
+
+          <% elsif item.type_corrective.to_i == 1 %>
+
+            <td class="mejora">
+              Acción de Mejora
+            </td>
+
+          <% elsif item.type_corrective.to_i == 2 %>
+
+            <td class="correctiva">
+              Acción Correctiva
+            </td>
+
+          <% else %>
+
+            <td class="center">
+              -
+            </td>
+
+          <% end %>
+
+          <td>
+            <%= item.label_action_implement(item.action_implement) %>
+          </td>
+
+          <td>
+            <%= item.responsible %>
+          </td>
+
+          <td class="center">
+            <%= item.commitment_date %>
+          </td>
+
+          <td class="center">
+            <%= item.closet_date %>
+          </td>
+
+          <td class="center">
+            <%= item.label_si_no(item.took_actions) %>
+          </td>
+
+          <td>
+            <%= item.label_state_actions(item.state_actions) %>
+          </td>
+
+        </tr>
+
+      <% end %>
+
+    </tbody>
+
+  </table>
+
+</div>
+

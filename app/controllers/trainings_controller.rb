@@ -21,6 +21,10 @@ class TrainingsController < ApplicationController
         @rep = User.find(@training.user_legal_representative) if  @training.user_legal_representative.present? && @training.user_legal_representative > 0
         @adv = User.find(@training.user_adviser_sst) if  @training.user_adviser_sst.present? && @training.user_adviser_sst > 0
         @res = User.find(@training.user_responsible_sst) if  @training.user_responsible_sst.present? && @training.user_responsible_sst > 0
+        @template = Template.where("reference = ? and version = ?",@training.code,@training.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+        @entity = Entity.find(@training.entity_id) if @training.present?
+
 
         @training_items = TrainingItem.where("training_id = ?", @training.id).order(:consecutive) if @training.present?
         respond_to do |format|
@@ -37,32 +41,34 @@ class TrainingsController < ApplicationController
         @rep = User.find(@training.user_legal_representative) if  @training.user_legal_representative.present? && @training.user_legal_representative > 0
         @adv = User.find(@training.user_adviser_sst) if  @training.user_adviser_sst.present? && @training.user_adviser_sst > 0
         @res = User.find(@training.user_responsible_sst) if  @training.user_responsible_sst.present? && @training.user_responsible_sst > 0
+        @template = Template.where("reference = ? and version = ?",@training.code,@training.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+        @entity = Entity.find(@training.entity_id) if @training.present?
 
-        nombre_archivo = @training.code.to_s + '.pdf'
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
                 pdf = WickedPdf.new.pdf_from_string(
                     render_to_string('ver_training'),
-                    zoom: 0.50,
                     disable_javascript: true,
-                    margin: {top: 10, bottom: 10, left: 5, right: 5 },
-                    orientation: 'Landscape',
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
                     page_size: 'letter',
-                    footer: {right: '[page] de [topage]'}
-                    
-                  )  
-                  send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+                    orientation: 'Landscape',
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
             }
         end    
-
-      
+   
     end    
 
 
     def new
       @training =  Training.new
-      @template = Template.where("format_number = ? and document_vigente = ?",32,1).last  
+      @template = Template.where("reference = ? and document_vigente = ?",'CCA-SST',1).last  
+
     end    
 
     def create

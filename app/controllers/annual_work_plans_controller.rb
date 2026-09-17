@@ -17,12 +17,14 @@ class AnnualWorkPlansController < ApplicationController
     end  
     
     def show 
-        @template = Template.where("format_number = ? and document_vigente = ?",33,1).last  
         @annual_work_plan = AnnualWorkPlan.find(params[:id].to_i)
         @annual_work_plan_items = AnnualWorkPlanItem.where("annual_work_plan_id = ?", @annual_work_plan.id) if @annual_work_plan.present?
         @rep = User.find(@annual_work_plan.user_legal_representative) if  @annual_work_plan.user_legal_representative.present? && @annual_work_plan.user_legal_representative > 0
         @adv = User.find(@annual_work_plan.user_adviser_sst) if  @annual_work_plan.user_adviser_sst.present? && @annual_work_plan.user_adviser_sst > 0
         @res = User.find(@annual_work_plan.user_responsible_sst) if  @annual_work_plan.user_responsible_sst.present? && @annual_work_plan.user_responsible_sst > 0
+        @template = Template.where("reference = ? and version = ?",@annual_work_plan.code,@annual_work_plan.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+        @entity = Entity.find(@annual_work_plan.entity_id) if @annual_work_plan.present?
 
         respond_to do |format|
             format.html
@@ -35,36 +37,36 @@ class AnnualWorkPlansController < ApplicationController
     def ver_plan
         @annual_work_plan = AnnualWorkPlan.find(params[:id].to_i)
         @annual_work_plan_items = AnnualWorkPlanItem.where("annual_work_plan_id = ?", @annual_work_plan.id) if @annual_work_plan.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",33,1).last  
         @rep = User.find(@annual_work_plan.user_legal_representative) if  @annual_work_plan.user_legal_representative.present? && @annual_work_plan.user_legal_representative > 0
         @adv = User.find(@annual_work_plan.user_adviser_sst) if  @annual_work_plan.user_adviser_sst.present? && @annual_work_plan.user_adviser_sst > 0
         @res = User.find(@annual_work_plan.user_responsible_sst) if  @annual_work_plan.user_responsible_sst.present? && @annual_work_plan.user_responsible_sst > 0
-
+        @template = Template.where("reference = ? and version = ?",@annual_work_plan.code,@annual_work_plan.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+        @entity = Entity.find(@annual_work_plan.entity_id) if @annual_work_plan.present?
 
         nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
                 pdf = WickedPdf.new.pdf_from_string(
                     render_to_string('ver_plan'),
-                    zoom: 0.50,
-                    orientation: 'Landscape',
                     disable_javascript: true,
-                    margin: {top: 10, bottom: 10, left: 5, right: 5 },
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
                     page_size: 'letter',
-                    footer: {right: '[page] de [topage]'}
-                    
-                  )  
-                  send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+                    orientation: 'Landscape',
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
             }
         end    
-     
+    
     end    
 
 
     def new
       @annual_work_plan =  AnnualWorkPlan.new
-      @template = Template.where("format_number = ? and document_vigente = ?",33,1).last  
+      @template = Template.where("reference = ? and document_vigente = ?",'PAT-SST',1).last  
     end    
 
     def create

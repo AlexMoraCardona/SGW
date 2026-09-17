@@ -1,0 +1,358 @@
+<head>
+    <meta charset="utf-8">
+    <%= wicked_pdf_stylesheet_link_tag "application" %>
+
+    <style>
+        /* =========================================================
+           CONFIGURACIÓN DE PÁGINA
+           ========================================================= */
+
+        @page {
+            size: Letter landscape;
+            margin: 10mm 5mm 10mm 5mm;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 10.5px !important;
+            color: #000;
+            margin: 0;
+            padding: 0;
+        }
+
+        .pdf-container {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* =========================================================
+           TABLA PRINCIPAL
+           ========================================================= */
+
+        .occupational-exam-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            margin: 0;
+            padding: 0;
+        }
+
+        .occupational-exam-table th,
+        .occupational-exam-table td {
+            border: 1px solid #000;
+            padding: 2px 2px;
+            vertical-align: middle;
+
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+
+            font-size: 10.5px !important;
+            line-height: 1.05;
+        }
+
+        /* =========================================================
+           ENCABEZADOS
+           ========================================================= */
+
+        .occupational-exam-table thead {
+            display: table-header-group;
+        }
+
+        .occupational-exam-table tbody {
+            display: table-row-group;
+        }
+
+        .occupational-exam-table tr {
+            page-break-inside: avoid;
+        }
+
+        .table-header {
+            background-color: #00aae4;
+            text-align: center;
+            font-weight: bold;
+            font-size: 10.5px !important;
+            line-height: 1.05;
+            vertical-align: middle !important;
+            padding: 2px 1px !important;
+        }
+
+        /* =========================================================
+           ANCHOS DE COLUMNAS
+           
+           11 columnas
+           ========================================================= */
+
+        .col-date {
+            width: 7%;
+            text-align: center;
+        }
+
+        .col-expiration {
+            width: 8%;
+            text-align: center;
+        }
+
+        .col-exam-type {
+            width: 9%;
+            text-align: center;
+        }
+
+        .col-name {
+            width: 13%;
+        }
+
+        .col-position {
+            width: 10%;
+        }
+
+        .col-concept {
+            width: 9%;
+        }
+
+        .col-addressing {
+            width: 5%;
+            text-align: center;
+        }
+
+        .col-recommendations {
+            width: 13%;
+        }
+
+        .col-restrictions {
+            width: 13%;
+        }
+
+        .col-state {
+            width: 8%;
+            text-align: center;
+        }
+
+        .col-emphasis {
+            width: 5%;
+        }
+
+        /* =========================================================
+           CELDAS
+           ========================================================= */
+
+        .body-cell {
+            font-size: 10.5px !important;
+            line-height: 1.05;
+            vertical-align: middle;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .text-justify {
+            text-align: justify;
+        }
+
+        /* =========================================================
+           FECHAS
+           ========================================================= */
+
+        .date-cell {
+            text-align: center;
+            white-space: nowrap;
+            font-size: 10.5px !important;
+        }
+
+        /* =========================================================
+           ESTADO DEL EXAMEN
+           ========================================================= */
+
+        .state-cell {
+            text-align: center;
+            vertical-align: middle;
+            font-size: 10.5px !important;
+            font-weight: bold;
+            line-height: 1.05;
+        }
+
+        /* =========================================================
+           ÉNFASIS
+           ========================================================= */
+
+        .emphasis-cell {
+            text-align: center;
+            vertical-align: middle;
+            font-size: 10.5px !important;
+            line-height: 1.05;
+        }
+
+        /* =========================================================
+           EVITAR ESPACIOS EXCESIVOS
+           ========================================================= */
+
+        .occupational-exam-table p {
+            margin: 0;
+            padding: 0;
+            font-size: 10.5px !important;
+            line-height: 1.05;
+        }
+
+        .occupational-exam-table div {
+            font-size: 10.5px !important;
+            line-height: 1.05;
+        }
+    </style>
+</head>
+
+<div class="pdf-container">
+
+    <table class="occupational-exam-table">
+
+        <!-- =====================================================
+             ANCHOS DE LAS COLUMNAS
+             ===================================================== -->
+
+        <colgroup>
+            <col class="col-date">
+            <col class="col-expiration">
+            <col class="col-exam-type">
+            <col class="col-name">
+            <col class="col-position">
+            <col class="col-concept">
+            <col class="col-addressing">
+            <col class="col-recommendations">
+            <col class="col-restrictions">
+            <col class="col-state">
+            <col class="col-emphasis">
+        </colgroup>
+
+        <!-- =====================================================
+             ENCABEZADO
+             ===================================================== -->
+
+        <thead>
+            <tr>
+
+                <th class="table-header">
+                    FECHA EXAMEN
+                </th>
+
+                <th class="table-header">
+                    FECHA DE VENCIMIENTO
+                </th>
+
+                <th class="table-header">
+                    TIPO DE EXAMEN
+                </th>
+
+                <th class="table-header">
+                    APELLIDOS Y NOMBRES
+                </th>
+
+                <th class="table-header">
+                    CARGO
+                </th>
+
+                <th class="table-header">
+                    CONCEPTO
+                </th>
+
+                <th class="table-header">
+                    DIREC.
+                </th>
+
+                <th class="table-header">
+                    RECOMENDACIONES MÉDICAS
+                </th>
+
+                <th class="table-header">
+                    RESTRICCIONES MÉDICAS
+                </th>
+
+                <th class="table-header">
+                    ESTADO DEL EXAMEN
+                </th>
+
+                <th class="table-header">
+                    ÉNFASIS
+                </th>
+
+            </tr>
+        </thead>
+
+        <!-- =====================================================
+             CUERPO
+             ===================================================== -->
+
+        <tbody>
+
+            <% @occupational_exam_items.each do |occupational_exam_item| %>
+
+                <tr>
+
+                    <!-- Fecha examen -->
+                    <td class="body-cell date-cell">
+                        <%= occupational_exam_item.fec_exam %>
+                    </td>
+
+                    <!-- Fecha vencimiento -->
+                    <td class="body-cell date-cell">
+                        <%= occupational_exam_item.fec_venc %>
+                    </td>
+
+                    <!-- Tipo de examen -->
+                    <td class="body-cell center">
+                        <%= occupational_exam_item.label_exam_type(
+                            occupational_exam_item.exam_type
+                        ) %>
+                    </td>
+
+                    <!-- Nombre -->
+                    <td class="body-cell">
+                        <%= occupational_exam_item.name %>
+                    </td>
+
+                    <!-- Cargo -->
+                    <td class="body-cell">
+                        <%= occupational_exam_item.post %>
+                    </td>
+
+                    <!-- Concepto -->
+                    <td class="body-cell">
+                        <%= occupational_exam_item.concept %>
+                    </td>
+
+                    <!-- Direccionamiento -->
+                    <td class="body-cell center">
+                        <%= occupational_exam_item.addressing %>
+                    </td>
+
+                    <!-- Recomendaciones -->
+                    <td class="body-cell">
+                        <%= occupational_exam_item.recommendations %>
+                    </td>
+
+                    <!-- Restricciones -->
+                    <td class="body-cell">
+                        <%= occupational_exam_item.restrictions %>
+                    </td>
+
+                    <!-- Estado examen -->
+                    <td class="state-cell">
+                        <%= OccupationalExamItem.label_state_exam(
+                            occupational_exam_item.state_exam
+                        ) %>
+                    </td>
+
+                    <!-- Énfasis -->
+                    <td class="emphasis-cell">
+                        <%= occupational_exam_item.emphasis %>
+                    </td>
+
+                </tr>
+
+            <% end %>
+
+        </tbody>
+
+    </table>
+
+</div>

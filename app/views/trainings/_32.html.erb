@@ -1,0 +1,105 @@
+<div class="card shadow">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-primary">
+                    <tr>
+                        <th style="border:1px solid black; text-align:center">OBJETIVO</th>
+                        <th colspan="12" style="border:1px solid black; text-align:center">Generar un proceso educacional estratégico aplicado de manera organizada y sistémica, para proveer, actualizar y ampliar los conocimientos y desarrollar habilidades que cubran la totalidad de requerimientos para el desempeño de puestos y mejoramiento de áreas específicas de la Organización.</th>
+                    </tr>
+                    <tr>
+                        <th>Nro.</th>
+                        <th>Tema de capacitación</th>
+                        <th>Duración</th>
+                        <th>Objetivo</th>
+                        <th>Alcance</th>
+                        <th>Recursos</th>
+                        <th>Responsable</th>
+                        <th>Fecha</th>
+                        <th>% de cobertura en capacitaciones</th>
+                        <th>% de trabajadores capacitados</th>
+                        <th>Observaciones</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
+                    </tr>   
+                </thead>
+                <% @training_items.each do |training_item| %>             
+                    <tbody>
+                        <tr>
+                            <td><%= training_item.consecutive %></td>
+                            <td><%= training_item.training_topic %></td>
+                            <td><%= training_item.duration %></td>
+                            <td><%= training_item.goals %></td>
+                            <td><%= training_item.scope %></td>
+                            <td><%= training_item.resources %></td>
+                            <td><%= training_item.responsible %></td>
+                            <td><%= training_item.date_training  %></td>
+                            <td style="text-align:center"><%= training_item.training_coverage_percentage  %>%</td>
+                            <td style="text-align:center"><%= training_item.percentage_trained_workers  %>%</td>
+                            <td><%= training_item.observation  %></td>
+                            <td style=" text-align:center;">
+                                <% if Current.user.level > 0 && Current.user.level < 4 %>
+                                    <%= link_to edit_training_item_path(training_item), class:"btn btn-warning btn-sm" do %>
+                                        <i class="bi bi-pencil-square"></i>
+                                    <% end %>                    
+                                <% end %>    
+                            </td>
+                            <td style="text-align:center;">
+                                <% if Current.user.level > 0 && Current.user.level < 4 %>
+                                    <%= button_to training_item_path(training_item), method: :delete, class:"btn btn-danger btn-sm", form: {data: {turbo_confirm:"¿Desea eliminar este registro? Esta acción no se puede deshacer."}} do %>
+                                        <i class="bi bi-trash"></i>
+                                    <% end %>
+                                <% end %>    
+                            </td>
+                        </tr>
+                    </tbody>
+                <% end %>
+            </table>
+        </div>
+    </div>
+    <hr class="my-5">
+    <div class="container-fluid">
+        <div class="row text-center align-items-start">
+            <!-- Representante Legal -->
+            <div class="col-12 col-md-6 mb-5">
+            <div style="height: 90px; display: flex; align-items: center; justify-content: center;">
+                <% if @training.firm_legal_representative == 1 && @rep.present? && @rep.firm.attached? && @rep.firm.image? %>
+                        <%= image_tag @rep.firm, style: "max-height:90px; max-width:100%; object-fit:contain;" %>
+                <% end %>
+            </div>
+            <hr class="my-1">
+            <strong>
+                <%= @training.name_user(@training.user_legal_representative) %>
+            </strong>
+            <br>
+            <small class="text-muted">
+                Representante Legal
+            </small>
+        </div>
+        <!-- Asesor SST -->
+        <div class="col-12 col-md-6 mb-5">
+            <div style="height: 90px; display: flex; align-items: center; justify-content: center;">
+                <% if @training.firm_adviser_sst == 1 && @adv.present? && @adv.firm.attached? && @adv.firm.image? %>
+                    <%= image_tag @adv.firm, style: "max-height:90px; max-width:100%; object-fit:contain;" %>
+                <% end %>
+            </div>
+            <hr class="my-1">
+            <strong>
+                <%= @training.name_user(@training.user_adviser_sst) %>
+            </strong>
+            <br>
+            <small class="text-muted">
+                Asesor SG-SST
+            </small>
+        </div>
+    </div>
+</div>
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+            <%= link_to trainings_path(entity_id: @training.entity_id), class:"btn btn-secondary" do %>
+                <i class="bi bi-arrow-left-circle"></i>Retornar
+            <% end %>
+        </div>
+    </div>
+</div>

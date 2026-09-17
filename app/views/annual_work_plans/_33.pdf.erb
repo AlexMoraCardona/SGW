@@ -1,0 +1,533 @@
+<head>
+    <meta charset="utf-8">
+    <%= wicked_pdf_stylesheet_link_tag "application" %>
+
+    <style>
+        /* =========================================================
+           CONFIGURACIÓN DE PÁGINA
+           ========================================================= */
+
+        @page {
+            size: Letter landscape;
+            margin: 10mm 5mm 10mm 5mm;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 5.5px;
+            color: #000;
+            margin: 0;
+            padding: 0;
+        }
+
+        .pdf-container {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* =========================================================
+           TABLA PRINCIPAL
+           ========================================================= */
+
+        .annual-plan-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            margin: 0;
+            padding: 0;
+        }
+
+        .annual-plan-table th,
+        .annual-plan-table td {
+            border: 1px solid #000;
+            padding: 2px 2px;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            font-size: 5.5px !important;
+            line-height: 1.05;
+        }
+
+        /* Repetir encabezado en cada página */
+        .annual-plan-table thead {
+            display: table-header-group;
+        }
+
+        .annual-plan-table tbody {
+            display: table-row-group;
+        }
+
+        /*
+         * Evita que una actividad se divida entre dos páginas.
+         */
+        .annual-plan-table tr {
+            page-break-inside: avoid;
+        }
+
+        /* =========================================================
+           ANCHOS DE LAS COLUMNAS
+           
+           6 columnas iniciales
+           12 meses
+           Evidencias
+           Observaciones
+           Total = 20 columnas
+           ========================================================= */
+
+        .col-aim {
+            width: 6%;
+        }
+
+        .col-goal {
+            width: 7%;
+        }
+
+        .col-activity {
+            width: 7%;
+        }
+
+        .col-resource {
+            width: 7%;
+        }
+
+        .col-responsible {
+            width: 7%;
+        }
+
+        .col-date {
+            width: 5%;
+            text-align: center;
+        }
+
+        .col-month {
+            width: 3%;
+            text-align: center;
+        }
+
+        .col-evidence {
+            width: 12%;
+        }
+
+        .col-observation {
+            width: 13%;
+        }
+
+        /* =========================================================
+           ENCABEZADOS
+           ========================================================= */
+
+        .main-header {
+            background-color: #00aae4;
+            text-align: center;
+            font-weight: bold;
+            font-size: 5.5px !important;
+            line-height: 1.05;
+            vertical-align: middle !important;
+        }
+
+        .month-header {
+            background-color: #00aae4;
+            text-align: center;
+            font-weight: bold;
+            font-size: 5.5px !important;
+            line-height: 1;
+            padding: 2px 1px !important;
+            vertical-align: middle !important;
+        }
+
+        .blank-header {
+            background-color: #00aae4;
+            padding: 0 !important;
+        }
+
+        /* =========================================================
+           CELDAS DEL CUERPO
+           ========================================================= */
+
+        .body-cell {
+            font-size: 5.5px !important;
+            line-height: 1.05;
+            vertical-align: middle;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .month-cell {
+            text-align: center;
+            vertical-align: middle;
+            font-size: 5.5px !important;
+            line-height: 1;
+            padding: 2px 1px !important;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        /* =========================================================
+           ESTADO DE LA ACTIVIDAD
+           
+           Rojo  = Pendiente / no cumplido
+           Verde = Cumplido
+           ========================================================= */
+
+        .status-pending {
+            background-color: #F03553;
+            text-align: center;
+            font-weight: bold;
+            font-size: 5.5px !important;
+            line-height: 1;
+            vertical-align: middle;
+        }
+
+        .status-complete {
+            background-color: #038018;
+            color: #fff;
+            text-align: center;
+            font-weight: bold;
+            font-size: 5.5px !important;
+            line-height: 1;
+            vertical-align: middle;
+        }
+
+        /* =========================================================
+           FIRMAS
+           ========================================================= */
+
+        .signatures {
+            width: 100%;
+            margin-top: 12px;
+            page-break-inside: avoid;
+        }
+
+        .signature-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        .signature-table td {
+            border: 1px solid #000;
+            text-align: center;
+            vertical-align: middle;
+            padding: 2px;
+            font-size: 5.5px !important;
+            line-height: 1.05;
+        }
+
+        .signature-space {
+            height: 50px;
+        }
+
+        .firmapdf {
+            display: block;
+            max-width: 160px;
+            height: 45px;
+            margin: 0 auto;
+            object-fit: contain;
+        }
+
+        .signature-name {
+            font-size: 5.5px !important;
+            line-height: 1.05;
+            height: 22px;
+            vertical-align: middle !important;
+        }
+    </style>
+</head>
+
+<div class="pdf-container">
+
+    <table class="annual-plan-table">
+
+        <!-- =====================================================
+             DEFINICIÓN DE ANCHOS
+             ===================================================== -->
+
+        <colgroup>
+            <col class="col-aim">
+            <col class="col-goal">
+            <col class="col-activity">
+            <col class="col-resource">
+            <col class="col-responsible">
+            <col class="col-date">
+
+            <% 12.times do %>
+                <col class="col-month">
+            <% end %>
+
+            <col class="col-evidence">
+            <col class="col-observation">
+        </colgroup>
+
+        <!-- =====================================================
+             ENCABEZADO
+             ===================================================== -->
+
+        <thead>
+
+            <tr>
+                <th rowspan="2" class="main-header">
+                    Objetivo
+                </th>
+
+                <th rowspan="2" class="main-header">
+                    Meta
+                </th>
+
+                <th rowspan="2" class="main-header">
+                    Actividad
+                </th>
+
+                <th rowspan="2" class="main-header">
+                    Recursos
+                </th>
+
+                <th rowspan="2" class="main-header">
+                    Responsable
+                </th>
+
+                <th rowspan="2" class="main-header">
+                    Fecha de realización
+                </th>
+
+                <th colspan="3" class="main-header">
+                    Trimestre 1
+                </th>
+
+                <th colspan="3" class="main-header">
+                    Trimestre 2
+                </th>
+
+                <th colspan="3" class="main-header">
+                    Trimestre 3
+                </th>
+
+                <th colspan="3" class="main-header">
+                    Trimestre 4
+                </th>
+
+                <th rowspan="2" class="main-header">
+                    Evidencias
+                </th>
+
+                <th rowspan="2" class="main-header">
+                    Observaciones
+                </th>
+            </tr>
+
+            <tr>
+                <th class="month-header">ENE</th>
+                <th class="month-header">FEB</th>
+                <th class="month-header">MAR</th>
+
+                <th class="month-header">ABR</th>
+                <th class="month-header">MAY</th>
+                <th class="month-header">JUN</th>
+
+                <th class="month-header">JUL</th>
+                <th class="month-header">AGO</th>
+                <th class="month-header">SEP</th>
+
+                <th class="month-header">OCT</th>
+                <th class="month-header">NOV</th>
+                <th class="month-header">DIC</th>
+            </tr>
+
+        </thead>
+
+        <!-- =====================================================
+             CUERPO
+             ===================================================== -->
+
+        <tbody>
+
+            <% @annual_work_plan_items.each do |annual_work_plan_item| %>
+
+                <tr>
+
+                    <!-- Objetivo -->
+                    <td class="body-cell">
+                        <%= annual_work_plan_item.aim %>
+                    </td>
+
+                    <!-- Meta -->
+                    <td class="body-cell">
+                        <%= annual_work_plan_item.goal %>
+                    </td>
+
+                    <!-- Actividad -->
+                    <td class="body-cell">
+                        <%= annual_work_plan_item.activity %>
+                    </td>
+
+                    <!-- Recursos -->
+                    <td class="body-cell">
+                        <%= annual_work_plan_item.resource %>
+                    </td>
+
+                    <!-- Responsable -->
+                    <td class="body-cell">
+                        <%= annual_work_plan_item.responsible %>
+                    </td>
+
+                    <!-- Fecha -->
+                    <td class="body-cell center">
+                        <%= annual_work_plan_item.date_realization %>
+                    </td>
+
+                    <!-- =================================================
+                         MESES
+                         ================================================= -->
+
+                    <% (1..12).each do |month| %>
+
+                        <% if annual_work_plan_item.month == month %>
+
+                            <% if annual_work_plan_item.earring == 0 %>
+
+                                <td class="status-pending">
+                                    <%= annual_work_plan_item.label_earring(
+                                        annual_work_plan_item.earring
+                                    ) %>
+                                </td>
+
+                            <% else %>
+
+                                <td class="status-complete">
+                                    <%= annual_work_plan_item.label_earring(
+                                        annual_work_plan_item.earring
+                                    ) %>
+                                </td>
+
+                            <% end %>
+
+                        <% else %>
+
+                            <td class="month-cell"></td>
+
+                        <% end %>
+
+                    <% end %>
+
+                    <!-- Evidencias -->
+                    <td class="body-cell">
+                        <%= annual_work_plan_item.evidences_plan %>
+                    </td>
+
+                    <!-- Observaciones -->
+                    <td class="body-cell">
+                        <%= annual_work_plan_item.observation %>
+                    </td>
+
+                </tr>
+
+            <% end %>
+
+        </tbody>
+
+        <!-- =====================================================
+             FIRMAS
+             ===================================================== -->
+
+        <tbody class="signatures">
+
+            <tr>
+
+                <!-- Representante Legal -->
+                <td colspan="6" style="text-align:center;">
+
+                    <% if @annual_work_plan.firm_legal_representative == 1 %>
+
+                        <% if @rep.present? %>
+
+                            <% if @rep.firm.attached? %>
+
+                                <% if @rep.firm.image? %>
+
+                                    <%= image_tag(
+                                        Evaluation.wicked_blob_path(@rep.firm),
+                                        class: "firmapdf"
+                                    ) %>
+
+                                <% end %>
+
+                            <% end %>
+
+                        <% end %>
+
+                    <% else %>
+
+                        <div style="height:45px;"></div>
+
+                    <% end %>
+
+                </td>
+
+                <!-- Asesor SST -->
+                <td colspan="7">
+
+                    <% if @annual_work_plan.firm_adviser_sst == 1 %>
+
+                        <% if @adv.present? %>
+
+                            <% if @adv.firm.attached? %>
+
+                                <% if @adv.firm.image? %>
+
+                                    <%= image_tag(
+                                        Evaluation.wicked_blob_path(@adv.firm),
+                                        class: "firmapdf"
+                                    ) %>
+
+                                <% end %>
+
+                            <% end %>
+
+                        <% end %>
+
+                    <% else %>
+
+                        <div style="height:45px;"></div>
+
+                    <% end %>
+
+                </td>
+
+                <!-- Responsable -->
+                <td colspan="7">
+                    <div style="height:45px;"></div>
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <!-- Nombre representante legal -->
+                <td colspan="6" class="signature-name">
+                    <%= @annual_work_plan.name_user(
+                        @annual_work_plan.user_legal_representative
+                    ) %>
+                    - Representante Legal
+                </td>
+
+                <!-- Nombre asesor SST -->
+                <td colspan="7" class="signature-name">
+                    <%= @annual_work_plan.name_user(
+                        @annual_work_plan.user_adviser_sst
+                    ) %>
+                    - Asesor SST
+                </td>
+
+                <!-- Responsable -->
+                <td colspan="7" class="signature-name">
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>

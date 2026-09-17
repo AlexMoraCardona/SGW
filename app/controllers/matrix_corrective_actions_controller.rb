@@ -40,7 +40,7 @@ class MatrixCorrectiveActionsController < ApplicationController
 
     def new
       @matrix_corrective_action = MatrixCorrectiveAction.new  
-      @template = Template.where("format_number = ? and document_vigente = ?",69,1).last  
+      @template = Template.where("reference = ? and document_vigente = ?",'SACPM-SST',1).last  
     end    
 
     def create
@@ -89,8 +89,10 @@ class MatrixCorrectiveActionsController < ApplicationController
     def show
         @matrix_corrective_action = MatrixCorrectiveAction.find_by(id: params[:id].to_i)
         @matrix_action_items = MatrixActionItem.where(matrix_corrective_action_id: params[:id].to_i).order(:consecutive)
+        @entity = Entity.find(@matrix_corrective_action.entity_id)  if @matrix_corrective_action.present?
         @locations  = Location.where("entity_id = ?", @matrix_corrective_action.entity_id) if @matrix_corrective_action.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",69,1).last  
+        @template = Template.where("reference = ? and version = ?",@matrix_corrective_action.code,@matrix_corrective_action.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
     end
 
@@ -98,25 +100,26 @@ class MatrixCorrectiveActionsController < ApplicationController
         @matrix_corrective_action = MatrixCorrectiveAction.find(params[:id])
         @matrix_action_items = MatrixActionItem.where("matrix_corrective_action_id = ?", @matrix_corrective_action.id).order(:consecutive) if @matrix_corrective_action.present?
         @entity = Entity.find(@matrix_corrective_action.entity_id)  if @matrix_corrective_action.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",69,1).last  
+        @template = Template.where("reference = ? and version = ?",@matrix_corrective_action.code,@matrix_corrective_action.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+        @locations  = Location.where("entity_id = ?", @matrix_corrective_action.entity_id) if @matrix_corrective_action.present?
         
-        nombre_evidencia = @template.reference.to_s + '.pdf'
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
                 pdf = WickedPdf.new.pdf_from_string(
                     render_to_string('resumen_pdf'),
-                    orientation: 'Landscape',
-                    zoom: 0.50,
                     disable_javascript: true,
-                    margin: {top: 10, bottom: 10, left: 5, right: 5 },
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
                     page_size: 'letter',
-                    footer: {right: '[page] de [topage]'}
-                    
-                  )  
-                  send_data(pdf, filename: nombre_evidencia, disposition: 'attachment')      
+                    orientation: 'Landscape',
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
             }
-        end
+        end    
       
     end        
 

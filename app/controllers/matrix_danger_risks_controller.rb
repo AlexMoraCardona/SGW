@@ -33,7 +33,7 @@ class MatrixDangerRisksController < ApplicationController
 
     def new
       @matrix_danger_risk = MatrixDangerRisk.new  
-      @template = Template.where("format_number = ? and document_vigente = ?",31,1).last  
+      @template = Template.where("reference = ? and document_vigente = ?",'MPR-SST',1).last  
     end    
 
     def create
@@ -50,7 +50,7 @@ class MatrixDangerRisksController < ApplicationController
  
     def edit
         @matrix_danger_risk = MatrixDangerRisk.find(params[:id])
-        @template = Template.where("format_number = ? and document_vigente = ?",31,1).last  
+        @template = Template.where("reference = ? and version = ?",@matrix_danger_risk.code,@matrix_danger_risk.version).last  
     end
     
     def update
@@ -97,11 +97,12 @@ class MatrixDangerRisksController < ApplicationController
     def ver_matrix_danger_risk
         @matrix_danger_risk = MatrixDangerRisk.find_by(id: params[:id].to_i)
         @matrix_danger_items = MatrixDangerItem.where(matrix_danger_risk_id: params[:id].to_i).order(:id)
-        @template = Template.where("format_number = ? and document_vigente = ?",31,1).last  
         @entity = Entity.find(@matrix_danger_risk.entity_id) if @matrix_danger_risk.present?
         @rep = User.find(@matrix_danger_risk.user_legal_representative) if  @matrix_danger_risk.user_legal_representative.present? && @matrix_danger_risk.user_legal_representative > 0
         @adv = User.find(@matrix_danger_risk.user_adviser_sst) if  @matrix_danger_risk.user_adviser_sst.present? && @matrix_danger_risk.user_adviser_sst > 0
         @res = User.find(@matrix_danger_risk.user_responsible_sst) if  @matrix_danger_risk.user_responsible_sst.present? && @matrix_danger_risk.user_responsible_sst > 0
+        @template = Template.where("reference = ? and version = ?",@matrix_danger_risk.code,@matrix_danger_risk.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
     end    
 
@@ -109,12 +110,14 @@ class MatrixDangerRisksController < ApplicationController
         @matrix_danger_risk = MatrixDangerRisk.find_by(id: params[:id].to_i)
         @entity = Entity.find(@matrix_danger_risk.entity_id) if @matrix_danger_risk.present?
         @matrix_danger_items = MatrixDangerItem.where(matrix_danger_risk_id: @matrix_danger_risk.id).order(:id) if @matrix_danger_risk.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",31,1).last  
         @rep = User.find(@matrix_danger_risk.user_legal_representative) if  @matrix_danger_risk.user_legal_representative.present? && @matrix_danger_risk.user_legal_representative > 0
         @adv = User.find(@matrix_danger_risk.user_adviser_sst) if  @matrix_danger_risk.user_adviser_sst.present? && @matrix_danger_risk.user_adviser_sst > 0
         @res = User.find(@matrix_danger_risk.user_responsible_sst) if  @matrix_danger_risk.user_responsible_sst.present? && @matrix_danger_risk.user_responsible_sst > 0
         @cargos = CompanyPosition.listar_cargo(@entity.id) if @entity.present?
         @matrix_danger_items_total = MatrixDangerItem.where(matrix_danger_risk_id: @matrix_danger_risk.id).order(:id) if @matrix_danger_risk.present?
+        @template = Template.where("reference = ? and version = ?",@matrix_danger_risk.code,@matrix_danger_risk.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+
         if params[:cargo].present?
             if params[:cargo].to_i == 1
                 @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ?",@matrix_danger_risk.id).order(:id) if params[:id].present?      
@@ -205,30 +208,29 @@ class MatrixDangerRisksController < ApplicationController
         @matrix_danger_risk = MatrixDangerRisk.find(params[:id])
         @matrix_danger_items = MatrixDangerItem.where("matrix_danger_risk_id = ?", @matrix_danger_risk.id).order(:id) if @matrix_danger_risk.present?
         @entity = Entity.find(@matrix_danger_risk.entity_id)  if @matrix_danger_risk.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",31,1).last  
         @rep = User.find(@matrix_danger_risk.user_legal_representative) if  @matrix_danger_risk.user_legal_representative.present? && @matrix_danger_risk.user_legal_representative > 0
         @adv = User.find(@matrix_danger_risk.user_adviser_sst) if  @matrix_danger_risk.user_adviser_sst.present? && @matrix_danger_risk.user_adviser_sst > 0
         @res = User.find(@matrix_danger_risk.user_responsible_sst) if  @matrix_danger_risk.user_responsible_sst.present? && @matrix_danger_risk.user_responsible_sst > 0
+        @template = Template.where("reference = ? and version = ?",@matrix_danger_risk.code,@matrix_danger_risk.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
-        nombre_evidencia = @template.reference.to_s + '.pdf'
 
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
                 pdf = WickedPdf.new.pdf_from_string(
                     render_to_string('resumen_pdf'),
-                    orientation: 'Landscape',
-                    zoom: 0.40,
                     disable_javascript: true,
-                    margin: {top: 10, bottom: 10, left: 5, right: 5 },
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
                     page_size: 'letter',
-                    footer: {right: '[page] de [topage]'}
-                    
-                  )  
-                  send_data(pdf, filename: nombre_evidencia, disposition: 'attachment')      
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
             }
         end    
-      
+     
     end   
     
     def cargar_archivompr

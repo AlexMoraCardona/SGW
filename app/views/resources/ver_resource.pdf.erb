@@ -1,108 +1,27 @@
-<head>
-  <meta charset='utf-8' />
-  <%= wicked_pdf_stylesheet_link_tag "application" %>
-</head>
-<br>
-<div>
-<table class="table table-hover" style="border:1px solid black"> 
-<thead>
-    <tr>
-        <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
-            <% if @resource.entity.logo.present? then %>
-                <%=  image_tag  @resource.entity.logo, class: "image_peq" %>
-            <% end %>
-        </td>
-        <td rowspan="4"; colspan="5"; style="text-align:center; padding-bottom: 40px;">
-            <div><h5>ASIGNACIÓN DE RECURSOS PARA EL SG-SST <%= @resource.year if @resource.present? %></h5><h6><%= @resource.entity.business_name if @resource.present? %> Nit: <%= @resource.entity.identification_number if @resource.present? %> </h6></div>
-        </td>
-        <td rowspan="4";  style="text-align:center"></td>
+<% if @template.present? %>
+        <% format_number = @template.format_number.to_i %>
+        <% plantilla = "resources/#{format_number}" %>
 
-        <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
-
-        <td style="border:1px solid black"><%= @template.date if @template.present? %></td>
-
-    </tr>
-    <tr> 
-        <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
-        <td style="border:1px solid black"><%= @template.date_updated if @template.present? %></td>
-    </tr>
-    <tr> 
-        <td colspan="2"; style="border:1px solid black">Versión:</td>
-        <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
-    </tr>
-    <tr> 
-        <td colspan="2"; style="border:1px solid black">Código:</td>
-        <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
-    </tr>
-
-    <tr>
-        <th rowspan="2"; style="border:1px solid black;text-align:center">Nro.</th>
-        <th rowspan="2"; style="border:1px solid black">Proceso</th>
-        <th rowspan="2"; style="border:1px solid black">Actividad</th>
-        <th rowspan="2"; style="border:1px solid black">Responsable</th>
-        <th rowspan="2"; style="border:1px solid black;text-align:center">Valor presupuestado IVA incluido Año</th>
-        <th colspan="2"; style="border:1px solid black;text-align:center">Ejecutado</th>
-        <th colspan="2"; style="border:1px solid black;text-align:center">Aprobado</th>
-        <th style="border:1px solid black;text-align:center">Fecha de Aprobación </th>
-    </tr>   
-
-    <tr>
-        <th style="border:1px solid black;text-align:center">SI</th>
-        <th style="border:1px solid black;text-align:center">NO</th>
-        <th style="border:1px solid black;text-align:center">SI</th>
-        <th style="border:1px solid black;text-align:center">NO</th>                
-        <th style="border:1px solid black;text-align:center">aaaa/mm/dd</th>
-    </tr>   
-
-</thead>
-
-<% @resource_items.each do |resource_item| %>             
-    <tbody>
-        <tr>
-            <td style="border:1px solid black;text-align:center"><%= resource_item.consecutive %></td>
-            <td style="border:1px solid black;text-align:center"><%= resource_item.process %></td>
-            <td style="border:1px solid black;text-align:center"><%= resource_item.activity %></td>
-            <td style="border:1px solid black;text-align:center"><%= resource_item.user.name %></td>
-            <td style="border:1px solid black;text-align:center">$<%= resource_item.miles(resource_item.value) %></td>
-            <td style="border:1px solid black;text-align:center"><%= resource_item.labelxs(resource_item.executed) %></td>
-            <td style="border:1px solid black;text-align:center"><%= resource_item.labelxn(resource_item.executed) %></td>
-            <td style="border:1px solid black;text-align:center"><%= resource_item.labelxs(resource_item.approved) %></td>
-            <td style="border:1px solid black;text-align:center"><%= resource_item.labelxn(resource_item.approved) %></td>
-            <td style="border:1px solid black;text-align:center"><%= resource_item.date_approved  %></td>
-        </tr> 
-    </body>
+        <% if lookup_context.exists?(plantilla, [], true) %>
+            <%= render plantilla, template: @template %>
+        <% else %>
+            <div class="alert alert-warning text-center my-4">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            La plantilla <strong>#{format_number}</strong> aún no tiene
+            un formato de visualización configurado.
+            </div>
+        <% end %>
 <% end %>
-        <tr style="border:1px solid black">
-            <td  colspan="3"; style="border:0px solid black"><br>
-                <% if @resource.firm_legal_representative == 1 %>
-                    <% if @rep.present? %>
-                        <% if @rep.firm.attached? %>
-                           <% if @rep.firm.image? %> 
-                                <%= image_tag(Evaluation.wicked_blob_path(@rep.firm), class: "firmapdf")%>
-                            <% end %>
-                        <% end %>
-                    <% end %>     
-                <% end %>     
-            </td>
-            <td  colspan="3"; style="border:0px solid black"><br>
-                <% if @resource.firm_adviser_sst == 1 %>
-                    <% if @adv.present? %>
-                        <% if @adv.firm.attached? %>
-                            <% if @adv.firm.image? %> 
-                                <%= image_tag(Evaluation.wicked_blob_path(@adv.firm), class: "firmapdf")%>
-                            <% end %>
-                        <% end %>
-                    <% end %>     
-                <% end %>     
-            </td>
-            <td  colspan="4"; style="border:0px solid black"><br>
-            </td>
-        </tr> 
-        <tr>
-            <td  colspan="3"; style="border:0px solid black"><%= @resource.name_user(@resource.user_legal_representative) %> - Representante Legal</td>
-            <td  colspan="3"; style="border:0px solid black"><%= @resource.name_user(@resource.user_adviser_sst) %> - Asesor SG-SST</td>
-            <td  colspan="4"; style="border:0px solid black"></td>
-        </tr>
-    </table>
-</div>  
-<div></br></div>  
+
+<!-- =========================================================
+     CONTROL DE CAMBIOS
+     ========================================================= -->
+
+<% if @template_versions.present? %>
+
+  <div class="control-cambios">
+    <%= render 'evaluation_rule_details/control_cambios' %>
+  </div>
+
+<% end %>
+

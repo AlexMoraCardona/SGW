@@ -1,0 +1,435 @@
+<head>
+  <meta charset="utf-8">
+
+  <%= wicked_pdf_stylesheet_link_tag "application" %>
+
+  <style>
+
+    @page {
+      size: Letter landscape;
+      margin: 10mm 7mm 10mm 7mm;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 8px;
+      color: #000;
+    }
+
+    .pdf-container {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .pdf-title {
+      text-align: center;
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    /* ================================
+       TABLA PRINCIPAL
+       ================================ */
+
+    .legal-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-spacing: 0;
+      table-layout: fixed;
+      page-break-inside: auto;
+    }
+
+    .legal-table thead {
+      display: table-header-group;
+    }
+
+    .legal-table tbody {
+      display: table-row-group;
+    }
+
+    .legal-table tr {
+      page-break-inside: avoid;
+      page-break-after: auto;
+    }
+
+    .legal-table th,
+    .legal-table td {
+      border: 1px solid #000;
+      padding: 3px 3px;
+      vertical-align: middle;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      white-space: normal;
+    }
+
+    .legal-table th {
+      text-align: center;
+      font-weight: bold;
+      background-color: #d9eaf7;
+      font-size: 7px;
+    }
+
+    .legal-table td {
+      font-size: 7px;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    /* ================================
+       ANCHOS DE LAS 12 COLUMNAS
+       ================================ */
+
+    .col-consecutive {
+      width: 3%;
+    }
+
+    .col-year {
+      width: 4%;
+    }
+
+    .col-risk {
+      width: 8%;
+    }
+
+    .col-entity {
+      width: 9%;
+    }
+
+    .col-requirement {
+      width: 9%;
+    }
+
+    .col-rule {
+      width: 12%;
+    }
+
+    .col-article {
+      width: 11%;
+    }
+
+    .col-apply {
+      width: 5%;
+    }
+
+    .col-evidence {
+      width: 10%;
+    }
+
+    .col-responsible {
+      width: 8%;
+    }
+
+    .col-meets {
+      width: 5%;
+    }
+
+    .col-description {
+      width: 16%;
+    }
+
+    /* ================================
+       SECCIÓN DE FIRMAS
+       ================================ */
+
+    .signature-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      table-layout: fixed;
+      page-break-inside: avoid;
+    }
+
+    .signature-table td {
+      width: 33.33%;
+      border: 1px solid #000;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .signature-space {
+      height: 65px;
+      vertical-align: bottom !important;
+    }
+
+    .signature-image {
+      max-width: 140px;
+      max-height: 55px;
+      display: inline-block;
+    }
+
+    .signature-name {
+      min-height: 25px;
+      padding: 5px;
+      font-size: 8px;
+      font-weight: bold;
+    }
+
+    .signature-role {
+      font-size: 7px;
+      font-weight: normal;
+    }
+
+    /* Evita que la sección de firmas quede dividida */
+    .signatures {
+      page-break-inside: avoid;
+    }
+
+  </style>
+</head>
+
+<div class="pdf-container">
+
+  <% if @matrix_legal_items.present? %>
+
+    <table class="legal-table">
+
+      <thead>
+        <tr>
+
+          <th class="col-consecutive">
+            Nro
+          </th>
+
+          <th class="col-year">
+            Año
+          </th>
+
+          <th class="col-risk">
+            Requisito legal/Tema
+          </th>
+
+          <th class="col-entity">
+            Entidad Emisora
+          </th>
+
+          <th class="col-requirement">
+            Requisito
+          </th>
+
+          <th class="col-rule">
+            Número
+          </th>
+
+          <th class="col-article">
+            Artículo Aplicable
+          </th>
+
+          <th class="col-apply">
+            Aplica
+          </th>
+
+          <th class="col-evidence">
+            Evidencia de Cumplimiento
+          </th>
+
+          <th class="col-responsible">
+            Responsable
+          </th>
+
+          <th class="col-meets">
+            Cumple
+          </th>
+
+          <th class="col-description">
+            Descripción del cumplimiento
+          </th>
+
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <% n = 0 %>
+
+        <% @matrix_legal_items.each do |matrix_legal_item| %>
+
+          <% n += 1 %>
+
+          <tr>
+
+            <td class="center">
+              <%= n %>
+            </td>
+
+            <td class="center">
+              <%= matrix_legal_item.year %>
+            </td>
+
+            <td>
+              <%= matrix_legal_item.risk_factor %>
+            </td>
+
+            <td>
+              <%= matrix_legal_item.issuing_entity %>
+            </td>
+
+            <td>
+              <%= matrix_legal_item.requirement %>
+            </td>
+
+            <td>
+              <%= matrix_legal_item.rule_name %>
+            </td>
+
+            <td>
+              <%= matrix_legal_item.applicable_article %>
+            </td>
+
+            <td class="center">
+              <%= matrix_legal_item.label_apply(matrix_legal_item.apply) %>
+            </td>
+
+            <td>
+              <%= matrix_legal_item.evidence_compliance %>
+            </td>
+
+            <td>
+              <%= matrix_legal_item.responsible %>
+            </td>
+
+            <td class="center">
+              <%= matrix_legal_item.label_meets(matrix_legal_item.meets) %>
+            </td>
+
+            <td>
+              <%= matrix_legal_item.description_compliance %>
+            </td>
+
+          </tr>
+
+        <% end %>
+
+      </tbody>
+
+    </table>
+
+  <% end %>
+
+
+  <!-- ==========================================
+       FIRMAS
+       ========================================== -->
+
+  <div class="signatures">
+
+    <table class="signature-table">
+
+      <tr>
+
+        <!-- REPRESENTANTE LEGAL -->
+
+        <td class="signature-space">
+
+          <% if @matrix_legal.firm_legal_representative == 1 %>
+
+            <% if @rep.present? && @rep.firm.attached? && @rep.firm.image? %>
+
+              <%= image_tag(
+                    Evaluation.wicked_blob_path(@rep.firm),
+                    class: "signature-image"
+                  ) %>
+
+            <% end %>
+
+          <% end %>
+
+        </td>
+
+
+        <!-- ASESOR SST -->
+
+        <td class="signature-space">
+
+          <% if @matrix_legal.firm_adviser_sst == 1 %>
+
+            <% if @adv.present? && @adv.firm.attached? && @adv.firm.image? %>
+
+              <%= image_tag(
+                    Evaluation.wicked_blob_path(@adv.firm),
+                    class: "signature-image"
+                  ) %>
+
+            <% end %>
+
+          <% end %>
+
+        </td>
+
+
+        <!-- RESPONSABLE SST -->
+
+        <td class="signature-space">
+
+          <% if @matrix_legal.firm_responsible_sst == 1 %>
+
+            <% if @res.present? && @res.firm.attached? && @res.firm.image? %>
+
+              <%= image_tag(
+                    Evaluation.wicked_blob_path(@res.firm),
+                    class: "signature-image"
+                  ) %>
+
+            <% end %>
+
+          <% end %>
+
+        </td>
+
+      </tr>
+
+
+      <tr>
+
+        <td class="signature-name">
+
+          <%= @matrix_legal.name_user(
+                @matrix_legal.user_legal_representative
+              ) %>
+
+          <div class="signature-role">
+            Representante Legal
+          </div>
+
+        </td>
+
+
+        <td class="signature-name">
+
+          <%= @matrix_legal.name_user(
+                @matrix_legal.user_adviser_sst
+              ) %>
+
+          <div class="signature-role">
+            Asesor SST
+          </div>
+
+        </td>
+
+
+        <td class="signature-name">
+
+          <%= @matrix_legal.name_user(
+                @matrix_legal.user_responsible_sst
+              ) %>
+
+          <div class="signature-role">
+            Responsable SST
+          </div>
+
+        </td>
+
+      </tr>
+
+    </table>
+
+  </div>
+
+</div>
+

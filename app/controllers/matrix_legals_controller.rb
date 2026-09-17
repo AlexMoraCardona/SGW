@@ -21,41 +21,41 @@ class MatrixLegalsController < ApplicationController
 
     
     def show
-        @template = Template.where("format_number = ? and document_vigente = ?",76,1).last  
         @matrix_legal = MatrixLegal.find(params[:id])
         @matrix_legal_items = MatrixLegalItem.where("matrix_legal_id = ?", @matrix_legal.id).order(id: :desc) if @matrix_legal.present?
         @entity = Entity.find(@matrix_legal.entity_id) if @matrix_legal.present?
         @rep = User.find(@matrix_legal.user_legal_representative) if  @matrix_legal.user_legal_representative.present? && @matrix_legal.user_legal_representative > 0
         @adv = User.find(@matrix_legal.user_adviser_sst) if  @matrix_legal.user_adviser_sst.present? && @matrix_legal.user_adviser_sst > 0
         @res = User.find(@matrix_legal.user_responsible_sst) if  @matrix_legal.user_responsible_sst.present? && @matrix_legal.user_responsible_sst > 0
-
-
+        @template = Template.where("reference = ? and version = ?",@matrix_legal.code,@matrix_legal.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
     end  
     
     def ver_matrix_legal
-        @template = Template.where("format_number = ? and document_vigente = ?",76,1).last  
         @matrix_legal = MatrixLegal.find(params[:id])
         @matrix_legal_items = MatrixLegalItem.where("matrix_legal_id = ?", @matrix_legal.id).order(id: :desc) if @matrix_legal.present?
         @entity = Entity.find(@matrix_legal.entity_id) if @matrix_legal.present?
         @rep = User.find(@matrix_legal.user_legal_representative) if  @matrix_legal.user_legal_representative.present? && @matrix_legal.user_legal_representative > 0
         @adv = User.find(@matrix_legal.user_adviser_sst) if  @matrix_legal.user_adviser_sst.present? && @matrix_legal.user_adviser_sst > 0
         @res = User.find(@matrix_legal.user_responsible_sst) if  @matrix_legal.user_responsible_sst.present? && @matrix_legal.user_responsible_sst > 0
+        @template = Template.where("reference = ? and version = ?",@matrix_legal.code,@matrix_legal.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+
 
         nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
                 pdf = WickedPdf.new.pdf_from_string(
                     render_to_string('ver_matrix_legal'),
-                    orientation: 'Landscape',
-                    zoom: 0.50,
                     disable_javascript: true,
-                    margin: {top: 10, bottom: 10, left: 5, right: 5 },
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
                     page_size: 'letter',
-                    footer: {right: '[page] de [topage]'}
-                    
-                  )  
-                  send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+                    orientation: 'Landscape',
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
             }
         end    
     end    
@@ -64,6 +64,7 @@ class MatrixLegalsController < ApplicationController
         @matrix_legal_items = MatrixLegalItem.where(matrix_legal_id: params[:id]).order(id: :desc) if params[:id].present?
     end    
     def new
+      @template = Template.where("reference = ? and document_vigente = ?",'ML-SST',1).last  
       @matrix_legal =  MatrixLegal.new
     end    
 

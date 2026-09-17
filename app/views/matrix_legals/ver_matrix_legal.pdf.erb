@@ -1,122 +1,27 @@
-<head>
-    <meta charset='utf-8' />
-    <%= wicked_pdf_stylesheet_link_tag "application" %>
-</head>
+<% if @template.present? %>
+        <% format_number = @template.format_number.to_i %>
+        <% plantilla = "matrix_legals/#{format_number}" %>
 
-<br>
-<table class="table table-hover" style="border:1px solid black"> 
-    <tr>
-        <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
-            <% if @entity.logo.present? then %>
-                <%= image_tag(Evaluation.wicked_blob_path(@entity.logo),:width => "80",  :height=>"80") %>
-            <% end %>
-        </td>
-        <td rowspan="4"; colspan="7"; style="text-align:center; padding-bottom: 40px;">
-            <div><h5>MATRIZ LEGAL </h5><h6><%= @entity.business_name if @entity.present? %> Nit: <%= @entity.identification_number if @entity.present? %> </h6></div>
-        </td>
-        <td rowspan="4";  style="text-align:center">
-        </td>
-        <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
-
-        <td style="border:1px solid black"><%= @template.date if @template.present? %></td>
-        
-    </tr>
-    <tr> 
-        <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
-        <td style="border:1px solid black"><%= @template.date_updated if @template.present? %></td>
-    </tr>
-    <tr> 
-        <td colspan="2"; style="border:1px solid black">Versión:</td>
-        <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
-    </tr>
-    <tr> 
-        <td colspan="2"; style="border:1px solid black">Código:</td>
-        <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
-    </tr>
-
-<% if @matrix_legal_items.present? %>
-        <tr>
-            <th scope="col" style="border:1px solid black"><%= t('.consecutive') %></th>
-            <th scope="col" style="border:1px solid black"><%= t('.year') %></th>
-            <th scope="col" style="border:1px solid black"><%= t('.risk_factor') %></th>
-            <th scope="col" style="border:1px solid black"><%= t('.issuing_entity') %></th>
-            <th scope="col" style="border:1px solid black"><%= t('.requirement') %></th>
-            <th scope="col" style="border:1px solid black"><%= t('.rule_name') %></th>
-            <th scope="col" style="border:1px solid black"><%= t('.applicable_article') %></th>
-            <th scope="col" style="border:1px solid black"><%= t('.apply') %></th>
-            <th scope="col" style="border:1px solid black"><%= t('.evidence_compliance') %></th>
-            <th scope="col" style="border:1px solid black"><%= t('.responsible') %></th>
-            <th scope="col" style="border:1px solid black"><%= t('.meets') %></th>
-            <th scope="col" style="border:1px solid black"><%= t('.description_compliance') %></th>
-        </tr>
-    <tbody>
-        <% n = 0 %>
-        <% @matrix_legal_items.each do |matrix_legal_item| %>
-            <% n += 1 %>
-            <tr>
-                <td style="border:1px solid black"><%= n %></td>
-                <td style="border:1px solid black"><%= matrix_legal_item.year %></td>
-                <td style="border:1px solid black"><%= matrix_legal_item.risk_factor %></td>
-                <td style="border:1px solid black"><%= matrix_legal_item.issuing_entity %></td>
-                <td style="border:1px solid black"><%= matrix_legal_item.requirement %></td>
-                <td style="border:1px solid black"><%= matrix_legal_item.rule_name %></td>
-                <td style="border:1px solid black"><%= matrix_legal_item.applicable_article %></td>
-                <td style="border:1px solid black"><%= matrix_legal_item.label_apply(matrix_legal_item.apply) %></td>
-                <td style="border:1px solid black"><%= matrix_legal_item.evidence_compliance %></td>
-                <td style="border:1px solid black"><%= matrix_legal_item.responsible %></td>
-                <td style="border:1px solid black"><%= matrix_legal_item.label_meets(matrix_legal_item.meets) %></td>
-                <td style="border:1px solid black"><%= matrix_legal_item.description_compliance %></td>
-            </tr>
-        <% end %>           
-    </tbody>      
-<% end %>     
-
-<tr>
-    <td colspan="4"; style="border:1px solid black; text-align:center">
-        <% if @matrix_legal.firm_legal_representative == 1 %>
-            <% if @rep.present? %>
-                <% if @rep.firm.attached? %>
-                   <% if @rep.firm.image? %>
-                        <%= image_tag(Evaluation.wicked_blob_path(@rep.firm), class: "firmapdf")%> 
-                   <% end %>
-                <% end %>
-            <% end %> 
+        <% if lookup_context.exists?(plantilla, [], true) %>
+            <%= render plantilla, template: @template %>
         <% else %>
-           <div></br></div>         
-        <% end %>     
-    </td>
-    <td colspan="4"; style="border:1px solid black; text-align:center">
-        <% if @matrix_legal.firm_adviser_sst == 1 %>
-            <% if @adv.present? %>
-                <% if @adv.firm.attached? %>
-                    <% if @adv.firm.image? %> 
-                        <%= image_tag(Evaluation.wicked_blob_path(@adv.firm), class: "firmapdf")%> 
-                    <% end %>
-                <% end %>
-            <% end %>     
-        <% else %>
-            <div></br></div>         
-        <% end %>     
-    </td>
-    <td colspan="4"; style="border:1px solid black; text-align:center">
-        <% if @matrix_legal.firm_responsible_sst == 1 %>
-            <% if @res.present? %>
-                <% if @res.firm.attached? %>
-                    <% if @res.firm.image? %> 
-                        <%= image_tag(Evaluation.wicked_blob_path(@res.firm), class: "firmapdf")%> 
-                    <% end %>
-                <% end %>
-            <% end %>     
-        <% else %>
-            <div></br></div>         
-        <% end %>     
-    </td>
-</tr>
-<tr>
-    <td colspan="4"; style="border:1px solid black;"><%= @matrix_legal.name_user(@matrix_legal.user_legal_representative) %> - Representante Legal</td>
-    <td colspan="4"; style="border:1px solid black;"><%= @matrix_legal.name_user(@matrix_legal.user_adviser_sst) %> - Asesor SST</td>
-    <td colspan="4"; style="border:1px solid black;"><%= @matrix_legal.name_user(@matrix_legal.user_responsible_sst) %> - Responsable SST</td>
-</tr>
+            <div class="alert alert-warning text-center my-4">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            La plantilla <strong>#{format_number}</strong> aún no tiene
+            un formato de visualización configurado.
+            </div>
+        <% end %>
+<% end %>
 
-</table>  
-</div>  
+<!-- =========================================================
+     CONTROL DE CAMBIOS
+     ========================================================= -->
+
+<% if @template_versions.present? %>
+
+  <div class="control-cambios">
+    <%= render 'evaluation_rule_details/control_cambios' %>
+  </div>
+
+<% end %>
+

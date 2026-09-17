@@ -21,8 +21,11 @@ class OccupationalExamsController < ApplicationController
     def show
         @occupational_exam = OccupationalExam.find(params[:id])
         @occupational_exam_items = OccupationalExamItem.where("occupational_exam_id = ?", @occupational_exam.id) if @occupational_exam.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",35,1).last  
         @empleados = User.usuarios_empresa
+        @template = Template.where("reference = ? and version = ?",@occupational_exam.code,@occupational_exam.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+        @entity = Entity.find(@occupational_exam.entity_id) if @occupational_exam.present?
+
 
         if params[:user_application].present?
             @occupational_exam_items = @occupational_exam_items.where("user_application = ?",params[:user_application].to_i).order(:consecutive)      
@@ -52,33 +55,34 @@ class OccupationalExamsController < ApplicationController
     def ver_occupational
         @occupational_exam = OccupationalExam.find(params[:id])
         @occupational_exam_items = OccupationalExamItem.where("occupational_exam_id = ?", @occupational_exam.id) if @occupational_exam.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",35,1).last  
-
+        @template = Template.where("reference = ? and version = ?",@occupational_exam.code,@occupational_exam.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+        @entity = Entity.find(@occupational_exam.entity_id) if @occupational_exam.present?
 
         nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
                 pdf = WickedPdf.new.pdf_from_string(
                     render_to_string('ver_occupational'),
                     orientation: 'Landscape',
-                    zoom: 1,
                     disable_javascript: true,
-                    margin: {top: 10, bottom: 10, left: 5, right: 5 },
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
                     page_size: 'letter',
-                    footer: {right: '[page] de [topage]'}
-                    
-                  )  
-                  send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
             }
         end    
-   
+  
     end    
 
 
     def new
       @occupational_exam =  OccupationalExam.new
-      @template = Template.where("format_number = ? and document_vigente = ?",35,1).last  
+      @template = Template.where("reference = ? and document_vigente = ?",'MSEO-SST',1).last  
+
     end    
 
     def create

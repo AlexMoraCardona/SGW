@@ -1,75 +1,27 @@
-<head>
-  <meta charset='utf-8' />
-  <%= wicked_pdf_stylesheet_link_tag "application" %>
-</head>
-<br> 
-<div>
-<table style="border:1px solid black;width:100%;"> 
-<thead>
-    <tr>
-        <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
-            <% if @occupational_exam.entity.logo.present? then %>
-                <%=  image_tag  @occupational_exam.entity.logo, class: "image_peq" %>
-            <% end %>
-        </td>
-        <td rowspan="4"; colspan="6"; style="text-align:center; padding-bottom: 40px;">
-            <div class="col-8">MATRIZ  DE SEGUIMIENTO EXAMENES OCUPACIONALES<h6><%= @occupational_exam.entity.business_name if @occupational_exam.present? %> Nit: <%= @occupational_exam.entity.identification_number if @occupational_exam.present? %> </h6></div>
-        </td>
-        <td rowspan="4";  style="text-align:center"></td>
+<% if @template.present? %>
+        <% format_number = @template.format_number.to_i %>
+        <% plantilla = "occupational_exams/#{format_number}" %>
 
-        <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
-
-        <td style="border:1px solid black"><%= @template.date if @template.present? %></td>
-
-    </tr>
-    <tr> 
-        <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
-        <td style="border:1px solid black"><%= @template.date_updated if @template.present? %></td>
-    </tr>
-    <tr> 
-        <td colspan="2"; style="border:1px solid black">Versión:</td>
-        <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
-    </tr>
-    <tr> 
-        <td colspan="2"; style="border:1px solid black">Código:</td>
-        <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
-    </tr>
-</thead>
-</table> 
-<table style="border:1px solid black;width:100%;"> 
-    <tr>
-        <th style="border:1px solid black">FECHA EXAMEN</th>
-        <th style="border:1px solid black">FECHA DE VENCIMIENTO</th>
-        <th style="border:1px solid black">TIPO DE EXAMEN</th>
-        <th style="border:1px solid black">APELLIDOS Y NOMBRES  </th>
-        <th style="border:1px solid black">CARGO</th>
-        <th style="border:1px solid black">CONCEPTO</th>
-        <th style="border:1px solid black">DIREC.</th>
-        <th style="border:1px solid black">RECOMENDACIONES MEDICAS  </th>
-        <th style="border:1px solid black">RESTRICCIONES MEDICAS  </th>
-        <th style="border:1px solid black">ESTADO DEL EXAMEN</th>
-        <th style="border:1px solid black">ÉNFASIS</th>
-    </tr>
-
-
-<% @occupational_exam_items.each do |occupational_exam_item| %>             
-    <tbody>
-        <tr>
-            <td style="border:1px solid black"><%= occupational_exam_item.fec_exam %></td>
-            <td style="border:1px solid black"><%= occupational_exam_item.fec_venc %></td>
-            <td style="border:1px solid black"><%= occupational_exam_item.label_exam_type(occupational_exam_item.exam_type) %></td>
-            <td style="border:1px solid black"><%= occupational_exam_item.name %></td>
-            <td style="border:1px solid black"><%= occupational_exam_item.post %></td>
-            <td style="border:1px solid black"><%= occupational_exam_item.concept %></td>
-            <td style="border:1px solid black"><%= occupational_exam_item.addressing %></td>
-            <td style="border:1px solid black"><%= occupational_exam_item.recommendations %></td>
-            <td style="border:1px solid black"><%= occupational_exam_item.restrictions %></td>
-            <td style="border:1px solid black"><%= OccupationalExamItem.label_state_exam(occupational_exam_item.state_exam) %></td>
-            <td style="border:1px solid black"><%= occupational_exam_item.emphasis %></td>
-        </tr>
-    </body>
+        <% if lookup_context.exists?(plantilla, [], true) %>
+            <%= render plantilla, template: @template %>
+        <% else %>
+            <div class="alert alert-warning text-center my-4">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            La plantilla <strong>#{format_number}</strong> aún no tiene
+            un formato de visualización configurado.
+            </div>
+        <% end %>
 <% end %>
-</table>
-</div>  
-<div></br></div>  
+
+<!-- =========================================================
+     CONTROL DE CAMBIOS
+     ========================================================= -->
+
+<% if @template_versions.present? %>
+
+  <div class="control-cambios">
+    <%= render 'evaluation_rule_details/control_cambios' %>
+  </div>
+
+<% end %>
 

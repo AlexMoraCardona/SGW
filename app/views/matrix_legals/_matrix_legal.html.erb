@@ -2,15 +2,16 @@
        CÁLCULO DE ESTADÍSTICAS
        ======================================================= %>
     <%
-        total_items = @matrix_legal_items.count
-        n0       = @matrix_legal_items.where("meets = ?",0).count
-        n1       = @matrix_legal_items.where("meets = ?",1).count
-        n2       = @matrix_legal_items.where("meets = ?",2).count
-        porcentaje0 = total_items.zero? ? 0 :((n0.to_f / total_items.to_f) * 100).round 
-        porcentaje1 = total_items.zero? ? 0 :((n1.to_f / total_items.to_f) * 100).round 
-        porcentaje2 = total_items.zero? ? 0 :((n2.to_f / total_items.to_f) * 100).round 
+        total_items = 0
+        total_items = @matrix_legal_items&.count
+        n0       = @matrix_legal_items.where("meets = ?",0).count if @matrix_legal_items.present?
+        n1       = @matrix_legal_items.where("meets = ?",1).count if @matrix_legal_items.present?
+        n2       = @matrix_legal_items.where("meets = ?",2).count if @matrix_legal_items.present?
+        porcentaje0 = total_items.zero? ? 0 :((n0.to_f / total_items.to_f) * 100).round if total_items.present? &&  n0.present?
+        porcentaje1 = total_items.zero? ? 0 :((n1.to_f / total_items.to_f) * 100).round if total_items.present? &&  n1.present?
+        porcentaje2 = total_items.zero? ? 0 :((n2.to_f / total_items.to_f) * 100).round if total_items.present? &&  n2.present?
 
-        porcentaje = total_items.zero? ? 0 : (((n0.to_f + n1.to_f + n2.to_f) / total_items) * 100).round
+        porcentaje = total_items.zero? ? 0 : (((n0.to_f + n1.to_f + n2.to_f) / total_items) * 100).round if total_items.present? &&  n0.present? &&  n1.present? &&  n2.present?
     %>
 
 <div class="container py-4">
@@ -164,20 +165,7 @@
           <hr>
         </div>
     </div>
-  <% else %>
-    <div class="card shadow-sm">
-      <div class="card-body text-center">
-        <h5 class="text-secondary mb-4">
-          No existen matrices registradas.
-        </h5>
-        <%= link_to new_matrix_legal_path(entity_id: @entity.id),
-            class: "btn btn-success" do %>
-          <i class="bi bi-plus-circle"></i>
-          <%= t('.create_matrix_legal') %>
-        <% end %>
-      </div>
-    </div>
-  <% end %>
+  
     <!-- =======================================================
          RESUMEN
          ======================================================= -->
@@ -332,6 +320,21 @@
                 </tbody>
             </table>
     </div>
+  <% else %>
+    <div class="card shadow-sm">
+      <div class="card-body text-center">
+        <h5 class="text-secondary mb-4">
+          No existen matrices registradas.
+        </h5>
+        <%= link_to new_matrix_legal_path(entity_id: @entity.id),
+            class: "btn btn-success" do %>
+          <i class="bi bi-plus-circle"></i>
+          <%= t('.create_matrix_legal') %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+ 
     <div class="text-muted"> 
         <%= link_to :back, class:"btn btn-secondary" do %>
             <i class="bi bi-arrow-left-circle"></i>

@@ -4,7 +4,8 @@ class ComplaintsController < ApplicationController
 
     def new
         if  Current.user
-            @complaint = Complaint.new  
+            @complaint = Complaint.new 
+            @template = Template.where("reference = ? and document_vigente = ?",'QCCL-SST',1).last  
          else
              redirect_to new_session_path, alert: t('common.not_logged_in')  
              session.delete(:user_id)    
@@ -31,6 +32,9 @@ class ComplaintsController < ApplicationController
     def edit
         @complaint = Complaint.find(params[:id])
         @user = User.find(@complaint.user_complaint) if @complaint.present?
+        @template = Template.where("reference = ? and version = ?",@complaint.code,@complaint.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+        @entity = Entity.find(@complaint.entity_id) if @complaint.present?
 
     end
     
@@ -58,6 +62,7 @@ class ComplaintsController < ApplicationController
             @complaints_cancelado = @complaints.where("state_complaint = ?", 2).count if @complaints.present?
             @complaints_total = @complaints.count
 
+
         else
                 if Current.user && Current.user.level < 3 && Current.user.level > 0 then
                         @entity = Entity.find(Current.user.entity)
@@ -76,24 +81,27 @@ class ComplaintsController < ApplicationController
     def informe
         @complaint = Complaint.find(params[:id])
         @user = User.find(@complaint.user_complaint) if @complaint.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",18,1).last  
-        @vista = 'complaints/informe/' 
-        @footer = 'Nit: ' + @complaint.entity.identification_number.to_s + ', Dirección: ' + @complaint.entity.entity_address.to_s
+        @template = Template.where("reference = ? and version = ?",@complaint.code,@complaint.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+        @entity = Entity.find(@complaint.entity_id) if @complaint.present?
+
+
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
                 pdf = WickedPdf.new.pdf_from_string(
                     render_to_string('informe'),
-                    header: { right: '[page] de [topage]' },
-                    margin: {top: 10, bottom: 10, left: 10, right: 10 },
                     disable_javascript: true,
-                    enable_plugins: true,
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
                     page_size: 'letter',
-
-                  )  
-                  send_data(pdf, filename: 'informe.pdf', disposition: 'attachment')      
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
             }
-        end
+        end    
+
     end
 
     def resumen
@@ -130,7 +138,7 @@ class ComplaintsController < ApplicationController
 
     def complaint_params
         params.require(:complaint).permit(:user_complaint, :user_interpose_complaint, :date_complaint, :relationship_facts, 
-        :have_proof, :date_firm_complaint, :firm_complaint, :state_complaint, :entity_id, :observation, files_complaint: [])
+        :have_proof, :date_firm_complaint, :firm_complaint, :state_complaint, :entity_id, :observation, :version, :code, files_complaint: [])
     end  
 
 end  

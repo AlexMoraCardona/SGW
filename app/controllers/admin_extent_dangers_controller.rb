@@ -17,7 +17,8 @@ class AdminExtentDangersController < ApplicationController
     end    
 
     def new
-      @admin_extent_danger = AdminExtentDanger.new  
+      @admin_extent_danger = AdminExtentDanger.new 
+      @template = Template.where("reference = ? and document_vigente = ?",'MPCPR-SST',1).last  
     end    
 
     
@@ -61,6 +62,7 @@ class AdminExtentDangersController < ApplicationController
 
         @admin_extent_danger = AdminExtentDanger.new 
         @entity = Entity.find(Current.user.entity) if Current.user.present?
+        @template = Template.where("reference = ? and document_vigente = ?",'MPCPR-SST',1).last  
 
         
         #@admin_extent_danger.save
@@ -85,30 +87,39 @@ class AdminExtentDangersController < ApplicationController
     end    
 
     def matrix_prevention
-        @template = Template.where("format_number = ? and document_vigente = ?",56,1).last  
         @admin_extent_danger = AdminExtentDanger.find(params[:id])
         @form_preventions = FormPrevention.where("admin_extent_danger_id = ?", @admin_extent_danger.id) if @admin_extent_danger.present?
         @entity = Entity.find(@admin_extent_danger.entity_id) if @admin_extent_danger.present?
         @cant = 0
+        @template = Template.where("reference = ? and version = ?",@admin_extent_danger.code,@admin_extent_danger.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+
     end    
     
     def matrix_vista
-        @template = Template.where("format_number = ? and document_vigente = ?",56,1).last  
         @admin_extent_danger = AdminExtentDanger.find(params[:id])
         @form_preventions = FormPrevention.where("admin_extent_danger_id = ?", @admin_extent_danger.id) if @admin_extent_danger.present?
         @entity = Entity.find(@admin_extent_danger.entity_id) if @admin_extent_danger.present?
         @cant = 0
+        @template = Template.where("reference = ? and version = ?",@admin_extent_danger.code,@admin_extent_danger.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+
+
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'matrix_vista',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('matrix_vista'),
+                    disable_javascript: true,
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
+                    page_size: 'letter',
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+            }
+        end    
     end   
     
 
@@ -117,7 +128,7 @@ class AdminExtentDangersController < ApplicationController
     def admin_extent_danger_params
         params.require(:admin_extent_danger).permit(:date_creation, :date_vencimiento, :state_extent, :entity_id, 
         :firm_user, :date_firm_user, :user_id, :post, :type_contract, :received_training, :suffered_accident, 
-        :epp, :epp_cuales, :area, :equipment_operates, :control_proposal, :cual_suffered_accident)
+        :epp, :epp_cuales, :area, :equipment_operates, :control_proposal, :cual_suffered_accident, :version, :code)
     end 
 
 end  

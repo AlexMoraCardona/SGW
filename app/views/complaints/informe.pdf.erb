@@ -1,189 +1,27 @@
-<!DOCTYPE html>
-<head>
-    <meta charset='utf-8' />
-</head>
-<table style="border:0px solid black;width: 100%">
-    <tr>
-        <td rowspan="2" style="border:1px solid black; width: 20%; text-align:center">
-            <% if @complaint.entity.logo.present? %>
-                <%= image_tag(Evaluation.wicked_blob_path(@complaint.entity.logo),:width => "100",  :height=>"100") %>
-            <% end %>   
-        </td>
-        <td style="border:1px solid black; text-align:center">
-            <div class="col-10" style="text-transform:uppercase;"><%= @complaint.entity.business_name if @complaint.present? %></div>
-        </td>
-    </tr>
-    <tr>    
-        <td style="border:1px solid black; text-align:center">
-            <div class="col-10"><%= @template.name if @template.present? %></div>
-        </td>
-    </tr>
-</table>
-<table style="border:0px solid black;width: 100%">
-    <tr>    
-        <td style="border:1px solid black; width: 25%">
-            CÓDIGO:                 
-        </td>
-        <td style="border:1px solid black; width: 25%">
-            &nbsp;&nbsp;<%= @template.reference if @template.present? %>                
-        </td>
+<% if @template.present? %>
+        <% format_number = @template.format_number.to_i %>
+        <% plantilla = "complaints/#{format_number}" %>
 
-        <td style="border:1px solid black; width: 25%">
-            VERSIÓN:                 
-        </td>
-        <td style="border:1px solid black; width: 25%">
-            &nbsp;&nbsp;<%= @template.version if @template.present? %>                
-        </td>
-    </tr>
-    <tr>    
-        <td style="border:1px solid black; width: 25%">
-            FECHA DE ELABORACIÓN:                 
-        </td>
-        <td style="border:1px solid black; width: 25%">
-            &nbsp;&nbsp;<%= @template.date if @template.present? %>                
-        </td>
+        <% if lookup_context.exists?(plantilla, [], true) %>
+            <%= render plantilla, template: @template %>
+        <% else %>
+            <div class="alert alert-warning text-center my-4">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            La plantilla <strong>#{format_number}</strong> aún no tiene
+            un formato de visualización configurado.
+            </div>
+        <% end %>
+<% end %>
 
-        <td style="border:1px solid black; width: 25%">
-            FECHA DE ACTUALIZACIÓN:                 
-        </td>
-        <td style="border:1px solid black; width: 25%">
-            &nbsp;&nbsp;<%= @template.date_updated if @template.present? %>                
-        </td>
-    </tr>
-</table>
-</br>
+<!-- =========================================================
+     CONTROL DE CAMBIOS
+     ========================================================= -->
 
-<div> 
-    <div>&nbsp;</div>
-    <table style="width: 100%">
-        <tr>     
-            <td style="border:1px solid black; width: 40%;background-color: #00aae4;">
-                <strong>INFORMACION BÁSICA</strong>                
-            </td>
-            <td style="border:1px solid black; width: 60%;background-color: #00aae4;">
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; width: 40%;">
-                Nombre del colaborador:                
-            </td>
-            <td style="border:1px solid black; width: 60%;">
-                <%= @complaint.name(@complaint.user_complaint) if @complaint.present?  %>     
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; width: 40%;">
-                Documento de Identidad:                
-            </td>
-            <td style="border:1px solid black; width: 60%;">
-                <%= @complaint.document(@complaint.user_complaint)  %>     
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; width: 40%;">
-                Cargo:                
-            </td>
-            <td style="border:1px solid black; width: 60%;">
-                <%= Complaint.cargo(@complaint.user_complaint)  %>     
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; width: 40%;">
-                Correo electrónico:                
-            </td>
-            <td style="border:1px solid black; width: 60%;">
-                <%= @complaint.email(@complaint.user_complaint) %>     
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; width: 40%;">
-                Persona contra quien se interpone la queja:                
-            </td>
-            <td style="border:1px solid black; width: 60%;">
-                <%= @complaint.name(@complaint.user_interpose_complaint)  %>     
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; width: 40%;">
-                Cargo:                
-            </td>
-            <td style="border:1px solid black; width: 60%;">
-                <%= Complaint.cargo(@complaint.user_interpose_complaint)  %>     
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; width: 40%;">
-                Fecha diligenciamiento:                
-            </td>
-            <td style="border:1px solid black; width: 60%;">
-                <%= @complaint.date_complaint %>      
-            </td>
-        </tr>
-    </table>
-    <table style="width: 100%">
-        <tr>    
-            <td style="border:1px solid black; width: 100%;background-color: #00aae4;">
-                <strong>1. RELACIÓN DE LOS HECHOS MOTIVO DE LA QUEJA:</strong><br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>1.1</strong>Describa todos los elementos en los que se identifiquen las circunstancias de tiempo (cuándo), modo (cómo), lugar (dónde) y cualquier otra que considere pertinente. De ser necesario el Comité podrá solicitarle ampliación de la información aquí descrita.
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; width: 100%">
-                <%= @complaint.relationship_facts %> 
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; width: 100%;background-color: #00aae4;">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>1.2</strong>¿Cuenta usted con alguna prueba? ¿Cuál(es)?  Relaciónelas y adjúntelas:
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; width: 100%">
-                <%= @complaint.observation %> 
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; width: 100%;background-color: #00aae4;">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>1.3</strong>¿Ha puesto en conocimiento de alguna autoridad los hechos aquí relacionados?
-            </td>
-        </tr>
-        <tr> 
-            <td style="border:1px solid black; width: 100%">
-                <% if @complaint.have_proof == 0 %>   
-                    <td style="border:1px solid black; width: 100%">
-                        SI(_)  NO(X) 
-                    </td>
-                <% else %>
-                    SI(X)  NO(_) 
-                <% end %>
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; width: 100%;">
-                Firma del Funcionario o Contratista:<br>
-                <div class="row"> 
-                    <div class="col-11">
-                        <div>&nbsp;</div>
-                        <% if @complaint.firm_complaint == 1 %>
-                           <% if @complaint.usuario(@complaint.user_complaint).firm.attached? %>
-                              <% if @complaint.usuario(@complaint.user_complaint).firm.image? %> 
-                              &nbsp;&nbsp;&nbsp;<%= image_tag @complaint.usuario(@complaint.user_complaint).firm, class: "firma" %>
-                                   <p>________________________________</p>
-                                <% end %>
-                            <% end %>
-                        <% else %>    
-                            <p>________________________________</p>
-                        <% end %>     
-                    </div>
-                </div>
-            </td>
-        </tr>
-    </table>
-    <div>&nbsp;</div>
-    <div class="row">
-        <div class="col-12">
-            El Comité no acepta quejas anónimas
-        </div>
-    </div>
+<% if @template_versions.present? %>
 
-</div>    
+  <div class="control-cambios">
+    <%= render 'evaluation_rule_details/control_cambios' %>
+  </div>
+
+<% end %>
+

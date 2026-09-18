@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_09_15_053641) do
+ActiveRecord::Schema[7.0].define(version: 2026_09_17_215544) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -163,6 +163,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_15_053641) do
     t.string "equipment_operates"
     t.string "control_proposal"
     t.string "cual_suffered_accident"
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["entity_id"], name: "index_admin_extent_dangers_on_entity_id"
     t.index ["user_id"], name: "index_admin_extent_dangers_on_user_id"
   end
@@ -224,6 +226,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_15_053641) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["entity_id"], name: "index_analysis_risks_on_entity_id"
   end
 
@@ -441,6 +445,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_15_053641) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["entity_id"], name: "index_change_managements_on_entity_id"
   end
 
@@ -530,6 +536,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_15_053641) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["entity_id"], name: "index_complaints_on_entity_id"
   end
 
@@ -1684,6 +1692,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_15_053641) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["entity_id"], name: "index_matrix_conditions_on_entity_id"
   end
 
@@ -1807,6 +1817,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_15_053641) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["entity_id"], name: "index_matrix_goals_on_entity_id"
   end
 
@@ -2480,6 +2492,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_15_053641) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["entity_id"], name: "index_security_standards_on_entity_id"
   end
 

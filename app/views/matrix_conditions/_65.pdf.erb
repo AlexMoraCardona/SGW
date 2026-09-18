@@ -1,0 +1,492 @@
+<head>
+    <meta charset="utf-8">
+
+    <%= wicked_pdf_stylesheet_link_tag "application" %>
+
+    <style>
+        /* =========================================================
+           CONFIGURACIÓN GENERAL DEL PDF
+           ========================================================= */
+
+        @page {
+            size: Letter landscape;
+            margin: 10mm 5mm 10mm 5mm;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 6.5px;
+            color: #000;
+            margin: 0;
+            padding: 0;
+        }
+
+        .pdf-container {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        /* =========================================================
+           TABLA PRINCIPAL
+           ========================================================= */
+
+        .unsafe-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            margin: 0;
+            padding: 0;
+        }
+
+        /*
+         * Los encabezados se repiten automáticamente
+         * cuando la tabla continúa en otra página.
+         */
+        .unsafe-table thead {
+            display: table-header-group;
+        }
+
+        .unsafe-table tbody {
+            display: table-row-group;
+        }
+
+        /*
+         * Evita que una fila quede partida entre páginas.
+         */
+        .unsafe-table tr {
+            page-break-inside: avoid;
+        }
+
+        .unsafe-table th,
+        .unsafe-table td {
+            border: 1px solid #000;
+            padding: 2px 2px;
+            vertical-align: middle;
+
+            font-size: 6.5px !important;
+            line-height: 1.1;
+
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+        }
+
+
+        /* =========================================================
+           ENCABEZADOS
+           ========================================================= */
+
+        .unsafe-table th {
+            background-color: #00aae4;
+            text-align: center;
+            font-weight: bold;
+            vertical-align: middle;
+            line-height: 1.05;
+            padding: 2px 1px;
+        }
+
+
+        /* =========================================================
+           ANCHOS DE LAS 11 COLUMNAS
+           ========================================================= */
+
+        .col-number {
+            width: 3%;
+            text-align: center;
+        }
+
+        .col-date {
+            width: 7%;
+            text-align: center;
+        }
+
+        .col-reporter {
+            width: 11%;
+        }
+
+        .col-position {
+            width: 9%;
+        }
+
+        .col-email {
+            width: 11%;
+        }
+
+        .col-site {
+            width: 8%;
+        }
+
+        .col-location {
+            width: 11%;
+        }
+
+        .col-description {
+            width: 15%;
+        }
+
+        .col-action {
+            width: 7%;
+            text-align: center;
+        }
+
+        .col-state {
+            width: 7%;
+            text-align: center;
+        }
+
+        .col-observations {
+            width: 11%;
+        }
+
+
+        /* =========================================================
+           CELDAS
+           ========================================================= */
+
+        .center {
+            text-align: center;
+        }
+
+        .date-cell {
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .text-cell {
+            text-align: left;
+        }
+
+
+        /* =========================================================
+           EVITAR ESPACIOS INTERNOS EN TEXTOS
+           ========================================================= */
+
+        .unsafe-table p,
+        .unsafe-table div {
+            margin: 0;
+            padding: 0;
+            font-size: 6.5px !important;
+            line-height: 1.1;
+        }
+
+
+        /* =========================================================
+           TABLA DE FIRMAS
+           ========================================================= */
+
+        .signatures-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            margin-top: 10px;
+        }
+
+        .signatures-table td {
+            width: 50%;
+            border: 1px solid #000;
+            text-align: center;
+            vertical-align: middle;
+            padding: 3px;
+            font-size: 7px !important;
+            line-height: 1.1;
+        }
+
+        .signature-space {
+            height: 45px;
+        }
+
+        .signature-name {
+            font-weight: bold;
+            min-height: 20px;
+        }
+
+        .signature-image {
+            max-width: 150px;
+            max-height: 40px;
+            width: auto;
+            height: auto;
+        }
+
+
+        /* =========================================================
+           TÍTULO DE FIRMAS
+           ========================================================= */
+
+        .signature-title {
+            font-weight: bold;
+            text-align: center;
+        }
+
+
+        /* =========================================================
+           AJUSTES PARA PDF
+           ========================================================= */
+
+        img {
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+
+<div class="pdf-container">
+
+    <!-- =========================================================
+         TABLA PRINCIPAL
+         ========================================================= -->
+
+    <table class="unsafe-table">
+
+        <!-- Anchos de columnas -->
+        <colgroup>
+            <col class="col-number">
+            <col class="col-date">
+            <col class="col-reporter">
+            <col class="col-position">
+            <col class="col-email">
+            <col class="col-site">
+            <col class="col-location">
+            <col class="col-description">
+            <col class="col-action">
+            <col class="col-state">
+            <col class="col-observations">
+        </colgroup>
+
+
+        <!-- =====================================================
+             ENCABEZADO
+             ===================================================== -->
+
+        <thead>
+            <tr>
+
+                <th>
+                    N°
+                </th>
+
+                <th>
+                    Fecha reporte
+                </th>
+
+                <th>
+                    Nombre completo<br>
+                    de quien reporta
+                </th>
+
+                <th>
+                    Cargo<br>
+                    de quien reporta
+                </th>
+
+                <th>
+                    Correo electrónico
+                </th>
+
+                <th>
+                    Sede del reporte
+                </th>
+
+                <th>
+                    Ubicación exacta de la<br>
+                    condición / acto inseguro
+                </th>
+
+                <th>
+                    Descripción de la<br>
+                    condición / acto inseguro
+                </th>
+
+                <th>
+                    TIPO DE<br>
+                    ACCIÓN
+                </th>
+
+                <th>
+                    ESTADO
+                </th>
+
+                <th>
+                    OBSERVACIONES
+                </th>
+
+            </tr>
+        </thead>
+
+
+        <!-- =====================================================
+             CUERPO
+             ===================================================== -->
+
+        <tbody>
+
+            <% @numero = 0 %>
+
+            <% @matrix_unsafe_items.each do |item| %>
+
+                <% @numero += 1 %>
+
+                <tr>
+
+                    <!-- N° -->
+                    <td class="center">
+                        <%= @numero %>
+                    </td>
+
+
+                    <!-- Fecha reporte -->
+                    <td class="date-cell">
+                        <%= item.date_item %>
+                    </td>
+
+
+                    <!-- Nombre quien reporta -->
+                    <td>
+                        <%= MatrixUnsafeItem.name_user(item.user_reporta) %>
+                    </td>
+
+
+                    <!-- Cargo -->
+                    <td>
+                        <%= CompanyPosition.name_cargo(item.cargo_reporta) %>
+                    </td>
+
+
+                    <!-- Correo -->
+                    <td>
+                        <%= item.correo_reporta %>
+                    </td>
+
+
+                    <!-- Sede -->
+                    <td>
+                        <%= item.sede %>
+                    </td>
+
+
+                    <!-- Ubicación -->
+                    <td>
+                        <%= item.exact_ubication %>
+                    </td>
+
+
+                    <!-- Descripción -->
+                    <td>
+                        <%= item.description_usafe %>
+                    </td>
+
+
+                    <!-- Tipo de acción -->
+                    <td class="center">
+                        <%= MatrixUnsafeItem.tipo_accion(item.tip_action) %>
+                    </td>
+
+
+                    <!-- Estado -->
+                    <td class="center">
+                        <%= MatrixUnsafeItem.estado(item.state_unsafe) %>
+                    </td>
+
+
+                    <!-- Observaciones -->
+                    <td>
+                        <%= item.observations %>
+                    </td>
+
+                </tr>
+
+            <% end %>
+
+        </tbody>
+
+    </table>
+
+
+    <!-- =========================================================
+         FIRMAS
+         ========================================================= -->
+
+    <table class="signatures-table">
+
+        <tr>
+
+            <!-- RESPONSABLE SST -->
+            <td class="signature-space">
+
+                <% if @matrix_condition.firm_responsible == 1 %>
+
+                    <% if @res.present? &&
+                          @res.firm.attached? &&
+                          @res.firm.image? %>
+
+                        <%= image_tag(
+                            Evaluation.wicked_blob_path(@res.firm),
+                            class: "signature-image"
+                        ) %>
+
+                    <% end %>
+
+                <% end %>
+
+            </td>
+
+
+            <!-- ASESOR SST -->
+            <td class="signature-space">
+
+                <% if @matrix_condition.firm_representante == 1 %>
+
+                    <% if @adv.present? &&
+                          @adv.firm.attached? &&
+                          @adv.firm.image? %>
+
+                        <%= image_tag(
+                            Evaluation.wicked_blob_path(@adv.firm),
+                            class: "signature-image"
+                        ) %>
+
+                    <% end %>
+
+                <% end %>
+
+            </td>
+
+        </tr>
+
+
+        <tr>
+
+            <!-- RESPONSABLE SST -->
+            <td class="signature-name">
+
+                <%= MatrixCondition.name_user(
+                    @matrix_condition.user_responsible
+                ) %>
+
+                <br>
+
+                Responsable del SST
+
+            </td>
+
+
+            <!-- ASESOR SST -->
+            <td class="signature-name">
+
+                <%= MatrixCondition.name_user(
+                    @matrix_condition.user_representante
+                ) %>
+
+                <br>
+
+                Asesor del SST
+
+            </td>
+
+        </tr>
+
+    </table>
+
+</div>
+

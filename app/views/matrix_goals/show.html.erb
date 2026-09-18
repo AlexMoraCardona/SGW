@@ -1,147 +1,22 @@
-<div class="container-fluid mb-4">
-    <div align="left"; class="container col-12">
-        <a class="navbar-brand" href="/">
-            <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-        </a>
-    </div>
-    <div class="row align-items-center">
-        <div class="col-12 col-lg-2 text-center mb-3 mb-lg-0">
-            <% if @entity.logo.present? %>
-                <%= image_tag @entity.logo, class: "img-fluid", style: "max-height:90px;" %>
-            <% end %>
-        </div>
-        <div class="col-12 col-lg-7 text-center">
-            <h3 class="fw-bold mb-2">
-                MATRIZ OBJETIVOS, METAS E INDICADORES DEL SG-SST SEGURIDAD Y SALUD EN EL TRABAJO AÑO: <%=@matrix_goal.year%>
-            </h3>
-            <h5 class="mb-1">
-                <%=@entity.business_name %>
-            </h5>
-            <small class="text-muted">
-                NIT: <%= @entity.identification_number %>-<%= @entity.verification_digit if @entity.verification_digit.present? %>
-            </small>
-        </div>
-        <div class="col-12 col-lg-3">
-            <div class="row">
-                <div class="col-7 fw-bold">Fecha creación:</div>
-                <div class="col-5"><%= @template.date %></div>
+<div class="container-fluid px-2 px-md-4">
+    <%= render 'templates/encabezado' if @template.present? %>
+
+    <% if @template.present? %>
+        <% format_number = @template.format_number.to_i %>
+        <% plantilla = "matrix_goals/#{format_number}" %>
+
+        <% if lookup_context.exists?(plantilla, [], true) %>
+            <%= render plantilla, template: @template %>
+        <% else %>
+            <div class="alert alert-warning text-center my-4">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            La plantilla <strong>#{format_number}</strong> aún no tiene
+            un formato de visualización configurado.
             </div>
-            <div class="row">
-                <div class="col-7 fw-bold">Actualización:</div>
-                <div class="col-5"><%= @template.date_updated %></div>
-            </div>
-            <div class="row">
-                <div class="col-7 fw-bold">Versión:</div>
-                <div class="col-5"><%= @template.version %></div>
-            </div>
-            <div class="row">
-                <div class="col-7 fw-bold">Código:</div>
-                <div class="col-5"><%= @template.reference %></div>
-            </div>
-        </div>
-    </div>
+        <% end %>
+    <% end %>
+
+    <%= render 'evaluation_rule_details/control_cambios' if @template_versions.present? %>
 </div>
-<hr>
-<div class="card shadow">
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover align-middle">
-                <thead class="table-primary">
-                    <tr>
-                        <th>No.</th>
-                        <th>OBJETIVO</th>
-                        <th>META </th>
-                        <th>NOMBRE INDICADOR</th>
-                        <th>FORMULA DEL INDICADOR</th>
-                        <th>ANÁLISIS</th>
-                        <th>RESPONSABLE</th>
-                        <th>FRECUENCIA DE ANÁLISIS</th>
-                        <th>INDICADOR</th>
-                    </tr>   
-                </thead>
-                <% cant = 0 %>  
-                <% @matrix_goal_items.each do |matrix_goal_item| %>             
-                    <tbody>
-                        <% cant += 1 %>
-                        <tr>
-                            <td><%= cant %></td>
-                            <td><%= matrix_goal_item.objetives %></td>
-                            <td><%= matrix_goal_item.meta %>%</td>
-                            <td><%= matrix_goal_item.indicator.name %></td>
-                            <td><%= matrix_goal_item.indicator.formula %></td>
-                            <td><%= matrix_goal_item.indicator.interpretation %></td>
-                            <td><%= matrix_goal_item.indicator.responsible_management %></td>
-                            <td><%= Indicator.label_periodicidad(matrix_goal_item.indicator.periodicity) %></td>
-                            <td style="text-align:center"><%= MatrixGoal.label_dato(matrix_goal_item.indicator_id, @report_official) if @report_official.present? %>%</td>
-                        </tr> 
-                    </body>
-                <% end %>
-            </table>
-        </div>
-    </div>
-    <hr class="my-5">
-    <div class="container-fluid">
-        <div class="row text-center align-items-start">
-            <!-- Representante Legal -->
-            <div class="col-12 col-md-4 mb-5">
-            <div style="height: 90px; display: flex; align-items: center; justify-content: center;">
-                <% if @matrix_goal.firm_representante == 1 && @rep.present? && @rep.firm.attached? && @rep.firm.image? %>
-                        <%= image_tag @rep.firm, style: "max-height:90px; max-width:100%; object-fit:contain;" %>
-                <% end %>
-            </div>
-            <hr class="my-1">
-            <strong>
-                <%= @rep.name %>
-            </strong>
-            <br>
-            <small class="text-muted">
-                Representante Legal
-            </small>
-        </div>
-        <!-- Asesor SST -->
-        <div class="col-12 col-md-4 mb-5">
-            <div style="height: 90px; display: flex; align-items: center; justify-content: center;">
-                <% if @matrix_goal.firm_asesor == 1 && @adv.present? && @adv.firm.attached? && @adv.firm.image? %>
-                    <%= image_tag @adv.firm, style: "max-height:90px; max-width:100%; object-fit:contain;" %>
-                <% end %>
-            </div>
-            <hr class="my-1">
-            <strong>
-                <%= @adv.name %>
-            </strong>
-            <br>
-            <small class="text-muted">
-                Asesor SG-SST
-            </small>
-        </div>
-        <!-- Responsable SG-SST -->
-        <div class="col-12 col-md-4 mb-5">
-            <div style="height: 90px; display: flex; align-items: center; justify-content: center;">
-                <% if @matrix_goal.firm_responsible == 1 && @res.present? && @res.firm.attached? && @res.firm.image? %>
-                    <%= image_tag @res.firm, style: "max-height:90px; max-width:100%; object-fit:contain;" %>
-                <% end %>
-            </div>
-            <hr class="my-1">
-            <strong>
-                <%= @res.name %>
-            </strong>
-            <br>
-            <small class="text-muted">
-                Responsable SG-SST
-            </small>
-        </div>
-    </div>
-</div>
-<div class="card shadow-sm mb-4">
-    <div class="card-body">
-        <div class="d-flex flex-wrap justify-content-center gap-2">
-            <%= link_to matrix_goals_path(entity_id: @matrix_goal.entity.id), class:"btn btn-secondary" do %>
-                <i class="bi bi-arrow-left-circle"></i>Retornar
-            <% end %>
-            <%= link_to ver_matrix_goal_path(@matrix_goal.id, format: 'pdf'), class: "btn btn-danger btn-sm" do %>
-                <i class="bi bi-file-earmark-pdf"></i>
-                PDF
-            <% end %>
-        </div>
-    </div>
-</div>
+
+ 

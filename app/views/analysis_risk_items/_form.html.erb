@@ -1,55 +1,605 @@
-<div class="container col-12 card p-5">
-    <br> 
+<div class="analysis-risk-item-page">
+  <div class="analysis-risk-item-card">
+    <!-- =====================================================
+         ENCABEZADO
+         ===================================================== -->
+    <div class="analysis-risk-item-header">
+      <div class="analysis-risk-item-header-icon">
+        <i class="bi bi-list-check"></i>
+      </div>
+      <div>
+        <h1>Pasos del análisis de riesgos</h1>
+        <p>
+          Registre los pasos, acciones, peligros y medidas de control
+          asociados a la tarea.
+        </p>
+      </div>
+    </div>
     <%= form_with model: @analysis_risk_item do |form| %>
-        <% @analysis_risk_item.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
+      <!-- =====================================================
+           ERRORES
+           ===================================================== -->
+      <% if @analysis_risk_item.errors.any? %>
+        <div class="alert alert-danger shadow-sm mx-3 mt-3" role="alert">
+          <div class="d-flex align-items-start gap-2">
+            <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+            <div>
+              <strong>
+                Por favor revise la siguiente información:
+              </strong>
+              <ul class="mb-0 mt-2 ps-3">
+                <% @analysis_risk_item.errors.full_messages.each do |error| %>
+                  <li><%= error %></li>
+                <% end %>
+              </ul>
             </div>
-        <% end %> 
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Pasos básicos del oficio: Describa la actividad principal a realizar."><strong>Pasos básicos del oficio: </strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                    <%= form.rich_text_area :basic_steps,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Describa detalladamente cada uno de los pasos de la tarea a ejecutar."><strong>Acciones: </strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                    <%= form.rich_text_area :actions_steps,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Identifiqué cada uno de los peligros potenciales y existentes involucrados en la tarea a ejecutar. Describa las consecuencias que se pueden generar."><strong></br>Riesgo y peligros potenciales: </br></strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                    <div class="col-sm-10" > 
-                        <div><%= form.grouped_collection_select(:risks_steps, ClasificationDanger.order(:name), :clasification_danger_details, :name, :id, :name, { prompt: "Seleccione los Peligros y riesgos" }, { multiple: true, class: 'form-control' })   %></div>
-                    </div>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Describa los controles requeridos."><strong>Medidas preventivas y/o correctivas a aplicar: </strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-
-                                   
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                    <%= form.rich_text_area :measures_steps,  class: "form-control" %>
-                </td>
-            </tr>
-       </table>
-       </br> 
-        <%= form.hidden_field :analysis_risk_id, :value => params[:id].to_i, class: "form-control" if params[:id].present? %>
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+          </div>
+        </div>
+      <% end %>
+      <!-- =====================================================
+           PASOS BÁSICOS DEL OFICIO
+           ===================================================== -->
+      <div class="analysis-risk-section">
+        <div class="analysis-risk-section-title">
+          <div class="analysis-risk-section-icon">
+            <i class="bi bi-1-circle"></i>
+          </div>
+          <div>
+            <h2>Pasos básicos del oficio</h2>
+            <span>
+              Describa la actividad principal a realizar.
+            </span>
+          </div>
+        </div>
+        <div class="analysis-risk-field">
+          <div class="analysis-risk-label">
+            <div class="analysis-risk-label-title">
+              Pasos básicos del oficio
+            </div>
+            <button type="button" class="analysis-risk-help" data-bs-toggle="tooltip" data-bs-html="true" title="Pasos básicos del oficio: Describa la actividad principal a realizar.">
+              <i class="bi bi-question-circle"></i>
+              Ayuda
+            </button>
+          </div>
+          <div class="analysis-risk-input">
+            <%= form.rich_text_area :basic_steps, class: "form-control analysis-risk-trix" %>
+          </div>
+        </div>
+      </div>
+      <!-- =====================================================
+           ACCIONES
+           ===================================================== -->
+      <div class="analysis-risk-section">
+        <div class="analysis-risk-section-title">
+          <div class="analysis-risk-section-icon">
+            <i class="bi bi-2-circle"></i>
+          </div>
+          <div>
+            <h2>Acciones</h2>
+            <span>
+              Describa detalladamente cada paso de la tarea.
+            </span>
+          </div>
+        </div>
+        <div class="analysis-risk-field">
+          <div class="analysis-risk-label">
+            <div class="analysis-risk-label-title">
+              Acciones
+            </div>
+            <button type="button" class="analysis-risk-help" data-bs-toggle="tooltip" data-bs-html="true" title="Describa detalladamente cada uno de los pasos de la tarea a ejecutar.">
+              <i class="bi bi-question-circle"></i>
+              Ayuda
+            </button>
+          </div>
+          <div class="analysis-risk-input">
+            <%= form.rich_text_area :actions_steps, class: "form-control analysis-risk-trix" %>
+          </div>
+        </div>
+      </div>
+      <!-- =====================================================
+           RIESGOS Y PELIGROS
+           ===================================================== -->
+      <div class="analysis-risk-section">
+        <div class="analysis-risk-section-title">
+          <div class="analysis-risk-section-icon warning">
+            <i class="bi bi-exclamation-triangle"></i>
+          </div>
+          <div>
+            <h2>Riesgos y peligros potenciales</h2>
+            <span>
+              Identifique los peligros potenciales y existentes
+              relacionados con la tarea.
+            </span>
+          </div>
+        </div>
+        <div class="analysis-risk-field">
+          <div class="analysis-risk-label">
+            <div class="analysis-risk-label-title">
+              Riesgo y peligros potenciales
+            </div>
+            <button type="button" class="analysis-risk-help" data-bs-toggle="tooltip" data-bs-html="true" title="Identifiqué cada uno de los peligros potenciales y existentes involucrados en la tarea a ejecutar. Describa las consecuencias que se pueden generar.">
+              <i class="bi bi-question-circle"></i>
+              Ayuda
+            </button>
+          </div>
+          <div class="analysis-risk-input">
+            <%= form.grouped_collection_select(:risks_steps, ClasificationDanger.order(:name), :clasification_danger_details, :name, :id, :name, { prompt: "Seleccione los peligros y riesgos" }, {multiple: true, class: "form-select analysis-risk-select"}) %>
+            <div class="analysis-risk-hint">
+              <i class="bi bi-info-circle"></i>
+              Puede seleccionar uno o varios peligros y riesgos.
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- =====================================================
+           MEDIDAS PREVENTIVAS Y CORRECTIVAS
+           ===================================================== -->
+      <div class="analysis-risk-section">
+        <div class="analysis-risk-section-title">
+          <div class="analysis-risk-section-icon success">
+            <i class="bi bi-shield-check"></i>
+          </div>
+          <div>
+            <h2>Medidas preventivas y/o correctivas</h2>
+            <span>
+              Defina los controles requeridos para la tarea.
+            </span>
+          </div>
+        </div>
+        <div class="analysis-risk-field">
+          <div class="analysis-risk-label">
+            <div class="analysis-risk-label-title">
+              Medidas preventivas y/o correctivas a aplicar
+            </div>
+            <button type="button" class="analysis-risk-help" data-bs-toggle="tooltip" data-bs-html="true" title="Describa los controles requeridos.">
+              <i class="bi bi-question-circle"></i>
+              Ayuda
+            </button>
+          </div>
+          <div class="analysis-risk-input">
+            <%= form.rich_text_area :measures_steps, class: "form-control analysis-risk-trix" %>
+          </div>
+        </div>
+      </div>
+      <!-- =====================================================
+           CAMPO OCULTO
+           ===================================================== -->
+      <% if params[:id].present? %>
+        <%= form.hidden_field :analysis_risk_id,  value: params[:id].to_i %>
+      <% end %>
+      <!-- =====================================================
+           BOTONES
+           ===================================================== -->
+      <div class="analysis-risk-actions">
+        <%= form.button type: "submit", class: "btn btn-primary btn-sm px-4" do %>
+          <i class="bi bi-check-circle me-1"></i>
+          <%= t('common.submit') %>
+        <% end %>
+        <%= link_to :back, class: "btn btn-outline-secondary btn-sm px-4" do %>
+          <i class="bi bi-arrow-left me-1"></i>
+          Retornar
+        <% end %>
+      </div>
     <% end %>
-</div>        
-<br>
+  </div>
+</div>
+<style>
+/* =========================================================
+   CONTENEDOR PRINCIPAL
+   ========================================================= */
 
- 
+.analysis-risk-item-page {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 15px 35px;
+}
+
+
+/* =========================================================
+   TARJETA PRINCIPAL
+   ========================================================= */
+
+.analysis-risk-item-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   ENCABEZADO
+   ========================================================= */
+
+.analysis-risk-item-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px 24px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.analysis-risk-item-header-icon {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: 12px;
+  background: #0d6efd;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.analysis-risk-item-header h1 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #212529;
+}
+
+.analysis-risk-item-header p {
+  margin: 4px 0 0;
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   SECCIONES
+   ========================================================= */
+
+.analysis-risk-section {
+  padding: 23px 24px;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.analysis-risk-section:last-of-type {
+  border-bottom: none;
+}
+
+
+/* =========================================================
+   TITULO DE SECCIÓN
+   ========================================================= */
+
+.analysis-risk-section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.analysis-risk-section-icon {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 10px;
+  background: #e9f2ff;
+  color: #0d6efd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.analysis-risk-section-icon.warning {
+  background: #fff3cd;
+  color: #997404;
+}
+
+.analysis-risk-section-icon.success {
+  background: #d1e7dd;
+  color: #146c43;
+}
+
+.analysis-risk-section-title h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #343a40;
+}
+
+.analysis-risk-section-title span {
+  display: block;
+  margin-top: 2px;
+  color: #6c757d;
+  font-size: 0.82rem;
+}
+
+
+/* =========================================================
+   CAMPOS
+   ========================================================= */
+
+.analysis-risk-field {
+  display: flex;
+  align-items: flex-start;
+  gap: 22px;
+}
+
+.analysis-risk-label {
+  width: 245px;
+  min-width: 245px;
+}
+
+.analysis-risk-label-title {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #495057;
+  line-height: 1.35;
+  margin-bottom: 8px;
+}
+
+.analysis-risk-input {
+  flex: 1;
+  min-width: 0;
+}
+
+
+/* =========================================================
+   BOTÓN AYUDA
+   ========================================================= */
+
+.analysis-risk-help {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: #0d6efd;
+  font-size: 0.78rem;
+  cursor: help;
+}
+
+.analysis-risk-help:hover {
+  color: #084298;
+}
+
+.analysis-risk-help i {
+  margin-right: 4px;
+}
+
+
+/* =========================================================
+   TRIX
+   ========================================================= */
+
+.analysis-risk-trix {
+  min-height: 145px;
+}
+
+.analysis-risk-input trix-editor {
+  min-height: 145px;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 12px;
+}
+
+.analysis-risk-input trix-editor:focus {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.12);
+  outline: none;
+}
+
+
+/* =========================================================
+   SELECT DE PELIGROS
+   ========================================================= */
+
+.analysis-risk-select {
+  min-height: 180px;
+  border-radius: 8px;
+  border-color: #ced4da;
+  padding: 8px;
+}
+
+.analysis-risk-select:focus {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.12);
+}
+
+.analysis-risk-select option {
+  padding: 7px 8px;
+}
+
+
+/* =========================================================
+   AYUDA DEL SELECT
+   ========================================================= */
+
+.analysis-risk-hint {
+  margin-top: 7px;
+  color: #6c757d;
+  font-size: 0.78rem;
+}
+
+.analysis-risk-hint i {
+  margin-right: 3px;
+}
+
+
+/* =========================================================
+   BOTONES
+   ========================================================= */
+
+.analysis-risk-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 24px;
+  background: #f8f9fa;
+  border-top: 1px solid #e5e7eb;
+}
+
+.analysis-risk-actions .btn {
+  border-radius: 7px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   CELULAR
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+
+  .analysis-risk-item-page {
+    padding: 10px 8px 25px;
+  }
+
+  .analysis-risk-item-card {
+    border-radius: 10px;
+  }
+
+
+  /* ENCABEZADO */
+
+  .analysis-risk-item-header {
+    padding: 16px;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .analysis-risk-item-header-icon {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    font-size: 19px;
+    border-radius: 10px;
+  }
+
+  .analysis-risk-item-header h1 {
+    font-size: 1.15rem;
+  }
+
+  .analysis-risk-item-header p {
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
+
+
+  /* SECCIONES */
+
+  .analysis-risk-section {
+    padding: 18px 15px;
+  }
+
+
+  /* TITULOS */
+
+  .analysis-risk-section-title {
+    gap: 9px;
+    margin-bottom: 15px;
+  }
+
+  .analysis-risk-section-icon {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    font-size: 16px;
+  }
+
+  .analysis-risk-section-title h2 {
+    font-size: 0.92rem;
+  }
+
+  .analysis-risk-section-title span {
+    font-size: 0.77rem;
+    line-height: 1.35;
+  }
+
+
+  /* CAMPOS */
+
+  .analysis-risk-field {
+    display: block;
+  }
+
+  .analysis-risk-label {
+    width: auto;
+    min-width: 0;
+    margin-bottom: 8px;
+  }
+
+  .analysis-risk-label-title {
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+  }
+
+  .analysis-risk-input {
+    width: 100%;
+  }
+
+
+  /* TRIX */
+
+  .analysis-risk-trix {
+    min-height: 130px;
+  }
+
+  .analysis-risk-input trix-editor {
+    min-height: 130px;
+  }
+
+
+  /* SELECT */
+
+  .analysis-risk-select {
+    min-height: 170px;
+    font-size: 0.88rem;
+  }
+
+
+  /* BOTONES */
+
+  .analysis-risk-actions {
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 16px 15px;
+  }
+
+  .analysis-risk-actions .btn {
+    min-width: 120px;
+  }
+
+}
+
+
+/* =========================================================
+   CELULAR MUY PEQUEÑO
+   ========================================================= */
+
+@media (max-width: 400px) {
+
+  .analysis-risk-item-page {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .analysis-risk-item-header {
+    padding: 14px;
+  }
+
+  .analysis-risk-section {
+    padding: 16px 12px;
+  }
+
+  .analysis-risk-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .analysis-risk-actions .btn {
+    width: 100%;
+  }
+
+}
+
+</style>
+

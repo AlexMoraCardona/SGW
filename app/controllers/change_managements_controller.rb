@@ -12,9 +12,12 @@ class ChangeManagementsController < ApplicationController
     def show
         @change_management = ChangeManagement.find(params[:id])
         @entity = Entity.find(@change_management.entity_id) if @change_management.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",111,1).last  
         @change_management_items = ChangeManagementItem.where("change_management_id = ?",@change_management.id) if @change_management.present?   
         @user = User.find(@change_management.user_elaborated) if @change_management.user_elaborated > 0
+        @template = Template.where("reference = ? and version = ?",@change_management.code,@change_management.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+
+
         respond_to do |format|
             format.html
             format.xlsx{ 
@@ -27,8 +30,9 @@ class ChangeManagementsController < ApplicationController
     def new
       @change_management =  ChangeManagement.new
       @entity = Entity.find(Current.user.entity)
-      @template = Template.where("format_number = ? and document_vigente = ?",111,1).last  
       @company_areas = CompanyArea.where("entity_id = ?",Current.user.entity.to_i) if Current.user.entity.present?
+      @template = Template.where("reference = ? and document_vigente = ?",'GC-SST',1).last  
+
     end    
 
     def create
@@ -56,7 +60,7 @@ class ChangeManagementsController < ApplicationController
     def edit
           @change_management = ChangeManagement.find(params[:id])
           @entity = Entity.find(@change_management.entity_id)
-          @template = Template.where("format_number = ? and document_vigente = ?",111,1).last  
+          @template = Template.where("reference = ? and version = ?",@change_management.code,@change_management.version).last 
           @company_areas = CompanyArea.where("entity_id = ?",Current.user.entity.to_i) if Current.user.entity.present?
     end
     
@@ -90,23 +94,27 @@ class ChangeManagementsController < ApplicationController
     def ver_analysis_cambio
         @change_management = ChangeManagement.find(params[:id])
         @entity = Entity.find(@change_management.entity_id) if @change_management.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",111,1).last  
         @change_management_items = ChangeManagementItem.where("change_management_id = ?",@change_management.id) if @change_management.present?   
         @user = User.find(@change_management.user_elaborated) if @change_management.user_elaborated > 0
+        @template = Template.where("reference = ? and version = ?",@change_management.code,@change_management.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'ver_change_management',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                zoom: 0.75,
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
-      
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('ver_analysis_cambio'),
+                    disable_javascript: true,
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
+                    page_size: 'letter',
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+            }
+        end    
+     
     end    
 
     def firma_analisis_cambio
@@ -139,7 +147,7 @@ class ChangeManagementsController < ApplicationController
          :description_change, :analisys_change, :recomendations_change,
           :dangers_change, :requeriment_legal, :operational_control, :work_procedure, 
           :others, :user_elaborated, :date_user_elaborated, :firm_user_elaborated, 
-          :entity_id)
+          :entity_id, :version, :code)
     end 
 
 end  

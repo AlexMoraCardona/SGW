@@ -44,13 +44,15 @@
         </div>
         <p>Por favor recuerde autorizar firma, el Comité no acepta quejas anónimas</p>    
         <hr>
-        <div class="form-group">
+        <div class="form-group"> 
             <h5><%= form.label :"Adjuntar_Archivos:", style: "display: block" %></h5>
             <%= form.file_field :files_complaint, multiple: true %>
         </div> 
         <hr>
         <%= form.hidden_field :date_complaint, :value => Time.now, class: "form-control" %>
         <%= form.hidden_field :user_complaint, :value => Current.user.id, class: "form-control" %>
+        <%= form.hidden_field :code, value: @template.reference if @template.present? %>
+        <%= form.hidden_field :version, value: @template.version.to_i if @template.present? %>
 
         <br>    
         <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>

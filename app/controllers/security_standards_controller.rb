@@ -12,9 +12,10 @@ class SecurityStandardsController < ApplicationController
     def show
         @security_standard = SecurityStandard.find(params[:id])
         @entity = Entity.find(@security_standard.entity_id) if @security_standard.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",112,1).last  
         @user_elaborated = User.find(@security_standard.user_elaborated) if @security_standard.user_elaborated > 0
         @user_asesor = User.find(@security_standard.user_asesor) if @security_standard.user_asesor > 0
+        @template = Template.where("reference = ? and version = ?",@security_standard.code,@security_standard.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
         respond_to do |format|
             format.html
@@ -28,10 +29,11 @@ class SecurityStandardsController < ApplicationController
     def new
       @security_standard =  SecurityStandard.new
       @entity = Entity.find(Current.user.entity)
-      @template = Template.where("format_number = ? and document_vigente = ?",112,1).last  
       @company_areas = CompanyArea.where("entity_id = ?",Current.user.entity.to_i) if Current.user.entity.present?
       @protection_elements = ProtectionElement.where("(entity = ? or entity = ?) and state_protection = ?",6,Current.user.entity,1)
       @user_asesor = User.find(@entity.responsible_sst) if @entity.responsible_sst > 0
+      @template = Template.where("reference = ? and document_vigente = ?",'ESA-SST',1).last  
+
     end    
 
     def create
@@ -74,10 +76,10 @@ class SecurityStandardsController < ApplicationController
     def edit
           @security_standard = SecurityStandard.find(params[:id])
           @entity = Entity.find(@security_standard.entity_id)
-          @template = Template.where("format_number = ? and document_vigente = ?",112,1).last  
           @company_areas = CompanyArea.where("entity_id = ?",Current.user.entity.to_i) if Current.user.entity.present?
           @protection_elements = ProtectionElement.where("(entity = ? or entity = ?) and state_protection = ?",6,Current.user.entity,1)
           @user_asesor = User.find(@entity.responsible_sst) if @entity.responsible_sst > 0
+          @template = Template.where("reference = ? and version = ?",@security_standard.code,@security_standard.version).last  
 
     end
     
@@ -127,22 +129,27 @@ class SecurityStandardsController < ApplicationController
     def ver_security_standard
         @security_standard = SecurityStandard.find(params[:id])
         @entity = Entity.find(@security_standard.entity_id) if @security_standard.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",112,1).last  
         @user_elaborated = User.find(@security_standard.user_elaborated) if @security_standard.user_elaborated > 0
         @user_asesor = User.find(@security_standard.user_asesor) if @security_standard.user_asesor > 0
+        @template = Template.where("reference = ? and version = ?",@security_standard.code,@security_standard.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
+
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'ver_security_standard',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                zoom: 0.75,
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('ver_security_standard'),
+                    disable_javascript: true,
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
+                    page_size: 'letter',
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+            }
+        end    
       
     end    
 
@@ -187,7 +194,7 @@ class SecurityStandardsController < ApplicationController
         params.require(:security_standard).permit(:code_area, :date_standard, :user_elaborated, 
         :date_user_elaborated, :firm_user_elaborated, :cargo_user_elaborated, :user_asesor, 
         :date_user_asesor, :firm_user_asesor, :cargo_user_asesor, :objetivo, :danger, 
-        :type_action, :element_protection, :description_activity, :standard_security, :entity_id)
+        :type_action, :element_protection, :description_activity, :standard_security, :entity_id, :version, :code)
     end 
 
 end  

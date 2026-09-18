@@ -1,0 +1,516 @@
+<head>
+    <meta charset="utf-8">
+
+    <%= wicked_pdf_stylesheet_link_tag "application" %>
+
+    <style>
+        /* =========================================================
+           CONFIGURACIÓN DEL PDF
+           ========================================================= */
+
+        @page {
+            size: Letter landscape;
+            margin: 10mm 5mm 10mm 5mm;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 6.5px;
+            color: #000;
+            margin: 0;
+            padding: 0;
+        }
+
+        .pdf-container {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        /* =========================================================
+           TABLA PRINCIPAL
+           ========================================================= */
+
+        .goals-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            margin: 0;
+            padding: 0;
+        }
+
+        /*
+         * Repite el encabezado cuando la tabla continúa
+         * en una página siguiente.
+         */
+        .goals-table thead {
+            display: table-header-group;
+        }
+
+        .goals-table tbody {
+            display: table-row-group;
+        }
+
+        /*
+         * Evita que una fila sea dividida entre dos páginas.
+         */
+        .goals-table tr {
+            page-break-inside: avoid;
+        }
+
+        .goals-table th,
+        .goals-table td {
+            border: 1px solid #000;
+            padding: 2px 2px;
+            vertical-align: middle;
+
+            font-size: 6.5px !important;
+            line-height: 1.1;
+
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+        }
+
+
+        /* =========================================================
+           ENCABEZADOS
+           ========================================================= */
+
+        .goals-table th {
+            background-color: #00aae4;
+            text-align: center;
+            font-weight: bold;
+            vertical-align: middle;
+
+            font-size: 6.5px !important;
+            line-height: 1.05;
+
+            padding: 2px 1px !important;
+        }
+
+
+        /* =========================================================
+           ANCHOS DE LAS 9 COLUMNAS
+           ========================================================= */
+
+        .col-number {
+            width: 3%;
+            text-align: center;
+        }
+
+        .col-objective {
+            width: 17%;
+        }
+
+        .col-meta {
+            width: 7%;
+            text-align: center;
+        }
+
+        .col-indicator-name {
+            width: 12%;
+        }
+
+        .col-formula {
+            width: 15%;
+        }
+
+        .col-analysis {
+            width: 15%;
+        }
+
+        .col-responsible {
+            width: 10%;
+        }
+
+        .col-frequency {
+            width: 9%;
+            text-align: center;
+        }
+
+        .col-result {
+            width: 12%;
+            text-align: center;
+        }
+
+
+        /* =========================================================
+           CELDAS
+           ========================================================= */
+
+        .center {
+            text-align: center;
+        }
+
+        .number-cell,
+        .meta-cell,
+        .frequency-cell,
+        .result-cell {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .text-cell {
+            text-align: left;
+            vertical-align: middle;
+        }
+
+
+        /* =========================================================
+           CONTENIDO INTERNO
+           ========================================================= */
+
+        .goals-table p,
+        .goals-table div {
+            margin: 0;
+            padding: 0;
+            font-size: 6.5px !important;
+            line-height: 1.1;
+        }
+
+
+        /* =========================================================
+           TABLA DE FIRMAS
+           ========================================================= */
+
+        .signatures-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            margin-top: 12px;
+        }
+
+        .signatures-table td {
+            width: 33.333%;
+            border: 1px solid #000;
+            text-align: center;
+            vertical-align: middle;
+            padding: 3px;
+
+            font-size: 7px !important;
+            line-height: 1.1;
+        }
+
+        /*
+         * Espacio reservado para la firma.
+         */
+        .signature-space {
+            height: 45px;
+        }
+
+        .signature-name {
+            font-weight: bold;
+            min-height: 20px;
+        }
+
+        .signature-image {
+            max-width: 150px;
+            max-height: 40px;
+            width: auto;
+            height: auto;
+        }
+
+
+        /* =========================================================
+           EVITAR ELEMENTOS PARTIDOS
+           ========================================================= */
+
+        .signatures-table tr {
+            page-break-inside: avoid;
+        }
+
+        img {
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+
+<div class="pdf-container">
+
+    <!-- =========================================================
+         MATRIZ DE OBJETIVOS E INDICADORES
+         ========================================================= -->
+
+    <table class="goals-table">
+
+        <!-- =====================================================
+             ANCHOS DE LAS COLUMNAS
+             ===================================================== -->
+
+        <colgroup>
+            <col class="col-number">
+            <col class="col-objective">
+            <col class="col-meta">
+            <col class="col-indicator-name">
+            <col class="col-formula">
+            <col class="col-analysis">
+            <col class="col-responsible">
+            <col class="col-frequency">
+            <col class="col-result">
+        </colgroup>
+
+
+        <!-- =====================================================
+             ENCABEZADO
+             ===================================================== -->
+
+        <thead>
+            <tr>
+
+                <th>
+                    No.
+                </th>
+
+                <th>
+                    OBJETIVOS<br>
+                    GENERALES
+                </th>
+
+                <th>
+                    META
+                </th>
+
+                <th>
+                    NOMBRE<br>
+                    INDICADOR
+                </th>
+
+                <th>
+                    FÓRMULA DEL<br>
+                    INDICADOR
+                </th>
+
+                <th>
+                    ANÁLISIS
+                </th>
+
+                <th>
+                    RESPONSABLE
+                </th>
+
+                <th>
+                    FRECUENCIA<br>
+                    DE ANÁLISIS
+                </th>
+
+                <th>
+                    INDICADOR
+                </th>
+
+            </tr>
+        </thead>
+
+
+        <!-- =====================================================
+             CUERPO
+             ===================================================== -->
+
+        <tbody>
+
+            <% cant = 0 %>
+
+            <% @matrix_goal_items.each do |matrix_goal_item| %>
+
+                <% cant += 1 %>
+
+                <tr>
+
+                    <!-- No. -->
+                    <td class="number-cell">
+                        <%= cant %>
+                    </td>
+
+
+                    <!-- Objetivos generales -->
+                    <td class="text-cell">
+                        <%= matrix_goal_item.objetives %>
+                    </td>
+
+
+                    <!-- Meta -->
+                    <td class="meta-cell">
+                        <%= matrix_goal_item.meta %>%
+                    </td>
+
+
+                    <!-- Nombre indicador -->
+                    <td class="text-cell">
+                        <%= matrix_goal_item.indicator.name %>
+                    </td>
+
+
+                    <!-- Fórmula -->
+                    <td class="text-cell">
+                        <%= matrix_goal_item.indicator.formula %>
+                    </td>
+
+
+                    <!-- Análisis -->
+                    <td class="text-cell">
+                        <%= matrix_goal_item.indicator.interpretation %>
+                    </td>
+
+
+                    <!-- Responsable -->
+                    <td class="text-cell">
+                        <%= matrix_goal_item.indicator.responsible_management %>
+                    </td>
+
+
+                    <!-- Frecuencia -->
+                    <td class="frequency-cell">
+                        <%= Indicator.label_periodicidad(
+                            matrix_goal_item.indicator.periodicity
+                        ) %>
+                    </td>
+
+
+                    <!-- Resultado indicador -->
+                    <td class="result-cell">
+
+                        <% if @report_official.present? %>
+
+                            <%= MatrixGoal.label_dato(
+                                matrix_goal_item.indicator_id,
+                                @report_official
+                            ) %>%
+
+                        <% end %>
+
+                    </td>
+
+                </tr>
+
+            <% end %>
+
+        </tbody>
+
+    </table>
+
+
+    <!-- =========================================================
+         FIRMAS
+         ========================================================= -->
+
+    <table class="signatures-table">
+
+        <!-- =====================================================
+             IMÁGENES DE FIRMAS
+             ===================================================== -->
+
+        <tr>
+
+            <!-- Representante Legal -->
+            <td class="signature-space">
+
+                <% if @matrix_goal.firm_representante == 1 %>
+
+                    <% if @rep.present? &&
+                          @rep.firm.attached? &&
+                          @rep.firm.image? %>
+
+                        <%= image_tag(
+                            Evaluation.wicked_blob_path(@rep.firm),
+                            class: "signature-image"
+                        ) %>
+
+                    <% end %>
+
+                <% end %>
+
+            </td>
+
+
+            <!-- Asesor SG-SST -->
+            <td class="signature-space">
+
+                <% if @matrix_goal.firm_asesor == 1 %>
+
+                    <% if @adv.present? &&
+                          @adv.firm.attached? &&
+                          @adv.firm.image? %>
+
+                        <%= image_tag(
+                            Evaluation.wicked_blob_path(@adv.firm),
+                            class: "signature-image"
+                        ) %>
+
+                    <% end %>
+
+                <% end %>
+
+            </td>
+
+
+            <!-- Responsable SG-SST -->
+            <td class="signature-space">
+
+                <% if @matrix_goal.firm_responsible == 1 %>
+
+                    <% if @res.present? &&
+                          @res.firm.attached? &&
+                          @res.firm.image? %>
+
+                        <%= image_tag(
+                            Evaluation.wicked_blob_path(@res.firm),
+                            class: "signature-image"
+                        ) %>
+
+                    <% end %>
+
+                <% end %>
+
+            </td>
+
+        </tr>
+
+
+        <!-- =====================================================
+             NOMBRES Y CARGOS
+             ===================================================== -->
+
+        <tr>
+
+            <!-- Representante Legal -->
+            <td class="signature-name">
+
+                <%= @rep.present? ? @rep.name : "" %>
+
+                <br>
+
+                Representante Legal
+
+            </td>
+
+
+            <!-- Asesor -->
+            <td class="signature-name">
+
+                <%= @adv.present? ? @adv.name : "" %>
+
+                <br>
+
+                Asesor SG-SST
+
+            </td>
+
+
+            <!-- Responsable -->
+            <td class="signature-name">
+
+                <%= @res.present? ? @res.name : "" %>
+
+                <br>
+
+                Responsable SG-SST
+
+            </td>
+
+        </tr>
+
+    </table>
+
+</div>

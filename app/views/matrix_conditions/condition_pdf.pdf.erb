@@ -1,111 +1,27 @@
-<head>
-    <meta charset='utf-8' />
-    <%= wicked_pdf_stylesheet_link_tag "application" %>
-</head>
+<% if @template.present? %>
+        <% format_number = @template.format_number.to_i %>
+        <% plantilla = "matrix_conditions/#{format_number}" %>
 
-<br>
-<div>
-
-    <table style="border:1px solid black;width: 100%;"> 
-        <thead>
-            <tr>
-                <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
-                    <% if @matrix_condition.entity.logo.present? then %>
-                        <%= image_tag(Evaluation.wicked_blob_path(@matrix_condition.entity.logo),:width => "80",  :height=>"80") %>
-                    <% end %>
-                </td>
-                <td rowspan="4"; colspan="6"; style="border:1px solid black;text-align:center">
-                    <div class="col-10"><h5>MATRIZ DE SEGUIMIENTO DE ACTOS Y CONDICIONES INSEGURAS</h5><h6><%= @matrix_condition.entity.business_name if @matrix_condition.present? %> Nit: <%= @matrix_condition.entity.identification_number if @matrix_condition.present? %> </h6></div>
-                </td>
-                <td rowspan="4";  style="text-align:center">
-                </td>
-                <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
-
-                <td style="border:1px solid black"><%= @template.date if @template.present? %></td>
-            </tr>
-            <tr> 
-                <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
-                <td style="border:1px solid black"><%= @template.date_updated if @template.present? %></td>
-            </tr>
-            <tr> 
-                <td colspan="2"; style="border:1px solid black">Versión:</td>
-                <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
-            </tr>
-            <tr> 
-                <td colspan="2"; style="border:1px solid black">Código:</td>
-                <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
-            </tr>
-    </table>            
-    <table style="border:0px solid black;width: 100%;">
-            <tr>  
-                <td style="border:1px solid black; text-align:center">N°</TD>
-                <td style="border:1px solid black; text-align:center">Fecha reporte</TD>
-                <td style="border:1px solid black; text-align:center">Nombre  completo de quien reporta</TD>
-                <td style="border:1px solid black; text-align:center">Cargo de quien reporta</TD>
-                <td style="border:1px solid black; text-align:center">Correo electrónico</TD>
-                <td style="border:1px solid black; text-align:center">Sede del reporte</TD>
-                <td style="border:1px solid black; text-align:center">Ubicación  exacta de la condición /acto inseguro</TD>
-                <td style="border:1px solid black; text-align:center">Descripción de la condición / acto inseguro</TD>
-                <td style="border:1px solid black; text-align:center">TIPO DE ACCIÓN</TD>
-                <td style="border:1px solid black; text-align:center">ESTADO</TD>
-                <td style="border:1px solid black; text-align:center">OBSERVACIONES</TD>
-             </tr>  
-             
-        </thead>
-        <% @numero = 0 %>          
-        <% @matrix_unsafe_items.each do |item| %>   
-            <% @numero += 1 %>          
-            <tbody>
-                <tr>
-                    <td style="border:1px solid black; text-align:center"><%= @numero %></td>
-                    <td style="border:1px solid black"><%= item.date_item %></td>
-                    <td style="border:1px solid black"><%= MatrixUnsafeItem.name_user(item.user_reporta) %></td>
-                    <td style="border:1px solid black"><%= CompanyPosition.name_cargo(item.cargo_reporta)  %></td>
-                    <td style="border:1px solid black"><%= item.correo_reporta %></td>
-                    <td style="border:1px solid black"><%= item.sede %></td>
-                    <td style="border:1px solid black"><%= item.exact_ubication %></td>
-                    <td style="border:1px solid black"><%= item.description_usafe %></td>
-                    <td style="border:1px solid black"><%= MatrixUnsafeItem.tipo_accion(item.tip_action) %></td>
-                    <td style="border:1px solid black"><%= MatrixUnsafeItem.estado(item.state_unsafe) %></td>
-                    <td style="border:1px solid black"><%= item.observations %></td>
-                </tr>
-            </body>
+        <% if lookup_context.exists?(plantilla, [], true) %>
+            <%= render plantilla, template: @template %>
+        <% else %>
+            <div class="alert alert-warning text-center my-4">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            La plantilla <strong>#{format_number}</strong> aún no tiene
+            un formato de visualización configurado.
+            </div>
         <% end %>
-    </table>  
-    <table style="border:0px solid black;width: 100%;">  
-        <tr>
-            <td colspan="8"; style="border:1px solid black; text-align:center">&nbsp;
-                <% if @matrix_condition.firm_responsible == 1 %>
-                    <% if @res.present? %>
-                        <% if @res.firm.attached? %>
-                           <% if @res.firm.image? %> 
-                                <%= image_tag(Evaluation.wicked_blob_path(@res.firm), class: "firmapdf")%> 
-                           <% end %>
-                        <% end %>
-                    <% end %> 
-                <% else %>
-                   <div></br></div>         
-                <% end %>     
-            </td>
-            <td colspan="8"; style="border:1px solid black; text-align:center">&nbsp;
-                <% if @matrix_condition.firm_representante == 1 %>
-                    <% if @adv.present? %>
-                        <% if @adv.firm.attached? %>
-                            <% if @adv.firm.image? %>
-                                <%= image_tag(Evaluation.wicked_blob_path(@adv.firm), class: "firmapdf")%> 
-                            <% end %>
-                        <% end %>
-                    <% end %>     
-                <% else %>
-                    <div></br></div>         
-                <% end %>     
-            </td>
-        </tr>
-        <tr>
-            <td colspan="8"; style="border:1px solid black; text-align:center"><%= MatrixCondition.name_user(@matrix_condition.user_responsible) %> - Responsable del SST</td>
-            <td colspan="8"; style="border:1px solid black; text-align:center"><%= MatrixCondition.name_user(@matrix_condition.user_representante) %> - Asesor del SST</td>
-        </tr>
-    </table>  
-    </br>
-</div>    
+<% end %>
+
+<!-- =========================================================
+     CONTROL DE CAMBIOS
+     ========================================================= -->
+
+<% if @template_versions.present? %>
+
+  <div class="control-cambios">
+    <%= render 'evaluation_rule_details/control_cambios' %>
+  </div>
+
+<% end %>
 

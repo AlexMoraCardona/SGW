@@ -1,0 +1,310 @@
+<head>
+    <meta charset="utf-8">
+    <%= wicked_pdf_stylesheet_link_tag "pdf" %>
+    <style>
+        /* =========================================================
+           CONFIGURACIÓN DEL PDF
+           ========================================================= */
+        @page {
+            size: Letter portrait;
+            margin: 12mm 10mm 12mm 10mm;
+        }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 7px;
+            color: #000;
+            margin: 0;
+            padding: 0;
+        }
+        .pdf-container {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* =========================================================
+           TABLA PRINCIPAL
+           ========================================================= */
+        .prevention-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            margin: 0;
+            padding: 0;
+        }
+        /*
+         * Permite que el encabezado se repita automáticamente
+         * cuando la tabla ocupa varias páginas.
+         */
+        .prevention-table thead {
+            display: table-header-group;
+        }
+        .prevention-table tbody {
+            display: table-row-group;
+        }
+
+        /*
+         * Evita dividir una fila entre dos páginas.
+         */
+        .prevention-table tr {
+            page-break-inside: avoid;
+        }
+        .prevention-table th,
+        .prevention-table td {
+            border: 1px solid #000;
+            padding: 3px 3px;
+            vertical-align: middle;
+
+            font-size: 7px !important;
+            line-height: 1.15;
+
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+        }
+
+        /* =========================================================
+           ENCABEZADOS
+           ========================================================= */
+        .prevention-table th {
+            background-color: #00aae4;
+            text-align: center;
+            font-weight: bold;
+            vertical-align: middle;
+
+            font-size: 7px !important;
+            line-height: 1.1;
+
+            padding: 3px 2px !important;
+        }
+
+        /* =========================================================
+           ANCHOS DE LAS COLUMNAS
+          
+           7 columnas:
+           No.
+           Tipo de peligro
+           Descripción
+           Efectos
+           Medidas de intervención (2 columnas)
+           Expuesto
+           ========================================================= */
+
+        .col-number {
+            width: 5%;
+            text-align: center;
+        }
+
+        .col-danger-type {
+            width: 15%;
+        }
+
+        .col-danger-description {
+            width: 21%;
+        }
+
+        .col-health-effects {
+            width: 22%;
+        }
+
+        .col-intervention {
+            width: 27%;
+        }
+
+        .col-exposed {
+            width: 10%;
+            text-align: center;
+        }
+
+        /* =========================================================
+           CELDAS
+           ========================================================= */
+
+        .number-cell {
+            text-align: center;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        .text-cell {
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        .center-cell {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        /* =========================================================
+           CELDA EXPUESTO
+           ========================================================= */
+
+        .exposed-cell {
+            text-align: center;
+            vertical-align: middle;
+            font-weight: bold;
+        }
+
+        .exposed-mark {
+            display: inline-block;
+            min-width: 16px;
+            padding: 2px 4px;
+            background-color: #FF0000;
+            color: #fff;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* =========================================================
+           CONTENIDO INTERNO
+           ========================================================= */
+
+        .prevention-table p,
+        .prevention-table div {
+            margin: 0;
+            padding: 0;
+            font-size: 7px !important;
+            line-height: 1.15;
+        }
+
+        /* =========================================================
+           BLOQUE FINAL / FIRMA
+           ========================================================= */
+
+        .signature-section {
+            margin-top: 25px;
+            width: 100%;
+        }
+
+        .signature-line {
+            width: 45%;
+            border-bottom: 1px solid #000;
+            min-height: 25px;
+            padding-bottom: 3px;
+            font-size: 8px !important;
+            font-weight: bold;
+        }
+
+        .signature-label {
+            margin-top: 4px;
+            font-size: 7px !important;
+            line-height: 1.2;
+        }
+
+
+        /* =========================================================
+           EVITAR ELEMENTOS PARTIDOS
+           ========================================================= */
+
+        .signature-section {
+            page-break-inside: avoid;
+        }
+    </style>
+</head>
+
+<div class="pdf-container">
+    <!-- =========================================================
+         TABLA DE PELIGROS Y MEDIDAS DE PREVENCIÓN
+         ========================================================= -->
+    <% if @form_preventions.present? %>
+        <table class="prevention-table">
+            <!-- =================================================
+                 ANCHOS DE LAS COLUMNAS
+                 ================================================= -->
+            <colgroup>
+                <col class="col-number">
+                <col class="col-danger-type">
+                <col class="col-danger-description">
+                <col class="col-health-effects">
+                <col class="col-intervention">
+                <col class="col-exposed">
+            </colgroup>
+            <!-- =================================================
+                 ENCABEZADO
+                 ================================================= -->
+            <thead>
+                <tr>
+                    <th>
+                        No.
+                    </th>
+                    <th>
+                        TIPO DE<br>
+                        PELIGRO
+                    </th>
+                    <th>
+                        DESCRIPCIÓN<br>
+                        DEL PELIGRO
+                    </th>
+                    <th>
+                        EFECTOS<br>
+                        EN LA SALUD
+                    </th>
+                    <th>
+                        MEDIDAS DE<br>
+                        INTERVENCIÓN
+                    </th>
+                    <th>
+                        EXPUESTO
+                    </th>
+                </tr>
+            </thead>
+            <!-- =================================================
+                 CUERPO
+                 ================================================= -->
+            <tbody>
+                <% @cant = 0 %>
+                <% @form_preventions.each do |form_prevention| %>
+                    <% @cant += 1 %>
+                    <tr>
+                        <!-- No. -->
+                        <td class="number-cell">
+                            <%= @cant %>
+                        </td>
+                        <!-- Tipo de peligro -->
+                        <td class="text-cell">
+                            <% if form_prevention.clasification_danger_detail.present? %>
+                                <%= form_prevention.clasification_danger_detail.clasification_danger.name if form_prevention.clasification_danger_detail.clasification_danger.present? %>
+                            <% end %>
+                        </td>
+                        <!-- Descripción del peligro -->
+                        <td class="text-cell">
+                            <%= form_prevention.clasification_danger_detail.name if form_prevention.clasification_danger_detail.present? %>
+                        </td>
+                        <!-- Efectos en la salud -->
+                        <td class="text-cell">
+                            <% if form_prevention.clasification_danger_detail.present? %>
+                                <%= DangerDetailRisk.label_risk(form_prevention.clasification_danger_detail.id) %>
+                            <% end %>
+                        </td>
+                        <!-- Medidas de intervención -->
+                        <td class="text-cell">
+                            <% if form_prevention.clasification_danger_detail.present? %>
+                                <%= DangerPrevention.label_prevention(form_prevention.clasification_danger_detail.id) %>
+                            <% end %>
+                        </td>
+                        <!-- Expuesto -->
+                        <td class="exposed-cell">
+                            <% if form_prevention.exposed.to_i == 1 %>
+                                <span class="exposed-mark">
+                                    X
+                                </span>
+                            <% end %>
+                        </td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+        <!-- =====================================================
+             FIRMA / RESPONSABLE DEL FORMULARIO
+             ===================================================== -->
+        <div class="signature-section">
+            <div class="signature-line">
+                <%= @admin_extent_danger.user.name if @admin_extent_danger.present? && @admin_extent_danger.user.present? %>
+            </div>
+            <div class="signature-label">
+                Nombre del Usuario encargado de llenar el formulario
+            </div>
+        </div>
+    <% end %>
+</div>

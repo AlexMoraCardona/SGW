@@ -1,91 +1,626 @@
-<div class="container col-12 card p-5">
-    <br> 
-    <%= form_with model: @security_standard do |form| %>
-        <% @security_standard.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %> 
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>FECHA DE ELABORACIÓN</strong>
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <strong>ÁREA</strong>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;text-align:center">
-                    <%= form.date_field :date_standard,  class: "form-control" %>               
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.collection_select :code_area, @company_areas, :id, :name if @company_areas.present? %>
-                </td>
-            </tr>
-        </table>
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>OBJETIVO: </strong>
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.text_area :objetivo,  class: "form-control" %>               
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>RIESGO ASOCIADO: </strong>               
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                        <div><%= form.grouped_collection_select(:danger, ClasificationDanger.order(:name), :clasification_danger_details, :name, :id, :name, { prompt: "Seleccione los Peligros y riesgos" }, { multiple: true, class: 'form-control' })   %></div>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>TIPO DE ACCIÓN: </strong>               
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.select(:type_action, [['PREVENTIVA', 0], ['CORRECTIVA', 1], ['MEJORA', 2]]) %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>ELEMENTOS DE PROTECCIÓN PERSONAL: </strong>               
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= select_tag :element_protection, options_from_collection_for_select(@protection_elements, :id, :name), multiple: true, class: 'form-control input-sm select2', :prompt  =>  '--Seleccione los EPP--' %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>DESCRIPCIÓN DE LA ACTIVIDAD: </strong>
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.text_area :description_activity,  class: "form-control" %>               
-                </td>
-            </tr>
-        </table>   
-        <table style="width: 100%;"> 
-            <tr>    
-                <td style="width: 100%;border:1px solid black;text-align:center;">
-                    <strong>ESTANDAR DE SEGURIDAD : (mencionar actividad)</strong>               
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 100%;border:1px solid black;">
-                    <%= form.rich_text_area :standard_security,  class: "form-control" %>                             
-                </td>
-            </tr>
-        </table>   
-       </br> 
-        <%= form.hidden_field :user_elaborated, :value => Current.user.id.to_i, class: "form-control" if Current.user.present? %>
-        <%= form.hidden_field :user_asesor, :value => @user_asesor.id.to_i, class: "form-control" if @user_asesor.present? %>
-        <%= form.hidden_field :entity_id, :value => Current.user.entity.to_i, class: "form-control" if Current.user.present? %>
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
-    <% end %>
-</div>        
-<br>
+<style>
+  .security-form-page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px 12px 30px;
+  }
 
- 
+  .security-form-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+  }
+
+  /* Encabezado */
+  .security-form-header {
+    padding: 16px 20px;
+    background: #f8f9fa;
+    border-bottom: 2px solid #00aae4;
+  }
+
+  .security-form-title {
+    margin: 0;
+    color: #343a40;
+    font-size: 1.3rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .security-form-title i {
+    color: #00aae4;
+  }
+
+  .security-form-subtitle {
+    margin: 5px 0 0;
+    color: #6c757d;
+    font-size: 0.82rem;
+  }
+
+  .security-form-body {
+    padding: 20px;
+  }
+
+  /* Errores */
+  .security-error {
+    margin-bottom: 15px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+  }
+
+  /* Secciones */
+  .security-section {
+    margin-bottom: 18px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .security-section:last-of-type {
+    margin-bottom: 20px;
+  }
+
+  .security-section-header {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 13px;
+    background: #f1f3f5;
+    border-bottom: 1px solid #dee2e6;
+    color: #343a40;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .security-section-header i {
+    color: #00aae4;
+    font-size: 0.95rem;
+  }
+
+  .security-section-body {
+    padding: 15px;
+  }
+
+  /* Campos */
+  .security-field {
+    margin-bottom: 15px;
+  }
+
+  .security-field:last-child {
+    margin-bottom: 0;
+  }
+
+  .security-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin-bottom: 6px;
+    color: #343a40;
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .security-input,
+  .security-select {
+    width: 100%;
+    min-height: 39px;
+    border: 1px solid #ced4da;
+    border-radius: 7px;
+    font-size: 0.85rem;
+  }
+
+  .security-input:focus,
+  .security-select:focus {
+    border-color: #00aae4;
+    box-shadow: 0 0 0 0.15rem rgba(0, 170, 228, 0.15);
+  }
+
+  textarea.security-input {
+    min-height: 90px;
+    resize: vertical;
+  }
+
+  .security-date {
+    max-width: 260px;
+  }
+
+  /* Select múltiples */
+  .security-multiple {
+    min-height: 110px;
+  }
+
+  /* Área Trix */
+  .security-trix-wrapper {
+    width: 100%;
+  }
+
+  .security-trix-wrapper trix-editor {
+    min-height: 280px;
+    border: 1px solid #ced4da;
+    border-radius: 0 0 7px 7px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    padding: 12px;
+  }
+
+  .security-trix-wrapper trix-toolbar {
+    border: 1px solid #ced4da;
+    border-bottom: 0;
+    border-radius: 7px 7px 0 0;
+    background: #f8f9fa;
+  }
+
+  /* Botonera */
+  .security-form-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-top: 15px;
+    border-top: 1px solid #e9ecef;
+  }
+
+  .security-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 120px;
+    padding: 8px 16px;
+    border-radius: 7px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+
+  .security-btn-save {
+    background: #00aae4;
+    border: 1px solid #00aae4;
+    color: #fff;
+  }
+
+  .security-btn-save:hover {
+    background: #008fc1;
+    border-color: #008fc1;
+    color: #fff;
+  }
+
+  .security-btn-back {
+    background: #fff;
+    border: 1px solid #6c757d;
+    color: #495057;
+  }
+
+  .security-btn-back:hover {
+    background: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+  }
+
+  .security-action-btn i {
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 767.98px) {
+
+    .security-form-page {
+      padding: 5px 7px 20px;
+    }
+
+    .security-form-header {
+      padding: 12px 14px;
+    }
+
+    .security-form-title {
+      font-size: 1.05rem;
+    }
+
+    .security-form-subtitle {
+      font-size: 0.72rem;
+    }
+
+    .security-form-body {
+      padding: 10px;
+    }
+
+    .security-section {
+      margin-bottom: 12px;
+      border-radius: 9px;
+    }
+
+    .security-section-header {
+      padding: 8px 10px;
+      font-size: 0.78rem;
+    }
+
+    .security-section-body {
+      padding: 11px;
+    }
+
+    .security-label {
+      font-size: 0.78rem;
+    }
+
+    .security-input,
+    .security-select {
+      min-height: 38px;
+      font-size: 0.81rem;
+    }
+
+    textarea.security-input {
+      min-height: 75px;
+    }
+
+    .security-date {
+      max-width: 100%;
+    }
+
+    .security-multiple {
+      min-height: 100px;
+    }
+
+    .security-trix-wrapper trix-editor {
+      min-height: 220px;
+      font-size: 0.85rem;
+      padding: 10px;
+    }
+
+    .security-form-actions {
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .security-action-btn {
+      width: 100%;
+      max-width: 260px;
+      min-width: 0;
+    }
+  }
+</style>
+
+<div class="security-form-page">
+
+<%= form_with model: @security_standard do |form| %>
+
+
+<div class="security-form-card">
+
+  <!-- ENCABEZADO -->
+  <div class="security-form-header">
+
+    <h2 class="security-form-title">
+      <i class="bi bi-shield-check me-1"></i>
+      ESTÁNDAR DE SEGURIDAD
+    </h2>
+
+    <p class="security-form-subtitle">
+      Registro y definición del estándar de seguridad
+    </p>
+
+  </div>
+
+
+  <div class="security-form-body">
+
+    <!-- ERRORES -->
+    <% @security_standard.errors.full_messages.each do |error| %>
+
+      <div class="alert alert-danger security-error" role="alert">
+
+        <i class="bi bi-exclamation-triangle-fill me-1"></i>
+
+        <%= error %>
+
+      </div>
+
+    <% end %>
+
+
+    <!-- INFORMACIÓN GENERAL -->
+    <div class="security-section">
+
+      <div class="security-section-header">
+
+        <i class="bi bi-info-circle"></i>
+
+        Información general
+
+      </div>
+
+
+      <div class="security-section-body">
+
+        <div class="row g-3">
+
+          <!-- FECHA -->
+          <div class="col-12 col-md-4">
+
+            <div class="security-field">
+
+              <label class="security-label">
+                FECHA DE ELABORACIÓN
+              </label>
+
+              <%= form.date_field :date_standard,
+                                  class: "form-control security-input security-date" %>
+
+            </div>
+
+          </div>
+
+
+          <!-- ÁREA -->
+          <div class="col-12 col-md-8">
+
+            <div class="security-field">
+
+              <label class="security-label">
+                ÁREA
+              </label>
+
+              <% if @company_areas.present? %>
+
+                <%= form.collection_select :code_area,
+                                           @company_areas,
+                                           :id,
+                                           :name,
+                                           { prompt: "-- Seleccionar área --" },
+                                           { class: "form-select security-select" } %>
+
+              <% end %>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- INFORMACIÓN DEL ESTÁNDAR -->
+    <div class="security-section">
+
+      <div class="security-section-header">
+
+        <i class="bi bi-clipboard2-check"></i>
+
+        Información del estándar
+
+      </div>
+
+
+      <div class="security-section-body">
+
+        <div class="row g-3">
+
+          <!-- OBJETIVO -->
+          <div class="col-12">
+
+            <div class="security-field">
+
+              <label class="security-label">
+                OBJETIVO
+              </label>
+
+              <%= form.text_area :objetivo,
+                                 class: "form-control security-input" %>
+
+            </div>
+
+          </div>
+
+
+          <!-- RIESGO -->
+          <div class="col-12">
+
+            <div class="security-field">
+
+              <label class="security-label">
+                RIESGO ASOCIADO
+              </label>
+
+              <%= form.grouped_collection_select(
+                    :danger,
+                    ClasificationDanger.order(:name),
+                    :clasification_danger_details,
+                    :name,
+                    :id,
+                    :name,
+                    { prompt: "Seleccione los peligros y riesgos" },
+                    {
+                      multiple: true,
+                      class: "form-select security-select security-multiple"
+                    }
+                  ) %>
+
+            </div>
+
+          </div>
+
+
+          <!-- TIPO DE ACCIÓN -->
+          <div class="col-12 col-md-6">
+
+            <div class="security-field">
+
+              <label class="security-label">
+                TIPO DE ACCIÓN
+              </label>
+
+              <%= form.select(
+                    :type_action,
+                    [
+                      ['PREVENTIVA', 0],
+                      ['CORRECTIVA', 1],
+                      ['MEJORA', 2]
+                    ],
+                    {},
+                    class: "form-select security-select"
+                  ) %>
+
+            </div>
+
+          </div>
+
+
+          <!-- EPP -->
+          <div class="col-12">
+
+            <div class="security-field">
+
+              <label class="security-label">
+                ELEMENTOS DE PROTECCIÓN PERSONAL
+              </label>
+
+              <%= select_tag :element_protection,
+                             options_from_collection_for_select(
+                               @protection_elements,
+                               :id,
+                               :name
+                             ),
+                             multiple: true,
+                             class: "form-select security-select security-multiple",
+                             prompt: "-- Seleccione los EPP --" %>
+
+            </div>
+
+          </div>
+
+
+          <!-- DESCRIPCIÓN -->
+          <div class="col-12">
+
+            <div class="security-field">
+
+              <label class="security-label">
+                DESCRIPCIÓN DE LA ACTIVIDAD
+              </label>
+
+              <%= form.text_area :description_activity,
+                                 class: "form-control security-input" %>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ESTÁNDAR DE SEGURIDAD -->
+    <div class="security-section">
+
+      <div class="security-section-header">
+
+        <i class="bi bi-file-text"></i>
+
+        Estándar de seguridad
+
+      </div>
+
+
+      <div class="security-section-body">
+
+        <div class="security-field">
+
+          <label class="security-label">
+            ESTÁNDAR DE SEGURIDAD
+            <span class="text-muted fw-normal">
+              (mencionar actividad)
+            </span>
+          </label>
+
+
+          <div class="security-trix-wrapper">
+
+            <%= form.rich_text_area :standard_security %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- CAMPOS OCULTOS -->
+
+    <% if Current.user.present? %>
+
+      <%= form.hidden_field :user_elaborated,
+                            value: Current.user.id.to_i %>
+
+      <%= form.hidden_field :entity_id,
+                            value: Current.user.entity.to_i %>
+
+    <% end %>
+
+
+    <% if @user_asesor.present? %>
+
+      <%= form.hidden_field :user_asesor,
+                            value: @user_asesor.id.to_i %>
+
+    <% end %>
+
+
+    <% if @template.present? %>
+
+      <%= form.hidden_field :code,
+                            value: @template.reference %>
+
+      <%= form.hidden_field :version,
+                            value: @template.version.to_i %>
+
+    <% end %>
+
+
+    <!-- BOTONERA -->
+
+    <div class="security-form-actions">
+
+      <button type="submit"
+              class="btn security-action-btn security-btn-save">
+
+        <i class="bi bi-check-circle"></i>
+
+        <span>
+          <%= t('common.submit') %>
+        </span>
+
+      </button>
+
+
+      <%= link_to :back,
+                  class: "btn security-action-btn security-btn-back" do %>
+
+        <i class="bi bi-arrow-left"></i>
+
+        <span>
+          Retornar
+        </span>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<% end %>
+
+</div>

@@ -1,57 +1,521 @@
-<div class="container col-12 card p-5">
-    <br> 
+
+<div class="change-item-page">
+
+  <div class="change-item-card">
+
+    <!-- ENCABEZADO -->
+    <div class="change-item-header">
+      <div class="change-item-header-icon">
+        <i class="bi bi-calendar2-check"></i>
+      </div>
+
+      <div>
+        <h1>Planeación del cambio</h1>
+        <p>Defina las actividades, responsables y fechas para la ejecución y seguimiento del cambio.</p>
+      </div>
+    </div>
+
     <%= form_with model: @change_management_item do |form| %>
-        <% @change_management_item.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
+
+      <!-- ERRORES -->
+      <% if @change_management_item.errors.any? %>
+        <div class="alert alert-danger shadow-sm mb-4" role="alert">
+          <div class="d-flex align-items-start gap-2">
+            <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+
+            <div>
+              <strong>Por favor revise la siguiente información:</strong>
+
+              <ul class="mb-0 mt-2 ps-3">
+                <% @change_management_item.errors.full_messages.each do |error| %>
+                  <li><%= error %></li>
+                <% end %>
+              </ul>
             </div>
-        <% end %> 
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>ACTIVIDAD: </strong>
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.rich_text_area :activity_plannig,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>RESPONSABLE: </strong>
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.collection_select :responsible_planning, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>COMUNICAR CAMBIO A: </strong>
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.text_field :communicate_change,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>FECHA EJECUCIÓN: </strong>
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.date_field :date_execution,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>FECHA SEGUIMIENTO: </strong>
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.date_field :date_continue,  class: "form-control" %>
-                </td>
-            </tr>
-       </table>
-       </br> 
-        <%= form.hidden_field :change_management_id, :value => params[:id].to_i, class: "form-control" if params[:id].present? %>
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- ACTIVIDAD -->
+      <div class="change-item-section">
+
+        <div class="change-item-section-title">
+          <i class="bi bi-list-check"></i>
+          <span>Actividad</span>
+        </div>
+
+        <div class="change-item-field">
+          <%= form.label :activity_plannig, "ACTIVIDAD", class: "change-item-label" %>
+
+          <div class="change-item-input">
+            <%= form.rich_text_area :activity_plannig,
+                class: "form-control change-item-trix" %>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RESPONSABLE -->
+      <div class="change-item-section">
+
+        <div class="change-item-section-title">
+          <i class="bi bi-person-check"></i>
+          <span>Responsable</span>
+        </div>
+
+        <div class="change-item-field">
+
+          <%= form.label :responsible_planning,
+              "RESPONSABLE",
+              class: "change-item-label" %>
+
+          <div class="change-item-input">
+
+            <%= form.collection_select :responsible_planning,
+                User.usuarios_empresa.order(id: :asc),
+                :id,
+                :name,
+                { prompt: "-- Seleccionar responsable --" },
+                { class: "form-select" } %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- COMUNICAR CAMBIO -->
+      <div class="change-item-section">
+
+        <div class="change-item-section-title">
+          <i class="bi bi-megaphone"></i>
+          <span>Comunicación del cambio</span>
+        </div>
+
+        <div class="change-item-field">
+
+          <%= form.label :communicate_change,
+              "COMUNICAR CAMBIO A",
+              class: "change-item-label" %>
+
+          <div class="change-item-input">
+
+            <%= form.text_field :communicate_change,
+                class: "form-control",
+                placeholder: "Indique a quién se debe comunicar el cambio" %>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- FECHAS -->
+      <div class="change-item-section">
+
+        <div class="change-item-section-title">
+          <i class="bi bi-calendar-event"></i>
+          <span>Programación</span>
+        </div>
+
+        <div class="row g-3">
+
+          <!-- FECHA EJECUCIÓN -->
+          <div class="col-12 col-md-6">
+
+            <div class="change-item-date-card">
+
+              <%= form.label :date_execution,
+                  "FECHA EJECUCIÓN",
+                  class: "change-item-label" %>
+
+              <div class="input-group">
+
+                <span class="input-group-text">
+                  <i class="bi bi-calendar-check"></i>
+                </span>
+
+                <%= form.date_field :date_execution,
+                    class: "form-control" %>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- FECHA SEGUIMIENTO -->
+          <div class="col-12 col-md-6">
+
+            <div class="change-item-date-card">
+
+              <%= form.label :date_continue,
+                  "FECHA SEGUIMIENTO",
+                  class: "change-item-label" %>
+
+              <div class="input-group">
+
+                <span class="input-group-text">
+                  <i class="bi bi-calendar2-week"></i>
+                </span>
+
+                <%= form.date_field :date_continue,
+                    class: "form-control" %>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- CAMPO OCULTO -->
+      <% if params[:id].present? %>
+        <%= form.hidden_field :change_management_id,
+            value: params[:id].to_i %>
+      <% end %>
+
+      <!-- BOTONES -->
+      <div class="change-item-actions">
+
+        <%= form.button type: "submit",
+            class: "btn btn-primary btn-sm px-4" do %>
+
+          <i class="bi bi-check-circle me-1"></i>
+          <%= t('common.submit') %>
+
+        <% end %>
+
+        <%= link_to :back,
+            class: "btn btn-outline-secondary btn-sm px-4" do %>
+
+          <i class="bi bi-arrow-left me-1"></i>
+          Retornar
+
+        <% end %>
+
+      </div>
+
     <% end %>
-</div>        
-<br>
+
+  </div>
+
+</div>
+
+<style>
+
+  /* =========================================================
+     CONTENEDOR PRINCIPAL
+     ========================================================= */
+
+  .change-item-page {
+    width: 100%;
+    max-width: 1050px;
+    margin: 0 auto;
+    padding: 20px 15px 35px;
+  }
+
+  .change-item-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+    overflow: hidden;
+  }
+
+  /* =========================================================
+     ENCABEZADO
+     ========================================================= */
+
+  .change-item-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px 24px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .change-item-header-icon {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border-radius: 12px;
+    background: #0d6efd;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+  }
+
+  .change-item-header h1 {
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #212529;
+  }
+
+  .change-item-header p {
+    margin: 4px 0 0;
+    color: #6c757d;
+    font-size: 0.9rem;
+  }
+
+  /* =========================================================
+     SECCIONES
+     ========================================================= */
+
+  .change-item-section {
+    padding: 22px 24px;
+    border-bottom: 1px solid #eeeeee;
+  }
+
+  .change-item-section:last-of-type {
+    border-bottom: none;
+  }
+
+  .change-item-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    color: #343a40;
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  .change-item-section-title i {
+    color: #0d6efd;
+    font-size: 1.05rem;
+  }
+
+  /* =========================================================
+     CAMPOS
+     ========================================================= */
+
+  .change-item-field {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .change-item-label {
+    width: 220px;
+    min-width: 220px;
+    padding-top: 9px;
+    margin-bottom: 0;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #495057;
+  }
+
+  .change-item-input {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .change-item-input .form-control,
+  .change-item-input .form-select {
+    min-height: 42px;
+    border-radius: 8px;
+    border-color: #ced4da;
+  }
+
+  .change-item-input .form-control:focus,
+  .change-item-input .form-select:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.12);
+  }
+
+  /* =========================================================
+     TRIX
+     ========================================================= */
+
+  .change-item-trix {
+    min-height: 150px;
+  }
+
+  trix-editor {
+    min-height: 150px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    background: #ffffff;
+    padding: 12px;
+  }
+
+  trix-editor:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.12);
+    outline: none;
+  }
+
+  .trix-button-group {
+    margin-bottom: 0;
+  }
+
+  /* =========================================================
+     FECHAS
+     ========================================================= */
+
+  .change-item-date-card {
+    background: #f8f9fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 14px;
+    height: 100%;
+  }
+
+  .change-item-date-card .change-item-label {
+    display: block;
+    width: auto;
+    min-width: 0;
+    padding-top: 0;
+    margin-bottom: 8px;
+  }
+
+  .change-item-date-card .input-group-text {
+    background: #ffffff;
+    border-color: #ced4da;
+    color: #0d6efd;
+  }
+
+  .change-item-date-card .form-control {
+    min-height: 42px;
+    border-radius: 0 8px 8px 0;
+  }
+
+  /* =========================================================
+     BOTONES
+     ========================================================= */
+
+  .change-item-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 24px;
+    background: #f8f9fa;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .change-item-actions .btn {
+    border-radius: 7px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* =========================================================
+     CELULAR
+     ========================================================= */
+
+  @media (max-width: 767.98px) {
+
+    .change-item-page {
+      padding: 10px 8px 25px;
+    }
+
+    .change-item-card {
+      border-radius: 10px;
+    }
+
+    .change-item-header {
+      padding: 16px;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .change-item-header-icon {
+      width: 42px;
+      height: 42px;
+      min-width: 42px;
+      font-size: 19px;
+      border-radius: 10px;
+    }
+
+    .change-item-header h1 {
+      font-size: 1.15rem;
+    }
+
+    .change-item-header p {
+      font-size: 0.82rem;
+      line-height: 1.4;
+    }
+
+    .change-item-section {
+      padding: 18px 15px;
+    }
+
+    .change-item-section-title {
+      font-size: 0.9rem;
+      margin-bottom: 13px;
+    }
+
+    .change-item-field {
+      display: block;
+    }
+
+    .change-item-label {
+      display: block;
+      width: auto;
+      min-width: 0;
+      padding-top: 0;
+      margin-bottom: 7px;
+      font-size: 0.78rem;
+    }
+
+    .change-item-input {
+      width: 100%;
+    }
+
+    .change-item-actions {
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 16px 15px;
+    }
+
+    .change-item-actions .btn {
+      min-width: 120px;
+    }
+
+    trix-editor {
+      min-height: 130px;
+    }
+
+  }
+
+  /* =========================================================
+     CELULAR MUY PEQUEÑO
+     ========================================================= */
+
+  @media (max-width: 400px) {
+
+    .change-item-page {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    .change-item-header {
+      padding: 14px;
+    }
+
+    .change-item-section {
+      padding: 16px 12px;
+    }
+
+    .change-item-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .change-item-actions .btn {
+      width: 100%;
+    }
+
+  }
+
+</style>
+

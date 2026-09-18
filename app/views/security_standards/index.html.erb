@@ -1,32 +1,357 @@
-<div align="left"; class="container col-12">
-    <a class="navbar-brand" href="/">
-        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-    </a>
+<style>
+  .security-page {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 10px 12px 30px;
+  }
+
+  /* Logo */
+  .security-logo-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 10px 15px 5px;
+  }
+
+  .security-logo {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+  }
+
+  /* Encabezado */
+  .security-header {
+    display: flex;
+    align-items: center;
+    min-height: 70px;
+    padding: 10px 5px 12px;
+    margin-bottom: 18px;
+    border-bottom: 2px solid #00aae4;
+  }
+
+  .security-title {
+    margin: 0;
+    color: #343a40;
+    font-size: 1.45rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .security-title i {
+    color: #00aae4;
+  }
+
+  .security-subtitle {
+    margin: 5px 0 0;
+    color: #6c757d;
+    font-size: 0.82rem;
+  }
+
+  /* Tarjeta */
+  .security-card {
+    width: 100%;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+  }
+
+  .security-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .security-card-header i {
+    color: #00aae4;
+    font-size: 1rem;
+  }
+
+  .security-card-title {
+    margin: 0;
+    color: #343a40;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .security-card-body {
+    padding: 20px;
+  }
+
+  /* Formulario */
+  .security-label {
+    display: block;
+    margin-bottom: 7px;
+    color: #343a40;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .security-select {
+    width: 100%;
+    min-height: 40px;
+    border: 1px solid #ced4da;
+    border-radius: 7px;
+    font-size: 0.85rem;
+  }
+
+  .security-select:focus {
+    border-color: #00aae4;
+    box-shadow: 0 0 0 0.15rem rgba(0, 170, 228, 0.15);
+  }
+
+  .security-entity {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 7px;
+    color: #495057;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  .security-entity i {
+    color: #00aae4;
+  }
+
+  /* Botonera */
+  .security-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 18px;
+  }
+
+  .security-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 115px;
+    padding: 8px 15px;
+    border-radius: 7px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: all 0.15s ease;
+  }
+
+  .security-btn-consult {
+    background: #00aae4;
+    border-color: #00aae4;
+    color: #fff;
+  }
+
+  .security-btn-consult:hover {
+    background: #008fc1;
+    border-color: #008fc1;
+    color: #fff;
+  }
+
+  .security-btn i {
+    font-size: 0.9rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 767.98px) {
+
+    .security-logo-container {
+      padding: 7px 10px 3px;
+    }
+
+    .security-logo {
+      width: 70px;
+      height: 70px;
+    }
+
+    .security-page {
+      padding: 5px 8px 20px;
+    }
+
+    .security-header {
+      min-height: 55px;
+      padding: 7px 2px 10px;
+      margin-bottom: 12px;
+    }
+
+    .security-title {
+      font-size: 1.05rem;
+    }
+
+    .security-subtitle {
+      font-size: 0.72rem;
+    }
+
+    .security-card-header {
+      padding: 10px 12px;
+    }
+
+    .security-card-title {
+      font-size: 0.82rem;
+    }
+
+    .security-card-body {
+      padding: 12px;
+    }
+
+    .security-label {
+      font-size: 0.78rem;
+    }
+
+    .security-select {
+      min-height: 38px;
+      font-size: 0.8rem;
+    }
+
+    .security-actions {
+      justify-content: center;
+    }
+
+    .security-btn {
+      width: 100%;
+      max-width: 260px;
+    }
+  }
+</style>
+
+<!-- LOGO -->
+
+<div class="security-logo-container">
+  <a class="navbar-brand"
+     href="/"
+     aria-label="Inicio CONESST">
+
+
+<%= image_tag 'LogoConesst202305232.png',
+              class: 'security-logo',
+              alt: 'Logo CONESST' %>
+
+
+  </a>
 </div>
-<div class="container col-11" 
-    <br>
-    <h2>ESTÁNDAR DE SEGURIDAD</h2>
-    <hr>
-    
-    <br>
- 
-    <% if params[:entity_id].present? || @entity.present? %>
-        <%= render 'security_standard' %> 
-    <% else %>
-        <%= form_with model: @entity, method: :get do |form| %>
-            <div class="row g-2">
-                <div class="col-sm-7">
-                    <h3>Empresa:</h3>
-                    <% if @entities.present? %>
-                        <%= form.collection_select :entity_id, @entities.order(id: :asc), :id, :business_name, { prompt: '--Seleccionar Entidad--' },
-                        { class: 'form-control input-sm select2' } %>
-                    <% else %> 
-                        <%=  @entity.business_name %>
-                        <%= form.hidden_field :entity_id, :value => @entity.id, class: "form-control" %>
-                    <% end %>
-                </div>
-            </div>    
-            <br>    
-            <button type="submit" class="btn btn-primary">Consultar</button>
-        <% end %>
-    <% end %>   
+
+<div class="security-page">
+
+  <!-- ENCABEZADO -->
+
+  <div class="security-header">
+
+
+<div>
+  <h2 class="security-title">
+    <i class="bi bi-shield-check me-1"></i>
+    ESTÁNDAR DE SEGURIDAD
+  </h2>
+
+  <p class="security-subtitle">
+    Consulta y gestión del estándar de seguridad
+  </p>
+</div>
+
+
+  </div>
+
+<% if params[:entity_id].present? || @entity.present? %>
+
+
+<!-- CONTENIDO DEL ESTÁNDAR -->
+<%= render 'security_standard' %>
+
+
+<% else %>
+
+
+<!-- SELECCIÓN DE EMPRESA -->
+<div class="security-card">
+
+  <div class="security-card-header">
+    <i class="bi bi-building"></i>
+
+    <h3 class="security-card-title">
+      Seleccionar empresa
+    </h3>
+  </div>
+
+
+  <div class="security-card-body">
+
+    <%= form_with model: @entity, method: :get do |form| %>
+
+      <div class="row g-3">
+
+        <div class="col-12 col-md-8 col-lg-7">
+
+          <label class="security-label">
+            Empresa
+          </label>
+
+          <% if @entities.present? %>
+
+            <%= form.collection_select(
+                  :entity_id,
+                  @entities.order(id: :asc),
+                  :id,
+                  :business_name,
+                  { prompt: '-- Seleccionar entidad --' },
+                  { class: 'form-select security-select' }
+                ) %>
+
+          <% else %>
+
+            <div class="security-entity">
+
+              <i class="bi bi-building"></i>
+
+              <span>
+                <%= @entity.business_name %>
+              </span>
+
+            </div>
+
+            <%= form.hidden_field :entity_id,
+                                  value: @entity.id %>
+
+          <% end %>
+
+        </div>
+
+      </div>
+
+
+      <!-- BOTONERA -->
+      <div class="security-actions">
+
+        <button type="submit"
+                class="btn security-btn security-btn-consult">
+
+          <i class="bi bi-search"></i>
+
+          <span>
+            Consultar
+          </span>
+
+        </button>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>
+
+
+<% end %>
+
+</div>

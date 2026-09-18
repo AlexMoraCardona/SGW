@@ -1,47 +1,497 @@
+<style>
+  .security-list-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 10px 12px 25px;
+  }
+
+  /* Empresa */
+  .security-company-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 15px 18px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .security-company-title {
+    margin: 0;
+    color: #343a40;
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .security-company-title i {
+    color: #00aae4;
+  }
+
+  .security-company-nit {
+    color: #6c757d;
+    font-weight: 500;
+  }
+
+  /* Botón crear */
+  .security-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+  }
+
+  .security-btn-create {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 7px 13px;
+    border: 0;
+    border-radius: 7px;
+    background: #00aae4;
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .security-btn-create:hover {
+    background: #008fc1;
+    color: #fff;
+  }
+
+  /* Tabla */
+  .security-table-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+  }
+
+  .security-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .security-table {
+    width: 100%;
+    min-width: 900px;
+    margin: 0;
+    vertical-align: middle;
+  }
+
+  .security-table thead th {
+    background: #f1f3f5;
+    color: #343a40;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 10px 8px;
+    border-bottom: 2px solid #dee2e6;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  .security-table tbody td {
+    color: #495057;
+    font-size: 0.82rem;
+    padding: 9px 8px;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  .security-table tbody tr:hover {
+    background-color: #f8f9fa;
+  }
+
+  /* Fechas */
+  .security-date {
+    color: #495057;
+    font-weight: 500;
+  }
+
+  /* Botones de la tabla */
+  .security-table-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 58px;
+    padding: 5px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .security-table-btn i {
+    font-size: 0.82rem;
+  }
+
+  /* Firmar */
+  .security-btn-sign {
+    background: #ffc107;
+    border-color: #ffc107;
+    color: #212529;
+  }
+
+  .security-btn-sign:hover {
+    background: #e0a800;
+    border-color: #e0a800;
+    color: #212529;
+  }
+
+  /* Ver */
+  .security-btn-view {
+    background: #00aae4;
+    border-color: #00aae4;
+    color: #fff;
+  }
+
+  .security-btn-view:hover {
+    background: #008fc1;
+    border-color: #008fc1;
+    color: #fff;
+  }
+
+  /* Editar */
+  .security-btn-edit {
+    background: #ffc107;
+    border-color: #ffc107;
+    color: #212529;
+  }
+
+  .security-btn-edit:hover {
+    background: #e0a800;
+    border-color: #e0a800;
+    color: #212529;
+  }
+
+  /* PDF */
+  .security-btn-pdf {
+    background: #198754;
+    border-color: #198754;
+    color: #fff;
+  }
+
+  .security-btn-pdf:hover {
+    background: #146c43;
+    border-color: #146c43;
+    color: #fff;
+  }
+
+  /* Indicador móvil */
+  .security-scroll-hint {
+    display: none;
+    padding: 7px 12px;
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    color: #6c757d;
+    font-size: 0.72rem;
+    text-align: center;
+  }
+
+  @media (max-width: 767.98px) {
+
+    .security-list-container {
+      padding: 8px 8px 20px;
+    }
+
+    .security-company-card {
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .security-company-title {
+      font-size: 1rem;
+    }
+
+    .security-actions {
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .security-btn-create {
+      padding: 7px 12px;
+      font-size: 0.8rem;
+    }
+
+    .security-table {
+      min-width: 900px;
+    }
+
+    .security-table thead th {
+      padding: 8px 6px;
+      font-size: 0.72rem;
+    }
+
+    .security-table tbody td {
+      padding: 8px 6px;
+      font-size: 0.75rem;
+    }
+
+    .security-table-btn {
+      padding: 5px 7px;
+      font-size: 0.7rem;
+    }
+
+    .security-scroll-hint {
+      display: block;
+    }
+  }
+</style>
+
+<div class="security-list-container">
+
 <% if @entity.present? %>
-    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
-<% end %>
-<%= link_to "Crear Estándar de seguridad", new_security_standard_path, class: 'btn btn-sm btn-primary' if Current.user.level > 0 &&  Current.user.level < 4 %> 
- 
-<div class="container col-11">
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">Fecha</th>
-                <th scope="col">Área</th>
-                <th scope="col">Usuario elaboró</th>
-                <th scope="col">Firmar elaboró</th>
-                <th scope="col">Firmar asesor</th>
-                <th scope="col">Ver</th>
-                <th scope="col"><%= t('common.edit') %></th>
-                <th scope="col">PDF</th>
-            </tr>
-        </thead> 
-        <tbody>
-            <% @security_standards.each do |security_standard| %>
-                <tr>  
-                    <td scope="col"><%= security_standard.date_standard.strftime("%F") if security_standard.date_standard.present? %></td>  
-                    <td scope="col"><%= SecurityStandard.label_area(security_standard.code_area)  %></td>  
-                    <td scope="col"><%= SecurityStandard.label_user(security_standard.user_elaborated) %></td>
-                    <% if security_standard.firm_user_elaborated == 0 %>
-                        <td scope="col"><%= link_to 'Firmar', firma_security_elaborated_path(security_standard), class: 'btn btn-sm btn-warning'%></td>
-                    <% else %>
-                        <td scope="col"><%= security_standard.date_user_elaborated.strftime("%F") if security_standard.date_user_elaborated.present? %>
-                    <% end %>
-                    <% if security_standard.firm_user_asesor == 0 %>
-                        <td scope="col"><%= link_to 'Firmar', firma_security_asesor_path(security_standard), class: 'btn btn-sm btn-warning'%></td>
-                    <% else %>
-                        <td scope="col"><%= security_standard.date_user_asesor.strftime("%F") if security_standard.date_user_asesor.present? %>
-                    <% end %>
-                    <td scope="col"><%= link_to 'Ver', security_standard_path(security_standard), class: 'btn btn-sm btn-primary'%></td>
-                    <td scope="col"><%= link_to 'Editar', edit_security_standard_path(security_standard.id), class: 'btn btn-sm btn-warning' if Current.user.level > 0 && Current.user.level < 3 %></td>
-                    <td scope="col"><%= link_to "PDF", ver_security_standard_path(security_standard.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
-                </tr>
-            <% end %>  
-        </tbody>      
-    </table>
-    </br>        
+
+
+<!-- EMPRESA -->
+<div class="security-company-card">
+
+  <h2 class="security-company-title">
+
+    <i class="bi bi-building me-1"></i>
+
+    <%= @entity.business_name %>
+
+    <% if @entity.identification_number.present? %>
+
+      <span class="security-company-nit">
+
+        · NIT:
+        <%= EvaluationRuleDetail.miles(@entity.identification_number) %>
+
+        <% if @entity.verification_digit.present? %>
+          -<%= @entity.verification_digit %>
+        <% end %>
+
+      </span>
+
+    <% end %>
+
+  </h2>
+
 </div>
 
 
+<% end %>
 
+  <!-- BOTÓN CREAR -->
+
+<% if Current.user.level > 0 && Current.user.level < 4 %>
+
+
+<div class="security-actions">
+
+  <%= link_to new_security_standard_path,
+              class: "security-btn-create" do %>
+
+    <i class="bi bi-plus-circle"></i>
+
+    <span>
+      Crear estándar de seguridad
+    </span>
+
+  <% end %>
+
+</div>
+
+
+<% end %>
+
+  <!-- TABLA -->
+
+  <div class="security-table-card">
+
+
+<div class="security-table-wrapper">
+
+  <table class="table table-hover security-table mb-0">
+
+    <thead>
+
+      <tr>
+        <th>Fecha</th>
+        <th>Área</th>
+        <th>Usuario elaboró</th>
+        <th>Firmar elaboró</th>
+        <th>Firmar asesor</th>
+        <th>Ver</th>
+        <th><%= t('common.edit') %></th>
+        <th>PDF</th>
+      </tr>
+
+    </thead>
+
+    <tbody>
+
+      <% @security_standards.each do |security_standard| %>
+
+        <tr>
+
+          <!-- FECHA -->
+          <td>
+
+            <% if security_standard.date_standard.present? %>
+
+              <span class="security-date">
+                <%= security_standard.date_standard.strftime("%F") %>
+              </span>
+
+            <% end %>
+
+          </td>
+
+
+          <!-- ÁREA -->
+          <td>
+            <%= SecurityStandard.label_area(security_standard.code_area) %>
+          </td>
+
+
+          <!-- USUARIO -->
+          <td>
+            <%= SecurityStandard.label_user(security_standard.user_elaborated) %>
+          </td>
+
+
+          <!-- FIRMA ELABORÓ -->
+          <td>
+
+            <% if security_standard.firm_user_elaborated == 0 %>
+
+              <%= link_to firma_security_elaborated_path(security_standard),
+                          class: "btn security-table-btn security-btn-sign",
+                          title: "Firmar como elaboró" do %>
+
+                <i class="bi bi-pen"></i>
+                <span>Firmar</span>
+
+              <% end %>
+
+            <% else %>
+
+              <% if security_standard.date_user_elaborated.present? %>
+
+                <span class="security-date">
+                  <%= security_standard.date_user_elaborated.strftime("%F") %>
+                </span>
+
+              <% end %>
+
+            <% end %>
+
+          </td>
+
+
+          <!-- FIRMA ASESOR -->
+          <td>
+
+            <% if security_standard.firm_user_asesor == 0 %>
+
+              <%= link_to firma_security_asesor_path(security_standard),
+                          class: "btn security-table-btn security-btn-sign",
+                          title: "Firmar como asesor" do %>
+
+                <i class="bi bi-pen"></i>
+                <span>Firmar</span>
+
+              <% end %>
+
+            <% else %>
+
+              <% if security_standard.date_user_asesor.present? %>
+
+                <span class="security-date">
+                  <%= security_standard.date_user_asesor.strftime("%F") %>
+                </span>
+
+              <% end %>
+
+            <% end %>
+
+          </td>
+
+
+          <!-- VER -->
+          <td>
+
+            <%= link_to security_standard_path(security_standard),
+                        class: "btn security-table-btn security-btn-view",
+                        title: "Ver estándar" do %>
+
+              <i class="bi bi-eye"></i>
+              <span>Ver</span>
+
+            <% end %>
+
+          </td>
+
+
+          <!-- EDITAR -->
+          <td>
+
+            <% if Current.user.level > 0 && Current.user.level < 3 %>
+
+              <%= link_to edit_security_standard_path(security_standard.id),
+                          class: "btn security-table-btn security-btn-edit",
+                          title: "Editar estándar" do %>
+
+                <i class="bi bi-pencil-square"></i>
+                <span>Editar</span>
+
+              <% end %>
+
+            <% end %>
+
+          </td>
+
+
+          <!-- PDF -->
+          <td>
+
+            <%= link_to ver_security_standard_path(
+                          security_standard.id,
+                          format: 'pdf'
+                        ),
+                        class: "btn security-table-btn security-btn-pdf",
+                        title: "Generar PDF" do %>
+
+              <i class="bi bi-file-earmark-pdf"></i>
+              <span>PDF</span>
+
+            <% end %>
+
+          </td>
+
+        </tr>
+
+      <% end %>
+
+    </tbody>
+
+  </table>
+
+</div>
+
+<div class="security-scroll-hint">
+
+  <i class="bi bi-arrow-left-right me-1"></i>
+
+  Desliza horizontalmente para ver todas las opciones
+
+</div>
+
+
+  </div>
+
+</div>

@@ -1,0 +1,607 @@
+<style>
+    /* =========================================================
+       CONTENEDOR GENERAL
+       ========================================================= */
+    .analysis-risk-container {
+        width: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 15px;
+    }
+    .analysis-risk-card {
+        background: #fff;
+        border: 0;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+    }
+    .analysis-risk-header {
+        background: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        padding: 15px 18px;
+    }
+    .analysis-risk-title {
+        margin: 0;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #212529;
+    }
+    /* =========================================================
+       TABLA INFORMACIÓN GENERAL
+       ========================================================= */
+    .analysis-info-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        margin: 0;
+    }
+    .analysis-info-table td {
+        border: 1px solid #dee2e6;
+        padding: 9px 10px;
+        vertical-align: top;
+        font-size: 0.9rem;
+        line-height: 1.4;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+    .analysis-info-table .info-label {
+        width: 28%;
+        background-color: #f8f9fa;
+        font-weight: 600;
+        color: #343a40;
+    }
+    .analysis-info-table .info-value {
+        width: 72%;
+        background-color: #fff;
+        color: #212529;
+    }
+    /* =========================================================
+       TÍTULOS DE SECCIÓN
+       ========================================================= */
+    .analysis-section-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 22px 0 10px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid #00aae4;
+        color: #212529;
+        font-size: 1rem;
+        font-weight: 700;
+    }
+    .analysis-section-title i {
+        color: #00aae4;
+        font-size: 1.1rem;
+    }
+    /* =========================================================
+       TABLA DE PASOS
+       ========================================================= */
+    .analysis-items-wrapper {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+    }
+    .analysis-items-table {
+        width: 100%;
+        min-width: 950px;
+        border-collapse: collapse;
+        table-layout: fixed;
+        margin: 0;
+    }
+    .analysis-items-table th {
+        background-color: #00aae4;
+        color: #fff;
+        border: 1px solid #008dbd;
+        padding: 9px 7px;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 0.82rem;
+        line-height: 1.25;
+        font-weight: 700;
+    }
+    .analysis-items-table td {
+        border: 1px solid #dee2e6;
+        padding: 9px 8px;
+        vertical-align: top;
+        font-size: 0.86rem;
+        line-height: 1.4;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+    .analysis-items-table tbody tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+    .analysis-items-table tbody tr:hover {
+        background-color: #eef9fd;
+    }
+    .analysis-items-table .col-step {
+        width: 22%;
+    }
+    .analysis-items-table .col-action {
+        width: 20%;
+    }
+    .analysis-items-table .col-risk {
+        width: 22%;
+    }
+    .analysis-items-table .col-measure {
+        width: 25%;
+    }
+    .analysis-items-table .col-edit {
+        width: 11%;
+        text-align: center;
+    }
+    /* =========================================================
+       BOTÓN EDITAR
+       ========================================================= */
+    .btn-analysis-edit {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        white-space: nowrap;
+        font-size: 0.78rem;
+        font-weight: 600;
+        border-radius: 7px;
+        padding: 6px 9px;
+    }
+    /* =========================================================
+       BOTONERA
+       ========================================================= */
+    .analysis-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin: 18px 0;
+    }
+    .analysis-actions .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        min-height: 38px;
+        padding: 8px 14px;
+        border-radius: 8px;
+        font-size: 0.88rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+    .analysis-actions .btn i {
+        font-size: 1rem;
+    }
+    .btn-analysis-create {
+        background-color: #ffc107;
+        border-color: #ffc107;
+        color: #212529;
+    }
+    .btn-analysis-create:hover,
+    .btn-analysis-create:focus {
+        background-color: #e0a800;
+        border-color: #d39e00;
+        color: #212529;
+    }
+    /* =========================================================
+       OBSERVACIONES
+       ========================================================= */
+    .observations-box {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        background-color: #fff;
+        padding: 12px 14px;
+        min-height: 70px;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+    .observations-label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 700;
+        color: #343a40;
+    }
+    /* =========================================================
+       ELABORADO POR / FIRMA
+       ========================================================= */
+    .signature-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+    }
+    .signature-table td {
+        border: 1px solid #dee2e6;
+        padding: 12px;
+        vertical-align: middle;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+    .signature-info {
+        width: 60%;
+        background-color: #f8f9fa;
+    }
+    .signature-image-cell {
+        width: 40%;
+        text-align: center;
+    }
+    .signature-image-cell img {
+        max-width: 100%;
+        width: auto;
+        max-height: 120px;
+        object-fit: contain;
+    }
+    .signature-placeholder {
+        color: #6c757d;
+        font-size: 0.82rem;
+        font-style: italic;
+    }
+    /* =========================================================
+       RESPONSIVE - TABLET
+       ========================================================= */
+    @media (max-width: 767.98px) {
+        .analysis-risk-container {
+            padding: 8px;
+        }
+        .analysis-risk-card {
+            border-radius: 9px;
+        }
+        .analysis-risk-header {
+            padding: 12px;
+        }
+        .analysis-risk-title {
+            font-size: 1rem;
+        }
+        .analysis-info-table,
+        .analysis-info-table tbody,
+        .analysis-info-table tr,
+        .analysis-info-table td {
+            display: block;
+            width: 100%;
+        }
+        .analysis-info-table {
+            border: 0;
+        }
+        .analysis-info-table tr {
+            margin-bottom: 8px;
+            border: 1px solid #dee2e6;
+            border-radius: 7px;
+            overflow: hidden;
+        }
+        .analysis-info-table td {
+            border: 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .analysis-info-table td:last-child {
+            border-bottom: 0;
+        }
+        .analysis-info-table .info-label,
+        .analysis-info-table .info-value {
+            width: 100%;
+        }
+        .analysis-info-table .info-label {
+            padding-bottom: 4px;
+            font-size: 0.82rem;
+        }
+        .analysis-info-table .info-value {
+            padding-top: 5px;
+            font-size: 0.9rem;
+        }
+        .analysis-section-title {
+            font-size: 0.95rem;
+            margin-top: 18px;
+        }
+        .analysis-items-table {
+            min-width: 900px;
+        }
+        .analysis-items-table th {
+            font-size: 0.78rem;
+            padding: 8px 6px;
+        }
+        .analysis-items-table td {
+            font-size: 0.82rem;
+            padding: 8px 7px;
+        }
+        .analysis-actions {
+            gap: 7px;
+            margin: 14px 0;
+        }
+        .analysis-actions .btn {
+            font-size: 0.82rem;
+            padding: 7px 11px;
+        }
+        .signature-table,
+        .signature-table tbody,
+        .signature-table tr,
+        .signature-table td {
+            display: block;
+            width: 100%;
+        }
+        .signature-table td {
+            text-align: center;
+        }
+        .signature-info {
+            text-align: left !important;
+        }
+        .signature-image-cell img {
+            max-height: 110px;
+        }
+    }
+    /* =========================================================
+       RESPONSIVE - CELULAR PEQUEÑO
+       ========================================================= */
+    @media (max-width: 575.98px) {
+        .analysis-risk-container {
+            padding: 5px;
+        }
+        .analysis-risk-header {
+            padding: 10px;
+        }
+        .analysis-risk-title {
+            font-size: 0.95rem;
+        }
+        .analysis-info-table td {
+            padding: 8px;
+        }
+        .analysis-section-title {
+            font-size: 0.9rem;
+        }
+        .analysis-items-wrapper {
+            border-radius: 6px;
+        }
+        .analysis-actions {
+            justify-content: center;
+        }
+        .analysis-actions .btn {
+            min-height: 36px;
+            padding: 7px 10px;
+            font-size: 0.78rem;
+        }
+        .analysis-actions .btn i {
+            font-size: 0.9rem;
+        }
+        .observations-box {
+            padding: 10px;
+            font-size: 0.86rem;
+        }
+        .signature-table td {
+            padding: 10px;
+            font-size: 0.85rem;
+        }
+    }
+</style>
+
+<div class="analysis-risk-container">
+    <div class="analysis-risk-card">
+        <!-- =====================================================
+         ENCABEZADO
+         ====================================================== -->
+        <div class="analysis-risk-header">
+            <h1 class="analysis-risk-title">
+                <i class="bi bi-shield-check me-1"></i>
+                Análisis de Riesgos
+            </h1>
+        </div>
+        <div class="p-2 p-md-3">
+            <!-- =================================================
+             INFORMACIÓN GENERAL
+             ================================================== -->
+            <div class="analysis-section-title">
+                <i class="bi bi-info-circle"></i>
+                <span>Información general</span>
+            </div>
+            <table class="analysis-info-table">
+                <tbody>
+                    <tr>
+                        <td class="info-label">
+                            Fecha de elaboración
+                        </td>
+                        <td class="info-value">
+                            <%= @analysis_risk.date_analysis if @analysis_risk.present? %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="info-label">
+                            Área
+                        </td>
+                        <td class="info-value">
+                            <%= AnalysisRisk.label_area(@analysis_risk.code_area) if @analysis_risk.present? %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="info-label">
+                            Descripción de la actividad
+                        </td>
+                        <td class="info-value">
+                            <%= @analysis_risk.description_activity if @analysis_risk.present? %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="info-label">
+                            Actividad rutinaria
+                        </td>
+                        <td class="info-value">
+                            <% if @analysis_risk.present? %>
+                                <% if @analysis_risk.routine_activity.to_i == 0 %>
+                                    <span class="badge text-bg-secondary">NO</span>
+                                <% else %>
+                                    <span class="badge text-bg-success">SÍ</span>
+                                <% end %>
+                            <% end %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="info-label">
+                            Elementos de protección requeridos
+                        </td>
+                        <td class="info-value">
+                            <%= @analysis_risk.epp_requested if @analysis_risk.present? %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="info-label">
+                            Antecedentes de accidentes laborales relacionados con la actividad
+                        </td>
+                        <td class="info-value">
+                            <%= @analysis_risk.accident if @analysis_risk.present? %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="info-label">
+                            Herramientas e implementos a utilizar
+                        </td>
+                        <td class="info-value">
+                            <%= @analysis_risk.tools_use if @analysis_risk.present? %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="info-label">
+                            Capacitación / información relacionada con la actividad
+                        </td>
+                        <td class="info-value">
+                            <%= @analysis_risk.training_activity if @analysis_risk.present? %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="info-label">
+                            Actividades donde aplica el estándar
+                        </td>
+                        <td class="info-value">
+                            <%= @analysis_risk.activity_standar if @analysis_risk.present? %>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- =================================================
+                 PASOS DEL OFICIO
+                 ================================================== -->
+            <div class="analysis-section-title">
+                <i class="bi bi-list-check"></i>
+                <span>Pasos básicos del oficio y medidas de prevención</span>
+            </div>
+            <div class="analysis-items-wrapper">
+                <table class="analysis-items-table">
+                    <colgroup>
+                        <col class="col-step">
+                        <col class="col-action">
+                        <col class="col-risk">
+                        <col class="col-measure">
+                        <col class="col-edit">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>
+                                Pasos básicos del oficio
+                            </th>
+                            <th>
+                                Acciones
+                            </th>
+                            <th>
+                                Riesgos y peligros potenciales
+                            </th>
+                            <th>
+                                Medidas preventivas y/o correctivas a aplicar
+                            </th>
+                            <th>
+                                Acción
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if @analysis_risk_items.present? %>
+                            <% @analysis_risk_items.each do |item| %>
+                                <tr>
+                                    <td>
+                                        <%= item.basic_steps %>
+                                    </td>
+                                    <td>
+                                        <%= item.actions_steps %>
+                                    </td>
+                                    <td>
+                                        <%= item.risks_steps %>
+                                    </td>
+                                    <td>
+                                        <%= item.measures_steps %>
+                                    </td>
+                                    <td class="text-center">
+                                        <%= link_to edit_analysis_risk_item_path(item.id), class: "btn btn-warning btn-sm btn-analysis-edit", title: t('common.edit_analysis_risks_item') do %>
+                                            <i class="bi bi-pencil-square"></i>
+                                            <span>Editar</span>
+                                        <% end %>
+                                    </td>
+                                </tr>
+                            <% end %>
+                        <% else %>
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-4">
+                                    <i class="bi bi-info-circle me-1"></i>
+                                    No se han registrado pasos para este análisis.
+                                </td>
+                            </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
+            <!-- =================================================
+                 BOTONERA
+                 ================================================== -->
+            <% if Current.user.level > 0 && Current.user.level < 3 %>
+                <div class="analysis-actions">
+                    <%= link_to crear_item_paso_path(@analysis_risk), class: "btn btn-analysis-create" do %>
+                        <i class="bi bi-plus-circle"></i>
+                        <span>Crear paso</span>
+                    <% end %>
+                </div>
+            <% end %>
+            <!-- =================================================
+                OBSERVACIONES
+                ================================================== -->
+            <div class="analysis-section-title">
+                <i class="bi bi-chat-left-text"></i>
+                <span>Observaciones</span>
+            </div>
+            <div class="observations-box">
+                <span class="observations-label">
+                    Observaciones:
+                </span>
+                <%= @analysis_risk.observations if @analysis_risk.present? %>
+            </div>
+            <!-- =================================================
+                 ELABORADO POR / FIRMA
+                 ================================================== -->
+            <div class="analysis-section-title">
+                <i class="bi bi-person-check"></i>
+                <span>Elaborado por</span>
+            </div>
+            <table class="signature-table">
+                <tbody>
+                    <tr>
+                        <td class="signature-info">
+                            <strong>Nombre:</strong>
+                            <%= @user.name if @user.present? %>
+                            <br>
+                            <strong>Cargo:</strong>
+                            <%= @analysis_risk.history if @analysis_risk.present? %>
+                        </td>
+                        <td class="signature-image-cell">
+                            <% if @analysis_risk.present? && @analysis_risk.firm_user_elaborated.to_i == 1 %>
+                                <% if @user.present? && @user.firm.attached? && @user.firm.image? %>
+                                    <%= image_tag @user.firm, class: "firma" %>
+                                <% else %>
+                                    <span class="signature-placeholder">
+                                        Firma no registrada
+                                    </span>
+                                <% end %>
+                            <% else %>
+                                <span class="signature-placeholder">
+                                    Firma no requerida
+                                </span>
+                            <% end %>
+                        </td>
+                    </tr>
+               </tbody>
+            </table>
+        </div>
+    </div>
+</div>

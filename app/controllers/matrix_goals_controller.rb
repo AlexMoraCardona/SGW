@@ -21,12 +21,14 @@ class MatrixGoalsController < ApplicationController
     def show
         @matrix_goal = MatrixGoal.find(params[:id])
         @matrix_goal_items = MatrixGoalItem.where("matrix_goal_id = ?", @matrix_goal.id) if @matrix_goal.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",99,1).last  
         @entity = Entity.find(@matrix_goal.entity_id) if @matrix_goal.present?
         @rep = User.find(@matrix_goal.user_representante) if  @matrix_goal.user_representante.present? && @matrix_goal.user_representante > 0
         @adv = User.find(@matrix_goal.user_asesor) if  @matrix_goal.user_asesor.present? && @matrix_goal.user_asesor > 0
         @res = User.find(@matrix_goal.user_responsible) if  @matrix_goal.user_responsible.present? && @matrix_goal.user_responsible > 0
         @report_official = ReportOfficial.where("entity_id = ? and year = ?",@entity.id,@matrix_goal.year).last if @entity.present? && @matrix_goal.present?
+        @template = Template.where("reference = ? and version = ?",@matrix_goal.code,@matrix_goal.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+     
 
         respond_to do |format|
             format.html
@@ -39,27 +41,28 @@ class MatrixGoalsController < ApplicationController
     def ver_matrix_goal
         @matrix_goal = MatrixGoal.find(params[:id])
         @matrix_goal_items = MatrixGoalItem.where("matrix_goal_id = ?", @matrix_goal.id) if @matrix_goal.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",99,1).last  
         @entity = Entity.find(@matrix_goal.entity_id) if @matrix_goal.present?
         @rep = User.find(@matrix_goal.user_representante) if  @matrix_goal.user_representante.present? && @matrix_goal.user_representante > 0
         @adv = User.find(@matrix_goal.user_asesor) if  @matrix_goal.user_asesor.present? && @matrix_goal.user_asesor > 0
         @res = User.find(@matrix_goal.user_responsible) if  @matrix_goal.user_responsible.present? && @matrix_goal.user_responsible > 0
         @report_official = ReportOfficial.where("entity_id = ? and year = ?",@entity.id,@matrix_goal.year).last if @entity.present? && @matrix_goal.present?
+        @template = Template.where("reference = ? and version = ?",@matrix_goal.code,@matrix_goal.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+
         
         nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
                 pdf = WickedPdf.new.pdf_from_string(
                     render_to_string('ver_matrix_goal'),
-                    zoom: 1,
                     disable_javascript: true,
-                    margin: {top: 10, bottom: 10, left: 5, right: 5 },
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
                     page_size: 'letter',
-                    footer: {right: '[page] de [topage]'}
-                    
-                  )  
-                  send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
             }
         end    
      
@@ -68,7 +71,7 @@ class MatrixGoalsController < ApplicationController
 
     def new
       @matrix_goal = MatrixGoal.new  
-      @template = Template.where("format_number = ? and document_vigente = ?",99,1).last  
+      @template = Template.where("reference = ? and document_vigente = ?",'MOBJ-SST',1).last  
     end    
 
     def create
@@ -182,7 +185,7 @@ class MatrixGoalsController < ApplicationController
         params.require(:matrix_goal).permit(:date_unsafe, :user_representante, 
         :user_responsible, :user_asesor, :date_firm_representante, 
         :date_firm_responsible, :date_firm_asesor, :firm_representante, 
-        :firm_responsible, :firm_asesor, :year, :entity_id)
+        :firm_responsible, :firm_asesor, :year, :entity_id, :version, :code)
     end 
 
 end   

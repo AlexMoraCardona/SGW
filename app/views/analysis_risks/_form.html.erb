@@ -1,105 +1,419 @@
-<div class="container col-12 card p-5">
-    <br> 
-    <%= form_with model: @analysis_risk do |form| %>
-        <% @analysis_risk.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %> 
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Fecha en la que se aplica la lista de chequeo."><strong>FECHA DE ELABORACIÓN</strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>               
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Coloque el nombre del área o proceso donde se ejecuta la actividad o trabajo, ej.: Mantenimiento, Mercadeo, facturación."><strong>ÁREA</strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>                              
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;text-align:center">
-                    <%= form.date_field :date_analysis,  class: "form-control" %>               
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.collection_select :code_area, @company_areas, :id, :name if @company_areas.present? %>
-                </td>
-            </tr>
-        </table>
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Describir los aspectos se quieren revisar."><strong>Descripcion de la Actividad: </strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>               
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                    <%= form.text_area :description_activity,  class: "form-control" %>               
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Marque  si o no según corresponda la actividad."><strong>Actividad rutinaria: </strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>               
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                    <%= form.radio_button :routine_activity, 0 %>
-                    <label for="no">NO</label>
-                    <%= form.radio_button :routine_activity, 1 %>
-                    <label for="si">SI</label>                    
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Describa el tipo de herramientas y/o equipos  de cada una de las herramientas y/o equipos que utilizara en la tarea a ejecutar."><strong>Elementos de protección requeridos: </strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>               
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                    <%= select_tag :epp_requested, options_from_collection_for_select(@protection_elements, :id, :name), multiple: true, class: 'form-control input-sm select2', :prompt  =>  '--Seleccione los EPP--' %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Relacione que accidentes se han presentado realizando la actividad."><strong>Antecedentes de accidentes laborales relacionados con la actividad: </strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>               
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                     <%= form.text_area :accident,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title=" Describa el tipo de equipos  de protección se deben utilizara en la tarea a ejecutar y según indicaciones de la ficha técnica de cada EPP."><strong>Herramientas e Implementos  a utilizar: </strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>               
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                     <%= form.text_area :tools_use,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Relacione que capacitación  e información a recibido frente a la actividad a realiza: Ejemplo uso de EPP, autocuidado."><strong>Capacitación/informacion  relacionado con la actividad: </strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>               
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                     <%= form.text_area :training_activity,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Describa las actividades que tiene relación con el ARO."><strong>Actividades donde aplica el estandar: </strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>               
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                     <%= form.text_area :activity_standar,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Complemente características o recomendaciones frente al aspecto a evaluar."><strong>Observaciones: </strong><%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>               
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                     <%= form.text_area :observations,  class: "form-control" %>
-                </td>
-            </tr>
-        </table>
-       </br> 
-        <%= form.hidden_field :user_elaborated, :value => Current.user.id.to_i, class: "form-control" if Current.user.present? %>
-        <%= form.hidden_field :entity_id, :value => Current.user.entity.to_i, class: "form-control" if Current.user.present? %>
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
-    <% end %>
-</div>        
-<br>
+<style>
+  .aro-form-page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px 12px 30px;
+  }
+  .aro-form-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+  }
+  .aro-form-header {
+    padding: 16px 20px;
+    background: #f8f9fa;
+    border-bottom: 2px solid #00aae4;
+  }
+  .aro-form-title {
+    margin: 0;
+    color: #343a40;
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+  .aro-form-subtitle {
+    margin: 4px 0 0;
+    color: #6c757d;
+    font-size: 0.82rem;
+  }
+  .aro-form-body {
+    padding: 20px;
+  }
+  /* Alertas */
+  .aro-error {
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 0.85rem;
+  }
+  /* Secciones */
+  .aro-section {
+    margin-bottom: 18px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .aro-section-header {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 13px;
+    background: #f1f3f5;
+    border-bottom: 1px solid #dee2e6;
+    color: #343a40;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .aro-section-header i {
+    color: #00aae4;
+    font-size: 0.95rem;
+  }
+  .aro-section-body {
+    padding: 14px;
+  }
+  /* Campos */
+  .aro-field {
+    margin-bottom: 14px;
+  }
+  .aro-field:last-child {
+    margin-bottom: 0;
+  }
+  .aro-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin-bottom: 6px;
+    color: #343a40;
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+  .aro-label-help {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-top: -1px;
+  }
+  .aro-input,
+  .aro-select {
+    width: 100%;
+    min-height: 38px;
+    border: 1px solid #ced4da;
+    border-radius: 7px;
+    font-size: 0.85rem;
+  }
+  .aro-input:focus,
+  .aro-select:focus {
+    border-color: #00aae4;
+    box-shadow: 0 0 0 0.15rem rgba(0, 170, 228, 0.15);
+  }
+  textarea.aro-input {
+    min-height: 85px;
+    resize: vertical;
+  }
+  .aro-date {
+    max-width: 260px;
+  }
+  /* Select EPP */
+  .aro-epp-select {
+    min-height: 100px;
+  }
+  /* Radio */
+  .aro-radio-group {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    min-height: 38px;
+  }
+  .aro-radio-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+  .aro-radio-option input {
+    width: 17px;
+    height: 17px;
+    accent-color: #00aae4;
+    cursor: pointer;
+  }
+  /* Botonera */
+  .aro-form-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding-top: 8px;
+    border-top: 1px solid #e9ecef;
+  }
+  .aro-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 120px;
+    padding: 8px 16px;
+    border-radius: 7px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+  .aro-btn-save {
+    background: #00aae4;
+    border: 1px solid #00aae4;
+    color: #fff;
+  }
+  .aro-btn-save:hover {
+    background: #008fc1;
+    border-color: #008fc1;
+    color: #fff;
+  }
+  .aro-btn-back {
+    background: #fff;
+    border: 1px solid #6c757d;
+    color: #495057;
+  }
+  .aro-btn-back:hover {
+    background: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+  }
+  .aro-action-btn i {
+    font-size: 0.9rem;
+  }
+  @media (max-width: 767.98px) {
+    .aro-form-page {
+      padding: 5px 7px 20px;
+    }
+    .aro-form-header {
+      padding: 12px 14px;
+    }
+    .aro-form-title {
+      font-size: 1.05rem;
+    }
+    .aro-form-subtitle {
+      font-size: 0.75rem;
+    }
+    .aro-form-body {
+      padding: 10px;
+    }
+    .aro-section {
+      margin-bottom: 12px;
+      border-radius: 9px;
+    }
+    .aro-section-header {
+      padding: 8px 10px;
+      font-size: 0.78rem;
+    }
+    .aro-section-body {
+      padding: 11px;
+    }
+    .aro-label {
+      font-size: 0.78rem;
+    }
+    .aro-input,
+    .aro-select {
+      font-size: 0.82rem;
+      min-height: 37px;
+    }
+    textarea.aro-input {
+      min-height: 75px;
+    }
+    .aro-date {
+      max-width: 100%;
+    }
+    .aro-radio-group {
+      justify-content: center;
+      gap: 30px;
+    }
+    .aro-form-actions {
+      flex-direction: column;
+      gap: 8px;
+    }
+    .aro-action-btn {
+      width: 100%;
+      max-width: 260px;
+      min-width: 0;
+    }
+  }
+</style>
 
- 
+<div class="aro-form-page">
+  <%= form_with model: @analysis_risk do |form| %>
+    <div class="aro-form-card">
+      <!-- ENCABEZADO -->
+      <div class="aro-form-header">
+        <h2 class="aro-form-title">
+          <i class="bi bi-shield-check me-1"></i>
+          ANÁLISIS DE RIESGO POR OFICIO (ARO)
+        </h2>
+        <p class="aro-form-subtitle">
+          Información general y características de la actividad
+        </p>
+      </div>
+      <div class="aro-form-body">
+        <!-- ERRORES -->
+        <% @analysis_risk.errors.full_messages.each do |error| %>
+          <div class="alert alert-danger aro-error" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-1"></i>
+            <%= error %>
+          </div>
+        <% end %>
+        <!-- INFORMACIÓN GENERAL -->
+        <div class="aro-section">
+          <div class="aro-section-header">
+            <i class="bi bi-info-circle"></i>
+            Información general
+          </div>
+          <div class="aro-section-body">
+            <div class="row g-3">
+              <!-- FECHA -->
+              <div class="col-12 col-md-4">
+                <div class="aro-field">
+                  <label class="aro-label">
+                    <span>
+                      FECHA DE ELABORACIÓN
+                    </span>
+                    <%= image_tag 'ayuda.png', width: 20, height: 20, class: "aro-label-help", data: {bs_toggle: "tooltip", bs_html: "true"}, title: "Fecha en la que se aplica la lista de chequeo." %>
+                  </label>
+                  <%= form.date_field :date_analysis, class: "form-control aro-input aro-date" %>
+                </div>
+              </div>
+              <!-- ÁREA -->
+              <div class="col-12 col-md-8">
+                <div class="aro-field">
+                  <label class="aro-label">
+                    <span>ÁREA</span>
+                    <%= image_tag 'ayuda.png', width: 20, height: 20, class: "aro-label-help", data: {bs_toggle: "tooltip", bs_html: "true"}, title: "Coloque el nombre del área o proceso donde se ejecuta la actividad o trabajo, ej.: Mantenimiento, Mercadeo, facturación." %>
+                  </label>
+                  <% if @company_areas.present? %>
+                    <%= form.collection_select :code_area, @company_areas, :id, :name, { prompt: "-- Seleccionar área --" }, { class: "form-select aro-select" } %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- DESCRIPCIÓN Y CARACTERÍSTICAS -->
+        <div class="aro-section">
+          <div class="aro-section-header">
+            <i class="bi bi-clipboard2-check"></i>
+            Características de la actividad
+          </div>
+          <div class="aro-section-body">
+            <!-- DESCRIPCIÓN -->
+            <div class="aro-field">
+              <label class="aro-label">
+                <span>
+                  Descripción de la actividad
+                </span>
+                <%= image_tag 'ayuda.png', width: 20, height: 20, class: "aro-label-help", data: {bs_toggle: "tooltip", bs_html: "true"}, title: "Describir los aspectos que se quieren revisar." %>
+              </label>
+              <%= form.text_area :description_activity, class: "form-control aro-input" %>
+            </div>
+            <!-- ACTIVIDAD RUTINARIA -->
+            <div class="aro-field">
+              <label class="aro-label">
+                <span>
+                  Actividad rutinaria
+                </span>
+                <%= image_tag 'ayuda.png', width: 20, height: 20, class: "aro-label-help", data: {bs_toggle: "tooltip", bs_html: "true"}, title: "Marque sí o no según corresponda la actividad." %>
+              </label>
+              <div class="aro-radio-group">
+                <label class="aro-radio-option">
+                  <%= form.radio_button :routine_activity, 0 %>
+                  <span>NO</span>
+                </label>
+                <label class="aro-radio-option">
+                  <%= form.radio_button :routine_activity, 1 %>
+                  <span>SÍ</span>
+                </label>
+              </div>
+            </div>
+            <!-- EPP -->
+            <div class="aro-field">
+              <label class="aro-label">
+                <span>
+                  Elementos de protección requeridos
+                </span>
+                <%= image_tag 'ayuda.png', width: 20, height: 20, class: "aro-label-help", data: {bs_toggle: "tooltip", bs_html: "true"}, title: "Describa el tipo de herramientas y/o equipos que utilizará en la tarea a ejecutar." %>
+              </label>
+              <%= select_tag :epp_requested, options_from_collection_for_select(@protection_elements, :id, :name), multiple: true, class: "form-select aro-select aro-epp-select", prompt: "-- Seleccione los EPP --" %>
+            </div>
+            <!  -- ACCIDENTES -->
+            <div class="aro-field">
+              <label class="aro-label">
+                <span>
+                  Antecedentes de accidentes laborales relacionados con la actividad
+                </span>
+                <%= image_tag 'ayuda.png', width: 20, height: 20, class: "aro-label-help", data: {bs_toggle: "tooltip", bs_html: "true"}, title: "Relacione qué accidentes se han presentado realizando la actividad." %>
+              </label>
+              <%= form.text_area :accident, class: "form-control aro-input" %>
+            </div>
+            <!-- HERRAMIENTAS -->
+            <div class="aro-field">
+              <label class="aro-label">
+                <span>
+                  Herramientas e implementos a utilizar
+                </span>
+                <%= image_tag 'ayuda.png', width: 20, height: 20, class: "aro-label-help", data: {bs_toggle: "tooltip", bs_html: "true"}, title: "Describa el tipo de equipos de protección que se deben utilizar en la tarea a ejecutar y según indicaciones de la ficha técnica de cada EPP." %>
+              </label>
+              <%= form.text_area :tools_use, class: "form-control aro-input" %>
+            </div>
+            <!-- CAPACITACIÓN -->
+            <div class="aro-field">
+              <label class="aro-label">
+                <span>
+                  Capacitación / información relacionada con la actividad
+                </span>
+                <%= image_tag 'ayuda.png', width: 20, height: 20, class: "aro-label-help", data: {bs_toggle: "tooltip", bs_html: "true"}, title: "Relacione qué capacitación e información ha recibido frente a la actividad a realizar. Ejemplo: uso de EPP, autocuidado." %>
+              </label>
+              <%= form.text_area :training_activity, class: "form-control aro-input" %>
+            </div>
+            <!-- ACTIVIDADES ESTÁNDAR -->
+            <div class="aro-field">
+              <label class="aro-label">
+                <span>
+                  Actividades donde aplica el estándar
+                </span>
+                <%= image_tag 'ayuda.png', width: 20, height: 20, class: "aro-label-help", data: {bs_toggle: "tooltip", bs_html: "true"}, title: "Describa las actividades que tienen relación con el ARO." %>
+              </label>
+              <%= form.text_area :activity_standar, class: "form-control aro-input" %>
+            </div>
+          </div>
+        </div>
+        <!-- OBSERVACIONES -->
+        <div class="aro-section">
+          <div class="aro-section-header">
+            <i class="bi bi-chat-left-text"></i>
+            Observaciones
+          </div>
+          <div class="aro-section-body">
+            <label class="aro-label">
+              <span>
+                Observaciones
+              </span>
+              <%= image_tag 'ayuda.png', width: 20, height: 20, class: "aro-label-help", data: {bs_toggle: "tooltip", bs_html: "true"}, title: "Complemente características o recomendaciones frente al aspecto a evaluar." %>
+            </label>
+            <%= form.text_area :observations, class: "form-control aro-input" %>
+          </div>
+        </div>
+        <!-- CAMPOS OCULTOS -->
+        <% if Current.user.present? %>
+          <%= form.hidden_field :user_elaborated, value: Current.user.id.to_i %>
+          <%= form.hidden_field :entity_id, value: Current.user.entity.to_i %>
+        <% end %>
+        <% if @template.present? %>
+          <%= form.hidden_field :code, value: @template.reference %>
+          <%= form.hidden_field :version, value: @template.version.to_i %>
+        <% end %>
+        <!-- BOTONERA -->
+        <div class="aro-form-actions">
+          <button type="submit" class="btn aro-action-btn aro-btn-save">
+            <i class="bi bi-check-circle"></i>
+            <span><%= t('common.submit') %></span>
+          </button>
+          <%= link_to :back, class: "btn aro-action-btn aro-btn-back" do %>
+            <i class="bi bi-arrow-left"></i>
+            <span>Retornar</span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

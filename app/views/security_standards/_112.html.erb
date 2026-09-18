@@ -1,0 +1,811 @@
+<style>
+    .security-page {
+        width: 100%;
+        max-width: 1150px;
+        margin: 0 auto;
+        padding: 15px;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #212529;
+    }
+
+    /* =========================================================
+       ENCABEZADO
+       ========================================================= */
+
+    .security-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 14px 18px;
+        margin-bottom: 18px;
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-left: 5px solid #00aae4;
+        border-radius: 10px;
+    }
+
+    .security-header-icon {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #00aae4;
+        color: white;
+        border-radius: 10px;
+        font-size: 24px;
+    }
+
+    .security-header-content {
+        min-width: 0;
+    }
+
+    .security-header-title {
+        margin: 0;
+        font-size: 21px;
+        font-weight: 700;
+        color: #212529;
+    }
+
+    .security-header-subtitle {
+        margin: 3px 0 0;
+        font-size: 13px;
+        color: #6c757d;
+    }
+
+    /* =========================================================
+       TARJETAS
+       ========================================================= */
+
+    .security-card {
+        background: #ffffff;
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        margin-bottom: 18px;
+        overflow: hidden;
+    }
+
+    .security-card-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 11px 15px;
+        background: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .security-card-header-icon {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #00aae4;
+        color: white;
+        border-radius: 8px;
+        font-size: 17px;
+    }
+
+    .security-card-title {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 700;
+        color: #212529;
+    }
+
+    .security-card-body {
+        padding: 15px;
+    }
+
+    /* =========================================================
+       INFORMACIÓN GENERAL
+       ========================================================= */
+
+    .security-info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .security-info-item {
+        min-width: 0;
+        padding: 11px 13px;
+        background: #f8f9fa;
+        border: 1px solid #e1e5e8;
+        border-radius: 8px;
+    }
+
+    .security-info-label {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: .3px;
+    }
+
+    .security-info-value {
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        color: #212529;
+        line-height: 1.45;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    /* Elementos que ocupan toda la fila */
+    .security-info-full {
+        grid-column: 1 / -1;
+    }
+
+    /* =========================================================
+       ESTÁNDAR DE SEGURIDAD
+       ========================================================= */
+
+    .security-standard-card {
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        margin-bottom: 18px;
+    }
+
+    .security-standard-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 13px 16px;
+        background: #00aae4;
+        color: #ffffff;
+    }
+
+    .security-standard-icon {
+        font-size: 19px;
+    }
+
+    .security-standard-title {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .security-standard-body {
+        padding: 18px;
+        min-height: 130px;
+        font-size: 14px;
+        line-height: 1.65;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        background: #ffffff;
+    }
+
+    /* =========================================================
+       FIRMAS
+       ========================================================= */
+
+    .security-signatures {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 15px;
+    }
+
+    .security-signature-card {
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #ffffff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .security-signature-header {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 10px 13px;
+        background: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .security-signature-header i {
+        color: #00aae4;
+        font-size: 17px;
+    }
+
+    .security-signature-body {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 170px;
+        gap: 15px;
+        align-items: center;
+        min-height: 125px;
+        padding: 15px;
+    }
+
+    .security-person-data {
+        min-width: 0;
+    }
+
+    .security-person-row {
+        margin-bottom: 8px;
+    }
+
+    .security-person-row:last-child {
+        margin-bottom: 0;
+    }
+
+    .security-person-label {
+        display: block;
+        margin-bottom: 2px;
+        font-size: 11px;
+        font-weight: 700;
+        color: #6c757d;
+        text-transform: uppercase;
+    }
+
+    .security-person-value {
+        display: block;
+        font-size: 13px;
+        line-height: 1.4;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    .security-firm-box {
+        height: 95px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px dashed #ced4da;
+        border-radius: 8px;
+        background: #fafafa;
+        text-align: center;
+        overflow: hidden;
+    }
+
+    .security-firm-box .firma {
+        max-width: 145px;
+        max-height: 75px;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+    }
+
+    .security-no-firm {
+        font-size: 11px;
+        color: #adb5bd;
+    }
+
+    /* =========================================================
+       RESPONSIVE TABLET
+       ========================================================= */
+
+    @media (max-width: 900px) {
+        .security-signature-body {
+            grid-template-columns: minmax(0, 1fr) 140px;
+        }
+
+        .security-firm-box .firma {
+            max-width: 120px;
+        }
+    }
+
+    /* =========================================================
+       RESPONSIVE CELULAR
+       ========================================================= */
+
+    @media (max-width: 767px) {
+        .security-page {
+            padding: 8px;
+        }
+
+        .security-header {
+            padding: 12px;
+            gap: 10px;
+            margin-bottom: 12px;
+            border-radius: 9px;
+        }
+
+        .security-header-icon {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            font-size: 20px;
+            border-radius: 8px;
+        }
+
+        .security-header-title {
+            font-size: 17px;
+        }
+
+        .security-header-subtitle {
+            font-size: 11px;
+        }
+
+        .security-card,
+        .security-standard-card,
+        .security-signature-card {
+            margin-bottom: 12px;
+            border-radius: 9px;
+        }
+
+        .security-card-header {
+            padding: 9px 11px;
+        }
+
+        .security-card-header-icon {
+            width: 30px;
+            height: 30px;
+            min-width: 30px;
+            font-size: 15px;
+        }
+
+        .security-card-title {
+            font-size: 13px;
+        }
+
+        .security-card-body {
+            padding: 10px;
+        }
+
+        .security-info-grid {
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        .security-info-full {
+            grid-column: auto;
+        }
+
+        .security-info-item {
+            padding: 9px 10px;
+        }
+
+        .security-info-label {
+            font-size: 10px;
+        }
+
+        .security-info-value {
+            font-size: 13px;
+        }
+
+        .security-standard-header {
+            padding: 10px 12px;
+        }
+
+        .security-standard-title {
+            font-size: 13px;
+        }
+
+        .security-standard-body {
+            padding: 12px;
+            min-height: 100px;
+            font-size: 13px;
+        }
+
+        .security-signatures {
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .security-signature-header {
+            padding: 9px 11px;
+            font-size: 13px;
+        }
+
+        .security-signature-body {
+            grid-template-columns: 1fr;
+            gap: 10px;
+            min-height: auto;
+            padding: 11px;
+        }
+
+        .security-firm-box {
+            height: 85px;
+        }
+
+        .security-firm-box .firma {
+            max-width: 140px;
+            max-height: 65px;
+        }
+    }
+
+    /* =========================================================
+       CELULARES MUY PEQUEÑOS
+       ========================================================= */
+
+    @media (max-width: 400px) {
+        .security-page {
+            padding: 5px;
+        }
+
+        .security-header-title {
+            font-size: 15px;
+        }
+
+        .security-header-subtitle {
+            font-size: 10px;
+        }
+
+        .security-info-value {
+            font-size: 12px;
+        }
+
+        .security-standard-body {
+            font-size: 12px;
+        }
+
+        .security-person-value {
+            font-size: 12px;
+        }
+    }
+</style>
+
+<div class="security-page">
+
+
+<!-- =====================================================
+     ENCABEZADO
+     ===================================================== -->
+
+<div class="security-header">
+    <div class="security-header-icon">
+        <i class="bi bi-shield-check"></i>
+    </div>
+
+    <div class="security-header-content">
+        <h1 class="security-header-title">
+            Estándar de Seguridad
+        </h1>
+
+        <p class="security-header-subtitle">
+            Documento de seguridad y prevención de riesgos
+        </p>
+    </div>
+</div>
+
+
+<!-- =====================================================
+     INFORMACIÓN GENERAL
+     ===================================================== -->
+
+<div class="security-card">
+
+    <div class="security-card-header">
+        <div class="security-card-header-icon">
+            <i class="bi bi-info-circle"></i>
+        </div>
+
+        <h2 class="security-card-title">
+            Información general
+        </h2>
+    </div>
+
+    <div class="security-card-body">
+
+        <div class="security-info-grid">
+
+            <!-- FECHA -->
+            <div class="security-info-item">
+
+                <span class="security-info-label">
+                    Fecha
+                </span>
+
+                <span class="security-info-value">
+                    <%= @security_standard.date_standard if @security_standard.present? %>
+                </span>
+
+            </div>
+
+
+            <!-- ÁREA -->
+            <div class="security-info-item">
+
+                <span class="security-info-label">
+                    Área
+                </span>
+
+                <span class="security-info-value">
+                    <%= SecurityStandard.label_area(@security_standard.code_area) if @security_standard.present? %>
+                </span>
+
+            </div>
+
+
+            <!-- ELABORADO POR -->
+            <div class="security-info-item">
+
+                <span class="security-info-label">
+                    Elaborado por
+                </span>
+
+                <span class="security-info-value">
+                    <%= @user_elaborated.name if @user_elaborated.present? %>
+                </span>
+
+            </div>
+
+
+            <!-- TIPO DE ACCIÓN -->
+            <div class="security-info-item">
+
+                <span class="security-info-label">
+                    Tipo de acción
+                </span>
+
+                <span class="security-info-value">
+                    <%= SecurityStandard.label_tipo(@security_standard.type_action) if @security_standard.present? %>
+                </span>
+
+            </div>
+
+
+            <!-- OBJETIVO -->
+            <div class="security-info-item security-info-full">
+
+                <span class="security-info-label">
+                    Objetivo
+                </span>
+
+                <span class="security-info-value">
+                    <%= @security_standard.objetivo if @security_standard.present? %>
+                </span>
+
+            </div>
+
+
+            <!-- RIESGO ASOCIADO -->
+            <div class="security-info-item security-info-full">
+
+                <span class="security-info-label">
+                    Riesgo asociado
+                </span>
+
+                <span class="security-info-value">
+                    <%= @security_standard.danger if @security_standard.present? %>
+                </span>
+
+            </div>
+
+
+            <!-- ELEMENTOS DE PROTECCIÓN PERSONAL -->
+            <div class="security-info-item security-info-full">
+
+                <span class="security-info-label">
+                    Elementos de protección personal
+                </span>
+
+                <span class="security-info-value">
+                    <%= @security_standard.element_protection if @security_standard.present? %>
+                </span>
+
+            </div>
+
+
+            <!-- DESCRIPCIÓN DE LA ACTIVIDAD -->
+            <div class="security-info-item security-info-full">
+
+                <span class="security-info-label">
+                    Descripción de la actividad
+                </span>
+
+                <span class="security-info-value">
+                    <%= @security_standard.description_activity if @security_standard.present? %>
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ESTÁNDAR DE SEGURIDAD
+     ===================================================== -->
+
+<div class="security-standard-card">
+
+    <div class="security-standard-header">
+
+        <i class="bi bi-shield-fill-check security-standard-icon"></i>
+
+        <h2 class="security-standard-title">
+            ESTÁNDAR DE SEGURIDAD: (mencionar actividad)
+        </h2>
+
+    </div>
+
+    <div class="security-standard-body">
+
+        <%= @security_standard.standard_security if @security_standard.present? %>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     FIRMAS
+     ===================================================== -->
+
+<div class="security-signatures">
+
+
+    <!-- ELABORADO POR -->
+    <div class="security-signature-card">
+
+        <div class="security-signature-header">
+            <i class="bi bi-person-check"></i>
+            Elaborado por
+        </div>
+
+        <div class="security-signature-body">
+
+            <div class="security-person-data">
+
+                <div class="security-person-row">
+
+                    <span class="security-person-label">
+                        Nombre
+                    </span>
+
+                    <span class="security-person-value">
+                        <%= @user_elaborated.name if @user_elaborated.present? %>
+                    </span>
+
+                </div>
+
+
+                <div class="security-person-row">
+
+                    <span class="security-person-label">
+                        Cargo
+                    </span>
+
+                    <span class="security-person-value">
+                        <%= @security_standard.cargo_user_elaborated if @security_standard.present? %>
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="security-firm-box">
+
+                <% if @security_standard.present? && @security_standard.firm_user_elaborated == 1 %>
+
+                    <% if @user_elaborated.present? && @user_elaborated.firm.attached? %>
+
+                        <% if @user_elaborated.firm.image? %>
+
+                            <%= image_tag @user_elaborated.firm, class: "firma" %>
+
+                        <% else %>
+
+                            <span class="security-no-firm">
+                                Firma no disponible
+                            </span>
+
+                        <% end %>
+
+                    <% else %>
+
+                        <span class="security-no-firm">
+                            Firma no disponible
+                        </span>
+
+                    <% end %>
+
+                <% else %>
+
+                    <span class="security-no-firm">
+                        Sin firma registrada
+                    </span>
+
+                <% end %>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RESPONSABLE SST -->
+    <div class="security-signature-card">
+
+        <div class="security-signature-header">
+            <i class="bi bi-person-badge"></i>
+            Responsable SST
+        </div>
+
+        <div class="security-signature-body">
+
+            <div class="security-person-data">
+
+                <div class="security-person-row">
+
+                    <span class="security-person-label">
+                        Nombre
+                    </span>
+
+                    <span class="security-person-value">
+                        <%= @user_asesor.name if @user_asesor.present? %>
+                    </span>
+
+                </div>
+
+
+                <div class="security-person-row">
+
+                    <span class="security-person-label">
+                        Cargo
+                    </span>
+
+                    <span class="security-person-value">
+                        <%= @security_standard.cargo_user_asesor if @security_standard.present? %>
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="security-firm-box">
+
+                <% if @security_standard.present? && @security_standard.firm_user_asesor == 1 %>
+
+                    <% if @user_asesor.present? && @user_asesor.firm.attached? %>
+
+                        <% if @user_asesor.firm.image? %>
+
+                            <%= image_tag @user_asesor.firm, class: "firma" %>
+
+                        <% else %>
+
+                            <span class="security-no-firm">
+                                Firma no disponible
+                            </span>
+
+                        <% end %>
+
+                    <% else %>
+
+                        <span class="security-no-firm">
+                            Firma no disponible
+                        </span>
+
+                    <% end %>
+
+                <% else %>
+
+                    <span class="security-no-firm">
+                        Sin firma registrada
+                    </span>
+
+                <% end %>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div style="height: 15px;"></div>
+
+
+</div>

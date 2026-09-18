@@ -1,0 +1,1029 @@
+<div class="change-view-page">
+
+  <div class="change-document-card">
+
+<!-- INFORMACIÓN GENERAL -->
+<div class="change-section">
+
+  <div class="change-info-grid">
+
+    <div class="change-info-item">
+      <div class="change-info-label">
+        <i class="bi bi-calendar3"></i>
+        Fecha
+      </div>
+
+      <div class="change-info-value">
+        <%= @change_management.date_change if @change_management.present? %>
+      </div>
+    </div>
+
+
+    <div class="change-info-item">
+      <div class="change-info-label">
+        <i class="bi bi-diagram-3"></i>
+        Área
+      </div>
+
+      <div class="change-info-value">
+        <%= ChangeManagement.label_area(@change_management.code_area) %>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- DESCRIPCIÓN Y ANÁLISIS -->
+<div class="change-section">
+
+  <div class="change-section-title">
+    <i class="bi bi-pencil-square"></i>
+    <span>Descripción y análisis del cambio</span>
+  </div>
+
+
+  <div class="change-content-block">
+
+    <div class="change-content-title">
+      Descripción del cambio
+    </div>
+
+    <div class="change-content-body trix-content">
+      <%= @change_management.description_change if @change_management.present? %>
+    </div>
+
+  </div>
+
+
+  <div class="change-content-block">
+
+    <div class="change-content-title">
+      Análisis de riesgos y aspectos / requisitos legales aplicables
+    </div>
+
+    <div class="change-content-body trix-content">
+      <%= @change_management.analisys_change if @change_management.present? %>
+    </div>
+
+  </div>
+
+
+  <div class="change-content-block">
+
+    <div class="change-content-title">
+      Recomendaciones del administrador del SG-SST
+    </div>
+
+    <div class="change-content-body trix-content">
+      <%= @change_management.recomendations_change if @change_management.present? %>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ANÁLISIS DEL IMPACTO -->
+<div class="change-section">
+
+  <div class="change-section-title">
+    <i class="bi bi-shield-check"></i>
+    <span>Análisis del impacto del sistema</span>
+  </div>
+
+
+  <div class="change-impact-list">
+
+    <div class="change-impact-item">
+      <div class="change-impact-label">
+        <i class="bi bi-exclamation-triangle"></i>
+        Peligros y riesgos
+      </div>
+
+      <div class="change-impact-value">
+        <%= @change_management.dangers_change if @change_management.present? %>
+      </div>
+    </div>
+
+
+    <div class="change-impact-item">
+      <div class="change-impact-label">
+        <i class="bi bi-journal-text"></i>
+        Requisitos legales
+      </div>
+
+      <div class="change-impact-value">
+        <%= @change_management.requeriment_legal if @change_management.present? %>
+      </div>
+    </div>
+
+
+    <div class="change-impact-item">
+      <div class="change-impact-label">
+        <i class="bi bi-gear"></i>
+        Control operativo
+      </div>
+
+      <div class="change-impact-value">
+        <%= @change_management.operational_control if @change_management.present? %>
+      </div>
+    </div>
+
+
+    <div class="change-impact-item">
+      <div class="change-impact-label">
+        <i class="bi bi-list-check"></i>
+        Procedimientos de trabajo
+      </div>
+
+      <div class="change-impact-value">
+        <%= @change_management.work_procedure if @change_management.present? %>
+      </div>
+    </div>
+
+
+    <div class="change-impact-item">
+      <div class="change-impact-label">
+        <i class="bi bi-three-dots"></i>
+        Otros
+      </div>
+
+      <div class="change-impact-value">
+        <%= @change_management.others if @change_management.present? %>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- PLANEACIÓN DEL CAMBIO -->
+<div class="change-section">
+
+  <div class="change-section-title">
+    <i class="bi bi-calendar-check"></i>
+    <span>Planeación del cambio</span>
+  </div>
+
+
+  <% if @change_management_items.present? %>
+
+    <div class="change-planning-wrapper">
+
+      <table class="table table-hover align-middle change-planning-table">
+
+        <thead>
+          <tr>
+            <th>Actividad</th>
+            <th>Responsable</th>
+            <th>Comunicar cambio a</th>
+            <th>Fecha ejecución</th>
+            <th>Fecha seguimiento</th>
+            <th>Editar</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <% @change_management_items.each do |item| %>
+
+            <tr>
+
+              <td>
+                <div class="change-planning-text">
+                  <%= item.activity_plannig %>
+                </div>
+              </td>
+
+
+              <td>
+                <div class="change-responsible">
+                  <i class="bi bi-person"></i>
+                  <%= ChangeManagement.label_user(item.responsible_planning) %>
+                </div>
+              </td>
+
+
+              <td>
+                <div class="change-planning-text">
+                  <%= item.communicate_change %>
+                </div>
+              </td>
+
+
+              <td class="change-date-cell">
+                <%= item.date_execution %>
+              </td>
+
+
+              <td class="change-date-cell">
+                <%= item.date_continue %>
+              </td>
+
+
+              <td class="change-edit-cell">
+
+                <%= link_to edit_change_management_item_path(item.id),
+                    class: "btn btn-sm btn-warning change-edit-btn",
+                    title: "Editar actividad" do %>
+
+                  <i class="bi bi-pencil-square"></i>
+                  <span>Editar</span>
+
+                <% end %>
+
+              </td>
+
+            </tr>
+
+          <% end %>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  <% else %>
+
+    <div class="change-empty-planning">
+
+      <i class="bi bi-calendar-x"></i>
+
+      <strong>No hay actividades de planeación registradas.</strong>
+
+      <span>
+        Puede crear una nueva actividad utilizando el botón inferior.
+      </span>
+
+    </div>
+
+  <% end %>
+
+
+  <!-- CREAR PLANEACIÓN -->
+
+  <% if Current.user.level > 0 && Current.user.level < 3 %>
+
+    <div class="change-planning-action">
+
+      <%= link_to crear_item_paso_cambio_path(@change_management),
+          class: "btn btn-warning change-create-planning-btn" do %>
+
+        <i class="bi bi-plus-circle"></i>
+        <span>Crear planeación</span>
+
+      <% end %>
+
+    </div>
+
+  <% end %>
+
+</div>
+
+
+<!-- FIRMA -->
+<div class="change-section">
+
+  <div class="change-section-title">
+    <i class="bi bi-pen"></i>
+    <span>Elaboración y firma</span>
+  </div>
+
+
+  <div class="change-signature-card">
+
+    <div class="change-signature-info">
+
+      <div class="change-signature-label">
+        Elaborado por
+      </div>
+
+      <div class="change-signature-name">
+        <i class="bi bi-person-badge"></i>
+
+        <%= @user.name if @user.present? %>
+      </div>
+
+    </div>
+
+
+    <div class="change-signature-image">
+
+      <% if @change_management.firm_user_elaborated == 1 %>
+
+        <% if @user.firm.attached? %>
+
+          <% if @user.firm.image? %>
+
+            <%= image_tag @user.firm,
+                class: "change-signature-img",
+                alt: "Firma" %>
+
+          <% end %>
+
+        <% end %>
+
+      <% else %>
+
+        <span class="change-not-signed">
+          <i class="bi bi-clock"></i>
+          Pendiente de firma
+        </span>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+  </div>
+
+</div>
+
+<style>
+
+  .change-view-page {
+    width: min(1150px, 94%);
+    margin: 15px auto 35px;
+  }
+
+
+  /* LOGO */
+
+  .change-logo-container {
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 12px;
+  }
+
+
+  .change-logo-link {
+    display: inline-flex;
+    align-items: center;
+  }
+
+
+  .change-logo-container img {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+  }
+
+
+  /* DOCUMENTO */
+
+  .change-document-card {
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+
+    overflow: hidden;
+  }
+
+
+  /* SECCIONES */
+
+  .change-section {
+    margin: 20px;
+    padding: 20px;
+
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+
+    background: #ffffff;
+  }
+
+
+  .change-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+
+    border-bottom: 1px solid #e9ecef;
+
+    color: #343a40;
+
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+
+  .change-section-title i {
+    color: #0d6efd;
+    font-size: 1.05rem;
+  }
+
+
+  /* INFORMACIÓN */
+
+  .change-info-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 15px;
+  }
+
+
+  .change-info-item {
+    padding: 14px;
+
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+
+    background: #f8f9fa;
+  }
+
+
+  .change-info-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    margin-bottom: 6px;
+
+    color: #6c757d;
+
+    font-size: 0.78rem;
+    font-weight: 700;
+
+    text-transform: uppercase;
+  }
+
+
+  .change-info-label i {
+    color: #0d6efd;
+  }
+
+
+  .change-info-value {
+    color: #212529;
+
+    font-size: 0.92rem;
+    font-weight: 600;
+
+    overflow-wrap: anywhere;
+  }
+
+
+  /* CONTENIDO */
+
+  .change-content-block {
+    margin-bottom: 18px;
+
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+
+    overflow: hidden;
+  }
+
+
+  .change-content-block:last-child {
+    margin-bottom: 0;
+  }
+
+
+  .change-content-title {
+    padding: 11px 14px;
+
+    background: #00aae4;
+
+    color: #ffffff;
+
+    font-size: 0.85rem;
+    font-weight: 700;
+
+    line-height: 1.4;
+  }
+
+
+  .change-content-body {
+    min-height: 55px;
+
+    padding: 14px;
+
+    color: #343a40;
+
+    font-size: 0.88rem;
+    line-height: 1.55;
+
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+
+  .change-content-body p:last-child {
+    margin-bottom: 0;
+  }
+
+
+  /* IMPACTO */
+
+  .change-impact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+
+  .change-impact-item {
+    display: grid;
+
+    grid-template-columns: 30% minmax(0, 1fr);
+
+    border: 1px solid #e9ecef;
+    border-radius: 9px;
+
+    overflow: hidden;
+  }
+
+
+  .change-impact-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+
+    padding: 12px;
+
+    background: #f1f3f5;
+
+    color: #343a40;
+
+    font-size: 0.82rem;
+    font-weight: 700;
+
+    line-height: 1.4;
+  }
+
+
+  .change-impact-label i {
+    color: #0d6efd;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+
+  .change-impact-value {
+    min-width: 0;
+
+    padding: 12px;
+
+    color: #343a40;
+
+    font-size: 0.86rem;
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
+    word-break: break-word;
+
+    white-space: pre-wrap;
+  }
+
+
+  /* PLANEACIÓN */
+
+  .change-planning-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+
+    -webkit-overflow-scrolling: touch;
+
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+  }
+
+
+  .change-planning-table {
+    min-width: 900px;
+
+    margin-bottom: 0;
+  }
+
+
+  .change-planning-table thead th {
+    padding: 11px 9px;
+
+    background: #00aae4;
+
+    color: #ffffff;
+
+    font-size: 0.75rem;
+    font-weight: 700;
+
+    text-align: center;
+    vertical-align: middle;
+
+    white-space: nowrap;
+
+    border-color: #dee2e6;
+  }
+
+
+  .change-planning-table tbody td {
+    padding: 11px 9px;
+
+    color: #343a40;
+
+    font-size: 0.84rem;
+
+    vertical-align: middle;
+
+    border-color: #e9ecef;
+  }
+
+
+  .change-planning-table tbody tr:hover {
+    background-color: #f8f9fa;
+  }
+
+
+  .change-planning-text {
+    min-width: 150px;
+
+    white-space: normal;
+
+    overflow-wrap: anywhere;
+
+    line-height: 1.4;
+  }
+
+
+  .change-responsible {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+
+    min-width: 140px;
+
+    line-height: 1.4;
+
+    overflow-wrap: anywhere;
+  }
+
+
+  .change-responsible i {
+    color: #6c757d;
+
+    flex-shrink: 0;
+
+    margin-top: 2px;
+  }
+
+
+  .change-date-cell {
+    min-width: 105px;
+
+    white-space: nowrap;
+    text-align: center;
+  }
+
+
+  .change-edit-cell {
+    min-width: 85px;
+
+    text-align: center;
+  }
+
+
+  .change-edit-btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    white-space: nowrap;
+
+    font-size: 0.78rem;
+  }
+
+
+  .change-empty-planning {
+    display: flex;
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    padding: 30px 20px;
+
+    border: 1px dashed #ced4da;
+    border-radius: 10px;
+
+    color: #6c757d;
+
+    text-align: center;
+  }
+
+
+  .change-empty-planning i {
+    margin-bottom: 4px;
+
+    color: #adb5bd;
+
+    font-size: 2rem;
+  }
+
+
+  .change-empty-planning strong {
+    color: #495057;
+
+    font-size: 0.9rem;
+  }
+
+
+  .change-empty-planning span {
+    font-size: 0.8rem;
+  }
+
+
+  .change-planning-action {
+    display: flex;
+
+    justify-content: center;
+
+    margin-top: 15px;
+  }
+
+
+  .change-create-planning-btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 7px 15px;
+
+    border-radius: 8px;
+
+    font-size: 0.84rem;
+    font-weight: 600;
+  }
+
+
+  /* FIRMA */
+
+  .change-signature-card {
+    display: grid;
+
+    grid-template-columns: 60% 40%;
+
+    min-height: 120px;
+
+    border: 1px solid #dee2e6;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+  }
+
+
+  .change-signature-info {
+    display: flex;
+
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 18px;
+
+    background: #f8f9fa;
+  }
+
+
+  .change-signature-label {
+    margin-bottom: 7px;
+
+    color: #6c757d;
+
+    font-size: 0.78rem;
+    font-weight: 700;
+
+    text-transform: uppercase;
+  }
+
+
+  .change-signature-name {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #212529;
+
+    font-size: 0.92rem;
+    font-weight: 600;
+
+    overflow-wrap: anywhere;
+  }
+
+
+  .change-signature-name i {
+    color: #0d6efd;
+    flex-shrink: 0;
+  }
+
+
+  .change-signature-image {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 120px;
+
+    padding: 12px;
+
+    background: #ffffff;
+
+    border-left: 1px solid #dee2e6;
+  }
+
+
+  .change-signature-img {
+    max-width: 220px;
+    max-height: 90px;
+
+    object-fit: contain;
+  }
+
+
+  .change-not-signed {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    color: #6c757d;
+
+    font-size: 0.82rem;
+  }
+
+
+  /* CELULAR */
+
+  @media (max-width: 767.98px) {
+
+    .change-view-page {
+      width: 94%;
+
+      margin-top: 10px;
+    }
+
+
+    .change-logo-container {
+      margin-bottom: 8px;
+    }
+
+
+    .change-logo-container img {
+      width: 70px;
+      height: 70px;
+    }
+
+
+    .change-section {
+      margin: 12px;
+
+      padding: 14px;
+    }
+
+
+    .change-section-title {
+      font-size: 0.9rem;
+
+      margin-bottom: 14px;
+    }
+
+
+    .change-info-grid {
+      grid-template-columns: 1fr;
+
+      gap: 10px;
+    }
+
+
+    .change-info-item {
+      padding: 11px;
+    }
+
+
+    .change-info-label {
+      font-size: 0.72rem;
+    }
+
+
+    .change-info-value {
+      font-size: 0.84rem;
+    }
+
+
+    .change-content-title {
+      padding: 10px 11px;
+
+      font-size: 0.78rem;
+    }
+
+
+    .change-content-body {
+      padding: 11px;
+
+      font-size: 0.82rem;
+    }
+
+
+    .change-impact-item {
+      grid-template-columns: 1fr;
+    }
+
+
+    .change-impact-label {
+      padding: 10px;
+
+      font-size: 0.78rem;
+
+      border-bottom: 1px solid #dee2e6;
+    }
+
+
+    .change-impact-value {
+      padding: 10px;
+
+      font-size: 0.8rem;
+    }
+
+
+    .change-planning-table {
+      min-width: 880px;
+    }
+
+
+    .change-planning-table thead th {
+      font-size: 0.7rem;
+
+      padding: 9px 7px;
+    }
+
+
+    .change-planning-table tbody td {
+      font-size: 0.78rem;
+
+      padding: 9px 7px;
+    }
+
+
+    .change-edit-btn {
+      width: 38px;
+      height: 34px;
+
+      padding: 0;
+    }
+
+
+    .change-edit-btn span {
+      display: none;
+    }
+
+
+    .change-signature-card {
+      grid-template-columns: 1fr;
+    }
+
+
+    .change-signature-image {
+      min-height: 100px;
+
+      border-left: 0;
+      border-top: 1px solid #dee2e6;
+    }
+
+
+    .change-signature-img {
+      max-width: 190px;
+      max-height: 80px;
+    }
+
+  }
+
+</style>

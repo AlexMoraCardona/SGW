@@ -1,33 +1,434 @@
-<div align="left"; class="container col-12">
-    <a class="navbar-brand" href="/">
-        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-    </a>
-</div>
-<div class="container col-11" 
-    <br>
-    <h2>ANÁLISIS DE RIESGO POR OFICIO (ARO)</h2>
-    <hr>
-    
-    <br> 
- 
-    <% if params[:entity_id].present? || @entity.present? %>
-        <%= render 'analysis_risk' %> 
-    <% else %>
-        <%= form_with model: @entity, method: :get do |form| %>
-            <div class="row g-2">
-                <div class="col-sm-7">
-                <h3>Empresa:</h3>
-                    <% if @entities.present? %>
-                        <%= form.collection_select :entity_id, @entities.order(id: :asc), :id, :business_name, { prompt: '--Seleccionar Entidad--' },
-                        { class: 'form-control input-sm select2' } %>
-                    <% else %> 
-                        <%=  @entity.business_name %>
-                        <%= form.hidden_field :entity_id, :value => @entity.id, class: "form-control" %>
-                    <% end %>
-                </div>
-            </div>    
-            <br>    
-            <button type="submit" class="btn btn-primary">Consultar</button>
-        <% end %>
+<style>
+    /* =========================================================
+       CONTENEDOR GENERAL
+       ========================================================= */
 
-    <% end %>     
+    .aro-page {
+        width: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 12px;
+    }
+
+    /* =========================================================
+       LOGO
+       ========================================================= */
+
+    .aro-logo-container {
+        width: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 10px 15px 5px;
+    }
+
+    .aro-logo {
+        width: 90px;
+        height: 90px;
+        object-fit: contain;
+        display: block;
+    }
+
+    /* =========================================================
+       ENCABEZADO
+       ========================================================= */
+
+    .aro-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 18px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid #00aae4;
+    }
+
+    .aro-title {
+        margin: 0;
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: #212529;
+        line-height: 1.25;
+    }
+
+    .aro-subtitle {
+        margin: 4px 0 0;
+        color: #6c757d;
+        font-size: 0.88rem;
+    }
+
+    /* =========================================================
+       TARJETA DEL FORMULARIO
+       ========================================================= */
+
+    .aro-card {
+        background: #fff;
+        border: 0;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+    }
+
+    .aro-card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        padding: 13px 16px;
+    }
+
+    .aro-card-header-title {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 700;
+        color: #343a40;
+    }
+
+    .aro-card-body {
+        padding: 18px;
+    }
+
+    /* =========================================================
+       CAMPO EMPRESA
+       ========================================================= */
+
+    .aro-label {
+        display: block;
+        margin-bottom: 7px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #343a40;
+    }
+
+    .aro-select {
+        width: 100%;
+        min-height: 42px;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 0.9rem;
+        background-color: #fff;
+    }
+
+    .aro-select:focus {
+        border-color: #00aae4;
+        box-shadow: 0 0 0 0.2rem rgba(0, 170, 228, 0.15);
+        outline: none;
+    }
+
+    .aro-entity-name {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 42px;
+        padding: 9px 12px;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #343a40;
+        overflow-wrap: anywhere;
+    }
+
+    .aro-entity-name i {
+        color: #00aae4;
+        flex-shrink: 0;
+    }
+
+    /* =========================================================
+       BOTONERA
+       ========================================================= */
+
+    .aro-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 18px;
+    }
+
+    .aro-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        min-height: 39px;
+        padding: 8px 15px;
+        border-radius: 8px;
+        font-size: 0.88rem;
+        font-weight: 600;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    .aro-btn i {
+        font-size: 1rem;
+    }
+
+    .aro-btn-consult {
+        background-color: #00aae4;
+        border-color: #00aae4;
+        color: #fff;
+    }
+
+    .aro-btn-consult:hover,
+    .aro-btn-consult:focus {
+        background-color: #008fbe;
+        border-color: #008fbe;
+        color: #fff;
+    }
+
+    /* =========================================================
+       RESPONSIVE TABLET
+       ========================================================= */
+
+    @media (max-width: 767.98px) {
+
+        .aro-page {
+            padding: 8px;
+        }
+
+        .aro-logo-container {
+            padding: 8px 10px 3px;
+        }
+
+        .aro-logo {
+            width: 75px;
+            height: 75px;
+        }
+
+        .aro-header {
+            margin-bottom: 13px;
+            padding-bottom: 9px;
+        }
+
+        .aro-title {
+            font-size: 1.15rem;
+        }
+
+        .aro-subtitle {
+            font-size: 0.8rem;
+        }
+
+        .aro-card {
+            border-radius: 9px;
+        }
+
+        .aro-card-header {
+            padding: 11px 13px;
+        }
+
+        .aro-card-body {
+            padding: 13px;
+        }
+
+        .aro-label {
+            font-size: 0.86rem;
+        }
+
+        .aro-select,
+        .aro-entity-name {
+            min-height: 40px;
+            font-size: 0.86rem;
+        }
+
+        .aro-actions {
+            justify-content: center;
+        }
+
+        .aro-btn {
+            min-height: 38px;
+            padding: 8px 13px;
+            font-size: 0.84rem;
+        }
+    }
+
+    /* =========================================================
+       CELULAR PEQUEÑO
+       ========================================================= */
+
+    @media (max-width: 575.98px) {
+
+        .aro-logo-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .aro-logo {
+            width: 70px;
+            height: 70px;
+        }
+
+        .aro-header {
+            display: block;
+            text-align: center;
+        }
+
+        .aro-title {
+            font-size: 1rem;
+        }
+
+        .aro-subtitle {
+            font-size: 0.76rem;
+        }
+
+        .aro-card-body {
+            padding: 12px;
+        }
+
+        .aro-actions {
+            justify-content: center;
+        }
+
+        .aro-btn {
+            padding: 7px 12px;
+            font-size: 0.8rem;
+        }
+    }
+</style>
+
+<!-- =========================================================
+     LOGO
+     ========================================================= -->
+
+<div class="aro-logo-container">
+
+
+<a href="/" aria-label="Inicio CONESST">
+
+    <%= image_tag 'LogoConesst202305232.png',
+        class: 'aro-logo',
+        alt: 'Logo CONESST' %>
+
+</a>
+
+
+</div>
+
+<!-- =========================================================
+     CONTENIDO PRINCIPAL
+     ========================================================= -->
+
+<div class="aro-page">
+
+
+<!-- ENCABEZADO -->
+
+<div class="aro-header">
+
+    <div>
+
+        <h2 class="aro-title">
+            <i class="bi bi-shield-check me-1"></i>
+            ANÁLISIS DE RIESGO POR OFICIO (ARO)
+        </h2>
+
+        <p class="aro-subtitle">
+            Consulta y gestión del análisis de riesgo por oficio
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     CONTENIDO
+     ====================================================== -->
+
+<% if params[:entity_id].present? || @entity.present? %>
+
+    <%= render 'analysis_risk' %>
+
+<% else %>
+
+    <div class="aro-card">
+
+        <div class="aro-card-header">
+
+            <h3 class="aro-card-header-title">
+
+                <i class="bi bi-building me-1"></i>
+
+                Seleccionar empresa
+
+            </h3>
+
+        </div>
+
+
+        <div class="aro-card-body">
+
+            <%= form_with model: @entity, method: :get do |form| %>
+
+                <div class="row">
+
+                    <div class="col-12 col-md-8 col-lg-7">
+
+                        <label class="aro-label">
+                            Empresa
+                        </label>
+
+
+                        <% if @entities.present? %>
+
+                            <%= form.collection_select(
+                                :entity_id,
+                                @entities.order(id: :asc),
+                                :id,
+                                :business_name,
+                                { prompt: '-- Seleccionar entidad --' },
+                                {
+                                    class: 'form-select aro-select'
+                                }
+                            ) %>
+
+                        <% else %>
+
+                            <div class="aro-entity-name">
+
+                                <i class="bi bi-building"></i>
+
+                                <span>
+                                    <%= @entity.business_name %>
+                                </span>
+
+                            </div>
+
+                            <%= form.hidden_field(
+                                :entity_id,
+                                value: @entity.id
+                            ) %>
+
+                        <% end %>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     BOTONERA
+                     ================================================== -->
+
+                <div class="aro-actions">
+
+                    <button type="submit"
+                            class="btn aro-btn aro-btn-consult">
+
+                        <i class="bi bi-search"></i>
+
+                        <span>Consultar</span>
+
+                    </button>
+
+                </div>
+
+            <% end %>
+
+        </div>
+
+    </div>
+
+<% end %>
+
+</div>

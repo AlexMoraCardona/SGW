@@ -1,43 +1,457 @@
 <% if @entity.present? %>
-    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
-<% end %>
-<%= link_to "Crear Gestión del cambio", new_change_management_path, class: 'btn btn-sm btn-primary' if Current.user.level > 0 &&  Current.user.level < 4 %> 
- 
-<div class="container col-11">
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">Fecha</th>
-                <th scope="col">Área</th>
-                <th scope="col">Usuario elaboró</th>
-                <th scope="col">Crear planeación</th>
-                <th scope="col">Firmar</th>
-                <th scope="col">Ver</th>
-                <th scope="col"><%= t('common.edit') %></th>
-                <th scope="col">PDF</th>
-            </tr>
-        </thead> 
-        <tbody>
-            <% @change_managements.each do |change_management| %>
-                <tr>  
-                    <td scope="col"><%= change_management.date_change.strftime("%F") if change_management.date_change.present? %></td>  
-                    <td scope="col"><%= ChangeManagement.label_area(change_management.code_area)  %></td>  
-                    <td scope="col"><%= ChangeManagement.label_user(change_management.user_elaborated) %></td>
-                    <td scope="col"><%= link_to 'Crear planeación', crear_item_paso_cambio_path(change_management), class: 'btn btn-sm btn-warning' if Current.user.level > 0 && Current.user.level < 3 %></td>
-                    <% if change_management.firm_user_elaborated == 0 %>
-                        <td scope="col"><%= link_to 'Firmar', firma_analisis_cambio_path(change_management), class: 'btn btn-sm btn-warning'%></td>
-                    <% else %>
-                        <td scope="col"><%= change_management.date_user_elaborated.strftime("%F") if change_management.date_user_elaborated.present? %>
-                    <% end %>
-                    <td scope="col"><%= link_to 'Ver', change_management_path(change_management), class: 'btn btn-sm btn-primary'%></td>
-                    <td scope="col"><%= link_to 'Editar', edit_change_management_path(change_management.id), class: 'btn btn-sm btn-warning' if Current.user.level > 0 && Current.user.level < 3 %></td>
-                    <td scope="col"><%= link_to "PDF", ver_analysis_cambio_path(change_management.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
-                </tr>
-            <% end %>  
-        </tbody>      
-    </table>
-    </br>        
+
+  <div class="change-entity-header">
+    <div>
+      <div class="change-entity-title">
+        <i class="bi bi-building"></i>
+        <span><%= @entity.business_name %></span>
+      </div>
+
+
+  <% if @entity.identification_number.present? %>
+    <div class="change-entity-nit">
+      NIT:
+      <%= EvaluationRuleDetail.miles(@entity.identification_number) %>
+      <% if @entity.verification_digit.present? %>
+        -<%= @entity.verification_digit %>
+      <% end %>
+    </div>
+  <% end %>
 </div>
 
 
+  </div>
+<% end %>
 
+<div class="change-list-card">
+
+  <div class="change-list-header">
+    <div>
+      <h2>
+        <i class="bi bi-arrow-repeat"></i>
+        Gestión del Cambio
+      </h2>
+      <p>Listado de gestiones del cambio registradas</p>
+    </div>
+
+
+<% if Current.user.level > 0 && Current.user.level < 4 %>
+  <%= link_to new_change_management_path,
+      class: "btn btn-primary btn-sm change-create-btn" do %>
+    <i class="bi bi-plus-circle"></i>
+    <span>Crear Gestión del cambio</span>
+  <% end %>
+<% end %>
+
+
+  </div>
+
+<% if @change_managements.present? %>
+
+
+<div class="change-table-wrapper">
+  <table class="table table-hover align-middle change-table mb-0">
+
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Área</th>
+        <th>Usuario elaboró</th>
+        <th>Planeación</th>
+        <th>Firmar</th>
+        <th>Ver</th>
+        <th><%= t('common.edit') %></th>
+        <th>PDF</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @change_managements.each do |change_management| %>
+
+        <tr>
+
+          <td class="change-date">
+            <% if change_management.date_change.present? %>
+              <%= change_management.date_change.strftime("%F") %>
+            <% else %>
+              —
+            <% end %>
+          </td>
+
+          <td>
+            <span class="change-area">
+              <%= ChangeManagement.label_area(change_management.code_area) %>
+            </span>
+          </td>
+
+          <td>
+            <span class="change-user">
+              <i class="bi bi-person"></i>
+              <%= ChangeManagement.label_user(change_management.user_elaborated) %>
+            </span>
+          </td>
+
+          <td>
+            <% if Current.user.level > 0 && Current.user.level < 3 %>
+              <%= link_to crear_item_paso_cambio_path(change_management),
+                  class: "btn btn-sm btn-warning change-action-btn" do %>
+                <i class="bi bi-list-check"></i>
+                <span>Crear planeación</span>
+              <% end %>
+            <% end %>
+          </td>
+
+          <td>
+            <% if change_management.firm_user_elaborated == 0 %>
+
+              <%= link_to firma_analisis_cambio_path(change_management),
+                  class: "btn btn-sm btn-warning change-action-btn" do %>
+                <i class="bi bi-pen"></i>
+                <span>Firmar</span>
+              <% end %>
+
+            <% else %>
+
+              <span class="change-signed">
+                <i class="bi bi-check-circle-fill"></i>
+                <%= change_management.date_user_elaborated.strftime("%F") if change_management.date_user_elaborated.present? %>
+              </span>
+
+            <% end %>
+          </td>
+
+          <td>
+            <%= link_to change_management_path(change_management),
+                class: "btn btn-sm btn-primary change-icon-btn",
+                title: "Ver gestión" do %>
+              <i class="bi bi-eye"></i>
+              <span class="d-md-none">Ver</span>
+            <% end %>
+          </td>
+
+          <td>
+            <% if Current.user.level > 0 && Current.user.level < 3 %>
+              <%= link_to edit_change_management_path(change_management.id),
+                  class: "btn btn-sm btn-warning change-icon-btn",
+                  title: "Editar gestión" do %>
+                <i class="bi bi-pencil-square"></i>
+                <span class="d-md-none">Editar</span>
+              <% end %>
+            <% end %>
+          </td>
+
+          <td>
+            <%= link_to ver_analysis_cambio_path(change_management.id, format: 'pdf'),
+                class: "btn btn-sm btn-success change-icon-btn",
+                title: "Generar PDF" do %>
+              <i class="bi bi-file-earmark-pdf"></i>
+              <span class="d-md-none">PDF</span>
+            <% end %>
+          </td>
+
+        </tr>
+
+      <% end %>
+    </tbody>
+
+  </table>
+</div>
+
+
+<% else %>
+
+
+<div class="change-empty">
+  <i class="bi bi-inbox"></i>
+  <h5>No hay gestiones del cambio registradas</h5>
+  <p>Cuando se registre una gestión del cambio, aparecerá en este listado.</p>
+</div>
+
+
+<% end %>
+
+</div>
+
+<style>
+  .change-entity-header {
+    width: min(1150px, 92%);
+    margin: 0 auto 16px;
+    padding: 16px 20px;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .change-entity-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #212529;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  .change-entity-title i {
+    color: #0d6efd;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .change-entity-nit {
+    margin-top: 4px;
+    padding-left: 30px;
+    color: #6c757d;
+    font-size: 0.88rem;
+  }
+
+  .change-list-card {
+    width: min(1150px, 92%);
+    margin: 0 auto 30px;
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 16px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+  }
+
+  .change-list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px 22px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .change-list-header h2 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #212529;
+  }
+
+  .change-list-header h2 i {
+    color: #0d6efd;
+  }
+
+  .change-list-header p {
+    margin: 4px 0 0 30px;
+    color: #6c757d;
+    font-size: 0.88rem;
+  }
+
+  .change-create-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .change-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .change-table {
+    min-width: 900px;
+  }
+
+  .change-table thead th {
+    padding: 12px 10px;
+    background: #f1f3f5;
+    color: #495057;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    border-bottom: 1px solid #dee2e6;
+    vertical-align: middle;
+  }
+
+  .change-table tbody td {
+    padding: 12px 10px;
+    color: #343a40;
+    font-size: 0.88rem;
+    border-color: #edf0f2;
+    vertical-align: middle;
+  }
+
+  .change-table tbody tr {
+    transition: background-color 0.15s ease;
+  }
+
+  .change-table tbody tr:hover {
+    background-color: #f8f9fa;
+  }
+
+  .change-date {
+    white-space: nowrap;
+    font-weight: 600;
+  }
+
+  .change-area {
+    display: inline-block;
+    max-width: 180px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.35;
+  }
+
+  .change-user {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    max-width: 190px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.35;
+  }
+
+  .change-user i {
+    color: #6c757d;
+    flex-shrink: 0;
+  }
+
+  .change-action-btn,
+  .change-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    white-space: nowrap;
+  }
+
+  .change-icon-btn {
+    min-width: 42px;
+  }
+
+  .change-signed {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #198754;
+    font-size: 0.82rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .change-signed i {
+    font-size: 0.95rem;
+  }
+
+  .change-empty {
+    padding: 50px 20px;
+    text-align: center;
+    color: #6c757d;
+  }
+
+  .change-empty i {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 2.5rem;
+    color: #adb5bd;
+  }
+
+  .change-empty h5 {
+    margin-bottom: 6px;
+    color: #495057;
+    font-weight: 600;
+  }
+
+  .change-empty p {
+    margin: 0;
+    font-size: 0.88rem;
+  }
+
+  @media (max-width: 767.98px) {
+
+    .change-entity-header,
+    .change-list-card {
+      width: 94%;
+    }
+
+    .change-entity-header {
+      padding: 13px 14px;
+      margin-bottom: 12px;
+    }
+
+    .change-entity-title {
+      font-size: 1rem;
+    }
+
+    .change-entity-nit {
+      padding-left: 28px;
+      font-size: 0.8rem;
+    }
+
+    .change-list-header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 14px;
+      padding: 16px;
+    }
+
+    .change-list-header h2 {
+      font-size: 1.08rem;
+    }
+
+    .change-list-header p {
+      margin-left: 0;
+      font-size: 0.8rem;
+    }
+
+    .change-create-btn {
+      width: fit-content;
+      align-self: center;
+    }
+
+    .change-table {
+      min-width: 820px;
+    }
+
+    .change-table thead th {
+      padding: 10px 8px;
+      font-size: 0.72rem;
+    }
+
+    .change-table tbody td {
+      padding: 10px 8px;
+      font-size: 0.82rem;
+    }
+
+    .change-action-btn {
+      font-size: 0.76rem;
+    }
+
+    .change-action-btn span {
+      display: none;
+    }
+
+    .change-action-btn {
+      width: 40px;
+      height: 34px;
+      padding: 0;
+    }
+
+    .change-icon-btn {
+      width: 40px;
+      height: 34px;
+      padding: 0;
+    }
+
+    .change-icon-btn span {
+      display: none !important;
+    }
+  }
+</style>

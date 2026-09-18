@@ -30,9 +30,13 @@ class MatrixConditionsController < ApplicationController
         @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", @matrix_condition.id).order(:date_item) if @matrix_condition.present?
         @condiciones  =    @matrix_unsafe_items.where("clasification_unsafe = ?",0).order(:date_item) if @matrix_unsafe_items.present?  
         @actos  =    @matrix_unsafe_items.where("clasification_unsafe = ?",1).order(:date_item)  if @matrix_unsafe_items.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",65,1).last  
         @adv = User.find(@matrix_condition.user_representante) if  @matrix_condition.user_representante.present? && @matrix_condition.user_representante > 0
         @res = User.find(@matrix_condition.user_responsible) if  @matrix_condition.user_responsible.present? && @matrix_condition.user_responsible > 0
+        @template = Template.where("reference = ? and version = ?",@matrix_condition.code,@matrix_condition.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+        @entity = Entity.find(@matrix_condition.entity_id) if @matrix_condition.present?
+
+
         respond_to do |format|
             format.html
             format.xlsx{ 
@@ -44,34 +48,33 @@ class MatrixConditionsController < ApplicationController
     def condition_pdf
         @matrix_condition = MatrixCondition.find(params[:id])
         @matrix_unsafe_items = MatrixUnsafeItem.where("matrix_condition_id = ?", @matrix_condition.id).order(:date_item) if @matrix_condition.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",65,1).last  
         @adv = User.find(@matrix_condition.user_representante) if  @matrix_condition.user_representante.present? && @matrix_condition.user_representante > 0
         @res = User.find(@matrix_condition.user_responsible) if  @matrix_condition.user_responsible.present? && @matrix_condition.user_responsible > 0
- 
-        nombre_evidencia = @template.reference.to_s + '.pdf'
+        @template = Template.where("reference = ? and version = ?",@matrix_condition.code,@matrix_condition.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+        @entity = Entity.find(@matrix_condition.entity_id) if @matrix_condition.present?
 
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
                 pdf = WickedPdf.new.pdf_from_string(
                     render_to_string('condition_pdf'),
-                    zoom: 0.80,
                     disable_javascript: true,
-                    margin: {top: 10, bottom: 10, left: 5, right: 5 },
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
                     page_size: 'letter',
-                    footer: {right: '[page] de [topage]'}
-                    
-                  )  
-                  send_data(pdf, filename: nombre_evidencia, disposition: 'attachment')      
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
             }
         end    
-   
     end    
 
 
     def new
       @matrix_condition = MatrixCondition.new  
-      @template = Template.where("format_number = ? and document_vigente = ?",65,1).last  
+      @template = Template.where("reference = ? and document_vigente = ?",'SACI-SST',1).last  
     end    
 
     def create
@@ -148,7 +151,7 @@ class MatrixConditionsController < ApplicationController
     def matrix_condition_params
         params.require(:matrix_condition).permit(:date_unsafe, :user_representante, :user_responsible, 
                 :date_firm_representante, :date_firm_responsible, :firm_representante, 
-                :firm_responsible, :entity_id)
+                :firm_responsible, :entity_id, :version, :code)
     end 
 
 end 

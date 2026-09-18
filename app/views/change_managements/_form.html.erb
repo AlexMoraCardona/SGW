@@ -1,113 +1,666 @@
-<div class="container col-12 card p-5">
-    <br> 
-    <%= form_with model: @change_management do |form| %>
-        <% @change_management.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %> 
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>FECHA DE ELABORACIÓN</strong>
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <strong>ÁREA</strong>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;text-align:center">
-                    <%= form.date_field :date_change,  class: "form-control" %>               
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.collection_select :code_area, @company_areas, :id, :name if @company_areas.present? %>
-                </td>
-            </tr>
-        </table>
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>DESCRIPCIÓN DEL CAMBIO: </strong>
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.rich_text_area :description_change,  class: "form-control" %>               
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>ANÁLISIS DE RIESGOS Y ASPECTOS / REQUISITOS LEGALES APLICABLES: </strong>               
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.rich_text_area :analisys_change,  class: "form-control" %>               
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>RECOMENDACIONES DEL ADMINISTRADOR DEL SG-SST: </strong>               
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.rich_text_area :recomendations_change,  class: "form-control" %>               
-                </td>
-            </tr>
-        </table>   
-        <table style="width: 100%;"> 
-            <tr>    
-                <td style="width: 100%;border:1px solid black;text-align:center;">
-                    <strong>ANÁLISIS DEL IMPACTO DEL SISTEMA  </strong>               
-                </td>
-            </tr>
-        </table>   
-        <table style="width: 100%;"> 
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>PELIGROS Y RIESGOS: </strong>               
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <div class="col-sm-10" > 
-                        <div><%= form.grouped_collection_select(:dangers_change, ClasificationDanger.order(:name), :clasification_danger_details, :name, :id, :name, { prompt: "Seleccione los Peligros y riesgos" }, { multiple: true, class: 'form-control' })   %></div>
-                    </div>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>REQUISITOS LEGALES: </strong>
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                     <%= form.text_area :requeriment_legal,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>CONTROL OPERATIVO: </strong>
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                     <%= form.text_area :operational_control,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>PROCEDIMIENTOS  DE TRABAJO: </strong>               
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                     <%= form.text_area :work_procedure,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>OTROS: </strong>               
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                     <%= form.text_area :others,  class: "form-control" %>
-                </td>
-            </tr>
-        </table>
-       </br> 
-        <%= form.hidden_field :user_elaborated, :value => Current.user.id.to_i, class: "form-control" if Current.user.present? %>
-        <%= form.hidden_field :entity_id, :value => Current.user.entity.to_i, class: "form-control" if Current.user.present? %>
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
-    <% end %>
-</div>        
-<br>
+<div class="change-form-page">
 
- 
+  <div class="change-form-card">
+
+
+<div class="change-form-header">
+  <div>
+    <h2>
+      <i class="bi bi-arrow-repeat"></i>
+      Gestión del Cambio
+    </h2>
+    <p>Registro y análisis de la gestión del cambio</p>
+  </div>
+
+  <div class="change-form-header-icon">
+    <i class="bi bi-clipboard2-check"></i>
+  </div>
+</div>
+
+<%= form_with model: @change_management do |form| %>
+
+  <% if @change_management.errors.any? %>
+    <div class="alert alert-danger change-error" role="alert">
+      <div class="d-flex align-items-start gap-2">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+
+        <div>
+          <strong>Por favor revise los siguientes errores:</strong>
+
+          <ul class="mb-0 mt-2">
+            <% @change_management.errors.full_messages.each do |error| %>
+              <li><%= error %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+
+  <!-- INFORMACIÓN GENERAL -->
+  <div class="change-section">
+
+    <div class="change-section-title">
+      <i class="bi bi-info-circle"></i>
+      <span>Información general</span>
+    </div>
+
+    <div class="change-grid change-grid-2">
+
+      <div class="change-field">
+        <%= form.label :date_change, "Fecha de elaboración", class: "change-label" %>
+
+        <%= form.date_field :date_change,
+            class: "form-control change-input" %>
+      </div>
+
+
+      <div class="change-field">
+        <%= form.label :code_area, "Área", class: "change-label" %>
+
+        <% if @company_areas.present? %>
+          <%= form.collection_select :code_area,
+              @company_areas,
+              :id,
+              :name,
+              { prompt: "-- Seleccionar área --" },
+              { class: "form-select change-input" } %>
+        <% end %>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- DESCRIPCIÓN DEL CAMBIO -->
+  <div class="change-section">
+
+    <div class="change-section-title">
+      <i class="bi bi-pencil-square"></i>
+      <span>Descripción y análisis del cambio</span>
+    </div>
+
+
+    <div class="change-field change-field-full">
+
+      <%= form.label :description_change,
+          "Descripción del cambio",
+          class: "change-label" %>
+
+      <%= form.rich_text_area :description_change,
+          class: "change-richtext" %>
+
+    </div>
+
+
+    <div class="change-field change-field-full">
+
+      <%= form.label :analisys_change,
+          "Análisis de riesgos y aspectos / requisitos legales aplicables",
+          class: "change-label" %>
+
+      <%= form.rich_text_area :analisys_change,
+          class: "change-richtext" %>
+
+    </div>
+
+
+    <div class="change-field change-field-full">
+
+      <%= form.label :recomendations_change,
+          "Recomendaciones del administrador del SG-SST",
+          class: "change-label" %>
+
+      <%= form.rich_text_area :recomendations_change,
+          class: "change-richtext" %>
+
+    </div>
+
+  </div>
+
+
+  <!-- ANÁLISIS DEL IMPACTO -->
+  <div class="change-section">
+
+    <div class="change-section-title">
+      <i class="bi bi-shield-check"></i>
+      <span>Análisis del impacto del sistema</span>
+    </div>
+
+
+    <!-- PELIGROS Y RIESGOS -->
+    <div class="change-field change-field-full">
+
+      <%= form.label :dangers_change,
+          "Peligros y riesgos",
+          class: "change-label" %>
+
+      <div class="change-help">
+        <i class="bi bi-info-circle"></i>
+        Seleccione uno o varios peligros y riesgos aplicables al cambio.
+      </div>
+
+      <%= form.grouped_collection_select(
+            :dangers_change,
+            ClasificationDanger.order(:name),
+            :clasification_danger_details,
+            :name,
+            :id,
+            :name,
+            { prompt: "Seleccione los Peligros y riesgos" },
+            {
+              multiple: true,
+              class: "form-select change-input change-multiselect"
+            }
+          ) %>
+
+    </div>
+
+
+    <!-- REQUISITOS LEGALES -->
+    <div class="change-field change-field-full">
+
+      <%= form.label :requeriment_legal,
+          "Requisitos legales",
+          class: "change-label" %>
+
+      <%= form.text_area :requeriment_legal,
+          class: "form-control change-textarea",
+          rows: 4 %>
+
+    </div>
+
+
+    <!-- CONTROL OPERATIVO -->
+    <div class="change-field change-field-full">
+
+      <%= form.label :operational_control,
+          "Control operativo",
+          class: "change-label" %>
+
+      <%= form.text_area :operational_control,
+          class: "form-control change-textarea",
+          rows: 4 %>
+
+    </div>
+
+
+    <!-- PROCEDIMIENTOS -->
+    <div class="change-field change-field-full">
+
+      <%= form.label :work_procedure,
+          "Procedimientos de trabajo",
+          class: "change-label" %>
+
+      <%= form.text_area :work_procedure,
+          class: "form-control change-textarea",
+          rows: 4 %>
+
+    </div>
+
+
+    <!-- OTROS -->
+    <div class="change-field change-field-full">
+
+      <%= form.label :others,
+          "Otros",
+          class: "change-label" %>
+
+      <%= form.text_area :others,
+          class: "form-control change-textarea",
+          rows: 4 %>
+
+    </div>
+
+  </div>
+
+
+  <!-- CAMPOS OCULTOS -->
+  <%= form.hidden_field :user_elaborated,
+      value: Current.user.id.to_i,
+      class: "form-control" if Current.user.present? %>
+
+  <%= form.hidden_field :entity_id,
+      value: Current.user.entity.to_i,
+      class: "form-control" if Current.user.present? %>
+
+  <%= form.hidden_field :code,
+      value: @template.reference if @template.present? %>
+
+  <%= form.hidden_field :version,
+      value: @template.version.to_i if @template.present? %>
+
+
+  <!-- BOTONES -->
+  <div class="change-form-actions">
+
+    <%= form.button type: "submit",
+        class: "btn btn-primary change-submit-btn" do %>
+
+      <i class="bi bi-check-circle"></i>
+      <span><%= t('common.submit') %></span>
+
+    <% end %>
+
+
+    <%= link_to :back,
+        class: "btn btn-outline-secondary change-back-btn" do %>
+
+      <i class="bi bi-arrow-left"></i>
+      <span>Retornar</span>
+
+    <% end %>
+
+  </div>
+
+<% end %>
+
+
+  </div>
+
+</div>
+
+<style>
+
+  .change-form-page {
+    width: min(1100px, 94%);
+    margin: 20px auto 35px;
+  }
+
+
+  .change-form-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+  }
+
+
+  /* ENCABEZADO */
+
+  .change-form-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding: 20px 24px;
+
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+
+  .change-form-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    margin: 0;
+
+    color: #212529;
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+
+
+  .change-form-header h2 i {
+    color: #0d6efd;
+  }
+
+
+  .change-form-header p {
+    margin: 5px 0 0 31px;
+
+    color: #6c757d;
+    font-size: 0.88rem;
+  }
+
+
+  .change-form-header-icon {
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #e9f2ff;
+    color: #0d6efd;
+
+    font-size: 1.35rem;
+
+    flex-shrink: 0;
+  }
+
+
+  /* ERRORES */
+
+  .change-error {
+    margin: 20px 24px 0;
+    border-radius: 10px;
+  }
+
+
+  /* SECCIONES */
+
+  .change-section {
+    margin: 22px 24px;
+
+    padding: 20px;
+
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+
+    background: #ffffff;
+  }
+
+
+  .change-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+
+    border-bottom: 1px solid #e9ecef;
+
+    color: #343a40;
+
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+
+  .change-section-title i {
+    color: #0d6efd;
+    font-size: 1.05rem;
+  }
+
+
+  /* GRID */
+
+  .change-grid {
+    display: grid;
+    gap: 18px;
+  }
+
+
+  .change-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+
+  /* CAMPOS */
+
+  .change-field {
+    min-width: 0;
+    margin-bottom: 20px;
+  }
+
+
+  .change-field:last-child {
+    margin-bottom: 0;
+  }
+
+
+  .change-field-full {
+    width: 100%;
+  }
+
+
+  .change-label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #343a40;
+
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+
+
+  .change-input {
+    min-height: 40px;
+
+    border-color: #ced4da;
+    border-radius: 8px;
+
+    font-size: 0.9rem;
+  }
+
+
+  .change-input:focus,
+  .change-textarea:focus {
+    border-color: #86b7fe;
+
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.12);
+  }
+
+
+  /* TEXTAREAS */
+
+  .change-textarea {
+    min-height: 105px;
+
+    resize: vertical;
+
+    border-radius: 8px;
+
+    font-size: 0.9rem;
+  }
+
+
+  /* TRIX */
+
+  .change-richtext {
+    min-height: 180px;
+
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    font-size: 0.9rem;
+  }
+
+
+  trix-editor.change-richtext {
+    min-height: 180px;
+    padding: 12px;
+  }
+
+
+  trix-toolbar {
+    border: 1px solid #ced4da;
+    border-bottom: 0;
+
+    border-radius: 8px 8px 0 0;
+
+    background: #f8f9fa;
+  }
+
+
+  .trix-content {
+    min-height: 140px;
+  }
+
+
+  /* MULTISELECT */
+
+  .change-multiselect {
+    min-height: 130px;
+
+    padding: 8px;
+
+    border-radius: 8px;
+
+    font-size: 0.88rem;
+  }
+
+
+  .change-help {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+
+    margin-bottom: 8px;
+
+    color: #6c757d;
+
+    font-size: 0.78rem;
+  }
+
+
+  .change-help i {
+    color: #0d6efd;
+    margin-top: 2px;
+  }
+
+
+  /* BOTONES */
+
+  .change-form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    padding: 4px 24px 24px;
+  }
+
+
+  .change-submit-btn,
+  .change-back-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    min-height: 38px;
+
+    padding: 7px 16px;
+
+    border-radius: 8px;
+
+    font-size: 0.86rem;
+    font-weight: 600;
+  }
+
+
+  /* CELULAR */
+
+  @media (max-width: 767.98px) {
+
+    .change-form-page {
+      width: 94%;
+      margin: 12px auto 25px;
+    }
+
+
+    .change-form-header {
+      padding: 16px;
+
+      align-items: flex-start;
+    }
+
+
+    .change-form-header h2 {
+      font-size: 1.08rem;
+    }
+
+
+    .change-form-header p {
+      margin-left: 0;
+      font-size: 0.78rem;
+    }
+
+
+    .change-form-header-icon {
+      width: 40px;
+      height: 40px;
+
+      font-size: 1.1rem;
+    }
+
+
+    .change-error {
+      margin: 14px 14px 0;
+
+      font-size: 0.82rem;
+    }
+
+
+    .change-section {
+      margin: 14px;
+
+      padding: 15px;
+    }
+
+
+    .change-section-title {
+      margin-bottom: 16px;
+
+      font-size: 0.92rem;
+    }
+
+
+    .change-grid-2 {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+
+    .change-field {
+      margin-bottom: 17px;
+    }
+
+
+    .change-label {
+      font-size: 0.82rem;
+    }
+
+
+    .change-input,
+    .change-textarea,
+    .change-richtext {
+      font-size: 0.84rem;
+    }
+
+
+    trix-editor.change-richtext {
+      min-height: 160px;
+    }
+
+
+    .change-multiselect {
+      min-height: 150px;
+      font-size: 0.8rem;
+    }
+
+
+    .change-form-actions {
+      flex-direction: row;
+
+      padding: 0 14px 18px;
+    }
+
+
+    .change-submit-btn,
+    .change-back-btn {
+      flex: 0 1 auto;
+
+      font-size: 0.8rem;
+      padding: 7px 12px;
+    }
+
+  }
+
+</style>

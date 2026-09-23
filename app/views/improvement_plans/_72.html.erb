@@ -1,0 +1,136 @@
+<div class="conesst-page">
+    <div class="conesst-card">
+        <div class="conesst-card-header">
+            <div class="conesst-card-header-content">
+                <h2 class="conesst-card-header-title">
+                    <i class="bi bi-list-check me-2"></i>
+                    Actividades del plan de mejoramiento
+                </h2>
+            </div>
+        </div>
+        <div class="conesst-card-body">
+            <div class="conesst-document-table-wrapper">
+                <table class="conesst-document-table">
+                    <thead>
+                        <tr>
+                            <th>NÚMERAL ESTÁNDAR</th>
+                            <th>ACTIVIDAD</th>
+                            <th>RECURSOS</th>
+                            <th>RESPONSABLE</th>
+                            <th>PLAZO DE LA ACCIÓN</th>
+                            <th>OBSERVACIONES</th>
+                            <th>EVIDENCIA DE CUMPLIMIENTO</th>
+                            <th>VER / EDITAR</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @improvement_items.each do |item| %>
+                            <tr>
+                                <td data-label="Númeral estándar" class="conesst-document-cell-center">
+                                    <span class="conesst-document-number">
+                                        <%= item.action_improvement %>
+                                    </span>
+                                </td>
+                                <td data-label="Actividad">
+                                    <div class="conesst-document-cell-text">
+                                        <%= item.activity_plan %>
+                                    </div>
+                                </td>
+                                <td data-label="Recursos">
+                                    <div class="conesst-document-cell-text">
+                                        <%= item.resources_improvement %>
+                                    </div>
+                                </td>
+                                <td data-label="Responsable">
+                                    <div class="conesst-document-cell-text">
+                                        <%= item.responsible_action %>
+                                    </div>
+                                </td>
+                                <td data-label="Plazo de la acción">
+                                    <div class="conesst-document-dates">
+                                        <div>
+                                            <span>Inicio:</span>
+                                            <strong>
+                                                <%= item.date_initial %>
+                                            </strong>
+                                        </div>
+                                        <% if item.date_fin.present? %>
+                                            <div>
+                                                <span>Fin:</span>
+                                                <strong>
+                                                    <%= item.date_fin %>
+                                                </strong>
+                                            </div>
+                                        <% end %>
+                                    </div>
+                                </td>
+                                <td data-label="Observaciones">
+                                    <div class="conesst-document-cell-text">
+                                        <%= item.observation %>
+                                    </div>
+                                </td>
+                                <td data-label="Evidencia de cumplimiento">
+                                    <% if item.file_improvements.attached? %>
+                                        <div data-controller="previews" class="conesst-evidence-container">
+                                            <% item.file_improvements.each do |file| %>
+                                                <div class="conesst-evidence-item">
+                                                    <% if file.image? %>
+                                                        <%= image_tag file, data: {previews_target: "preview"}, class: "conesst-evidence-image", alt: file.filename.to_s %>
+                                                    <% elsif file.video? %>
+                                                        <%= video_tag url_for(file), controls: true, class: "conesst-evidence-video" %>
+                                                    <% elsif file.audio? %>
+                                                        <%= audio_tag(url_for(file), controls: true, class: "conesst-evidence-audio") %>
+                                                    <% else %>
+                                                        <div class="conesst-evidence-file">
+                                                            <i class="bi bi-file-earmark me-1"></i>
+                                                            <%= link_to file.filename, url_for(file), target: "_blank", rel: "noopener" %>
+                                                        </div>
+                                                    <% end %>
+                                                    <%= link_to rails_blob_path(file, disposition: "attachment"), class: "conesst-btn conesst-btn-sm" do %>
+                                                        <i class="bi bi-download me-1"></i>
+                                                        Descargar
+                                                    <% end %>
+                                                </div>
+                                            <% end %>
+                                        </div>
+                                    <% else %>
+                                        <span class="conesst-no-evidence">
+                                            <i class="bi bi-dash-circle me-1"></i>
+                                            Sin evidencia
+                                        </span>
+                                    <% end %>
+                                </td>
+                                <td data-label="Ver / Editar" class="conesst-document-cell-center">
+                                    <%= link_to edit_improvement_item_path(item), class: "conesst-btn conesst-btn-sm" do %>
+                                        <i class="bi bi-pencil-square me-1"></i>
+                                        Editar
+                                    <% end %>
+                                </td>
+                            </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
+            <div class="conesst-signature-section">
+                <div class="conesst-signature">
+                    <% if @improvement_plan.firm_representante == 1 %>
+                        <% if @rep.present? %>
+                            <% if @rep.firm.attached? %>
+                                <% if @rep.firm.image? %>
+                                    <%= image_tag @rep.firm, class: "conesst-signature-image", alt: "Firma representante legal" %>
+                                <% end %>
+                            <% end %>
+                        <% end %>
+                    <% end %>
+                    <div class="conesst-signature-line"></div>
+                    <div class="conesst-signature-name">
+                        <%= @rep.name if @rep.present? %>
+                    </div>
+                    <div class="conesst-signature-role">
+                        Representante Legal
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -286,149 +286,61 @@
     }
 </style>
 
-<!-- =========================================================
-     LOGO
-     ========================================================= -->
-
 <div class="aro-logo-container">
-
-
-<a href="/" aria-label="Inicio CONESST">
-
-    <%= image_tag 'LogoConesst202305232.png',
-        class: 'aro-logo',
-        alt: 'Logo CONESST' %>
-
-</a>
-
-
+    <a href="/" aria-label="Inicio CONESST">
+        <%= image_tag 'LogoConesst202305232.png', class: 'aro-logo', alt: 'Logo CONESST' %>
+    </a>
 </div>
-
-<!-- =========================================================
-     CONTENIDO PRINCIPAL
-     ========================================================= -->
-
 <div class="aro-page">
-
-
-<!-- ENCABEZADO -->
-
-<div class="aro-header">
-
-    <div>
-
-        <h2 class="aro-title">
-            <i class="bi bi-shield-check me-1"></i>
-            ANÁLISIS DE RIESGO POR OFICIO (ARO)
-        </h2>
-
-        <p class="aro-subtitle">
-            Consulta y gestión del análisis de riesgo por oficio
-        </p>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     CONTENIDO
-     ====================================================== -->
-
-<% if params[:entity_id].present? || @entity.present? %>
-
-    <%= render 'analysis_risk' %>
-
-<% else %>
-
-    <div class="aro-card">
-
-        <div class="aro-card-header">
-
-            <h3 class="aro-card-header-title">
-
-                <i class="bi bi-building me-1"></i>
-
-                Seleccionar empresa
-
-            </h3>
-
+    <div class="aro-header">
+        <div>
+            <h2 class="aro-title">
+                <i class="bi bi-shield-check me-1"></i>
+                ANÁLISIS DE RIESGO POR OFICIO (ARO)s
+            </h2>
+            <p class="aro-subtitle">
+                Consulta y gestión del análisis de riesgo por oficio
+            </p>
         </div>
-
-
-        <div class="aro-card-body">
-
-            <%= form_with model: @entity, method: :get do |form| %>
-
-                <div class="row">
-
-                    <div class="col-12 col-md-8 col-lg-7">
-
-                        <label class="aro-label">
-                            Empresa
-                        </label>
-
-
-                        <% if @entities.present? %>
-
-                            <%= form.collection_select(
-                                :entity_id,
-                                @entities.order(id: :asc),
-                                :id,
-                                :business_name,
-                                { prompt: '-- Seleccionar entidad --' },
-                                {
-                                    class: 'form-select aro-select'
-                                }
-                            ) %>
-
-                        <% else %>
-
-                            <div class="aro-entity-name">
-
-                                <i class="bi bi-building"></i>
-
-                                <span>
-                                    <%= @entity.business_name %>
-                                </span>
-
-                            </div>
-
-                            <%= form.hidden_field(
-                                :entity_id,
-                                value: @entity.id
-                            ) %>
-
-                        <% end %>
-
+    </div>
+    <% if params[:entity_id].present? || @entity.present? %>
+        <%= render 'analysis_risk' %>
+    <% else %>
+        <div class="aro-card">
+            <div class="aro-card-header">
+                <h3 class="aro-card-header-title">
+                    <i class="bi bi-building me-1"></i>
+                    Seleccionar empresa
+                </h3>
+            </div>
+            <div class="aro-card-body">
+                <%= form_with model: @entity, method: :get do |form| %>
+                    <div class="row">
+                        <div class="col-12 col-md-8 col-lg-7">
+                            <label class="aro-label">
+                                Empresa
+                            </label>
+                            <% if @entities.present? %>
+                                <%= form.collection_select(:entity_id, @entities.order(id: :asc), :id, :business_name, { prompt: '-- Seleccionar entidad --' }, {class: 'form-select aro-select'}) %>
+                            <% else %>
+                                <div class="aro-entity-name">
+                                    <i class="bi bi-building"></i>
+                                    <span>
+                                        <%= @entity.business_name %>
+                                    </span>
+                                </div>
+                                <%= form.hidden_field(:entity_id, value: @entity.id) %>
+                            <% end %>
+                        </div>
                     </div>
-
-                </div>
-
-
-                <!-- =================================================
-                     BOTONERA
-                     ================================================== -->
-
-                <div class="aro-actions">
-
-                    <button type="submit"
-                            class="btn aro-btn aro-btn-consult">
-
-                        <i class="bi bi-search"></i>
-
-                        <span>Consultar</span>
-
-                    </button>
-
-                </div>
-
-            <% end %>
-
+                    <div class="aro-actions">
+                        <button type="submit" class="btn aro-btn aro-btn-consult">
+                            <i class="bi bi-search"></i>
+                            <span>Consultar</span>
+                        </button>
+                    </div>
+                <% end %>
+            </div>
         </div>
-
-    </div>
-
-<% end %>
-
+    <% end %>
 </div>

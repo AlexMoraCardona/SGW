@@ -12,11 +12,11 @@ class InvestigationsController < ApplicationController
     def show
         @investigation = Investigation.find(params[:id])
         @entity = Entity.find(@investigation.entity_id) if @investigation.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",103,1).last  
         @inves_recomendations = InvesRecomendation.where("investigation_id = ?",@investigation.id) if @investigation.present?   
         @inves_users = InvesUser.where("investigation_id = ?",@investigation.id) if @investigation.present?   
+        @template = Template.where("reference = ? and version = ?",@investigation.code,@investigation.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
-        @template = Template.where("format_number = ? and document_vigente = ?",103,1).last  
         respond_to do |format|
             format.html
             format.xlsx{ 
@@ -24,28 +24,6 @@ class InvestigationsController < ApplicationController
             }
         end    
     end  
-    
-    def ver_investigacion
-        @investigation = Investigation.find(params[:id])
-        @entity = Entity.find(@investigation.entity_id) if @investigation.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",103,1).last  
-        @inves_recomendations = InvesRecomendation.where("investigation_id = ?",@investigation.id) if @investigation.present?   
-        @inves_users = InvesUser.where("investigation_id = ?",@investigation.id) if @investigation.present?   
-
-        respond_to do |format| 
-            format.html
-            format.pdf {render  pdf: 'ver_investigacion',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
-      
-    end    
-
 
     def recomendaciones
         @investigation = Investigation.find(params[:id])
@@ -65,7 +43,7 @@ class InvestigationsController < ApplicationController
     def new
       @investigation =  Investigation.new
       @entity = Entity.find(Current.user.entity)
-      @template = Template.where("format_number = ? and document_vigente = ?",103,1).last  
+      @template = Template.where("reference = ? and document_vigente = ?",'IAT-SST',1).last  
     end    
 
     def create
@@ -80,7 +58,8 @@ class InvestigationsController < ApplicationController
     def edit
           @investigation = Investigation.find(params[:id])
           @entity = Entity.find(@investigation.entity_id)
-          @template = Template.where("format_number = ? and document_vigente = ?",103,1).last  
+          @template = Template.where("reference = ? and version = ?",@investigation.code,@investigation.version).last  
+
     end
     
     def update
@@ -102,22 +81,29 @@ class InvestigationsController < ApplicationController
     def ver_investigation
         @investigation = Investigation.find(params[:id])
         @entity = Entity.find(@investigation.entity_id) if @investigation.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",103,1).last  
         @inves_recomendations = InvesRecomendation.where("investigation_id = ?",@investigation.id) if @investigation.present?   
         @inves_users = InvesUser.where("investigation_id = ?",@investigation.id) if @investigation.present?   
+        @template = Template.where("reference = ? and version = ?",@investigation.code,@investigation.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
+
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'ver_investigacion',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
-      
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('ver_investigation'),
+                    disable_javascript: true,
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
+                    page_size: 'letter',
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+            }
+        end    
+
+     
     end    
 
     
@@ -138,7 +124,7 @@ class InvestigationsController < ApplicationController
         :firm_profesional, :date_firm_profesional, :license, :space_for_injury, 
         :space_for_agente, :de, :entity_id, :user_id, :datos_complementarios, :plan_accion, 
         :actos_inseguros, :condiciones_inseguras, :factores_personales, :factores_administrativos, 
-        :state_investigation, :date_state_investigation, registros_fotograficos: [] )
+        :state_investigation, :date_state_investigation, :version, :code, registros_fotograficos: [] )
     end 
 
 end  

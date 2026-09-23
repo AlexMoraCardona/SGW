@@ -1,283 +1,341 @@
-<div class="container col-12 card p-5">
-    <br> 
-    <%= form_with model: @simulacrum_item do |form| %>
-        <% @simulacrum_item.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
+<div class="conesst-page">
+    <div class="conesst-card">
+        <div class="conesst-card-body">
+            <%= form_with model: @simulacrum_item do |form| %>
+                <% if @simulacrum_item.errors.any? %>
+                    <div class="conesst-form-errors alert alert-danger" role="alert">
+                        <ul class="mb-0">
+                            <% @simulacrum_item.errors.full_messages.each do |error| %>
+                                <li><%= error %></li>
+                            <% end %>
+                        </ul>
+                    </div>
+                <% end %>
+                <div class="simulacrum-form-section">
+                    <div class="simulacrum-form-section-title">
+                        <i class="bi bi-list-check"></i>
+                        <span>Clasificación del registro</span>
+                    </div>
+                    <div class="simulacrum-form-field">
+                        <%= form.label :clasification, class: "simulacrum-form-label" do %>
+                            <span>
+                                <i class="bi bi-tags"></i>
+                                Clasificación
+                            </span>
+                        <% end %>
+                        <%= form.select(:clasification, [['METODOLOGÍA', 0], ['PERSONAL EVACUADO', 1], ['ACTIVIDADES PREVIAS AL SIMULACRO', 2], ['SECUENCIA CRONOLÓGICA DE EVENTOS', 3]], {}, { class: "form-select simulacrum-form-control" }) %>
+                    </div>
+                </div>
+                <div class="simulacrum-form-section">
+                    <div class="simulacrum-form-section-title">
+                        <i class="bi bi-clipboard-check"></i>
+                        <span>Metodología</span>
+                    </div>
+                    <div class="simulacrum-form-grid">
+                        <div class="simulacrum-form-field">
+                            <%= form.label :name, class: "simulacrum-form-label" do %>
+                                <span>
+                                    <i class="bi bi-person"></i>
+                                    Nombre
+                                </span>
+                            <% end %>
+                            <%= form.text_field :name, class: "form-control simulacrum-form-control" %>
+                        </div>
+                        <div class="simulacrum-form-field">
+                            <%= form.label :position_exercise, class: "simulacrum-form-label" do %>
+                                <span>
+                                    <i class="bi bi-person-badge"></i>
+                                    Cargo en el ejercicio
+                                </span>
+                            <% end %>
+                            <%= form.text_field :position_exercise, class: "form-control simulacrum-form-control" %>
+                        </div>
+                        <div class="simulacrum-form-field">
+                            <%= form.label :area_work, class: "simulacrum-form-label" do %>
+                                <span>
+                                    <i class="bi bi-building"></i>
+                                    Área de trabajo
+                                </span>
+                            <% end %>
+                            <%= form.text_field :area_work, class: "form-control simulacrum-form-control" %>
+                        </div>
+                        <div class="simulacrum-form-field simulacrum-form-field-full">
+                            <%= form.label :functions, class: "simulacrum-form-label" do %>
+                                <span>
+                                    <i class="bi bi-list-task"></i>
+                                    Funciones
+                                </span>
+                            <% end %>
+                            <%= form.text_area :functions, class: "form-control simulacrum-form-control", rows: 3 %>
+                        </div>
+                    </div>
+                <div class="conesst-table-wrapper mt-3">
+                    <table class="table table-bordered align-middle conesst-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Cargo en el ejercicio</th>
+                                <th>Área de trabajo</th>
+                                <th>Funciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% items = @simulacrum_items&.where(clasification: 0) %>
+                            <% if items.present? %>
+                                <% items.each do |item| %>
+                                    <tr>
+                                        <td data-label="Nombre">
+                                            <%= item.name %>
+                                        </td>
+                                        <td data-label="Cargo en el ejercicio">
+                                            <%= item.position_exercise %>
+                                        </td>
+                                        <td data-label="Área de trabajo">
+                                            <%= item.area_work %>
+                                        </td>
+                                        <td data-label="Funciones">
+                                            <%= item.functions %>
+                                        </td>
+                                    </tr>
+                                <% end %>
+                            <% else %>
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted">
+                                        No hay registros. 
+                                    </td>
+                                </tr>
+                            <% end %>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        <% end %> 
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <strong>Clasificación: </strong>
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                    <%= form.select(:clasification, [['METODOLOGÍA', 0], ['PERSONAL EVACUADO', 1], ['ACTIVIDADES PREVIAS AL SIMULACRO', 2], ['SECUENCIA CRONOLÓGICA DE EVENTOS', 3]]) %>
-                </td>
-            </tr>
-        </table>
-        </br> 
-        <div><strong><h5>METODOLOGÍA</h5></strong></div>
+            <div class="simulacrum-form-section">
+                <div class="simulacrum-form-section-title">
+                    <i class="bi bi-people"></i>
+                    <span>Personal evacuado</span>
+                </div>
+                <div class="simulacrum-form-grid">
+                    <div class="simulacrum-form-field">
+                        <%= form.label :floor, class: "simulacrum-form-label" do %>
+                            <span>
+                                <i class="bi bi-layers"></i>
+                                Piso
+                            </span>
+                        <% end %>
+                        <%= form.text_field :floor, class: "form-control simulacrum-form-control" %>
+                    </div>
+                    <div class="simulacrum-form-field">
+                        <%= form.label :evacuated_personal_area, class: "simulacrum-form-label" do %>
+                            <span>
+                                <i class="bi bi-building"></i>
+                                Área
+                            </span>
+                        <% end %>
+                        <%= form.text_field :evacuated_personal_area, class: "form-control simulacrum-form-control" %>
+                    </div>
+                    <div class="simulacrum-form-field">
+                        <%= form.label :evacuated_personal_name, class: "simulacrum-form-label" do %>
+                            <span>
+                                <i class="bi bi-person"></i>
+                                Nombre
+                            </span>
+                        <% end %>
+                        <%= form.text_field :evacuated_personal_name, class: "form-control simulacrum-form-control" %>
+                    </div>
+                    <div class="simulacrum-form-field">
+                        <%= form.label :evacuated_personal_cargo, class: "simulacrum-form-label" do %>
+                            <span>
+                                <i class="bi bi-person-badge"></i>
+                                Cargo
+                            </span>
+                        <% end %>
+                        <%= form.text_area :evacuated_personal_cargo, class: "form-control simulacrum-form-control", rows: 3 %>
+                    </div>
+                </div>
+                <div class="conesst-table-wrapper mt-3">
+                    <table class="table table-bordered align-middle conesst-table">
+                        <thead>
+                            <tr>
+                                <th>Piso</th>
+                                <th>Área</th>
+                                <th>Nombre</th>
+                                <th>Cargo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% items = @simulacrum_items&.where(clasification: 1) %>
+                            <% if items.present? %>
+                                <% items.each do |item| %>
+                                    <tr>
+                                        <td data-label="Piso">
+                                            <%= item.floor %>
+                                        </td>
+                                        <td data-label="Área">
+                                            <%= item.evacuated_personal_area %>
+                                        </td>
+                                        <td data-label="Nombre">
+                                            <%= item.evacuated_personal_name %>
+                                        </td>
+                                        <td data-label="Cargo">
+                                            <%= item.evacuated_personal_cargo %>
+                                        </td>
+                                    </tr>
+                                <% end %>
+                            <% else %>
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted">
+                                        No hay registros.
+                                    </td>
+                                </tr>
+                            <% end %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="simulacrum-form-section">
+                <div class="simulacrum-form-section-title">
+                    <i class="bi bi-calendar-check"></i>
+                    <span>Actividades previas al simulacro</span>
+                </div>
+                <div class="simulacrum-form-grid">
+                    <div class="simulacrum-form-field">
+                        <%= form.label :previous_activity, class: "simulacrum-form-label" do %>
+                            <span>
+                                <i class="bi bi-check2-square"></i>
+                                Actividad
+                            </span>
+                        <% end %>
+                        <%= form.text_field :previous_activity, class: "form-control simulacrum-form-control" %>
+                    </div>
+                    <div class="simulacrum-form-field">
+                        <%= form.label :date_previous, class: "simulacrum-form-label" do %>
+                            <span>
+                                <i class="bi bi-calendar3"></i>
+                                Fecha
+                            </span>
+                        <% end %>
+                        <%= form.date_field :date_previous, class: "form-control simulacrum-form-control" %>
+                    </div>
+                    <div class="simulacrum-form-field simulacrum-form-field-full">
+                        <%= form.label :responsible_previous, class: "simulacrum-form-label" do %>
+                            <span>
+                                <i class="bi bi-person-check"></i>
+                                Responsable
+                            </span>
+                        <% end %>
+                        <%= form.text_field :responsible_previous, class: "form-control simulacrum-form-control" %>
+                    </div>
+                </div>
+                <div class="conesst-table-wrapper mt-3">
+                    <table class="table table-bordered align-middle conesst-table">
+                        <thead>
+                            <tr>
+                                <th colspan="3">
+                                    Programación de actividades preparatorias del simulacro
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>Actividad</th>
+                                <th>Fecha</th>
+                                <th>Responsable</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% items = @simulacrum_items&.where(clasification: 2) %>
+                            <% if items.present? %>
+                                <% items.each do |item| %>
+                                    <tr>
+                                        <td data-label="Actividad">
+                                            <%= item.previous_activity %>
+                                        </td>
+                                        <td data-label="Fecha">
+                                            <%= item.date_previous %>
+                                        </td>
+                                        <td data-label="Responsable">
+                                            <%= item.responsible_previous %>
+                                        </td>
+                                    </tr>
+                                <% end %>
+                            <% else %>
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted">
+                                        No hay registros.
+                                    </td>
+                                </tr>
+                            <% end %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="simulacrum-form-section">
+                <div class="simulacrum-form-section-title">
+                    <i class="bi bi-clock-history"></i>
+                    <span>Secuencia cronológica de eventos</span>
+                </div>
+                <div class="simulacrum-form-grid">
+                    <div class="simulacrum-form-field">
+                          <%= form.label :time_sequence_crono, class: "simulacrum-form-label" do %>
+                            <span>
+                              <i class="bi bi-clock"></i>
+                                Hora
+                            </span>
+                          <% end %>
+                          <%= form.time_field :time_sequence_crono,  class: "form-control simulacrum-form-control" %>
+                    </div>
+                    <div class="simulacrum-form-field">
+                        <%= form.label :activity_sequence, class: "simulacrum-form-label" do %>
+                            <span>
+                              <i class="bi bi-list-task"></i>
+                                Actividad
+                            </span>
+                        <% end %>
+                        <%= form.text_field :activity_sequence, class: "form-control simulacrum-form-control" %>
+                    </div>
+                </div>
+                <div class="conesst-table-wrapper mt-3">
+                    <table class="table table-bordered align-middle conesst-table">
+                        <thead>
+                            <tr>
+                                <th>Hora</th>
+                                <th>Actividad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% items = @simulacrum_items&.where(clasification: 3) %>
+                            <% if items.present? %>
+                                <% items.each do |item| %>
+                                    <tr>
+                                        <td data-label="Hora">
+                                            <%= item.time_sequence_crono %>
+                                        </td>
+                                        <td data-label="Actividad">
+                                            <%= item.activity_sequence %>
+                                        </td>
+                                    </tr>
+                                <% end %>
+                            <% else %>
+                                <tr>
+                                    <td colspan="2" class="text-center text-muted">
+                                        No hay registros.
+                                    </td>
+                                </tr>
+                           <% end %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <%= form.hidden_field :simulacrum_id, value: params[:id].to_i if params[:id].present? %>
+                <div class="simulacrum-form-actions">
+                    <div class="conesst-actions">
+                        <%= form.submit t('common.submit'), class: "conesst-btn conesst-btn-primary" %>
+                        <%= link_to :back, class: "conesst-btn conesst-btn-warning" do %>
+                            <i class="bi bi-arrow-left"></i>
+                            <span>Retornar</span>
+                        <% end %>
+                    </div>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>
 
-        <table style="width: 100%;">        
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <strong>Nombre: </strong>
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                    <%= form.text_field :name,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <strong>Cargo en el ejercicio: </strong>
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                    <%= form.text_field :position_exercise,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <strong>Área de trabajo: </strong>
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                    <%= form.text_field :area_work,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <strong>Funciones: </strong>
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                    <%= form.text_area :functions,  class: "form-control" %>
-                </td>
-            </tr>
-       </table>
-       </br> 
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 25%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
-                    <strong>Nombre</strong>               
-                </td>
-                <td style="width: 25%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
-                    <strong>Cargo en el ejercicio</strong>               
-                </td>
-                <td style="width: 25%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
-                    <strong>Área de trabajo</strong>               
-                </td>
-                <td style="width: 25%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
-                    <strong>Funciones</strong>               
-                </td>
-            </tr>
-            <% if @simulacrum_items.present? %>
-                <%  @simulacrum_items.where("clasification = ?",0).each  do |item| %>
-                    <tr>    
-                        <td style="width: 25%;border:1px solid black;padding: 5px;">
-                            <%= item.name  %>               
-                        </td>
-                        <td style="width: 25%;border:1px solid black;padding: 5px;">
-                            <%= item.position_exercise  %>               
-                        </td>
-                        <td style="width: 25%;border:1px solid black;padding: 5px;">
-                            <%= item.area_work  %>               
-                        </td>
-                        <td style="width: 25%;border:1px solid black;padding: 5px;">
-                            <%= item.functions  %>               
-                        </td>
-                    </tr>
-                <% end %>               
-            <% end %>               
-        </table>
-        <div></br></div>
-        </br> 
-        <div><strong><h5>PERSONAL EVACUADO</h5></strong></div>
-
-        <table style="width: 100%;">        
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <strong>Piso: </strong>
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                    <%= form.text_field :floor,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <strong>Área: </strong>
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                    <%= form.text_field :evacuated_personal_area,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <strong>Nombre: </strong>
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                    <%= form.text_field :evacuated_personal_name,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <strong>Cargo: </strong>
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                    <%= form.text_area :evacuated_personal_cargo,  class: "form-control" %>
-                </td>
-            </tr>
-       </table>
-       </br> 
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 25%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
-                    <strong>Piso</strong>               
-                </td>
-                <td style="width: 25%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
-                    <strong>Área</strong>               
-                </td>
-                <td style="width: 25%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
-                    <strong>Nombre</strong>               
-                </td>
-                <td style="width: 25%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
-                    <strong>Cargo</strong>               
-                </td>
-            </tr>
-            <% if @simulacrum_items.present? %>
-                <%  @simulacrum_items.where("clasification = ?",1).each  do |item| %>
-                    <tr>    
-                        <td style="width: 25%;border:1px solid black;padding: 5px;">
-                            <%= item.floor  %>               
-                        </td>
-                        <td style="width: 25%;border:1px solid black;padding: 5px;">
-                            <%= item.evacuated_personal_area  %>               
-                        </td>
-                        <td style="width: 25%;border:1px solid black;padding: 5px;">
-                            <%= item.evacuated_personal_name  %>               
-                        </td>
-                        <td style="width: 25%;border:1px solid black;padding: 5px;">
-                            <%= item.evacuated_personal_cargo  %>               
-                        </td>
-                    </tr>
-                <% end %>               
-            <% end %>               
-        </table>
-        <div></br></div>
-        <div><strong><h5>ACTIVIDADES PREVIAS AL SIMULACRO</h5></strong></div>
-
-        <table style="width: 100%;">        
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <strong>Actividad: </strong>
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                    <%= form.text_field :previous_activity,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <strong>Fecha: </strong>
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                    <%= form.date_field :date_previous,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <strong>Responsable: </strong>
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                    <%= form.text_field :responsible_previous,  class: "form-control" %>
-                </td>
-            </tr>
-       </table>
-       </br> 
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 100%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
-                    <strong>Programación de actividades preparatorias del simulacro</strong>               
-                </td>
-            </tr>    
-       </table>
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 40%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
-                    <strong>Actividad</strong>               
-                </td>
-                <td style="width: 20%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
-                    <strong>Fecha</strong>               
-                </td>
-                <td style="width: 40%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
-                    <strong>Responsable</strong>               
-                </td>
-            </tr>
-            <% if @simulacrum_items.present? %>
-                <%  @simulacrum_items.where("clasification = ?",2).each  do |item| %>
-                    <tr>    
-                        <td style="width: 40%;border:1px solid black;padding: 5px;">
-                            <%= item.previous_activity  %>               
-                        </td>
-                        <td style="width: 20%;border:1px solid black;padding: 5px;">
-                            <%= item.date_previous  %>               
-                        </td>
-                        <td style="width: 40%;border:1px solid black;padding: 5px;">
-                            <%= item.responsible_previous  %>               
-                        </td>
-                    </tr>
-                <% end %>               
-            <% end %>               
-        </table>
-        <div></br></div>
-        <div><strong><h5>SECUENCIA CRONOLÓGICA DE EVENTOS</h5></strong></div>
-
-        <table style="width: 100%;">        
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <strong>Hora: </strong>
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                    <%= form.time_field :time_sequence_crono,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <strong>Actividad: </strong>
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                    <%= form.text_field :activity_sequence,  class: "form-control" %>
-                </td>
-            </tr>
-       </table>
-       </br> 
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 30%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
-                    <strong>Hora</strong>               
-                </td>
-                <td style="width: 70%;border:1px solid black;text-align:center;padding: 5px;background-color:#00aae4;">
-                    <strong>Actividad</strong>               
-                </td>
-            </tr>
-            <% if @simulacrum_items.present? %>
-                <%  @simulacrum_items.where("clasification = ?",3).each  do |item| %>
-                    <tr>    
-                        <td style="width: 30%;border:1px solid black;padding: 5px;">
-                            <%= item.time_sequence_crono  %>               
-                        </td>
-                        <td style="width: 70%;border:1px solid black;padding: 5px;">
-                            <%= item.activity_sequence  %>               
-                        </td>
-                    </tr>
-                <% end %>               
-            <% end %>               
-        </table>
-        <div></br></div>
-
-
-        <%= form.hidden_field :simulacrum_id, :value => params[:id].to_i, class: "form-control" if params[:id].present? %>
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
-    <% end %>
-</div>        
-<br>
-
- 

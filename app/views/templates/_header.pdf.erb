@@ -2,23 +2,19 @@
 <html>
 <head>
     <meta charset="utf-8">
-
     <style>
         * {
             box-sizing: border-box;
         }
-
         body {
             margin: 0;
             padding: 0;
             font-family: Arial, Helvetica, sans-serif;
             color: #212529;
         }
-
         /* ============================
            ENCABEZADO PRINCIPAL
         ============================ */
-
         .encabezado-principal {
             width: 100%;
             border: 1px solid #b5b2b2;
@@ -32,15 +28,15 @@
 
         /* LOGO */
         .logo {
-            width: 18%;
+            width: 20%;
             text-align: center;
             padding: 8px;
             border-right: 1px solid #d5d5d5;
         }
 
         .logo img {
-            width: 82px;
-            height: 82px;
+            width: 90px;
+            height: 90px;
             object-fit: contain;
             display: block;
             margin: 0 auto;
@@ -48,24 +44,24 @@
 
         /* TITULO */
         .titulo {
-            width: 82%;
+            width: 80%;
             text-align: center;
             padding: 10px 15px;
         }
 
         .empresa {
-            font-size: 18px;
+            font-size: 19px;
             font-weight: bold;
             text-transform: uppercase;
             line-height: 1.3;
-            margin-bottom: 7px;
+            margin-bottom: 5px;
         }
 
         .nombre-formato {
             font-size: 16px;
             font-weight: bold;
             text-transform: uppercase;
-            line-height: 1.4;
+            line-height: 1.35;
         }
 
         /* ============================
@@ -81,13 +77,12 @@
         }
 
         .informacion td {
-            padding: 9px 10px;
-            font-size: 16px;
+            padding: 7px 9px;
+            font-size: 13px;
             vertical-align: middle;
             border-right: 1px solid #d5d5d5;
             border-bottom: 1px solid #d5d5d5;
         }
-
 
         .informacion tr:last-child td {
             border-bottom: none;
@@ -108,101 +103,21 @@
             font-weight: normal;
         }
 
-        /* ============================
-           CELULAR
-        ============================ */
-
-        @media screen and (max-width: 600px) {
-
-            .logo {
-                width: 22%;
-                padding: 6px;
-            }
-
-            .titulo {
-                width: 78%;
-                padding: 8px;
-            }
-
-            .logo img {
-                width: 55px;
-                height: 55px;
-            }
-
-            .empresa {
-                font-size: 12px;
-            }
-
-            .nombre-formato {
-                font-size: 10px;
-            }
-
-            .informacion td {
-                font-size: 9px;
-                padding: 5px;
-            }
-        }
-
-        /* CELULARES PEQUEÑOS */
-        @media screen and (max-width: 400px) {
-
-            .logo {
-                width: 25%;
-            }
-
-            .titulo {
-                width: 75%;
-            }
-
-            .logo img {
-                width: 48px;
-                height: 48px;
-            }
-
-            .empresa {
-                font-size: 10px;
-            }
-
-            .nombre-formato {
-                font-size: 9px;
-            }
-
-            .informacion td {
-                font-size: 8px;
-                padding: 4px;
-            }
+        .pagina-documento {
+            font-weight: bold;
         }
     </style>
 </head>
 
 <body>
-
-    <!-- ============================
-         ENCABEZADO PRINCIPAL
-    ============================= -->
-
     <table class="encabezado-principal">
         <tr>
-
-            <!-- LOGO -->
             <td class="logo">
-
                 <% if @entity&.logo.present? %>
-
-                    <%= image_tag(
-                        Evaluation.wicked_blob_path(@entity.logo),
-                        width: 75,
-                        height: 75,
-                        alt: "Logo"
-                    ) %>
-
+                    <%= image_tag(Evaluation.wicked_blob_path(@entity.logo),  width: 90, height: 90, alt: "Logo") %>
                 <% end %>
-
             </td>
-
-            <!-- INFORMACIÓN PRINCIPAL -->
             <td class="titulo">
-
                 <div class="empresa">
                     <%= @entity&.business_name %>
                 </div>
@@ -212,50 +127,32 @@
                 <div class="nombre-formato">
                     <%= @template&.name %>
                 </div>
-
             </td>
-
         </tr>
     </table>
-
-
-    <!-- ============================
-         INFORMACIÓN DEL DOCUMENTO
-    ============================= -->
-
     <table class="informacion">
-
         <tr>
-
-            <td class="etiqueta">
-                Código
-            </td>
-
+            <td class="etiqueta">Código</td>
             <td class="valor">
                 <%= @template&.reference %>
             </td>
-
-            <td class="etiqueta">
-                Versión
-            </td>
-
+            <td class="etiqueta">Versión</td>
             <td class="valor">
                 <%= @template&.version %>
             </td>
-
         </tr>
         <tr>
-            <!-- FECHA DE ELABORACIÓN -->
-            <td class="etiqueta">
-                Fecha de elaboración
-            </td>
+            <td class="etiqueta">Fecha de elaboración</td>
             <td class="valor">
                 <%
                     fecha_template = @template&.date
                     fecha_empresa  = @entity&.created_at
+
                     fecha_elaboracion =
                         if fecha_template.present? && fecha_empresa.present?
-                            fecha_template.to_date < fecha_empresa.to_date ? fecha_empresa.to_date : fecha_template.to_date
+                            fecha_template.to_date < fecha_empresa.to_date ?
+                              fecha_empresa.to_date :
+                              fecha_template.to_date
                         elsif fecha_template.present?
                             fecha_template.to_date
                         elsif fecha_empresa.present?
@@ -274,42 +171,50 @@
                     <%= fecha_elaboracion.year %>
                 <% end %>
             </td>
-
-            <!-- PÁGINA -->
-            <td class="etiqueta">
-                Página
-            </td>
+            <td class="etiqueta">Página</td>
             <td class="valor">
-                <span id="pagina-documento" class="pagina-documento">1 de 1</span>
+                <span id="pagina-documento" class="pagina-documento">
+                    1 de 1
+                </span>
             </td>
         </tr>
     </table>
-
     <script>
         function obtenerParametros() {
-        var parametros = {};
-        var query = window.location.search.substring(1);
-        if (!query) {
+            var parametros = {};
+            var query = window.location.search.substring(1);
+
+            if (!query) {
+                return parametros;
+            }
+
+            var pares = query.split('&');
+
+            for (var i = 0; i < pares.length; i++) {
+                var par = pares[i].split('=');
+
+                if (par.length === 2) {
+                    parametros[decodeURIComponent(par[0])] =
+                        decodeURIComponent(par[1]);
+                }
+            }
+
             return parametros;
         }
-        var pares = query.split('&');
-        for (var i = 0; i < pares.length; i++) {
-            var par = pares[i].split('=');
-            if (par.length === 2) {
-                parametros[decodeURIComponent(par[0])] =
-                    decodeURIComponent(par[1]);
-            }
-        }
-        return parametros;
-        }
+
         function actualizarPagina() {
             var parametros = obtenerParametros();
+
             var pagina = parametros['page'];
             var total = parametros['topage'];
+
             if (pagina && total) {
-                var elemento = document.getElementById('pagina-documento');
+                var elemento =
+                    document.getElementById('pagina-documento');
+
                 if (elemento) {
-                    elemento.innerHTML = pagina + ' de ' + total;
+                    elemento.innerHTML =
+                        pagina + ' de ' + total;
                 }
             }
         }
@@ -318,6 +223,5 @@
             actualizarPagina();
         };
     </script>
-
 </body>
 </html>

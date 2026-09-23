@@ -1,0 +1,137 @@
+<head>
+    <meta charset="utf-8">
+    <%= wicked_pdf_stylesheet_link_tag "pdf_conesst" %>
+</head>
+<div class="conesst-pdf">
+    <table class="conesst-pdf-improvement-table">
+        <thead>
+            <tr class="conesst-pdf-table-header">
+                <th>
+                    NÚMERAL<br>ESTÁNDAR
+                </th>
+                <th>
+                    ACTIVIDAD
+                </th>
+                <th>    
+                    RECURSOS
+                </th>
+                <th>
+                    RESPONSABLE
+                </th>
+                <th>
+                    PLAZO DE LA ACCIÓN
+                </th>
+                <th>
+                    OBSERVACIONES
+                </th>
+                <th>
+                    EVIDENCIA DE CUMPLIMIENTO
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @improvement_items.each do |item| %>
+                <tr>
+                    <td class="conesst-pdf-center">
+                        <%= item.action_improvement %>
+                    </td>
+                    <td>
+                        <div class="conesst-pdf-text">
+                            <%= item.activity_plan %>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="conesst-pdf-text">
+                            <%= item.resources_improvement %>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="conesst-pdf-text">
+                            <%= item.responsible_action %>
+                        </div>
+                    </td>
+                    <td class="conesst-pdf-center">
+                        <div class="conesst-pdf-date">
+                            <%= item.date_initial %>
+                        </div>
+                        <% if item.date_fin.present? %>
+                            <div class="conesst-pdf-date">
+                                al
+                                <%= item.date_fin %>
+                            </div>
+                        <% end %>
+                    </td>
+                    <td>
+                        <div class="conesst-pdf-text">
+                            <%= item.observation %>
+                        </div>
+                    </td>
+                    <td class="conesst-pdf-evidence">
+                        <% if item.file_improvements.attached? %>
+                            <% item.file_improvements.each do |file| %>
+                                <div class="conesst-pdf-evidence-item">
+                                    <% if file.image? %>
+                                        <div class="conesst-pdf-evidence-image">
+                                            <%= image_tag file, class: "conesst-pdf-evidence-img" %>
+                                        </div>
+                                    <% elsif file.video? %>
+                                        <div class="conesst-pdf-file">
+                                            <i class="bi bi-camera-video"></i>
+                                            <span>
+                                                <%= file.filename %>
+                                            </span>
+                                        </div>
+                                    <% elsif file.audio? %>
+                                        <div class="conesst-pdf-file">
+                                            <i class="bi bi-file-earmark-music"></i>
+                                            <span>
+                                                <%= file.filename %>
+                                            </span>
+                                        </div>
+                                    <% else %>
+                                        <div class="conesst-pdf-file">
+                                            <i class="bi bi-file-earmark"></i>
+                                            <span>
+                                                <%= file.filename %>
+                                            </span>
+                                        </div>
+                                    <% end %>
+                                    <%= link_to("Descargar", rails_blob_path(file, disposition: "attachment"), class: "conesst-pdf-download") %>
+                                </div>
+                            <% end %>
+                        <% else %>
+                            <span class="conesst-pdf-no-evidence">
+                                Sin evidencia
+                            </span>
+                        <% end %>
+                    </td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+    <table class="conesst-pdf-signature-table">
+        <tr>
+            <td class="conesst-pdf-signature-cell">
+                <% if @improvement_plan.firm_representante == 1 %>
+                    <% if @rep.present? %>
+                        <% if @rep.firm.attached? %>
+                            <% if @rep.firm.image? %>
+                                <%= image_tag @rep.firm, class: "conesst-pdf-signature-image" %>
+                            <% end %>
+                        <% end %>
+                    <% end %>
+                <% end %>
+            </td>   
+            <td colspan="3"></td>
+        </tr>
+        <tr>    
+            <td class="conesst-pdf-signature-name">
+                <%= @rep.name if @rep.present? %>
+                <% if @rep.present? %>
+                    - Representante Legal
+                <% end %>
+            </td>
+            <td colspan="3"></td>
+        </tr>
+    </table>
+</div>

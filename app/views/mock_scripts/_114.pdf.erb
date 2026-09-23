@@ -1,0 +1,345 @@
+<head>
+    <meta charset="utf-8">
+    <%= wicked_pdf_stylesheet_link_tag "pdf_conesst" %>
+</head>
+<div class="pdf-document">
+    <div class="pdf-title">
+        SIMULACRO DE EVACUACIÓN POR SISMO
+    </div>
+    <div class="pdf-section-title">
+        1. OBJETIVO
+    </div>
+    <div class="pdf-text">
+        <p>
+            Realizar un simulacro de evacuación por
+            <strong><%= @mock_script.space_for if @mock_script.present? %></strong>
+            en las instalaciones de
+            <strong><%= @entity.business_name if @entity.present? %></strong>,
+            con el propósito de preparar y sensibilizar al personal sobre cómo actuar
+            ante una emergencia, asignar roles y responsabilidades específicas,
+            y garantizar que tanto colaboradores como usuarios conozcan las rutas
+            de evacuación y el punto de encuentro establecido por la empresa.
+        </p>
+    </div>
+    <div class="pdf-section-title">
+        2. ALCANCE
+    </div>
+    <div class="pdf-text">
+        <p>
+            El presente guion aplica a todas las áreas, dependencias y personal de
+            <strong><%= @entity.business_name if @entity.present? %></strong>.
+            Incluye empleados, visitantes, contratistas y proveedores presentes
+            durante el desarrollo del simulacro.
+        </p>
+    </div>
+    <div class="pdf-section-title">
+        3. TIPO DE SIMULACRO
+    </div>
+    <div class="pdf-text">
+        <p>
+            El
+            <%= @mock_script.date_script.day if @mock_script.date_script.present? %>
+            de
+            <%= I18n.l(@mock_script.date_script, format: "%B") if @mock_script.date_script.present? %>
+            de
+            <%= @mock_script.date_script.strftime("%Y") if @mock_script.date_script.present? %>
+            a las
+            <%= @mock_script.time_script.strftime("%T %p") if @mock_script.time_script.present? %>,
+            se presenta
+            <strong><%= @mock_script.type_emergency if @mock_script.present? %></strong>
+            en las instalaciones de
+            <strong><%= @entity.business_name if @entity.present? %></strong>,
+            por lo cual los empleados se alertan por los posibles riesgos,
+            se toma la decisión de activar la brigada de emergencia y el sistema
+            de alarma y continuamente se le informa al
+            <strong><%= @user_representante.name if @user_representante.present? %></strong>,
+            gerente de la empresa.
+        </p>
+        <p>
+            <strong>Alerta:</strong>
+            Sonará la sirena 2 veces de manera intermitente, indicando señal
+            de preparación ante una emergencia.
+        </p>
+        <p>
+            <strong>Alarma:</strong>
+            Sonará la sirena continuamente durante 10 segundos, indicando señal
+            de evacuación total por emergencia.
+        </p>
+    </div>
+    <div class="pdf-section-title">
+        RESPONSABILIDADES
+    </div>
+    <div class="pdf-subsection-title">
+        ALTA DIRECCIÓN
+    </div>
+    <div class="pdf-list">
+        <p>* Asignar los recursos necesarios (tiempo, personal, materiales y presupuesto) para la preparación y ejecución del simulacro.</p>
+        <p>* Autorizar la interrupción temporal de actividades para llevar a cabo el ejercicio.</p>
+        <p>* Aprobar los objetivos, alcance, cronograma y metodología del simulacro.</p>
+    </div>
+    <div class="pdf-subsection-title">
+        COORDINADOR GENERAL:
+        <%= @mock_script.name_coordinator if @mock_script.present? %>
+    </div>
+    <div class="pdf-list">
+        <p>* Dirigir y supervisar todas las fases del ejercicio, autoriza el inicio y cierre del simulacro.</p>
+        <p>* Coordina con el líder de la brigada la activación de la alerta y alarma.</p>
+    </div>
+    <div class="pdf-subsection-title">
+        LÍDER DE LA BRIGADA:
+        <%= @mock_script.name_brigade if @mock_script.present? %>
+    </div>
+    <div class="pdf-list">
+        <p>* Activar alerta.</p>
+        <p>* Activar la brigada de emergencias.</p>
+        <p>* Activar alarma.</p>
+        <p>* Dar orden de evacuación una vez se indique el fin de la simulación.</p>
+        <p>* Reportar novedades, incidentes o dificultades al Coordinador General del Simulacro.</p>
+    </div>
+    <div class="pdf-subsection-title">
+        LÍDER DE EVACUACIÓN:
+        <%= @mock_script.name_evacuation if @mock_script.present? %>
+    </div>
+    <div class="pdf-list">
+        <p>* Verificar y garantizar que las rutas de evacuación y salidas de emergencia se mantengan despejadas.</p>
+        <p>* Coordinar la salida del personal hasta el punto de encuentro de manera ordenada.</p>
+        <p>* Verificar que todas las personas evacúen y recorrer todas las áreas para confirmar que no queden ocupantes dentro de la empresa.</p>
+        <p>* Realizar conteo total de personas en el punto de encuentro.</p>
+        <p>* Reportar novedades, incidentes o dificultades al Coordinador General del Simulacro.</p>
+    </div>
+    <div class="pdf-subsection-title">
+        BRIGADISTAS
+    </div>
+    <div class="pdf-list">
+        <p>* Apoyar la evacuación.</p>
+        <p>* Brindar primeros auxilios en caso de personas lesionadas o afectadas.</p>
+        <p>* Orientar al personal por las rutas seguras.</p>
+        <p>* Verificar que todas las personas evacuen las instalaciones.</p>
+        <p>* Apoyar en punto de encuentro: orden y conteo de personas.</p>
+    </div>
+    <div class="pdf-subsection-title">
+        PERSONAL PARTICIPANTE
+    </div>
+    <div class="pdf-list">
+        <p>* Seguir las instrucciones de los líderes del simulacro.</p>
+        <p>* Conservar la calma.</p>
+        <p>* Dirigirse al punto de encuentro.</p>
+        <p>* No ingresar a las instalaciones de la empresa hasta recibir indicación del coordinador general del simulacro.</p>
+    </div>
+    <div class="pdf-subsection-title">
+        APOYO EXTERNO:
+        <%= @mock_script.external_soport if @mock_script.present? %>
+    </div>
+    <div class="pdf-subsection-title">
+        Riesgos asociados y/o consecuencias
+    </div>
+    <div class="pdf-list">
+        <p>* Pánico generalizado en el personal.</p>
+        <p>* Posibles lesionados en el proceso de evacuación.</p>
+        <p>* Pánico entre los vecinos caídas en el desplazamiento.</p>
+    </div>
+    <div class="pdf-subsection-title">
+        Aspectos para tener en cuenta
+    </div>
+    <div class="pdf-list">
+        <p>* El ejercicio se cancelará si llega a presentarse una emergencia real que no pueda ser controlada por el personal que conforma la brigada.</p>
+        <p>* Informar a los vecinos sobre la realización del simulacro para no generar pánico.</p>
+    </div>
+    <div class="pdf-section-title">
+        4. FASES DEL SIMULACRO
+    </div>
+    <div class="pdf-subsection-title">
+        Fase 1: preparación previa
+    </div>
+    <div class="pdf-list">
+        <p>* Socialización del guion del simulacro.</p>
+        <p>* Verificación de recursos de emergencia (botiquines, extintores, señalización, alarma).</p>
+        <p>* Asignación de roles y responsabilidades.</p>
+    </div>
+    <div class="pdf-subsection-title">
+        Fase 2: ejecución del simulacro
+    </div>
+    <div class="pdf-list">
+        <p>* Activar señal de alerta y alarma.</p>
+        <p>* Se coordina evacuación hacia el punto de encuentro.</p>
+        <p>* Se retiran recursos de emergencia (botiquín, camilla, extintores).</p>
+        <p>* Verificación del estado estructural de las instalaciones.</p>
+    </div>
+    <div class="pdf-subsection-title">
+        Fase 3: recuperación y evaluación
+    </div>
+    <div class="pdf-list">
+        <p>* Conteo de personas en punto de encuentro.</p>
+        <p>* Se da por finalizado el simulacro.</p>
+        <p>* Se da indicación de retorno a sus lugares de trabajo.</p>
+        <p>* Se realiza reunión de cierre con brigada, responsable SST, observador y asesor externo, para identificación de aciertos y oportunidades de mejora.</p>
+        <p>* Socializar resultados con todo el personal de la empresa.</p>
+    </div>
+    <div class="pdf-table-title">
+        ROLES Y FUNCIONES DE LOS BRIGADISTAS
+    </div>
+    <table class="pdf-roles-table">
+        <thead>
+            <tr>
+                <th style="width: 30%;">
+                    FUNCIÓN
+                </th>
+                <th style="width: 70%;">
+                    ENCARGADO
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <strong>Comité de emergencias</strong>
+                </td>
+                <td>
+                    <%= @mock_script.officer_committee if @mock_script.present? %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Coordinación general del simulacro</strong>
+                </td>
+                <td>
+                    <%= @mock_script.coordinator_drill if @mock_script.present? %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Activación de alerta y alarma</strong>
+                </td>
+                <td>
+                    <%= @mock_script.alert_activation if @mock_script.present? %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Evacuación general y conteo de personas</strong>
+                </td>
+                <td>
+                    <%= @mock_script.evacuation_count if @mock_script.present? %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Evacuación primer piso</strong>
+                </td>
+                <td>
+                    <%= @mock_script.evacuation_first if @mock_script.present? %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Evacuación segundo piso</strong>
+                </td>
+                <td>
+                    <%= @mock_script.evacuation_second if @mock_script.present? %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Retiro de botiquín</strong>
+                </td>
+                <td>
+                    <%= @mock_script.withdraw_kit if @mock_script.present? %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Retiro de camilla</strong>
+                </td>
+                <td>
+                    <%= @mock_script.withdraw_stretcher if @mock_script.present? %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Retiro de extintor</strong>
+                </td>
+                <td>
+                    <%= @mock_script.withdraw_extinguisher if @mock_script.present? %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>
+                        Verificación del estado estructural de las instalaciones
+                    </strong>
+                </td>
+                <td>
+                    <%= @mock_script.verification if @mock_script.present? %>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>
+                        Indicación de retorno a sus lugares de trabajo
+                    </strong>
+                </td>
+                <td>
+                    <%= @mock_script.return_indication if @mock_script.present? %>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="pdf-section-title">
+        5. RUTAS DE EVACUACIÓN
+    </div>
+    <div class="pdf-text">
+        <p>
+            Se utilizarán las rutas establecidas para tal fin descritas
+            a continuación:
+        </p>
+        <div class="pdf-rich-text">
+            <%= @mock_script.routes_evacuation if @mock_script.present? %>
+        </div>
+    </div>
+    <div class="pdf-section-title">
+        6. SALIDAS DE EMERGENCIA
+    </div>
+    <div class="pdf-rich-text">
+        <%= @mock_script.emergency_exit if @mock_script.present? %>
+    </div>
+    <div class="pdf-section-title">
+        7. RECURSOS DE EMERGENCIA
+    </div>
+    <div class="pdf-rich-text">
+        <%= @mock_script.emergency_resources if @mock_script.present? %>
+    </div>
+    <table class="pdf-signature">
+        <tr>
+            <td>
+                <% if @mock_script.firm_user_asesor == 1 %>
+                    <% if @user_asesor.firm.attached? %>
+                        <% if @user_asesor.firm.image? %>
+                            <div class="pdf-signature-image">
+                                <%= image_tag @user_asesor.firm, class: "firmapdf" %>
+                            </div>
+                        <% end %>
+                    <% else %>
+                        <div class="pdf-signature-image"></div>
+                    <% end %>
+                <% else %>
+                    <div class="pdf-signature-image"></div>
+                <% end %>
+                <div class="pdf-signature-line"></div>
+                <div class="pdf-signature-name">
+                    <%= @user_asesor.name if @user_asesor.present? %>
+                </div>
+                <div class="pdf-signature-name">
+                    Asesor SG-SST
+                </div>
+                <div class="pdf-signature-data">
+                    <%= @user_asesor.document.abbreviation if @user_asesor.present? %>:
+                    <%= Firm.miles(@user_asesor.nro_document) if @user_asesor.present? %>
+                </div>
+                <div class="pdf-signature-data">
+                    Licencia:
+                    <%= @user_asesor.license if @user_asesor.present? %>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

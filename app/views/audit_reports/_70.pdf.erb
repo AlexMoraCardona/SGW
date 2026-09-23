@@ -1,0 +1,245 @@
+<head>
+    <meta charset="utf-8">
+    <%= wicked_pdf_stylesheet_link_tag "pdf_conesst" %>
+</head>
+<table class="audit-pdf-info-table">
+    <tr>
+        <td>
+            <div class="audit-pdf-label">
+                OBJETIVO DE LA AUDITORÍA
+            </div>
+            <div class="audit-pdf-text">
+                Verificar el cumplimiento de la Resolución 0312 de 2019
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="audit-pdf-label">
+                ALCANCE DE LA AUDITORÍA
+            </div>
+            <div class="audit-pdf-text">
+                Evaluar la planificación, desarrollo y aplicación del
+                Sistema de Gestión de la Seguridad y Salud en el Trabajo
+                (SG-SST);
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="audit-pdf-label">
+                CRITERIOS DE LA AUDITORÍA
+            </div>
+            <ul class="audit-pdf-list">
+                <li>Decreto 1072 de 2015</li>
+                <li>Resolución 0312 de 2019</li>
+                <li>Plan de Trabajo anual</li>
+                <li>Plan de Capacitación</li>
+                <li>Matriz de Peligros y riesgos</li>
+                <li>Plan de preparación y atención de emergencias</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="audit-pdf-label">
+                EQUIPO AUDITOR
+            </div>
+            <div class="audit-pdf-text">
+                <%= @user_audit.name if @user_audit.present? %>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="audit-pdf-label">
+                FECHA DE AUDITORÍA
+            </div>
+            <div class="audit-pdf-text">
+                <%= @audit_report.date_audit if @audit_report.present? %>
+            </div>
+        </td>
+    </tr>
+</table>
+<div class="audit-pdf-section-title">
+    RESULTADOS DE AUDITORÍA
+</div>
+<table class="audit-pdf-results-table">
+    <thead>
+        <tr>
+            <th class="audit-pdf-col-process">
+                PROCESO
+            </th>
+            <th class="audit-pdf-col-finding-type">
+                TIPO DE HALLAZGO
+            </th>
+            <th class="audit-pdf-col-action">
+                TIPO DE ACCIÓN
+            </th>
+            <th class="audit-pdf-col-finding">
+                HALLAZGO
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if @audit_report_items.present? %>
+            <% @audit_report_items.each do |audit_report_item| %>
+                <tr>
+                    <td>
+                        <%= audit_report_item.process %>
+                    </td>
+                    <td class="audit-pdf-center">
+                        <%= AuditReportItem.label_type_finding(audit_report_item.type_finding) %>
+                    </td>
+                    <td class="audit-pdf-center">
+                        <%= AuditReportItem.label_type_action(audit_report_item.type_action) %>
+                    </td>
+                    <td>
+                        <%= audit_report_item.finding %>
+                    </td>
+                </tr>
+            <% end %>
+        <% else %>
+            <tr>
+                <td colspan="4" class="audit-pdf-empty">
+                    No se han registrado hallazgos para esta auditoría.
+                </td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+<table class="audit-pdf-text-table">
+    <tr>
+        <td>
+            <div class="audit-pdf-label">
+                CONCLUSIONES
+            </div>
+            <div class="audit-pdf-content">
+                <%= @audit_report.conclusions %>
+            </div>
+        </td>
+    </tr>
+</table>
+<table class="audit-pdf-text-table">
+    <tr>
+        <td>
+            <div class="audit-pdf-label">
+                OBSERVACIONES GENERALES Y OPORTUNIDADES DE MEJORA
+            </div>
+            <div class="audit-pdf-content">
+                <%= @audit_report.observations %>
+            </div>
+        </td>
+    </tr>
+</table>
+<table class="audit-pdf-attachments-table">
+    <tr>
+        <td>
+            <div class="audit-pdf-label">
+                ARCHIVOS ADJUNTOS
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <% if @audit_report_items.present? %>
+                <% @audit_report_items.each do |audit_report_item| %>
+                    <% if audit_report_item.finding_evidences.attached? %>
+                        <div class="audit-pdf-evidence">
+                            <div class="audit-pdf-evidence-title">
+                                <%= audit_report_item.finding %>
+                            </div>
+                            <% audit_report_item.finding_evidences.each do |file| %>
+                                <div class="audit-pdf-file">
+                                    <% if file.image? %>
+                                        <div class="audit-pdf-image-container">
+                                            <%= image_tag(Evaluation.wicked_blob_path(file), class: "audit-pdf-evidence-image") %>
+                                        </div>
+                                    <% elsif file.video? %>
+                                        <div class="audit-pdf-file-name">
+                                            Video:
+                                            <%= file.filename %>
+                                        </div>
+                                    <% elsif file.audio? %>
+                                        <div class="audit-pdf-file-name">
+                                            Audio:
+                                            <%= file.filename %>
+                                        </div>
+                                    <% else %>
+                                        <div class="audit-pdf-file-name">
+                                            Archivo:
+                                            <%= file.filename %>
+                                        </div>
+                                    <% end %>
+                                </div>
+                            <% end %>
+                        </div>
+                    <% end %>
+                <% end %>
+            <% else %>
+                <div class="audit-pdf-no-files">
+                    No hay archivos adjuntos.
+                </div>
+            <% end %>
+        </td>
+    </tr>
+</table>
+<table class="audit-pdf-signatures">
+    <tr>
+        <td class="audit-pdf-signature-column">
+            <% if @user_audit.present? %>
+                <div class="audit-pdf-signature-title">
+                    Firma del auditor líder
+                </div>
+                <div class="audit-pdf-signature-space">
+                    <% if @audit_report.firm_audit == 1 && @user_audit.firm.attached? && @user_audit.firm.image? %>
+                        <%= image_tag(Evaluation.wicked_blob_path(@user_audit.firm), class: "audit-pdf-signature-image") %>
+                    <% end %>
+                    <div class="audit-pdf-signature-line"></div>
+                </div>
+                <div class="audit-pdf-signature-name">
+                    <%= @user_audit.name %>
+                </div>
+                <div class="audit-pdf-signature-data">
+                    <%= CompanyPosition.name_cargo(@user_audit.activity) %>
+                </div>
+                <div class="audit-pdf-signature-data">
+                    <%= @user_audit.document.abbreviation %>:
+                    <%= Firm.miles(@user_audit.nro_document) %>
+                </div>
+                <div class="audit-pdf-signature-date">
+                    Fecha firma:
+                    <%= @audit_report.date_firm_audit if @audit_report.date_firm_audit %>
+                </div>
+            <% end %>
+        </td>
+        <td class="audit-pdf-signature-column">
+            <% if @user_representante.present? %>
+                <div class="audit-pdf-signature-title">
+                    Firma del Representante Legal
+                </div>
+                <div class="audit-pdf-signature-space">
+                    <% if @audit_report.firm_representante == 1 && @user_representante.firm.attached? && @user_representante.firm.image? %>
+                        <%= image_tag(Evaluation.wicked_blob_path(@user_representante.firm), class: "audit-pdf-signature-image") %>
+                    <% end %>
+                    <div class="audit-pdf-signature-line"></div>
+                </div>
+                <div class="audit-pdf-signature-name">
+                    <%= @user_representante.name %>
+                </div>
+                <div class="audit-pdf-signature-data">
+                    <%= CompanyPosition.name_cargo(@user_representante.activity) %>
+                </div>
+                <div class="audit-pdf-signature-data">
+                    <%= @user_representante.document.abbreviation %>:
+                    <%= Firm.miles(@user_representante.nro_document) %>
+                </div>
+                <div class="audit-pdf-signature-date">
+                    Fecha firma:
+                    <%= @audit_report.date_firm_representante if @audit_report.date_firm_representante %>
+                </div>
+            <% end %>
+        </td>
+    </tr>
+</table>
+</div>

@@ -1,41 +1,118 @@
-<% if @entity.present? %>
-    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
-<% end %>
-<%= link_to "Crear Informe simulacro de emergencias", new_simulacrum_path, class: 'btn btn-sm btn-primary' if Current.user.level > 0 &&  Current.user.level < 4 %> 
- 
-<div class="container col-11">
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">Fecha</th>
-                <th scope="col">Usuario elaboró</th>
-                <th scope="col">Crear item</th>
-                <th scope="col">Firmar</th>
-                <th scope="col">Ver</th>
-                <th scope="col"><%= t('common.edit') %></th>
-                <th scope="col">PDF</th>
-            </tr>
-        </thead> 
-        <tbody>
-            <% @simulacrums.each do |simulacrum| %>
-                <tr>  
-                    <td scope="col"><%= simulacrum.date_simulacrum.strftime("%F") if simulacrum.date_simulacrum.present? %></td>  
-                    <td scope="col"><%= Simulacrum.label_user(simulacrum.user_asesor) %></td>
-                    <td scope="col"><%= link_to 'Crear item', crear_item_simulacro_path(simulacrum), class: 'btn btn-sm btn-warning' if Current.user.level > 0 && Current.user.level < 3 %></td>
-                    <% if simulacrum.firm_user_asesor == 0 %>
-                        <td scope="col"><%= link_to 'Firmar', firma_simulacro_path(simulacrum), class: 'btn btn-sm btn-warning'%></td>
-                    <% else %>
-                        <td scope="col"><%= simulacrum.date_user_asesor.strftime("%F") if simulacrum.date_user_asesor.present? %>
+<div class="conesst-page">
+    <% if @entity.present? %>
+        <div class="audit-company-header">
+            <div class="audit-company-title-row">
+                <div class="audit-company-icon"> <i class="bi bi-building"></i>
+                </div>
+                <div>
+                    <h2 class="audit-company-title">
+                        <%= @entity.business_name %>
+                    </h2>
+                    <% if @entity.identification_number.present? %>
+                        <div class="audit-company-nit">
+                            NIT:
+                            <%= EvaluationRuleDetail.miles(@entity.identification_number) %>
+                            <%= "-#{@entity.verification_digit}" if @entity.verification_digit.present? %>
+                        </div>
                     <% end %>
-                    <td scope="col"><%= link_to 'Ver', simulacrum_path(simulacrum), class: 'btn btn-sm btn-primary'%></td>
-                    <td scope="col"><%= link_to 'Editar', edit_simulacrum_path(simulacrum.id), class: 'btn btn-sm btn-warning' if Current.user.level > 0 && Current.user.level < 3 %></td>
-                    <td scope="col"><%= link_to "PDF", ver_simulacro_path(simulacrum.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
-                </tr>
-            <% end %>  
-        </tbody>      
-    </table>
-    </br>        
+                </div>
+            </div>
+        </div>
+    <% end %>
+    <div class="conesst-card">
+        <div class="conesst-card-body">
+            <div class="conesst-actions">
+                <% if Current.user.level > 0 && Current.user.level < 4 %>
+                    <%= link_to new_simulacrum_path, class: "conesst-btn conesst-btn-primary", title: "Crear informe de simulacro de emergencias" do %>
+                        <i class="bi bi-plus-circle"></i>
+                        <span>Crear Informe simulacro</span>
+                    <% end %>
+                <% end %>
+            </div>
+            <div class="conesst-table-wrapper">
+                <table class="conesst-table">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Usuario elaboró</th>
+                            <th>Crear item</th>
+                            <th>Firmar</th>
+                            <th>Ver</th>
+                            <th><%= t('common.edit') %></th>
+                            <th>PDF</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @simulacrums.each do |simulacrum| %>
+                            <tr>
+                                <td data-label="Fecha">
+                                    <% if simulacrum.date_simulacrum.present? %>
+                                        <span class="simulacrum-date">
+                                            <i class="bi bi-calendar3"></i>
+                                            <%= simulacrum.date_simulacrum.strftime("%F") %>
+                                        </span>
+                                    <% end %>
+                                </td>
+                                <td data-label="Usuario elaboró">
+                                    <span class="simulacrum-user">
+                                        <i class="bi bi-person"></i>
+                                        <%= Simulacrum.label_user(simulacrum.user_asesor) %>
+                                    </span>
+                                </td>
+                                <td data-label="Crear item">
+                                    <% if Current.user.level > 0 && Current.user.level < 3 %>
+                                        <%= link_to crear_item_simulacro_path(simulacrum), class: "conesst-btn conesst-btn-warning", title: "Crear item" do %>
+                                            <i class="bi bi-plus-circle"></i>
+                                            <span>Crear item</span>
+                                        <% end %>
+                                    <% end %>
+                                </td>
+                                <td data-label="Firmar">
+                                    <% if simulacrum.firm_user_asesor == 0 %>
+                                        <%= link_to firma_simulacro_path(simulacrum), class: "conesst-btn conesst-btn-warning", title: "Firmar simulacro" do %>
+                                            <i class="bi bi-pen"></i>
+                                            <span>Firmar</span>
+                                        <% end %>
+                                    <% else %>
+                                        <% if simulacrum.date_user_asesor.present? %>
+                                            <span class="simulacrum-signed">
+                                                <i class="bi bi-check-circle"></i>
+                                                <%= simulacrum.date_user_asesor.strftime("%F") %>
+                                            </span>
+                                        <% end %>
+                                    <% end %>
+                                </td>
+                                <td data-label="Ver">
+                                    <%= link_to simulacrum_path(simulacrum), class: "conesst-btn conesst-btn-primary", title: "Ver simulacro" do %>
+                                        <i class="bi bi-eye"></i>
+                                        <span>Ver</span>
+                                    <% end %>
+                                </td>
+                                <td data-label="<%= t('common.edit') %>">
+                                    <% if Current.user.level > 0 && Current.user.level < 3 %>
+                                        <%= link_to edit_simulacrum_path(simulacrum.id), class: "conesst-btn conesst-btn-warning", title: t('common.edit') do %>
+                                            <i class="bi bi-pencil-square"></i>
+                                            <span><%= t('common.edit') %></span>
+                                        <% end %>
+                                    <% end %>
+                                </td>
+                                <td data-label="PDF">
+                                    <%= link_to ver_simulacro_path(simulacrum.id, format: 'pdf'), class: "conesst-btn conesst-btn-success", title: "Generar PDF" do %>
+                                        <i class="bi bi-file-earmark-pdf"></i>
+                                        <span>PDF</span>
+                                    <% end %>
+                                </td>
+                            </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
+            <% if @simulacrums.blank? %>
+                <div class="simulacrum-empty">
+                    <i class="bi bi-info-circle"></i>
+                    <span>No hay informes de simulacros registrados.</span>
+                </div>
+            <% end %>
+        </div>
+    </div>
 </div>
-
-
-

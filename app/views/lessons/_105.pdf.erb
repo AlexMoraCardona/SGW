@@ -1,0 +1,93 @@
+<head>
+    <meta charset="utf-8">
+    <%= wicked_pdf_stylesheet_link_tag "pdf_conesst" %>
+</head>
+<div class="pdf-document">
+    <table class="pdf-table" style="margin-bottom: 12px;">
+        <tbody>
+            <tr>
+                <td class="pdf-cell-left" style="width: 25%; background-color: #f1f3f5; font-weight: 700;">
+                TÍTULO:
+                </td>
+                <td class="pdf-cell-left" style="width: 75%;">
+                    <%= @lesson.title if @lesson.present? %>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="pdf-section-title">
+        ¿QUÉ SUCEDIÓ?
+    </div>
+    <div class="pdf-text pdf-justify">
+        <% if @lesson.present? %>
+            <%= @lesson.leccion_que %>
+        <% end %>
+    </div>
+    <div class="pdf-section-title">
+        CAUSAS ORIGINADORAS DEL EVENTO:
+    </div>
+    <div class="pdf-text pdf-justify">
+        <% if @lesson.present? %>
+            <%= @lesson.leccion_causa %>
+        <% end %>
+    </div>
+    <div class="pdf-section-title">
+        RECOMENDACIONES:
+    </div>
+    <div class="pdf-text pdf-justify">
+        <% if @lesson.present? %>
+            <%= @lesson.leccion_recome %>
+        <% end %>
+    </div>
+    <div class="pdf-space-large"></div>
+    <table class="pdf-table" style="border: 0; page-break-inside: avoid;">
+        <tbody>
+            <tr>
+                <td class="pdf-signature-cell" style="width: 50%; border: 0;">
+                    <div class="pdf-center">
+                        <div class="pdf-small-text" style="font-weight: 700; margin-bottom: 5px;">
+                        Elaboró:
+                        </div>
+                        <div style="height: 55px;">
+                            <% if @user_responsable.present? && @lesson.firm_user_adviser_sst.to_i == 1 && @user_responsable.firm.attached? && @user_responsable.firm.image? %>
+                                <%= image_tag @user_responsable.firm, class: "pdf-firm-image" %>
+                            <% end %>
+                        </div>
+                        <div class="pdf-signature-line" style="margin-left: auto; margin-right: auto;">
+                        </div>
+                        <% if @user_responsable.present? %>
+                            <div class="pdf-signature-name">
+                                <%= @user_responsable.name %>
+                            </div>
+                        <% end %>
+                        <div class="pdf-signature-data">
+                            Asesor externo SG-SST
+                        </div>
+                    </div>
+                </td>
+                <td class="pdf-signature-cell" style="width: 50%; border: 0;">
+                    <div class="pdf-center">
+                        <div class="pdf-small-text" style="font-weight: 700; margin-bottom: 5px;">
+                            Responsable:    
+                        </div>
+                        <div style="height: 55px;">
+                            <% if @user_vigia.present? && @lesson.firm_user_vigia.to_i == 1 && @user_vigia.firm.attached? && @user_vigia.firm.image? %>
+                                <%= image_tag @user_vigia.firm, class: "pdf-firm-image" %>
+                            <% end %>
+                        </div>
+                        <div class="pdf-signature-line" style="margin-left: auto; margin-right: auto;">
+                        </div>
+                        <% if @user_vigia.present? %>
+                            <div class="pdf-signature-name">
+                                <%= @user_vigia.name %>
+                            </div>
+                        <% end %>
+                        <div class="pdf-signature-data">
+                            Responsable de SG-SST
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

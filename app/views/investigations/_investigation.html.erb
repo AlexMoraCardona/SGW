@@ -1,42 +1,170 @@
+<div class="conesst-page">
 
-<% if @entity.present? %>
-    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
-<% end %>
-<%= link_to "Crear investigación", new_investigation_path, class: 'btn btn-sm btn-primary' if Current.user.level > 0 &&  Current.user.level < 3 %> 
- 
-<div class="container col-11">
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">Fecha investigación</th>
-                <th scope="col">Tipo de evento</th>
-                <th scope="col">Empleado</th>
-                <th scope="col">Recomendaciones</th>
-                <th scope="col">Equipo investigador</th>
-                <th scope="col">Ver</th>
-                <th scope="col"><%= t('common.edit') %></th>
-                <th scope="col"><%= t('common.delete') %></th>
-                <th scope="col">PDF</th>
-            </tr>
-        </thead> 
-        <tbody>
-            <% @investigations.each do |investigation| %>
-                <tr> 
-                    <td scope="col"><%= investigation.date_investigation.strftime("%F") if investigation.date_investigation.present? %></td>  
-                    <td scope="col"><%= Investigation.label_type_event(investigation.type_event)  %></td>  
-                    <td scope="col"><%= investigation.user.name %></td>
-                    <td scope="col"><%= link_to 'Recomendaciones', new_inves_recomendation_path(id: investigation.id), class: 'btn btn-sm btn-primary'%></td>
-                    <td scope="col"><%= link_to 'Equipo investigador',  new_inves_user_path(id: investigation.id), class: 'btn btn-sm btn-primary'%></td>
-                    <td scope="col"><%= link_to 'Ver', investigation_path(investigation), class: 'btn btn-sm btn-primary'%></td>
-                    <td scope="col"><%= link_to 'Editar', edit_investigation_path(investigation.id), class: 'btn btn-sm btn-warning' %></td>
-                    <td scope="col"><%= button_to 'Delete', investigation, method: :delete, class:'btn btn-sm btn-danger' %></td>
-                    <td scope="col"><%= link_to "PDF", ver_investigation_path(investigation.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
+  <div class="conesst-card">
+
+    <% if @entity.present? %>
+      <div class="audit-company-header">
+        <div class="audit-company-title-row">
+          <div class="audit-company-icon">
+            <i class="bi bi-building"></i>
+          </div>
+
+          <div>
+            <h1 class="audit-company-title">
+              <%= @entity.business_name %>
+            </h1>
+
+            <div class="audit-company-nit">
+              NIT:
+              <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>
+              <%= "-#{@entity.verification_digit}" if @entity.verification_digit.present? %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+
+        <h2 class="conesst-card-header-title">
+          <i class="bi bi-search"></i>
+          Investigaciones de accidentes e incidentes
+        </h2>
+
+        <% if Current.user.level > 0 && Current.user.level < 3 %>
+          <div class="conesst-actions">
+            <%= link_to new_investigation_path,
+                        class: "conesst-btn conesst-btn-primary",
+                        title: "Crear investigación" do %>
+              <i class="bi bi-plus-circle"></i>
+              <span>Crear investigación</span>
+            <% end %>
+          </div>
+        <% end %>
+
+      </div>
+    </div>
+
+    <div class="conesst-card-body">
+
+      <% if @investigations.present? %>
+
+        <div class="conesst-table-wrapper">
+          <table class="conesst-table">
+
+            <thead>
+              <tr>
+                <th>Fecha investigación</th>
+                <th>Tipo de evento</th>
+                <th>Empleado</th>
+                <th>Recomendaciones</th>
+                <th>Equipo investigador</th>
+                <th>Ver</th>
+                <th><%= t('common.edit') %></th>
+                <th><%= t('common.delete') %></th>
+                <th>PDF</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% @investigations.each do |investigation| %>
+                <tr>
+
+                  <td data-label="Fecha investigación">
+                    <%= investigation.date_investigation.strftime("%F") if investigation.date_investigation.present? %>
+                  </td>
+
+                  <td data-label="Tipo de evento">
+                    <%= Investigation.label_type_event(investigation.type_event) %>
+                  </td>
+
+                  <td data-label="Empleado">
+                    <%= investigation.user.name %>
+                  </td>
+
+                  <td data-label="Recomendaciones">
+                    <%= link_to new_inves_recomendation_path(id: investigation.id),
+                                class: "conesst-btn conesst-btn-primary",
+                                title: "Gestionar recomendaciones" do %>
+                      <i class="bi bi-list-check"></i>
+                      <span>Recomendaciones</span>
+                    <% end %>
+                  </td>
+
+                  <td data-label="Equipo investigador">
+                    <%= link_to new_inves_user_path(id: investigation.id),
+                                class: "conesst-btn conesst-btn-primary",
+                                title: "Gestionar equipo investigador" do %>
+                      <i class="bi bi-people"></i>
+                      <span>Equipo investigador</span>
+                    <% end %>
+                  </td>
+
+                  <td data-label="Ver">
+                    <%= link_to investigation_path(investigation),
+                                class: "conesst-btn conesst-btn-primary",
+                                title: "Ver investigación" do %>
+                      <i class="bi bi-eye"></i>
+                      <span>Ver</span>
+                    <% end %>
+                  </td>
+
+                  <td data-label="<%= t('common.edit') %>">
+                    <%= link_to edit_investigation_path(investigation.id),
+                                class: "conesst-btn conesst-btn-warning",
+                                title: "Editar investigación" do %>
+                      <i class="bi bi-pencil-square"></i>
+                      <span>Editar</span>
+                    <% end %>
+                  </td>
+
+                  <td data-label="<%= t('common.delete') %>">
+                    <%= button_to investigation,
+                                  method: :delete,
+                                  class: "conesst-btn conesst-btn-danger",
+                                  title: "Eliminar investigación",
+                                  form: {
+                                    data: {
+                                      turbo_confirm: "¿Está seguro de eliminar esta investigación?"
+                                    }
+                                  } do %>
+                      <i class="bi bi-trash"></i>
+                      <span>Eliminar</span>
+                    <% end %>
+                  </td>
+
+                  <td data-label="PDF">
+                    <%= link_to ver_investigation_path(
+                                  investigation.id,
+                                  format: "pdf"
+                                ),
+                                class: "conesst-btn conesst-btn-success",
+                                title: "Generar PDF" do %>
+                      <i class="bi bi-file-earmark-pdf"></i>
+                      <span>PDF</span>
+                    <% end %>
+                  </td>
+
                 </tr>
-            <% end %>  
-        </tbody>      
-    </table>
-    </br>        
+              <% end %>
+            </tbody>
+
+          </table>
+        </div>
+
+      <% else %>
+
+        <div class="simulacrum-empty">
+          <i class="bi bi-info-circle"></i>
+          <span>No hay investigaciones registradas.</span>
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
 </div>
-
-
 

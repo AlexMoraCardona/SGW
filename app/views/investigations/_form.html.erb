@@ -1,412 +1,1003 @@
-<div class="container col-12 card p-5">
-    <br> 
-    <%= form_with model: @investigation do |form| %>
-        <% @investigation.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %> 
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 30%;border:1px solid black;text-align:center">
-                    <strong>FECHA DE INVESTIGACIÓN</strong>               
-                </td>
-                <td style="width: 70%;border:1px solid black;text-align:center">
-                    <strong>TIPO DE EVENTO</strong>               
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;text-align:center">
-                    <%= form.date_field :date_investigation,  class: "form-control" %>               
-                </td>
-                <td style="width: 70%;border:1px solid black;text-align:center">
-                    <%= form.radio_button :type_event, 0 %>
-                    <label for="accionpreventiva">INCIDENTE</label>
-                    <%= form.radio_button :type_event, 1 %>
-                    <label for="accionmejora">ACCIDENTE</label>                    
-                    <%= form.radio_button :type_event, 2 %>
-                    <label for="accioncorrectiva">ACCIDENTE GRAVE</label>                    
-                    <%= form.radio_button :type_event, 3 %>
-                    <label for="accioncorrectiva">ACCIDENTE MORTAL</label>                    
-                </td>
-            </tr>
-        </table>
-        <table style="width: 100%;">
-            <tr style="background-color: #00aae4;">    
-                <td style="width: 100%;border:1px solid black;text-align:center">
-                    <strong>DATOS DE LA ENTIDAD</strong>               
-                </td>
-            </tr>
-        </table> 
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 60%;border:1px solid black;">
-                    <strong>RAZÓN SOCIAL: </strong><%= @entity.business_name if @entity.present? %>               
-                </td>
-                <td style="width: 40%;border:1px solid black;">
-                    <strong>NIT: </strong><%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.present? %>-<%= @entity.verification_digit if @entity.present? %>               
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 60%;border:1px solid black;">
-                    <strong>DIRECCIÓN: </strong><%= @entity.entity_address if @entity.present? %>               
-                </td>
-                <td style="width: 40%;border:1px solid black;">
-                    <strong>TELÉFONO: </strong><%= @entity.phone_number_entity if @entity.present? %>               
-                </td>
-            </tr>
-        </table>
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 100%;border:1px solid black;">
-                    <strong>TIPO DE VINCULACIÓN LABORAL: </strong><%= form.text_field :type_labor_connection,  class: "form-control" %>               
-                </td>
-            </tr>
-        </table>
-        <table style="width: 100%;">
-            <tr style="background-color: #00aae4;">    
-                <td style="width: 100%;border:1px solid black;text-align:center">
-                    <strong>DATOS DEL TRABAJADOR</strong>               
-                </td>
-            </tr>
-        </table> 
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 100%;border:1px solid black;">
-                    <strong>APELLIDOS Y NOMBRES:   </strong><%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>               
-                </td>
-            </tr>
-        </table> 
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>EDAD:   </strong><%= form.number_field :age,  class: "form-control" %>               
-                </td>
-                <td style="width: 35%;border:1px solid black;">
-                    <strong>NUMERO TELEFONICO /CELULAR:  </strong><%= form.text_field :phone,  class: "form-control" %>               
-                </td>
-                <td style="width: 35%;border:1px solid black;">
-                    <strong>FECHA DE INGRESO A LA ENTIDAD:  </strong><%= form.date_field :date_income,  class: "form-control" %>               
-                </td>
-            </tr>
-        </table> 
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 50%;border:1px solid black;">
-                    <strong>EXPERIENCIA EN EL OFICIO:    </strong><%= form.text_field :job_experience,  class: "form-control" %>               
-                </td>
-                <td style="width: 50%;border:1px solid black;">
-                    <strong>ÁREA:   </strong><%= form.text_field :area,  class: "form-control" %>               
-                </td>
-            </tr>
-        </table>
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 100%;border:1px solid black;">
-                    <strong>¿EL ACCIDENTE OCURRIÓ REALIZANDO SU OFICIO HABITUAL?  </strong>
-                    <%= form.radio_button :accident_usual, 0 %>
-                    <label for="si">SI</label>
-                    <%= form.radio_button :accident_usual, 1 %>
-                    <label for="no">NO</label>                    
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 100%;border:1px solid black;">
-                    <strong>SI LA RESPUESTA ES NO EXPLIQUE ¿POR QUÉ?  </strong></br>
-                    <%= form.text_field :obs_accident_usual,  class: "form-control" %>
-                </td>
-            </tr>
-        </table>
-        <table style="width: 100%;">
-            <tr style="background-color: #00aae4;">    
-                <td style="width: 100%;border:1px solid black;text-align:center">
-                    <strong>DATOS GENERALES SOBRE EL ACCIDENTE</strong>               
-                </td>
-            </tr>
-        </table> 
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>FECHA DE OCURRENCIA:  </strong><%= form.date_field :date_accident,  class: "form-control" %>               
-                </td>
-                <td style="width: 35%;border:1px solid black;">
-                    <strong>HORA DEL EVENTO:   </strong><%= form.time_field :time_accident,  class: "form-control" %>               
-                </td>
-                <td style="width: 35%;border:1px solid black;">
-                    <strong>LUGAR DONDE OCURRE EL EVENTO:  </strong><%= form.text_field :place,  class: "form-control" %>               
-                </td>
-            </tr>
-        </table> 
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 100%;border:1px solid black;">
-                    <strong>¿INFORMO OPORTUNAMENTE EL ACCIDENTE?  </strong>
-                    <%= form.radio_button :inform_prompt, 0 %>
-                    <label for="si">SI</label>
-                    <%= form.radio_button :inform_prompt, 1 %>
-                    <label for="no">NO</label>                    
-                    &nbsp; QUÉ?</br>
-                    <%= form.text_field :obs_accident_usual,  class: "form-control" %>
-                </td>
-            </tr>    
-            <tr>
-                <td style="width: 100%;border:1px solid black;">
-                    <strong>TAREA DESARROLLADA AL MOMENTO DEL EVENTO:  </strong></br>
-                    <%= form.text_field :task_moment_accident,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>
-                <td style="width: 100%;border:1px solid black;">
-                    <strong>DESCRIPCIÓN DEL EVENTO (DESCRIBA DONDE, CUANDO, QUE Y CÓMO OCURRIÓ):  </strong></br>
-                    <%= form.text_area :event_description,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>
-                <td style="width: 100%;border:1px solid black;">
-                    <strong>VERSIÓN TRABAJADOR ACCIDENTADO  </strong></br>
-                    <%= form.text_area :version_work,  class: "form-control" %></br>
-                    <strong>OBSERVACIONES DEL TRABAJADOR Y/O TESTIGOS:  </strong></br>
-                    <strong>Versión de los testigos:   </strong></br>
-                    <%= form.text_area :version_witness,  class: "form-control" %></br>
-                </td>
-            </tr>
-            <tr>
-                <td style="width: 100%;border:1px solid black;">
-                    <strong>¿HAN OCURRIDO EVENTOS SIMILARES?  </strong>
-                    <%= form.radio_button :similar_events, 0 %>
-                    <label for="si">SI</label>
-                    <%= form.radio_button :similar_events, 1 %>
-                    <label for="no">NO</label>                    
-                    ,&nbsp;SI LA RESPÙESTA ES AFIRMATIVA, EXPLIQUE QUE ACCIONES SE HABÍAN TOMADO PARA SU CONTROL:</br>
-                    <%= form.text_field :obs_similar_events,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>
-                <td style="width: 100%;border:1px solid black;">
-                    <strong>DATOS COMPLEMENTARIOS  </strong></br>
-                    <%= form.rich_text_area :datos_complementarios,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>
-                <td style="width: 100%;border:1px solid black;text-align:center">
-                    <strong>REGISTRO FOTOGRAFICO  </strong>
-                        <br>
-                        <div class="container col-11 card p-5">
-                                <div class="row">
-                                    <div class="form-group">
-                                        <h5><%= form.label :"Adjuntar_Archivos:", style: "display: block" %></h5>
-                                        <%= form.file_field :registros_fotograficos, multiple: true %>
-                                    </div> 
-                                </div>
-                            <br> 
-                        </div>  
-                        <br>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <br>
-                    <div class="form-group">
-                        <h5>Archivos adjuntos:</h5>
-                    </div>         
-                    <hr>
-                    <% if @investigation.registros_fotograficos.attached? %>
-                        <div data-controller="previews" >
-                            <% @investigation.registros_fotograficos.each do |file|%>
-                                <br>
-                                <% if file.image? %>
-                                    <div>
-                                        <%= image_tag file, data: {previews_target: "preview"}, class: "image_inv" %>
-                                        <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' if Current.user.level > 0 && Current.user.level < 3 %> 
-                                        <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                                    </div> 
-                                <% elsif file.video? %>
-                                    <%= video_tag url_for(file), controls: "", width: "400px" %>          
-                                    <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' if Current.user.level > 0 && Current.user.level < 3 %> 
-                                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                                <% elsif file.audio? %>
-                                    <%= audio_tag(url_for(file), controls: "") %>          
-                                    <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' if Current.user.level > 0 && Current.user.level < 3 %> 
-                                <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                                <% else %>
-                                    <%= link_to file.filename, url_for(file) %>          
-                                    <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' if Current.user.level > 0 && Current.user.level < 3 %> 
-                                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                                <% end %>
-                            <% end %>  
-                        </div>
-                    <% end %>  
-                    <hr>
-                    <br>             
-                </td>    
-            </tr>
-            <tr>
-                <td style="width: 100%;border:1px solid black;text-align:center">
-                    <strong>Espacio para la descripción de las imágenes:  </strong>
-                        </br><%= form.text_area :photographic_record,  class: "form-control" %>
-                        <br>
-                </td>
-            </tr>
-        </table> 
-        <table style="width: 100%;">
-            <tr style="background-color: #00aae4;">    
-                <td style="width: 100%;border:1px solid black;text-align:center">
-                    <strong>ÁRBOL DE CAUSAS</strong>               
-                </td>
-            </tr>
-        </table> 
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 100%;border:1px solid black;text-align:center">
-                    Espacio para lesión</br>
-                    <%= form.text_field :space_for_injury,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>
-                <td style="width: 100%;border:1px solid black;text-align:center">
-                    Espacio para agente del accidente</br>
-                    <%= form.text_field :space_for_agente,  class: "form-control" %>
-                </td>
-            </tr>
-        </table>
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 30%;border:1px solid black;text-align:center">
-                    Causa inmediata 1 </br>
-                    <%= form.text_field :immediate_cause1,  class: "form-control" %>               
-                </td>
-                <td style="width: 40%;border:1px solid black;text-align:center">
-                    Causa inmediata 2 </br>
-                    <%= form.text_field :immediate_cause2,  class: "form-control" %>               
-                </td>
-                <td style="width: 30%;border:1px solid black;text-align:center">
-                    Causa inmediata 3 </br>
-                    <%= form.text_field :immediate_cause3,  class: "form-control" %>               
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;text-align:center">
-                    Causa básica 1 </br>
-                    <%= form.text_field :cause_basic1,  class: "form-control" %>               
-                </td>
-                <td style="width: 40%;border:1px solid black;text-align:center">
-                    Causa básica 2 </br>
-                    <%= form.text_field :cause_basic2,  class: "form-control" %>               
-                </td>
-                <td style="width: 30%;border:1px solid black;text-align:center">
-                    Causa básica 3 </br>
-                    <%= form.text_field :cause_basic3,  class: "form-control" %>               
-                </td>
-            </tr>
-        </table> 
-        <table style="width: 100%;">
-            <tr style="background-color: #00aae4;">    
-                <td style="width: 100%;border:1px solid black;">
-                    <strong>CAUSAS DEL ACCIDENTE (Ver tabla de codificación NTC 3701)</strong>               
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 100%;border:1px solid black;">
-                    <strong>CAUSAS INMEDIATAS:</strong>               
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 100%;border:1px solid black;">
-                    <strong>ACTOS INSEGUROS</strong></br>               
-                    <%= form.rich_text_area :actos_inseguros,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 100%;border:1px solid black;">
-                    <strong>CONDICIONES INSEGURAS</strong></br>               
-                    <%= form.rich_text_area :condiciones_inseguras,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 100%;border:1px solid black;">
-                    <strong>CAUSAS BÁSICAS:</strong>               
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 100%;border:1px solid black;">
-                    <strong>FACTORES PERSONALES</strong></br>               
-                    <%= form.rich_text_area :factores_personales,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 100%;border:1px solid black;">
-                    <strong>FACTORES ADMINISTRATIVOS</strong></br>               
-                    <%= form.rich_text_area :factores_administrativos,  class: "form-control" %>
-                </td>
-            </tr>
-        </table> 
-        <table style="width: 100%;">
-            <tr style="background-color: #00aae4;">    
-                <td style="width: 30%;border:1px solid black;text-align:center;">
-                    <strong>PARTE DEL CUERPO AFECTADA</strong>               
-                </td>
-                <td style="width: 30%;border:1px solid black;text-align:center;">
-                    <strong>TIPO DE LESIÓN SUFRIDA</strong>               
-                </td>
-                <td style="width: 30%;border:1px solid black;text-align:center;">
-                    <strong>MECANISMO O FORMA DEL ACCIDENTE</strong>               
-                </td>
-                <td style="width: 10%;border:1px solid black;text-align:center;">
-                    <strong>DÍAS DE INCAPACIDAD</strong>               
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;text-align:center;">
-                    <%= form.text_field :affected_part,  class: "form-control" %>               
-                </td>
-                <td style="width: 30%;border:1px solid black;text-align:center;">
-                    <%= form.text_field :type_injury,  class: "form-control" %>               
-                </td>
-                <td style="width: 30%;border:1px solid black;text-align:center;">
-                    <%= form.text_field :accident_mechanism,  class: "form-control" %>               
-                </td>
-                <td style="width: 10%;border:1px solid black;text-align:center;">
-                    <%= form.number_field :disability_days,  class: "form-control" %>               
-                </td>
-            </tr>
-        </table> 
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 80%;border:1px solid black;text-align:center">
-                    <strong>NOMBRES Y APELLIDOS DEL PROFESIONAL EN SST</strong>
-                </td>    
-                <td style="width: 20%;border:1px solid black;text-align:center">
-                    <strong>DE:</strong>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 80%;border:1px solid black;text-align:center">
-                    <%= form.collection_select :usr_profesional, User.usuarios_asesor.order(id: :asc), :id,  :name, style: "width=50px" %>
-                </td>
-                <td style="width: 20%;border:1px solid black;text-align:center">
-                    <%= form.text_field :de,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 80%;border:1px solid black;text-align:center">
-                    <strong>ESTADO DE LA INVESTIGACIÓN:</strong> 
-                    <%= form.radio_button :state_investigation, 0 %>
-                    <label for="estadopendiente">PENDIENTE</label>
-                    <%= form.radio_button :state_investigation, 1 %>
-                    <label for="estadoinvestigado">INVESTIGADO</label>                    
-                </td>
-                <td style="width: 20%;border:1px solid black;text-align:center">
-                    <strong>FECHA EN QUE TERMINA LA INVESTIGACIÓN:</strong> 
-                    <%= form.date_field :date_state_investigation,  class: "form-control" %>               
-                </td>
-            </tr>
-        </table>
-        </br> 
-        <%= form.hidden_field :entity_id, :value => @entity.id, class: "form-control" if @entity.present? %>
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
-    <% end %>
-</div>        
-<br>
+<div class="conesst-page">
 
- 
+  <div class="conesst-card">
+
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+
+        <h1 class="conesst-card-header-title">
+          <i class="bi bi-search"></i>
+          Investigación de accidente / incidente
+        </h1>
+
+      </div>
+    </div>
+
+    <div class="conesst-card-body">
+
+      <%= form_with model: @investigation do |form| %>
+
+        <% if @investigation.errors.any? %>
+          <div class="alert alert-danger conesst-form-errors" role="alert">
+            <strong>
+              <i class="bi bi-exclamation-triangle"></i>
+              Se encontraron los siguientes errores:
+            </strong>
+
+            <ul class="mb-0 mt-2">
+              <% @investigation.errors.full_messages.each do |error| %>
+                <li><%= error %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+
+        <!-- ========================================================= -->
+        <!-- INFORMACIÓN DE LA INVESTIGACIÓN -->
+        <!-- ========================================================= -->
+
+        <section class="simulacrum-form-section">
+
+          <h2 class="simulacrum-form-section-title">
+            <i class="bi bi-clipboard2-pulse"></i>
+            Información de la investigación
+          </h2>
+
+          <div class="simulacrum-form-grid">
+
+            <div class="simulacrum-form-field">
+              <%= form.label :date_investigation,
+                             "Fecha de investigación",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.date_field :date_investigation,
+                                  class: "form-control simulacrum-form-control" %>
+            </div>
+
+            <div class="simulacrum-form-field">
+
+              <span class="simulacrum-form-label">
+                <i class="bi bi-exclamation-diamond"></i>
+                Tipo de evento
+              </span>
+
+              <div class="d-flex flex-wrap gap-3 align-items-center">
+
+                <div class="form-check">
+                  <%= form.radio_button :type_event, 0, class: "form-check-input" %>
+                  <%= form.label :type_event_0, "Incidente", class: "form-check-label" %>
+                </div>
+
+                <div class="form-check">
+                  <%= form.radio_button :type_event, 1, class: "form-check-input" %>
+                  <%= form.label :type_event_1, "Accidente", class: "form-check-label" %>
+                </div>
+
+                <div class="form-check">
+                  <%= form.radio_button :type_event, 2, class: "form-check-input" %>
+                  <%= form.label :type_event_2, "Accidente grave", class: "form-check-label" %>
+                </div>
+
+                <div class="form-check">
+                  <%= form.radio_button :type_event, 3, class: "form-check-input" %>
+                  <%= form.label :type_event_3, "Accidente mortal", class: "form-check-label" %>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ========================================================= -->
+        <!-- DATOS DE LA ENTIDAD -->
+        <!-- ========================================================= -->
+
+        <section class="simulacrum-form-section">
+
+          <h2 class="simulacrum-form-section-title">
+            <i class="bi bi-building"></i>
+            Datos de la entidad
+          </h2>
+
+          <% if @entity.present? %>
+
+            <div class="simulacrum-form-grid">
+
+              <div class="simulacrum-form-field">
+                <label class="simulacrum-form-label">
+                  <i class="bi bi-building"></i>
+                  Razón social
+                </label>
+
+                <div class="form-control simulacrum-form-control bg-light">
+                  <%= @entity.business_name %>
+                </div>
+              </div>
+
+              <div class="simulacrum-form-field">
+                <label class="simulacrum-form-label">
+                  <i class="bi bi-card-text"></i>
+                  NIT
+                </label>
+
+                <div class="form-control simulacrum-form-control bg-light">
+                  <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %><%= "-#{@entity.verification_digit}" if @entity.verification_digit.present? %>
+                </div>
+              </div>
+
+              <div class="simulacrum-form-field">
+                <label class="simulacrum-form-label">
+                  <i class="bi bi-geo-alt"></i>
+                  Dirección
+                </label>
+
+                <div class="form-control simulacrum-form-control bg-light">
+                  <%= @entity.entity_address %>
+                </div>
+              </div>
+
+              <div class="simulacrum-form-field">
+                <label class="simulacrum-form-label">
+                  <i class="bi bi-telephone"></i>
+                  Teléfono
+                </label>
+
+                <div class="form-control simulacrum-form-control bg-light">
+                  <%= @entity.phone_number_entity %>
+                </div>
+              </div>
+
+            </div>
+
+          <% else %>
+
+            <div class="alert alert-warning">
+              <i class="bi bi-exclamation-triangle"></i>
+              No se encontró información de la entidad.
+            </div>
+
+          <% end %>
+
+          <div class="simulacrum-form-field simulacrum-form-field-spacing">
+
+            <%= form.label :type_labor_connection,
+                           "Tipo de vinculación laboral",
+                           class: "simulacrum-form-label" %>
+
+            <%= form.text_field :type_labor_connection,
+                                class: "form-control simulacrum-form-control" %>
+
+          </div>
+
+        </section>
+
+
+        <!-- ========================================================= -->
+        <!-- DATOS DEL TRABAJADOR -->
+        <!-- ========================================================= -->
+
+        <section class="simulacrum-form-section">
+
+          <h2 class="simulacrum-form-section-title">
+            <i class="bi bi-person-badge"></i>
+            Datos del trabajador
+          </h2>
+
+          <div class="simulacrum-form-grid">
+
+            <div class="simulacrum-form-field simulacrum-form-field-full">
+
+              <%= form.label :user_id,
+                             "Apellidos y nombres",
+                             class: "simulacrum-form-label" %>
+
+              <% usuarios_empresa = User.usuarios_empresa %>
+
+              <% if usuarios_empresa.present? %>
+
+                <%= form.collection_select(
+                      :user_id,
+                      usuarios_empresa.order(id: :asc),
+                      :id,
+                      :name,
+                      { prompt: "-- Seleccionar trabajador --" },
+                      { class: "form-select simulacrum-form-control", required: true }
+                    ) %>
+
+              <% else %>
+
+                <div class="alert alert-warning mb-0">
+                  <i class="bi bi-exclamation-triangle"></i>
+                  No hay trabajadores disponibles para seleccionar.
+                </div>
+
+              <% end %>
+
+            </div>
+
+            <div class="simulacrum-form-field">
+
+              <%= form.label :age,
+                             "Edad",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.number_field :age,
+                                    class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field">
+
+              <%= form.label :phone,
+                             "Número telefónico / celular",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.text_field :phone,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field">
+
+              <%= form.label :date_income,
+                             "Fecha de ingreso a la entidad",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.date_field :date_income,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field">
+
+              <%= form.label :job_experience,
+                             "Experiencia en el oficio",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.text_field :job_experience,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field">
+
+              <%= form.label :area,
+                             "Área",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.text_field :area,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field simulacrum-form-field-full">
+
+              <span class="simulacrum-form-label">
+                <i class="bi bi-question-circle"></i>
+                ¿El accidente ocurrió realizando su oficio habitual?
+              </span>
+
+              <div class="d-flex gap-4 align-items-center">
+
+                <div class="form-check">
+                  <%= form.radio_button :accident_usual, 0, class: "form-check-input" %>
+                  <%= form.label :accident_usual_0, "Sí", class: "form-check-label" %>
+                </div>
+
+                <div class="form-check">
+                  <%= form.radio_button :accident_usual, 1, class: "form-check-input" %>
+                  <%= form.label :accident_usual_1, "No", class: "form-check-label" %>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="simulacrum-form-field simulacrum-form-field-full">
+
+              <%= form.label :obs_accident_usual,
+                             "Si la respuesta es no, explique por qué",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.text_field :obs_accident_usual,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ========================================================= -->
+        <!-- DATOS GENERALES SOBRE EL ACCIDENTE -->
+        <!-- ========================================================= -->
+
+        <section class="simulacrum-form-section">
+
+          <h2 class="simulacrum-form-section-title">
+            <i class="bi bi-calendar-event"></i>
+            Datos generales sobre el accidente
+          </h2>
+
+          <div class="simulacrum-form-grid">
+
+            <div class="simulacrum-form-field">
+
+              <%= form.label :date_accident,
+                             "Fecha de ocurrencia",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.date_field :date_accident,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field">
+
+              <%= form.label :time_accident,
+                             "Hora del evento",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.time_field :time_accident,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field">
+
+              <%= form.label :place,
+                             "Lugar donde ocurre el evento",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.text_field :place,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field simulacrum-form-field-full">
+
+              <span class="simulacrum-form-label">
+                <i class="bi bi-megaphone"></i>
+                ¿Informó oportunamente el accidente?
+              </span>
+
+              <div class="d-flex flex-wrap gap-4 align-items-center">
+
+                <div class="form-check">
+                  <%= form.radio_button :inform_prompt, 0, class: "form-check-input" %>
+                  <%= form.label :inform_prompt_0, "Sí", class: "form-check-label" %>
+                </div>
+
+                <div class="form-check">
+                  <%= form.radio_button :inform_prompt, 1, class: "form-check-input" %>
+                  <%= form.label :inform_prompt_1, "No", class: "form-check-label" %>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="simulacrum-form-field simulacrum-form-field-full">
+
+              <%= form.label :obs_accident_usual,
+                             "Observación / ¿Qué?",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.text_field :obs_accident_usual,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field simulacrum-form-field-full">
+
+              <%= form.label :task_moment_accident,
+                             "Tarea desarrollada al momento del evento",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.text_field :task_moment_accident,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field simulacrum-form-field-full">
+
+              <%= form.label :event_description,
+                             "Descripción del evento (dónde, cuándo, qué y cómo ocurrió)",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.text_area :event_description,
+                                 class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field simulacrum-form-field-full">
+
+              <%= form.label :version_work,
+                             "Versión del trabajador accidentado",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.text_area :version_work,
+                                 class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field simulacrum-form-field-full">
+
+              <div class="simulacrum-form-label">
+                <i class="bi bi-chat-left-text"></i>
+                Observaciones del trabajador y/o testigos
+              </div>
+
+              <%= form.label :version_witness,
+                             "Versión de los testigos",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.text_area :version_witness,
+                                 class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field simulacrum-form-field-full">
+
+              <span class="simulacrum-form-label">
+                <i class="bi bi-arrow-repeat"></i>
+                ¿Han ocurrido eventos similares?
+              </span>
+
+              <div class="d-flex gap-4 align-items-center">
+
+                <div class="form-check">
+                  <%= form.radio_button :similar_events, 0, class: "form-check-input" %>
+                  <%= form.label :similar_events_0, "Sí", class: "form-check-label" %>
+                </div>
+
+                <div class="form-check">
+                  <%= form.radio_button :similar_events, 1, class: "form-check-input" %>
+                  <%= form.label :similar_events_1, "No", class: "form-check-label" %>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="simulacrum-form-field simulacrum-form-field-full">
+
+              <%= form.label :obs_similar_events,
+                             "Si la respuesta es afirmativa, explique qué acciones se habían tomado para su control",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.text_field :obs_similar_events,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field simulacrum-form-field-full">
+
+              <%= form.label :datos_complementarios,
+                             "Datos complementarios",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.rich_text_area :datos_complementarios,
+                                      class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ========================================================= -->
+        <!-- REGISTRO FOTOGRÁFICO -->
+        <!-- ========================================================= -->
+
+        <section class="simulacrum-form-section">
+
+          <h2 class="simulacrum-form-section-title">
+            <i class="bi bi-camera"></i>
+            Registro fotográfico
+          </h2>
+
+          <div class="simulacrum-form-field">
+
+            <%= form.label :registros_fotograficos,
+                           "Adjuntar archivos",
+                           class: "simulacrum-form-label" %>
+
+            <%= form.file_field :registros_fotograficos,
+                                multiple: true,
+                                class: "form-control simulacrum-form-control" %>
+
+          </div>
+
+
+          <% if @investigation.registros_fotograficos.attached? %>
+
+            <div class="simulacrum-form-field simulacrum-form-field-spacing">
+
+              <div class="simulacrum-form-label">
+                <i class="bi bi-paperclip"></i>
+                Archivos adjuntos
+              </div>
+
+              <div data-controller="previews">
+
+                <% @investigation.registros_fotograficos.each do |file| %>
+
+                  <div class="conesst-card mb-3">
+                    <div class="conesst-card-body">
+
+                      <% if file.image? %>
+
+                        <%= image_tag file,
+                                      data: { previews_target: "preview" },
+                                      class: "img-fluid rounded mb-3" %>
+
+                      <% elsif file.video? %>
+
+                        <%= video_tag url_for(file),
+                                      controls: true,
+                                      class: "w-100 rounded mb-3" %>
+
+                      <% elsif file.audio? %>
+
+                        <%= audio_tag url_for(file),
+                                      controls: true,
+                                      class: "w-100 mb-3" %>
+
+                      <% else %>
+
+                        <div class="mb-3">
+                          <i class="bi bi-file-earmark"></i>
+                          <%= link_to file.filename, url_for(file) %>
+                        </div>
+
+                      <% end %>
+
+                      <div class="conesst-actions">
+
+                        <% if Current.user.level > 0 && Current.user.level < 3 %>
+
+                          <%= link_to purge_attachment_path(file),
+                                      data: {
+                                        turbo_method: :delete,
+                                        turbo_confirm: "¿Está seguro de eliminar el archivo?"
+                                      },
+                                      class: "conesst-btn conesst-btn-danger",
+                                      title: "Borrar archivo" do %>
+                            <i class="bi bi-trash"></i>
+                            <span>Borrar</span>
+                          <% end %>
+
+                        <% end %>
+
+                        <%= link_to rails_blob_path(file, disposition: "attachment"),
+                                    class: "conesst-btn conesst-btn-success",
+                                    title: "Descargar archivo" do %>
+                          <i class="bi bi-download"></i>
+                          <span>Descargar</span>
+                        <% end %>
+
+                      </div>
+
+                    </div>
+                  </div>
+
+                <% end %>
+
+              </div>
+
+            </div>
+
+          <% end %>
+
+
+          <div class="simulacrum-form-field simulacrum-form-field-spacing">
+
+            <%= form.label :photographic_record,
+                           "Espacio para la descripción de las imágenes",
+                           class: "simulacrum-form-label" %>
+
+            <%= form.text_area :photographic_record,
+                               class: "form-control simulacrum-form-control" %>
+
+          </div>
+
+        </section>
+
+
+        <!-- ========================================================= -->
+        <!-- ÁRBOL DE CAUSAS -->
+        <!-- ========================================================= -->
+
+        <section class="simulacrum-form-section">
+
+          <h2 class="simulacrum-form-section-title">
+            <i class="bi bi-diagram-3"></i>
+            Árbol de causas
+          </h2>
+
+          <div class="simulacrum-form-grid">
+
+            <div class="simulacrum-form-field simulacrum-form-field-full">
+
+              <%= form.label :space_for_injury,
+                             "Espacio para lesión",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.text_field :space_for_injury,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field simulacrum-form-field-full">
+
+              <%= form.label :space_for_agente,
+                             "Espacio para agente del accidente",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.text_field :space_for_agente,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field">
+
+              <%= form.label :immediate_cause1,
+                             "Causa inmediata 1",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.text_field :immediate_cause1,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field">
+
+              <%= form.label :immediate_cause2,
+                             "Causa inmediata 2",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.text_field :immediate_cause2,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field">
+
+              <%= form.label :immediate_cause3,
+                             "Causa inmediata 3",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.text_field :immediate_cause3,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field">
+
+              <%= form.label :cause_basic1,
+                             "Causa básica 1",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.text_field :cause_basic1,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field">
+
+              <%= form.label :cause_basic2,
+                             "Causa básica 2",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.text_field :cause_basic2,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field">
+
+              <%= form.label :cause_basic3,
+                             "Causa básica 3",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.text_field :cause_basic3,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ========================================================= -->
+        <!-- CAUSAS DEL ACCIDENTE -->
+        <!-- ========================================================= -->
+
+        <section class="simulacrum-form-section">
+
+          <h2 class="simulacrum-form-section-title">
+            <i class="bi bi-exclamation-octagon"></i>
+            Causas del accidente
+          </h2>
+
+          <div class="simulacrum-form-grid">
+
+            <div class="simulacrum-form-field simulacrum-form-field-full">
+
+              <div class="simulacrum-form-label">
+                <i class="bi bi-arrow-down-circle"></i>
+                Causas inmediatas
+              </div>
+
+            </div>
+
+            <div class="simulacrum-form-field simulacrum-form-field-full">
+
+              <%= form.label :actos_inseguros,
+                             "Actos inseguros",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.rich_text_area :actos_inseguros,
+                                      class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field simulacrum-form-field-full">
+
+              <%= form.label :condiciones_inseguras,
+                             "Condiciones inseguras",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.rich_text_area :condiciones_inseguras,
+                                      class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field simulacrum-form-field-full">
+
+              <div class="simulacrum-form-label">
+                <i class="bi bi-arrow-down-circle"></i>
+                Causas básicas
+              </div>
+
+            </div>
+
+            <div class="simulacrum-form-field simulacrum-form-field-full">
+
+              <%= form.label :factores_personales,
+                             "Factores personales",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.rich_text_area :factores_personales,
+                                      class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field simulacrum-form-field-full">
+
+              <%= form.label :factores_administrativos,
+                             "Factores administrativos",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.rich_text_area :factores_administrativos,
+                                      class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ========================================================= -->
+        <!-- LESIONES -->
+        <!-- ========================================================= -->
+
+        <section class="simulacrum-form-section">
+
+          <h2 class="simulacrum-form-section-title">
+            <i class="bi bi-person-hearts"></i>
+            Información de la lesión
+          </h2>
+
+          <div class="simulacrum-form-grid">
+
+            <div class="simulacrum-form-field">
+
+              <%= form.label :affected_part,
+                             "Parte del cuerpo afectada",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.text_field :affected_part,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field">
+
+              <%= form.label :type_injury,
+                             "Tipo de lesión sufrida",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.text_field :type_injury,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field">
+
+              <%= form.label :accident_mechanism,
+                             "Mecanismo o forma del accidente",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.text_field :accident_mechanism,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field">
+
+              <%= form.label :disability_days,
+                             "Días de incapacidad",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.number_field :disability_days,
+                                    class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ========================================================= -->
+        <!-- PROFESIONAL SST -->
+        <!-- ========================================================= -->
+
+        <section class="simulacrum-form-section">
+
+          <h2 class="simulacrum-form-section-title">
+            <i class="bi bi-person-check"></i>
+            Profesional responsable e investigación
+          </h2>
+
+          <div class="simulacrum-form-grid">
+
+            <div class="simulacrum-form-field">
+
+              <%= form.label :usr_profesional,
+                             "Nombres y apellidos del profesional en SST",
+                             class: "simulacrum-form-label" %>
+
+              <% usuarios_asesor = User.usuarios_asesor %>
+
+              <% if usuarios_asesor.present? %>
+
+                <%= form.collection_select(
+                      :usr_profesional,
+                      usuarios_asesor.order(id: :asc),
+                      :id,
+                      :name,
+                      { prompt: "-- Seleccionar profesional --" },
+                      { class: "form-select simulacrum-form-control", required: true }
+                    ) %>
+
+              <% else %>
+
+                <div class="alert alert-warning mb-0">
+                  <i class="bi bi-exclamation-triangle"></i>
+                  No hay profesionales asesores disponibles.
+                </div>
+
+              <% end %>
+
+            </div>
+
+            <div class="simulacrum-form-field">
+
+              <%= form.label :de,
+                             "DE",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.text_field :de,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+            <div class="simulacrum-form-field">
+
+              <span class="simulacrum-form-label">
+                <i class="bi bi-clipboard-check"></i>
+                Estado de la investigación
+              </span>
+
+              <div class="d-flex flex-wrap gap-4 align-items-center">
+
+                <div class="form-check">
+                  <%= form.radio_button :state_investigation, 0, class: "form-check-input" %>
+                  <%= form.label :state_investigation_0,
+                                 "Pendiente",
+                                 class: "form-check-label" %>
+                </div>
+
+                <div class="form-check">
+                  <%= form.radio_button :state_investigation, 1, class: "form-check-input" %>
+                  <%= form.label :state_investigation_1,
+                                 "Investigado",
+                                 class: "form-check-label" %>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="simulacrum-form-field">
+
+              <%= form.label :date_state_investigation,
+                             "Fecha en que termina la investigación",
+                             class: "simulacrum-form-label" %>
+
+              <%= form.date_field :date_state_investigation,
+                                  class: "form-control simulacrum-form-control" %>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ========================================================= -->
+        <!-- CAMPOS OCULTOS -->
+        <!-- ========================================================= -->
+
+        <%= form.hidden_field :entity_id,
+                              value: @entity.id if @entity.present? %>
+
+        <%= form.hidden_field :code,
+                              value: @template.reference if @template.present? %>
+
+        <%= form.hidden_field :version,
+                              value: @template.version.to_i if @template.present? %>
+
+
+        <!-- ========================================================= -->
+        <!-- BOTONES -->
+        <!-- ========================================================= -->
+
+        <div class="conesst-actions simulacrum-form-actions">
+
+          <%= form.button type: "submit",
+                          class: "conesst-btn conesst-btn-primary",
+                          title: t('common.submit') do %>
+            <i class="bi bi-check-circle"></i>
+            <span><%= t('common.submit') %></span>
+          <% end %>
+
+          <%= link_to :back,
+                      class: "conesst-btn conesst-btn-warning",
+                      title: "Retornar" do %>
+            <i class="bi bi-arrow-left"></i>
+            <span>Retornar</span>
+          <% end %>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>
+

@@ -1,0 +1,852 @@
+<head>
+    <meta charset="utf-8">
+    <%= wicked_pdf_stylesheet_link_tag "pdf_conesst" %>
+</head>
+
+<div class="pdf-document">
+
+    <div class="pdf-space"></div>
+
+    <!-- =========================================================
+         INFORMACIÓN DE LA INVESTIGACIÓN
+    ========================================================== -->
+
+    <table class="pdf-table">
+        <tr>
+            <th class="pdf-col-30">
+                FECHA DE INVESTIGACIÓN
+            </th>
+
+            <th class="pdf-col-70">
+                TIPO DE EVENTO
+            </th>
+        </tr>
+
+        <tr>
+            <td class="pdf-center">
+                <%= @investigation.date_investigation if @investigation.date_investigation.present? %>
+            </td>
+
+            <td class="pdf-center">
+                <%= Investigation.label_type_event(@investigation.type_event) %>
+            </td>
+        </tr>
+    </table>
+
+
+    <!-- =========================================================
+         DATOS DE LA ENTIDAD
+    ========================================================== -->
+
+    <div class="pdf-section-title">
+        DATOS DE LA ENTIDAD
+    </div>
+
+    <table class="pdf-info-table">
+        <tr>
+            <td class="pdf-col-60">
+                <strong>RAZÓN SOCIAL:</strong>
+                <%= @entity.business_name if @entity.present? %>
+            </td>
+
+            <td class="pdf-col-40">
+                <strong>NIT:</strong>
+                <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.present? %>-<%= @entity.verification_digit if @entity.present? %>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <strong>DIRECCIÓN:</strong>
+                <%= @entity.entity_address if @entity.present? %>
+            </td>
+
+            <td>
+                <strong>TELÉFONO:</strong>
+                <%= @entity.phone_number_entity if @entity.present? %>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <strong>TIPO DE VINCULACIÓN LABORAL:</strong>
+                <%= @investigation.type_labor_connection %>
+            </td>
+        </tr>
+    </table>
+
+
+    <!-- =========================================================
+         DATOS DEL TRABAJADOR
+    ========================================================== -->
+
+    <div class="pdf-section-title">
+        DATOS DEL TRABAJADOR
+    </div>
+
+    <table class="pdf-info-table">
+        <tr>
+            <td colspan="3">
+                <strong>APELLIDOS Y NOMBRES:</strong>
+                <%= @investigation.user.name %>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="pdf-col-30">
+                <strong>EDAD:</strong>
+                <%= @investigation.age %>
+            </td>
+
+            <td class="pdf-col-35">
+                <strong>NÚMERO TELEFÓNICO / CELULAR:</strong>
+                <%= @investigation.phone %>
+            </td>
+
+            <td class="pdf-col-35">
+                <strong>FECHA DE INGRESO A LA ENTIDAD:</strong>
+                <%= @investigation.date_income %>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <strong>OFICIO:</strong>
+                <%= User.label_activity(@investigation.user.activity) %>
+            </td>
+
+            <td>
+                <strong>EXPERIENCIA EN EL OFICIO:</strong>
+                <%= @investigation.job_experience %>
+            </td>
+
+            <td>
+                <strong>ÁREA:</strong>
+                <%= @investigation.area %>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="3">
+                <strong>
+                    ¿EL ACCIDENTE OCURRIÓ REALIZANDO SU OFICIO HABITUAL?
+                </strong>
+
+                <%= Investigation.label_accident_usual(@investigation.accident_usual) %>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="3">
+                <strong>
+                    SI LA RESPUESTA ES NO EXPLIQUE ¿POR QUÉ?
+                </strong>
+
+                <div class="pdf-text">
+                    <%= @investigation.obs_accident_usual %>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+
+    <!-- =========================================================
+         DATOS GENERALES SOBRE EL ACCIDENTE
+    ========================================================== -->
+
+    <div class="pdf-section-title">
+        DATOS GENERALES SOBRE EL ACCIDENTE
+    </div>
+
+    <table class="pdf-info-table">
+        <tr>
+            <td class="pdf-col-30">
+                <strong>FECHA DE OCURRENCIA:</strong>
+                <%= @investigation.date_accident %>
+            </td>
+
+            <td class="pdf-col-35">
+                <strong>HORA DEL EVENTO:</strong>
+                <%= @investigation.time_accident.strftime("%T") if @investigation.time_accident.present? %>
+            </td>
+
+            <td class="pdf-col-35">
+                <strong>LUGAR DONDE OCURRE EL EVENTO:</strong>
+                <%= @investigation.place %>
+            </td>
+        </tr>
+    </table>
+
+    <table class="pdf-info-table">
+
+        <tr>
+            <td>
+                <strong>
+                    ¿INFORMÓ OPORTUNAMENTE EL ACCIDENTE?
+                </strong>
+
+                <%= Investigation.label_inform_prompt(@investigation.inform_prompt) %>
+
+                <strong>¿QUÉ?</strong>
+
+                <div class="pdf-text">
+                    <%= @investigation.obs_inform_prompt %>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <strong>
+                    TAREA DESARROLLADA AL MOMENTO DEL EVENTO:
+                </strong>
+
+                <div class="pdf-text">
+                    <%= @investigation.task_moment_accident %>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <strong>
+                    DESCRIPCIÓN DEL EVENTO
+                    (DESCRIBA DÓNDE, CUÁNDO, QUÉ Y CÓMO OCURRIÓ):
+                </strong>
+
+                <div class="pdf-text">
+                    <%= @investigation.event_description %>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <strong>
+                    VERSIÓN TRABAJADOR ACCIDENTADO:
+                </strong>
+
+                <div class="pdf-text">
+                    <%= @investigation.version_work %>
+                </div>
+
+                <strong>
+                    OBSERVACIONES DEL TRABAJADOR Y/O TESTIGOS:
+                </strong>
+
+                <br>
+
+                <strong>
+                    Versión de los testigos:
+                </strong>
+
+                <div class="pdf-text">
+                    <%= @investigation.version_witness %>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <strong>
+                    ¿HAN OCURRIDO EVENTOS SIMILARES?
+                </strong>
+
+                <%= Investigation.label_similar_events(@investigation.similar_events) %>
+
+                <br>
+
+                <strong>
+                    SI LA RESPUESTA ES AFIRMATIVA, EXPLIQUE QUÉ ACCIONES
+                    SE HABÍAN TOMADO PARA SU CONTROL:
+                </strong>
+
+                <div class="pdf-text">
+                    <%= @investigation.obs_similar_events %>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <strong>DATOS COMPLEMENTARIOS:</strong>
+
+                <div class="pdf-text">
+                    <%= @investigation.datos_complementarios %>
+                </div>
+            </td>
+        </tr>
+
+    </table>
+
+
+    <!-- =========================================================
+         REGISTRO FOTOGRÁFICO
+    ========================================================== -->
+
+    <div class="pdf-section-title">
+        REGISTRO FOTOGRÁFICO
+    </div>
+
+    <table class="pdf-table">
+
+        <tr>
+            <td class="pdf-center">
+
+                <% if @investigation.present? %>
+
+                    <% if @investigation.registros_fotograficos.attached? %>
+
+                        <% @investigation.registros_fotograficos.each do |file| %>
+
+                            <div class="pdf-no-break">
+
+                                <% if file.image? %>
+
+                                    <div class="pdf-center">
+                                        <%= image_tag file, class: "pdf-image" %>
+                                    </div>
+
+                                    <div class="pdf-small-text pdf-center">
+                                        <%= file.filename %>
+                                    </div>
+
+                                <% elsif file.video? %>
+
+                                    <div class="pdf-center">
+                                        <%= video_tag url_for(file), controls: "", width: "400" %>
+                                    </div>
+
+                                <% elsif file.audio? %>
+
+                                    <div class="pdf-center">
+                                        <%= audio_tag url_for(file), controls: "" %>
+                                    </div>
+
+                                <% else %>
+
+                                    <div class="pdf-center">
+                                        <%= link_to file.filename, url_for(file) %>
+                                    </div>
+
+                                <% end %>
+
+                            </div>
+
+                            <div class="pdf-space"></div>
+
+                        <% end %>
+
+                    <% end %>
+
+                <% end %>
+
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <strong>
+                    ESPACIO PARA LA DESCRIPCIÓN DE LAS IMÁGENES:
+                </strong>
+
+                <div class="pdf-text">
+                    <%= @investigation.photographic_record %>
+                </div>
+            </td>
+        </tr>
+
+    </table>
+
+
+    <!-- =========================================================
+         ÁRBOL DE CAUSAS
+    ========================================================== -->
+
+    <div class="pdf-section-title">
+        ÁRBOL DE CAUSAS
+    </div>
+
+    <table class="pdf-table">
+
+        <tr>
+            <td class="pdf-col-30 pdf-no-border"></td>
+
+            <td class="pdf-col-40 pdf-center">
+                <strong>Espacio para lesión</strong>
+
+                <div class="pdf-text pdf-center">
+                    <%= @investigation.space_for_injury %>
+                </div>
+            </td>
+
+            <td class="pdf-col-30 pdf-no-border"></td>
+        </tr>
+
+    </table>
+
+    <div class="pdf-center">
+        ↓
+    </div>
+
+    <table class="pdf-table">
+
+        <tr>
+            <td class="pdf-col-30 pdf-no-border"></td>
+
+            <td class="pdf-col-40 pdf-center">
+                <strong>Espacio para agente del accidente</strong>
+
+                <div class="pdf-text pdf-center">
+                    <%= @investigation.space_for_agente %>
+                </div>
+            </td>
+
+            <td class="pdf-col-30 pdf-no-border"></td>
+        </tr>
+
+    </table>
+
+    <div class="pdf-center">
+        ↓
+    </div>
+
+    <table class="pdf-table">
+
+        <tr>
+            <td class="pdf-col-30 pdf-center">
+                <strong>Causa inmediata 1</strong>
+
+                <div class="pdf-text pdf-center">
+                    <%= @investigation.immediate_cause1 %>
+                </div>
+            </td>
+
+            <td class="pdf-col-40 pdf-center">
+                <strong>Causa inmediata 2</strong>
+
+                <div class="pdf-text pdf-center">
+                    <%= @investigation.immediate_cause2 %>
+                </div>
+            </td>
+
+            <td class="pdf-col-30 pdf-center">
+                <strong>Causa inmediata 3</strong>
+
+                <div class="pdf-text pdf-center">
+                    <%= @investigation.immediate_cause3 %>
+                </div>
+            </td>
+        </tr>
+
+    </table>
+
+    <table class="pdf-table">
+
+        <tr>
+            <td class="pdf-col-30 pdf-no-border pdf-center">
+                ↓
+            </td>
+
+            <td class="pdf-col-40 pdf-no-border pdf-center">
+                ↓
+            </td>
+
+            <td class="pdf-col-30 pdf-no-border pdf-center">
+                ↓
+            </td>
+        </tr>
+
+    </table>
+
+    <table class="pdf-table">
+
+        <tr>
+            <td class="pdf-col-30 pdf-center">
+                <strong>Causa básica 1</strong>
+
+                <div class="pdf-text pdf-center">
+                    <%= @investigation.cause_basic1 %>
+                </div>
+            </td>
+
+            <td class="pdf-col-40 pdf-center">
+                <strong>Causa básica 2</strong>
+
+                <div class="pdf-text pdf-center">
+                    <%= @investigation.cause_basic2 %>
+                </div>
+            </td>
+
+            <td class="pdf-col-30 pdf-center">
+                <strong>Causa básica 3</strong>
+
+                <div class="pdf-text pdf-center">
+                    <%= @investigation.cause_basic3 %>
+                </div>
+            </td>
+        </tr>
+
+    </table>
+
+
+    <!-- =========================================================
+         CAUSAS DEL ACCIDENTE
+    ========================================================== -->
+
+    <div class="pdf-section-title">
+        CAUSAS DEL ACCIDENTE (Ver tabla de codificación NTC 3701)
+    </div>
+
+    <table class="pdf-table">
+
+        <tr>
+            <th>
+                CAUSAS INMEDIATAS
+            </th>
+        </tr>
+
+        <tr>
+            <td>
+                <strong>ACTOS INSEGUROS</strong>
+
+                <div class="pdf-text">
+                    <%= @investigation.actos_inseguros %>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <strong>CONDICIONES INSEGURAS</strong>
+
+                <div class="pdf-text">
+                    <%= @investigation.condiciones_inseguras %>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <th>
+                CAUSAS BÁSICAS
+            </th>
+        </tr>
+
+        <tr>
+            <td>
+                <strong>FACTORES PERSONALES</strong>
+
+                <div class="pdf-text">
+                    <%= @investigation.factores_personales %>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <strong>FACTORES ADMINISTRATIVOS</strong>
+
+                <div class="pdf-text">
+                    <%= @investigation.factores_administrativos %>
+                </div>
+            </td>
+        </tr>
+
+    </table>
+
+
+    <!-- =========================================================
+         LESIÓN
+    ========================================================== -->
+
+    <table class="pdf-table pdf-table-blue">
+
+        <tr>
+            <th class="pdf-col-30">
+                PARTE DEL CUERPO AFECTADA
+            </th>
+
+            <th class="pdf-col-30">
+                TIPO DE LESIÓN SUFRIDA
+            </th>
+
+            <th class="pdf-col-30">
+                MECANISMO O FORMA DEL ACCIDENTE
+            </th>
+
+            <th class="pdf-col-10">
+                DÍAS DE INCAPACIDAD
+            </th>
+        </tr>
+
+        <tr>
+            <td class="pdf-center">
+                <%= @investigation.affected_part %>
+            </td>
+
+            <td class="pdf-center">
+                <%= @investigation.type_injury %>
+            </td>
+
+            <td class="pdf-center">
+                <%= @investigation.accident_mechanism %>
+            </td>
+
+            <td class="pdf-center">
+                <%= @investigation.disability_days %>
+            </td>
+        </tr>
+
+    </table>
+
+
+    <!-- =========================================================
+         RECOMENDACIONES
+    ========================================================== -->
+
+    <div class="pdf-section-title">
+        RECOMENDACIONES
+    </div>
+
+    <table class="pdf-table pdf-table-blue">
+
+        <thead>
+
+            <tr>
+                <th rowspan="2" class="pdf-col-29">
+                    RECOMENDACIÓN
+                </th>
+
+                <th colspan="3" class="pdf-col-21">
+                    APLICA EN
+                </th>
+
+                <th colspan="2" class="pdf-col-24">
+                    IMPLEMENTACIÓN
+                </th>
+
+                <th colspan="2" class="pdf-col-26">
+                    VERIFICACIÓN
+                </th>
+            </tr>
+
+            <tr>
+                <th class="pdf-col-7">
+                    FUENTE
+                </th>
+
+                <th class="pdf-col-7">
+                    MEDIO
+                </th>
+
+                <th class="pdf-col-7">
+                    PERSONAS
+                </th>
+
+                <th class="pdf-col-12">
+                    FECHA
+                </th>
+
+                <th class="pdf-col-12">
+                    RESPONSABLE
+                </th>
+
+                <th class="pdf-col-13">
+                    FECHA
+                </th>
+
+                <th class="pdf-col-13">
+                    RESPONSABLE
+                </th>
+            </tr>
+
+        </thead>
+
+        <% if @inves_recomendations.present? %>
+
+            <tbody>
+
+                <% @inves_recomendations.each do |inves_recomendation| %>
+
+                    <tr>
+
+                        <td>
+                            <%= inves_recomendation.recomendation %>
+                        </td>
+
+                        <td class="pdf-center">
+                            <% if inves_recomendation.apply == 0 %>
+                                <strong>X</strong>
+                            <% end %>
+                        </td>
+
+                        <td class="pdf-center">
+                            <% if inves_recomendation.apply == 1 %>
+                                <strong>X</strong>
+                            <% end %>
+                        </td>
+
+                        <td class="pdf-center">
+                            <% if inves_recomendation.apply == 2 %>
+                                <strong>X</strong>
+                            <% end %>
+                        </td>
+
+                        <td class="pdf-center">
+                            <%= inves_recomendation.date_implementation %>
+                        </td>
+
+                        <td class="pdf-center">
+                            <%= User.label_name(inves_recomendation.responsible_implementation) %>
+                        </td>
+
+                        <td class="pdf-center">
+                            <%= inves_recomendation.date_verification %>
+                        </td>
+
+                        <td class="pdf-center">
+                            <%= User.label_name(inves_recomendation.responsible_verification) %>
+                        </td>
+
+                    </tr>
+
+                <% end %>
+
+            </tbody>
+
+        <% end %>
+
+    </table>
+
+
+    <!-- =========================================================
+         EQUIPO INVESTIGADOR
+    ========================================================== -->
+
+    <div class="pdf-section-title">
+        EQUIPO INVESTIGADOR
+    </div>
+
+    <table class="pdf-table">
+
+        <thead>
+
+            <tr>
+                <th class="pdf-col-50">
+                    NOMBRE
+                </th>
+
+                <th class="pdf-col-25">
+                    CARGO
+                </th>
+
+                <th class="pdf-col-25">
+                    FIRMA
+                </th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <% if @inves_users.present? %>
+
+                <% @inves_users.each do |inves_user| %>
+
+                    <tr>
+
+                        <td class="pdf-center">
+                            <strong>
+                                <%= inves_user.name %>
+                            </strong>
+                        </td>
+
+                        <td class="pdf-center">
+                            <strong>
+                                <%= inves_user.post %>
+                            </strong>
+                        </td>
+
+                        <td class="pdf-center">
+
+                            <% usu = User.buscar_user(inves_user.user_id) %>
+
+                            <% if inves_user.firm == 1 %>
+
+                                <% if usu.present? && usu.firm.attached? && usu.firm.image? %>
+
+                                    <div class="pdf-signature-image">
+                                        <%= image_tag usu.firm, class: "pdf-firm-image" %>
+                                    </div>
+
+                                <% end %>
+
+                            <% end %>
+
+                        </td>
+
+                    </tr>
+
+                <% end %>
+
+            <% end %>
+
+        </tbody>
+
+    </table>
+
+
+    <!-- =========================================================
+         PROFESIONAL EN SST
+    ========================================================== -->
+
+    <div class="pdf-section-title">
+        PROFESIONAL EN SST
+    </div>
+
+    <table class="pdf-table">
+
+        <thead>
+
+            <tr>
+                <th class="pdf-col-60">
+                    NOMBRES Y APELLIDOS DEL PROFESIONAL EN SST
+                </th>
+
+                <th class="pdf-col-20">
+                    LICENCIA N°
+                </th>
+
+                <th class="pdf-col-20">
+                    DE
+                </th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <tr>
+
+                <td class="pdf-center">
+                    <%= User.label_name(@investigation.usr_profesional) %>
+                </td>
+
+                <td class="pdf-center">
+                    <%= User.label_license(@investigation.usr_profesional) %>
+                </td>
+
+                <td class="pdf-center">
+                    <%= @investigation.de %>
+                </td>
+
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    <div class="pdf-space-large"></div>
+
+</div>
+

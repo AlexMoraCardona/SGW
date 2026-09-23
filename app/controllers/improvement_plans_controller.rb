@@ -19,10 +19,11 @@ class ImprovementPlansController < ApplicationController
     end  
     
     def show 
-        @template = Template.where("format_number = ? and document_vigente = ?",72,1).last  
         @improvement_plan = ImprovementPlan.find(params[:id])
         @entity = Entity.find(@improvement_plan.entity_id) if @improvement_plan.present?
         @rep = User.find(@improvement_plan.user_representante)
+        @template = Template.where("reference = ? and version = ?",@improvement_plan.code,@improvement_plan.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
         @improvement_items = ImprovementItem.where("improvement_plan_id = ?", @improvement_plan.id) if @improvement_plan.present?
         respond_to do |format|
@@ -36,29 +37,35 @@ class ImprovementPlansController < ApplicationController
     def ver_improvement_plan_pdf
         @improvement_plan = ImprovementPlan.find(params[:id])
         @improvement_items = ImprovementItem.where("improvement_plan_id = ?", @improvement_plan.id) if @improvement_plan.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",72,1).last  
         @entity = Entity.find(@improvement_plan.entity_id) if @improvement_plan.present?
         @rep = User.find(@improvement_plan.user_representante)
+        @template = Template.where("reference = ? and version = ?",@improvement_plan.code,@improvement_plan.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
         
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'ver_improvement_plan_pdf',
-                margin: {top: 5, bottom: 5, left: 2, right: 2 },
-                orientation: 'Landscape',
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('ver_improvement_plan_pdf'),
+                    disable_javascript: true,
+                    orientation: 'Landscape',
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
+                    page_size: 'letter',
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+            }
+        end    
       
     end    
 
 
     def new
       @improvement_plan =  ImprovementPlan.new
-      @template = Template.where("format_number = ? and document_vigente = ?",72,1).last  
+      @template = Template.where("reference = ? and document_vigente = ?",'PM-SST',1).last  
+
     end    
 
     def create
@@ -139,7 +146,7 @@ class ImprovementPlansController < ApplicationController
     private
 
     def improvement_plan_params
-        params.require(:improvement_plan).permit(:user_representante, :user_responsible, :date_firm_representante, :date_firm_responsible, :firm_representante, :firm_responsible, :date_plan, :entity_id)
+        params.require(:improvement_plan).permit(:user_representante, :user_responsible, :date_firm_representante, :date_firm_responsible, :firm_representante, :firm_responsible, :date_plan, :entity_id, :version, :code)
     end 
 end 
 

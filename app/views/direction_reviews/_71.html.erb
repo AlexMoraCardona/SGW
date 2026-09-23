@@ -1,0 +1,156 @@
+
+<div class="conesst-page">
+  <div class="conesst-header">
+    <div>
+      <h1 class="conesst-title">
+        <i class="bi bi-building-check me-2"></i>
+        Revisión por la alta dirección
+      </h1>
+      <p class="conesst-subtitle">
+        Revisión de los elementos del Sistema de Gestión de Seguridad y Salud en el Trabajo
+      </p>
+    </div>
+  </div>
+  <div class="conesst-card">
+    <div class="conesst-card-body">
+      <% direction_review_questions = [
+        "Revisar las estrategias implementadas y determinar si han sido eficaces para alcanzar los objetivos, metas y resultados esperados del Sistema de Gestión de la Seguridad y Salud en el Trabajo.",
+        "Revisar el cumplimiento del plan de trabajo anual en seguridad y salud en el trabajo y su cronograma.",
+        "Analizar la suficiencia de los recursos asignados para la implementación del Sistema de Gestión de la Seguridad y Salud en el Trabajo y el cumplimiento de los resultados esperados.",
+        "Revisar la capacidad del Sistema de Gestión de la Seguridad y Salud en el Trabajo SG-SST, para satisfacer las necesidades globales de la empresa en materia de seguridad y salud en el trabajo.",
+        "Analizar la necesidad de realizar cambios en el Sistema de Gestión de la Seguridad y Salud en el Trabajo SG-SST, incluida la revisión de la política y sus objetivos.",
+        "Evaluar la eficacia de las medidas de seguimiento con base en las revisiones anteriores de la alta dirección y realizar los ajustes necesarios.",
+        "Analizar el resultado de los indicadores y de las auditorias anteriores del Sistema de Gestión de la Seguridad y Salud en el Trabajo SG-SST.",
+        "Aportar información sobre nuevas prioridades y objetivos estratégicos de la organización que puedan ser insumos para la planificación y la mejora continua.",
+        "Recolectar información para determinar si las medidas de prevención y control de peligros y riesgos se aplican y son eficaces.",
+        "Intercambiar información con los trabajadores sobre los resultados y su desempeño en seguridad y salud en el trabajo.",
+        "Servir de base para la adopción de decisiones que tengan por objeto mejorar la identificación de peligros y el control de los riesgos y en general mejorar la gestión en seguridad y salud en el trabajo de la empresa.",
+        "Determinar si promueve la participación de los trabajadores.",
+        "Evidenciar que se cumpla con la normatividad nacional vigente aplicable en materia de riesgos laborales, el cumplimiento de los estándares mínimos del Sistema de Garantía de Calidad del Sistema General de Riesgos Laborales que le apliquen.",
+        "Establecer acciones que permitan la mejora continua en seguridad y salud en el trabajo.",
+        "Establecer el cumplimiento de planes específicos, de las metas establecidas y de los objetivos propuestos.",
+        "Inspeccionar sistemáticamente los puestos de trabajo, las máquinas y equipos y en general, las instalaciones de la empresa.",
+        "Vigilar las condiciones en los ambientes de trabajo.",
+        "Vigilar las condiciones de salud de los trabajadores.",
+        "Mantener actualizada la identificación de peligros, la evaluación y valoración de los riesgos.",
+        "Identificar la notificación y la investigación de incidentes, accidentes de trabajo y enfermedades laborales.",
+        "Identificar ausentismo laboral por causas asociadas con seguridad y salud en el trabajo.",
+        "Identificar pérdidas como daños a la propiedad, máquinas y equipos entre otros, relacionados con seguridad y salud en el trabajo.",
+        "Identificar deficiencias en la gestión de la seguridad y salud en el trabajo.",
+        "Identificar la efectividad de los programas de rehabilitación de la salud de los trabajadores."
+      ] %>
+      <div class="conesst-document-table-wrapper">
+        <table class="conesst-document-table">
+          <thead>
+            <tr>
+              <th class="conesst-document-cell-text">
+                Elementos a verificar
+              </th>
+              <th class="conesst-document-cell-text">
+                Gestión realizada
+              </th>
+              <th class="conesst-document-cell-text">
+                Resultados o recomendaciones alta dirección
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% direction_review_questions.each_with_index do |question, index| %>
+              <% number = index + 1 %>
+              <% management = @direction_review.public_send("g#{number}") %>
+              <% result = @direction_review.public_send("r#{number}") %>
+              <tr>
+                <td class="conesst-document-cell-text">
+                  <div class="conesst-document-number">
+                    <%= number %>
+                  </div>
+                  <div class="mt-2">
+                    <%= question %>
+                  </div>
+                </td>
+                <td class="conesst-document-cell-text">
+                  <% if management.present? %>
+                    <%= simple_format(management) %>
+                  <% else %>
+                    <span class="text-muted">
+                      Sin información registrada
+                    </span>
+                  <% end %>
+                </td>
+                <td class="conesst-document-cell-text">
+                  <% if result.present? %>
+                    <%= simple_format(result) %>
+                  <% else %>
+                    <span class="text-muted">
+                      Sin información registrada
+                    </span>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <% if @rep.present? %>
+    <div class="conesst-card">
+      <div class="conesst-card-header">
+        <div class="conesst-card-header-content">
+          <div>
+            <h2 class="conesst-card-header-title">
+              <i class="bi bi-pen me-2"></i>
+              Firma del representante legal
+            </h2>
+            <p class="conesst-card-header-subtitle">
+              Información de validación y firma de la revisión
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="conesst-card-body">
+        <div class="conesst-signature-section">
+          <div class="conesst-signature">
+            <div class="conesst-signature-name mb-3">
+              Firma del Representante Legal
+            </div>
+            <div class="conesst-signature-image">
+              <% if @direction_review.firm_representante == 1 && @rep.firm.attached? && @rep.firm.image? %>
+                <%= image_tag @rep.firm, class: "conesst-signature-image", alt: "Firma #{@rep.name}" %>
+              <% else %>
+                <div class="conesst-signature-line"></div>
+              <% end %>
+            </div>
+            <div class="conesst-signature-name">
+              <%= @rep.name %>
+            </div>
+            <div class="conesst-signature-role">
+              <%= @rep.document.abbreviation %>:
+              <%= Firm.miles(@rep.nro_document) %>
+            </div>
+            <% if @direction_review.date_firm_representante.present? %>
+              <div class="conesst-signature-role mt-1">
+                <i class="bi bi-calendar3 me-1"></i>
+                Fecha firma:
+                <%= @direction_review.date_firm_representante %>
+              </div>
+            <% end %>
+            <div class="mt-3">
+              <% if @direction_review.firm_representante == 1 %>
+                <span class="conesst-status-badge">
+                  <i class="bi bi-check-circle me-1"></i>
+                  Documento firmado
+                </span>
+              <% else %>
+                <span class="conesst-status-badge">
+                  <i class="bi bi-clock me-1"></i>
+                  Pendiente de firma
+                </span>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -1,142 +1,186 @@
-<div class="container col-12 card p-5">
-    <br> 
-    <%= form_with model: @simulacrum do |form| %>
-        <% @simulacrum.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
+<div class="conesst-page">
+  <div class="conesst-card">
+    <div class="conesst-card-body">
+      <p class="conesst-subtitle">
+        <h2 class="conesst-title">
+          <i class="bi bi-journal-text me-1"></i>
+          INFORME SIMULACRO DE EMERGENCIAS
+        </h2>
+      </p>
+      <%= form_with model: @simulacrum do |form| %>
+        <% if @simulacrum.errors.any? %>
+          <div class="alert alert-danger conesst-form-errors" role="alert">
+            <div class="fw-semibold mb-2">
+              <i class="bi bi-exclamation-triangle me-1"></i>
+              No fue posible guardar el simulacro.
             </div>
-        <% end %> 
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>FECHA DEL SIMULACRO</strong>
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <strong>AÑO</strong>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;text-align:center">
-                    <%= form.date_field :date_simulacrum,  class: "form-control" %>               
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                     <%= form.number_field :year,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>MUNICIPIO: </strong>
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.text_field :municipality,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>HORA: </strong>
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.time_field :time_simulacrum,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>PREPARACIÓN: </strong>               
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.rich_text_area :preparation,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>TIPO DE EMERGENCIA: </strong>
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.text_field :type_emergency,  class: "form-control" %>
-                </td>
-            </tr>
-        </table>   
-        <table style="width: 100%;"> 
-            <tr>    
-                <td style="width: 100%;border:1px solid black;text-align:center;">
-                    <strong>TIEMPOS DE EVACUACIÓN </strong>               
-                </td>
-            </tr>
-        </table>   
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>HORA SEÑAL DE ALERTA: </strong>
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.time_field :time_warning_signal,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>HORA SEÑAL DE ALARMA: </strong>
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.time_field :time_alarm_signal,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>TIEMPO DE LLEGADA DE TODO EL PERSONAL AL PUNTO DE ENCUENTRO: </strong>
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.time_field :time_arrival,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>GRUPOS DE APOYO: </strong>
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.text_area :support_group,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>NÚMEROS DE EMERGENCIA: </strong>
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.text_area :cel_emergency,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>CONCLUSIONES: </strong>               
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.rich_text_area :conclusions,  class: "form-control" %>
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;">
-                    <strong>RECOMENDACIONES: </strong>               
-                </td>
-                <td style="width: 70%;border:1px solid black;">
-                    <%= form.rich_text_area :recommendations,  class: "form-control" %>
-                </td>
-            </tr>
-        </table>  
-        <br>
-        <div class="container col-11 card p-5">
-            <div class="form-group">
-                <h5>Adjuntar_Archivos</h5>
-                <%= form.file_field :simulacro_files, multiple: true %>
-            </div> 
+            <ul class="mb-0">
+              <% @simulacrum.errors.full_messages.each do |error| %>
+                <li><%= error %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <div class="simulacrum-form-section">
+          <div class="simulacrum-form-section-title">
+            <i class="bi bi-info-circle"></i>
+            <span>Información general del simulacro</span>
+          </div>
+          <div class="simulacrum-form-grid">
+            <div class="simulacrum-form-field">
+              <%= form.label :date_simulacrum, "Fecha del simulacro", class: "simulacrum-form-label" do %>
+                <i class="bi bi-calendar3"></i>
+                <span>Fecha del simulacro</span>
+              <% end %>
+              <%= form.date_field :date_simulacrum, class: "form-control simulacrum-form-control" %>
+            </div>
+            <div class="simulacrum-form-field">
+              <%= form.label :year, "Año", class: "simulacrum-form-label" do %>
+                <i class="bi bi-calendar-event"></i>
+                <span>Año</span>
+              <% end %>
+              <%= form.number_field :year, class: "form-control simulacrum-form-control" %>
+            </div>
+            <div class="simulacrum-form-field">
+              <%= form.label :municipality, "Municipio", class: "simulacrum-form-label" do %>
+                <i class="bi bi-geo-alt"></i>
+                <span>Municipio</span>
+              <% end %>
+              <%= form.text_field :municipality, class: "form-control simulacrum-form-control" %>
+            </div>
+            <div class="simulacrum-form-field">
+              <%= form.label :time_simulacrum, "Hora", class: "simulacrum-form-label" do %>
+                <i class="bi bi-clock"></i>
+                <span>Hora</span>
+              <% end %>
+              <%= form.time_field :time_simulacrum, class: "form-control simulacrum-form-control" %>
+            </div>
+            <div class="simulacrum-form-field simulacrum-form-field-full">
+              <%= form.label :type_emergency, "Tipo de emergencia", class: "simulacrum-form-label" do %>
+                <i class="bi bi-exclamation-diamond"></i>
+                <span>Tipo de emergencia</span>
+              <% end %>
+              <%= form.text_field :type_emergency, class: "form-control simulacrum-form-control" %>
+            </div>
+          </div>
         </div>
-        <br> 
-
-        </br> 
-        <%= form.hidden_field :user_asesor, :value => @user_asesor.id.to_i, class: "form-control" if @user_asesor.present? %>
-        <%= form.hidden_field :entity_id, :value => Current.user.entity.to_i, class: "form-control" if Current.user.present? %>
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
-    <% end %>
-</div>        
-<br>
-
- 
+        <div class="simulacrum-form-section">
+          <div class="simulacrum-form-section-title">
+            <i class="bi bi-clipboard-check"></i>
+            <span>Preparación</span>
+          </div>
+          <div class="simulacrum-form-field">
+            <%= form.label :preparation, "Preparación del simulacro", class: "simulacrum-form-label" do %>
+              <i class="bi bi-pencil-square"></i>
+              <span>Preparación</span>
+            <% end %>
+            <div class="simulacrum-rich-text">
+              <%= form.rich_text_area :preparation %>
+            </div>
+          </div>
+        </div>
+        <div class="simulacrum-form-section">
+          <div class="simulacrum-form-section-title">
+            <i class="bi bi-stopwatch"></i>
+            <span>Tiempos de evacuación</span>
+          </div>
+          <div class="simulacrum-form-grid">
+            <div class="simulacrum-form-field">
+              <%= form.label :time_warning_signal, "Hora señal de alerta", class: "simulacrum-form-label" do %>
+                <i class="bi bi-bell"></i>
+                <span>Hora señal de alerta</span>
+              <% end %>
+              <%= form.time_field :time_warning_signal, class: "form-control simulacrum-form-control" %>
+            </div>
+            <div class="simulacrum-form-field">
+              <%= form.label :time_alarm_signal, "Hora señal de alarma", class: "simulacrum-form-label" do %>
+                <i class="bi bi-alarm"></i>
+                <span>Hora señal de alarma</span>
+              <% end %>
+              <%= form.time_field :time_alarm_signal, class: "form-control simulacrum-form-control" %>
+            </div>
+            <div class="simulacrum-form-field simulacrum-form-field-full">
+              <%= form.label :time_arrival, "Tiempo de llegada de todo el personal al punto de encuentro", class: "simulacrum-form-label" do %>
+                <i class="bi bi-people"></i>
+                <span>Tiempo de llegada de todo el personal al punto de encuentro</span>
+              <% end %>
+              <%= form.time_field :time_arrival, class: "form-control simulacrum-form-control" %>
+            </div>
+            <div class="simulacrum-form-field">
+              <%= form.label :support_group, "Grupos de apoyo", class: "simulacrum-form-label" do %>
+                <i class="bi bi-person-check"></i>
+                <span>Grupos de apoyo</span>
+              <% end %>
+              <%= form.text_area :support_group, rows: 4, class: "form-control simulacrum-form-control" %>
+            </div>
+            <div class="simulacrum-form-field">
+              <%= form.label :cel_emergency, "Números de emergencia",  class: "simulacrum-form-label" do %>
+                <i class="bi bi-telephone"></i>
+                <span>Números de emergencia</span>
+              <% end %>
+              <%= form.text_area :cel_emergency, rows: 4, class: "form-control simulacrum-form-control" %>
+            </div>
+          </div>
+        </div>
+        <div class="simulacrum-form-section">
+          <div class="simulacrum-form-section-title">
+            <i class="bi bi-check2-circle"></i>
+            <span>Conclusiones y recomendaciones</span>
+          </div>
+          <div class="simulacrum-form-field">
+            <%= form.label :conclusions, "Conclusiones", class: "simulacrum-form-label" do %>
+              <i class="bi bi-check-circle"></i>
+              <span>Conclusiones</span>
+            <% end %>
+            <div class="simulacrum-rich-text">
+              <%= form.rich_text_area :conclusions %>
+            </div>
+          </div>
+          <div class="simulacrum-form-field simulacrum-form-field-spacing">
+            <%= form.label :recommendations, "Recomendaciones", class: "simulacrum-form-label" do %>
+              <i class="bi bi-lightbulb"></i>
+              <span>Recomendaciones</span>
+            <% end %>
+            <div class="simulacrum-rich-text">
+              <%= form.rich_text_area :recommendations %>
+            </div>
+          </div>
+        </div>
+        <div class="simulacrum-form-section">
+          <div class="simulacrum-form-section-title">
+            <i class="bi bi-paperclip"></i>
+            <span>Archivos adjuntos</span>
+          </div>
+          <div class="simulacrum-upload">
+            <div class="simulacrum-upload-icon">
+              <i class="bi bi-cloud-arrow-up"></i>
+            </div>
+            <div class="simulacrum-upload-content">
+              <div class="simulacrum-upload-title">
+                Adjuntar archivos
+              </div>
+              <div class="simulacrum-upload-description">
+                Puede seleccionar uno o varios archivos relacionados con el simulacro.
+              </div>
+              <%= form.file_field :simulacro_files, multiple: true, class: "form-control simulacrum-form-control" %>
+            </div>
+          </div>
+        </div>
+        <%= form.hidden_field :user_asesor, value: @user_asesor.id.to_i if @user_asesor.present? %>
+        <%= form.hidden_field :entity_id, value: Current.user.entity.to_i if Current.user.present? %>
+        <%= form.hidden_field :code, value: @template.reference if @template.present? %>
+        <%= form.hidden_field :version, value: @template.version.to_i if @template.present? %>
+        <div class="conesst-actions simulacrum-form-actions">
+          <%= form.button type: "submit", class: "conesst-btn conesst-btn-primary", title: t('common.submit') do %>
+            <i class="bi bi-check-circle"></i>
+            <span><%= t('common.submit') %></span>
+          <% end %>
+          <%= link_to :back, class: "conesst-btn conesst-btn-warning", title: "Retornar" do %>
+            <i class="bi bi-arrow-left"></i>
+            <span>Retornar</span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

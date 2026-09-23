@@ -1,0 +1,554 @@
+<div class="conesst-page">
+  <div class="conesst-header">
+    <div>
+      <h2 class="conesst-title">
+        <i class="bi bi-journal-text me-1"></i>
+        Simulacro de evacuación por sismo
+      </h2>
+      <% if @entity.present? %>
+        <p class="conesst-subtitle">
+          <i class="bi bi-building me-1"></i>
+          <strong>
+            <%= @entity.business_name %>
+          </strong>
+          <% if @entity.identification_number.present? %>
+            <span class="conesst-header-separator">·</span>
+            <span class="conesst-header-nit">
+              NIT:
+              <%= EvaluationRuleDetail.miles(@entity.identification_number) %>
+              <% if @entity.verification_digit.present? %>
+                -<%= @entity.verification_digit %>
+              <% end %>
+            </span>
+          <% end %>
+        </p>
+      <% end %>
+    </div>
+  </div>
+  <div class="conesst-card mb-3">
+    <div class="conesst-card-header">
+      <h3 class="conesst-card-header-title">
+        <i class="bi bi-info-circle me-1"></i>
+        Información general
+      </h3>
+    </div>
+    <div class="conesst-card-body">
+      <div class="conesst-section">
+        <h4 class="conesst-section-title">
+          1. Objetivo
+        </h4>
+        <div class="conesst-content-text">
+          Realizar un simulacro de evacuación por
+          <strong>
+            <%= @mock_script.space_for if @mock_script.present? %>
+          </strong>
+          en las instalaciones de
+          <strong>
+            <%= @entity.business_name if @entity.present? %>
+          </strong>,
+          con el propósito de preparar y sensibilizar al personal sobre cómo actuar
+          ante una emergencia, asignar roles y responsabilidades específicas,
+          y garantizar que tanto colaboradores como usuarios conozcan las rutas
+          de evacuación y el punto de encuentro establecido por la empresa.
+        </div>
+      </div>
+      <div class="conesst-section">
+        <h4 class="conesst-section-title">
+          2. Alcance
+        </h4>
+        <div class="conesst-content-text">
+          El presente guion aplica a todas las áreas, dependencias y personal de
+          <strong>
+            <%= @entity.business_name if @entity.present? %>
+          </strong>.
+          Incluye empleados, visitantes, contratistas y proveedores presentes
+          durante el desarrollo del simulacro.
+        </div>
+      </div>
+      <div class="conesst-section">
+        <h4 class="conesst-section-title">
+          3. Tipo de simulacro
+        </h4>
+        <div class="conesst-content-text">
+          El
+          <strong>
+            <%= @mock_script.date_script.day if @mock_script.date_script.present? %>
+          </strong>
+          de
+          <strong>
+            <%= I18n.l(@mock_script.date_script, format: '%B') if @mock_script.date_script.present? %>
+          </strong>
+          de
+          <strong>
+            <%= @mock_script.date_script.strftime("%Y") if @mock_script.date_script.present? %>
+          </strong>
+          a las
+          <strong>
+            <%= @mock_script.time_script.strftime("%T %p") if @mock_script.time_script.present? %>
+          </strong>,
+          se presenta
+          <strong>
+            <%= @mock_script.type_emergency if @mock_script.present? %>
+          </strong>
+          en las instalaciones de
+          <strong>
+            <%= @entity.business_name if @entity.present? %>
+          </strong>,
+          por lo cual los empleados se alertan por los posibles riesgos,
+          se toma la decisión de activar la brigada de emergencia y el sistema
+          de alarma y continuamente se le informa al
+          <strong>
+            <%= @user_representante.name if @user_representante.present? %>
+          </strong>,
+          gerente de la empresa.
+
+        </div>
+        <div class="conesst-alert-box mt-3">
+          <div>
+            <strong>
+              <i class="bi bi-bell me-1"></i>
+              Alerta:
+            </strong>
+            Sonará la sirena 2 veces de manera intermitente, indicando señal
+            de preparación ante una emergencia.
+          </div>
+          <div class="mt-2">
+            <strong>
+              <i class="bi bi-bell-fill me-1"></i>
+              Alarma:
+            </strong>
+            Sonará la sirena continuamente durante 10 segundos, indicando señal
+            de evacuación total por emergencia.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="conesst-card mb-3">
+    <div class="conesst-card-header">
+      <h3 class="conesst-card-header-title">
+        <i class="bi bi-people me-1"></i>
+        Responsabilidades
+      </h3>
+    </div>
+    <div class="conesst-card-body">
+      <div class="conesst-role-block">
+        <h4 class="conesst-role-title">
+          Alta dirección
+        </h4>
+        <ul class="conesst-list">
+          <li>
+            Asignar los recursos necesarios (tiempo, personal, materiales y
+            presupuesto) para la preparación y ejecución del simulacro.
+          </li>
+          <li>
+            Autorizar la interrupción temporal de actividades para llevar a cabo
+            el ejercicio.
+          </li>
+          <li>
+            Aprobar los objetivos, alcance, cronograma y metodología del simulacro.
+          </li>
+        </ul>
+      </div>
+      <div class="conesst-role-block">
+        <h4 class="conesst-role-title">
+          Coordinador general:
+          <span>
+            <%= @mock_script.name_coordinator if @mock_script.present? %>
+          </span>
+        </h4>
+        <ul class="conesst-list">
+          <li>
+            Dirigir y supervisar todas las fases del ejercicio, autoriza el
+            inicio y cierre del simulacro.
+          </li>
+          <li>
+            Coordina con el líder de la brigada la activación de la alerta y alarma.
+          </li>
+        </ul>
+      </div>
+      <div class="conesst-role-block">
+        <h4 class="conesst-role-title">
+          Líder de la brigada:
+          <span>
+            <%= @mock_script.name_brigade if @mock_script.present? %>
+          </span>
+        </h4>
+        <ul class="conesst-list">
+          <li>Activar alerta.</li>
+          <li>Activar la brigada de emergencias.</li>
+          <li>Activar alarma.</li>
+          <li>
+            Dar orden de evacuación una vez se indique el fin de la simulación.
+          </li>
+          <li>
+            Reportar novedades, incidentes o dificultades al Coordinador General
+            del Simulacro.
+          </li>
+        </ul>
+      </div>
+      <div class="conesst-role-block">
+        <h4 class="conesst-role-title">
+          Líder de evacuación:
+          <span>
+            <%= @mock_script.name_evacuation if @mock_script.present? %>
+          </span>
+        </h4>
+        <ul class="conesst-list">
+          <li>
+            Verificar y garantizar que las rutas de evacuación y salidas de
+            emergencia se mantengan despejadas.
+          </li>
+          <li>
+            Coordinar la salida del personal hasta el punto de encuentro de
+            manera ordenada.
+          </li>
+          <li>
+            Verificar que todas las personas evacúen y recorrer todas las áreas
+            para confirmar que no queden ocupantes dentro de la empresa.
+          </li>
+          <li>
+            Realizar conteo total de personas en el punto de encuentro.
+          </li>
+          <li>
+            Reportar novedades, incidentes o dificultades al Coordinador General
+            del Simulacro.
+          </li>
+        </ul>
+      </div>
+      <div class="conesst-role-block">
+        <h4 class="conesst-role-title">
+          Brigadistas
+        </h4>
+        <ul class="conesst-list">
+          <li>Apoyar la evacuación.</li>
+          <li>
+            Brindar primeros auxilios en caso de personas lesionadas o afectadas.
+          </li>
+          <li>Orientar al personal por las rutas seguras.</li>
+          <li>
+            Verificar que todas las personas evacuen las instalaciones.
+          </li>
+          <li>
+            Apoyar en punto de encuentro: orden y conteo de personas.
+          </li>
+        </ul>
+      </div>
+      <div class="conesst-role-block">
+        <h4 class="conesst-role-title">
+          Personal participante
+        </h4>
+        <ul class="conesst-list">
+          <li>Seguir las instrucciones de los líderes del simulacro.</li>
+          <li>Conservar la calma.</li>
+          <li>Dirigirse al punto de encuentro.</li>
+          <li>
+            No ingresar a las instalaciones de la empresa hasta recibir
+            indicación del coordinador general del simulacro.
+          </li>
+        </ul>
+      </div>
+      <div class="conesst-info-row">
+        <strong>
+          Apoyo externo:
+        </strong>
+        <span>
+          <%= @mock_script.external_soport if @mock_script.present? %>
+        </span>
+      </div>
+      <div class="conesst-info-row">
+        <strong>
+          Riesgos asociados y/o consecuencias:
+        </strong>
+        <ul class="conesst-list mb-0">
+          <li>Pánico generalizado en el personal.</li>
+          <li>Posibles lesionados en el proceso de evacuación.</li>
+          <li>
+            Pánico entre los vecinos, caídas en el desplazamiento.
+          </li>
+        </ul>
+      </div>
+      <div class="conesst-info-row">
+        <strong>
+          Aspectos para tener en cuenta:
+        </strong>
+        <ul class="conesst-list mb-0">
+          <li>
+            El ejercicio se cancelará si llega a presentarse una emergencia real
+            que no pueda ser controlada por el personal que conforma la brigada.
+          </li>
+          <li>
+            Informar a los vecinos sobre la realización del simulacro para no
+            generar pánico.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="conesst-card mb-3">
+    <div class="conesst-card-header">
+      <h3 class="conesst-card-header-title">
+        <i class="bi bi-list-check me-1"></i>
+        4. Fases del simulacro
+      </h3>
+    </div>
+    <div class="conesst-card-body">
+      <div class="conesst-phase-grid">
+        <div class="conesst-phase">
+          <h4 class="conesst-phase-title">
+            Fase 1: preparación previa
+          </h4>
+          <ul class="conesst-list">
+            <li>Socialización del guion del simulacro.</li>
+            <li>
+              Verificación de recursos de emergencia
+              (botiquines, extintores, señalización, alarma).
+            </li>
+            <li>
+              Asignación de roles y responsabilidades.
+            </li>
+          </ul>
+        </div>
+        <div class="conesst-phase">
+          <h4 class="conesst-phase-title">
+            Fase 2: ejecución del simulacro
+          </h4>
+          <ul class="conesst-list">
+            <li>Activar señal de alerta y alarma.</li>
+            <li>
+              Se coordina evacuación hacia el punto de encuentro.
+            </li>
+            <li>
+              Se retiran recursos de emergencia
+              (botiquín, camilla, extintores).
+            </li>
+            <li>
+              Verificación del estado estructural de las instalaciones.
+            </li>
+          </ul>
+        </div>
+        <div class="conesst-phase">
+          <h4 class="conesst-phase-title">
+            Fase 3: recuperación y evaluación
+          </h4>
+          <ul class="conesst-list">
+            <li>Conteo de personas en punto de encuentro.</li>
+            <li>Se da por finalizado el simulacro.</li>
+            <li>
+              Se da indicación de retorno a sus lugares de trabajo.
+            </li>
+            <li>
+              Se realiza reunión de cierre con brigada, responsable SST,
+              observador y asesor externo, para identificación de aciertos
+              y oportunidades de mejora.
+            </li>
+            <li>
+              Socializar resultados con todo el personal de la empresa.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="conesst-card mb-3">
+    <div class="conesst-card-header">
+      <h3 class="conesst-card-header-title">
+        <i class="bi bi-diagram-3 me-1"></i>
+        Roles y funciones de los brigadistas
+      </h3>
+    </div>
+    <div class="conesst-card-body">
+      <div class="conesst-table-wrapper">
+        <table class="table table-hover align-middle conesst-table">
+          <thead>
+            <tr>
+              <th>Función</th>
+              <th>Encargado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <strong>Comité de emergencias</strong>
+              </td>
+              <td>
+                <%= @mock_script.officer_committee if @mock_script.present? %>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Coordinación general del simulacro</strong>
+              </td>
+              <td>
+                <%= @mock_script.coordinator_drill if @mock_script.present? %>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Activación de alerta y alarma</strong>
+              </td>
+              <td>
+                <%= @mock_script.alert_activation if @mock_script.present? %>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Evacuación general y conteo de personas</strong>
+              </td>
+              <td>
+                <%= @mock_script.evacuation_count if @mock_script.present? %>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Evacuación primer piso</strong>
+              </td>
+              <td>
+                <%= @mock_script.evacuation_first if @mock_script.present? %>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Evacuación segundo piso</strong>
+              </td>
+              <td>
+                <%= @mock_script.evacuation_second if @mock_script.present? %>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Retiro de botiquín</strong>
+              </td>
+              <td>
+                <%= @mock_script.withdraw_kit if @mock_script.present? %>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Retiro de camilla</strong>
+              </td>
+              <td>
+                <%= @mock_script.withdraw_stretcher if @mock_script.present? %>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Retiro de extintor</strong>
+              </td>
+              <td>
+                <%= @mock_script.withdraw_extinguisher if @mock_script.present? %>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>
+                  Verificación del estado estructural de las instalaciones
+                </strong>
+              </td>
+              <td>
+                <%= @mock_script.verification if @mock_script.present? %>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>
+                  Indicación de retorno a sus lugares de trabajo
+                </strong>
+              </td>
+              <td>
+                <%= @mock_script.return_indication if @mock_script.present? %>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="conesst-scroll-hint">
+        <i class="bi bi-arrow-left-right me-1"></i>
+        Desliza horizontalmente para consultar toda la información.
+      </div>
+    </div>
+  </div>
+  <div class="conesst-card mb-3">
+    <div class="conesst-card-header">
+      <h3 class="conesst-card-header-title">
+        <i class="bi bi-signpost-2 me-1"></i>
+        5. Rutas de evacuación
+      </h3>
+    </div>
+    <div class="conesst-card-body">
+      <div class="conesst-content-text">
+        <p>
+          Se utilizarán las rutas establecidas para tal fin descritas
+          a continuación:
+        </p>
+        <div class="conesst-value-box">
+          <%= @mock_script.routes_evacuation if @mock_script.present? %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="conesst-card mb-3">
+    <div class="conesst-card-header">
+      <h3 class="conesst-card-header-title">
+        <i class="bi bi-door-open me-1"></i>
+        6. Salidas de emergencia
+      </h3>
+    </div>
+    <div class="conesst-card-body">
+      <div class="conesst-value-box">
+        <%= @mock_script.emergency_exit if @mock_script.present? %>
+      </div>
+    </div>
+  </div>
+  <div class="conesst-card mb-3">
+    <div class="conesst-card-header">
+      <h3 class="conesst-card-header-title">
+        <i class="bi bi-life-preserver me-1"></i>
+        7. Recursos de emergencia
+      </h3>
+    </div>
+    <div class="conesst-card-body">
+      <div class="conesst-value-box">
+        <%= @mock_script.emergency_resources if @mock_script.present? %>
+      </div>
+    </div>
+  </div>
+  <div class="conesst-card mb-3">
+    <div class="conesst-card-header">
+      <h3 class="conesst-card-header-title">
+        <i class="bi bi-pen me-1"></i>
+        Firma del asesor
+      </h3>
+    </div>
+    <div class="conesst-card-body">
+      <div class="conesst-signature">
+        <% if @mock_script.firm_user_asesor == 1 %>
+          <% if @user_asesor.firm.attached? %>
+            <% if @user_asesor.firm.image? %>
+              <div class="conesst-signature-image">
+                <%= image_tag @user_asesor.firm, class: "firmapdf" %>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
+        <div class="conesst-signature-line">
+          __________________________________
+        </div>
+        <div class="conesst-signature-name">
+          <%= @user_asesor.name if @user_asesor.present? %>
+        </div>
+        <div class="conesst-signature-detail">
+          Asesor SG-SST
+        </div>
+        <div class="conesst-signature-detail">
+          <%= @user_asesor.document.abbreviation if @user_asesor.present? %>:
+          <%= Firm.miles(@user_asesor.nro_document) if @user_asesor.present? %>
+        </div>
+        <div class="conesst-signature-detail">
+          Licencia:
+          <%= @user_asesor.license if @user_asesor.present? %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

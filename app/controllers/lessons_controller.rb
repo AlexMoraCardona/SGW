@@ -12,11 +12,11 @@ class LessonsController < ApplicationController
     def show
         @lesson = Lesson.find(params[:id])
         @entity = Entity.find(@lesson.entity_id) if @lesson.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",105,1).last  
         @user_responsable = User.find(@lesson.user_adviser_sst) if @lesson.present? && @lesson.user_adviser_sst > 0
         @user_vigia = User.find(@lesson.user_vigia) if @lesson.present? && @lesson.user_vigia > 0
+        @template = Template.where("reference = ? and version = ?",@lesson.code,@lesson.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
-        @template = Template.where("format_number = ? and document_vigente = ?",105,1).last  
         respond_to do |format|
             format.html
             format.xlsx{ 
@@ -28,28 +28,35 @@ class LessonsController < ApplicationController
     def ver_leccion
         @lesson = Lesson.find(params[:id])
         @entity = Entity.find(@lesson.entity_id) if @lesson.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",105,1).last  
         @user_responsable = User.find(@lesson.user_adviser_sst) if @lesson.present? && @lesson.user_adviser_sst > 0
         @user_vigia = User.find(@lesson.user_vigia) if @lesson.present? && @lesson.user_vigia > 0
+        @template = Template.where("reference = ? and version = ?",@lesson.code,@lesson.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
+
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'ver_leccion',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
-      
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('ver_leccion'),
+                    disable_javascript: true,
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
+                    page_size: 'letter',
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+            }
+        end    
+     
     end    
 
     def new
       @lesson =  Lesson.new
       @entity = Entity.find(Current.user.entity)
-      @template = Template.where("format_number = ? and document_vigente = ?",105,1).last  
+      @template = Template.where("reference = ? and document_vigente = ?",'LAAT-SST',1).last  
+
     end    
 
     def create
@@ -64,7 +71,7 @@ class LessonsController < ApplicationController
     def edit
           @lesson = Lesson.find(params[:id])
           @entity = Entity.find(@lesson.entity_id)
-          @template = Template.where("format_number = ? and document_vigente = ?",105,1).last  
+          @template = Template.where("reference = ? and version = ?",@lesson.code,@lesson.version).last  
     end
     
     def update
@@ -112,7 +119,7 @@ class LessonsController < ApplicationController
         params.require(:lesson).permit(:title, :user_adviser_sst, 
         :user_vigia, :date_user_adviser_sst, :date_user_vigia, 
         :firm_user_adviser_sst, :firm_user_vigia, :entity_id, 
-        :user_id, :leccion_que, :leccion_causa, :leccion_recome)
+        :user_id, :leccion_que, :leccion_causa, :leccion_recome, :version, :code)
     end 
 
 end  

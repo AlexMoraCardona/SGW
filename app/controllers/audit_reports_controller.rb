@@ -19,11 +19,12 @@ class AuditReportsController < ApplicationController
     end  
     
     def show 
-        @template = Template.where("format_number = ? and document_vigente = ?",70,1).last  
         @audit_report = AuditReport.find(params[:id])
         @entity = Entity.find(@audit_report.entity_id) if @audit_report.present?
         @user_audit = User.find(@audit_report.user_audit)
         @user_representante = User.find(@audit_report.user_representante)
+        @template = Template.where("reference = ? and version = ?",@audit_report.code,@audit_report.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
         @audit_report_items = AuditReportItem.where("audit_report_id = ?", @audit_report.id) if @audit_report.present?
         respond_to do |format|
@@ -37,29 +38,36 @@ class AuditReportsController < ApplicationController
     def ver_auditoria_interna_pdf
         @audit_report = AuditReport.find(params[:id])
         @audit_report_items = AuditReportItem.where("audit_report_id = ?", @audit_report.id) if @audit_report.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",70,1).last  
         @entity = Entity.find(@audit_report.entity_id) if @audit_report.present?
         @user_audit = User.find(@audit_report.user_audit)
         @user_representante = User.find(@audit_report.user_representante)
+        @template = Template.where("reference = ? and version = ?",@audit_report.code,@audit_report.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
+
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'ver_auditoria_interna',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
-      
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('ver_auditoria_interna_pdf'),
+                    disable_javascript: true,
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
+                    page_size: 'letter',
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+            }
+        end    
+
+     
     end    
 
 
     def new
       @audit_report =  AuditReport.new
-      @template = Template.where("format_number = ? and document_vigente = ?",70,1).last  
+      @template = Template.where("reference = ? and document_vigente = ?",'IAI-SST',1).last  
     end    
 
     def create
@@ -130,7 +138,7 @@ class AuditReportsController < ApplicationController
     private
 
     def audit_report_params
-        params.require(:audit_report).permit(:user_representante, :user_audit, :date_firm_representante, :date_firm_audit, :firm_representante, :firm_audit, :entity_id, :date_audit, :conclusions, :observations)
+        params.require(:audit_report).permit(:user_representante, :user_audit, :date_firm_representante, :date_firm_audit, :firm_representante, :firm_audit, :entity_id, :date_audit, :conclusions, :observations, :version, :code)
     end 
 end  
 

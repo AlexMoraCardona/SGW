@@ -1,0 +1,490 @@
+<div class="conesst-page simulacrum-report-page">
+  <div class="conesst-card simulacrum-cover-card">
+    <div class="conesst-card-body">
+      <div class="simulacrum-brand">
+        <%= link_to root_path, class: "simulacrum-brand-link" do %>
+          <%= image_tag "LogoConesst202305232.png", class: "simulacrum-brand-logo", alt: "CONESST" %>
+        <% end %>
+      </div>
+      <div class="simulacrum-cover-content">
+        <div class="simulacrum-cover-title">
+          <i class="bi bi-shield-check"></i>
+          <h1>INFORME SIMULACRO</h1>
+        </div>
+        <div class="simulacrum-cover-company">
+          <h2>
+            <%= @entity.business_name if @entity.present? %>
+          </h2>
+          <% if @entity.present? %>
+            <p>
+              <strong>Nit:</strong>
+              <%= EvaluationRuleDetail.miles(@entity.identification_number) %>
+              <%= "-#{@entity.verification_digit}" if @entity.verification_digit.present? %>
+            </p>
+          <% end %>
+        </div>
+        <% if @entity&.logo.present? %>
+          <div class="simulacrum-cover-logo">
+            <%= image_tag @entity.logo, alt: @entity.business_name %>
+          </div>
+        <% end %>
+        <div class="simulacrum-cover-info">
+          <div class="simulacrum-cover-info-item">
+            <i class="bi bi-person-badge"></i>
+            <div>
+              <span>Profesional responsable</span>
+              <strong>
+                <%= @user_asesor.name if @user_asesor.present? %>
+              </strong>
+            </div>
+          </div>
+          <div class="simulacrum-cover-info-item">
+            <i class="bi bi-calendar3"></i>
+            <div>
+              <span>Año</span>
+              <strong>
+                <%= @simulacrum.year if @simulacrum.present? %>
+              </strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="conesst-card">
+    <div class="conesst-card-body">
+      <div class="simulacrum-report-section">
+        <div class="simulacrum-report-section-title">
+          <i class="bi bi-file-text"></i>
+          <span>INTRODUCCIÓN</span>
+        </div>
+        <div class="simulacrum-report-text">
+          <p>
+            El simulacro se realizó en
+            <strong>
+              <%= @entity.business_name if @entity.present? %>
+            </strong>,
+            el día
+            <strong>
+              <%= @simulacrum.date_simulacrum if @simulacrum&.date_simulacrum.present? %>
+            </strong>
+            a partir de las
+            <strong>
+              <%= @simulacrum.time_simulacrum.strftime("%T %p") if @simulacrum&.time_simulacrum.present? %>
+            </strong>
+            en el municipio de
+            <strong>
+              <%= @simulacrum.municipality if @simulacrum.present? %>
+            </strong>.
+          </p>
+          <p>
+            La planeación y ejecución del ejercicio estuvo a cargo del responsable
+            de SST, líder de brigada de emergencias y el asesor externo en SST.
+          </p>
+          <p>
+            Este informe detalla las acciones de preparación del simulacro,
+            así como su resultado y el análisis del mismo.
+          </p>
+        </div>
+      </div>
+      <div class="simulacrum-report-section">
+        <div class="simulacrum-report-section-title">
+          <i class="bi bi-bullseye"></i>
+          <span>1. OBJETIVO</span>
+        </div>
+        <div class="simulacrum-report-text">
+          <p>
+            Evaluar las acciones de coordinación y el sistema de notificación
+            para el procedimiento de evacuación ante una amenaza que genere
+            riesgo colectivo para los ocupantes de
+            <strong>
+              <%= @entity.business_name if @entity.present? %>
+            </strong>.
+          </p>
+        </div>
+      </div>
+      <div class="simulacrum-report-section">
+        <div class="simulacrum-report-section-title">
+          <i class="bi bi-clipboard-check"></i>
+          <span>2. PREPARACIÓN</span>
+        </div>
+        <div class="simulacrum-report-text">
+          <p>
+            Para la preparación del simulacro de emergencias de la empresa
+            se realizaron las siguientes actividades:
+          </p>
+          <div class="simulacrum-report-rich-text">
+            <%= @simulacrum.preparation if @simulacrum.present? %>
+          </div>
+        </div>
+      </div>
+      <div class="simulacrum-report-section">
+        <div class="simulacrum-report-section-title">
+          <i class="bi bi-people"></i>
+          <span>3. METODOLOGÍA</span>
+        </div>
+        <div class="simulacrum-report-text">
+          <p>
+            En el ejercicio participaron:
+          </p>
+        </div>
+        <div class="conesst-table-wrapper">
+          <table class="conesst-table simulacrum-report-table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Cargo en el ejercicio</th>
+                <th>Área de trabajo</th>
+                <th>Funciones</th>
+                <th class="simulacrum-report-action-column">
+                  Eliminar
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @simulacrum_items.present? %>
+                <% @simulacrum_items.where("clasification = ?", 0).each do |simulacrum_item| %>
+                  <tr>
+                    <td>
+                      <%= simulacrum_item.name %>
+                    </td>
+                    <td>
+                      <%= simulacrum_item.position_exercise %>
+                    </td>
+                    <td>
+                      <%= simulacrum_item.area_work %>
+                    </td>
+                    <td>
+                      <%= simulacrum_item.functions %>
+                    </td>
+                    <td class="simulacrum-report-action-column">
+                      <% if Current.user.level > 0 && Current.user.level < 3 %>
+                        <%= button_to simulacrum_item, method: :delete, class: "conesst-btn conesst-btn-danger", title: "Eliminar", data: {turbo_confirm: "¿Está seguro de eliminar este registro?"} do %>
+                          <i class="bi bi-trash"></i>
+                          <span>Eliminar</span>
+                        <% end %>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="simulacrum-report-section">
+        <div class="simulacrum-report-section-title">
+          <i class="bi bi-exclamation-triangle"></i>
+          <span>SIMULACRO DE EVACUACIÓN</span>
+        </div>
+        <div class="conesst-table-wrapper">
+          <table class="conesst-table simulacrum-report-detail-table">
+            <tbody>
+              <tr>
+                <th>Tipo de emergencia</th>
+                <td>
+                  <%= @simulacrum.type_emergency if @simulacrum.present? %>
+                </td>
+              </tr>
+              <tr>
+                <th>Fecha</th>
+                <td>
+                  <%= @simulacrum.date_simulacrum if @simulacrum&.date_simulacrum.present? %>
+                </td>
+              </tr>
+              <tr>
+                <th>Hora</th>
+                <td>
+                  <%= @simulacrum.time_simulacrum.strftime("%T %p") if @simulacrum&.time_simulacrum.present? %>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="simulacrum-report-section">
+        <div class="simulacrum-report-section-title">
+          <i class="bi bi-stopwatch"></i>
+          <span>TIEMPOS DE EVACUACIÓN</span>
+        </div>
+        <div class="conesst-table-wrapper">
+          <table class="conesst-table simulacrum-report-detail-table">
+            <tbody>
+              <tr>
+                <th>Hora señal de alerta</th>
+                <td>
+                  <%= @simulacrum.time_warning_signal.strftime("%T %p") if @simulacrum&.time_warning_signal.present? %>
+                </td>
+              </tr>
+              <tr>
+                <th>Hora señal de alarma</th>
+                <td>
+                  <%= @simulacrum.time_alarm_signal.strftime("%T %p") if @simulacrum&.time_alarm_signal.present? %>
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  Tiempo de llegada de todo el personal al punto de encuentro
+                </th>
+                <td>
+                  <%= @simulacrum.time_arrival.strftime("%T %p") if @simulacrum&.time_arrival.present? %>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="simulacrum-report-section">
+        <div class="simulacrum-report-section-title">
+          <i class="bi bi-person-walking"></i>
+          <span>PERSONAL EVACUADO</span>
+        </div>
+        <div class="simulacrum-report-text">
+          <p>Coordinadores de evacuación:</p>
+        </div>
+        <div class="conesst-table-wrapper">
+          <table class="conesst-table simulacrum-report-table">
+            <thead>
+              <tr>
+                <th>Piso</th>
+                <th>Área</th>
+                <th>Nombre</th>
+                <th>Cargo</th>
+                <th class="simulacrum-report-action-column">
+                  Eliminar
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @simulacrum_items.present? %>
+                <% @simulacrum_items.where("clasification = ?", 1).each do |simulacrum_item| %>
+                  <tr>
+                    <td>
+                      <%= simulacrum_item.floor %>
+                    </td>
+                    <td>
+                      <%= simulacrum_item.evacuated_personal_area %>
+                    </td>
+                    <td>
+                      <%= simulacrum_item.evacuated_personal_name %>
+                    </td>
+                    <td>
+                      <%= simulacrum_item.evacuated_personal_cargo %>
+                    </td>
+                    <td class="simulacrum-report-action-column">
+                      <% if Current.user.level > 0 && Current.user.level < 3 %>
+                        <%= button_to simulacrum_item, method: :delete, class: "conesst-btn conesst-btn-danger", title: "Eliminar", data: {turbo_confirm: "¿Está seguro de eliminar este registro?"} do %>
+                          <i class="bi bi-trash"></i>
+                          <span>Eliminar</span>
+                        <% end %>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="simulacrum-report-section">
+        <div class="simulacrum-report-section-title">
+          <i class="bi bi-life-preserver"></i>
+          <span>GRUPOS DE APOYO</span>
+        </div>
+        <div class="simulacrum-report-rich-text">
+          <%= @simulacrum.support_group if @simulacrum.present? %>
+        </div>
+      </div>
+      <div class="simulacrum-report-section">
+        <div class="simulacrum-report-section-title">
+          <i class="bi bi-calendar-check"></i>
+          <span>ACTIVIDADES PREVIAS AL SIMULACRO</span>
+        </div>
+        <div class="simulacrum-report-subtitle">
+          Programación de actividades preparatorias del simulacro
+        </div>
+        <div class="conesst-table-wrapper">
+          <table class="conesst-table simulacrum-report-table">
+            <thead>
+              <tr>
+                <th>Actividad</th>
+                <th>Fecha</th>
+                <th>Responsable</th>
+                <th class="simulacrum-report-action-column">
+                  Eliminar
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @simulacrum_items.present? %>
+                <% @simulacrum_items.where("clasification = ?", 2).each do |simulacrum_item| %>
+                  <tr>
+                    <td>
+                      <%= simulacrum_item.previous_activity %>
+                    </td>
+                    <td>
+                      <%= simulacrum_item.date_previous %>
+                    </td>
+                    <td>
+                      <%= simulacrum_item.responsible_previous %>
+                    </td>
+                    <td class="simulacrum-report-action-column">
+                      <% if Current.user.level > 0 && Current.user.level < 3 %>
+                        <%= button_to simulacrum_item, method: :delete, class: "conesst-btn conesst-btn-danger", title: "Eliminar", data: {turbo_confirm: "¿Está seguro de eliminar este registro?"} do %>
+                          <i class="bi bi-trash"></i>
+                          <span>Eliminar</span>
+                        <% end %>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="simulacrum-report-section">
+        <div class="simulacrum-report-section-title">
+          <i class="bi bi-clock-history"></i>
+          <span>SECUENCIA CRONOLÓGICA DE EVENTOS</span>
+        </div>
+        <div class="conesst-table-wrapper">
+          <table class="conesst-table simulacrum-report-table">
+            <thead>
+              <tr>
+                <th>Hora</th>
+                <th>Actividad</th>
+                <th class="simulacrum-report-action-column">
+                  Eliminar
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @simulacrum_items.present? %>
+                <% @simulacrum_items.where("clasification = ?", 3).each do |simulacrum_item| %>
+                  <tr>
+                    <td>
+                      <%= simulacrum_item.time_sequence_crono %>
+                    </td>
+                    <td>
+                      <%= simulacrum_item.activity_sequence %>
+                    </td>
+                    <td class="simulacrum-report-action-column">
+                      <% if Current.user.level > 0 && Current.user.level < 3 %>
+                        <%= button_to simulacrum_item, method: :delete, class: "conesst-btn conesst-btn-danger", title: "Eliminar", data: {turbo_confirm: "¿Está seguro de eliminar este registro?"} do %>
+                          <i class="bi bi-trash"></i>
+                          <span>Eliminar</span>
+                        <% end %>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="simulacrum-report-section">
+        <div class="simulacrum-report-section-title">
+          <i class="bi bi-telephone"></i>
+          <span>NÚMEROS DE EMERGENCIAS</span>
+        </div>
+        <div class="simulacrum-report-rich-text">
+          <%= @simulacrum.cel_emergency if @simulacrum.present? %>
+        </div>
+      </div>
+      <div class="simulacrum-report-section">
+        <div class="simulacrum-report-section-title">
+          <i class="bi bi-check2-square"></i>
+          <span>CONCLUSIONES</span>
+        </div>
+        <div class="simulacrum-report-rich-text">
+          <%= @simulacrum.conclusions if @simulacrum.present? %>
+        </div>
+      </div>
+      <div class="simulacrum-report-section">
+        <div class="simulacrum-report-section-title">
+          <i class="bi bi-lightbulb"></i>
+          <span>RECOMENDACIONES</span>
+        </div>
+        <div class="simulacrum-report-rich-text">
+          <%= @simulacrum.recommendations if @simulacrum.present? %>
+        </div>
+      </div>
+      <div class="simulacrum-report-section">
+        <div class="simulacrum-report-section-title">
+          <i class="bi bi-images"></i>
+          <span>REGISTRO FOTOGRÁFICO</span>
+        </div>
+        <% if @simulacrum.simulacro_files.attached? %>
+          <div class="simulacrum-report-files" data-controller="previews">
+            <% @simulacrum.simulacro_files.each do |file| %>
+              <div class="simulacrum-report-file">
+                <% if file.image? %>
+                  <div class="simulacrum-report-image-wrapper">
+                    <%= image_tag file, data: { previews_target: "preview" }, class: "simulacrum-report-image", alt: file.filename.to_s %>
+                  </div>
+                <% elsif file.video? %>
+                  <div class="simulacrum-report-media">
+                    <%= video_tag url_for(file), controls: true, class: "simulacrum-report-video" %>
+                  </div>
+                <% elsif file.audio? %>
+                  <div class="simulacrum-report-media">
+                    <%= audio_tag url_for(file), controls: true, class: "simulacrum-report-audio" %>
+                  </div>
+                <% else %>
+                  <div class="simulacrum-report-document">
+                    <i class="bi bi-file-earmark"></i>
+                    <%= link_to file.filename, url_for(file), target: "_blank", rel: "noopener" %>
+                  </div>
+                <% end %>
+                <% if Current.user.level > 0 && Current.user.level < 3 %>
+                  <div class="simulacrum-report-file-actions">
+                    <%= link_to purge_attachment_path(file), data: {turbo_method: :delete, turbo_confirm: "¿Está seguro de eliminar el archivo?"}, class: "conesst-btn conesst-btn-danger", title: "Eliminar archivo" do %>
+                      <i class="bi bi-trash"></i>
+                      <span>Eliminar archivo</span>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="simulacrum-report-empty">
+            <i class="bi bi-images"></i>
+            <span>No hay archivos registrados.</span>
+          </div>
+        <% end %>
+      </div>
+      <div class="simulacrum-report-signature-section">
+        <div class="simulacrum-report-signature">
+          <% if @simulacrum.firm_user_asesor == 1 %>
+            <% if @user_asesor.firm.attached? %>
+              <% if @user_asesor.firm.image? %>
+                <div class="simulacrum-report-signature-image">
+                  <%= image_tag @user_asesor.firm, class: "firmapdf" %>
+                </div>
+              <% end %>
+            <% end %>
+          <% end %>
+          <div class="simulacrum-report-signature-line"></div>
+          <strong>
+            <%= @user_asesor.name if @user_asesor.present? %>
+          </strong>
+          <span>Asesor SG-SST</span>
+          <% if @user_asesor.present? %>
+            <span>
+              <%= @user_asesor.document.abbreviation %>:
+              <%= Firm.miles(@user_asesor.nro_document) %>
+            </span>
+            <span>
+              Licencia:
+              <%= @user_asesor.license %>
+            </span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,35 +1,57 @@
-<br>
-<div class="container col-11" 
-    <br>
-    <h2 class="display-5"><%= t('.title') %></h2>
-    <hr>
-</div>    
-<div class="container col-11 card p-5">
-    <br>
-    <%= form_with model: @audit_report do |form| %>
-        <% @audit_report.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %>
-
-        <%= form.hidden_field :entity_id, :value => params[:entity_id].to_i, class: "form-control" if params[:entity_id].present? %>
-        <br>
-        <div class="form-group">    
-            <%= form.label :conclusions,  style: "display: block" %>
-            <%= form.text_area :conclusions,  class: "form-control" %>
+<div class="conesst-page">
+    <div class="conesst-header">
+        <h2 class="conesst-title">
+            <%= t('.title') %>
+        </h2>
+    </div>
+    <div class="conesst-card">
+        <div class="conesst-card-body">
+            <%= form_with model: @audit_report do |form| %>
+                <% if @audit_report.errors.any? %>
+                    <div class="alert alert-danger conesst-alert" role="alert">
+                        <div class="fw-semibold mb-1">
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                            Se encontraron los siguientes errores:
+                        </div>
+                        <ul class="mb-0 ps-3">
+                            <% @audit_report.errors.full_messages.each do |error| %>
+                                <li><%= error %></li>
+                            <% end %>
+                        </ul>
+                    </div>
+                <% end %>
+                <% if params[:entity_id].present? %>
+                    <%= form.hidden_field :entity_id, value: params[:entity_id].to_i %>
+                <% end %>
+                <div class="audit-form-field">
+                    <%= form.label :conclusions, class: "audit-form-label" do %>
+                        <span>
+                            <i class="bi bi-check2-square"></i>
+                            <%= form.object.class.human_attribute_name(:conclusions) %>
+                        </span>
+                    <% end %>
+                    <%= form.text_area :conclusions, class: "form-control audit-form-control", rows: 6 %>
+                </div>
+                <div class="audit-form-field">
+                    <%= form.label :observations, class: "audit-form-label" do %>
+                        <span>
+                            <i class="bi bi-chat-left-text"></i>
+                            <%= form.object.class.human_attribute_name(:observations) %>
+                        </span>
+                    <% end %>
+                    <%= form.text_area :observations, class: "form-control audit-form-control", rows: 6 %>
+                </div>
+                <div class="conesst-actions audit-form-actions">
+                    <%= form.button type: "submit", class: "conesst-btn conesst-btn-primary" do %>
+                        <i class="bi bi-check-circle"></i>
+                        <span><%= t('common.submit') %></span>
+                    <% end %>
+                    <%= link_to :back, class: "conesst-btn conesst-btn-warning" do %>
+                        <i class="bi bi-arrow-left"></i>
+                        <span>Retornar</span>
+                    <% end %>
+                </div>
+            <% end %>
         </div>
-        <br>    
-        <div class="form-group">    
-            <%= form.label :observations,  style: "display: block" %>
-            <%= form.text_area :observations,  class: "form-control" %>
-        </div>
-        <br>    
-
-
-        <br>    
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
-    <% end %>
-</div>        
-<br>
+    </div>
+</div>

@@ -1,0 +1,403 @@
+<head>
+  <meta charset="utf-8">
+  <%= wicked_pdf_stylesheet_link_tag "pdf_conesst" %>
+</head>
+<div class="pdf-simulacrum-cover">
+  <div class="pdf-simulacrum-cover-title">
+    INFORME SIMULACRO
+  </div>
+  <div class="pdf-simulacrum-cover-company">
+    <%= @entity.business_name if @entity.present? %>
+  </div>
+  <% if @entity.present? %>
+    <div class="pdf-simulacrum-cover-nit">
+      Nit:
+      <%= EvaluationRuleDetail.miles(@entity.identification_number) %><%= "-#{@entity.verification_digit}" if @entity.verification_digit.present? %>
+    </div>
+  <% end %>
+  <% if @entity.present? && @entity.logo.present? %>
+    <div class="pdf-simulacrum-cover-logo">
+      <%= image_tag Evaluation.wicked_blob_path(@entity.logo), class: "pdf-simulacrum-logo" %>
+    </div>
+  <% end %>
+  <% if @user_asesor.present? %>
+    <div class="pdf-simulacrum-cover-data">
+      <div class="pdf-simulacrum-cover-label">
+        PROFESIONAL
+      </div>
+      <div class="pdf-simulacrum-cover-value">
+        <%= @user_asesor.name %>
+      </div>
+    </div>
+  <% end %>
+  <% if @simulacrum.present? %>
+    <div class="pdf-simulacrum-cover-data">
+      <div class="pdf-simulacrum-cover-label">
+        AÑO
+      </div>
+      <div class="pdf-simulacrum-cover-value">
+        <%= @simulacrum.year %>
+      </div>
+    </div>
+  <% end %>
+</div>
+<div class="pdf-page-break"></div>
+  <div class="pdf-simulacrum-section">
+    <div class="pdf-simulacrum-section-title">
+      INTRODUCCIÓN
+    </div>
+    <div class="pdf-simulacrum-text">
+      <p>
+        El simulacro se realizó en
+        <strong>
+          <%= @entity.business_name if @entity.present? %>
+        </strong>,
+        el día
+        <strong>
+          <%= @simulacrum.date_simulacrum if @simulacrum&.date_simulacrum.present? %>
+        </strong>
+        a partir de las
+        <strong>
+          <%= @simulacrum.time_simulacrum.strftime("%T %p") if @simulacrum&.time_simulacrum.present? %>
+        </strong>
+        en el municipio de
+        <strong>
+          <%= @simulacrum.municipality if @simulacrum.present? %>
+        </strong>.
+      </p>
+
+      <p>
+        La planeación y ejecución del ejercicio estuvo a cargo del responsable
+        de SST, líder de brigada de emergencias y el asesor externo en SST.
+      </p>
+
+      <p>
+        Este informe detalla las acciones de preparación del simulacro,
+        así como su resultado y el análisis del mismo.
+      </p>
+
+    </div>
+  </div>
+  <div class="pdf-simulacrum-section">
+    <div class="pdf-simulacrum-section-title">
+      1. OBJETIVO
+    </div>
+    <div class="pdf-simulacrum-text">
+      <p>
+        Evaluar las acciones de coordinación y el sistema de notificación
+        para el procedimiento de evacuación ante una amenaza que genere
+        riesgo colectivo para los ocupantes de
+        <strong>
+          <%= @entity.business_name if @entity.present? %>
+        </strong>.
+      </p>
+    </div>
+  </div>
+  <div class="pdf-simulacrum-section">
+    <div class="pdf-simulacrum-section-title">
+      2. PREPARACIÓN
+    </div>
+    <div class="pdf-simulacrum-text">
+      <p>
+        Para la preparación del simulacro de emergencias de la empresa
+        se realizaron las siguientes actividades:
+      </p>
+      <div class="pdf-simulacrum-rich-text">
+        <%= @simulacrum.preparation if @simulacrum.present? %>
+      </div>
+    </div>
+  </div>
+  <div class="pdf-simulacrum-section">
+    <div class="pdf-simulacrum-section-title">
+      3. METODOLOGÍA
+    </div>
+    <div class="pdf-simulacrum-text">
+      <p>
+        En el ejercicio participaron:
+      </p>
+    </div>
+    <table class="pdf-simulacrum-table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Cargo en el ejercicio</th>
+          <th>Área de trabajo</th>
+          <th>Funciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @simulacrum_items.present? %>
+          <% @simulacrum_items.where("clasification = ?", 0).each do |simulacrum_item| %>
+            <tr>
+              <td>
+                <%= simulacrum_item.name %>
+              </td>
+              <td>
+                <%= simulacrum_item.position_exercise %>
+              </td>
+              <td>
+                <%= simulacrum_item.area_work %>
+              </td>
+              <td>
+                <%= simulacrum_item.functions %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="pdf-simulacrum-section">
+    <div class="pdf-simulacrum-section-title">
+      SIMULACRO DE EVACUACIÓN
+    </div>
+    <table class="pdf-simulacrum-detail-table">
+      <tbody>
+        <tr>
+          <th>Tipo de emergencia</th>
+          <td>
+            <%= @simulacrum.type_emergency if @simulacrum.present? %>
+          </td>
+        </tr>
+        <tr>
+          <th>Fecha</th>
+          <td>
+            <%= @simulacrum.date_simulacrum if @simulacrum&.date_simulacrum.present? %>
+          </td>
+        </tr>
+        <tr>
+          <th>Hora</th>
+          <td>
+            <%= @simulacrum.time_simulacrum.strftime("%T %p") if @simulacrum&.time_simulacrum.present? %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="pdf-simulacrum-section">
+    <div class="pdf-simulacrum-section-title">
+      TIEMPOS DE EVACUACIÓN
+    </div>
+    <table class="pdf-simulacrum-detail-table">
+      <tbody>
+        <tr>
+          <th>Hora señal de alerta</th>
+          <td>
+            <%= @simulacrum.time_warning_signal.strftime("%T %p") if @simulacrum&.time_warning_signal.present? %>
+          </td>
+        </tr>
+        <tr>
+          <th>Hora señal de alarma</th>
+          <td>
+            <%= @simulacrum.time_alarm_signal.strftime("%T %p") if @simulacrum&.time_alarm_signal.present? %>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            Tiempo de llegada de todo el personal al punto de encuentro
+          </th>
+          <td>
+            <%= @simulacrum.time_arrival.strftime("%T %p") if @simulacrum&.time_arrival.present? %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="pdf-simulacrum-section">
+    <div class="pdf-simulacrum-section-title">
+      PERSONAL EVACUADO
+    </div>
+    <div class="pdf-simulacrum-text">
+      <p>
+        Coordinadores de evacuación:
+      </p>
+    </div>
+    <table class="pdf-simulacrum-table">
+      <thead>
+        <tr>
+          <th>Piso</th>
+          <th>Área</th>
+          <th>Nombre</th>
+          <th>Cargo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @simulacrum_items.present? %>
+          <% @simulacrum_items.where("clasification = ?", 1).each do |simulacrum_item| %>
+            <tr>
+              <td>
+                <%= simulacrum_item.floor %>
+              </td>
+              <td>
+                <%= simulacrum_item.evacuated_personal_area %>
+              </td>
+              <td>
+                <%= simulacrum_item.evacuated_personal_name %>
+              </td>
+              <td>
+                <%= simulacrum_item.evacuated_personal_cargo %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="pdf-simulacrum-section">
+    <div class="pdf-simulacrum-section-title">
+      GRUPOS DE APOYO
+    </div>
+    <div class="pdf-simulacrum-rich-text">
+      <%= @simulacrum.support_group if @simulacrum.present? %>
+    </div>
+  </div>
+  <div class="pdf-simulacrum-section">
+    <div class="pdf-simulacrum-section-title">
+      ACTIVIDADES PREVIAS AL SIMULACRO
+    </div>
+    <div class="pdf-simulacrum-subtitle">
+      Programación de actividades preparatorias del simulacro
+    </div>
+    <table class="pdf-simulacrum-table">
+      <thead>
+        <tr>
+          <th class="pdf-col-40">Actividad</th>
+          <th class="pdf-col-20">Fecha</th>
+          <th class="pdf-col-40">Responsable</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @simulacrum_items.present? %>
+          <% @simulacrum_items.where("clasification = ?", 2).each do |simulacrum_item| %>
+            <tr>
+              <td>
+                <%= simulacrum_item.previous_activity %>
+              </td>
+              <td>
+                <%= simulacrum_item.date_previous %>
+              </td>
+              <td>
+                <%= simulacrum_item.responsible_previous %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="pdf-simulacrum-section">
+    <div class="pdf-simulacrum-section-title">
+      SECUENCIA CRONOLÓGICA DE EVENTOS
+    </div>
+    <table class="pdf-simulacrum-table">
+      <thead>
+        <tr>
+          <th class="pdf-col-30">Hora</th>
+          <th class="pdf-col-70">Actividad</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @simulacrum_items.present? %>
+          <% @simulacrum_items.where("clasification = ?", 3).each do |simulacrum_item| %>
+            <tr>
+              <td>
+                <%= simulacrum_item.time_sequence_crono %>
+              </td>
+              <td>
+                <%= simulacrum_item.activity_sequence %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="pdf-simulacrum-section">
+    <div class="pdf-simulacrum-section-title">
+      NÚMEROS DE EMERGENCIAS
+    </div>
+    <div class="pdf-simulacrum-rich-text">
+      <%= @simulacrum.cel_emergency if @simulacrum.present? %>
+    </div>
+  </div>
+  <div class="pdf-simulacrum-section">
+    <div class="pdf-simulacrum-section-title">
+      CONCLUSIONES
+    </div>
+    <div class="pdf-simulacrum-rich-text">
+      <%= @simulacrum.conclusions if @simulacrum.present? %>
+    </div>
+  </div>
+  <div class="pdf-simulacrum-section">
+    <div class="pdf-simulacrum-section-title">
+      RECOMENDACIONES
+    </div>
+    <div class="pdf-simulacrum-rich-text">
+      <%= @simulacrum.recommendations if @simulacrum.present? %>
+    </div>
+  </div>
+  <div class="pdf-simulacrum-section">
+    <div class="pdf-simulacrum-section-title">
+      REGISTRO FOTOGRÁFICO
+    </div>
+    <% if @simulacrum.simulacro_files.attached? %>
+      <% @simulacrum.simulacro_files.each do |file| %>
+        <div class="pdf-simulacrum-file">
+          <% if file.image? %>
+            <div class="pdf-simulacrum-image-container">
+              <%= image_tag Evaluation.wicked_blob_path(file), class: "pdf-simulacrum-image" %>
+            </div>
+          <% elsif file.video? %>
+            <div class="pdf-simulacrum-file-name">
+              <strong>Video:</strong>
+              <%= file.filename %>
+            </div>
+          <% elsif file.audio? %>
+            <div class="pdf-simulacrum-file-name">
+              <strong>Audio:</strong>
+              <%= file.filename %>
+            </div>
+          <% else %>
+            <div class="pdf-simulacrum-file-name">
+              <strong>Archivo:</strong>
+              <%= file.filename %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="pdf-simulacrum-no-files">
+        No se registraron archivos fotográficos.
+      </div>
+    <% end %>
+  </div>
+  <div class="pdf-simulacrum-signature">
+    <% if @simulacrum.firm_user_asesor == 1 %>
+      <% if @user_asesor.present? && @user_asesor.firm.attached? && @user_asesor.firm.image? %>
+        <div class="pdf-simulacrum-signature-image">
+          <%= image_tag Evaluation.wicked_blob_path(@user_asesor.firm), class: "firmapdf" %>
+        </div>
+      <% else %>
+        <div class="pdf-simulacrum-signature-space"></div>
+      <% end %>
+    <% else %>
+      <div class="pdf-simulacrum-signature-space"></div>
+    <% end %>
+    <div class="pdf-simulacrum-signature-line"></div>
+    <% if @user_asesor.present? %>
+      <div class="pdf-simulacrum-signature-name">
+        <%= @user_asesor.name %>
+      </div>
+      <div class="pdf-simulacrum-signature-detail">
+        Asesor SG-SST
+      </div>
+      <div class="pdf-simulacrum-signature-detail">
+        <%= @user_asesor.document.abbreviation %>:
+        <%= Firm.miles(@user_asesor.nro_document) %>
+      </div>
+      <div class="pdf-simulacrum-signature-detail">
+        Licencia: <%= @user_asesor.license %>
+      </div>
+    <% end %>
+</div>
+

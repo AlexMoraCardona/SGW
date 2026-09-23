@@ -1,87 +1,183 @@
-<div class="container col-12 card p-5">
-    <br>
-    <%= form_with model: @inves_recomendation do |form| %>
-        <% @inves_recomendation.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
+<div class="conesst-page">
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+        <h1 class="conesst-card-header-title">
+          <i class="bi bi-check2-square"></i>
+          Recomendaciones de la investigación
+        </h1>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <%= form_with model: @inves_recomendation do |form| %>
+        <% if @inves_recomendation.errors.any? %>
+          <div class="alert alert-danger conesst-form-errors" role="alert">
+            <strong>
+              <i class="bi bi-exclamation-triangle"></i>
+              Se encontraron los siguientes errores:
+            </strong>
+            <ul class="mb-0 mt-2">
+              <% @inves_recomendation.errors.full_messages.each do |error| %>
+                <li><%= error %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <section class="simulacrum-form-section">
+          <h2 class="simulacrum-form-section-title">
+            <i class="bi bi-lightbulb"></i>
+            Recomendación
+          </h2>
+          <div class="simulacrum-form-field">
+            <label class="simulacrum-form-label">
+              <i class="bi bi-chat-left-text"></i>
+              Recomendación
+              <span data-bs-toggle="tooltip" data-bs-placement="top" title="Ingrese la recomendación." class="text-info" role="button">
+                <i class="bi bi-question-circle"></i>
+              </span>
+            </label>
+            <%= form.text_field :recomendation, class: "form-control simulacrum-form-control", placeholder: "Ingrese la recomendación" %>
+          </div>
+        </section>
+        <section class="simulacrum-form-section">
+          <h2 class="simulacrum-form-section-title">
+            <i class="bi bi-diagram-3"></i>
+            Lugar de aplicación
+          </h2>
+          <div class="simulacrum-form-field">
+            <span class="simulacrum-form-label">
+              <i class="bi bi-bullseye"></i>
+              ¿Dónde se aplicará la recomendación?
+            </span>
+            <div class="d-flex flex-wrap gap-4 align-items-center">
+              <div class="form-check">
+                <%= form.radio_button :apply, 0, class: "form-check-input" %>
+                <%= form.label :apply_0, "Fuente", class: "form-check-label" %>
+              </div>
+              <div class="form-check">
+                <%= form.radio_button :apply, 1, class: "form-check-input" %>
+                <%= form.label :apply_1, "Medio", class: "form-check-label" %>
+              </div>
+              <div class="form-check">
+                <%= form.radio_button :apply, 2, class: "form-check-input" %>
+                <%= form.label :apply_2, "Personas", class: "form-check-label" %>
+              </div>
             </div>
-        <% end %>  
-     
-        <div class="form-group"> 
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingrese la recomendación.">Recomendación: <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :recomendation,  class: "form-control" %>
-        </div>
-        </br>    
-        <div class="row g-3">
-            <div class="col-sm-4">
-                        <%= form.label :apply,  style: "display: block" %>
-                        <%= form.radio_button :apply, 0 %>
-                        <label for="f">FUENTE</label>
-                        <%= form.radio_button :apply, 1 %>
-                        <label for="m">MEDIO</label>
-                        <%= form.radio_button :apply, 2 %>
-                        <label for="p">PERSONAS</label>
-            </div>        
-        </div>  
-        </br>    
-        <div class="row g-2">
-            <div class="col-sm-3">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingrese la fecha de implementación.">Fecha de implementación: <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-                <%= form.date_field :date_implementation,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el responsable de la implementación.">Responsable de la implementación: <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-                <%= form.collection_select :responsible_implementation, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %> 
-            </div>        
-        </div>  
-        </br>    
-        <div class="row g-2">
-            <div class="col-sm-3">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Ingrese la fecha de la verificación.">Fecha de verificación: <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-                <%= form.date_field :date_verification,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el responsable de la verificación.">Responsable de la verificación: <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-                <%= form.collection_select :responsible_verification, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %> 
-            </div>        
-        </div> 
-        <%= form.hidden_field :investigation_id, :value => params[:id].to_s, class: "form-control" %>
-
-        </br>    
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
-    <% end %>
-    <hr>
-    <br>
-    <% if @inves_recomendations.present? %>
-        <div class="d-flex">
-            <div class="container">
-                <h class="display-6">Recomendaciones</h>
-            </div> 
-        </div>
-        
-        <hr>
-            
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">Recomendación</th>
-                    <th scope="col">Editar</th>
-                    <th scope="col">Eliminar</th>
-                </tr>
-            </thead>
-            <tbody>
-            
-                    <% @inves_recomendations.each do |inves_recomendation| %>
-                        <tr>
-                            <td><%= inves_recomendation.recomendation %></td>
-                            <td><%= link_to t('common.edit'), edit_inves_recomendation_path(inves_recomendation), class: 'btn btn-sm btn-primary'  %></td>
-                            <td><%= button_to "Delete", inves_recomendation, method: :delete, class:"btn btn-sm btn-danger" %></td>
-                        </tr>
-                    <% end %>
-            </tbody>      
-        </table>
-    <% end %>         
-    
+          </div>
+        </section>
+        <section class="simulacrum-form-section">
+          <h2 class="simulacrum-form-section-title">
+            <i class="bi bi-calendar-check"></i>
+            Implementación
+          </h2>
+          <div class="simulacrum-form-grid">
+            <div class="simulacrum-form-field">
+              <%= form.label :date_implementation, "Fecha de implementación",  class: "simulacrum-form-label" %>
+              <span data-bs-toggle="tooltip" data-bs-placement="top" title="Ingrese la fecha de implementación." class="text-info" role="button">
+                <i class="bi bi-question-circle"></i>
+              </span>
+              <%= form.date_field :date_implementation, class: "form-control simulacrum-form-control" %>
+            </div>
+            <div class="simulacrum-form-field">
+              <%= form.label :responsible_implementation, "Responsable de la implementación", class: "simulacrum-form-label" %>
+                <span data-bs-toggle="tooltip" data-bs-placement="top" title="Seleccione el responsable de la implementación." class="text-info" role="button">
+                  <i class="bi bi-question-circle"></i>
+                </span>
+                <% usuarios_empresa = User.usuarios_empresa %>
+                <% if usuarios_empresa.present? %>
+                  <%= form.collection_select(:responsible_implementation, usuarios_empresa.order(id: :asc), :id, :name, { prompt: "-- Seleccionar responsable --" }, {class: "form-select simulacrum-form-control", required: true}) %>
+                <% else %>
+                  <div class="alert alert-warning mb-0">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    No hay usuarios disponibles para seleccionar como responsable.
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </section>
+          <section class="simulacrum-form-section">
+            <h2 class="simulacrum-form-section-title">
+              <i class="bi bi-clipboard-check"></i>
+              Verificación
+            </h2>
+            <div class="simulacrum-form-grid">
+              <div class="simulacrum-form-field">
+                <%= form.label :date_verification, "Fecha de verificación", class: "simulacrum-form-label" %>
+                <span data-bs-toggle="tooltip" data-bs-placement="top" title="Ingrese la fecha de la verificación." class="text-info" role="button">
+                  <i class="bi bi-question-circle"></i>
+                </span>
+                <%= form.date_field :date_verification, class: "form-control simulacrum-form-control" %>
+              </div>
+              <div class="simulacrum-form-field">
+                <%= form.label :responsible_verification, "Responsable de la verificación", class: "simulacrum-form-label" %>
+                <span data-bs-toggle="tooltip" data-bs-placement="top" title="Seleccione el responsable de la verificación." class="text-info" role="button">
+                  <i class="bi bi-question-circle"></i>
+                </span>
+                <% usuarios_verificacion = User.usuarios_empresa %>
+                <% if usuarios_verificacion.present? %>
+                  <%= form.collection_select(:responsible_verification, usuarios_verificacion.order(id: :asc), :id, :name, { prompt: "-- Seleccionar responsable --" }, {class: "form-select simulacrum-form-control", required: true}) %>
+                <% else %>
+                  <div class="alert alert-warning mb-0">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    No hay usuarios disponibles para seleccionar como responsable.
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </section>
+          <%= form.hidden_field :investigation_id, value: params[:id].to_s %>
+            <div class="conesst-actions simulacrum-form-actions">
+              <%= form.button type: "submit", class: "conesst-btn conesst-btn-primary", title: t('common.submit') do %>
+                <i class="bi bi-check-circle"></i>
+              <span><%= t('common.submit') %></span>
+            <% end %>
+            <%= link_to :back, class: "conesst-btn conesst-btn-warning", title: "Retornar" do %>
+              <i class="bi bi-arrow-left"></i>
+              <span>Retornar</span>
+            <% end %>
+          </div>
+        <% end %>
+        <% if @inves_recomendations.present? %>
+          <section class="simulacrum-form-section">
+            <h2 class="simulacrum-form-section-title">
+              <i class="bi bi-list-check"></i>
+              Recomendaciones registradas
+            </h2>
+            <div class="conesst-table-wrapper">
+              <table class="conesst-table">
+                <thead>
+                  <tr>
+                    <th>Recomendación</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @inves_recomendations.each do |inves_recomendation| %>
+                    <tr>
+                      <td data-label="Recomendación">
+                        <%= inves_recomendation.recomendation %>
+                      </td>
+                      <td data-label="Editar">
+                        <%= link_to edit_inves_recomendation_path(inves_recomendation), class: "conesst-btn conesst-btn-warning", title: "Editar recomendación" do %>
+                          <i class="bi bi-pencil-square"></i>
+                          <span>Editar</span>
+                        <% end %>
+                      </td>
+                      <td data-label="Eliminar">
+                        <%= button_to inves_recomendation, method: :delete, class: "conesst-btn conesst-btn-danger", title: "Eliminar recomendación", form: {data: {turbo_confirm: "¿Está seguro de eliminar esta recomendación?"}} do %>
+                          <i class="bi bi-trash"></i>
+                          <span>Eliminar</span>
+                        <% end %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        <% end %>
+      </div>
+    </div>
 </div>
-<br>
+

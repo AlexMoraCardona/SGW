@@ -1,0 +1,1124 @@
+<div class="conesst-page">
+  <!-- INFORMACIÓN DE LA INVESTIGACIÓN -->
+  <div class="conesst-card mb-3">
+
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+
+        <h2 class="conesst-card-header-title">
+          <i class="bi bi-clipboard-data"></i>
+          Información de la investigación
+        </h2>
+
+      </div>
+    </div>
+
+    <div class="conesst-card-body">
+
+      <div class="conesst-table-wrapper">
+
+        <table class="conesst-table">
+
+          <tbody>
+
+            <tr>
+              <td data-label="Fecha de investigación">
+                <strong>FECHA DE INVESTIGACIÓN</strong>
+              </td>
+
+              <td data-label="Fecha">
+                <%= @investigation.date_investigation if @investigation.date_investigation.present? %>
+              </td>
+
+              <td data-label="Tipo de evento">
+                <strong>TIPO DE EVENTO</strong>
+              </td>
+
+              <td data-label="Tipo">
+                <%= Investigation.label_type_event(@investigation.type_event) %>
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- DATOS DE LA ENTIDAD -->
+  <div class="conesst-card mb-3">
+
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+
+        <h2 class="conesst-card-header-title">
+          <i class="bi bi-building"></i>
+          Datos de la entidad
+        </h2>
+
+      </div>
+    </div>
+
+    <div class="conesst-card-body">
+
+      <div class="conesst-table-wrapper">
+
+        <table class="conesst-table">
+
+          <tbody>
+
+            <tr>
+              <td data-label="Razón social">
+                <strong>RAZÓN SOCIAL</strong>
+              </td>
+
+              <td data-label="Razón social valor">
+                <%= @entity.business_name if @entity.present? %>
+              </td>
+
+              <td data-label="NIT">
+                <strong>NIT</strong>
+              </td>
+
+              <td data-label="NIT valor">
+                <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.present? %>-<%= @entity.verification_digit if @entity.present? %>
+              </td>
+            </tr>
+
+            <tr>
+              <td data-label="Dirección">
+                <strong>DIRECCIÓN</strong>
+              </td>
+
+              <td data-label="Dirección valor">
+                <%= @entity.entity_address if @entity.present? %>
+              </td>
+
+              <td data-label="Teléfono">
+                <strong>TELÉFONO</strong>
+              </td>
+
+              <td data-label="Teléfono valor">
+                <%= @entity.phone_number_entity if @entity.present? %>
+              </td>
+            </tr>
+
+            <tr>
+              <td data-label="Tipo de vinculación laboral">
+                <strong>TIPO DE VINCULACIÓN LABORAL</strong>
+              </td>
+
+              <td data-label="Vinculación" colspan="3">
+                <%= @investigation.type_labor_connection %>
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- DATOS DEL TRABAJADOR -->
+  <div class="conesst-card mb-3">
+
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+
+        <h2 class="conesst-card-header-title">
+          <i class="bi bi-person"></i>
+          Datos del trabajador
+        </h2>
+
+      </div>
+    </div>
+
+    <div class="conesst-card-body">
+
+      <div class="conesst-table-wrapper">
+
+        <table class="conesst-table">
+
+          <tbody>
+
+            <tr>
+              <td data-label="Apellidos y nombres">
+                <strong>APELLIDOS Y NOMBRES</strong>
+              </td>
+
+              <td data-label="Nombre" colspan="3">
+                <%= @investigation.user.name %>
+              </td>
+            </tr>
+
+            <tr>
+              <td data-label="Edad">
+                <strong>EDAD</strong>
+              </td>
+
+              <td data-label="Edad valor">
+                <%= @investigation.age %>
+              </td>
+
+              <td data-label="Teléfono">
+                <strong>NÚMERO TELEFÓNICO / CELULAR</strong>
+              </td>
+
+              <td data-label="Teléfono valor">
+                <%= @investigation.phone %>
+              </td>
+            </tr>
+
+            <tr>
+              <td data-label="Fecha ingreso">
+                <strong>FECHA DE INGRESO A LA ENTIDAD</strong>
+              </td>
+
+              <td data-label="Fecha ingreso valor">
+                <%= @investigation.date_income %>
+              </td>
+
+              <td data-label="Oficio">
+                <strong>OFICIO</strong>
+              </td>
+
+              <td data-label="Oficio valor">
+                <%= User.label_activity(@investigation.user.activity) %>
+              </td>
+            </tr>
+
+            <tr>
+              <td data-label="Experiencia">
+                <strong>EXPERIENCIA EN EL OFICIO</strong>
+              </td>
+
+              <td data-label="Experiencia valor">
+                <%= @investigation.job_experience %>
+              </td>
+
+              <td data-label="Área">
+                <strong>ÁREA</strong>
+              </td>
+
+              <td data-label="Área valor">
+                <%= @investigation.area %>
+              </td>
+            </tr>
+
+            <tr>
+              <td data-label="Oficio habitual" colspan="4">
+                <strong>
+                  ¿EL ACCIDENTE OCURRIÓ REALIZANDO SU OFICIO HABITUAL?
+                </strong>
+                <br>
+                <%= Investigation.label_accident_usual(@investigation.accident_usual) %>
+              </td>
+            </tr>
+
+            <tr>
+              <td data-label="Explicación" colspan="4">
+                <strong>
+                  SI LA RESPUESTA ES NO EXPLIQUE ¿POR QUÉ?
+                </strong>
+
+                <div class="mt-2">
+                  <%= @investigation.obs_accident_usual %>
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- DATOS GENERALES DEL ACCIDENTE -->
+  <div class="conesst-card mb-3">
+
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+
+        <h2 class="conesst-card-header-title">
+          <i class="bi bi-exclamation-triangle"></i>
+          Datos generales sobre el accidente
+        </h2>
+
+      </div>
+    </div>
+
+    <div class="conesst-card-body">
+
+      <div class="conesst-table-wrapper">
+
+        <table class="conesst-table">
+
+          <tbody>
+
+            <tr>
+              <td data-label="Fecha de ocurrencia">
+                <strong>FECHA DE OCURRENCIA</strong>
+              </td>
+
+              <td data-label="Fecha">
+                <%= @investigation.date_accident %>
+              </td>
+
+              <td data-label="Hora">
+                <strong>HORA DEL EVENTO</strong>
+              </td>
+
+              <td data-label="Hora valor">
+                <%= @investigation.time_accident.strftime("%T") if @investigation.time_accident.present? %>
+              </td>
+            </tr>
+
+            <tr>
+              <td data-label="Lugar">
+                <strong>LUGAR DONDE OCURRE EL EVENTO</strong>
+              </td>
+
+              <td data-label="Lugar valor" colspan="3">
+                <%= @investigation.place %>
+              </td>
+            </tr>
+
+            <tr>
+              <td data-label="Informó oportunamente" colspan="4">
+                <strong>
+                  ¿INFORMÓ OPORTUNAMENTE EL ACCIDENTE?
+                </strong>
+
+                <br>
+
+                <%= Investigation.label_inform_prompt(@investigation.inform_prompt) %>
+
+                <span class="ms-2 fw-semibold">¿QUÉ?</span>
+
+                <div class="mt-2">
+                  <%= @investigation.obs_inform_prompt %>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td data-label="Tarea desarrollada" colspan="4">
+                <strong>
+                  TAREA DESARROLLADA AL MOMENTO DEL EVENTO
+                </strong>
+
+                <div class="mt-2">
+                  <%= @investigation.task_moment_accident %>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td data-label="Descripción del evento" colspan="4">
+                <strong>
+                  DESCRIPCIÓN DEL EVENTO
+                </strong>
+
+                <small class="text-muted d-block">
+                  Describa dónde, cuándo, qué y cómo ocurrió.
+                </small>
+
+                <div class="mt-2">
+                  <%= @investigation.event_description %>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td data-label="Versión trabajador" colspan="4">
+                <strong>VERSIÓN TRABAJADOR ACCIDENTADO</strong>
+
+                <div class="mt-2">
+                  <%= @investigation.version_work %>
+                </div>
+
+                <strong class="d-block mt-3">
+                  OBSERVACIONES DEL TRABAJADOR Y/O TESTIGOS
+                </strong>
+
+                <strong class="d-block mt-2">
+                  Versión de los testigos:
+                </strong>
+
+                <div class="mt-2">
+                  <%= @investigation.version_witness %>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td data-label="Eventos similares" colspan="4">
+                <strong>
+                  ¿HAN OCURRIDO EVENTOS SIMILARES?
+                </strong>
+
+                <br>
+
+                <%= Investigation.label_similar_events(@investigation.similar_events) %>
+
+                <div class="mt-2">
+                  <strong>
+                    Si la respuesta es afirmativa, explique qué acciones se habían tomado para su control:
+                  </strong>
+                </div>
+
+                <div class="mt-2">
+                  <%= @investigation.obs_similar_events %>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td data-label="Datos complementarios" colspan="4">
+                <strong>DATOS COMPLEMENTARIOS</strong>
+
+                <div class="mt-2">
+                  <%= @investigation.datos_complementarios %>
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- REGISTRO FOTOGRÁFICO -->
+  <div class="conesst-card mb-3">
+
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+
+        <h2 class="conesst-card-header-title">
+          <i class="bi bi-images"></i>
+          Registro fotográfico
+        </h2>
+
+      </div>
+    </div>
+
+    <div class="conesst-card-body">
+
+      <% if @investigation.present? && @investigation.registros_fotograficos.attached? %>
+
+        <div class="row g-3">
+
+          <% @investigation.registros_fotograficos.each do |file| %>
+
+            <div class="col-12 col-sm-6 col-lg-4">
+
+              <div class="border rounded p-2 h-100 text-center">
+
+                <% if file.image? %>
+
+                  <%= image_tag file,
+                        data: { previews_target: "preview" },
+                        class: "img-fluid rounded",
+                        alt: file.filename.to_s %>
+
+                  <div class="small text-muted mt-2">
+                    <%= file.filename %>
+                  </div>
+
+                <% elsif file.video? %>
+
+                  <%= video_tag url_for(file),
+                        controls: true,
+                        class: "w-100 rounded" %>
+
+                  <div class="small text-muted mt-2">
+                    <%= file.filename %>
+                  </div>
+
+                <% elsif file.audio? %>
+
+                  <%= audio_tag url_for(file),
+                        controls: true,
+                        class: "w-100" %>
+
+                  <div class="small text-muted mt-2">
+                    <%= file.filename %>
+                  </div>
+
+                <% else %>
+
+                  <%= link_to file.filename,
+                        url_for(file),
+                        class: "conesst-btn conesst-btn-primary" %>
+
+                <% end %>
+
+              </div>
+
+            </div>
+
+          <% end %>
+
+        </div>
+
+      <% else %>
+
+        <div class="simulacrum-empty">
+          <i class="bi bi-images"></i>
+          <span>No hay registros fotográficos asociados.</span>
+        </div>
+
+      <% end %>
+
+      <div class="mt-4">
+
+        <h6 class="fw-bold">
+          Espacio para la descripción de las imágenes
+        </h6>
+
+        <div class="border rounded p-3 bg-light">
+          <%= @investigation.photographic_record %>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ÁRBOL DE CAUSAS -->
+  <div class="conesst-card mb-3">
+
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+
+        <h2 class="conesst-card-header-title">
+          <i class="bi bi-diagram-3"></i>
+          Árbol de causas
+        </h2>
+
+      </div>
+    </div>
+
+    <div class="conesst-card-body">
+
+      <!-- Lesión -->
+      <div class="conesst-table-wrapper">
+
+        <table class="conesst-table">
+
+          <tbody>
+
+            <tr>
+              <td data-label="Espacio" class="text-center">
+
+              </td>
+
+              <td data-label="Lesión" class="text-center">
+
+                <strong>ESPACIO PARA LESIÓN</strong>
+
+                <div class="mt-2">
+                  <%= @investigation.space_for_injury %>
+                </div>
+
+              </td>
+
+              <td data-label="Espacio">
+
+              </td>
+            </tr>
+
+            <tr>
+              <td></td>
+
+              <td class="text-center">
+                <i class="bi bi-arrow-down fs-4"></i>
+              </td>
+
+              <td></td>
+            </tr>
+
+            <tr>
+              <td></td>
+
+              <td class="text-center">
+
+                <strong>ESPACIO PARA AGENTE DEL ACCIDENTE</strong>
+
+                <div class="mt-2">
+                  <%= @investigation.space_for_agente %>
+                </div>
+
+              </td>
+
+              <td></td>
+            </tr>
+
+            <tr>
+              <td></td>
+
+              <td class="text-center">
+                <i class="bi bi-arrow-down fs-4"></i>
+              </td>
+
+              <td></td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+
+      <!-- Causas inmediatas -->
+      <div class="conesst-table-wrapper mt-3">
+
+        <table class="conesst-table">
+
+          <tbody>
+
+            <tr>
+
+              <td data-label="Causa inmediata 1" class="text-center">
+                <strong>CAUSA INMEDIATA 1</strong>
+
+                <div class="mt-2">
+                  <%= @investigation.immediate_cause1 %>
+                </div>
+              </td>
+
+              <td data-label="Causa inmediata 2" class="text-center">
+                <strong>CAUSA INMEDIATA 2</strong>
+
+                <div class="mt-2">
+                  <%= @investigation.immediate_cause2 %>
+                </div>
+              </td>
+
+              <td data-label="Causa inmediata 3" class="text-center">
+                <strong>CAUSA INMEDIATA 3</strong>
+
+                <div class="mt-2">
+                  <%= @investigation.immediate_cause3 %>
+                </div>
+              </td>
+
+            </tr>
+
+            <tr>
+
+              <td class="text-center">
+                <i class="bi bi-arrow-down fs-4"></i>
+              </td>
+
+              <td class="text-center">
+                <i class="bi bi-arrow-down fs-4"></i>
+              </td>
+
+              <td class="text-center">
+                <i class="bi bi-arrow-down fs-4"></i>
+              </td>
+
+            </tr>
+
+            <tr>
+
+              <td data-label="Causa básica 1" class="text-center">
+                <strong>CAUSA BÁSICA 1</strong>
+
+                <div class="mt-2">
+                  <%= @investigation.cause_basic1 %>
+                </div>
+              </td>
+
+              <td data-label="Causa básica 2" class="text-center">
+                <strong>CAUSA BÁSICA 2</strong>
+
+                <div class="mt-2">
+                  <%= @investigation.cause_basic2 %>
+                </div>
+              </td>
+
+              <td data-label="Causa básica 3" class="text-center">
+                <strong>CAUSA BÁSICA 3</strong>
+
+                <div class="mt-2">
+                  <%= @investigation.cause_basic3 %>
+                </div>
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- CAUSAS DEL ACCIDENTE -->
+  <div class="conesst-card mb-3">
+
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+
+        <h2 class="conesst-card-header-title">
+          <i class="bi bi-list-check"></i>
+          Causas del accidente
+        </h2>
+
+      </div>
+    </div>
+
+    <div class="conesst-card-body">
+
+      <div class="conesst-table-wrapper">
+
+        <table class="conesst-table">
+
+          <tbody>
+
+            <tr>
+              <td data-label="Referencia" colspan="2">
+                <strong>
+                  CAUSAS DEL ACCIDENTE
+                </strong>
+
+                <small class="text-muted">
+                  (Ver tabla de codificación NTC 3701)
+                </small>
+              </td>
+            </tr>
+
+            <tr>
+              <td data-label="Clasificación" colspan="2">
+                <strong>CAUSAS INMEDIATAS</strong>
+              </td>
+            </tr>
+
+            <tr>
+              <td data-label="Actos inseguros">
+                <strong>ACTOS INSEGUROS</strong>
+              </td>
+
+              <td data-label="Descripción">
+                <%= @investigation.actos_inseguros %>
+              </td>
+            </tr>
+
+            <tr>
+              <td data-label="Condiciones inseguras">
+                <strong>CONDICIONES INSEGURAS</strong>
+              </td>
+
+              <td data-label="Descripción">
+                <%= @investigation.condiciones_inseguras %>
+              </td>
+            </tr>
+
+            <tr>
+              <td data-label="Clasificación" colspan="2">
+                <strong>CAUSAS BÁSICAS</strong>
+              </td>
+            </tr>
+
+            <tr>
+              <td data-label="Factores personales">
+                <strong>FACTORES PERSONALES</strong>
+              </td>
+
+              <td data-label="Descripción">
+                <%= @investigation.factores_personales %>
+              </td>
+            </tr>
+
+            <tr>
+              <td data-label="Factores administrativos">
+                <strong>FACTORES ADMINISTRATIVOS</strong>
+              </td>
+
+              <td data-label="Descripción">
+                <%= @investigation.factores_administrativos %>
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- LESIÓN -->
+  <div class="conesst-card mb-3">
+
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+
+        <h2 class="conesst-card-header-title">
+          <i class="bi bi-heart-pulse"></i>
+          Información de la lesión
+        </h2>
+
+      </div>
+    </div>
+
+    <div class="conesst-card-body">
+
+      <div class="conesst-table-wrapper">
+
+        <table class="conesst-table">
+
+          <tbody>
+
+            <tr>
+
+              <td data-label="Parte del cuerpo afectada">
+                <strong>PARTE DEL CUERPO AFECTADA</strong>
+
+                <div class="mt-2">
+                  <%= @investigation.affected_part %>
+                </div>
+              </td>
+
+              <td data-label="Tipo de lesión">
+                <strong>TIPO DE LESIÓN SUFRIDA</strong>
+
+                <div class="mt-2">
+                  <%= @investigation.type_injury %>
+                </div>
+              </td>
+
+              <td data-label="Mecanismo">
+                <strong>MECANISMO O FORMA DEL ACCIDENTE</strong>
+
+                <div class="mt-2">
+                  <%= @investigation.accident_mechanism %>
+                </div>
+              </td>
+
+              <td data-label="Días incapacidad">
+                <strong>DÍAS DE INCAPACIDAD</strong>
+
+                <div class="mt-2">
+                  <%= @investigation.disability_days %>
+                </div>
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- RECOMENDACIONES -->
+  <div class="conesst-card mb-3">
+
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+
+        <h2 class="conesst-card-header-title">
+          <i class="bi bi-check2-square"></i>
+          Recomendaciones
+        </h2>
+
+      </div>
+    </div>
+
+    <div class="conesst-card-body">
+
+      <% if @inves_recomendations.present? %>
+
+        <div class="conesst-table-wrapper">
+
+          <table class="conesst-table">
+
+            <thead>
+              <tr>
+                <th>Recomendación</th>
+                <th>Fuente</th>
+                <th>Medio</th>
+                <th>Personas</th>
+                <th>Fecha implementación</th>
+                <th>Responsable implementación</th>
+                <th>Fecha verificación</th>
+                <th>Responsable verificación</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <% @inves_recomendations.each do |inves_recomendation| %>
+
+                <tr>
+
+                  <td data-label="Recomendación">
+                    <%= inves_recomendation.recomendation %>
+                  </td>
+
+                  <td data-label="Fuente" class="text-center">
+                    <% if inves_recomendation.apply == 0 %>
+                      <strong class="fs-5">X</strong>
+                    <% end %>
+                  </td>
+
+                  <td data-label="Medio" class="text-center">
+                    <% if inves_recomendation.apply == 1 %>
+                      <strong class="fs-5">X</strong>
+                    <% end %>
+                  </td>
+
+                  <td data-label="Personas" class="text-center">
+                    <% if inves_recomendation.apply == 2 %>
+                      <strong class="fs-5">X</strong>
+                    <% end %>
+                  </td>
+
+                  <td data-label="Fecha implementación">
+                    <%= inves_recomendation.date_implementation %>
+                  </td>
+
+                  <td data-label="Responsable implementación">
+                    <%= User.label_name(inves_recomendation.responsible_implementation) %>
+                  </td>
+
+                  <td data-label="Fecha verificación">
+                    <%= inves_recomendation.date_verification %>
+                  </td>
+
+                  <td data-label="Responsable verificación">
+                    <%= User.label_name(inves_recomendation.responsible_verification) %>
+                  </td>
+
+                </tr>
+
+              <% end %>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      <% else %>
+
+        <div class="simulacrum-empty">
+          <i class="bi bi-info-circle"></i>
+          <span>No hay recomendaciones registradas.</span>
+        </div>
+
+      <% end %>
+
+    </div>
+  </div>
+
+
+  <!-- EQUIPO INVESTIGADOR -->
+  <div class="conesst-card mb-3">
+
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+
+        <h2 class="conesst-card-header-title">
+          <i class="bi bi-people"></i>
+          Equipo investigador
+        </h2>
+
+      </div>
+    </div>
+
+    <div class="conesst-card-body">
+
+      <div class="conesst-table-wrapper">
+
+        <table class="conesst-table">
+
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Cargo</th>
+              <th>Firma</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            <% if @inves_users.present? %>
+
+              <% @inves_users.each do |inves_user| %>
+
+                <tr>
+
+                  <td data-label="Nombre">
+                    <strong>
+                      <%= inves_user.name %>
+                    </strong>
+                  </td>
+
+                  <td data-label="Cargo">
+                    <%= inves_user.post %>
+                  </td>
+
+                  <td data-label="Firma" class="text-center">
+
+                    <% usu = User.buscar_user(inves_user.user_id) %>
+
+                    <% if inves_user.firm == 1 %>
+
+                      <% if usu.present? && usu.firm.attached? && usu.firm.image? %>
+
+                        <%= image_tag usu.firm,
+                              class: "firmapdf img-fluid",
+                              alt: "Firma de #{inves_user.name}" %>
+
+                      <% else %>
+
+                        <span class="badge rounded-pill text-bg-success">
+                          <i class="bi bi-check-circle"></i>
+                          Firmado
+                        </span>
+
+                      <% end %>
+
+                    <% else %>
+
+                      <span class="badge rounded-pill text-bg-light">
+                        Pendiente de firma
+                      </span>
+
+                    <% end %>
+
+                  </td>
+
+                </tr>
+
+              <% end %>
+
+            <% else %>
+
+              <tr>
+                <td colspan="3" class="text-center text-muted">
+                  No hay integrantes registrados.
+                </td>
+              </tr>
+
+            <% end %>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- PROFESIONAL SST -->
+  <div class="conesst-card mb-3">
+
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+
+        <h2 class="conesst-card-header-title">
+          <i class="bi bi-person-vcard"></i>
+          Profesional en Seguridad y Salud en el Trabajo
+        </h2>
+
+      </div>
+    </div>
+
+    <div class="conesst-card-body">
+
+      <div class="conesst-table-wrapper">
+
+        <table class="conesst-table">
+
+          <tbody>
+
+            <tr>
+
+              <td data-label="Profesional SST">
+                <strong>
+                  NOMBRES Y APELLIDOS DEL PROFESIONAL EN SST
+                </strong>
+
+                <div class="mt-2">
+                  <%= User.label_name(@investigation.usr_profesional) %>
+                </div>
+              </td>
+
+              <td data-label="Licencia">
+                <strong>LICENCIA N°</strong>
+
+                <div class="mt-2">
+                  <%= User.label_license(@investigation.usr_profesional) %>
+                </div>
+              </td>
+
+              <td data-label="De">
+                <strong>DE</strong>
+
+                <div class="mt-2">
+                  <%= @investigation.de %>
+                </div>
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ACCIONES -->
+  <div class="conesst-actions">
+
+    <%= link_to :back,
+          class: "conesst-btn conesst-btn-warning",
+          title: "Regresar" do %>
+
+      <i class="bi bi-arrow-left"></i>
+      <span>Retornar</span>
+
+    <% end %>
+
+  </div>
+
+</div>

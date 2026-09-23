@@ -12,9 +12,11 @@ class SimulacrumsController < ApplicationController
     def show
         @simulacrum = Simulacrum.find(params[:id])
         @entity = Entity.find(@simulacrum.entity_id) if @simulacrum.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",113,1).last  
         @simulacrum_items = SimulacrumItem.where("simulacrum_id = ?",@simulacrum.id) if @simulacrum.present?   
         @user_asesor = User.find(@simulacrum.user_asesor) if @simulacrum.user_asesor > 0
+        @template = Template.where("reference = ? and version = ?",@simulacrum.code,@simulacrum.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+
         respond_to do |format|
             format.html
             format.xlsx{ 
@@ -27,8 +29,8 @@ class SimulacrumsController < ApplicationController
     def new
       @simulacrum =  Simulacrum.new
       @entity = Entity.find(Current.user.entity)
-      @template = Template.where("format_number = ? and document_vigente = ?",113,1).last
       @user_asesor = User.find(@entity.external_consultant) if @entity.external_consultant > 0
+      @template = Template.where("reference = ? and document_vigente = ?",'ISE-SST',1).last  
 
     end    
 
@@ -44,7 +46,7 @@ class SimulacrumsController < ApplicationController
     def edit
           @simulacrum = Simulacrum.find(params[:id])
           @entity = Entity.find(@simulacrum.entity_id)
-          @template = Template.where("format_number = ? and document_vigente = ?",113,1).last  
+          @template = Template.where("reference = ? and version = ?",@simulacrum.code,@simulacrum.version).last  
           @user_asesor = User.find(@entity.external_consultant) if @entity.external_consultant > 0
     end
     
@@ -68,23 +70,27 @@ class SimulacrumsController < ApplicationController
     def ver_simulacro
         @simulacrum = Simulacrum.find(params[:id])
         @entity = Entity.find(@simulacrum.entity_id) if @simulacrum.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",113,1).last  
         @simulacrum_items = SimulacrumItem.where("simulacrum_id = ?",@simulacrum.id) if @simulacrum.present?   
         @user_asesor = User.find(@entity.external_consultant) if @entity.external_consultant > 0
+        @template = Template.where("reference = ? and version = ?",@simulacrum.code,@simulacrum.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'ver_simulacrum',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                zoom: 0.75,
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
-      
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('ver_simulacro'),
+                    disable_javascript: true,
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
+                    page_size: 'letter',
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+            }
+        end    
+    
     end    
 
     def firma_simulacro
@@ -117,7 +123,7 @@ class SimulacrumsController < ApplicationController
         params.require(:simulacrum).permit(:date_simulacrum, :year, :user_asesor, 
         :date_user_asesor, :firm_user_asesor, :time_simulacrum, :municipality, 
         :preparation, :type_emergency, :time_warning_signal, :time_alarm_signal, 
-        :time_arrival, :support_group, :cel_emergency, :conclusions, :entity_id, :recommendations, simulacro_files: [])
+        :time_arrival, :support_group, :cel_emergency, :conclusions, :entity_id, :recommendations, :version, :code, simulacro_files: [])
     end 
 
 end  

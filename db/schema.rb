@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_09_17_215544) do
+ActiveRecord::Schema[7.0].define(version: 2026_09_19_192428) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -318,6 +318,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_17_215544) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["entity_id"], name: "index_audit_reports_on_entity_id"
   end
 
@@ -684,6 +686,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_17_215544) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["entity_id"], name: "index_direction_reviews_on_entity_id"
   end
 
@@ -1396,6 +1400,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_17_215544) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["entity_id"], name: "index_improvement_plans_on_entity_id"
   end
 
@@ -1513,6 +1519,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_17_215544) do
     t.string "de"
     t.integer "state_investigation", default: 0
     t.date "date_state_investigation"
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["entity_id"], name: "index_investigations_on_entity_id"
     t.index ["user_id"], name: "index_investigations_on_user_id"
   end
@@ -1618,6 +1626,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_17_215544) do
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
     t.bigint "user_id"
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["entity_id"], name: "index_lessons_on_entity_id"
     t.index ["user_id"], name: "index_lessons_on_user_id"
   end
@@ -2021,6 +2031,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_17_215544) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["entity_id"], name: "index_mock_scripts_on_entity_id"
   end
 
@@ -2218,6 +2230,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_17_215544) do
     t.integer "area_work", default: 0
     t.bigint "cessation_fund_id"
     t.string "email_name"
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["administrative_political_division_id"], name: "index_profiles_on_administrative_political_division_id"
     t.index ["cessation_fund_id"], name: "index_profiles_on_cessation_fund_id"
     t.index ["health_promoter_id"], name: "index_profiles_on_health_promoter_id"
@@ -2538,6 +2552,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_17_215544) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["entity_id"], name: "index_simulacrums_on_entity_id"
   end
 

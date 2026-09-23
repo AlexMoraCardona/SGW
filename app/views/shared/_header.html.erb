@@ -9,10 +9,7 @@
         <!-- LOGO -->
         <div class="col-12 col-md-2 text-center">
           <a href="/" class="d-inline-block">
-            <%= image_tag 'LogoConesst202305232.png',
-                          width: 120,
-                          height: 120,
-                          class: "img-fluid rounded-3" %>
+            <%= image_tag 'LogoConesst202305232.png', width: 120, height: 120, class: "img-fluid rounded-3" %>
           </a>
         </div>
 
@@ -54,129 +51,59 @@
 
             <% if Current.user %>
 
-              <%= link_to "/users/cambiar_clave/path",
-                          class: "btn btn-outline-primary btn-sm rounded-pill",
-                          data: {
-                            bs_toggle: "tooltip",
-                            bs_placement: "top"
-                          },
-                          title: "Cambiar clave" do %>
-
+              <%= link_to "/users/cambiar_clave/path", class: "btn btn-outline-primary btn-sm rounded-pill", data: {bs_toggle: "tooltip", bs_placement: "top"}, title: "Cambiar clave" do %>
                 <i class="bi bi-key-fill me-1"></i>
                 <span class="d-none d-sm-inline">Cambiar clave</span>
-
               <% end %>
-
-              <%= button_to session_path(Current.user),
-                            method: :delete,
-                            class: "btn btn-primary btn-sm rounded-pill",
-                            data: {
-                              turbo_confirm: t('common.confirm')
-                            } do %>
-
+              <%= button_to session_path(Current.user), method: :delete, class: "btn btn-primary btn-sm rounded-pill", data: {turbo_confirm: t('common.confirm')} do %>
                 <i class="bi bi-box-arrow-right me-1"></i>
                 Salir
-
               <% end %>
-
             <% else %>
-
-              <%= link_to t('.login'),
-                          new_session_path,
-                          class: "btn btn-outline-primary btn-sm rounded-pill" %>
-
-              <%= link_to t('.register'),
-                          new_user_path,
-                          class: "btn btn-primary btn-sm rounded-pill" %>
-
+              <%= link_to t('.login'), new_session_path, class: "btn btn-outline-primary btn-sm rounded-pill" %>
+              <%= link_to t('.register'), new_user_path, class: "btn btn-primary btn-sm rounded-pill" %>
             <% end %>
-
           </div>
-
         </div>
-
         <!-- AVATAR -->
         <div class="col-12 col-md-2 text-center">
-
           <% if Current.user %>
-
-            <%= link_to "/users/actualizar_datos/path",
-                        class: "d-inline-block",
-                        data: {
-                          bs_toggle: "tooltip",
-                          bs_placement: "top"
-                        },
-                        title: "Actualizar mis datos" do %>
-
+            <%= link_to "/users/actualizar_datos/path", class: "d-inline-block", data: {bs_toggle: "tooltip", bs_placement: "top"}, title: "Actualizar mis datos" do %>
               <% if Current.user.avatar.attached? && Current.user.avatar.image? %>
-
-                <%= image_tag Current.user.avatar,
-                              class: "avatar-mini img-fluid shadow-sm" %>
-
+                <%= image_tag Current.user.avatar, class: "avatar-mini img-fluid shadow-sm" %>
               <% else %>
-
-                <%= image_tag "avatar.jpg",
-                              class: "avatar-mini img-fluid shadow-sm" %>
-
+                <%= image_tag "avatar.jpg", class: "avatar-mini img-fluid shadow-sm" %>
               <% end %>
-
             <% end %>
-
           <% end %>
-
         </div>
-
       </div>
-
       <!-- NOTIFICACIONES -->
       <div class="d-flex justify-content-center justify-content-lg-end flex-wrap gap-2 mt-4">
-
         <% if @cant_noti.present? %>
-
-          <button type="button"
-                  class="btn btn-outline-primary btn-sm rounded-pill position-relative"
-                  data-bs-toggle="modal"
-                  data-bs-target="#exampleModal">
-
+          <button type="button" class="btn btn-outline-primary btn-sm rounded-pill position-relative" data-bs-toggle="modal" data-bs-target="#exampleModal">
             <i class="bi bi-bell-fill me-1"></i>
             Notificaciones
-
             <% if @cant_noti.to_i > 0 %>
-
               <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                 <%= @cant_noti %>+
               </span>
-
             <% end %>
-
           </button>
-
         <% end %>
-
         <% if @cant_firma.present? %>
-
-          <%= link_to "firms/penfirma/1",
-                      class: "btn btn-outline-primary btn-sm rounded-pill position-relative" do %>
-
+          <%= link_to "firms/penfirma/1", class: "btn btn-outline-primary btn-sm rounded-pill position-relative" do %>
             <i class="bi bi-pen-fill me-1"></i>
             Firmar documentos
-
             <% if @cant_firma.to_i > 0 %>
-
               <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                 <%= @cant_firma %>+
               </span>
-
             <% end %>
-
           <% end %>
-
         <% end %>
-
       </div>
-
     </div>
-
   </div>
 
 
@@ -184,93 +111,54 @@
   <!-- MODAL NOTIFICACIONES -->
   <!-- ====================================================== -->
 
-  <div class="modal fade"
-       id="exampleModal"
-       tabindex="-1"
-       aria-labelledby="exampleModalLabel"
-       aria-hidden="true">
-
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-
       <div class="modal-content border-0 shadow-lg rounded-4">
-
         <div class="modal-header bg-light">
-
           <h5 class="modal-title fw-bold" id="exampleModalLabel">
-
             <i class="bi bi-bell-fill me-2 text-primary"></i>
-
             Notificaciones
-
             <% if @cant_noti.present? && @cant_noti.to_i > 0 %>
-
               <span class="badge bg-danger ms-2">
                 <%= @cant_noti %>
               </span>
-
             <% end %>
-
           </h5>
-
-          <button type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Cerrar"></button>
-
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
-
-
         <div class="modal-body p-2 p-md-4">
-
           <% if @cant_noti.present? && @cant_noti.to_i > 0 %>
-
             <div class="table-responsive">
-
               <table class="table table-hover align-middle mb-0">
-
                 <thead class="table-light">
-
                   <tr>
-
                     <th>
                       <i class="bi bi-diagram-3 me-1"></i>
                       Origen
                     </th>
-
                     <th>
                       <i class="bi bi-building me-1"></i>
                       Empresa
                     </th>
-
                     <th>
                       <i class="bi bi-clipboard-check me-1"></i>
                       Actividad
                     </th>
-
                     <th class="text-nowrap">
                       <i class="bi bi-calendar-event me-1"></i>
                       Fecha / Mes
                     </th>
-
                     <th class="text-center">
                       Acción
                     </th>
-
                   </tr>
-
                 </thead>
-
                 <tbody>
-
                   <% i = 0 %>
-
                   <% while i < @cant_noti.to_i %>
-
                     <% notificacion = @notificaciones[i] %>
                     <% fecha_notificacion = notificacion[3] %>
-
                     <% if fecha_notificacion.present? %>
-
                       <%
                         estado =
                           if fecha_notificacion < Time.current
@@ -281,243 +169,136 @@
                             "pendiente"
                           end
                       %>
-
                       <tr>
-
                         <td>
                           <span class="fw-semibold">
                             <%= notificacion[0] %>
                           </span>
                         </td>
-
                         <td>
                           <%= notificacion[1] %>
                         </td>
-
                         <td>
                           <%= notificacion[2] %>
                         </td>
-
                         <td class="text-nowrap">
-
                           <% if estado == "vencida" %>
-
                             <span class="badge bg-danger">
                               <i class="bi bi-exclamation-circle me-1"></i>
                               <%= fecha_notificacion %>
                             </span>
-
                           <% elsif estado == "hoy" %>
-
                             <span class="badge bg-warning text-dark">
                               <i class="bi bi-clock me-1"></i>
                               <%= fecha_notificacion %>
                             </span>
-
                           <% else %>
-
                             <span class="badge bg-success">
                               <i class="bi bi-calendar-check me-1"></i>
                               <%= fecha_notificacion %>
                             </span>
-
                           <% end %>
-
                         </td>
-
                         <td class="text-center">
-
                           <% if notificacion[0] == "Plan anual de trabajo" %>
-
-                            <%= link_to edit_annual_work_plan_item_path(notificacion[4]),
-                                        class: "btn btn-sm btn-outline-primary rounded-pill",
-                                        title: "Ver notificación",
-                                        data: { bs_toggle: "tooltip" } do %>
+                            <%= link_to edit_annual_work_plan_item_path(notificacion[4]), class: "btn btn-sm btn-outline-primary rounded-pill", title: "Ver notificación", data: { bs_toggle: "tooltip" } do %>
                               <i class="bi bi-eye"></i>
                               <span class="d-none d-md-inline ms-1">Ver</span>
                             <% end %>
-
                           <% elsif notificacion[0] == "Matriz de Peligros y Riesgos" %>
-
-                            <%= link_to edit_matrix_danger_item_path(notificacion[4]),
-                                        class: "btn btn-sm btn-outline-primary rounded-pill",
-                                        title: "Ver notificación",
-                                        data: { bs_toggle: "tooltip" } do %>
+                            <%= link_to edit_matrix_danger_item_path(notificacion[4]), class: "btn btn-sm btn-outline-primary rounded-pill", title: "Ver notificación", data: { bs_toggle: "tooltip" } do %>
                               <i class="bi bi-eye"></i>
                               <span class="d-none d-md-inline ms-1">Ver</span>
                             <% end %>
-
                           <% elsif notificacion[0] == "Encuesta SVE" %>
-
-                            <%= link_to new_epidemiological_surveillance_program_surveillance_survey_surveillance_survey_response_path(
-                                          notificacion[5],
-                                          notificacion[6],
-                                          user_id: notificacion[4],
-                                          from_notification: true
-                                        ),
-                                        class: "btn btn-sm btn-outline-primary rounded-pill",
-                                        title: "Responder encuesta",
-                                        data: { bs_toggle: "tooltip" } do %>
+                            <%= link_to new_epidemiological_surveillance_program_surveillance_survey_surveillance_survey_response_path(notificacion[5], notificacion[6], user_id: notificacion[4], from_notification: true), class: "btn btn-sm btn-outline-primary rounded-pill", title: "Responder encuesta", data: { bs_toggle: "tooltip" } do %>
                               <i class="bi bi-ui-checks"></i>
                               <span class="d-none d-md-inline ms-1">
                                 Responder
                               </span>
                             <% end %>
-
                           <% elsif notificacion[0] == "Matriz ACPM" %>
-
-                            <%= link_to edit_matrix_action_item_path(notificacion[4]),
-                                        class: "btn btn-sm btn-outline-primary rounded-pill",
-                                        title: "Ver notificación",
-                                        data: { bs_toggle: "tooltip" } do %>
+                            <%= link_to edit_matrix_action_item_path(notificacion[4]), class: "btn btn-sm btn-outline-primary rounded-pill", title: "Ver notificación",  data: { bs_toggle: "tooltip" } do %>
                               <i class="bi bi-eye"></i>
                               <span class="d-none d-md-inline ms-1">Ver</span>
                             <% end %>
-
                           <% elsif notificacion[0] == "Matriz Actos y Condiciones Inseguras" %>
-
-                            <%= link_to edit_matrix_unsafe_item_path(notificacion[4]),
-                                        class: "btn btn-sm btn-outline-primary rounded-pill",
-                                        title: "Ver notificación",
-                                        data: { bs_toggle: "tooltip" } do %>
+                            <%= link_to edit_matrix_unsafe_item_path(notificacion[4]), class: "btn btn-sm btn-outline-primary rounded-pill", title: "Ver notificación", data: { bs_toggle: "tooltip" } do %>
                               <i class="bi bi-eye"></i>
                               <span class="d-none d-md-inline ms-1">Ver</span>
                             <% end %>
-
                           <% elsif notificacion[0] == "Compromiso Acta de Reunión COPASST - VIGÍA" %>
-
-                            <%= link_to edit_commitment_path(notificacion[4]),
-                                        class: "btn btn-sm btn-outline-primary rounded-pill",
-                                        title: "Ver notificación",
-                                        data: { bs_toggle: "tooltip" } do %>
+                            <%= link_to edit_commitment_path(notificacion[4]), class: "btn btn-sm btn-outline-primary rounded-pill", title: "Ver notificación", data: { bs_toggle: "tooltip" } do %>
                               <i class="bi bi-eye"></i>
                               <span class="d-none d-md-inline ms-1">Ver</span>
                             <% end %>
-
                           <% elsif notificacion[0] == "Citación" %>
-
-                            <%= link_to activity_path(notificacion[4]),
-                                        class: "btn btn-sm btn-outline-primary rounded-pill",
-                                        title: "Ver citación",
-                                        data: { bs_toggle: "tooltip" } do %>
+                            <%= link_to activity_path(notificacion[4]), class: "btn btn-sm btn-outline-primary rounded-pill", title: "Ver citación", data: { bs_toggle: "tooltip" } do %>
                               <i class="bi bi-eye"></i>
                               <span class="d-none d-md-inline ms-1">Ver</span>
                             <% end %>
-
                           <% elsif notificacion[0] == "Lista Chequeo Moto" %>
-
-                            <%= link_to moto_checklist_path(notificacion[4]),
-                                        class: "btn btn-sm btn-outline-primary rounded-pill",
-                                        title: "Ver lista",
-                                        data: { bs_toggle: "tooltip" } do %>
+                            <%= link_to moto_checklist_path(notificacion[4]), class: "btn btn-sm btn-outline-primary rounded-pill", title: "Ver lista", data: { bs_toggle: "tooltip" } do %>
                               <i class="bi bi-eye"></i>
                               <span class="d-none d-md-inline ms-1">Ver</span>
                             <% end %>
-
                           <% elsif notificacion[0] == "Lista Chequeo Automóvil" %>
-
-                            <%= link_to car_checklist_path(notificacion[4]),
-                                        class: "btn btn-sm btn-outline-primary rounded-pill",
-                                        title: "Ver lista",
-                                        data: { bs_toggle: "tooltip" } do %>
+                            <%= link_to car_checklist_path(notificacion[4]), class: "btn btn-sm btn-outline-primary rounded-pill", title: "Ver lista", data: { bs_toggle: "tooltip" } do %>
                               <i class="bi bi-eye"></i>
                               <span class="d-none d-md-inline ms-1">Ver</span>
                             <% end %>
-
                           <% elsif notificacion[0] == "Solicitud de EPP" %>
-
-                            <%= link_to edit_epp_recuest_path(notificacion[4]),
-                                        class: "btn btn-sm btn-outline-primary rounded-pill",
-                                        title: "Ver solicitud",
-                                        data: { bs_toggle: "tooltip" } do %>
+                            <%= link_to edit_epp_recuest_path(notificacion[4]), class: "btn btn-sm btn-outline-primary rounded-pill", title: "Ver solicitud", data: { bs_toggle: "tooltip" } do %>
                               <i class="bi bi-eye"></i>
                               <span class="d-none d-md-inline ms-1">Ver</span>
                             <% end %>
-
                           <% elsif notificacion[0] == "Extintor" %>
-
-                            <%= link_to adm_extinguisher_path(notificacion[4]),
-                                        class: "btn btn-sm btn-outline-primary rounded-pill",
-                                        title: "Ver extintor",
-                                        data: { bs_toggle: "tooltip" } do %>
+                            <%= link_to adm_extinguisher_path(notificacion[4]), class: "btn btn-sm btn-outline-primary rounded-pill", title: "Ver extintor", data: { bs_toggle: "tooltip" } do %>
                               <i class="bi bi-eye"></i>
                               <span class="d-none d-md-inline ms-1">Ver</span>
                             <% end %>
-
                           <% end %>
-
                         </td>
-
                       </tr>
-
                     <% end %>
-
                     <% i += 1 %>
-
                   <% end %>
-
                 </tbody>
-
               </table>
-
             </div>
-
             <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
-
               <span class="badge bg-danger">
                 <i class="bi bi-exclamation-circle me-1"></i>
                 Vencida
               </span>
-
               <span class="badge bg-warning text-dark">
                 <i class="bi bi-clock me-1"></i>
                 Hoy
               </span>
-
               <span class="badge bg-success">
                 <i class="bi bi-calendar-check me-1"></i>
                 Pendiente
               </span>
-
             </div>
-
           <% else %>
-
             <div class="text-center py-5">
-
               <i class="bi bi-bell-slash display-4 text-body-secondary"></i>
-
               <h5 class="mt-3">
                 No hay notificaciones
               </h5>
-
               <p class="text-body-secondary mb-0">
                 Actualmente no tiene notificaciones pendientes.
               </p>
-
             </div>
-
           <% end %>
-
         </div>
-
         <div class="modal-footer justify-content-center">
-
-          <button type="button"
-                  class="btn btn-secondary rounded-pill px-4"
-                  data-bs-dismiss="modal">
-
+          <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">
             <i class="bi bi-x-circle me-1"></i>
             Cerrar
-
           </button>
-
         </div>
-
       </div>
-
     </div>
-
   </div>
-
 </div>

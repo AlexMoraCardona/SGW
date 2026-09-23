@@ -1,39 +1,123 @@
-<% if @entity.present? %>
-    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
-<% end %>
-<%= link_to "Crear Guión", new_mock_script_path, class: 'btn btn-sm btn-primary' if Current.user.level > 0 &&  Current.user.level < 3 %> 
- 
-<div class="container col-11">
-    <table class="table table-hover">
-        <thead>
+<div class="conesst-page">
+  <div class="conesst-header">
+    <div>
+      <h2 class="conesst-title">
+        <i class="bi bi-journal-text me-1"></i>
+        Guiones de Simulacro
+      </h2>
+      <% if @entity.present? %>
+        <p class="conesst-subtitle">
+          <i class="bi bi-building me-1"></i>
+          <strong>
+            <%= @entity.business_name %>
+          </strong>
+          <% if @entity.identification_number.present? %>
+            <span class="conesst-header-separator">·</span>
+            <span class="conesst-header-nit">
+              NIT:
+              <%= EvaluationRuleDetail.miles(@entity.identification_number) %>
+              <% if @entity.verification_digit.present? %>
+                -<%= @entity.verification_digit %>
+              <% end %>
+            </span>
+          <% end %>
+        </p>
+      <% else %>
+        <p class="conesst-subtitle">
+          Consulta y gestión de los guiones de simulacro
+        </p>
+      <% end %>
+    </div>
+  </div>
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+        <h3 class="conesst-card-header-title">
+          <i class="bi bi-list-ul me-1"></i>
+          Guiones registrados
+        </h3>
+        <% if Current.user.level > 0 && Current.user.level < 3 %>
+          <div class="conesst-actions">
+            <%= link_to new_mock_script_path, class: "conesst-btn conesst-btn-primary", title: "Crear Guión" do %>
+              <i class="bi bi-plus-circle"></i>
+              <span>Crear Guión</span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <div class="conesst-table-wrapper">
+        <table class="table table-hover align-middle conesst-table">
+          <thead>
             <tr>
-                <th scope="col">Fecha</th>
-                <th scope="col">Usuario elaboró</th>
-                <th scope="col">Firmar</th>
-                <th scope="col">Ver</th>
-                <th scope="col"><%= t('common.edit') %></th>
-                <th scope="col">PDF</th>
+              <th>Fecha</th>
+              <th>Usuario elaboró</th>
+              <th class="text-center">Firmar</th>
+              <th class="text-center">Ver</th>
+              <th class="text-center"><%= t('common.edit') %></th>
+              <th class="text-center">PDF</th>
             </tr>
-        </thead> 
-        <tbody>
+          </thead>
+          <tbody>
             <% @mock_scripts.each do |mock_script| %>
-                <tr>  
-                    <td scope="col"><%= mock_script.date_script.strftime("%F") if mock_script.date_script.present? %></td>  
-                    <td scope="col"><%= MockScript.label_user(mock_script.user_asesor) %></td>
-                    <% if mock_script.firm_user_asesor == 0 %>
-                        <td scope="col"><%= link_to 'Firmar', firma_mock_script_path(mock_script), class: 'btn btn-sm btn-warning'%></td>
-                    <% else %>
-                        <td scope="col"><%= mock_script.date_user_asesor.strftime("%F") if mock_script.date_user_asesor.present? %>
+              <tr>
+                <td>
+                  <% if mock_script.date_script.present? %>
+                    <span class="conesst-date">
+                      <i class="bi bi-calendar3 me-1"></i>
+                      <%= mock_script.date_script.strftime("%F") %>
+                    </span>
+                  <% else %>
+                    <span class="text-muted">—</span>
+                  <% end %>
+                </td>
+                <td>
+                  <div class="conesst-user">
+                    <i class="bi bi-person-circle"></i>
+                    <span>
+                      <%= MockScript.label_user(mock_script.user_asesor) %>
+                    </span>
+                  </div>
+                </td>
+                <td class="text-center">
+                  <% if mock_script.firm_user_asesor == 0 %>
+                      <%= link_to firma_mock_script_path(mock_script), class: "conesst-btn conesst-btn-warning", title: "Firmar" do %>
+                        <i class="bi bi-pen"></i>
+                        <span>Firmar</span>
+                      <% end %>
+                  <% else %>
+                    <span class="conesst-signed">
+                      <i class="bi bi-check-circle-fill me-1"></i>
+                      <%= mock_script.date_user_asesor.strftime("%F") if mock_script.date_user_asesor.present? %>
+                    </span>
+                  <% end %>
+                </td>
+                <td class="text-center">
+                    <%= link_to mock_script_path(mock_script), class: "conesst-btn conesst-btn-primary", title: "Ver" do %>
+                      <i class="bi bi-eye"></i>
+                      <span>Ver</span>
                     <% end %>
-                    <td scope="col"><%= link_to 'Ver', mock_script_path(mock_script), class: 'btn btn-sm btn-primary'%></td>
-                    <td scope="col"><%= link_to 'Editar', edit_mock_script_path(mock_script.id), class: 'btn btn-sm btn-warning' if Current.user.level > 0 && Current.user.level < 3 %></td>
-                    <td scope="col"><%= link_to "PDF", ver_mock_script_path(mock_script.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
-                </tr>
-            <% end %>  
-        </tbody>      
-    </table>
-    </br>        
+                </td>
+                <td class="text-center">
+                  <% if Current.user.level > 0 && Current.user.level < 3 %>
+                      <%= link_to edit_mock_script_path(mock_script.id), class: "conesst-btn conesst-btn-warning", title: "Editar" do %>
+                        <i class="bi bi-pencil-square"></i>
+                        <span>Editar</span>
+                      <% end %>
+                  <% end %>
+                </td>
+                <td class="text-center">
+                    <%= link_to ver_mock_script_path(mock_script.id, format: "pdf"), class: "conesst-btn conesst-btn-success", title: "PDF" do %>
+                      <i class="bi bi-file-earmark-pdf"></i>
+                      <span>PDF</span>
+                    <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
-
-
-

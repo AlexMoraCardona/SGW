@@ -1,35 +1,82 @@
-<div class="container col-11 card p-5">
-    <br>
-    <%= form_with model: @audit_report do |form| %>
-        <% @audit_report.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
+<div class="conesst-page">
+  <div class="conesst-card">
+    <div class="conesst-card-body">
+        <%= form_with model: @audit_report do |form| %>
+            <% if @audit_report.errors.any? %>
+                <div class="alert alert-danger audit-signature-errors" role="alert">
+                    <div class="fw-semibold mb-2">
+                        <i class="bi bi-exclamation-triangle me-1"></i>
+                        No fue posible guardar la información.
+                    </div>
+                    <ul class="mb-0">
+                        <% @audit_report.errors.full_messages.each do |error| %>
+                            <li><%= error %></li>
+                        <% end %>
+                    </ul>
+                </div>
+            <% end %>
+            <div class="audit-signature-section">
+                <div class="audit-signature-section-title">
+                    <i class="bi bi-person-check"></i>
+                    <span>Auditor</span>
+                </div>
+               <div class="audit-signature-user">
+                    <div class="audit-signature-user-icon">
+                        <i class="bi bi-person"></i>
+                    </div>
+                    <div class="audit-signature-user-info">
+                        <span class="audit-signature-label">
+                            Auditor responsable
+                        </span>
+                        <strong>
+                            <%= @audit_report.name_user(@audit_report.user_audit) %>
+                        </strong>
+                    </div>
+                </div>
+            </div>
+            <div class="audit-signature-section">
+                <div class="audit-signature-section-title">
+                    <i class="bi bi-pen"></i>
+                    <span>Firma autorizada del Auditor</span>
+                </div>
+                <div class="audit-signature-question">
+                    ¿El auditor autoriza el uso de su firma en el informe?
+                </div>
+                <div class="audit-signature-options">
+                    <label class="audit-signature-option">
+                        <%= form.radio_button :firm_audit, 0 %>
+                          <span class="audit-signature-option-content">
+                            <i class="bi bi-x-circle"></i>
+                                <span>
+                                    <strong>No</strong>
+                                    <small>No autoriza la firma</small>
+                                </span>
+                          </span>
+                    </label>
+                    <label class="audit-signature-option">
+                        <%= form.radio_button :firm_audit, 1 %>
+                            <span class="audit-signature-option-content">
+                                <i class="bi bi-check-circle"></i>
+                                <span>
+                                    <strong>Sí</strong>
+                                    <small>Autoriza la firma</small>
+                                </span>
+                            </span>
+                    </label>
+                </div>
+            </div>
+            <%= form.hidden_field :date_firm_audit, value: Time.now %>
+            <div class="conesst-actions audit-signature-actions">
+                <%= form.button type: "submit", class: "conesst-btn conesst-btn-primary", title: t('common.submit') do %>
+                    <i class="bi bi-check-circle"></i>
+                    <span><%= t('common.submit') %></span>
+                <% end %>
+                <%= link_to :back, class: "conesst-btn conesst-btn-warning", title: "Retornar" do %>
+                    <i class="bi bi-arrow-left"></i>
+                    <span>Retornar</span>
+                <% end %>
             </div>
         <% end %>
-
-        <table>
-            <tr>
-                <td>
-                    <h4>Auditor</h4> 
-                    <%= @audit_report.name_user(@audit_report.user_audit) %>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <h4>Firma autorizada del Auditor</h4> 
-                    <%= form.radio_button :firm_audit, 0 %>
-                    <label for="no">No</label>&nbsp;&nbsp; 
-                    <%= form.radio_button :firm_audit, 1 %>
-                    <label for="si">Si</label>&nbsp;&nbsp;   
-                </td>
-            </tr>
-        </table>
-        <%= form.hidden_field :date_firm_audit, :value => Time.now, class: "form-control" %>
-
-        <br>    
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
-    <% end %>
-</div>        
-<br>
-
+    </div>
+  </div>
+</div>

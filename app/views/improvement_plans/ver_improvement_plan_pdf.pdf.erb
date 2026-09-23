@@ -1,112 +1,27 @@
-<head>
-    <meta charset='utf-8' />
-</head>
-<br>
-<div>
- 
-    <table class="table table-hover" style="border:1px solid black"> 
-        <thead>
-            <tr>
-                <td rowspan="4"; style="border:1px solid black; text-align:center; padding-bottom: 40px;">
-                    <% if @entity.logo.present? then %>
-                        <%=  image_tag  @entity.logo, class: "image_peq" %>
-                    <% end %> 
-                </td>
-                <td rowspan="4"; colspan="3"; style="text-align:center">
-                    <div class="col-10"><%= @template.name if @template.present? %><%= @improvement_plan.entity.business_name if @improvement_plan.present? %> Nit: <%= @improvement_plan.entity.identification_number if @improvement_plan.present? %> </div>
-                </td>
-                <td rowspan="4";  style="text-align:center">
-                </td>
-                <td colspan="2"; style="border:1px solid black">Fecha de Creación:</td>
+<% if @template.present? %>
+        <% format_number = @template.format_number.to_i %>
+        <% plantilla = "improvement_plans/#{format_number}" %>
 
-                <td style="border:1px solid black"><%= @template.date  if @template.present? %></td>
-            </tr>
-            <tr> 
-                <td colspan="2"; style="border:1px solid black">Fecha de Actualización:</td>
-                <td style="border:1px solid black"><%= @template.date_updated if @template.present? %></td>
-            </tr>
-            <tr> 
-                <td colspan="2"; style="border:1px solid black">Versión:</td>
-                <td style="border:1px solid black"><%= @template.version if @template.present? %></td>
-            </tr>
-            <tr> 
-                <td colspan="2"; style="border:1px solid black">Código:</td>
-                <td style="border:1px solid black"><%= @template.reference if @template.present? %></td>
-            </tr>
-
-            <tr>  
-                <td style="border:1px solid black; text-align:center">NÚMERAL ESTÁNDAR</TD>
-                <td style="border:1px solid black; text-align:center">ACTIVIDAD</TD>
-                <td style="border:1px solid black; text-align:center">RECURSOS</TD>
-                <td style="border:1px solid black; text-align:center">RESPONSABLE</TD>
-                <td style="border:1px solid black; text-align:center">PLAZO DE LA ACCION</TD>
-                <td style="border:1px solid black; text-align:center">OBSERVACIONES</TD>
-                <td style="border:1px solid black; text-align:center">EVIDENCIA DE CUMPLIMIENTO</TD>
-                <td style="border:1px solid black; text-align:center">VER/EDITAR</TD>
-             </tr>  
-        </thead>
-        <% @improvement_items.each do |item| %>   
-            <tbody>
-                <tr>
-                    <td style="border:1px solid black; text-align:center"><%= item.action_improvement %></td>
-                    <td style="border:1px solid black"><%= item.activity_plan %></td>
-                    <td style="border:1px solid black"><%= item.resources_improvement %></td>
-                    <td style="border:1px solid black"><%= item.responsible_action %></td>
-                    <td style="border:1px solid black"><%= item.date_initial %></td>
-                    <td style="border:1px solid black"><%= item.observation %></td>
-                    <td style="border:1px solid black">
-                        <% if item.file_improvements.attached? %>
-                            <div data-controller="previews" >
-            
-                                <% item.file_improvements.each do |file|%>
-                                    <br>
-                                    <% if file.image? %>
-                                        <div>
-                                            <%= image_tag file, data: {previews_target: "preview"}, class: "image_peq" %>
-                                            <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                                        </div>
-                                    <% elsif file.video? %>
-                                            <%= video_tag url_for(file), controls: "", width: "400px" %>          
-                                            <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                                    <% elsif file.audio? %>
-                                        <%= audio_tag(url_for(file), controls: "") %>          
-                                        <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                                    <% else %>
-                                        <%= link_to file.filename, url_for(file) %>          
-                                        <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                                    <% end %>
-                                <% end %>  
-                            </div>
-                        <% end %>  
-                    
-                    </td>
-                    <td style="border:1px solid black; text-align:center;"><%= link_to t('common.edit'), edit_improvement_item_path(item), class: 'btn btn-sm btn-primary'  %></td>
-                </tr>
-            </body> 
+        <% if lookup_context.exists?(plantilla, [], true) %>
+            <%= render plantilla, template: @template %>
+        <% else %>
+            <div class="alert alert-warning text-center my-4">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            La plantilla <strong>#{format_number}</strong> aún no tiene
+            un formato de visualización configurado.
+            </div>
         <% end %>
-        <tr style="border:1px solid black">
-            <td  colspan="4"; style="border:1px solid black"><br>
-                <% if @improvement_plan.firm_representante == 1 %>
-                    <% if @rep.present? %>
-                        <% if @rep.firm.attached? %>
-                           <% if @rep.firm.image? %> 
-                                <%= image_tag @rep.firm, class: "firma" %>
-                            <% end %>
-                        <% end %>
-                    <% end %>     
-                <% end %>     
-            </td>
-            <td  colspan="3"; style="border:0px solid black"><br>
-            </td>
-            <td  colspan="3"; style="border:0px solid black"><br>
-            </td>
-        </tr> 
-        <tr>
-            <td  colspan="4"; style="border:1px solid black"><%= @rep.name %> - Representante Legal</td>
-            <td  colspan="3"; style="border:0px solid black"></td>
-            <td  colspan="3"; style="border:0px solid black"></td>
-        </tr>
-    </table>  
-    </br>
-</div>    
+<% end %>
+
+<!-- =========================================================
+     CONTROL DE CAMBIOS
+     ========================================================= -->
+
+<% if @template_versions.present? %>
+
+  <div class="control-cambios">
+    <%= render 'evaluation_rule_details/control_cambios' %>
+  </div>
+
+<% end %>
 

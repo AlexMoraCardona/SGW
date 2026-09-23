@@ -17,10 +17,11 @@ class DirectionReviewsController < ApplicationController
     end  
     
     def show 
-        @template = Template.where("format_number = ? and document_vigente = ?",71,1).last  
         @direction_review = DirectionReview.find(params[:id])
         @entity = Entity.find(@direction_review.entity_id) if @direction_review.present?
         @rep = User.find(@direction_review.user_representante)
+        @template = Template.where("reference = ? and version = ?",@direction_review.code,@direction_review.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
         respond_to do |format|
             format.html
@@ -32,28 +33,34 @@ class DirectionReviewsController < ApplicationController
     
     def ver_review_pdf
         @direction_review = DirectionReview.find(params[:id])
-        @template = Template.where("format_number = ? and document_vigente = ?",71,1).last  
         @entity = Entity.find(@direction_review.entity_id) if @direction_review.present?
         @rep = User.find(@direction_review.user_representante)
+        @template = Template.where("reference = ? and version = ?",@direction_review.code,@direction_review.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'ver_review_pdf',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
-      
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('ver_review_pdf'),
+                    disable_javascript: true,
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
+                    page_size: 'letter',
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+            }
+        end    
+
+     
     end    
 
 
     def new
       @direction_review =  DirectionReview.new
-      @template = Template.where("format_number = ? and document_vigente = ?",71,1).last  
+      @template = Template.where("reference = ? and document_vigente = ?",'RAD-SST',1).last  
     end    
 
     def create
@@ -105,7 +112,7 @@ class DirectionReviewsController < ApplicationController
     private
 
     def direction_review_params
-        params.require(:direction_review).permit(:user_representante, :date_firm_representante, :firm_representante, :date_review, :g1, :r1, :g2, :r2, :g3, :r3, :g4, :r4, :g5, :r5, :g6, :r6, :g7, :r7, :g8, :r8, :g9, :r9, :g10, :r10, :g11, :r11, :g12, :r12, :g13, :r13, :g14, :r14, :g15, :r15, :g16, :r16, :g17, :r17, :g18, :r18, :g19, :r19, :g20, :r20, :g21, :r21, :g22, :r22, :g23, :r23, :g24, :r24, :entity_id)
+        params.require(:direction_review).permit(:user_representante, :date_firm_representante, :firm_representante, :date_review, :g1, :r1, :g2, :r2, :g3, :r3, :g4, :r4, :g5, :r5, :g6, :r6, :g7, :r7, :g8, :r8, :g9, :r9, :g10, :r10, :g11, :r11, :g12, :r12, :g13, :r13, :g14, :r14, :g15, :r15, :g16, :r16, :g17, :r17, :g18, :r18, :g19, :r19, :g20, :r20, :g21, :r21, :g22, :r22, :g23, :r23, :g24, :r24, :entity_id, :version, :code)
     end 
 end  
 

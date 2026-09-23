@@ -1,31 +1,89 @@
-<div class="container col-11 card p-5">
-    <br>
-    <%= form_with model: @improvement_plan do |form| %>
-        <% @improvement_plan.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
+<div class="conesst-page">
+    <div class="conesst-header">
+        <div>
+            <h1 class="conesst-title">
+                <i class="bi bi-clipboard2-check me-2"></i>
+                Plan de mejoramiento SG-SST
+            </h1>
+            <p class="conesst-subtitle">
+                Registro del plan de mejoramiento de la entidad
+            </p>
+        </div>
+    </div>
+    <div class="conesst-card">
+        <div class="conesst-card-header">
+            <div class="conesst-card-header-content">
+                <h2 class="conesst-card-header-title">
+                    <i class="bi bi-pencil-square me-2"></i>
+                    Información del plan
+                </h2>
             </div>
-        <% end %>
-
-        <%= form.hidden_field :entity_id, :value => params[:entity_id].to_i, class: "form-control" if params[:entity_id].present? %>
-
-        <div class="row g-2">
-            <div class="col-sm-4">
-                <%= form.label :date_plan, style: "display: block" %>
-                <%= form.date_field :date_plan,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-2">
-            <div class="col-sm-4">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Representante Legal.">Representante Legal:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                <%= form.collection_select :user_representante, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-            </div>        
-        </div>  
-
-        <br>    
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
-    <% end %>
-</div>        
-<br>
+        </div>
+        <div class="conesst-card-body">
+            <%= form_with model: @improvement_plan do |form| %>
+                <% if @improvement_plan.errors.any? %>
+                    <div class="alert alert-danger mb-4" role="alert">
+                        <div class="fw-semibold mb-2">
+                            <i class="bi bi-exclamation-triangle me-1"></i>
+                            No fue posible guardar el plan:
+                        </div>
+                        <ul class="mb-0">
+                            <% @improvement_plan.errors.full_messages.each do |error| %>
+                                <li>
+                                    <%= error %>
+                                </li>
+                            <% end %>
+                        </ul>
+                    </div>
+                <% end %>
+                <%= form.hidden_field :entity_id, value: params[:entity_id].to_i if params[:entity_id].present? %>
+                <%= form.hidden_field :code, value: @template.reference if @template.present? %>
+                <%= form.hidden_field :version, value: @template.version.to_i if @template.present? %>
+                <div class="conesst-form-section">
+                    <div class="conesst-form-section-title">
+                        <i class="bi bi-calendar3 me-1"></i>
+                        Información del plan
+                    </div>
+                    <div class="conesst-form-grid">
+                        <div class="conesst-form-group">
+                            <%= form.label :date_plan, class: "conesst-form-label" do %>
+                                <span>
+                                    Fecha del plan
+                                </span>
+                                <%= image_tag "ayuda.png", width: 22, height: 22, class: "conesst-help-icon", data: {bs_toggle: "tooltip", bs_html: "true", bs_placement: "top"}, title: "Seleccione la fecha correspondiente al plan de mejoramiento." %>
+                            <% end %>
+                            <%= form.date_field :date_plan, class: "form-control" %>
+                        </div>
+                    </div>
+                </div>
+                <div class="conesst-form-section">
+                    <div class="conesst-form-section-title">
+                        <i class="bi bi-person-badge me-1"></i>
+                        Representante legal
+                    </div>
+                    <div class="conesst-form-grid">
+                        <div class="conesst-form-group">
+                            <%= form.label :user_representante, class: "conesst-form-label" do %>
+                                <span>
+                                    Representante Legal
+                                </span>
+                                <%= image_tag "ayuda.png",  width: 22, height: 22, class: "conesst-help-icon", data: {bs_toggle: "tooltip", bs_html: "true", bs_placement: "top"}, title: "Seleccione el nombre del Representante Legal." %>
+                            <% end %>
+                            <%= form.collection_select(:user_representante, User.usuarios_empresa.order(id: :asc), :id, :name, {prompt: "-- Seleccionar Representante Legal --"}, {class: "form-select select2"}) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="conesst-actions conesst-form-actions">
+                    <%= form.button type: "submit", class: "conesst-btn conesst-btn-primary" do %>
+                        <i class="bi bi-check-circle me-1"></i>
+                        <%= t('common.submit') %>
+                    <% end %>
+                    <%= link_to :back, class: "conesst-btn" do %>
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Retornar
+                    <% end %>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>

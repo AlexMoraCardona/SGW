@@ -1,35 +1,151 @@
-<% if @entity.present? %>
-    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
-<% end %>
-<%= link_to "Crear lección", new_lesson_path, class: 'btn btn-sm btn-primary' if Current.user.level > 0 &&  Current.user.level < 3 %> 
- 
-<div class="container col-11">
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">Fecha</th>
-                <th scope="col">Título</th>
-                <th scope="col">Ver</th>
-                <th scope="col"><%= t('common.edit') %></th>
-                <th scope="col"><%= t('common.delete') %></th>
-                <th scope="col">PDF</th>
-            </tr>
-        </thead> 
-        <tbody>
-            <% @lessons.each do |lesson| %>
-                <tr> 
-                    <td scope="col"><%= lesson.created_at.strftime("%F") if lesson.created_at.present? %></td>  
-                    <td scope="col"><%= lesson.title %></td>  
-                    <td scope="col"><%= link_to 'Ver', lesson_path(lesson), class: 'btn btn-sm btn-primary'%></td>
-                    <td scope="col"><%= link_to 'Editar', edit_lesson_path(lesson.id), class: 'btn btn-sm btn-warning' if Current.user.level > 0 &&  Current.user.level < 3 %></td>
-                    <td scope="col"><%= button_to 'Delete', lesson, method: :delete, class:'btn btn-sm btn-danger' if Current.user.level > 0 &&  Current.user.level < 3 %></td>
-                    <td scope="col"><%= link_to "PDF", ver_leccion_path(lesson.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
+<div class="conesst-page">
+  <div class="conesst-header">
+    <div>
+      <h1 class="conesst-title">
+        <i class="bi bi-journal-bookmark me-2"></i>
+        Lecciones
+      </h1>
+      <% if @entity.present? %>
+        <p class="conesst-subtitle">
+          <i class="bi bi-building me-1"></i>
+          <strong><%= @entity.business_name %></strong>
+          <span class="ms-2">
+            NIT:
+            <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %><%= "-#{@entity.verification_digit}" if @entity.verification_digit.present? %>
+          </span>
+        </p>
+      <% else %>
+        <p class="conesst-subtitle">
+          Consulta y administración de lecciones
+        </p>
+      <% end %>
+    </div>
+  </div>
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+        <div>
+          <h2 class="conesst-card-header-title">
+            <i class="bi bi-list-ul me-2"></i>
+            Listado de lecciones
+          </h2>
+          <p class="conesst-card-header-subtitle">
+            Lecciones disponibles en el sistema
+          </p>
+        </div>
+        <% if Current.user.level > 0 && Current.user.level < 3 %>
+          <div class="conesst-actions">
+            <%= link_to new_lesson_path, class: "conesst-btn conesst-btn-primary" do %>
+              <i class="bi bi-plus-circle me-1"></i>
+              Crear lección
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <% if @lessons.present? %>
+        <div class="conesst-table-wrapper">
+          <div class="table-responsive">
+            <table class="conesst-table table-hover align-middle">
+              <thead>
+                <tr>
+                  <th class="text-center">
+                    <i class="bi bi-calendar3 me-1"></i>
+                    Fecha
+                  </th>
+                  <th>
+                    <i class="bi bi-journal-text me-1"></i>
+                    Título
+                  </th>
+                  <th class="text-center">
+                    Ver
+                  </th>
+                  <% if Current.user.level > 0 && Current.user.level < 3 %>
+                    <th class="text-center">
+                      Editar
+                    </th>
+                    <th class="text-center">
+                      Eliminar
+                    </th>
+                  <% end %>
+                  <th class="text-center">
+                    PDF
+                  </th>
                 </tr>
-            <% end %>  
-        </tbody>      
-    </table>
-    </br>        
+              </thead>
+              <tbody>
+                <% @lessons.each do |lesson| %>
+                  <tr>
+                    <td class="text-center">
+                      <span class="conesst-pdf-date">
+                        <%= lesson.created_at.strftime("%d/%m/%Y") if lesson.created_at.present? %>
+                      </span>
+                    </td>
+                    <td>
+                      <div class="conesst-table-main-text">
+                        <%= lesson.title %>
+                      </div>
+                    </td>
+                    <td class="text-center">
+                      <%= link_to lesson_path(lesson), class: "conesst-btn conesst-btn-sm", title: "Ver lección" do %>
+                        <i class="bi bi-eye"></i>
+                        <span class="d-none d-md-inline ms-1">
+                          Ver
+                        </span>
+                      <% end %>
+                    </td>
+                    <% if Current.user.level > 0 && Current.user.level < 3 %>
+                      <td class="text-center">
+                        <%= link_to edit_lesson_path(lesson), class: "conesst-btn conesst-btn-sm", title: "Editar lección" do %>
+                          <i class="bi bi-pencil-square"></i>
+                          <span class="d-none d-md-inline ms-1">
+                            Editar
+                          </span>
+                        <% end %>
+                      </td>
+                      <td class="text-center">
+                        <%= button_to lesson, method: :delete, class: "conesst-btn conesst-btn-sm", title: "Eliminar lección", form: {data: {turbo_confirm: "¿Está seguro de eliminar esta lección?"}} do %>
+                          <i class="bi bi-trash"></i>
+                          <span class="d-none d-md-inline ms-1">
+                            Eliminar
+                          </span>
+                        <% end %>
+                      </td>
+                    <% end %>
+                    <td class="text-center">
+                      <%= link_to ver_leccion_path(lesson.id, format: "pdf"), class: "conesst-btn conesst-btn-sm", title: "Generar PDF" do %>
+                        <i class="bi bi-file-earmark-pdf"></i>
+                        <span class="d-none d-md-inline ms-1">
+                          PDF
+                        </span>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      <% else %>
+        <div class="conesst-empty-state">
+          <div class="conesst-empty-state-icon">
+            <i class="bi bi-journal-x"></i>
+          </div>
+          <h5>
+            No hay lecciones registradas
+          </h5>
+          <p>
+            Actualmente no existen lecciones disponibles para mostrar.
+          </p>
+          <% if Current.user.level > 0 && Current.user.level < 3 %>
+            <%= link_to new_lesson_path, class: "conesst-btn conesst-btn-primary" do %>
+              <i class="bi bi-plus-circle me-1"></i>
+              Crear primera lección
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>
-
-
-

@@ -1,0 +1,124 @@
+<div class="conesst-page">
+  <div class="conesst-header">
+    <div>
+      <h1 class="conesst-title">
+        <i class="bi bi-journal-text me-2"></i>
+        Lección aprendida
+      </h1>
+      <p class="conesst-subtitle">
+        Documento de lección aprendida y recomendaciones
+      </p>
+    </div>
+  </div>
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+        <div>
+          <h2 class="conesst-card-header-title">
+            <i class="bi bi-file-earmark-text me-2"></i>
+            Información del documento
+          </h2>
+          <% if @entity.present? %>
+            <p class="conesst-card-header-subtitle">
+              <%= @entity.business_name %>
+              <% if @entity.identification_number.present? %>
+                <span class="ms-2">
+                  NIT:
+                  <%= EvaluationRuleDetail.miles(@entity.identification_number) %><%= "-#{@entity.verification_digit}" if @entity.verification_digit.present? %>
+                </span>
+              <% end %>
+            </p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <% if @lesson.present? %>
+        <div class="conesst-form-section">
+          <div class="conesst-form-section-title">
+            <i class="bi bi-bookmark me-2"></i>
+            Título
+          </div>
+          <div class="conesst-form-control-static">
+            <%= @lesson.title %>
+          </div>
+        </div>
+        <div class="conesst-form-section">
+          <div class="conesst-form-section-title">
+            <i class="bi bi-question-circle me-2"></i>
+            ¿Qué sucedió?
+          </div>
+          <div class="conesst-form-control-static conesst-rich-text-content">
+            <%= @lesson.leccion_que %>
+          </div>
+        </div>
+        <div class="conesst-form-section">
+          <div class="conesst-form-section-title">
+            <i class="bi bi-diagram-3 me-2"></i>
+            Causas originadoras del evento
+          </div>
+          <div class="conesst-form-control-static conesst-rich-text-content">
+            <%= @lesson.leccion_causa %>
+          </div>
+        </div>
+        <div class="conesst-form-section">
+          <div class="conesst-form-section-title">
+            <i class="bi bi-lightbulb me-2"></i>
+            Recomendaciones
+          </div>
+          <div class="conesst-form-control-static conesst-rich-text-content">
+            <%= @lesson.leccion_recome %>
+          </div>
+        </div>
+      <% end %>
+      <div class="conesst-form-section">
+        <div class="conesst-form-section-title">
+          <i class="bi bi-pen me-2"></i>
+          Responsables
+        </div>
+        <div class="conesst-signature-section">
+          <div class="conesst-signature">
+            <div class="conesst-signature-title">
+              Elaboró
+            </div>
+            <div class="conesst-signature-space">
+              <% if @user_responsable.present? && @lesson.present? && @lesson.firm_user_adviser_sst == 1 && @user_responsable.firm.attached? && @user_responsable.firm.image? %>
+                <%= image_tag @user_responsable.firm, class: "conesst-signature-image", alt: "Firma #{@user_responsable.name}" %>
+              <% end %>
+            </div>
+            <div class="conesst-signature-line"></div>
+            <div class="conesst-signature-name">
+              <%= @user_responsable.name if @user_responsable.present? %>
+            </div>
+            <div class="conesst-signature-role">
+              Asesor externo SG-SST
+            </div>
+          </div>
+          <div class="conesst-signature">
+            <div class="conesst-signature-title">
+              Responsable
+            </div>
+            <div class="conesst-signature-space">
+              <% if @user_vigia.present? && @lesson.present? && @lesson.firm_user_vigia == 1 && @user_vigia.firm.attached? && @user_vigia.firm.image? %>
+                <%= image_tag @user_vigia.firm, class: "conesst-signature-image", alt: "Firma #{@user_vigia.name}" %>
+              <% end %>
+            </div>
+            <div class="conesst-signature-line"></div>
+            <div class="conesst-signature-name">
+              <%= @user_vigia.name if @user_vigia.present? %>
+            </div>
+            <div class="conesst-signature-role">
+              Responsable de SG-SST
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="conesst-form-actions">
+        <%= link_to :back, class: "conesst-btn" do %>
+          <i class="bi bi-arrow-left me-1"></i>
+          Retornar
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,366 +1,126 @@
-<div class="container col-12 card p-5">
-    <br>
-    <%= form_with model: @direction_review do |form| %>
-        <% @direction_review.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
+<div class="conesst-page">
+    <div class="conesst-header">
+        <div>
+            <h1 class="conesst-title">
+                <i class="bi bi-building-check me-2"></i>
+                Revisión por la alta dirección
+            </h1>
+            <p class="conesst-subtitle">
+                Registro de la revisión del Sistema de Gestión de Seguridad
+                y Salud en el Trabajo
+            </p>
+        </div>
+    </div>
+    <div class="conesst-card">
+        <div class="conesst-card-header">
+            <div class="conesst-card-header-content">
+                <h2 class="conesst-card-header-title">
+                    <i class="bi bi-clipboard-check me-2"></i>
+                    Información de la revisión
+                </h2>
             </div>
-        <% end %>
-
-        <%= form.hidden_field :entity_id, :value => params[:entity_id].to_i, class: "form-control" if params[:entity_id].present? %>
-
-        <br> 
-        <div class="row g-2">
-            <div class="col-sm-8">    
-                <button type="button" class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Representante Legal.">Representante Legal:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                <%= form.collection_select :user_representante, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-            </div>
-            <div class="col-sm-4">
-                <%= form.label :date_review, style: "display: block" %>
-                <%= form.date_field :date_review,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">1.Revisar las estrategias implementadas y determinar si han sido eficaces para alcanzar los objetivos, metas y resultados esperados del Sistema de Gestión de la Seguridad y Salud en el Trabajo.</p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g1,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r1,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">2. Revisar el cumplimiento del plan de trabajo anual en seguridad y salud en el trabajo y su cronograma.</p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g2,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r2,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">3.Analizar la suficiencia de los recursos asignados para la implementación del Sistema de Gestión de la Seguridad y Salud en el Trabajo y el cumplimiento de los resultados esperados.</p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g3,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r3,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">4.Revisar la capacidad del Sistema de Gestión de la Seguridad y Salud en el Trabajo SG-SST, para satisfacer las necesidades globales de la empresa en materia de seguridad y salud en el trabajo.</p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g4,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r4,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">5.Analizar la necesidad de realizar cambios en el Sistema de Gestión de la Seguridad y Salud en el Trabajo SG-SST, incluida la revisión de la política y sus objetivos.</p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g5,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r5,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">6. Evaluar la eficacia de las medidas de seguimiento con base en las revisiones anteriores de la alta dirección y realizar los ajustes necesarios.</p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g6,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r6,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">7.Analizar el resultado de los indicadores y de las auditorias anteriores del Sistema de Gestión de la Seguridad y Salud en el Trabajo SG-SST.</p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g7,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r7,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">8.Aportar información sobre nuevas prioridades y objetivos estratégicos de la organización que puedan ser insumos para la planificación y la mejora continua.</p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g8,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r8,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">9. Recolectar información para determinar si las medidas de prevención y control de peligros y riesgos se aplican y son eficaces.</p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g9,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r9,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">10.lntercambiar información con los trabajadores sobre los resultados y su desempeño en seguridad y salud en el trabajo.</p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g10,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r10,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">11.Servir de base para la adopción de decisiones que tengan por objeto mejorar la identificación de peligros y el control de los riesgos y en general mejorar la gestión en seguridad y salud en el trabajo de la empresa. </p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g11,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r11,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">12.Determinar si promueve la participación de los trabajadores.</p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g12,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r12,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">13.Evidenciar que se cumpla con la normatividad nacional vigente aplicable en materia de riesgos laborales, el cumplimiento de los estándares mínimos del Sistema de Garantía de Calidad del Sistema General de Riesgos Laborales que le apliquen. </p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g13,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r13,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">14.Establecer acciones que permitan la mejora continua en seguridad y salud en el trabajo.</p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g14,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r14,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">15.Establecer el cumplimiento de planes específicos, de las metas establecidas y de los objetivos propuestos.</p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g15,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r15,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">16.lnspeccionar sistemáticamente los puestos de trabajo, las máquinas y equipos y en general, las instalaciones de la empresa.</p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g16,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r16,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">17.Vigilar las condiciones en los ambientes de trabajo.</p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g17,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r17,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">18.Vigilar las condiciones de salud de los trabajadores.</p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g18,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r18,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">19.Mantener actualizada la identificación de peligros, la evaluación y valoración de los riesgos.</p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g19,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r19,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">20.ldentificar la notificación y la investigación de incidentes, accidentes de trabajo y enfermedades laborales.</p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g20,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r20,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">21.ldentificar ausentismo laboral por causas asociadas con seguridad y salud en el trabajo.</p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g21,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r21,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">22.ldentificar pérdidas como daños a la propiedad, máquinas y equipos entre otros, relacionados con seguridad y salud en el trabajo.</p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g22,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r22,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">23.Identificar deficiencias en la gestión de la seguridad y salud en el trabajo.</p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g23,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r23,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-4">    
-                <p style="text-align:justify">24.ldentificar la efectividad de los programas de rehabilitación de la salud de los trabajadores.</p>
-            </div>
-            <div class="col-sm-4">
-                <div>Gestión realizada</div>
-                <%= form.text_area :g24,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <div>Resultados o recomendaciones alta dirección</div>
-                <%= form.text_area :r24,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-
-        <br>    
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
-    <% end %>
-</div>        
-<br>
+        </div>
+        <div class="conesst-card-body">
+            <%= form_with model: @direction_review do |form| %>
+                <% if @direction_review.errors.any? %>
+                    <div class="alert alert-danger mb-4" role="alert">
+                        <div class="fw-semibold mb-2">
+                            <i class="bi bi-exclamation-triangle me-1"></i>
+                            No fue posible guardar la información:
+                        </div>
+                        <ul class="mb-0">
+                            <% @direction_review.errors.full_messages.each do |error| %>
+                                <li>
+                                    <%= error %>
+                                </li>
+                            <% end %>
+                        </ul>
+                    </div>
+                <% end %>
+                <%= form.hidden_field :entity_id, value: params[:entity_id].to_i if params[:entity_id].present? %>
+                <%= form.hidden_field :code, value: @template.reference if @template.present? %>
+                <%= form.hidden_field :version, value: @template.version.to_i if @template.present? %>
+                <div class="conesst-form-section">
+                    <div class="conesst-form-section-title">
+                        <i class="bi bi-person-vcard me-1"></i>
+                        Datos generales
+                    </div>
+                    <div class="conesst-form-grid conesst-form-grid-2">
+                        <div class="conesst-form-group">
+                            <%= form.label :user_representante, class: "conesst-form-label" do %>
+                                <span>
+                                    Representante Legal
+                                </span>
+                                <%= image_tag "ayuda.png", width: 22, height: 22, class: "conesst-help-icon", data: {bs_toggle: "tooltip", bs_html: "true", bs_placement: "top"}, title: "Seleccione el nombre del Representante Legal." %>
+                            <% end %>
+                            <%= form.collection_select(:user_representante, User.usuarios_empresa.order(id: :asc), :id, :name, { prompt: "-- Seleccionar representante legal --" }, { class: "form-select select2" }) %>
+                        </div>
+                        <div class="conesst-form-group">
+                            <%= form.label :date_review, class: "conesst-form-label" do %>
+                                <span>
+                                    Fecha de revisión
+                                </span>
+                                <%= image_tag "ayuda.png", width: 22, height: 22, class: "conesst-help-icon", data: {bs_toggle: "tooltip", bs_html: "true", bs_placement: "top"}, title: "Seleccione la fecha en que se realiza la revisión por la alta dirección." %>
+                            <% end %>
+                            <%= form.date_field :date_review, class: "form-control", required: true %>
+                        </div>
+                    </div>
+                </div>
+                <div class="conesst-form-section">
+                    <div class="conesst-form-section-title">
+                        <i class="bi bi-list-check me-1"></i>
+                        Aspectos de la revisión por la alta dirección
+                    </div>
+                    <div class="conesst-direction-review-list">
+                        <% direction_review_questions = [[1, "Revisar las estrategias implementadas y determinar si han sido eficaces para alcanzar los objetivos, metas y resultados esperados del Sistema de Gestión de la Seguridad y Salud en el Trabajo.", :g1, :r1], [2, "Revisar el cumplimiento del plan de trabajo anual en seguridad y salud en el trabajo y su cronograma.", :g2, :r2], [3, "Analizar la suficiencia de los recursos asignados para la implementación del Sistema de Gestión de la Seguridad y Salud en el Trabajo y el cumplimiento de los resultados esperados.", :g3, :r3], [4, "Revisar la capacidad del Sistema de Gestión de la Seguridad y Salud en el Trabajo SG-SST, para satisfacer las necesidades globales de la empresa en materia de seguridad y salud en el trabajo.", :g4, :r4], [5, "Analizar la necesidad de realizar cambios en el Sistema de Gestión de la Seguridad y Salud en el Trabajo SG-SST, incluida la revisión de la política y sus objetivos.", :g5, :r5], [6, "Evaluar la eficacia de las medidas de seguimiento con base en las revisiones anteriores de la alta dirección y realizar los ajustes necesarios.", :g6, :r6], [7, "Analizar el resultado de los indicadores y de las auditorias anteriores del Sistema de Gestión de la Seguridad y Salud en el Trabajo SG-SST.", :g7, :r7], [8, "Aportar información sobre nuevas prioridades y objetivos estratégicos de la organización que puedan ser insumos para la planificación y la mejora continua.", :g8, :r8], [9, "Recolectar información para determinar si las medidas de prevención y control de peligros y riesgos se aplican y son eficaces.", :g9, :r9], [10, "lntercambiar información con los trabajadores sobre los resultados y su desempeño en seguridad y salud en el trabajo.", :g10, :r10], [11, "Servir de base para la adopción de decisiones que tengan por objeto mejorar la identificación de peligros y el control de los riesgos y en general mejorar la gestión en seguridad y salud en el trabajo de la empresa.", :g11, :r11], [12, "Determinar si promueve la participación de los trabajadores.", :g12, :r12], [13, "Evidenciar que se cumpla con la normatividad nacional vigente aplicable en materia de riesgos laborales, el cumplimiento de los estándares mínimos del Sistema de Garantía de Calidad del Sistema General de Riesgos Laborales que le apliquen.", :g13, :r13], [14, "Establecer acciones que permitan la mejora continua en seguridad y salud en el trabajo.", :g14, :r14], [15, "Establecer el cumplimiento de planes específicos, de las metas establecidas y de los objetivos propuestos.", :g15, :r15], [16, "lnspeccionar sistemáticamente los puestos de trabajo, las máquinas y equipos y en general, las instalaciones de la empresa.", :g16, :r16], [17, "Vigilar las condiciones en los ambientes de trabajo.", :g17, :r17], [18, "Vigilar las condiciones de salud de los trabajadores.", :g18, :r18], [19, "Mantener actualizada la identificación de peligros, la evaluación y valoración de los riesgos.", :g19, :r19], [20, "ldentificar la notificación y la investigación de incidentes, accidentes de trabajo y enfermedades laborales.", :g20, :r20], [21, "ldentificar ausentismo laboral por causas asociadas con seguridad y salud en el trabajo.", :g21, :r21], [22, "ldentificar pérdidas como daños a la propiedad, máquinas y equipos entre otros, relacionados con seguridad y salud en el trabajo.", :g22, :r22], [23, "Identificar deficiencias en la gestión de la seguridad y salud en el trabajo.", :g23, :r23], [24, "ldentificar la efectividad de los programas de rehabilitación de la salud de los trabajadores.", :g24, :r24]] %>
+                        <% direction_review_questions.each do |number, question, management_field, recommendation_field| %>
+                            <div class="conesst-direction-review-item">
+                                <div class="conesst-direction-review-question-header">
+                                    <span class="conesst-direction-review-number">
+                                        <%= number %>
+                                    </span>
+                                    <span class="conesst-direction-review-question-title">
+                                        Aspecto <%= number %> de la revisión
+                                    </span>
+                                </div>
+                                <div class="conesst-direction-review-question">
+                                    <%= question %>
+                                </div>
+                                <div class="conesst-direction-review-fields">
+                                    <div class="conesst-form-group">
+                                        <%= form.label management_field, class: "conesst-form-label" do %>
+                                            <span>
+                                                Gestión realizada
+                                            </span>
+                                            <%= image_tag "ayuda.png", width: 22, height: 22, class: "conesst-help-icon", data: {bs_toggle: "tooltip", bs_html: "true", bs_placement: "top"}, title: "Describa la gestión realizada frente al aspecto revisado." %>
+                                        <% end %>
+                                        <%= form.text_area management_field, class: "form-control conesst-direction-review-textarea", rows: 4 %>
+                                    </div>
+                                    <div class="conesst-form-group">
+                                        <%= form.label recommendation_field, class: "conesst-form-label" do %>
+                                            <span>
+                                                Resultados o recomendaciones alta dirección
+                                            </span>
+                                            <%= image_tag "ayuda.png", width: 22, height: 22, class: "conesst-help-icon", data: {bs_toggle: "tooltip", bs_html: "true", bs_placement: "top"}, title: "Registre los resultados o recomendaciones de la alta dirección." %>
+                                        <% end %>
+                                        <%= form.text_area recommendation_field, class: "form-control conesst-direction-review-textarea", rows: 4 %>
+                                    </div>
+                                </div>
+                            </div>
+                        <% end %>
+                    </div>
+                </div>
+                <div class="conesst-actions conesst-form-actions">
+                    <%= form.button type: "submit", class: "conesst-btn conesst-btn-primary" do %>
+                        <i class="bi bi-check-circle me-1"></i>
+                        <%= t('common.submit') %>
+                    <% end %>
+                    <%= link_to :back, class: "conesst-btn" do %>
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Retornar
+                    <% end %>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>

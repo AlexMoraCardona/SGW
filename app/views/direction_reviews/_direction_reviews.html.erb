@@ -1,54 +1,149 @@
 <% if @entity.present? %>
-    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
-<% end %>
-
-
-<% if @direction_reviews.present? %>
-    <%= link_to t('.create_direction_review'), new_direction_review_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level <  3 %>
-
-    <table class="table table-hover"> 
-
-        <% @direction_reviews.each do |direction_review| %>
-            <hr>
-            <div class="col-sm-8">
-                <h3>Informe revisión por la alta dirección del: <%= direction_review.date_review %> </h3>
-            </div>        
-
-            <%= link_to t('common.show_review'), direction_review_path(direction_review.id), class: 'btn btn-sm btn-warning' %> &nbsp;
-            <%= link_to t('common.edit'), edit_direction_review_path(direction_review.id), class: 'btn btn-sm btn-warning' if Current.user.level > 0 && Current.user.level <  3 %> &nbsp;
-            <%= link_to "PDF", ver_review_pdf_path(direction_review.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;
-
-            <div class="container col-12">
-                <br>
-
-                <div class="row g-4">
-                    <div class="col-sm-3"> 
-                        <strong><%= t('.user_representante') %></strong><br>
-                        <%=  DirectionReview.name_user(direction_review.user_representante)  %> 
-                    </div>        
-                    <div class="col-sm-3"> 
-                        <strong><%= t('.firm_representante') %></strong><br>
-                        <%= DirectionReview.label_firm(direction_review.firm_representante) %> 
-                    </div>        
-                    <div class="col-sm-3">
-                        <strong><%= t('.date_firm_representante') %></strong><br>
-                        <%= direction_review.date_firm_representante %> 
-                    </div>
-                    <div class="col-sm-3">
-                        <% if direction_review.firm_representante.to_i == 0 %>
-                            <%= link_to t('common.firmar'), firmar_representante_review_path(direction_review.id, 1), class: 'btn btn-sm btn btn-warning' %>
-                        <% end %>    
-                    </div>
+    <div class="conesst-card">
+        <div class="conesst-card-body">
+            <div class="conesst-section-header">
+                <div>
+                    <h2 class="conesst-section-title">
+                        <i class="bi bi-building me-2"></i>
+                        <%= @entity.business_name %>
+                    </h2>
+                    <p class="conesst-section-subtitle">
+                        NIT:
+                        <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>
+                        <%= "-#{@entity.verification_digit}" if @entity.verification_digit.present? %>
+                    </p>
                 </div>
-            </div> 
-            <hr>
-            <br>
-        <% end %>  
-        <hr>  
-    </table>  
-    <br>
+            </div>
+        </div>
+    </div>
+<% end %>
+<% if @direction_reviews.present? %>
+    <div class="conesst-card">
+        <div class="conesst-card-header">
+            <div class="conesst-card-header-content">
+                <div>
+                    <h2 class="conesst-card-header-title">
+                        <i class="bi bi-clipboard-check me-2"></i>
+                        Revisiones por la alta dirección
+                    </h2>
+                    <p class="conesst-card-header-subtitle">
+                        Informes registrados para la empresa
+                    </p>
+                </div>
+            </div>
+            <% if Current.user.level > 0 && Current.user.level < 3 %>
+                <%= link_to new_direction_review_path(entity_id: @entity.id), class: "conesst-btn conesst-btn-primary" do %>
+                    <i class="bi bi-plus-circle me-1"></i>
+                    <%= t('.create_direction_review') %>
+                <% end %>
+            <% end %>
+        </div>
+        <div class="conesst-card-body">
+            <div class="conesst-list">
+                <% @direction_reviews.each do |direction_review| %>
+                    <div class="conesst-list-item">
+                        <div class="conesst-list-item-header">
+                            <div>
+                                <h3 class="conesst-list-item-title">
+                                    <i class="bi bi-calendar3 me-2"></i>
+                                    Informe de revisión por la alta dirección
+                                </h3>
+                                <div class="conesst-list-item-subtitle">
+                                    Fecha:
+                                    <strong>
+                                        <%= direction_review.date_review %>
+                                    </strong>
+                                </div>
+                            </div>
+                            <div class="conesst-actions">
+                                <%= link_to direction_review_path(direction_review.id), class: "conesst-btn conesst-btn-sm" do %>
+                                    <i class="bi bi-eye me-1"></i>
+                                    <%= t('common.show_review') %>
+                                <% end %>
+                                <% if Current.user.level > 0 && Current.user.level < 3 %>
+                                    <%= link_to edit_direction_review_path(direction_review.id), class: "conesst-btn conesst-btn-sm" do %>
+                                        <i class="bi bi-pencil-square me-1"></i>
+                                        <%= t('common.edit') %>
+                                    <% end %>
+                                <% end %>
+                                <%= link_to ver_review_pdf_path(direction_review.id, format: 'pdf'), class: "conesst-btn conesst-btn-sm" do %>
+                                    <i class="bi bi-file-earmark-pdf me-1"></i>
+                                    PDF
+                                <% end %>
+                            </div>
+                        </div>
+                        <div class="conesst-form-section">
+                            <div class="conesst-form-section-title">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Información de la revisión
+                            </div>
+                            <div class="conesst-info-grid">
+                                <div class="conesst-info-item">
+                                    <div class="conesst-info-label">
+                                        <i class="bi bi-person me-1"></i>
+                                        <%= t('.user_representante') %>
+                                    </div>
+                                    <div class="conesst-info-value">
+                                        <%= DirectionReview.name_user(direction_review.user_representante) %>
+                                    </div>
+                                </div>
+                                <div class="conesst-info-item">
+                                    <div class="conesst-info-label">
+                                        <i class="bi bi-pen me-1"></i>
+                                        <%= t('.firm_representante') %>
+                                    </div>
+                                    <div class="conesst-info-value">
+                                        <%= DirectionReview.label_firm(direction_review.firm_representante) %>
+                                    </div>
+                                </div>
+                                <div class="conesst-info-item">
+                                    <div class="conesst-info-label">
+                                        <i class="bi bi-calendar-check me-1"></i>
+                                        <%= t('.date_firm_representante') %>
+                                    </div>
+                                    <div class="conesst-info-value">
+                                        <%= direction_review.date_firm_representante %>
+                                    </div>
+                                </div>
+                                <div class="conesst-info-item conesst-info-action">
+                                    <% if direction_review.firm_representante.to_i == 0 %>
+                                        <%= link_to firmar_representante_review_path(direction_review.id, 1), class: "conesst-btn conesst-btn-primary" do %>
+                                            <i class="bi bi-pen me-1"></i>
+                                            <%= t('common.firmar') %>
+                                        <% end %>
+                                    <% else %>
+                                        <span class="conesst-status-badge">
+                                            <i class="bi bi-check-circle me-1"></i>
+                                            Firmado
+                                        </span>
+                                    <% end %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
 <% else %>
-    <div>
-        <%= link_to t('common.create_review'), new_direction_review_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+    <div class="conesst-card">
+        <div class="conesst-card-body">
+            <div class="conesst-empty-state">
+                <i class="bi bi-clipboard-x"></i>
+                <div>
+                    <strong>
+                        No existen revisiones registradas
+                    </strong>
+                    <p>
+                        Actualmente no hay informes de revisión por la alta
+                        dirección para esta empresa.
+                    </p>
+                    <%= link_to new_direction_review_path(entity_id: @entity.id), class: "conesst-btn conesst-btn-primary" do %>
+                        <i class="bi bi-plus-circle me-1"></i>
+                        <%= t('common.create_review') %>
+                    <% end %>
+                </div>
+            </div>
+        </div>
     </div>
 <% end %>

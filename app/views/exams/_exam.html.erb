@@ -1,19 +1,70 @@
 <% if @entity.present? %>
-    <h class="display-6"><%= @entity.business_name %> Nit: <%=@entity.identification_number %></h>
-<% end %>
-
-<% if @examenes_activos.present? %>
-    <%= form_tag evaluacion_path(Current.user.id.to_i), method: :get do %>
-        <%= select_tag :allow_exam_id, options_from_collection_for_select(@examenes_activos, :id, :name_exam), class: 'form-control input-sm select2', :prompt  =>  '--Seleccione la evaluación a realizar--' %>
-
-        <br>
-        <%= submit_tag 'Hacer evaluación',  :class => 'btn btn-primary btn-block spin pull-right' %>
-    <% end %>
-
-
-<% else %>
-    <div>
-        <h class="display-6">La Entidad no tiene evaluaciones activas por el momento</h>
+  <div class="conesst-card mb-3">
+    <div class="conesst-card-body">
+      <div class="d-flex align-items-start gap-2">
+        <i class="bi bi-building fs-5 text-primary flex-shrink-0"></i>
+        <div class="min-w-0">
+          <div class="conesst-card-header-title text-break">
+            <%= @entity.business_name %>
+          </div>
+          <% if @entity.identification_number.present? %>
+            <div class="conesst-card-header-subtitle mt-1">
+              <span class="fw-semibold">NIT:</span>
+              <%= @entity.identification_number %>
+            </div>
+          <% end %>
+        </div>
+      </div>
     </div>
+  </div>
 <% end %>
-
+<% if @examenes_activos.present? %>
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+        <div class="conesst-card-header-title">
+          <i class="bi bi-clipboard2-check me-2"></i>
+          Evaluación
+        </div>
+        <div class="conesst-card-header-subtitle">
+          Seleccione la evaluación que desea realizar
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <%= form_tag evaluacion_path(Current.user.id.to_i), method: :get do %>
+        <div class="conesst-form-section">
+          <div class="conesst-form-section-title">
+            <i class="bi bi-list-check me-2"></i>
+            Evaluaciones disponibles
+          </div>
+          <div class="conesst-form-grid">
+            <div class="conesst-form-group">
+              <%= label_tag :allow_exam_id, "Evaluación", class: "conesst-form-label" %>
+              <%= select_tag(:allow_exam_id, options_from_collection_for_select(@examenes_activos, :id, :name_exam), class: "form-select select2", prompt: "-- Seleccionar evaluación --") %>
+            </div>
+          </div>
+        </div>
+        <div class="conesst-form-actions">
+          <%= submit_tag("Hacer evaluación", class: "conesst-btn conesst-btn-primary spin") %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% else %>
+  <div class="conesst-card">
+    <div class="conesst-card-body">
+      <div class="text-center py-3">
+        <div class="mb-2">
+          <i class="bi bi-clipboard-x fs-2 text-muted"></i>
+        </div>
+        <div class="conesst-card-header-title">
+          No hay evaluaciones activas
+        </div>
+        <div class="conesst-card-header-subtitle mt-1">
+          La entidad no tiene evaluaciones activas por el momento.
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

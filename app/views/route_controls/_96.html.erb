@@ -1,0 +1,161 @@
+<div class="conesst-page">
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+        <div class="conesst-card-header-title">
+          <i class="bi bi-signpost-2 me-2"></i>
+          Información del Control de Ruta
+        </div>
+        <div class="conesst-card-header-subtitle">
+          Datos registrados del control de ruta
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <div class="d-flex flex-column gap-0">
+        <div class="row border-bottom py-3 align-items-center">
+          <div class="col-12 col-md-4 mb-1 mb-md-0">
+            <div class="fw-semibold text-muted">
+              <i class="bi bi-building me-2"></i>
+              Empresa
+            </div>
+          </div>
+          <div class="col-12 col-md-8">
+            <div class="fw-semibold text-break">
+              <%= @entity.business_name if @entity.present? %>
+            </div>
+          </div>
+        </div>
+        <div class="row border-bottom py-3 align-items-center">
+          <div class="col-12 col-md-4 mb-1 mb-md-0">
+            <div class="fw-semibold text-muted">
+              <i class="bi bi-calendar-event me-2"></i>
+              Fecha
+            </div>
+          </div>
+          <div class="col-12 col-md-8">
+            <div class="fw-semibold">
+              <%= @route_control.date_control if @route_control.present? %>
+            </div>
+          </div>
+        </div>
+        <div class="row border-bottom py-3 align-items-center">
+          <div class="col-12 col-md-4 mb-1 mb-md-0">
+            <div class="fw-semibold text-muted">
+              <i class="bi bi-clock me-2"></i>
+              Hora de inicio
+            </div>
+          </div>
+          <div class="col-12 col-md-8">
+            <% if @route_control&.time_initial_control.present? %>
+              <div class="fw-semibold">
+                <%= @route_control.time_initial_control.strftime("%I:%M %p") %>
+              </div>
+            <% else %>
+              <span class="text-muted">
+                No registrada
+              </span>
+            <% end %>
+          </div>
+        </div>
+        <div class="row border-bottom py-3 align-items-center">
+          <div class="col-12 col-md-4 mb-1 mb-md-0">
+            <div class="fw-semibold text-muted">
+              <i class="bi bi-clock-history me-2"></i>
+              Hora final
+            </div>
+          </div>
+          <div class="col-12 col-md-8">
+            <% if @route_control&.time_final_control.present? %>
+              <div class="fw-semibold">
+                <%= @route_control.time_final_control.strftime("%I:%M %p") %>
+              </div>
+            <% else %>
+              <span class="text-muted">
+                No registrada
+              </span>
+            <% end %>
+          </div>
+        </div>
+        <div class="row border-bottom py-3 align-items-center">
+          <div class="col-12 col-md-4 mb-1 mb-md-0">
+            <div class="fw-semibold text-muted">
+              <i class="bi bi-person me-2"></i>
+              Usuario
+            </div>
+          </div>
+          <div class="col-12 col-md-8">
+            <div class="fw-semibold text-break">
+              <%= @route_control.user.name if @route_control.present? %>
+            </div>
+          </div>
+        </div>
+        <div class="row border-bottom py-3 align-items-center">
+          <div class="col-12 col-md-4 mb-1 mb-md-0">
+            <div class="fw-semibold text-muted">
+              <i class="bi bi-card-text me-2"></i>
+              Documento
+            </div>
+          </div>
+          <div class="col-12 col-md-8">
+            <div class="fw-semibold text-break">
+              <%= @route_control.user.nro_document if @route_control.present? %>
+            </div>
+          </div>
+        </div>
+        <div class="row border-bottom py-3 align-items-center">
+          <div class="col-12 col-md-4 mb-1 mb-md-0">
+            <div class="fw-semibold text-muted">
+              <i class="bi bi-briefcase me-2"></i>
+              Cargo
+            </div>
+          </div>
+          <div class="col-12 col-md-8">
+            <div class="fw-semibold text-break">
+              <%= User.label_activity(@route_control.user.activity) if @route_control.present? %>
+            </div>
+          </div>
+        </div>
+        <div class="row border-bottom py-3 align-items-center">
+          <div class="col-12 col-md-4 mb-1 mb-md-0">
+            <div class="fw-semibold text-muted">
+              <i class="bi bi-car-front me-2"></i>
+              Tipo de vehículo
+            </div>
+          </div>
+          <div class="col-12 col-md-8">
+            <div class="fw-semibold text-break">
+              <%= RouteControl.label_tipo_vehiculo(@route_control.vehicle_type) if @route_control.present? %>
+            </div>
+          </div>
+        </div>
+        <div class="row border-bottom py-3 align-items-center">
+          <div class="col-12 col-md-4 mb-1 mb-md-0">
+            <div class="fw-semibold text-muted">
+              <i class="bi bi-geo-alt me-2"></i>
+              Lugar
+            </div>
+          </div>
+          <div class="col-12 col-md-8">
+            <div class="fw-semibold text-break">
+              <%= @route_control.place if @route_control.present? %>
+            </div>
+          </div>
+        </div>
+        <div class="row py-3 align-items-start">
+          <div class="col-12 col-md-4 mb-1 mb-md-0">
+            <div class="fw-semibold text-muted">
+              <i class="bi bi-chat-left-text me-2"></i>
+              Observaciones
+            </div>
+          </div>
+          <div class="col-12 col-md-8">
+            <div class="fw-semibold text-break">
+              <%= @route_control.observation if @route_control.present? %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

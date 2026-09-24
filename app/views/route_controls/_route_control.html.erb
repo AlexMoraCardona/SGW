@@ -1,33 +1,84 @@
+
 <tr>
-    <td><%= route_control.date_control %></td>
-    <td><%= RouteControl.label_entidad(route_control.entity) %></td>
-    <td><%= RouteControl.label_user(route_control.user_create) %></td>
-    <td>
-        <%  if  route_control.time_initial_control.present? %>
-            <div> 
-                <%= route_control.time_initial_control.strftime("%I:%M %p") %>
-            </div> 
-        <%  else %>  
-            <div>  
-                <%= link_to "Registrar Hora de inicio", control_hora_inicio_path(id: route_control.id), class: 'btn btn-sm btn-primary' %>                        
-            </div>
-        <%  end%>
-    </td>
-    <td>
-        <%  if  route_control.time_final_control.present? %>
-            <div> 
-                <%= route_control.time_final_control.strftime("%I:%M %p") %>
-            </div> 
-        <%  else %>  
-            <div>  
-                <%= link_to "Registrar Hora final", control_hora_final_path(id: route_control.id), class: 'btn btn-sm btn-primary' %>                        
-            </div>
-        <%  end%>
-    </td>
-    <td><%= highlight route_control.user.name, params.dig(:q, :user_id_cont) %></td>
-    <td><%= highlight route_control.place, params.dig(:q, :place_cont) %></td>
-    <td><%= link_to t('common.edit'), edit_route_control_path(route_control), class: 'btn btn-sm btn-primary'  %></td>
-    <td><%= link_to "Ver", route_control_path(route_control.id), class: 'btn btn-sm btn-warning' %> &nbsp;</td>
-    <td><%= link_to "PDF", pdf_informe_route_control_path(route_control.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;</td>
-    <td><%= button_to "Delete", route_control, method: :delete, class:"btn btn-sm btn-danger" if Current.user.level > 0 && Current.user.level < 4  %></td>
+  <td>
+    <span class="conesst-table-main-text">
+      <%= route_control.date_control %>
+    </span>
+  </td>
+  <td>
+    <span class="conesst-table-main-text">
+      <%= RouteControl.label_entidad(route_control.entity) %>
+    </span>
+  </td>
+  <td>
+    <span class="conesst-table-main-text">
+      <i class="bi bi-person me-1 text-muted"></i>
+      <%= RouteControl.label_user(route_control.user_create) %>
+    </span>
+  </td>
+  <td>
+    <% if route_control.time_initial_control.present? %>
+      <span class="conesst-status-badge text-success">
+        <i class="bi bi-clock me-1"></i>
+        <%= route_control.time_initial_control.strftime("%I:%M %p") %>
+      </span>
+    <% else %>
+      <%= link_to control_hora_inicio_path(id: route_control.id), class: "conesst-btn conesst-btn-primary conesst-btn-sm", title: "Registrar hora de inicio" do %>
+        <i class="bi bi-clock"></i>
+        <span>Registrar inicio</span>
+      <% end %>
+    <% end %>
+  </td>
+  <td>
+    <% if route_control.time_final_control.present? %>
+      <span class="conesst-status-badge text-success">
+        <i class="bi bi-clock-history me-1"></i>
+        <%= route_control.time_final_control.strftime("%I:%M %p") %>
+      </span>
+    <% else %>
+      <%= link_to control_hora_final_path(id: route_control.id), class: "conesst-btn conesst-btn-primary conesst-btn-sm", title: "Registrar hora final" do %>
+        <i class="bi bi-clock-history"></i>
+        <span>Registrar final</span>
+      <% end %>
+    <% end %>
+  </td>
+  <td>
+    <span class="conesst-table-main-text">
+      <%= highlight(route_control.user.name, params.dig(:q, :user_id_cont)) %>
+    </span>
+  </td>
+  <td>
+    <span class="conesst-table-main-text">
+      <%= highlight(route_control.place, params.dig(:q, :place_cont)) %>
+    </span>
+  </td>
+  <td>
+    <%= link_to edit_route_control_path(route_control),
+        class: "conesst-btn conesst-btn-warning conesst-btn-sm", title: t('common.edit') do %>
+      <i class="bi bi-pencil-square"></i>
+      <span class="d-md-none">
+        <%= t('common.edit') %>
+      </span>
+    <% end %>
+  </td>
+  <td>
+    <%= link_to route_control_path(route_control.id), class: "conesst-btn conesst-btn-primary conesst-btn-sm", title: "Ver control de ruta" do %>
+      <i class="bi bi-eye"></i>
+      <span class="d-md-none">Ver</span>
+    <% end %>
+  </td>
+  <td>
+    <%= link_to pdf_informe_route_control_path(route_control.id, format: 'pdf'), class: "conesst-btn conesst-btn-success conesst-btn-sm", title: "Generar PDF" do %>
+      <i class="bi bi-file-earmark-pdf"></i>
+      <span class="d-md-none">PDF</span>
+    <% end %>
+  </td>
+  <td>
+    <% if Current.user.level > 0 && Current.user.level < 4 %>
+      <%= button_to route_control, method: :delete, class: "conesst-btn conesst-btn-danger conesst-btn-sm", title: "Eliminar", form: {data: {turbo_confirm: "¿Está seguro de eliminar este control de ruta?"}} do %>
+        <i class="bi bi-trash"></i>
+        <span class="d-md-none">Eliminar</span>
+      <% end %>
+    <% end %>
+  </td>
 </tr>

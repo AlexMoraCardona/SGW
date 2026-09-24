@@ -1,495 +1,763 @@
-<div class="container col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
-    <br>
+<div class="conesst-page">
+    <div class="conesst-header">
+        <div class="conesst-header-content">
+            <div>
+                <h1 class="conesst-title">
+                    Perfil Sociodemográfico
+                </h1>
+                <p class="conesst-subtitle mb-0">
+                    <%= @entity.business_name %>
+                </p>
+            </div>
+        </div>
+    </div>
     <%= form_with model: @profile do |form| %>
-        <% @profile.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
+        <% if @profile.errors.any? %>
+            <div class="alert alert-danger shadow-sm mb-4" role="alert">
+                <div class="fw-bold mb-2">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    Se encontraron los siguientes errores:
+                </div>
+                <ul class="mb-0">
+                    <% @profile.errors.full_messages.each do |error| %>
+                        <li><%= error %></li>
+                    <% end %>
+                </ul>
             </div>
         <% end %>
-        <div class="col-sm-12 p-3 mb-2 text-dark">    
-            <p class="fst-normal fs-3 text-start"><strong>Perfil Sociodemográfico </br> <%= @entity.business_name %></strong> </p>
-            <p class="fst-normal">1. En el siguiente formato deberá contestar una serie de preguntas  las cuales están relacionadas con su vida personal, lo que nos ayudará a recolectar datos y así poder enfocar nuestras actividades empresariales a su bienestar.</strong> </p>
-            <p class="fst-normal">2. <strong>¿Por qué se realiza? </strong> El empleador tiene el deber de conocer su población trabajadora y poder orientar sus actividades o posibles beneficios, esto se realiza según el Decreto 1072 de 2015.</p>
-            <p class="fst-normal">3. <strong>¿Quién tendrá acceso? </strong> El personal de Seguridad y Salud en el Trabajo, será el responsable de velar por la información allí suministrada y de realizar dicho informe.</p>
+        <div class="conesst-card mb-4">
+            <div class="conesst-card-header">
+                <div class="conesst-card-header-content">
+                    <div>
+                        <h2 class="conesst-card-header-title">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Información de la encuesta
+                        </h2>
+                        <p class="conesst-card-header-subtitle">
+                            Antes de iniciar, lea cuidadosamente la siguiente información.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="conesst-card-body">
+                <div class="conesst-rich-text-content">
+                    <p>
+                        <strong>1.</strong>
+                        En el siguiente formato deberá contestar una serie de preguntas
+                        las cuales están relacionadas con su vida personal, lo que nos
+                        ayudará a recolectar datos y así poder enfocar nuestras actividades
+                        empresariales a su bienestar.
+                    </p>
+                    <p>
+                        <strong>2. ¿Por qué se realiza?</strong>
+                        El empleador tiene el deber de conocer su población trabajadora
+                        y poder orientar sus actividades o posibles beneficios, esto se
+                        realiza según el Decreto 1072 de 2015.
+                    </p>
+                    <p class="mb-0">
+                        <strong>3. ¿Quién tendrá acceso?</strong>
+                        El personal de Seguridad y Salud en el Trabajo, será el responsable
+                        de velar por la información allí suministrada y de realizar dicho informe.
+                    </p>
+                </div>
+            </div>
         </div>
-        <br>         
-        <div class="col-sm-12 p-3 mb-2 text-dark">    
-            <strong><%= form.label :gender,  style: "display: block" %></strong>
-            <%= form.radio_button :gender, 0, :checked => false, required: true %>
-            <label for="Masculino">Masculino</label></br>
-            <%= form.radio_button :gender, 1, :checked => false, required: true %>
-            <label for="Femenino">Femenino</label></br>
-            <%= form.radio_button :gender, 2, :checked => false, required: true %>
-            <label for="No binario">No binario</label></br>
-            <%= form.radio_button :gender, 3, :checked => false, required: true %>
-            <label for="Otro">Otro</label></br>
+        <div class="conesst-card mb-4">
+            <div class="conesst-card-header">
+                <div class="conesst-card-header-content">
+                    <div>
+                        <h2 class="conesst-card-header-title">
+                            <i class="bi bi-person-vcard me-2"></i>
+                            Información personal
+                        </h2>
+                        <p class="conesst-card-header-subtitle">
+                            Información básica del trabajador.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="conesst-card-body">
+                <div class="conesst-form-grid-2">
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-gender-ambiguous me-2"></i>
+                            <%= form.label :gender %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "Masculino"], [1, "Femenino"], [2, "No binario"], [3, "Otro"]].each do |value, label| %>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-check">
+                                        <%= form.radio_button :gender, value, class: "form-check-input", required: true %>
+                                        <%= form.label :gender, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-droplet me-2"></i>
+                            <%= form.label :blood_type %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "A+"], [1, "A-"], [2, "B+"], [3, "B-"], [4, "AB+"], [5, "AB-"], [6, "O+"], [7, "O-"]].each do |value, label| %>
+                                <div class="col-6 col-sm-3">
+                                    <div class="form-check">
+                                        <%= form.radio_button :blood_type, value, class: "form-check-input", required: true %>
+                                        <%= form.label :blood_type, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-calendar3 me-2"></i>
+                            <%= form.label :age %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "18-27"], [1, "28-37"], [2, "38-47"], [3, "48-57"], [4, "58-67"], [5, "Mayor de 67"]].each do |value, label| %>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-check">
+                                        <%= form.radio_button :age, value, class: "form-check-input", required: true %>
+                                        <%= form.label :age, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-speedometer2 me-2"></i>
+                            <%= form.label :weight %>
+                        </div>
+                        <div class="conesst-form-group">
+                            <%= form.number_field :weight, class: "form-control", step: 1, max: 1000, min: 1 %>
+                            <div class="form-text">
+                                Peso en kilos, números enteros.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-arrows-vertical me-2"></i>
+                            <%= form.label :height %>
+                        </div>
+                        <div class="conesst-form-group">
+                            <%= form.number_field :height, class: "form-control", step: 1, max: 250, min: 1 %>
+                            <div class="form-text">
+                                Estatura en centímetros sin puntos ni comas.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-heart me-2"></i>
+                            <%= form.label :civil_status %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "Soltero (a)"], [1, "Casado (a)"], [2, "Unión libre"], [3, "Viudo (a)"], [4, "Divorciado/ separado (a)"]].each do |value, label| %>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <%= form.radio_button :civil_status, value, class: "form-check-input", required: true %>
+                                        <%= form.label :civil_status, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-mortarboard me-2"></i>
+                            <%= form.label :education_level %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "Primaria"], [1, "Secundaria"], [2, "Técnico"], [3, "Tecnólogo"], [4, "Profesional"], [5, "Posgrado"]].each do |value, label| %>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-check">
+                                        <%= form.radio_button :education_level, value, class: "form-check-input", required: true %>
+                                        <%= form.label :education_level, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-building me-2"></i>
+                            <%= form.label :area_work %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "Administrativa"], [1, "Operativa"]].each do |value, label| %>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-check">
+                                        <%= form.radio_button :area_work, value, class: "form-check-input", required: true %>
+                                        <%= form.label :area_work, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-person-badge me-2"></i>
+                            <%= form.label :post_actual %>
+                        </div>
+                        <%= form.text_field :post_actual, class: "form-control" %>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-file-earmark-text me-2"></i>
+                            <%= form.label :contract_type %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "Contrato a Término Fijo"], [1, "Contrato a término indefinido"], [2, "Contrato de Obra o labor"], [3, "Contrato civil por prestación de servicios"], [4, "Contrato de aprendizaje"], [5, "Contrato ocasional de trabajo"]].each do |value, label| %>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <%= form.radio_button :contract_type, value, class: "form-check-input", required: true %>
+                                        <%= form.label :contract_type, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-clock me-2"></i>
+                            <%= form.label :Antiquity %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "Diurno"], [1, "Nocturno"], [2, "Mixto"]].each do |value, label| %>
+                                <div class="col-12 col-sm-4">
+                                    <div class="form-check">
+                                        <%= form.radio_button :Antiquity, value, class: "form-check-input", required: true %>
+                                        <%= form.label :Antiquity, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-envelope me-2"></i>
+                            <%= form.label :email_name %>
+                        </div>
+                        <%= form.email_field :email_name, class: "form-control" %>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-cash-coin me-2"></i>
+                            <%= form.label :salary_range %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "De 1 a 2 SMLMV"], [1, "De 3 a 4 SMLMV"], [2, "Mas de 4 SMLMV"]].each do |value, label| %>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <%= form.radio_button :salary_range, value, class: "form-check-input", required: true %>
+                                        <%= form.label :salary_range, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <br>    
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :blood_type,  style: "display: block" %></strong>
-            <%= form.radio_button :blood_type, 0, :checked => false, required: true %>
-            <label for="A+">A+</label></br>
-            <%= form.radio_button :blood_type, 1, :checked => false, required: true %>
-            <label for="A-">A-</label></br>
-            <%= form.radio_button :blood_type, 2, :checked => false, required: true %>
-            <label for="B+">B+</label></br>
-            <%= form.radio_button :blood_type, 3, :checked => false, required: true %>
-            <label for="B-">B-</label></br>
-            <%= form.radio_button :blood_type, 4, :checked => false, required: true %>
-            <label for="AB+">AB+</label></br>
-            <%= form.radio_button :blood_type, 5, :checked => false, required: true %>
-            <label for="AB-">AB-</label></br>
-            <%= form.radio_button :blood_type, 6, :checked => false, required: true %>
-            <label for="O+">O+</label></br>
-            <%= form.radio_button :blood_type, 7, :checked => false, required: true %>
-            <label for="O-">O-</label></br>
+        <div class="conesst-card mb-4">
+            <div class="conesst-card-header">
+                <div class="conesst-card-header-content">
+                    <div>
+                        <h2 class="conesst-card-header-title">
+                            <i class="bi bi-shield-check me-2"></i>
+                            Seguridad social y entidad bancaria
+                        </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="conesst-card-body">
+                <div class="conesst-form-grid-2">
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-hospital me-2"></i>
+                            <%= form.label :health_promoter_id %>
+                        </div>
+                        <%= form.collection_select :health_promoter_id, HealthPromoter.all.order(id: :asc), :id, :name_entity, {}, { class: "form-select" } %>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-piggy-bank me-2"></i>
+                            <%= form.label :pension_fund_id %>
+                        </div>
+                        <%= form.collection_select :pension_fund_id, PensionFund.all.order(id: :asc), :id, :fund, {}, { class: "form-select" } %>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-wallet2 me-2"></i>
+                            <%= form.label :cessation_fund_id %>
+                        </div>
+                        <%= form.collection_select :cessation_fund_id, CessationFund.all.order(id: :asc), :id, :name, {}, { class: "form-select" } %>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-shield-plus me-2"></i>
+                            <%= form.label :occupational_risk_manager_id %>
+                        </div>
+                        <%= form.collection_select :occupational_risk_manager_id, OccupationalRiskManager.all.order(id: :asc), :id, :name, {}, { class: "form-select" } %>
+                    </div>
+                    <div class="conesst-form-section conesst-form-section-full">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-bank me-2"></i>
+                            <%= form.label :head_family %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "Banco de Bogotá"], [1, "Banco Popular"], [2, "Itaú Colombia"], [3, "Bancolombia"], [4, "Citibanck"], [5, "GNB Sudameris"], [6, "BBVA"], [7, "Banco de Occidente"], [8, "Banco Caja Social"], [9, "Davivienda"], [10, "Colpatria"], [11, "Banco Agrario"], [12, "Banco AV Villas"], [13, "Ban100"], [14, "Bancamia"], [15, "Banco W"], [16, "Coomeva"], [17, "Banco Falabella"], [18, "Banco Pichincha"], [19, "Banco Santander"], [20, "Banco Mundo Mujer"], [21, "Lulubank"], [22, "Nubank"], [23, "Otro"]].each do |value, label| %>
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <div class="form-check">
+                                        <%= form.radio_button :head_family, value, class: "form-check-input", required: true %>
+                                        <%= form.label :head_family, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <br>    
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :age,  style: "display: block" %></strong>
-            <%= form.radio_button :age, 0, :checked => false, required: true %>
-            <label for="18-27">18-27</label></br>
-            <%= form.radio_button :age, 1, :checked => false, required: true %>
-            <label for="28-37">28-37</label></br>
-            <%= form.radio_button :age, 2, :checked => false, required: true %>
-            <label for="38-47">38-47</label></br>
-            <%= form.radio_button :age, 3, :checked => false, required: true %>
-            <label for="48-57">48-57</label></br>
-            <%= form.radio_button :age, 4, :checked => false, required: true %>
-            <label for="58-67">58-67</label></br>            
-            <%= form.radio_button :age, 5, :checked => false, required: true %>
-            <label for="Mayor de 67">Mayor de 67</label></br>            
+        <div class="conesst-card mb-4">
+            <div class="conesst-card-header">
+                <div class="conesst-card-header-content">
+                    <div>
+                        <h2 class="conesst-card-header-title">
+                            <i class="bi bi-geo-alt me-2"></i>
+                            Contacto y ubicación
+                        </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="conesst-card-body">
+                <div class="conesst-form-grid-2">
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-person-lines-fill me-2"></i>
+                            <%= form.label :emergency_contact %>
+                        </div>
+                        <%= form.text_field :emergency_contact, class: "form-control" %>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-telephone me-2"></i>
+                            <%= form.label :phone_emergency_contact %>
+                        </div>
+                        <%= form.text_field :phone_emergency_contact, class: "form-control" %>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-pin-map me-2"></i>
+                            <%= form.label :administrative_political_division_id %>
+                        </div>
+                        <%= form.collection_select :administrative_political_division_id, AdministrativePoliticalDivision.where("department_code = ?", "05").order(town_center_name: :asc), :id, :name_with_initial_corto, { prompt: "Seleccione un municipio" }, { class: "form-select", required: true } %>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-house me-2"></i>
+                            <%= form.label :address %>
+                        </div>
+                        <%= form.text_field :address, class: "form-control" %>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-signpost me-2"></i>
+                            <%= form.label :neighborhood %>
+                        </div>
+                        <%= form.text_field :neighborhood, class: "form-control" %>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-phone me-2"></i>
+                            <%= form.label :phone %>
+                        </div>
+                        <%= form.text_field :phone, class: "form-control" %>
+                    </div>
+                </div>
+            </div>
         </div>
-        <br>    
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :weight, style: "display: block" %> <p class="fw-lighter">Peso en kilos números enteros.</p></strong>
-            <%= form.number_field :weight,  class: "form-control", step: 1, max:1000, min:1 %>
+        <div class="conesst-card mb-4">
+            <div class="conesst-card-header">
+                <div class="conesst-card-header-content">
+                    <div>
+                        <h2 class="conesst-card-header-title">
+                            <i class="bi bi-house-heart me-2"></i>
+                            Información familiar y vivienda
+                        </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="conesst-card-body">
+                <div class="conesst-form-grid-2">
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-buildings me-2"></i>
+                            <%= form.label :stratum_socioeconomic %>
+                        </div>
+                        <div class="row g-2">
+                            <% (1..6).each do |estrato| %>
+                                <div class="col-4 col-sm-2">
+                                    <div class="form-check">
+                                        <%= form.radio_button :stratum_socioeconomic, estrato - 1, class: "form-check-input", required: true %>
+                                        <%= form.label :stratum_socioeconomic, estrato, value: estrato - 1, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-house-door me-2"></i>
+                            <%= form.label :housing_type %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "Propia"], [1, "Arrendada"], [2, "Familiar"]].each do |value, label| %>
+                                <div class="col-12 col-sm-4">
+                                    <div class="form-check">
+                                        <%= form.radio_button :housing_type, value, class: "form-check-input", required: true %>
+                                        <%= form.label :housing_type, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section conesst-form-section-full">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-lightning-charge me-2"></i>
+                            <%= form.label :basic_housing_services %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "Energía, acueducto, alcantarillado"], [1, "Energía, gas, acueducto, alcantarillado"], [2, "Energía, gas, acueducto, alcantarillado, internet"]].each do |value, label| %>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <%= form.radio_button :basic_housing_services, value, class: "form-check-input", required: true %>
+                                        <%= form.label :basic_housing_services, label, value: value,  class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-people me-2"></i>
+                            <%= form.label :has_children %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "Si"], [1, "No"]].each do |value, label| %>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <%= form.radio_button :has_children, value, class: "form-check-input", required: true %>
+                                        <%= form.label :has_children, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-person-hearts me-2"></i>
+                            <%= form.label :number_children %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "Ninguno"], [1, "1"], [2, "2"], [3, "Más de 2"]].each do |value, label| %>
+                                <div class="col-6 col-sm-3">
+                                    <div class="form-check">
+                                        <%= form.radio_button :number_children, value, class: "form-check-input", required: true %>
+                                        <%= form.label :number_children, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-person-plus me-2"></i>
+                            <%= form.label :number_people_charge %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "Ninguna"], [1, "1-2"], [2, "3-4"], [3, "5-6"]].each do |value, label| %>
+                                <div class="col-6 col-sm-3">
+                                    <div class="form-check">
+                                        <%= form.radio_button :number_people_charge, value, class: "form-check-input", required: true %>
+                                        <%= form.label :number_people_charge, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-universal-access me-2"></i>
+                            <%= form.label :live_people_disability %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "Si"], [1, "No"]].each do |value, label| %>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <%= form.radio_button :live_people_disability, value,  class: "form-check-input", required: true %>
+                                        <%= form.label :live_people_disability, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-person-wheelchair me-2"></i>
+                            <%= form.label :type_disability %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "Visual"], [1, "Auditiva"], [2, "Física"], [3, "Mental"], [4, "Múltiple"], [5, "N/A"]].each do |value, label| %>
+                                <div class="col-6 col-sm-4">
+                                    <div class="form-check">
+                                        <%= form.radio_button :type_disability, value, class: "form-check-input", required: true %>
+                                        <%= form.label :type_disability, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <br>    
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :height, style: "display: block" %> <p class="fw-lighter">Estatura en centímetros sin puntos ni comas.</p></strong>
-            <%= form.number_field :height,  class: "form-control", step: 1, max:250, min:1 %>
+        <div class="conesst-card mb-4">
+            <div class="conesst-card-header">
+                <div class="conesst-card-header-content">
+                    <div>
+                        <h2 class="conesst-card-header-title">
+                            <i class="bi bi-heart-pulse me-2"></i>
+                            Estilo de vida y salud
+                        </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="conesst-card-body">
+                <div class="conesst-form-grid-2">
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-controller me-2"></i>
+                            <%= form.label :use_time %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "Recreación y deporte"], [1, "Labores domésticas"], [2, "Estudio"], [3, "Otro"]].each do |value, label| %>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <%= form.radio_button :use_time, value, class: "form-check-input", required: true %>
+                                        <%= form.label :use_time, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-clipboard2-pulse me-2"></i>
+                            <%= form.label :diagnosed_illness %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "Si"], [1, "No"]].each do |value, label| %>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <%= form.radio_button :diagnosed_illness, value, class: "form-check-input", required: true %>
+                                        <%= form.label :diagnosed_illness, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-file-medical me-2"></i>
+                            <%= form.label :what_disease %>
+                        </div>
+                        <%= form.text_field :what_disease, class: "form-control" %>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-ban me-2"></i>
+                            <%= form.label :smoke %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "Si"], [1, "No"]].each do |value, label| %>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <%= form.radio_button :smoke, value, class: "form-check-input", required: true %>
+                                        <%= form.label :smoke, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-cloud-haze me-2"></i>
+                            <%= form.label :population_group %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "N/A"], [1, "Cigarrillo"], [2, "Cigarrillo eléctronico"], [3, "Otro"]].each do |value, label| %>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <%= form.radio_button :population_group, value, class: "form-check-input", required: true %>
+                                        <%= form.label :population_group, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-calendar-range me-2"></i>
+                            <%= form.label :daily_average_smoke %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "N/A"], [1, "Diario"], [2, "Semanal"], [3, "Quincenal"], [4, "Mensual"], [5, "Ocasional"]].each do |value, label| %>
+                                <div class="col-6 col-sm-4">
+                                    <div class="form-check">
+                                        <%= form.radio_button :daily_average_smoke, value, class: "form-check-input", required: true %>
+                                        <%= form.label :daily_average_smoke, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-cup-straw me-2"></i>
+                            <%= form.label :consume_alcoholic_beverages %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "Si"], [1, "No"]].each do |value, label| %>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <%= form.radio_button :consume_alcoholic_beverages, value, class: "form-check-input", required: true %>
+                                        <%= form.label :consume_alcoholic_beverages, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-calendar-range me-2"></i>
+                            <%= form.label :average_drinks %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "N/A"], [1, "Diario"], [2, "Semanal"], [3, "Quincenal"], [4, "Mensual"], [5, "Ocasional"]].each do |value, label| %>
+                                <div class="col-6 col-sm-4">
+                                    <div class="form-check">
+                                        <%= form.radio_button :average_drinks, value, class: "form-check-input", required: true %>
+                                        <%= form.label :average_drinks, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-bicycle me-2"></i>
+                            <%= form.label :sports_practice %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "Si"], [1, "No"]].each do |value, label| %>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <%= form.radio_button :sports_practice, value, class: "form-check-input", required: true %>
+                                        <%= form.label :sports_practice, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-calendar-range me-2"></i>
+                            <%= form.label :average_sports %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "N/A"], [1, "Diario"], [2, "Semanal"], [3, "Quincenal"], [4, "Mensual"], [5, "Ocasional"]].each do |value, label| %>
+                                <div class="col-6 col-sm-4">
+                                    <div class="form-check">
+                                        <%= form.radio_button :average_sports, value, class: "form-check-input", required: true %>
+                                        <%= form.label :average_sports, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="conesst-form-section">
+                        <div class="conesst-form-section-title">
+                            <i class="bi bi-bus-front me-2"></i>
+                            <%= form.label :conveyance %>
+                        </div>
+                        <div class="row g-2">
+                            <% [[0, "Moto"], [1, "Carro"], [2, "Bicicleta"], [3, "Servicio público"], [4, "A pie"], [5, "Otro"]].each do |value, label| %>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-check">
+                                        <%= form.radio_button :conveyance, value, class: "form-check-input", required: true %>
+                                        <%= form.label :conveyance, label, value: value, class: "form-check-label" %>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <br>    
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :civil_status,  style: "display: block" %></strong>
-            <%= form.radio_button :civil_status, 0, :checked => false, required: true %>
-            <label for="Soltero (a)">Soltero (a)</label></br>
-            <%= form.radio_button :civil_status, 1, :checked => false, required: true %>
-            <label for="Casado (a)">Casado (a)</label></br>
-            <%= form.radio_button :civil_status, 2, :checked => false, required: true %>
-            <label for="Unión libre">Unión libre</label></br>
-            <%= form.radio_button :civil_status, 3, :checked => false, required: true %>
-            <label for="Viudo (a)">Viudo (a)</label></br>
-            <%= form.radio_button :civil_status, 4, :checked => false, required: true %>
-            <label for="Divorciado/ separado (a)">Divorciado/ separado (a)</label></br>            
-        </div>
-        <br>     
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :education_level,  style: "display: block" %></strong>
-            <%= form.radio_button :education_level, 0, :checked => false, required: true %>
-            <label for="Primaria">Primaria</label></br>
-            <%= form.radio_button :education_level, 1, :checked => false, required: true %>
-            <label for="Secundaria">Secundaria</label></br>
-            <%= form.radio_button :education_level, 2, :checked => false, required: true %>
-            <label for="Técnico">Técnico</label></br>
-            <%= form.radio_button :education_level, 3, :checked => false, required: true %>
-            <label for="Tecnólogo">Tecnólogo</label></br>
-            <%= form.radio_button :education_level, 4, :checked => false, required: true %>
-            <label for="Profesional">Profesional</label></br>   
-            <%= form.radio_button :education_level, 5, :checked => false, required: true %>
-            <label for="Posgrado">Posgrado</label></br>           
-        </div>
-        <br>     
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :area_work,  style: "display: block" %></strong>
-            <%= form.radio_button :area_work, 0, :checked => false, required: true %>
-            <label for="Administrativa">Administrativa</label></br>
-            <%= form.radio_button :area_work, 1, :checked => false, required: true %>
-            <label for="Operativa">Operativa</label></br>
-        </div>
-        <br>     
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :post_actual,  style: "display: block" %></strong>
-            <%= form.text_field :post_actual,  class: "form-control" %>
-        </div>
-        <br>     
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :contract_type,  style: "display: block" %></strong>
-            <%= form.radio_button :contract_type, 0, :checked => false, required: true %>
-            <label for="Fijo">Contrato a Término Fijo</label></br>
-            <%= form.radio_button :contract_type, 1, :checked => false, required: true %>
-            <label for="Indefinido">Contrato a término indefinido</label></br>
-            <%= form.radio_button :contract_type, 2, :checked => false, required: true %>
-            <label for="Obra">Contrato de Obra o labor</label></br>
-            <%= form.radio_button :contract_type, 3, :checked => false, required: true %>
-            <label for="Civil">Contrato civil por prestación de servicios</label></br>
-            <%= form.radio_button :contract_type, 4, :checked => false, required: true %>
-            <label for="Aprendizaje">Contrato de aprendizaje</label></br>
-            <%= form.radio_button :contract_type, 5, :checked => false, required: true %>
-            <label for="Ocasional">Contrato ocasional de trabajo</label></br>
+        <div class="conesst-card mb-4">
+            <div class="conesst-card-header">
+                <div class="conesst-card-header-content">
+                    <div>
+                        <h2 class="conesst-card-header-title">
+                            <i class="bi bi-shield-lock me-2"></i>
+                            Tratamiento de datos personales
+                        </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="conesst-card-body">
+                <div class="conesst-form-section">
+                    <div class="conesst-rich-text-content">
+                        <p>
+                            Los datos de carácter personal que usted suministre a través
+                            de esta encuesta serán objeto de tratamiento en los términos
+                            de la <strong>Ley 1581 de 2012, el Decreto 1377 de 2013 y el
+                            Decreto 886 de 2014</strong> por parte de la Organización,
+                            quien se compromete a implementar todas las medidas necesarias
+                            para garantizar un tratamiento idóneo de los datos personales
+                            y a cumplir con las disposiciones que se tienen en esta materia.
+                        </p>
 
+                        <p class="fw-semibold mb-3">
+                            ¿Acepto el tratamiento de datos personales?
+                        </p>
+                    </div>
+                    <div class="form-check">
+                        <%= form.radio_button :accept_processing_data, 0, class: "form-check-input", required: true %>
+                        <%= form.label :accept_processing_data, "SI ACEPTO", value: 0, class: "form-check-label fw-semibold" %>
+                    </div>
+                </div>
+            </div>
         </div>
-        <br>     
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :Antiquity,  style: "display: block" %></strong>
-            <%= form.radio_button :Antiquity, 0, :checked => false, required: true %>
-            <label for="diurno">Diurno</label></br>
-            <%= form.radio_button :Antiquity, 1, :checked => false, required: true %>
-            <label for="nocturno">Nocturno</label></br>
-            <%= form.radio_button :Antiquity, 2, :checked => false, required: true %>
-            <label for="mixto">Mixto</label></br>
+        <%= form.hidden_field :user_id, value: @user_id.to_i %>
+        <%= form.hidden_field :survey_profile_id, value: @survey_profile_id.to_i %>
+        <div class="conesst-card">
+            <div class="conesst-card-body">
+                <div class="conesst-form-actions">
+                    <button type="submit" class="conesst-btn conesst-btn-primary">
+                        <i class="bi bi-check-lg"></i>
+                        <%= t('common.submit') %>
+                    </button>
+                    <%= link_to :back, class: "conesst-btn" do %>
+                        <i class="bi bi-arrow-left"></i>
+                        Retornar
+                    <% end %>
+                </div>
+            </div>
         </div>
-        <br>  
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :email_name,  style: "display: block" %></strong>
-            <%= form.email_field :email_name,  class: "form-control" %>
-        </div>
-        <br>     
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :salary_range,  style: "display: block" %></strong>
-            <%= form.radio_button :salary_range, 0, :checked => false, required: true %>
-            <label for="1 a 2 SMLMV">De 1 a 2 SMLMV</label></br>
-            <%= form.radio_button :salary_range, 1, :checked => false, required: true %>
-            <label for="3 a 4 SMLMV">De 3 a 4 SMLMV</label></br>
-            <%= form.radio_button :salary_range, 2, :checked => false, required: true %>
-            <label for="Más de 4 SMLMV">Mas de 4 SMLMV</label></br>
-        </div>
-        <br>     
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :health_promoter_id,  style: "display: block" %></strong>
-           <%= form.collection_select :health_promoter_id, HealthPromoter.all.order(id: :asc), :id, :name_entity, style: "width:50px" %>
-        </div>
-        <br>    
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :pension_fund_id,  style: "display: block" %></strong>
-           <%= form.collection_select :pension_fund_id, PensionFund.all.order(id: :asc), :id, :fund, style: "width=50px" %>
-        </div>
-        <br>    
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :cessation_fund_id,  style: "display: block" %></strong>
-           <%= form.collection_select :cessation_fund_id, CessationFund.all.order(id: :asc), :id, :name, style: "width=50px" %>
-        </div>
-        <br>    
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :occupational_risk_manager_id,  style: "display: block" %></strong>
-           <%= form.collection_select :occupational_risk_manager_id, OccupationalRiskManager.all.order(id: :asc), :id, :name, style: "width=50px" %>
-        </div>
-        <br>  
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :head_family,  style: "display: block" %></strong>
-            <%= form.radio_button :head_family, 0, :checked => false, required: true %>
-            <label for="bogota">Banco de Bogotá</label></br>
-            <%= form.radio_button :head_family, 1, :checked => false, required: true %>
-            <label for="popular">Banco Popular</label></br>
-            <%= form.radio_button :head_family, 2, :checked => false, required: true %>
-            <label for="itau">Itaú Colombia</label></br>
-            <%= form.radio_button :head_family, 3, :checked => false, required: true %>
-            <label for="bancolombia">Bancolombia</label></br>
-            <%= form.radio_button :head_family, 4, :checked => false, required: true %>
-            <label for="citibank">Citibanck</label></br>
-            <%= form.radio_button :head_family, 5, :checked => false, required: true %>
-            <label for="GNB">GNB Sudameris</label></br>
-            <%= form.radio_button :head_family, 6, :checked => false, required: true %>
-            <label for="BBVA">BBVA</label></br>
-            <%= form.radio_button :head_family, 7, :checked => false, required: true %>
-            <label for="occidente">Banco de Occidente</label></br>
-            <%= form.radio_button :head_family, 8, :checked => false, required: true %>
-            <label for="cajasocial">Banco Caja Social</label></br>
-            <%= form.radio_button :head_family, 9, :checked => false, required: true %>
-            <label for="davivienda">Davivienda</label></br>
-            <%= form.radio_button :head_family, 10, :checked => false, required: true %>
-            <label for="colpatria">Colpatria</label></br>
-            <%= form.radio_button :head_family, 11, :checked => false, required: true %>
-            <label for="agraria">Banco Agrario</label></br>
-            <%= form.radio_button :head_family, 12, :checked => false, required: true %>
-            <label for="avvillas">Banco AV Villas</label></br>
-            <%= form.radio_button :head_family, 13, :checked => false, required: true %>
-            <label for="bancien">Ban100</label></br>
-            <%= form.radio_button :head_family, 14, :checked => false, required: true %>
-            <label for="bancamia">Bancamia</label></br>
-            <%= form.radio_button :head_family, 15, :checked => false, required: true %>
-            <label for="wsa">Banco W</label></br>
-            <%= form.radio_button :head_family, 16, :checked => false, required: true %>
-            <label for="coomeva">Coomeva</label></br>
-            <%= form.radio_button :head_family, 17, :checked => false, required: true %>
-            <label for="falabella">Banco Falabella</label></br>
-            <%= form.radio_button :head_family, 18, :checked => false, required: true %>
-            <label for="pichincha">Banco Pichincha</label></br>
-            <%= form.radio_button :head_family, 19, :checked => false, required: true %>
-            <label for="santander">Banco Santander</label></br>
-            <%= form.radio_button :head_family, 20, :checked => false, required: true %>
-            <label for="mundomujer">Banco Mundo Mujer</label></br>
-            <%= form.radio_button :head_family, 21, :checked => false, required: true %>
-            <label for="lulubank">Lulubank</label></br>
-            <%= form.radio_button :head_family, 22, :checked => false, required: true %>
-            <label for="nu">Nubank</label></br>
-            <%= form.radio_button :head_family, 23, :checked => false, required: true %>
-            <label for="otro">Otro</label></br>
-        </div>
-        <br>  
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :emergency_contact,  style: "display: block" %></strong>
-            <%= form.text_field :emergency_contact,  class: "form-control" %>
-        </div>
-        <br>     
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :phone_emergency_contact,  style: "display: block" %></strong>
-            <%= form.text_field :phone_emergency_contact,  class: "form-control" %>
-        </div>
-        <br>     
-        <div class="col-sm-12 p-3 mb-2  text-dark">     
-            <strong><%= form.label :administrative_political_division_id,  style: "display: block" %></strong>
-            <%= form.collection_select :administrative_political_division_id, AdministrativePoliticalDivision.where("department_code = ?","05").order(town_center_name: :asc), :id, :name_with_initial_corto, required: true, style: "width=50px" %>
-        </div>
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :address,  style: "display: block" %></strong>
-            <%= form.text_field :address,  class: "form-control" %>
-        </div>
-        <br>     
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :neighborhood,  style: "display: block" %></strong>
-            <%= form.text_field :neighborhood,  class: "form-control" %>
-        </div>
-        <br>     
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :phone,  style: "display: block" %></strong>
-            <%= form.text_field :phone,  class: "form-control" %>
-        </div>
-        <br>     
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :stratum_socioeconomic,  style: "display: block" %></strong>
-            <%= form.radio_button :stratum_socioeconomic, 0, :checked => false, required: true %>
-            <label for="1">1</label></br>
-            <%= form.radio_button :stratum_socioeconomic, 1, :checked => false, required: true %>
-            <label for="2">2</label></br>
-            <%= form.radio_button :stratum_socioeconomic, 2, :checked => false, required: true %>
-            <label for="3">3</label></br>
-            <%= form.radio_button :stratum_socioeconomic, 3, :checked => false, required: true %>
-            <label for="4">4</label></br>
-            <%= form.radio_button :stratum_socioeconomic, 4, :checked => false, required: true %>
-            <label for="5">5</label></br>   
-            <%= form.radio_button :stratum_socioeconomic, 5, :checked => false, required: true %>
-            <label for="6">6</label></br>   
-        </div>
-        <br>     
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :housing_type,  style: "display: block" %></strong>
-            <%= form.radio_button :housing_type, 0, :checked => false, required: true %>
-            <label for="Propia">Propia</label></br>
-            <%= form.radio_button :housing_type, 1, :checked => false, required: true %>
-            <label for="Arrendada">Arrendada</label></br>
-            <%= form.radio_button :housing_type, 2, :checked => false, required: true %>
-            <label for="Familiar">Familiar</label></br>
-       </div>
-        <br>     
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :basic_housing_services,  style: "display: block" %></strong>
-            <%= form.radio_button :basic_housing_services, 0, :checked => false, required: true %>
-            <label for="Energía, acueducto, alcantarillado">Energía, acueducto, alcantarillado</label></br>
-            <%= form.radio_button :basic_housing_services, 1, :checked => false, required: true %>
-            <label for="Energía, gas, acueducto, alcantarillado">Energía, gas, acueducto, alcantarillado</label></br>
-            <%= form.radio_button :basic_housing_services, 2, :checked => false, required: true %>
-            <label for="Energía, gas, acueducto, alcantarillado, internet">Energía, gas, acueducto, alcantarillado, internet</label></br>
-        </div>
-        <br>  
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :has_children,  style: "display: block" %></strong>
-            <%= form.radio_button :has_children, 0, :checked => false, required: true %>
-            <label for="Si">Si</label></br>
-            <%= form.radio_button :has_children, 1, :checked => false, required: true %>
-            <label for="No">No</label></br>
-        </div>
-        <br>  
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :number_children,  style: "display: block" %></strong>
-            <%= form.radio_button :number_children, 0, :checked => false, required: true %>
-            <label for="ninguno">Ninguno</label></br>
-            <%= form.radio_button :number_children, 1, :checked => false, required: true %>
-            <label for="1">1</label></br>
-            <%= form.radio_button :number_children, 2, :checked => false, required: true %>
-            <label for="2">2</label></br>
-            <%= form.radio_button :number_children, 3, :checked => false, required: true %>
-            <label for="Más de 2">Más de 2</label></br>
-        </div>
-        <br> 
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :number_people_charge,  style: "display: block" %></strong>
-            <%= form.radio_button :number_people_charge, 0, :checked => false, required: true %>
-            <label for="Ninguna">Ninguna</label></br>
-            <%= form.radio_button :number_people_charge, 1, :checked => false, required: true %>
-            <label for="1-2">1-2</label></br>
-            <%= form.radio_button :number_people_charge, 2, :checked => false, required: true %>
-            <label for="3-4">3-4</label></br>
-            <%= form.radio_button :number_people_charge, 3, :checked => false, required: true %>
-            <label for="5-6">5-6</label></br>
-        </div>
-        <br>  
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :live_people_disability,  style: "display: block" %></strong>
-            <%= form.radio_button :live_people_disability, 0, :checked => false, required: true %>
-            <label for="Si">Si</label></br>
-            <%= form.radio_button :live_people_disability, 1, :checked => false, required: true %>
-            <label for="No">No</label></br>
-        </div>
-        <br>  
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :type_disability,  style: "display: block" %></strong>
-            <%= form.radio_button :type_disability, 0, :checked => false, required: true %>
-            <label for="Visual">Visual</label></br>
-            <%= form.radio_button :type_disability, 1, :checked => false, required: true %>
-            <label for="Auditiva">Auditiva</label></br>
-            <%= form.radio_button :type_disability, 2, :checked => false, required: true %>
-            <label for="Física">Física</label></br>
-            <%= form.radio_button :type_disability, 3, :checked => false, required: true %>
-            <label for="Mental">Mental</label></br>
-            <%= form.radio_button :type_disability, 4, :checked => false, required: true %>
-            <label for="Múltiple">Múltiple</label></br>   
-            <%= form.radio_button :type_disability, 5, :checked => false, required: true %>
-            <label for="N/A">N/A</label></br>   
-        </div>
-        <br> 
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :use_time,  style: "display: block" %></strong>
-            <%= form.radio_button :use_time, 0, :checked => false, required: true %>
-            <label for="Recreación y deporte">Recreación y deporte</label></br>
-            <%= form.radio_button :use_time, 1, :checked => false, required: true %>
-            <label for="Labores domésticas">Labores domésticas</label></br>
-            <%= form.radio_button :use_time, 2, :checked => false, required: true %>
-            <label for="Estudio">Estudio</label></br>
-            <%= form.radio_button :use_time, 3, :checked => false, required: true %>
-            <label for="Otro">Otro</label></br>
-        </div>
-        <br> 
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :diagnosed_illness,  style: "display: block" %></strong>
-            <%= form.radio_button :diagnosed_illness, 0, :checked => false, required: true %>
-            <label for="Si">Si</label></br>
-            <%= form.radio_button :diagnosed_illness, 1, :checked => false, required: true %>
-            <label for="No">No</label></br>
-        </div>
-        <br> 
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :what_disease,  style: "display: block" %></strong>
-            <%= form.text_field :what_disease,  class: "form-control" %>
-        </div>
-        <br>
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :smoke,  style: "display: block" %></strong>
-            <%= form.radio_button :smoke, 0, :checked => false, required: true %>
-            <label for="Si">Si</label></br>
-            <%= form.radio_button :smoke, 1, :checked => false, required: true %>
-            <label for="No">No</label></br>
-        </div>
-        <br>
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :population_group,  style: "display: block" %></strong>
-            <%= form.radio_button :population_group, 0, :checked => false, required: true %>
-            <label for="NA">N/A</label></br>
-            <%= form.radio_button :population_group, 1, :checked => false, required: true %>
-            <label for="cigarrillo">Cigarrillo</label></br>
-            <%= form.radio_button :population_group, 2, :checked => false, required: true %>
-            <label for="electronico">Cigarrillo eléctronico</label></br>
-            <%= form.radio_button :population_group, 3, :checked => false, required: true %>
-            <label for="otro">Otro</label></br>
-        </div>
-        <br>     
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :daily_average_smoke,  style: "display: block" %></strong>
-            <%= form.radio_button :daily_average_smoke, 0, :checked => false, required: true %>
-            <label for="N/A">N/A</label></br>
-            <%= form.radio_button :daily_average_smoke, 1, :checked => false, required: true %>
-            <label for="Diario">Diario</label></br>
-            <%= form.radio_button :daily_average_smoke, 2, :checked => false, required: true %>
-            <label for="Semanal">Semanal</label></br>
-            <%= form.radio_button :daily_average_smoke, 3, :checked => false, required: true %>
-            <label for="Quincenal">Quincenal</label></br>
-            <%= form.radio_button :daily_average_smoke, 4, :checked => false, required: true %>
-            <label for="Mensual">Mensual</label></br>
-            <%= form.radio_button :daily_average_smoke, 5, :checked => false, required: true %>
-            <label for="Ocasional">Ocasional</label></br>
-        </div>
-        <br> 
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :consume_alcoholic_beverages,  style: "display: block" %></strong>
-            <%= form.radio_button :consume_alcoholic_beverages, 0, :checked => false, required: true %>
-            <label for="Si">Si</label></br>
-            <%= form.radio_button :consume_alcoholic_beverages, 1, :checked => false, required: true %>
-            <label for="No">No</label></br>
-        </div>
-        <br> 
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :average_drinks,  style: "display: block" %></strong>
-            <%= form.radio_button :average_drinks, 0, :checked => false, required: true %>
-            <label for="N/A">N/A</label></br>
-            <%= form.radio_button :average_drinks, 1, :checked => false, required: true %>
-            <label for="Diario">Diario</label></br>
-            <%= form.radio_button :average_drinks, 2, :checked => false, required: true %>
-            <label for="Semanal">Semanal</label></br>
-            <%= form.radio_button :average_drinks, 3, :checked => false, required: true %>
-            <label for="Quincenal">Quincenal</label></br>
-            <%= form.radio_button :average_drinks, 4, :checked => false, required: true %>
-            <label for="Mensual">Mensual</label></br>
-            <%= form.radio_button :average_drinks, 5, :checked => false, required: true %>
-            <label for="Ocasional">Ocasional</label></br>
-        </div>
-        <br>
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :sports_practice,  style: "display: block" %></strong>
-            <%= form.radio_button :sports_practice, 0, :checked => false, required: true %>
-            <label for="Si">Si</label></br>
-            <%= form.radio_button :sports_practice, 1, :checked => false, required: true %>
-            <label for="No">No</label></br>
-        </div>
-        <br> 
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :average_sports,  style: "display: block" %></strong>
-            <%= form.radio_button :average_sports, 0, :checked => false, required: true %>
-            <label for="N/A">N/A</label></br>
-            <%= form.radio_button :average_sports, 1, :checked => false, required: true %>
-            <label for="Diario">Diario</label></br>
-            <%= form.radio_button :average_sports, 2, :checked => false, required: true %>
-            <label for="Semanal">Semanal</label></br>
-            <%= form.radio_button :average_sports, 3, :checked => false, required: true %>
-            <label for="Quincenal">Quincenal</label></br>
-            <%= form.radio_button :average_sports, 4, :checked => false, required: true %>
-            <label for="Mensual">Mensual</label></br>
-            <%= form.radio_button :average_sports, 5, :checked => false, required: true %>
-            <label for="Ocasional">Ocasional</label></br>
-        </div>
-        <br>
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <strong><%= form.label :conveyance,  style: "display: block" %></strong>
-            <%= form.radio_button :conveyance, 0, :checked => false, required: true %>
-            <label for="Moto">Moto</label></br>
-            <%= form.radio_button :conveyance, 1, :checked => false, required: true %>
-            <label for="Carro">Carro</label></br>
-            <%= form.radio_button :conveyance, 2, :checked => false, required: true %>
-            <label for="Bicicleta">Bicicleta</label></br>
-            <%= form.radio_button :conveyance, 3, :checked => false, required: true %>
-            <label for="Servicio público">Servicio público</label></br>
-            <%= form.radio_button :conveyance, 4, :checked => false, required: true %>
-            <label for="Ocasional">A pie</label></br>
-            <%= form.radio_button :conveyance, 5, :checked => false, required: true %>
-            <label for="Otro">Otro</label></br>
-
-        </div>
-        <br>
-        <div class="col-sm-12 p-3 mb-2  text-dark">    
-            <p class="fst-normal">Los datos de carácter personal que usted suministre a través de esta encuesta serán objeto de tratamiento en los términos de la <strong>Ley 1581 de 2012, el Decreto 1377 de 2013 y el Decreto 886 de 2014</strong>  por parte de la Organización, quien se compromete a implementar todas las medidas necesarias para garantizar un tratamiento idóneo de los datos personales y a cumplir con las disposiciones que se tienen en esta materia.
-            ¿Acepto el tratamiento de datos personales?</p>
-            <%= form.radio_button :accept_processing_data, 0, :checked => false, required: true %>
-            <label for="Si">SI ACEPTO</label></br>
-        </div>
-        <br> 
-        <%= form.hidden_field :user_id, :value => @user_id.to_i, class: "form-control" %>
-        <%= form.hidden_field :survey_profile_id, :value => @survey_profile_id.to_i, class: "form-control" %>
-
-        <br>    
-        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
     <% end %>
-</div>        
-<br>
-
- 
+</div>

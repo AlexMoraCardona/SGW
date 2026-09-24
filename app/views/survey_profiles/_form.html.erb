@@ -1,43 +1,120 @@
-<div class="container col-11 card p-5">
-    <br>
-    <%= form_with model: @survey_profile do |form| %>
-        <% @survey_profile.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
+<div class="conesst-page">
+  <div class="conesst-header">
+    <div class="conesst-header-content">
+      <h1 class="conesst-title">
+        <i class="bi bi-clipboard2-plus me-2"></i>
+        Perfil Sociodemográfico
+      </h1>
+      <p class="conesst-subtitle">
+        Configuración del período y responsables del perfil sociodemográfico.
+      </p>
+    </div>
+  </div>
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+        <h2 class="conesst-card-header-title">
+          <i class="bi bi-calendar-check me-2"></i>
+          Información del perfil
+        </h2>
+        <p class="conesst-card-header-subtitle">
+          Complete la información requerida para crear o actualizar
+          el perfil sociodemográfico.
+        </p>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <%= form_with model: @survey_profile do |form| %>
+        <% if @survey_profile.errors.any? %>
+          <div class="alert alert-danger" role="alert">
+            <div class="d-flex align-items-start gap-2">
+              <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+              <div>
+                <strong>
+                  No fue posible guardar el perfil.
+                </strong>
+                <ul class="mb-0 mt-2">
+                  <% @survey_profile.errors.full_messages.each do |error| %>
+                    <li><%= error %></li>
+                  <% end %>
+                </ul>
+              </div>
             </div>
-        <% end %>    
-
-        <br>    
-        <div class="row g-2">
-            <div class="col-sm-4">
-                <%= form.label :date_profile, style: "display: block" %>
-                <%= form.date_field :date_profile,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">    
-                <%= form.label :date_vencimiento_profile, style: "display: block" %>
-                <%= form.date_field :date_vencimiento_profile,  class: "form-control" %>
-            </div>                   
-        </div>  
-        <div class="row g-2">
-            <div class="col-sm-5">
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Asesor SG-SST.">Asesor SG-SST:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button></br>
-                <%= form.collection_select :user_elaboro, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-            </div>        
-            <div class="col-sm-5">    
-                <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Representante Legal.">Representante Legal:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                <%= form.collection_select :user_aprobo, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-            </div>                   
-        </div>  
-
+          </div>
+        <% end %>
+        <div class="conesst-form-section">
+          <div class="conesst-form-section-title">
+            <i class="bi bi-calendar-range me-2"></i>
+            Vigencia del perfil
+          </div>
+          <div class="row g-4">
+            <div class="col-12 col-md-6">
+              <div class="conesst-form-group">
+                <%= form.label :date_profile, class: "conesst-form-label" do %>
+                  Fecha de elaboración
+                <% end %>
+                <%= form.date_field :date_profile, class: "form-control" %>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="conesst-form-group">
+                <%= form.label :date_vencimiento_profile, class: "conesst-form-label" do %>
+                  Fecha de vencimiento
+                <% end %>
+                <%= form.date_field :date_vencimiento_profile, class: "form-control" %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="conesst-form-section mt-4">
+          <div class="conesst-form-section-title">
+            <i class="bi bi-people me-2"></i>
+            Responsables
+          </div>
+          <div class="row g-4">
+            <div class="col-12 col-md-6">
+              <div class="conesst-form-group">
+                <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
+                  <%= form.label :user_elaboro, "Asesor SG-SST", class: "conesst-form-label mb-0" %>
+                  <button type="button" class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Asesor SG-SST.">
+                    <i class="bi bi-question-circle text-primary"></i>
+                  </button>
+                </div>
+                <%= form.collection_select :user_elaboro, User.usuarios_empresa.order(id: :asc), :id, :name,  {}, { class: "form-select select2" } %>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="conesst-form-group">
+                <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
+                  <%= form.label :user_aprobo, "Representante Legal", class: "conesst-form-label mb-0" %>
+                  <button type="button" class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el nombre del Representante Legal.">
+                    <i class="bi bi-question-circle text-primary"></i>
+                  </button>
+                </div>
+                <%= form.collection_select :user_aprobo, User.usuarios_empresa.order(id: :asc), :id, :name, {}, { class: "form-select select2" } %>
+              </div>
+            </div>
+          </div>
+        </div>
         <% if params[:entity_id].present? %>
-            <%= form.hidden_field :entity_id, :value => params[:entity_id].to_i, class: "form-control" %>
+          <%= form.hidden_field :entity_id, value: params[:entity_id].to_i %>
         <% else %>
-            <%= form.hidden_field :entity_id, :value => @entity.id if @entity.id.present? %>
-        <% end %>                
-
-        <div><br> </div>    
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, survey_profiles_path %>
-    <% end %>
-</div>        
-<br>
+          <% if @entity&.id.present? %>
+            <%= form.hidden_field :entity_id, value: @entity.id %>
+          <% end %>
+        <% end %>
+        <% if @template.present? %>
+          <%= form.hidden_field :code, value: @template.reference %>
+          <%= form.hidden_field :version, value: @template.version.to_i %>
+        <% end %>
+        <div class="conesst-form-actions mt-4">
+          <%= form.submit t('common.submit'), class: "conesst-btn conesst-btn-primary" %>
+          <%= link_to survey_profiles_path, class: "conesst-btn btn-sm btn-outline-secondary" do %>
+            <i class="bi bi-arrow-left me-1"></i>
+            Retornar
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

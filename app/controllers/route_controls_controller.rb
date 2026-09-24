@@ -20,6 +20,7 @@ class RouteControlsController < ApplicationController
 
     def new
       @route_control = RouteControl.new  
+      @template = Template.where("reference = ? and document_vigente = ?",'CR-SST',1).last  
     end    
 
     def create
@@ -40,7 +41,8 @@ class RouteControlsController < ApplicationController
     def show
         @route_control = RouteControl.find(params[:id])
         @entity = Entity.find(@route_control.user.entity) if @route_control.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",96,1).last  
+        @template = Template.where("reference = ? and version = ?",@route_control.code,@route_control.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
     end
 
     def update
@@ -61,26 +63,25 @@ class RouteControlsController < ApplicationController
     def pdf_informe_route_control
         @route_control = RouteControl.find(params[:id])
         @entity = Entity.find(@route_control.user.entity) if @route_control.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",96,1).last  
+        @template = Template.where("reference = ? and version = ?",@route_control.code,@route_control.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
-        nombre_evidencia = @template.reference.to_s + '.pdf'
 
-
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
                 pdf = WickedPdf.new.pdf_from_string(
                     render_to_string('pdf_informe_route_control'),
                     disable_javascript: true,
-                    margin: {top: 20, bottom: 15, left: 15, right: 15 },
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
                     page_size: 'letter',
-                    footer: {right: '[page] de [topage]'}
-                    
-                  )  
-                  send_data(pdf, filename: nombre_evidencia, disposition: 'attachment')      
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
             }
         end    
-      
     end 
     
     def control_hora_inicio
@@ -134,7 +135,7 @@ class RouteControlsController < ApplicationController
 
     def route_control_params
         params.require(:route_control).permit(:date_control, :observation, :time_initial_control, 
-        :time_final_control, :place, :vehicle_type, :user_id, :user_create, :entity)
+        :time_final_control, :place, :vehicle_type, :user_id, :user_create, :entity, :version, :code)
     end 
 
 end  

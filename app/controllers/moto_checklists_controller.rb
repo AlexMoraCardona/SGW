@@ -154,7 +154,7 @@ class MotoChecklistsController < ApplicationController
          :brakes_condition, :brakes_condition_obs, :transmission_condition, :transmission_condition_obs, 
          :documents_condition, :documents_condition_obs, :kit_condition, :kit_condition_obs, 
          :firm_user, :date_firm_user, :user_autoriza, :user_autoriza_firm, :user_autoriza_date, 
-         :user_id, :entity_id, moto_files: [])
+         :user_id, :version, :code, :entity_id, moto_files: [])
     end 
 end 
 

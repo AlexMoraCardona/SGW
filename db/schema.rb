@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_09_19_192428) do
+ActiveRecord::Schema[7.0].define(version: 2026_09_23_004508) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -406,6 +406,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_19_192428) do
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.bigint "entity_id"
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["entity_id"], name: "index_car_checklists_on_entity_id"
     t.index ["user_id"], name: "index_car_checklists_on_user_id"
   end
@@ -896,6 +898,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_19_192428) do
     t.integer "external_consultant", default: 0
     t.integer "pay_entity", default: 0
     t.string "objeto_entity"
+    t.integer "monthly_advice", default: 0
     t.index ["email_entity"], name: "index_entities_on_email_entity", unique: true
   end
 
@@ -2074,6 +2077,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_19_192428) do
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.bigint "entity_id"
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["entity_id"], name: "index_moto_checklists_on_entity_id"
     t.index ["user_id"], name: "index_moto_checklists_on_user_id"
   end
@@ -2445,6 +2450,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_19_192428) do
     t.bigint "user_id"
     t.integer "user_create", default: 0
     t.integer "entity", default: 0
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["user_id"], name: "index_route_controls_on_user_id"
   end
 
@@ -2483,6 +2490,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_19_192428) do
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
     t.integer "number_employees", default: 0
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["entity_id"], name: "index_safety_inspections_on_entity_id"
   end
 
@@ -2869,6 +2878,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_19_192428) do
     t.integer "firm_elaboro", default: 0
     t.integer "firm_aprobo", default: 0
     t.integer "firm_reviso", default: 0
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["entity_id"], name: "index_survey_profiles_on_entity_id"
   end
 

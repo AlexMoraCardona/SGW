@@ -1,210 +1,600 @@
-<div align="left"; class="container col-12">
-    <a class="navbar-brand" href="/">
-        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-    </a>
+<div class="conesst-page">
+    <div class="conesst-header">
+        <div class="conesst-header-content">
+            <div class="conesst-logo-container">
+                <%= link_to root_path, class: "navbar-brand" do %>
+                    <%= image_tag "LogoConesst202305232.png", class: "conesst-logo", alt: "CONESST" %>
+                <% end %>
+            </div>
+            <div>
+                <h1 class="conesst-title">
+                    Encuesta sociodemográfica
+                </h1>
+                <p class="conesst-subtitle">
+                    Información del perfil sociodemográfico del empleado
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="conesst-card">
+        <div class="conesst-card-header">
+            <div class="conesst-card-header-content">
+                <div>
+                    <h2 class="conesst-card-header-title">
+                        <i class="bi bi-person-badge me-2"></i>
+                        Información del empleado
+                    </h2>
+                    <p class="conesst-card-header-subtitle">
+                        Datos generales y laborales
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="conesst-card-body">
+            <div class="row g-3">
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Nombre del empleado
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= @profile.user.name %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Número de identificación
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= @profile.user.nro_document %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Cargo
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= User.label_activity(@profile.user.activity) if @profile.user.activity.present? %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Fecha de elaboración
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= @profile.created_at.strftime("%F") %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Sexo
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelgenero(@profile.gender) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Tipo de RH
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelsangre(@profile.blood_type) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Edad
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labeledad(@profile.age) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Peso
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= @profile.weight %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Estatura
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= @profile.height %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Estado civil
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelestadocivil(@profile.civil_status) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Nivel de escolaridad
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelnivel(@profile.education_level) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Área de trabajo
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelarea(@profile.area_work) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Cargo actual
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= @profile.post_actual %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Tipo de contrato
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelcontrato(@profile.contract_type) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Turno de trabajo
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelturno(@profile.Antiquity) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Correo electrónico
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= @profile.email_name %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Rango salarial
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelsalario(@profile.salary_range) %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="conesst-card">
+        <div class="conesst-card-header">
+            <div class="conesst-card-header-content">
+                <div>
+                    <h2 class="conesst-card-header-title">
+                        <i class="bi bi-shield-check me-2"></i>
+                        Seguridad social
+                    </h2>
+                    <p class="conesst-card-header-subtitle">
+                        Entidades de seguridad social y servicios asociados
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="conesst-card-body">
+            <div class="row g-3">
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            EPS
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labeleps(@profile.health_promoter_id) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Fondo de Pensiones
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelpension(@profile.pension_fund_id) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Fondo de Cesantías
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelcesantia(@profile.cessation_fund_id) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            ARL
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelarl(@profile.occupational_risk_manager_id) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Entidad Bancaria
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelbanco(@profile.head_family) %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="conesst-card">
+        <div class="conesst-card-header">
+            <div class="conesst-card-header-content">
+                <div>
+                    <h2 class="conesst-card-header-title">
+                        <i class="bi bi-house-heart me-2"></i>
+                        Información familiar y de contacto
+                    </h2>
+                    <p class="conesst-card-header-subtitle">
+                        Información familiar, vivienda y contacto
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="conesst-card-body">
+            <div class="row g-3">
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Nombre del contacto de emergencia
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= @profile.emergency_contact %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Número telefónico contacto
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= @profile.phone_emergency_contact %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Ciudad - Municipio
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelciudad(@profile.administrative_political_division_id) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Dirección
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= @profile.address %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Barrio
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= @profile.neighborhood %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Número de teléfono
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= @profile.phone %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Estrato socioeconómico
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelestrato(@profile.stratum_socioeconomic) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Tipo de vivienda
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelvivienda(@profile.housing_type) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Servicios básicos de la vivienda
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelservicios(@profile.basic_housing_services) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            ¿Tiene hijos?
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelhijos(@profile.has_children) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Número de hijos
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelnumerohijos(@profile.number_children) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Número de personas a cargo
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelpersonasacargo(@profile.number_people_charge) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            ¿Vive con personas que tengan alguna discapacidad?
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labeldiscapacitadas(@profile.live_people_disability) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Tipo de discapacidad
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labeltipodiscapacitadas(@profile.type_disability) %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="conesst-card">
+        <div class="conesst-card-header">
+            <div class="conesst-card-header-content">
+                <div>
+                    <h2 class="conesst-card-header-title">
+                        <i class="bi bi-heart-pulse me-2"></i>
+                        Salud y hábitos
+                    </h2>
+                    <p class="conesst-card-header-subtitle">
+                        Información relacionada con salud, hábitos y estilos de vida
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="conesst-card-body">
+            <div class="row g-3">
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Uso del tiempo libre
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labeltiempo(@profile.use_time) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            ¿Le han diagnosticado alguna enfermedad?
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelenfermedad(@profile.diagnosed_illness) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            ¿Cuál enfermedad?
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= @profile.what_disease %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            ¿Fuma?
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelfuma(@profile.smoke) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Cuál cigarrillo
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelcualcigarrillo(@profile.population_group) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Promedio de cigarrillos
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelpromediocigarrillo(@profile.daily_average_smoke) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            ¿Consume bebidas alcohólicas?
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelbebida(@profile.consume_alcoholic_beverages) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Promedio de bebidas
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelpromediobebida(@profile.average_drinks) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            ¿Practica algún deporte?
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labeldeporte(@profile.sports_practice) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Promedio de práctica deportiva
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelpromediodeporte(@profile.average_sports) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            Medio de transporte para ir al trabajo
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labelmediotransporte(@profile.conveyance) %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="conesst-card">
+        <div class="conesst-card-header">
+            <div class="conesst-card-header-content">
+                <div>
+                    <h2 class="conesst-card-header-title">
+                        <i class="bi bi-shield-lock me-2"></i>
+                        Tratamiento de datos personales
+                    </h2>
+                    <p class="conesst-card-header-subtitle">
+                        Autorización para el tratamiento de datos personales
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="conesst-card-body">
+            <div class="row g-3">
+                <div class="col-12 col-lg-6">
+                    <div class="conesst-info-item">
+                        <div class="conesst-info-label">
+                            ¿Aceptó el tratamiento de datos personales?
+                        </div>
+                        <div class="conesst-info-value">
+                            <%= Profile.labeltratamientodatos(@profile.accept_processing_data) %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="conesst-form-actions">
+        <%= link_to :back, class: "conesst-btn" do %>
+            <i class="bi bi-arrow-left me-1"></i>
+            Retornar
+        <% end %>
+    </div>
 </div>
-<div class="container col-12"> 
-    <div> 
-        <strong>Encuesta sociodemografica</strong><br>
-    </div>        
-    <div>
-        <strong>Nombre del empleado:</strong>
-        <%=  @profile.user.name  %> 
-    </div>        
-    <div>
-        <strong>Número de identificación:</strong>
-        <%=  @profile.user.nro_document  %> 
-    </div>        
-    <div>
-        <strong>Cargo:</strong>
-        <%=  @profile.user.activity  %> 
-    </div>        
-    <div>
-        <strong>Fecha de elaboración de la encuesta:</strong>
-        <%= @profile.created_at.strftime("%F")  %> 
-    </div>        
-    <div>
-        <strong>Sexo:</strong>
-        <%= Profile.labelgenero(@profile.gender)  %> 
-    </div>        
-    <div>
-        <strong>Tipo de RH:</strong>
-        <%= Profile.labelsangre(@profile.blood_type)  %> 
-    </div>         
-    <div>
-        <strong>Edad:</strong>
-        <%= Profile.labeledad(@profile.age)  %> 
-    </div>         
-    <div>
-        <strong>Peso:</strong>
-        <%= @profile.weight  %> 
-    </div>         
-    <div>
-        <strong>Estatura:</strong>
-        <%= @profile.height  %> 
-    </div> 
-    <div>
-        <strong>Estado civil: </strong>
-        <%= Profile.labelestadocivil(@profile.civil_status)  %> 
-    </div>        
-    <div>
-        <strong>Nivel de escolaridad: </strong>
-        <%= Profile.labelnivel(@profile.education_level)  %> 
-    </div>        
-    <div>
-        <strong>Área de trabajo: </strong>
-        <%= Profile.labelarea(@profile.area_work)  %> 
-    </div>        
-    <div>
-        <strong>Cargo:</strong>
-        <%= @profile.post_actual  %> 
-    </div> 
-    <div>
-        <strong>Tipo de contrato: </strong>
-        <%= Profile.labelcontrato(@profile.contract_type)  %> 
-    </div>            
-    <div>
-        <strong>Turno de trabajo: </strong>
-        <%= Profile.labelturno(@profile.Antiquity)  %> 
-    </div>    
-    <div>
-        <strong>Correo electrónico:</strong>
-        <%= @profile.email_name  %> 
-    </div>     
-    <div>
-        <strong>Rango salarial: </strong>
-        <%= Profile.labelsalario(@profile.salary_range)  %> 
-    </div>      
-    <div>
-        <strong>EPS: </strong>
-        <%= Profile.labeleps(@profile.health_promoter_id)  %> 
-    </div>   
-    <div>
-        <strong>Fondo de Pensiones: </strong>
-        <%= Profile.labelpension(@profile.pension_fund_id)  %> 
-    </div>  
-    <div>
-        <strong>Fondo de Cesantías: </strong>
-        <%= Profile.labelcesantia(@profile.cessation_fund_id)  %> 
-    </div>  
-    <div>
-        <strong>ARL: </strong>
-        <%= Profile.labelarl(@profile.occupational_risk_manager_id)  %> 
-    </div>  
-    <div>
-        <strong>Entidad Bancaria: </strong>
-        <%= Profile.labelbanco(@profile.head_family)  %> 
-    </div>  
-    <div>
-        <strong>Nombre del contacto de emergencia:</strong>
-        <%= @profile.emergency_contact  %> 
-    </div> 
-    <div>
-        <strong>Número telefónico contacto:</strong>
-        <%= @profile.phone_emergency_contact  %> 
-    </div>     
-    <div>
-        <strong>Ciudad - Municipio: </strong>
-        <%= Profile.labelciudad(@profile.administrative_political_division_id)  %> 
-    </div>  
-    <div>
-        <strong>Dirección:</strong>
-        <%= @profile.address  %> 
-    </div> 
-    <div>
-        <strong>Barrio:</strong>
-        <%= @profile.neighborhood  %> 
-    </div> 
-    <div>
-        <strong>Número de teléfono:</strong>
-        <%= @profile.phone  %> 
-    </div>     
-    <div>
-        <strong>Estrato socioeconómico: </strong>
-        <%= Profile.labelestrato(@profile.stratum_socioeconomic)  %> 
-    </div>  
-    <div>
-        <strong>Tipo de vivienda: </strong>
-        <%= Profile.labelvivienda(@profile.housing_type)  %> 
-    </div>
-    <div>
-        <strong>Servicios básicos de la vivienda: </strong>
-        <%= Profile.labelservicios(@profile.basic_housing_services)  %> 
-    </div>
-    <div>
-        <strong>¿Tiene hijos? </strong>
-        <%= Profile.labelhijos(@profile.has_children)  %> 
-    </div>
-    <div>
-        <strong>Número de hijos: </strong>
-        <%= Profile.labelnumerohijos(@profile.number_children)  %> 
-    </div>
-    <div>
-        <strong>Número de personas a cargo: </strong>
-        <%= Profile.labelpersonasacargo(@profile.number_people_charge)  %> 
-    </div>
-
-    <div>
-        <strong>¿Vive con personas que tengan alguna discapacidad? </strong>
-        <%= Profile.labeldiscapacitadas(@profile.live_people_disability)  %> 
-    </div>
-
-    <div>
-        <strong>Tipo de discapacidad </strong>
-        <%= Profile.labeltipodiscapacitadas(@profile.type_disability)  %> 
-    </div>
-    <div>
-        <strong>Uso del tiempo libre: </strong>
-        <%= Profile.labeltiempo(@profile.use_time)  %> 
-    </div>
-    <div>
-        <strong>¿Le han diagnosticado alguna enfermedad? </strong>
-        <%= Profile.labelenfermedad(@profile.diagnosed_illness)  %> 
-    </div>
-    <div>
-        <strong>¿Cuál enfermedad? </strong>
-        <%= @profile.what_disease  %> 
-    </div>  
-    <div>
-        <strong>¿Fuma? </strong>
-        <%= Profile.labelfuma(@profile.smoke)  %> 
-    </div>
-    <div>
-        <strong>Cual cigarrillo: </strong>
-        <%= Profile.labelcualcigarrillo(@profile.population_group)  %> 
-    </div>
-    <div>
-        <strong>Promedio: </strong>
-        <%= Profile.labelpromediocigarrillo(@profile.daily_average_smoke)  %> 
-    </div>
-    <div>
-        <strong>¿Consume bebidas alcohólicas? </strong>
-        <%= Profile.labelbebida(@profile.consume_alcoholic_beverages)  %> 
-    </div>
-    <div>
-        <strong>Promedio: </strong>
-        <%= Profile.labelpromediobebida(@profile.average_drinks)  %> 
-    </div>
-    <div>
-        <strong>¿Practica algún deporte? </strong>
-        <%= Profile.labeldeporte(@profile.sports_practice)  %> 
-    </div>
-    <div>
-        <strong>Promedio: </strong>
-        <%= Profile.labelpromediodeporte(@profile.average_sports)  %> 
-    </div>
-    <div>
-        <strong>Medio de transporte que utiliza para ir al trabajo: </strong>
-        <%= Profile.labelmediotransporte(@profile.conveyance)  %> 
-    </div>
-
-    <div>
-        <strong>¿Acepto el tratamiento de datos personales? </strong>
-        <%= Profile.labeltratamientodatos(@profile.accept_processing_data)  %> 
-    </div>
-    </br>
-    <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>    
-</div>   
-</br>
-
-

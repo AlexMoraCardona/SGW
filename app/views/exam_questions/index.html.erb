@@ -1,43 +1,121 @@
-<div align="left"; class="container col-12">
-    <a class="navbar-brand" href="/">
-        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-    </a>
-</div>
-<div class="container col-11">
-        <div class="d-flex">
-            <div class="container">
-               <h2 class="display-5"> <%= t('.title')%></h2>
-            </div> 
+<div class="conesst-page">
+  <div class="conesst-logo-container">
+    <%= link_to root_path, class: "d-inline-block" do %>
+      <%= image_tag('LogoConesst202305232.png', class: 'conesst-logo',  alt: 'CONESST') %>
+    <% end %>
+  </div>
+  <div class="conesst-header">
+    <div class="conesst-card-header-content">
+      <div class="conesst-card-header-title">
+        <i class="bi bi-question-circle me-2"></i>
+        <%= t('.title') %>
+      </div>
+      <div class="conesst-card-header-subtitle">
+        Administración y consulta de preguntas de evaluación
+      </div>
+    </div>
+  </div>
+  <div class="conesst-card mb-3">
+    <div class="conesst-card-body">
+      <div class="conesst-actions">
+        <%= link_to new_exam_question_path, class: "conesst-btn conesst-btn-primary" do %>
+          <i class="bi bi-plus-circle"></i>
+          <%= t('.create_exam_question') %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="conesst-card mb-3">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+        <div class="conesst-card-header-title">
+          <i class="bi bi-search me-2"></i>
+          Buscar preguntas
+        </div>
+        <div class="conesst-card-header-subtitle">
+          Filtre las preguntas por evaluación
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <%= search_form_for @q do |f| %>
+        <div class="conesst-form-grid conesst-form-grid-2">
+          <div class="conesst-form-group">
+            <%= f.label :adm_exam_id_eq, class: "conesst-form-label" do %>
+              ID de la evaluación
+            <% end %>
+            <%= f.number_field :adm_exam_id_eq, class: "form-control", min: 1, placeholder: "Ingrese el ID de la evaluación" %>
+          </div>
+        </div>
+        <div class="conesst-form-actions">
+          <button type="submit" class="conesst-btn conesst-btn-primary">
+            <i class="bi bi-search"></i>
+            Buscar
+          </button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="conesst-card mb-3">
+    <div class="conesst-card-body">
+      <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
+        <div class="small text-muted">
+          <%== pagy_info(@pagy) %>
         </div>
         <div>
-            <%= link_to t('.create_exam_question'), new_exam_question_path, class: 'btn btn-xs btn-primary'  %>
+          <%== pagy_bootstrap_combo_nav_js(@pagy) %>
         </div>
-        <hr>
-        <%= search_form_for @q do |f| %>
-            <%= f.label :adm_exam_id_eq %>
-            <%= f.number_field :adm_exam_id_eq %>
-
-            <button type="submit" class="btn btn-primary">Buscar</button>
-        <% end %>
-    </br>        
-    <%== pagy_info(@pagy) %>
-    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
-        
-    <table class="table table-hover">
-        <thead>
+      </div>
+    </div>
+  </div>
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+        <div class="conesst-card-header-title">
+          <i class="bi bi-list-check me-2"></i>
+          Preguntas de evaluación
+        </div>
+        <div class="conesst-card-header-subtitle">
+          Listado de preguntas registradas
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body p-0">
+      <div class="conesst-table-wrapper">
+        <table class="conesst-table table-hover align-middle mb-0">
+          <thead>
             <tr>
-                <th scope="col"><%= t('.number') %></th>
-                <th scope="col"><%= sort_link(@q, :adm_exam_id, default_order: :desc) %></th>
-                <th scope="col"><%= t('.question') %></th>
-                <th scope="col"><%= t('common.edit') %></th>
+              <th>
+                <%= t('.number') %>
+              </th>
+              <th>
+                <%= sort_link(@q, :adm_exam_id, default_order: :desc) %>
+              </th>
+              <th>
+                <%= t('.question') %>
+              </th>
+              <th>
+                <%= t('common.edit') %>
+              </th>
             </tr>
-        </thead>
-        <tbody>
-            <%= render partial: 'exam_question', collection: @exam_questions  %>  
-        </tbody>      
-    </table>
-
-    <%== pagy_info(@pagy) %>
-    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
-
+          </thead>
+          <tbody>
+            <%= render partial: 'exam_question', collection: @exam_questions %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="conesst-card mt-3">
+    <div class="conesst-card-body">
+      <div class="d-flex flex-column align-items-center gap-2">
+        <div class="small text-muted text-center">
+          <%== pagy_info(@pagy) %>
+        </div>
+        <div>
+          <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

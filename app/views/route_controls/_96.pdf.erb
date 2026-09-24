@@ -1,0 +1,96 @@
+<head>
+    <meta charset="utf-8">
+</head>
+
+<div class="conesst-pdf">
+   <table class="pdf-info-table">
+    <tr>
+      <td class="pdf-border pdf-label-cell">
+        <strong>Empresa</strong>
+      </td>
+      <td class="pdf-border pdf-value">
+        <%= @entity.business_name if @entity.present? %>
+      </td>
+    </tr>
+    <tr>
+      <td class="pdf-border pdf-label-cell">
+        <strong>Fecha</strong>
+      </td>
+      <td class="pdf-border pdf-value">
+        <%= @route_control.date_control if @route_control.present? %>
+      </td>
+    </tr>
+    <tr>
+      <td class="pdf-border pdf-label-cell">
+        <strong>Hora de inicio</strong>
+      </td>
+      <td class="pdf-border pdf-value">
+        <% if @route_control&.time_initial_control.present? %>
+          <%= @route_control.time_initial_control.strftime("%I:%M %p") %>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td class="pdf-border pdf-label-cell">
+        <strong>Hora final</strong>
+      </td>
+      <td class="pdf-border pdf-value">
+        <% if @route_control&.time_final_control.present? %>
+          <%= @route_control.time_final_control.strftime("%I:%M %p") %>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td class="pdf-border pdf-label-cell">
+        <strong>Usuario</strong>
+      </td>
+      <td class="pdf-border pdf-value">
+        <%= @route_control.user.name if @route_control.present? %>
+      </td>
+    </tr>
+    <tr>
+      <td class="pdf-border pdf-label-cell">
+        <strong>Documento</strong>
+      </td>
+      <td class="pdf-border pdf-value">
+        <%= @route_control.user.nro_document if @route_control.present? %>
+      </td>
+    </tr>
+    <tr>
+      <td class="pdf-border pdf-label-cell">
+        <strong>Cargo</strong>
+      </td>
+
+      <td class="pdf-border pdf-value">
+        <%= User.label_activity(@route_control.user.activity) if @route_control.present? %>
+      </td>
+    </tr>
+    <tr>
+      <td class="pdf-border pdf-label-cell">
+        <strong>Tipo de vehículo</strong>
+      </td>
+
+      <td class="pdf-border pdf-value">
+        <%= RouteControl.label_tipo_vehiculo(@route_control.vehicle_type) if @route_control.present? %>
+      </td>
+    </tr>
+    <tr>
+      <td class="pdf-border pdf-label-cell">
+        <strong>Lugar</strong>
+      </td>
+
+      <td class="pdf-border pdf-value">
+        <%= @route_control.place if @route_control.present? %>
+      </td>
+    </tr>
+    <tr>
+      <td class="pdf-border pdf-label-cell">
+        <strong>Observaciones</strong>
+      </td>
+
+      <td class="pdf-border pdf-value">
+        <%= @route_control.observation if @route_control.present? %>
+      </td>
+    </tr>
+  </table>
+</div>

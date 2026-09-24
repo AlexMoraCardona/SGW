@@ -62,7 +62,6 @@ class ProfilesController < ApplicationController
     def informe
         @survey_profile = SurveyProfile.find(params[:id])
         @profiles = Profile.where("survey_profile_id = ?",@survey_profile.id) if @survey_profile.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",37,1).last  
         @administrative_political_division = AdministrativePoliticalDivision.find(@survey_profile.entity.entity_location_code) if @survey_profile.entity.entity_location_code.present?
         @cantidadsedes = Location.where("entity_id = ?", @survey_profile.entity_id).count 
         @responsablesst = User.find(@survey_profile.entity.responsible_sst) if @survey_profile.entity.responsible_sst.present?
@@ -71,7 +70,12 @@ class ProfilesController < ApplicationController
         @claseriesgo = RiskLevel.find(@survey_profile.entity.risk_classification) if @survey_profile.entity.risk_classification.present?
         @user_elaboro = User.find(@survey_profile.user_elaboro) if @survey_profile.user_elaboro.present?
         @user_aprobo = User.find(@survey_profile.user_aprobo) if @survey_profile.user_aprobo.present?
+        @template = Template.where("reference = ? and version = ?",@survey_profile.code,@survey_profile.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+        @entity = Entity.find(@survey_profile.entity_id) if @survey_profile.present?
         
+
+
         @datos_genero = Profile.vgenero(@survey_profile.id) if @survey_profile.present? 
         @cant_genero = Profile.cantidad_vector(@datos_genero) if @datos_genero.present?
 
@@ -190,7 +194,7 @@ class ProfilesController < ApplicationController
         @survey_profile = SurveyProfile.find_by(id: params[:id].to_i)
         @profiles = Profile.where(survey_profile_id: @survey_profile.id) if @survey_profile.present?
         @cantemp = User.where("entity = ? and level > ? and state = ?", @survey_profile.entity_id,2,1).count
-        @empleados = User.where("entity = ? and level > ? and state = ?", @survey_profile.entity_id,2,1)
+        @empleados = User.where("entity = ? and level > ? and state = ?", @survey_profile.entity_id,0,1)
         @cantpendientes = 0
         @pendientes = []
         @ya = []

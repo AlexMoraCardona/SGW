@@ -185,7 +185,7 @@ class SafetyInspectionsController < ApplicationController
 
     def safety_inspection_params
         params.require(:safety_inspection).permit(:date_inspection,:place_inspection, :area_inspection, :productivity_affectation, 
-                        :user_responsible, :date_firm_responsible, :firm_responsible, :post_responsible, :entity_id, :number_employees)
+                        :user_responsible, :date_firm_responsible, :firm_responsible, :post_responsible, :entity_id, :number_employees, :version, :code)
     end 
 end 
 

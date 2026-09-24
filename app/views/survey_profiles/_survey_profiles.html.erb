@@ -1,40 +1,111 @@
-<% if @entity.present? %>
-    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
-<% end %>
-
-
-<% if @survey_profiles.present? %>
-    <%= link_to t('common.create_survey_profile'), new_survey_profile_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
-
-    <table class="table table-hover"> 
-        <thead>
-            <tr>
-                <th scope="col">Nit Entidad</th>
-                <th scope="col">Entidad</th>
-                <th scope="col"><%= t('.date_profile') %></th>
-                <th scope="col"><%= t('.date_vencimiento_profile') %></th>
-                <th scope="col"><%= t('common.edit') %></th>
-        </tr>
-        </thead>
-
-        <% @survey_profiles.each do |survey_profile| %>
-            <tr> 
-                <td><%= survey_profile.entity.business_name %></td>
-                <td><%= survey_profile.entity.identification_number %></td>
-                <td><%= survey_profile.date_profile %></td>
-                <td><%= survey_profile.date_vencimiento_profile %></td>
-                <td><%= link_to t('common.edit'), edit_survey_profile_path(survey_profile), class: 'btn btn-sm btn-primary'  %></td>
-            </tr>
-        <% end %>  
-        <hr>  
-    </table>  
-    <br>
-<% else %>
-    <div>
-        <%= link_to t('common.create_survey_profile'), new_survey_profile_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+<div class="conesst-page">
+  <% if @entity.present? %>
+    <div class="conesst-header">
+      <div class="conesst-header-content">
+        <h1 class="conesst-title">
+          <%= @entity.business_name %>
+        </h1>
+        <p class="conesst-subtitle mb-0">
+          <i class="bi bi-building me-1"></i>
+          NIT:
+          <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %><%= "-#{@entity.verification_digit}" if @entity.verification_digit.present? %>
+        </p>
+      </div>
     </div>
-<% end %>
-
-
-
-
+  <% end %>
+  <% if @survey_profiles.present? %>
+    <div class="conesst-card">
+      <div class="conesst-card-header">
+        <div class="conesst-card-header-content">
+          <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+            <div>
+              <h2 class="conesst-card-header-title">
+                <i class="bi bi-clipboard2-data me-2"></i>
+                Perfiles sociodemográficos
+              </h2>
+              <p class="conesst-card-header-subtitle mb-0">
+                Perfiles de encuesta registrados para la entidad.
+              </p>
+            </div>
+            <div class="conesst-actions">
+              <%= link_to new_survey_profile_path(entity_id: @entity.id), class: "conesst-btn conesst-btn-primary" do %>
+                <i class="bi bi-plus-circle me-1"></i>
+                <%= t('common.create_survey_profile') %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="conesst-card-body">
+        <div class="conesst-table-wrapper">
+          <table class="conesst-table">
+            <thead>
+              <tr>
+                <th scope="col">NIT Entidad</th>
+                <th scope="col">Entidad</th>
+                <th scope="col">
+                  <%= t('.date_profile') %>
+                </th>
+                <th scope="col">
+                  <%= t('.date_vencimiento_profile') %>
+                </th>
+                <th scope="col" class="text-center">
+                  <%= t('common.edit') %>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @survey_profiles.each do |survey_profile| %>
+                <tr>
+                  <td>
+                    <span class="conesst-table-main-text">
+                      <%= EvaluationRuleDetail.miles(survey_profile.entity.identification_number) if survey_profile.entity.identification_number.present? %><%= "-#{survey_profile.entity.verification_digit}" if survey_profile.entity.verification_digit.present? %>
+                    </span>
+                  </td>
+                  <td>
+                    <span class="conesst-table-main-text">
+                      <%= survey_profile.entity.business_name %>
+                    </span>
+                  </td>
+                  <td>
+                    <%= survey_profile.date_profile %>
+                  </td>
+                  <td>
+                    <%= survey_profile.date_vencimiento_profile %>
+                  </td>
+                  <td class="text-center">
+                    <%= link_to edit_survey_profile_path(survey_profile), class: "conesst-btn conesst-btn-primary conesst-btn-sm" do %>
+                      <i class="bi bi-pencil-square me-1"></i>
+                      <%= t('common.edit') %>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <div class="conesst-card">
+      <div class="conesst-card-body">
+        <div class="conesst-empty-state">
+          <i class="bi bi-clipboard2-x"></i>
+          <h2>
+            No hay perfiles sociodemográficos
+          </h2>
+          <p>
+            La entidad no tiene perfiles de encuesta registrados
+            por el momento.
+          </p>
+          <div class="mt-3">
+            <%= link_to new_survey_profile_path(entity_id: @entity.id), class: "conesst-btn conesst-btn-primary" do %>
+              <i class="bi bi-plus-circle me-1"></i>
+              <%= t('common.create_survey_profile') %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

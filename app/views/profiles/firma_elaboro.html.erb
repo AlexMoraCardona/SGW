@@ -1,34 +1,94 @@
-<div class="container col-11 card p-5">
-    <br>
-    <%= form_with model: @survey_profile do |form| %>
-        <% @survey_profile.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
+<div class="conesst-page">
+    <div class="conesst-header">
+        <div class="conesst-header-content">
+            <div>
+                <div class="conesst-title">
+                    <i class="bi bi-pen me-2"></i>
+                    Firma del Responsable SST
+                </div>
+                <div class="conesst-subtitle">
+                    Autorización de la firma del responsable del Sistema de Gestión de Seguridad y Salud en el Trabajo
+                </div>
             </div>
-        <% end %>
+        </div>
+    </div>
 
-        <table>
-            <tr>
-                <td>
-                    <h4>Responsable SST</h4> 
-                    <%= @survey_profile.name_user(@survey_profile.user_elaboro) %>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <h4>Firma autorizada del Responsable SST</h4> 
-                    <%= form.radio_button :firm_elaboro, 0 %>
-                    <label for="no">No</label>&nbsp;&nbsp; 
-                    <%= form.radio_button :firm_elaboro, 1 %>
-                    <label for="si">Si</label>&nbsp;&nbsp;   
-                </td>
-            </tr>
-        </table>
-        <%= form.hidden_field :date_firm_elaboro, :value => Time.now, class: "form-control" %>
-
-        <br>    
-        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
-    <% end %>
-</div>        
-<br>
+    <div class="conesst-card">
+        <div class="conesst-card-header">
+            <div class="conesst-card-header-content">
+                <div>
+                    <div class="conesst-card-header-title">
+                        <i class="bi bi-person-check me-2"></i>
+                        Autorización de firma
+                    </div>
+                    <div class="conesst-card-header-subtitle">
+                        Confirme si el responsable SST autoriza el uso de su firma.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="conesst-card-body">
+            <%= form_with model: @survey_profile do |form| %>
+                <% if @survey_profile.errors.any? %>
+                    <div class="alert alert-danger" role="alert">
+                        <div class="fw-bold mb-1">
+                            <i class="bi bi-exclamation-triangle me-1"></i>
+                            Se encontraron los siguientes errores:
+                        </div>
+                        <ul class="mb-0 ps-3">
+                            <% @survey_profile.errors.full_messages.each do |error| %>
+                                <li><%= error %></li>
+                            <% end %>
+                        </ul>
+                    </div>
+                <% end %>
+                <div class="conesst-form-section">
+                    <div class="conesst-form-section-title">
+                        <i class="bi bi-person me-2"></i>
+                        Responsable SST
+                    </div>
+                    <div class="conesst-info-grid">
+                        <div class="conesst-info-item">
+                            <div class="conesst-info-label">
+                                Responsable SST
+                            </div>
+                            <div class="conesst-info-value">
+                                <i class="bi bi-person-badge me-2"></i>
+                                <%= @survey_profile.name_user(@survey_profile.user_elaboro) %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="conesst-form-section mt-4">
+                    <div class="conesst-form-section-title">
+                        <i class="bi bi-pen me-2"></i>
+                        Firma autorizada
+                    </div>
+                    <div class="conesst-form-group">
+                        <div class="conesst-form-label">
+                            ¿Autoriza la firma del Responsable SST?
+                        </div>
+                        <div class="d-flex flex-wrap gap-4 mt-2">
+                            <div class="form-check">
+                                <%= form.radio_button :firm_elaboro, 0, class: "form-check-input", id: "firm_elaboro_no" %>
+                                <%= form.label :firm_elaboro, "No", value: 0, class: "form-check-label", for: "firm_elaboro_no" %>
+                            </div>
+                            <div class="form-check">
+                                <%= form.radio_button :firm_elaboro, 1,  class: "form-check-input", id: "firm_elaboro_si" %>
+                                <%= form.label :firm_elaboro, "Sí", value: 1, class: "form-check-label", for: "firm_elaboro_si" %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <%= form.hidden_field :date_firm_elaboro, value: Time.now %>
+                <div class="conesst-form-actions mt-4">
+                    <%= form.submit t('common.submit'), class: "conesst-btn conesst-btn-primary" %>
+                    <%= link_to :back, class: "conesst-btn" do %>
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Retornar
+                    <% end %>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>

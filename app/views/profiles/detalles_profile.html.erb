@@ -1,36 +1,115 @@
-<div align="left"; class="container col-12">
-    <a class="navbar-brand" href="/">
-        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-    </a>
-</div>
-<div class="container col-12"> 
+<div class="conesst-page">
+    <div class="conesst-header">
+        <div class="conesst-header-content">
+            <div class="conesst-logo-container">
+                <%= link_to root_path, class: "navbar-brand" do %>
+                    <%= image_tag "LogoConesst202305232.png",  class: "conesst-logo", alt: "CONESST" %>
+                <% end %>
+            </div>
+            <div>
+                <h1 class="conesst-title">
+                    Encuestas de perfil sociodemográfico
+                </h1>
+                <p class="conesst-subtitle">
+                    Listado de encuestas realizadas por los empleados
+                </p>
+            </div>
+        </div>
+    </div>
     <% if @profiles.present? %>
-        <table class="table table-hover"> 
-            <thead>
-                <tr>
-                    <th scope="col">Identificación empleado</th>
-                    <th scope="col">Nombre Empleado</th>
-                    <th scope="col">Entidad</th>
-                    <th scope="col">Fecha elaboración</th>
-                    <th scope="col"><%= t('common.show') %></th>
-                </tr>
-            </thead>
-
-            <% @profiles.each do |profile| %>
-                <tr> 
-                    <td><%= profile.user.nro_document %></td>
-                    <td><%= profile.user.name %></td>
-                    <td><%= @entity.business_name %></td>
-                    <td><%= profile.created_at.strftime("%F") %></td>
-                    <td><%= link_to t('common.show'), encuesta_profile_path(profile), class: 'btn btn-sm btn-primary'  %></td>
-                </tr>
-            <% end %>  
-            <hr>  
-        </table>  
-    <br>
+        <div class="conesst-card">
+            <div class="conesst-card-header">
+                <div class="conesst-card-header-content">
+                    <div>
+                        <h2 class="conesst-card-header-title">
+                            <i class="bi bi-clipboard-data me-2"></i>
+                            Encuestas registradas
+                        </h2>
+                        <p class="conesst-card-header-subtitle">
+                            <%= @entity.business_name %>
+                        </p>
+                    </div>
+                    <span class="conesst-badge">
+                        <%= @profiles.count %>
+                        <%= @profiles.count == 1 ? "encuesta" : "encuestas" %>
+                    </span>
+                </div>
+            </div>
+            <div class="conesst-card-body">
+                <div class="conesst-table-wrapper">
+                    <table class="conesst-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    Identificación empleado
+                                </th>
+                                <th scope="col">
+                                    Nombre empleado
+                                </th>
+                                <th scope="col">
+                                    Entidad
+                                </th>
+                                <th scope="col">
+                                    Fecha elaboración
+                                </th>
+                                <th scope="col" class="text-center">
+                                    <%= t('common.show') %>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% @profiles.each do |profile| %>
+                                <tr>
+                                    <td data-label="Identificación empleado">
+                                        <span class="conesst-table-main-text">
+                                            <%= profile.user.nro_document %>
+                                        </span>
+                                    </td>
+                                    <td data-label="Nombre empleado">
+                                        <span class="conesst-table-main-text">
+                                            <%= profile.user.name %>
+                                        </span>
+                                    </td>
+                                    <td data-label="Entidad">
+                                        <%= @entity.business_name %>
+                                    </td>
+                                    <td data-label="Fecha elaboración">
+                                        <%= profile.created_at.strftime("%F") %>
+                                    </td>
+                                    <td data-label="Acciones" class="text-center">
+                                        <%= link_to encuesta_profile_path(profile), class: "conesst-btn conesst-btn-primary conesst-btn-sm", title: t('common.show') do %>
+                                            <i class="bi bi-eye me-1"></i>
+                                            <span>
+                                                <%= t('common.show') %>
+                                            </span>
+                                        <% end %>
+                                    </td>
+                                </tr>
+                            <% end %>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="conesst-mobile-scroll-hint d-md-none">
+                    <i class="bi bi-arrows-expand me-1"></i>
+                    Desliza horizontalmente para consultar toda la información.
+                </div>
+            </div>
+        </div>
     <% else %>
-        <div>
-            <h class="display-6">La Entidad no tiene encuestas por el momento</h>
+        <div class="conesst-card">
+            <div class="conesst-card-body">
+                <div class="conesst-empty-state">
+                    <div class="mb-3">
+                        <i class="bi bi-clipboard-x display-5 text-muted"></i>
+                    </div>
+                    <h3 class="h5 mb-2">
+                        No hay encuestas registradas
+                    </h3>
+                    <p class="mb-0">
+                        La entidad no tiene encuestas por el momento.
+                    </p>
+                </div>
+            </div>
         </div>
     <% end %>
 </div>

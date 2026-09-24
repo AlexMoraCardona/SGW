@@ -1,12 +1,43 @@
-<% if @entity.present? %>
-    <h class="display-6"><%= @entity.business_name %> Nit: <%=@entity.identification_number %></h>
-<% end %>
-
-<% if @survey_profiles.present? %>
-    <table class="table table-hover"> 
-        <thead>
-            <tr>
-                <th scope="col">Nit Entidad</th>
+<div class="conesst-page">
+  <% if @entity.present? %>
+    <div class="conesst-header">
+      <div class="conesst-header-content">
+        <div class="conesst-logo-container">
+          <i class="bi bi-building"></i>
+        </div>
+        <div>
+          <h1 class="conesst-title">
+            <%= @entity.business_name %>
+          </h1>
+          <div class="conesst-subtitle">
+            NIT:
+            <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% if @survey_profiles.present? %>
+    <div class="conesst-card">
+      <div class="conesst-card-header">
+        <div class="conesst-card-header-content">
+          <div>
+            <h2 class="conesst-card-header-title">
+              <i class="bi bi-clipboard-data me-1"></i>
+              Estudios sociodemográficos
+            </h2>
+            <div class="conesst-card-header-subtitle">
+              Perfiles sociodemográficos registrados para la entidad
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="conesst-card-body p-0">
+        <div class="conesst-table-wrapper">
+          <table class="conesst-table">
+            <thead>
+              <tr>
+                <th scope="col">NIT Entidad</th>
                 <th scope="col">Entidad</th>
                 <th scope="col"><%= t('.date_profile') %></th>
                 <th scope="col"><%= t('.date_vencimiento_profile') %></th>
@@ -16,39 +47,121 @@
                 <th scope="col"><%= t('common.show') %></th>
                 <th scope="col">Detalle</th>
                 <th scope="col">PDF</th>
-            </tr>
-        </thead>
-
-        <% @survey_profiles.each do |survey_profile| %>
-            <tr> 
-                <td><%= survey_profile.entity.business_name %></td>
-                <td><%= survey_profile.entity.identification_number %></td>
-                <td><%= survey_profile.date_profile %></td>
-                <td><%= survey_profile.date_vencimiento_profile %></td>
-                <% if survey_profile.firm_elaboro == 0 %>
-                    <td><%= link_to t('common.firmar'), firma_elaboro_path(survey_profile.id, 3), class: 'btn btn-sm btn btn-warning' if survey_profile.user_elaboro.present? %></td>
-                <% else %>
-                    <td><%= survey_profile.date_firm_elaboro %></td>
-                <% end %>      
-                <% if survey_profile.firm_aprobo == 0 %>
-                    <td><%= link_to t('common.firmar'), firma_aprobo_path(survey_profile.id, 1), class: 'btn btn-sm btn btn-warning' if survey_profile.user_aprobo.present? %></td>
-                <% else %>
-                    <td><%= survey_profile.date_firm_aprobo %></td>
-                <% end %>      
-                <td><%= link_to t('common.ficha'), fichatecnica_path(survey_profile), class: 'btn btn-sm btn-primary'  %></td>
-                <td><%= link_to t('common.show'), infoprofile_path(survey_profile), class: 'btn btn-sm btn-primary'  %></td>
-                <td><%= link_to t('common.detail'), detalles_profile_path(survey_profile), class: 'btn btn-sm btn-primary'  %></td>
-                <td><%= link_to "PDF", informe_estudio_socio_path(survey_profile, format: 'pdf'), class: 'btn btn-sm btn-success' %> </td>
-            </tr>
-        <% end %>  
-        <hr>  
-    </table>  
-<br>
-
-
-<% else %>
-    <div>
-        <h class="display-6">La Entidad no tiene encuestas por el momento</h>
+              </tr>
+            </thead>
+            <tbody>
+              <% @survey_profiles.each do |survey_profile| %>
+                <tr>
+                  <td>
+                    <span class="conesst-table-main-text">
+                      <%= EvaluationRuleDetail.miles(survey_profile.entity.identification_number) if survey_profile.entity.identification_number.present? %>
+                    </span>
+                  </td>
+                  <td>
+                    <span class="conesst-table-main-text">
+                      <%= survey_profile.entity.business_name %>
+                    </span>
+                  </td>
+                  <td>
+                    <span class="conesst-table-main-text">
+                      <%= survey_profile.date_profile %>
+                    </span>
+                  </td>
+                  <td>
+                    <span class="conesst-table-main-text">
+                      <%= survey_profile.date_vencimiento_profile %>
+                    </span>
+                  </td>
+                  <td>
+                    <% if survey_profile.firm_elaboro == 0 %>
+                      <% if survey_profile.user_elaboro.present? %>
+                        <%= link_to firma_elaboro_path(survey_profile.id, 3), class: "conesst-btn conesst-btn-sm conesst-btn-warning", title: t('common.firmar') do %>
+                          <i class="bi bi-pen"></i>
+                          <span class="d-none d-md-inline">
+                            <%= t('common.firmar') %>
+                          </span>
+                        <% end %>
+                      <% end %>
+                    <% else %>
+                      <span class="conesst-table-main-text">
+                        <%= survey_profile.date_firm_elaboro %>
+                      </span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <% if survey_profile.firm_aprobo == 0 %>
+                      <% if survey_profile.user_aprobo.present? %>
+                        <%= link_to firma_aprobo_path(survey_profile.id, 1), class: "conesst-btn conesst-btn-sm conesst-btn-warning", title: t('common.firmar') do %>
+                          <i class="bi bi-pen"></i>
+                          <span class="d-none d-md-inline">
+                            <%= t('common.firmar') %>
+                          </span>
+                        <% end %>
+                      <% end %>
+                    <% else %>
+                      <span class="conesst-table-main-text">
+                        <%= survey_profile.date_firm_aprobo %>
+                      </span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <%= link_to fichatecnica_path(survey_profile), class: "conesst-btn conesst-btn-sm conesst-btn-primary", title: t('common.ficha') do %>
+                      <i class="bi bi-file-earmark-text"></i>
+                      <span class="d-none d-md-inline">
+                        <%= t('common.ficha') %>
+                      </span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <%= link_to infoprofile_path(survey_profile), class: "conesst-btn conesst-btn-sm conesst-btn-primary", title: t('common.show') do %>
+                      <i class="bi bi-eye"></i>
+                      <span class="d-none d-md-inline">
+                        <%= t('common.show') %>
+                      </span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <%= link_to detalles_profile_path(survey_profile), class: "conesst-btn conesst-btn-sm conesst-btn-primary", title: t('common.detail') do %>
+                      <i class="bi bi-list-ul"></i>
+                      <span class="d-none d-md-inline">
+                        <%= t('common.detail') %>
+                      </span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <%= link_to informe_estudio_socio_path(survey_profile, format: 'pdf'), class: "conesst-btn conesst-btn-sm conesst-btn-success", title: "Generar PDF" do %>
+                      <i class="bi bi-file-earmark-pdf"></i>
+                      <span class="d-none d-md-inline">
+                        PDF
+                      </span>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <div class="conesst-mobile-scroll-hint d-md-none">
+          <i class="bi bi-arrow-left-right me-1"></i>
+          Desliza horizontalmente para ver todas las opciones
+        </div>
+      </div>
     </div>
-<% end %>
-
+  <% else %>
+    <div class="conesst-card">
+      <div class="conesst-card-body">
+        <div class="conesst-empty-state">
+          <div class="mb-2">
+            <i class="bi bi-clipboard-x fs-2"></i>
+          </div>
+          <div class="fw-semibold">
+            La entidad no tiene encuestas por el momento
+          </div>
+          <div class="small text-muted mt-1">
+            No se encontraron estudios sociodemográficos registrados.
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

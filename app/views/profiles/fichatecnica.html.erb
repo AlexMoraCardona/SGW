@@ -1,121 +1,199 @@
-<br>
-<div class="container col-11" 
-    <br>
-        <h class="display-5">Ficha Técnica</h>
-    <hr>
-    
-    <br>
- 
-    <% if @survey_profile.present? %>
-     
-        <div class="row g-2">
-            <div class="col-sm-3">
-                <strong>Empresa:</strong>
-            </div>        
-            <div class="col-sm-5">
-                <%= @survey_profile.entity.business_name %> 
-            </div>        
-        </div>   
-        <div class="row g-2">
-            <div class="col-sm-3">
-                <strong>Nit:</strong>
-            </div>        
-            <div class="col-sm-5">
-                <%= EvaluationRuleDetail.miles(@survey_profile.entity.identification_number) if @survey_profile.present? %>
-            </div>        
-        </div>   
-        <div class="row g-2">
-            <div class="col-sm-3">
-                <strong>Fecha de creación:</strong>
-            </div>        
-            <div class="col-sm-5">
-                <%= @survey_profile.date_profile if @survey_profile.present? %>
-            </div>        
-        </div>   
-        <div class="row g-2">
-            <div class="col-sm-3">
-                <strong>Fecha de terminación:</strong>
-            </div>        
-            <div class="col-sm-5">
-                <%= @survey_profile.date_vencimiento_profile if @survey_profile.present? %>
-            </div>        
-        </div>   
-        <div class="row g-2">
-            <div class="col-sm-3">
-                <strong>Cantidad Empleados:</strong>
-            </div>        
-            <div class="col-sm-5">
-                <%= @cantemp if @cantemp.present? %>
-            </div>        
-        </div>   
-        <div class="row g-2">
-            <div class="col-sm-3">
-                <strong>Cantidad de Encuestados:</strong>
-            </div>        
-            <div class="col-sm-5">
-                <%= @cantprofiles if @profiles.present? %>
-            </div>        
-        </div>   
-        <div class="row g-2">
-            <div class="col-sm-3">
-                <strong>Pendientes por realizar encuesta:</strong>
-            </div>        
-            <div class="col-sm-5">
-                <%= @cantpendientes if @cantpendientes.present? %>
-            </div>        
-        </div> 
-
-    <% end %>   
-    <hr>
-    <br>
-        <h class="display-5">Empleados pendientes por realizar encuesta</h>
-    <hr>
-    
-    <br>    
-    <table class="table table-hover">
-        <thead>
+<div class="conesst-page">
+  <div class="conesst-header">
+    <div class="conesst-header-content">
+      <div class="conesst-logo-container">
+        <i class="bi bi-file-earmark-text"></i>
+      </div>
+      <div>
+        <h1 class="conesst-title">
+          Ficha Técnica
+        </h1>
+        <div class="conesst-subtitle">
+          Información del estudio sociodemográfico
+        </div>
+      </div>
+    </div>
+  </div>
+  <% if @survey_profile.present? %>
+    <div class="conesst-card">
+      <div class="conesst-card-header">
+        <div class="conesst-card-header-content">
+          <div>
+            <h2 class="conesst-card-header-title">
+              <i class="bi bi-clipboard-data me-1"></i>
+              Información del estudio
+            </h2>
+            <div class="conesst-card-header-subtitle">
+              Datos generales y estado de la encuesta
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="conesst-card-body">
+        <div class="conesst-info-grid">
+          <div class="conesst-info-item">
+            <div class="conesst-info-label">
+              <i class="bi bi-building me-1"></i>
+              Empresa
+            </div>
+            <div class="conesst-info-value">
+              <%= @survey_profile.entity.business_name %>
+            </div>
+          </div>
+          <div class="conesst-info-item">
+            <div class="conesst-info-label">
+              <i class="bi bi-card-text me-1"></i>
+              NIT
+            </div>
+            <div class="conesst-info-value">
+              <%= EvaluationRuleDetail.miles(@survey_profile.entity.identification_number) if @survey_profile.entity.identification_number.present? %>
+            </div>
+          </div>
+          <div class="conesst-info-item">
+            <div class="conesst-info-label">
+              <i class="bi bi-calendar-plus me-1"></i>
+              Fecha de creación
+            </div>
+            <div class="conesst-info-value">
+              <%= @survey_profile.date_profile %>
+            </div>
+          </div>
+          <div class="conesst-info-item">
+            <div class="conesst-info-label">
+              <i class="bi bi-calendar-check me-1"></i>
+              Fecha de terminación
+            </div>
+            <div class="conesst-info-value">
+              <%= @survey_profile.date_vencimiento_profile %>
+            </div>
+          </div>
+          <div class="conesst-info-item">
+            <div class="conesst-info-label">
+              <i class="bi bi-people me-1"></i>
+              Cantidad de empleados
+            </div>
+            <div class="conesst-info-value">
+              <%= @cantemp if @cantemp.present? %>
+            </div>
+          </div>
+          <div class="conesst-info-item">
+            <div class="conesst-info-label">
+              <i class="bi bi-person-check me-1"></i>
+              Cantidad de encuestados
+            </div>
+            <div class="conesst-info-value">
+              <%= @cantprofiles if @profiles.present? %>
+            </div>
+          </div>
+          <div class="conesst-info-item">
+            <div class="conesst-info-label">
+              <i class="bi bi-person-exclamation me-1"></i>
+              Pendientes por realizar encuesta
+            </div>
+            <div class="conesst-info-value">
+              <%= @cantpendientes if @cantpendientes.present? %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+        <div>
+          <h2 class="conesst-card-header-title">
+            <i class="bi bi-person-exclamation me-1"></i>
+            Empleados pendientes por realizar encuesta
+          </h2>
+          <div class="conesst-card-header-subtitle">
+            Empleados que aún no han completado la encuesta
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body p-0">
+      <div class="conesst-table-wrapper">
+        <table class="conesst-table">
+          <thead>
             <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Documento</th>
-                <th scope="col">Nombre</th>
+              <th scope="col">ID</th>
+              <th scope="col">Documento</th>
+              <th scope="col">Nombre</th>
             </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
             <% @pendientes.each do |pendiente| %>
-                <tr>
-                    <td><%= pendiente[0] %></td>
-                    <td><%= pendiente[1] %> </td>
-                    <td><%= pendiente[2] %> </td>
-                </tr>
-            <% end %>    
-        </tbody>      
-    </table>
-    
-    <hr>
-    <br>
-        <h class="display-5">Empleados que ya realizaron la encuesta</h>
-    <hr>
-    
-    <br>    
-    <table class="table table-hover">
-        <thead>
+              <tr>
+                <td>
+                  <span class="conesst-table-main-text">
+                    <%= pendiente[0] %>
+                  </span>
+                </td>
+                <td>
+                  <span class="conesst-table-main-text">
+                    <%= pendiente[1] %>
+                  </span>
+                </td>
+                <td>
+                  <span class="conesst-table-main-text">
+                    <%= pendiente[2] %>
+                  </span>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+        <div>
+          <h2 class="conesst-card-header-title">
+            <i class="bi bi-person-check me-1"></i>
+            Empleados que ya realizaron la encuesta
+          </h2>
+          <div class="conesst-card-header-subtitle">
+            Empleados que han completado el estudio sociodemográfico
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body p-0">
+      <div class="conesst-table-wrapper">
+        <table class="conesst-table">
+          <thead>
             <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Documento</th>
-                <th scope="col">Nombre</th>
+              <th scope="col">ID</th>
+              <th scope="col">Documento</th>
+              <th scope="col">Nombre</th>
             </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
             <% @ya.each do |ya| %>
-                <tr>
-                    <td><%= ya[0] %></td>
-                    <td><%= ya[1] %> </td>
-                    <td><%= ya[2] %> </td>
-                </tr>
-            <% end %>    
-        </tbody>      
-    </table>
-
-    <hr>
-
-</div>    
+              <tr>
+                <td>
+                  <span class="conesst-table-main-text">
+                    <%= ya[0] %>
+                  </span>
+                </td>
+                <td>
+                  <span class="conesst-table-main-text">
+                    <%= ya[1] %>
+                  </span>
+                </td>
+                <td>
+                  <span class="conesst-table-main-text">
+                    <%= ya[2] %>
+                  </span>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

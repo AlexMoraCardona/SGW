@@ -1,69 +1,106 @@
-<div class="container col-11 card p-5">
-    <br>
-    <%= form_with model: @exam_question do |form| %>
-        <% @exam_question.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
+<div class="conesst-page">
+  <div class="conesst-header">
+    <div class="conesst-card-header-content">
+      <div class="conesst-card-header-title">
+        <i class="bi bi-question-circle me-2"></i>
+        <%= @exam_question.new_record? ? "Crear pregunta" : "Editar pregunta" %>
+      </div>
+      <div class="conesst-card-header-subtitle">
+        Configuración de la pregunta y sus opciones de respuesta
+      </div>
+    </div>
+  </div>
+  <div class="conesst-card">
+    <div class="conesst-card-body">
+      <%= form_with model: @exam_question do |form| %>
+        <% if @exam_question.errors.any? %>
+          <div class="alert alert-danger mb-4" role="alert">
+            <div class="fw-semibold mb-2">
+              <i class="bi bi-exclamation-triangle me-2"></i>
+              No fue posible guardar la pregunta.
             </div>
-        <% end %>    
-
-        <div class="row g-2">
-            <div class="col-sm-9">
-                <%= form.label :adm_exam_id, style: "display: block" %>
-                <%= form.collection_select :adm_exam_id, AdmExam.all.order(id: :asc), :id, :description, { prompt: '--Seleccionar Evaluación--' },
-                { class: 'form-control input-sm select2' } %>
-            </div>        
-            <div class="col-sm-2">
-                <%= form.label :number, style: "display: block" %>
-                <%= form.number_field :number,  class: "form-control", min:1 %>
-            </div>        
-        </div>  
-        <br>    
-        <div class="form-group">    
-            <%= form.label :question, style: "display: block" %>
-            <%= form.text_area :question,  class: "form-control" %>
+            <ul class="mb-0 ps-3">
+              <% @exam_question.errors.full_messages.each do |error| %>
+                <li><%= error %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <div class="conesst-form-section">
+          <div class="conesst-form-section-title">
+            <i class="bi bi-info-circle me-2"></i>
+            Información de la pregunta
+          </div>
+          <div class="conesst-form-grid conesst-form-grid-2">
+            <div class="conesst-form-group">
+              <%= form.label :adm_exam_id, "Evaluación", class: "conesst-form-label" %>
+              <%= form.collection_select(:adm_exam_id, AdmExam.all.order(id: :asc), :id, :description, { prompt: "-- Seleccionar evaluación --" }, { class: "form-select select2" }) %>
+            </div>
+            <div class="conesst-form-group">
+              <%= form.label :number, "Número de pregunta", class: "conesst-form-label" %>
+              <%= form.number_field :number, class: "form-control", min: 1 %>
+            </div>
+          </div>
         </div>
-        <br>
-
-        <div class="form-group">    
-            <%= form.label :good_answe, style: "display: block" %>
-            <%= form.text_area :good_answe,  class: "form-control" %>
+        <div class="conesst-form-section">
+          <div class="conesst-form-section-title">
+            <i class="bi bi-chat-square-text me-2"></i>
+            Pregunta
+          </div>
+          <div class="conesst-form-grid">
+            <div class="conesst-form-group">
+              <%= form.label :question, "Pregunta", class: "conesst-form-label" %>
+              <%= form.text_area :question, class: "form-control", rows: 4, placeholder: "Ingrese la pregunta" %>
+            </div>
+          </div>
         </div>
-        <br>
-
-        <div class="form-group">    
-            <%= form.label :bad_answer_one, style: "display: block" %>
-            <%= form.text_area :bad_answer_one,  class: "form-control" %>
+        <div class="conesst-form-section">
+          <div class="conesst-form-section-title">
+            <i class="bi bi-ui-checks me-2"></i>
+            Opciones de respuesta
+          </div>
+          <div class="conesst-form-grid conesst-form-grid-2">
+            <div class="conesst-form-group">
+              <%= form.label :good_answe, "Respuesta correcta", class: "conesst-form-label" %>
+              <%= form.text_area :good_answe, class: "form-control", rows: 3, placeholder: "Ingrese la respuesta correcta" %>
+            </div>
+            <div class="conesst-form-group">
+              <%= form.label :bad_answer_one, "Respuesta incorrecta 1", class: "conesst-form-label" %>
+              <%= form.text_area :bad_answer_one, class: "form-control", rows: 3, placeholder: "Ingrese una respuesta incorrecta" %>
+            </div>
+            <div class="conesst-form-group">
+              <%= form.label :bad_answer_two, "Respuesta incorrecta 2",  class: "conesst-form-label" %>
+              <%= form.text_area :bad_answer_two, class: "form-control", rows: 3, placeholder: "Ingrese una respuesta incorrecta" %>
+            </div>
+            <div class="conesst-form-group">
+              <%= form.label :bad_answer_three, "Respuesta incorrecta 3", class: "conesst-form-label" %>
+              <%= form.text_area :bad_answer_three, class: "form-control", rows: 3, placeholder: "Ingrese una respuesta incorrecta" %>
+            </div>
+            <div class="conesst-form-group">
+              <%= form.label :bad_answer_four, "Respuesta incorrecta 4", class: "conesst-form-label" %>
+              <%= form.text_area :bad_answer_four, class: "form-control", rows: 3, placeholder: "Ingrese una respuesta incorrecta" %>
+            </div>
+          </div>
         </div>
-        <br>
-
-        <div class="form-group">    
-            <%= form.label :bad_answer_two, style: "display: block" %>
-            <%= form.text_area :bad_answer_two,  class: "form-control" %>
+        <div class="conesst-form-section">
+          <div class="conesst-form-section-title">
+            <i class="bi bi-image me-2"></i>
+            Imagen de la pregunta
+          </div>
+          <div class="conesst-form-grid">
+            <div class="conesst-form-group">
+              <%= form.label :img_question, "Imagen", class: "conesst-form-label" %>
+              <%= form.file_field :img_question, class: "form-control", accept: "image/*", capture: "environment" %>
+            </div>
+          </div>
         </div>
-        <br>
-
-        <div class="form-group">    
-            <%= form.label :bad_answer_three, style: "display: block" %>
-            <%= form.text_area :bad_answer_three,  class: "form-control" %>
+        <div class="conesst-form-actions">
+          <button type="submit" class="conesst-btn conesst-btn-primary">
+            <i class="bi bi-check-circle"></i>
+            <%= t('common.submit') %>
+          </button>
         </div>
-        <br>
-        <div class="form-group">    
-            <%= form.label :bad_answer_four, style: "display: block" %>
-            <%= form.text_area :bad_answer_four,  class: "form-control" %>
-        </div>
-        <br>
-
-        <div class="form-group">    
-            <%= form.label :img_question,  style: "display: block" %> 
-            <%= form.file_field :img_question,  class: "form-control", accept:"image/*", capture:"environment" %>
-        </div>
-        <br>
-
-        <div class="form-group">   
-            <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
-        </div>    
-    <% end %>
-</div>        
-<br>
-
+      <% end %>
+    </div>
+  </div>
+</div>

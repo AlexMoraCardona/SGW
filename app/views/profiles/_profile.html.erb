@@ -1,19 +1,55 @@
-<% if @entity.present? %>
-    <h class="display-6"><%= @entity.business_name %> Nit: <%=@entity.identification_number %></h>
-<% end %>
-
-<% if @survey_profiles.present? %>
-    <%= form_tag encuesta_path(Current.user.id.to_i), method: :get do %>
-        <%= select_tag :survey_profile_id, options_from_collection_for_select(@survey_profiles, :id, :date_profile), class: 'form-control input-sm select2', :prompt  =>  '--Seleccione la fecha de la encuesta a realizar--' %>
-
-        <br>
-        <%= submit_tag 'Hacer encuesta',  :class => 'btn btn-primary btn-block spin pull-right' %>
-    <% end %>
-
-
-<% else %>
-    <div>
-        <h class="display-6">La Entidad no tiene encuestas activas por el momento</h>
+<div class="conesst-page">
+  <% if @entity.present? %>
+    <div class="conesst-header">
+      <div class="conesst-header-content">
+        <h1 class="conesst-title">
+          <%= @entity.business_name %>
+        </h1>
+        <p class="conesst-subtitle">
+          <i class="bi bi-building me-1"></i>
+          NIT: <%= @entity.identification_number %>
+        </p>
+      </div>
     </div>
-<% end %>
-
+  <% end %>
+  <% if @survey_profiles.present? %>
+    <div class="conesst-card">
+      <div class="conesst-card-header">
+        <div class="conesst-card-header-content">
+          <h2 class="conesst-card-header-title">
+            <i class="bi bi-clipboard2-check me-2"></i>
+            Selección de encuesta
+          </h2>
+          <p class="conesst-card-header-subtitle">
+            Seleccione la fecha de la encuesta que desea realizar.
+          </p>
+        </div>
+      </div>
+      <div class="conesst-card-body">
+        <%= form_tag encuesta_path(Current.user.id.to_i), method: :get do %>
+          <div class="conesst-form-group">
+            <%= label_tag :survey_profile_id, "Fecha de la encuesta", class: "conesst-form-label" %>
+            <%= select_tag :survey_profile_id, options_from_collection_for_select(@survey_profiles, :id, :date_profile), class: "form-select select2",  prompt: "-- Seleccione la fecha de la encuesta a realizar --" %>
+          </div>
+          <div class="conesst-form-actions mt-4">
+            <%= submit_tag "Hacer encuesta", class: "conesst-btn conesst-btn-primary", data: { disable_with: "Cargando..." } %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+    <div class="conesst-card">
+      <div class="conesst-card-body">
+        <div class="conesst-empty-state">
+          <i class="bi bi-clipboard-x"></i>
+          <h2>
+            No hay encuestas disponibles
+          </h2>
+          <p>
+            La Entidad no tiene encuestas activas por el momento.
+          </p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

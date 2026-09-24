@@ -155,7 +155,7 @@ class CarChecklistsController < ApplicationController
          :retention_condition_obs, :documents_condition, :documents_condition_obs, 
          :prevention_condition, :prevention_condition_obs, :witnesses_condition, 
          :witnesses_condition_obs, :firm_user, :date_firm_user, :user_autoriza, 
-         :user_autoriza_firm, :user_autoriza_date, :user_id, :entity_id, car_files: [])
+         :user_autoriza_firm, :user_autoriza_date, :user_id, :version, :code, :entity_id, car_files: [])
     end 
 end 
 

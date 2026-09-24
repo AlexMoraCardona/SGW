@@ -1,35 +1,88 @@
-<div align="left"; class="container col-12">
-    <a class="navbar-brand" href="/">
-        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-    </a>
-</div>
-<div class="container col-11" 
-    <br>
-        <h class="display-5">Informe Estudio Sociodemográfico</h>
-    <hr>
-    
-    <br>
- 
-    <% if params[:entity_id].present? %>
-        <%= render 'survey_profile' %> 
-    <% else %>
-        <%= form_with model: @entity, method: :get do |form| %>
-            <div class="row g-2">
-                <div class="col-sm-7">
-                    <% if Current.user.level == 1 %>
-                        <%= form.label :Entidad, style: "display: block" %>
-                        <%= form.collection_select :entity_id, @entities, :id, :business_name, { prompt: '--Seleccionar Entidad--' },
-                        { class: 'form-control input-sm select2' } %>
-                    <% else %>
-                        <div class="container">
-                            <h class="display-6"><%= @entities.business_name %></h>
-                        </div> 
-                        <%= form.hidden_field :entity_id, :value => @entities.id.to_i, class: "form-control" %>
-                    <% end %>
-                </div>
-            </div>    
-            <br>    
-            <button type="submit" class="btn btn-primary">Consultar</button>
+<div class="conesst-page">
+  <div class="conesst-header">
+    <div class="conesst-header-content">
+      <div class="conesst-logo-container">
+        <%= link_to root_path, class: "navbar-brand" do %>
+            <%= image_tag "LogoConesst202305232.png", class: "conesst-logo", alt: "CONESST" %>
         <% end %>
-
-    <% end %>     
+      </div>
+      <div>
+        <h1 class="conesst-title">
+          Informe Estudio Sociodemográfico
+        </h1>
+        <div class="conesst-subtitle">
+          Consulta y generación del informe sociodemográfico
+        </div>
+      </div>
+    </div>
+  </div>
+  <% if params[:entity_id].present? %>
+    <div class="conesst-card">
+      <div class="conesst-card-header">
+        <div class="conesst-card-header-content">
+          <div>
+            <h2 class="conesst-card-header-title">
+              <i class="bi bi-clipboard-data me-1"></i>
+              Estudio sociodemográfico
+            </h2>
+            <div class="conesst-card-header-subtitle">
+              Información correspondiente a la entidad seleccionada
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="conesst-card-body">
+        <%= render 'survey_profile' %>
+      </div>
+    </div>
+  <% else %>
+    <div class="conesst-card">
+      <div class="conesst-card-header">
+        <div class="conesst-card-header-content">
+          <div>
+            <h2 class="conesst-card-header-title">
+              <i class="bi bi-building me-1"></i>
+              Seleccionar entidad
+            </h2>
+            <div class="conesst-card-header-subtitle">
+              Seleccione la entidad para consultar el informe
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="conesst-card-body">
+        <%= form_with model: @entity, method: :get do |form| %>
+          <div class="conesst-form-section">
+            <div class="conesst-form-section-title">
+              <i class="bi bi-building"></i>
+              Entidad
+            </div>
+            <div class="conesst-form-group">
+              <% if Current.user.level == 1 %>
+                <%= form.label :entity_id, "Entidad", class: "conesst-form-label" %>
+                <%= form.collection_select :entity_id, @entities, :id, :business_name, { prompt: "-- Seleccionar entidad --" }, {class: "form-select select2"} %>
+              <% else %>
+                <div class="conesst-form-label">
+                  Entidad
+                </div>
+                <div class="conesst-form-control-static">
+                  <i class="bi bi-building me-1"></i>
+                  <%= @entities.business_name %>
+                </div>
+                <%= form.hidden_field :entity_id, value: @entities.id.to_i %>
+              <% end %>
+            </div>
+          </div>
+          <div class="conesst-form-actions">
+            <%= form.button type: "submit", class: "conesst-btn conesst-btn-primary" do %>
+              <i class="bi bi-search"></i>
+              <span>
+                Consultar
+              </span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

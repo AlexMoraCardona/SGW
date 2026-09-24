@@ -1,140 +1,27 @@
-<!DOCTYPE html>
-<head>
-    <meta charset='utf-8' />
-</head>
+<% if @template.present? %>
+        <% format_number = @template.format_number.to_i %>
+        <% plantilla = "route_controls/#{format_number}" %>
 
-<div align="left"; class="container col-12">
-    <table style="border:0px solid black;width: 100%">
-        <tr style="padding: 20px;">
-            <td rowspan="2" style="border:1px solid black; width: 20%; text-align:center">
-                <% if @entity.logo.present? then %>
-                    <%= image_tag(Evaluation.wicked_blob_path(@entity.logo),:width => "120") %>
-                <% end %>   
-            </td>
-            <td style="border:1px solid black; text-align:center">
-                <div class="col-10"><%= @entity.business_name if @entity.present? %></div>
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; text-align:center">
-                <div class="col-10"><%= @template.name if @template.present? %></div>
-            </td>
-        </tr>
-    </table>
-    <table style="width: 100%">
-        <tr>    
-            <td style="border:1px solid black; width: 25%">
-                CÓDIGO:                 
-            </td>
-            <td style="border:1px solid black; width: 25%">
-                &nbsp;&nbsp;<small class="text-muted"><%= @template.reference if @template.present? %></small>                
-            </td>
+        <% if lookup_context.exists?(plantilla, [], true) %>
+            <%= render plantilla, template: @template %>
+        <% else %>
+            <div class="alert alert-warning text-center my-4">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            La plantilla <strong>#{format_number}</strong> aún no tiene
+            un formato de visualización configurado.
+            </div>
+        <% end %>
+<% end %>
 
-            <td style="border:1px solid black; width: 25%">
-                VERSIÓN:                 
-            </td>
-            <td style="border:1px solid black; width: 25%">
-                &nbsp;&nbsp;<small class="text-muted"><%= @template.version if @template.present? %></small>                
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; width: 25%">
-                FECHA DE ELABORACIÓN:                  
-            </td>
-            <td style="border:1px solid black; width: 25%">
-                &nbsp;&nbsp;<small class="text-muted"><%= @template.date if @template.present? %></small>                
-            </td>
+<!-- =========================================================
+     CONTROL DE CAMBIOS
+     ========================================================= -->
 
-            <td style="border:1px solid black; width: 25%">
-                FECHA DE ACTUALIZACIÓN:                 
-            </td>
-            <td style="border:1px solid black; width: 25%">
-                &nbsp;&nbsp;<small class="text-muted"><%= @template.date_updated if @template.present? %></small>                
-            </td>
-        </tr>
-    </table>
-    <table style="width: 100%">
-        <tr>    
-            <td style="border:1px solid black; width: 25%;padding: 2px;">
-                <p><strong>Empresa: </strong></p>                
-            </td>
-            <td style="border:1px solid black; width: 75%;padding: 2px;">
-                <p><%= @entity.business_name if @entity.present? %></p>                
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; width: 25%;padding: 2px;">
-                <p><strong>Fecha: </strong></p>                
-            </td>
-            <td style="border:1px solid black; width: 75%;padding: 2px;">
-                <p><%= @route_control.date_control if @route_control.present? %></p>                
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; width: 25%;padding: 5px;">
-                <p><strong>Hora de Inicio: </strong></p>                
-            </td>
-            <td style="border:1px solid black; width: 75%;padding: 5px;">
-                <p><%= @route_control.time_initial_control.strftime("%I:%M %p") if @route_control.time_initial_control.present? %></p>                
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; width: 25%;padding: 5px;">
-                <p><strong>Hora de Final: </strong></p>                
-            </td>
-            <td style="border:1px solid black; width: 75%;padding: 5px;">
-                <p><%= @route_control.time_final_control.strftime("%I:%M %p") if @route_control.time_final_control.present? %></p>                
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; width: 25%;padding: 2px;">
-                <p><strong>Usuario: </strong></p>                
-            </td>
-            <td style="border:1px solid black; width: 75%;padding: 2px;">
-                <p><%= @route_control.user.name if @route_control.present? %></p>                
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; width: 25%;padding: 2px;">
-                <p><strong>Documento: </strong></p>                
-            </td>
-            <td style="border:1px solid black; width: 75%;padding: 2px;">
-                <p><%= @route_control.user.nro_document if @route_control.present? %></p>                
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; width: 25%;padding: 2px;">
-                <p><strong>Cargo: </strong></p>                
-            </td>
-            <td style="border:1px solid black; width: 75%;padding: 2px;">
-                <p><%=  User.label_activity(@route_control.user.activity)  if @route_control.present? %></p>                
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; width: 25%;padding: 2px;">
-                <p><strong>Tipo de Vehículo: </strong></p>                
-            </td>
-            <td style="border:1px solid black; width: 75%;padding: 2px;">
-                <p><%=  RouteControl.label_tipo_vehiculo(@route_control.vehicle_type)  if @route_control.present? %></p>                
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; width: 25%;padding: 2px;">
-                <p><strong>lugar: </strong></p>                
-            </td>
-            <td style="border:1px solid black; width: 75%;padding: 2px;">
-                <p><%= @route_control.place if @route_control.present? %></p>                
-            </td>
-        </tr>
-        <tr>    
-            <td style="border:1px solid black; width: 25%;padding: 2px;">
-                <p><strong>Observaciones: </strong></p>                
-            </td>
-            <td style="border:1px solid black; width: 75%;padding: 2px;">
-                <p><%= @route_control.observation if @route_control.present? %></p>                
-            </td>
-        </tr>
+<% if @template_versions.present? %>
 
-    </table>
-    <div></br></div>
-</div>
+  <div class="control-cambios">
+    <%= render 'evaluation_rule_details/control_cambios' %>
+  </div>
+
+<% end %>
+

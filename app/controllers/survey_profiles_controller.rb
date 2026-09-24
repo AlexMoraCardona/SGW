@@ -16,6 +16,8 @@ class SurveyProfilesController < ApplicationController
 
     def new
       @survey_profile = SurveyProfile.new  
+      @template = Template.where("reference = ? and document_vigente = ?",'IES-SST',1).last  
+
     end    
 
     def create
@@ -59,7 +61,6 @@ class SurveyProfilesController < ApplicationController
     def informe_estudio_socio
         @survey_profile = SurveyProfile.find(params[:id])
         @profiles = Profile.where("survey_profile_id = ?",@survey_profile.id) if @survey_profile.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",37,1).last  
         @administrative_political_division = AdministrativePoliticalDivision.find(@survey_profile.entity.entity_location_code) if @survey_profile.entity.entity_location_code.present?
         @cantidadsedes = Location.where("entity_id = ?", @survey_profile.entity_id).count 
         @responsablesst = User.find(@survey_profile.entity.responsible_sst) if @survey_profile.entity.responsible_sst.present?
@@ -68,7 +69,12 @@ class SurveyProfilesController < ApplicationController
         @claseriesgo = RiskLevel.find(@survey_profile.entity.risk_classification) if @survey_profile.entity.risk_classification.present?
         @user_elaboro = User.find(@survey_profile.user_elaboro) if @survey_profile.user_elaboro.present?
         @user_aprobo = User.find(@survey_profile.user_aprobo) if @survey_profile.user_aprobo.present?
+        @template = Template.where("reference = ? and version = ?",@survey_profile.code,@survey_profile.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+        @entity = Entity.find(@survey_profile.entity_id) if @survey_profile.present?
         
+
+
         @datos_genero = Profile.vgenero(@survey_profile.id) if @survey_profile.present? 
         @cant_genero = Profile.cantidad_vector(@datos_genero) if @datos_genero.present?
 
@@ -159,17 +165,22 @@ class SurveyProfilesController < ApplicationController
         @datos_transporte = Profile.vtransporte(@survey_profile.id) if @survey_profile.present? 
         @cant_transporte = Profile.cantidad_vector(@datos_transporte) if @datos_transporte.present?
 
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'informe_estudio_socio',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('informe_estudio_socio'),
+                    disable_javascript: true,
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
+                    page_size: 'letter',
+                    orientation: 'Landscape',
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+            }
+        end    
     end   
 
 
@@ -178,7 +189,7 @@ class SurveyProfilesController < ApplicationController
     def survey_profile_params 
         params.require(:survey_profile).permit(:date_profile, :date_vencimiento_profile, :entity_id, :user_elaboro, 
         :user_reviso, :user_aprobo, :date_firm_elaboro, :date_firm_reviso, :date_firm_aprobo, 
-        :firm_elaboro, :firm_aprobo, :firm_reviso)
+        :firm_elaboro, :firm_aprobo, :firm_reviso, :version, :code)
     end 
 
 end  

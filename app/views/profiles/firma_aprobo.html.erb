@@ -1,34 +1,91 @@
-<div class="container col-11 card p-5">
-    <br>
+<div class="conesst-page">
+    <div class="conesst-header">
+        <div class="conesst-header-content">
+            <div>
+                <h1 class="conesst-title">
+                    Firma del Representante Legal
+                </h1>
+                <p class="conesst-subtitle">
+                    Autorización de la firma del representante legal
+                </p>
+            </div>
+        </div>
+    </div>
     <%= form_with model: @survey_profile do |form| %>
-        <% @survey_profile.errors.full_messages.each do |error| %>
+        <% if @survey_profile.errors.any? %>
             <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
+                <div class="fw-bold mb-2">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    Se encontraron los siguientes errores:
+                </div>
+                <ul class="mb-0 ps-3">
+                    <% @survey_profile.errors.full_messages.each do |error| %>
+                        <li><%= error %></li>
+                    <% end %>
+                </ul>
             </div>
         <% end %>
-
-        <table>
-            <tr>
-                <td>
-                    <h4>Representante Legal</h4> 
-                    <%= @survey_profile.name_user(@survey_profile.user_aprobo) %>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <h4>Firma autorizada del Representante Legal</h4> 
-                    <%= form.radio_button :firm_aprobo, 0 %>
-                    <label for="no">No</label>&nbsp;&nbsp; 
-                    <%= form.radio_button :firm_aprobo, 1 %>
-                    <label for="si">Si</label>&nbsp;&nbsp;   
-                </td>
-            </tr>
-        </table>
-        <%= form.hidden_field :date_firm_aprobo, :value => Time.now, class: "form-control" %>
-
-        <br>    
-        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+        <div class="conesst-card">
+            <div class="conesst-card-header">
+                <div class="conesst-card-header-content">
+                    <div>
+                        <h2 class="conesst-card-header-title">
+                            <i class="bi bi-person-badge me-2"></i>
+                            Representante Legal
+                        </h2>
+                        <p class="conesst-card-header-subtitle">
+                            Información y autorización de firma
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="conesst-card-body">
+                <div class="conesst-form-section">
+                    <div class="conesst-info-grid">
+                        <div class="conesst-info-item">
+                            <div class="conesst-info-label">
+                                <i class="bi bi-person me-1"></i>
+                                Representante Legal
+                            </div>
+                            <div class="conesst-info-value">
+                                <%= @survey_profile.name_user(@survey_profile.user_aprobo) %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="conesst-form-section">
+                    <div class="conesst-form-section-title">
+                        <i class="bi bi-pen me-2"></i>
+                        Firma autorizada del Representante Legal
+                    </div>
+                    <div class="conesst-form-group">
+                        <label class="conesst-form-label">
+                            ¿Autoriza la firma?
+                        </label>
+                        <div class="d-flex flex-wrap gap-4 mt-2">
+                            <div class="form-check">
+                                <%= form.radio_button :firm_aprobo, 0, class: "form-check-input", id: "firm_aprobo_no" %>
+                                <%= form.label :firm_aprobo, "No", value: 0, class: "form-check-label", for: "firm_aprobo_no" %>
+                            </div>
+                            <div class="form-check">
+                                <%= form.radio_button :firm_aprobo, 1, class: "form-check-input", id: "firm_aprobo_si" %>
+                                <%= form.label :firm_aprobo, "Sí", value: 1, class: "form-check-label", for: "firm_aprobo_si" %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <%= form.hidden_field :date_firm_aprobo, value: Time.now,  class: "form-control" %>
+                <div class="conesst-form-actions">
+                    <%= form.button type: "submit", class: "conesst-btn conesst-btn-primary" do %>
+                        <i class="bi bi-check-circle me-1"></i>
+                        <%= t('common.submit') %>
+                    <% end %>
+                    <%= link_to :back, class: "conesst-btn" do %>
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Retornar
+                    <% end %>
+                </div>
+            </div>
+        </div>
     <% end %>
-</div>        
-<br>
+</div>

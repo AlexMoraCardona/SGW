@@ -1,73 +1,75 @@
 <%= form_with model: @safety_inspection_item do |f| %>
-
-
-  <div class="card">
-
-    <div class="card-body">
-      <div class="card-header d-flex justify-content-center align-items-center" >
-          <h3>Fotografía situación o condición</h3>
-      </div>
-
-      <div id="camera-container"  class="d-flex justify-content-center align-items-center" >
-
-        <div data-controller="camera" class="text-center">
-          <video
-              data-camera-target="video"
-              autoplay
-              playsinline
-              muted
-              width="240"
-              height="180"
-              style="border:1px solid #999;">
-          </video>
-
-        
-          <canvas
-            data-camera-target="canvas"
-            style="display:none;">
-          </canvas>
-          <img
-            data-camera-target="preview"
-            style="display:none; max-width:100%;">
-
-          <br>
-
-          <div class="mb-3">
-            <%= label_tag :photo_name, "Nombre de la fotografía", class: "form-label" %>
-            <%= text_field_tag :photo_name,
-              nil,
-              class: "form-control",
-              maxlength: 100,
-              pattern: "[\\p{L}\\p{N}_ \\-]+",
-              title: "Solo se permiten letras, números, espacios, guiones y guiones bajos." %>
-          </div>          
-          <div class="justify-content:center;">
-
-            <button
-              type="button"
-              class="btn btn-primary"
-              data-camera-target="button"
-              data-action="click->camera#tomarFotografia">
-              📷 Tomar fotografía
-            </button>
-
-            <%= hidden_field_tag :photo_data, 
-              nil,
-              id:"photo_data",
-              data: { camera_target:"photo" } %>      
-            </br> </br>
-            <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>          
-
-            <%= link_to "Retornar", request.referer || root_path, class: "btn btn-secondary" %>
+  <div class="conesst-page">
+    <div class="conesst-card">
+      <div class="conesst-card-header">
+        <div class="d-flex align-items-center gap-2">
+          <i class="bi bi-camera fs-5"></i>
+          <div>
+            <h3 class="mb-0">
+              Fotografía situación o condición
+            </h3>
+            <small class="text-muted">
+              Capture una fotografía como evidencia de la inspección.
+            </small>
           </div>
-
         </div>
       </div>
-
-
+      <div class="conesst-card-body">
+        <div id="camera-container" class="d-flex justify-content-center align-items-center">
+          <div data-controller="camera" class="text-center w-100">
+            <div class="mb-4">
+              <video
+                data-camera-target="video"
+                autoplay
+                playsinline
+                muted
+                width="240"
+                height="180"
+                class="rounded border shadow-sm"
+              ></video>
+              <canvas
+                data-camera-target="canvas"
+                style="display:none;"
+              ></canvas>
+              <img
+                data-camera-target="preview"
+                style="display:none; max-width:100%;"
+                class="img-fluid rounded shadow-sm mt-3"
+              >
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-12 col-md-8 col-lg-6">
+                <div class="mb-4 text-start">
+                  <%= label_tag(:photo_name, "Nombre de la fotografía", class: "form-label fw-semibold") %>
+                  <%= text_field_tag(:photo_name, nil, class: "form-control", maxlength: 100, pattern: "[\\p{L}\\p{N}_ \\-]+", title: "Solo se permiten letras, números, espacios, guiones y guiones bajos.") %>
+                  <div class="form-text">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Utilice letras, números, espacios, guiones o guiones bajos.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Datos ocultos -->
+            <%= hidden_field_tag(:photo_data, nil, id: "photo_data", data: { camera_target: "photo" }) %>
+            <div class="conesst-actions justify-content-center">
+              <button
+                type="button"
+                class="conesst-btn conesst-btn-primary"
+                data-camera-target="button"
+                data-action="click->camera#tomarFotografia"
+              >
+                <i class="bi bi-camera me-1"></i>
+                Tomar fotografía
+              </button>
+              <%= f.submit(t('common.submit'), class: "conesst-btn conesst-btn-success") %>
+              <%= link_to(request.referer || root_path, class: "conesst-btn") do %>
+                <i class="bi bi-arrow-left me-1"></i>
+                Retornar
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-
   </div>
-
 <% end %>

@@ -18,6 +18,7 @@ class HomesController < ApplicationController
          @copasst = User.where("entity = ? and copasst = ?",@entity,1) if @entity.present?
          @ccl = User.where("entity = ? and ccl = ?",@entity,1) if @entity.present?
          @br = User.where("entity = ? and brigade = ?",@entity,1) if @entity.present?
+         @horas_asesoradas = Entity.horas_asesoradas if Current.user.level == 2 || Current.user.level == 1
     end    
 
     def show

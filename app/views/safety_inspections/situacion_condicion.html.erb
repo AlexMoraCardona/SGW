@@ -1,364 +1,306 @@
-<div class="container-fluid py-4">
-    <%# =======================================================
-       CÁLCULO DE ESTADÍSTICAS
-       ======================================================= %>
-    <%
-        total_items = @safety_inspection_items.count
-        na_items       = @safety_inspection_items.where(state_compliance: 0).count
-        si_items       = @safety_inspection_items.where(state_compliance: 1).count
-        no_items       = @safety_inspection_items.where(state_compliance: 2).count
-        parcial_items  = @safety_inspection_items.where(state_compliance: 3).count
+<div class="conesst-page">
+  <%
+    total_items   = @safety_inspection_items.count
+    na_items      = @safety_inspection_items.where(state_compliance: 0).count
+    si_items      = @safety_inspection_items.where(state_compliance: 1).count
+    no_items      = @safety_inspection_items.where(state_compliance: 2).count
+    parcial_items = @safety_inspection_items.where(state_compliance: 3).count
 
-        evaluados = na_items + si_items
+    evaluados = na_items + si_items
 
-        porcentaje =
-            total_items.zero? ? 0 :
-            ((evaluados.to_f / total_items) * 100).round
-    %>
+    porcentaje =
+      if total_items.zero?
+        0
+      else
+        ((evaluados.to_f / total_items) * 100).round
+      end
+  %>
 
-    <!-- =======================================================
-         ENCABEZADO
-         ======================================================= -->
 
-    <div class="card shadow-sm border-0 mb-4">
-        <div class="card-body">
-            <div class="row align-items-center g-3">
-                <div class="col-12 col-lg-7">
-                    <h2 class="fw-bold mb-2 text-primary">
-                        <%= @entity.business_name %>
-                    </h2>
-                    <div class="text-muted">
-                        <strong>NIT:</strong>
-                        <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>
-                        <% if @entity.verification_digit.present? %>
-                            -<%= @entity.verification_digit %>
-                        <% end %>
-                    </div>
-                </div>
-                <div class="col-12 col-lg-5">
-                    <div class="small">
-                        <div class="mb-2">
-                            <strong>Fecha de inspección</strong>
-                            <div class="text-muted">
-                                <%= @safety_inspection.date_inspection %>
-                            </div>
-                        </div>
-                        <div class="mb-2">
-                            <strong>Lugar</strong>
-                            <div class="text-muted">
-                                <%= @safety_inspection.place_inspection %>
-                            </div>
-                        </div>
-                        <div>
-                            <strong>Área de trabajo</strong>
-                            <div class="text-muted">
-                                <%= @safety_inspection.area_inspection %>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- =======================================================
-         AVANCE
-         ======================================================= -->
-    <div class="card shadow-sm border-0 mb-4">
-        <div class="card-body">
-            <div class="d-flex justify-content-between mb-2">
-                <h5 class="mb-0">
-                    Resultado de la inspección
-                </h5>
-                <strong>
-                    <%= porcentaje %>%
-                </strong>
-            </div>
-            <div class="progress" style="height:28px;">
-                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width:<%= porcentaje %>%">
-                    <%= evaluados %> / <%= total_items %>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- =======================================================
-         RESUMEN
-         ======================================================= -->
-    <div class="row g-3 mb-4">
-        <div class="col-6 col-lg-3">
-            <div class="card text-center border-success shadow-sm h-100">
-                <div class="card-body">
-                    <h2 class="text-success mb-0">
-                        <%= si_items %>
-                    </h2>
-                    <div class="fw-semibold text-success">
-                        SI CUMPLE
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-lg-3">
-            <div class="card text-center border-danger shadow-sm h-100">
-                <div class="card-body">
-                    <h2 class="text-danger mb-0">
-                        <%= no_items %>
-                    </h2>
-                    <div class="fw-semibold text-danger">
-                        NO CUMPLE
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-lg-3">
-            <div class="card text-center border-warning shadow-sm h-100">
-                <div class="card-body">
-                    <h2 class="text-warning mb-0">
-                        <%= parcial_items %>
-                    </h2>
-                    <div class="fw-semibold text-warning">
-                        PARCIAL
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-lg-3">
-            <div class="card text-center border-secondary shadow-sm h-100">
-                <div class="card-body">
-                    <h2 class="text-secondary mb-0">
-                        <%= na_items %>
-                    </h2>
-                    <div class="fw-semibold text-secondary">
-                        N/A
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="d-flex gap-2 mb-4">
-      <%= button_tag(type: "button", class: "btn btn-primary", onclick: "window.location.reload();") do %>
-        <i class="bi bi-arrow-clockwise me-1"></i>
-        Actualizar
-      <% end %>
-      <%= link_to "Retornar", request.referer || root_path, class: "btn btn-secondary" %>
-    </div>
-    <% if @safety_inspection_items.present? %>
-        <!-- =======================================================
-             VISTA ESCRITORIO
-             ======================================================= -->
-        <div class="card shadow-sm border-0 d-none d-lg-block">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover table-bordered align-middle">
-                        <thead class="table-primary">
-                            <tr>
-                                <th style="width:45%;">
-                                    Situación o Condición
-                                </th>
-                                <th style="width:40%;">
-                                    Cumplimiento
-                                </th>
-                                <th class="text-center" style="width:15%;">
-                                    Acciónes
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% @safety_inspection_items.order(:id).each do |item| %>
-                                <tr>
-                                    <!-- Situación -->
-                                    <td>
-                                        <div class="fw-semibold mb-2">
-                                            <%= item.situation_condition.name %>
-                                        </div>
-                                        <% case item.state_compliance %>
-                                        <% when 0 %>
-                                            <span class="badge bg-secondary fs-6">
-                                                N/A
-                                            </span>
-                                        <% when 1 %>
-                                            <span class="badge bg-success fs-6">
-                                                ✓ SI CUMPLE
-                                            </span>
-                                        <% when 2 %>
-                                            <span class="badge bg-danger fs-6">
-                                                ✕ NO CUMPLE
-                                            </span>
-                                        <% when 3 %>
-                                            <span class="badge bg-warning text-dark fs-6">
-                                                ⚠ PARCIAL
-                                            </span>
-                                        <% else %>
-                                            <span class="badge bg-light text-dark border fs-6">
-                                                SIN EVALUAR
-                                            </span>
-                                        <% end %>
-                                    </td>
-                                    <!-- Cumplimiento -->
-                                    <td>
-                                        <%= form_with model: item do |form| %>
-                                            <div class="btn-group w-100" role="group">
-                                                <%= form.radio_button :state_compliance,
-                                                    0,
-                                                    class: "btn-check",
-                                                    id: "na_#{item.id}",
-                                                    onclick: "this.form.submit.click();" %>
-                                                <%= form.label :state_compliance,
-                                                    "N/A",
-                                                    for: "na_#{item.id}",
-                                                    class: "btn btn-outline-secondary" %>
-                                                <%= form.radio_button :state_compliance,
-                                                    1,
-                                                    class: "btn-check",
-                                                    id: "si_#{item.id}",
-                                                    onclick: "this.form.submit.click();" %>
-                                                <%= form.label :state_compliance,
-                                                    "SI",
-                                                    for: "si_#{item.id}",
-                                                    class: "btn btn-outline-success" %>
-                                                <%= form.radio_button :state_compliance,
-                                                    2,
-                                                    class: "btn-check",
-                                                    id: "no_#{item.id}",
-                                                    onclick: "this.form.submit.click();" %>
-                                                <%= form.label :state_compliance,
-                                                    "NO",
-                                                    for: "no_#{item.id}",
-                                                    class: "btn btn-outline-danger" %>
-                                                <%= form.radio_button :state_compliance,
-                                                    3,
-                                                    class: "btn-check",
-                                                    id: "parcial_#{item.id}",
-                                                    onclick: "this.form.submit.click();" %>
-                                                <%= form.label :state_compliance,
-                                                    "PARCIAL",
-                                                    for: "parcial_#{item.id}",
-                                                    class: "btn btn-outline-warning" %>
-                                            </div>
-                                            <div class="d-none">
-                                                <%= form.submit "",
-                                                    name: "submit",
-                                                    remote: true %>
-                                            </div>
-                                        <% end %>
-                                    </td>
-                                    <!-- Acciónes -->
-                                    <td class="text-center align-middle">
-                                        <%= link_to edit_safety_inspection_item_path(item), class: "btn btn-primary btn-sm" do %>Editar<% end %>
-                                        <%= link_to "📷", situacion_foto_path(item.id), class:"btn btn-light btn-sm me-2" %>
-                                        <%= button_to "Eliminar", item, method: :delete, class: "btn btn-danger btn-sm m-2", data: {turbo_confirm: "¿Está seguro de eliminar este registro? Esta acción no se puede deshacer." }  if Current.user.level > 0 && Current.user.level < 3 %>                                            
-                                    </td>
-                                </tr>
-                            <% end %>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <!-- =======================================================
-             VISTA PARA CELULAR
-             ======================================================= -->
-        <div class="d-lg-none">
-            <% @safety_inspection_items.order(:id).each do |item| %>
-                <div class="card shadow-sm border-0 mb-3">
-                    <div class="card-body">
-                        <!-- Nombre de la condición -->
-                        <h5 class="fw-bold text-primary mb-3">
-                            <%= item.situation_condition.name %>
-                        </h5>
-                        <!-- Estado actual -->
-                        <div class="mb-3">
-                            <% case item.state_compliance %>
-                            <% when 0 %>
-                                <span class="badge bg-secondary fs-6">
-                                    N/A
-                                </span>
-                            <% when 1 %>
-                                <span class="badge bg-success fs-6">
-                                    ✓ SI CUMPLE
-                                </span>
-                            <% when 2 %>
-                                <span class="badge bg-danger fs-6">
-                                    ✕ NO CUMPLE
-                                </span>
-                            <% when 3 %>
-                                <span class="badge bg-warning text-dark fs-6">
-                                    ⚠ PARCIAL
-                                </span>
-                            <% else %>
-                                <span class="badge bg-light text-dark border fs-6">
-                                    SIN EVALUAR
-                                </span>
-                            <% end %>
-                        </div>
-                        <!-- Formulario -->
-                        <%= form_with model: item do |form| %>
-                            <div class="btn-group w-100 mb-3" role="group">
-                                <%= form.radio_button :state_compliance,
-                                    0,
-                                    class: "btn-check",
-                                    id: "mobile_na_#{item.id}",
-                                    onclick: "this.form.submit.click();" %>
-                                <%= form.label :state_compliance,
-                                    "N/A",
-                                    for: "mobile_na_#{item.id}",
-                                    class: "btn btn-outline-secondary" %>
-                                <%= form.radio_button :state_compliance,
-                                    1,
-                                    class: "btn-check",
-                                    id: "mobile_si_#{item.id}",
-                                    onclick: "this.form.submit.click();" %>
-                                <%= form.label :state_compliance,
-                                    "SI",
-                                    for: "mobile_si_#{item.id}",
-                                    class: "btn btn-outline-success" %>
-                                <%= form.radio_button :state_compliance,
-                                    2,
-                                    class: "btn-check",
-                                    id: "mobile_no_#{item.id}",
-                                    onclick: "this.form.submit.click();" %>
-                                <%= form.label :state_compliance,
-                                    "NO",
-                                    for: "mobile_no_#{item.id}",
-                                    class: "btn btn-outline-danger" %>
-                                <%= form.radio_button :state_compliance,
-                                    3,
-                                    class: "btn-check",
-                                    id: "mobile_parcial_#{item.id}",
-                                    onclick: "this.form.submit.click();" %>
-                                <%= form.label :state_compliance,
-                                    "PARCIAL",
-                                    for: "mobile_parcial_#{item.id}",
-                                    class: "btn btn-outline-warning" %>
-                            </div>
-                            <div class="d-none">
-                                <%= form.submit "",
-                                    name: "submit",
-                                    remote: true %>
-                            </div>
-                        <% end %>
-                        <!-- Botón Editar -->
-                        <div class="d-grid gap-3">
-                            <%= link_to "📷", situacion_foto_path(item.id), class:"btn btn-light btn-sm me-2" %>
-                            <%= link_to edit_safety_inspection_item_path(item),
-                                class: "btn btn-primary" do %>
-                                <i class="bi bi-pencil-square"></i>
-                                Editar observación
-                            <% end %>
-                            <% if Current.user.level > 0 && Current.user.level < 3 %>
-                                 <%= button_to item, method: :delete, class: "btn btn-danger btn-sm w-100 me-2", form_class: "w-100", data: { turbo_confirm: "¿Está seguro de eliminar este registro? Esta acción no se puede deshacer." } do %>
-                                     <i class="bi bi-trash"></i> Eliminar
-                                <% end %>
-                            <% end %>                            
-                        </div>
-                    </div>
-                </div>
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-3">
+        <div>
+          <h4 class="mb-1">
+            <i class="bi bi-clipboard-check me-2"></i>
+            Inspección de Seguridad
+          </h4>
+          <div class="text-muted small">
+            <strong><%= @entity.business_name %></strong>
+            <% if @entity.identification_number.present? %>
+              <span class="mx-1">•</span>
+              NIT:
+              <%= EvaluationRuleDetail.miles(@entity.identification_number) %>
+              <% if @entity.verification_digit.present? %>
+                -<%= @entity.verification_digit %>
+              <% end %>
             <% end %>
+          </div>
         </div>
-    <% end %>
-    <div class="d-flex gap-2 mb-4">
-      <%= button_tag(type: "button", class: "btn btn-primary", onclick: "window.location.reload();") do %>
-        <i class="bi bi-arrow-clockwise me-1"></i>
-        Actualizar
-      <% end %>
-      <%= link_to "Retornar", request.referer || root_path, class: "btn btn-secondary" %>
+        <div class="small text-md-end">
+          <div class="mb-2">
+            <span class="fw-semibold">
+              <i class="bi bi-calendar3 me-1"></i>
+              Fecha de inspección
+            </span>
+            <div class="text-muted">
+              <%= @safety_inspection.date_inspection %>
+            </div>
+          </div>
+          <div class="mb-2">
+            <span class="fw-semibold">
+              <i class="bi bi-geo-alt me-1"></i>
+              Lugar
+            </span>
+            <div class="text-muted">
+              <%= @safety_inspection.place_inspection %>
+            </div>
+          </div>
+          <div>
+            <span class="fw-semibold">
+              <i class="bi bi-building me-1"></i>
+              Área de trabajo
+            </span>
+            <div class="text-muted">
+              <%= @safety_inspection.area_inspection %>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>               
+  </div>
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-body">
+      <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-3">
+        <div>
+          <h5 class="mb-1">
+            <i class="bi bi-speedometer2 me-2"></i>
+            Resultado de la inspección
+          </h5>
+          <small class="text-muted">
+            Ítems evaluados: <%= evaluados %> de <%= total_items %>
+          </small>
+        </div>
+        <strong class="fs-4">
+          <%= porcentaje %>%
+        </strong>
+      </div>
+      <div
+        class="progress"
+        role="progressbar"
+        aria-label="Resultado de la inspección"
+        aria-valuenow="<%= porcentaje %>"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        style="height: 28px;"
+      >
+        <div
+          class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+          style="width: <%= porcentaje %>%"
+        >
+          <%= evaluados %> / <%= total_items %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+      <div class="conesst-card h-100">
+        <div class="conesst-card-body text-center">
+          <div class="fs-1 fw-bold text-success">
+            <%= si_items %>
+          </div>
+          <div class="fw-semibold text-success">
+            <i class="bi bi-check-circle me-1"></i>
+            SI CUMPLE
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="conesst-card h-100">
+        <div class="conesst-card-body text-center">
+          <div class="fs-1 fw-bold text-danger">
+            <%= no_items %>
+          </div>
+          <div class="fw-semibold text-danger">
+            <i class="bi bi-x-circle me-1"></i>
+            NO CUMPLE
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="conesst-card h-100">
+        <div class="conesst-card-body text-center">
+          <div class="fs-1 fw-bold text-warning">
+            <%= parcial_items %>
+          </div>
+          <div class="fw-semibold text-warning">
+            <i class="bi bi-exclamation-circle me-1"></i>
+            PARCIAL
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="conesst-card h-100">
+        <div class="conesst-card-body text-center">
+          <div class="fs-1 fw-bold text-secondary">
+            <%= na_items %>
+          </div>
+          <div class="fw-semibold text-secondary">
+            <i class="bi bi-dash-circle me-1"></i>
+            N/A
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="conesst-actions mb-4">
+    <%= button_tag(type: "button", class: "conesst-btn conesst-btn-primary", onclick: "window.location.reload();") do %>
+      <i class="bi bi-arrow-clockwise me-1"></i>
+      Actualizar
+    <% end %>
+    <%= link_to request.referer || root_path, class: "conesst-btn" do %>
+      <i class="bi bi-arrow-left me-1"></i>
+      Retornar
+    <% end %>
+  </div>
+  <% if @safety_inspection_items.present? %>
+    <div class="conesst-card">
+      <div class="conesst-card-header">
+        <div>
+          <h5 class="mb-1">
+            <i class="bi bi-list-check me-2"></i>
+            Condiciones de la inspección
+          </h5>
+          <small class="text-muted">
+            Seleccione el nivel de cumplimiento de cada condición.
+          </small>
+        </div>
+      </div>
+      <div class="conesst-card-body p-0">
+        <div class="conesst-table-wrapper">
+          <table class="conesst-table">
+            <thead>
+              <tr>
+                <th>
+                  Situación o condición
+                </th>
+                <th>
+                  Cumplimiento
+                </th>
+                <th class="text-center">
+                  Acciones
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @safety_inspection_items.order(:id).each do |item| %>
+                <tr>
+                  <td data-label="Situación o condición">
+                    <div class="fw-semibold mb-2">
+                      <%= item.situation_condition.name %>
+                    </div>
+                    <% if item.state_compliance.to_i == 0 %>
+                      <span class="badge bg-secondary">
+                        <i class="bi bi-dash-circle me-1"></i>
+                        N/A
+                      </span>
+                    <% elsif item.state_compliance.to_i == 1 %>
+                      <span class="badge bg-success">
+                        <i class="bi bi-check-circle me-1"></i>
+                        SI CUMPLE
+                      </span>
+                    <% elsif item.state_compliance.to_i == 2 %>
+                      <span class="badge bg-danger">
+                        <i class="bi bi-x-circle me-1"></i>
+                        NO CUMPLE
+                      </span>
+                    <% elsif item.state_compliance.to_i == 3 %>
+                      <span class="badge bg-warning text-dark">
+                        <i class="bi bi-exclamation-circle me-1"></i>
+                        PARCIAL
+                      </span>
+                    <% else %>
+                      <span class="badge bg-light text-dark border">
+                        <i class="bi bi-question-circle me-1"></i>
+                        SIN EVALUAR
+                      </span>
+                    <% end %>
+                  </td>
+                  <td data-label="Cumplimiento">
+                    <%= form_with model: item do |form| %>
+                      <div class="row g-2">
+                        <div class="col-6 col-md-auto flex-md-grow-1">
+                          <%= form.radio_button(:state_compliance, 0, class: "btn-check", id: "na_#{item.id}", onclick: "this.form.submit.click();") %>
+                          <%= form.label(:state_compliance, "N/A", for: "na_#{item.id}", class: "btn btn-outline-secondary w-100") %>
+                        </div>
+                        <div class="col-6 col-md-auto flex-md-grow-1">
+                          <%= form.radio_button(:state_compliance, 1, class: "btn-check", id: "si_#{item.id}", onclick: "this.form.submit.click();") %>
+                          <%= form.label(:state_compliance, "SI", for: "si_#{item.id}", class: "btn btn-outline-success w-100") %>
+                        </div>
+                        <div class="col-6 col-md-auto flex-md-grow-1">
+                          <%= form.radio_button(:state_compliance, 2, class: "btn-check", id: "no_#{item.id}", onclick: "this.form.submit.click();") %>
+                          <%= form.label(:state_compliance, "NO", for: "no_#{item.id}", class: "btn btn-outline-danger w-100") %>
+                        </div>
+                        <div class="col-6 col-md-auto flex-md-grow-1">
+                          <%= form.radio_button(:state_compliance, 3, class: "btn-check", id: "parcial_#{item.id}", onclick: "this.form.submit.click();") %>
+                          <%= form.label(:state_compliance, "PARCIAL", for: "parcial_#{item.id}", class: "btn btn-outline-warning w-100") %>
+                        </div>
+                      </div>
+                      <div class="d-none">
+                        <%= form.submit("", name: "submit", remote: true) %>
+                      </div>
+                    <% end %>
+                  </td>
+                  <td data-label="Acciones">
+                    <div class="conesst-actions">
+                      <%= link_to edit_safety_inspection_item_path(item), class: "conesst-btn conesst-btn-primary" do %>
+                        <i class="bi bi-pencil-square me-1"></i>
+                        Editar
+                      <% end %>
+                      <%= link_to situacion_foto_path(item.id), class: "conesst-btn conesst-btn-warning" do %>
+                        <i class="bi bi-camera me-1"></i>
+                        Foto
+                      <% end %>
+                      <% if Current.user.level > 0 && Current.user.level < 3 %>
+                        <%= button_to item, method: :delete, class: "conesst-btn", form_class: "d-inline", data: {turbo_confirm: "¿Está seguro de eliminar este registro? Esta acción no se puede deshacer."} do %>
+                          <i class="bi bi-trash me-1"></i>
+                          Eliminar
+                        <% end %>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <div class="conesst-card">
+      <div class="conesst-card-body text-center py-5">
+        <i class="bi bi-clipboard-x fs-1 text-muted"></i>
+        <h5 class="mt-3 mb-1">
+          No hay condiciones registradas
+        </h5>
+        <p class="text-muted mb-0">
+          No existen ítems asociados a esta inspección de seguridad.
+        </p>
+      </div>
+    </div>
+  <% end %>
+  <div class="conesst-actions mt-4">
+    <%= button_tag(type: "button", class: "conesst-btn conesst-btn-primary", onclick: "window.location.reload();") do %>
+      <i class="bi bi-arrow-clockwise me-1"></i>
+      Actualizar
+    <% end %>
+    <%= link_to request.referer || root_path, class: "conesst-btn" do %>
+      <i class="bi bi-arrow-left me-1"></i>
+      Retornar
+    <% end %>
+  </div>
+</div>

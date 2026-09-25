@@ -1,126 +1,132 @@
 <% if @entity.present? %>
-    <div class="container-fluid">
-        <!-- Encabezado -->
-        <div class="row align-items-center mb-4">
-            <div class="col-12 col-lg-8">
-                <h3 class="mb-1">
-                    <%= @entity.business_name %>
-                </h3>
-                <small class="text-muted">
-                    NIT:
-                    <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>
-                    <% if @entity.verification_digit.present? %>
-                        -<%= @entity.verification_digit %>
-                    <% end %>
-                </small>
-            </div>
-            <div class="col-12 col-lg-4 text-lg-end mt-3 mt-lg-0">
-                <%= link_to t('common.create_safety_inspection'), new_safety_inspection_path(entity_id: @entity.id), class: "btn btn-primary" %>
-            </div>
-        </div>
-        <% if @safety_inspections.present? %>
-            <!-- ========================= -->
-            <!-- TABLA PARA PC -->
-            <!-- ========================= -->
-            <div class="d-none d-lg-block">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover align-middle">
-                        <thead class="table-light">
-                            <tr>
-                                <th class="text-center">Formato de inspección de seguridad del:</th>
-                                <th class="text-center">Lugar de la inspección:</th>
-                                <th class="text-center">Área de trabajo:</th>
-                                <th class="text-center"><%= t('.user_responsible') %></th>
-                                <th class="text-center">Firma</th>
-                                <th class="text-center">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% @safety_inspections.each do |safety_inspection| %>
-                                <tr>
-                                    <td class="text-center">
-                                        <%= safety_inspection.date_inspection %>
-                                    </td>
-                                    <td class="text-center">
-                                        <%= safety_inspection.place_inspection %>
-                                    </td>
-                                    <td class="text-center">
-                                        <%= safety_inspection.area_inspection %>
-                                    </td>
-                                    <td class="text-center">
-                                        <%= safety_inspection.name_user(safety_inspection.user_responsible) %>
-                                    </td>
-                                    <td class="text-center">
-                                        <% if safety_inspection.firm_responsible.to_i == 0 %>
-                                            <%= link_to t('common.firmar'), firmar_responsable_inspeccion_path(safety_inspection.id, 2), class: 'btn btn-warning btn-sm' %>
-                                        <% else %>
-                                            <%= safety_inspection.date_firm_responsible %>
-                                        <% end %>
-                                    </td>
-                                    <td class="text-center">
-                                        <div class="btn-group" role="group">
-                                            <%= link_to "Ver situación o condición", situacion_condicion_path(safety_inspection.id), class:"btn btn-primary btn-sm me-2" %>
-                                            <%= link_to t('common.show_safety_inspection'), safety_inspection_path(safety_inspection.id), class:"btn btn-info btn-sm me-2" %>
-                                            <%= link_to t('common.edit'), edit_safety_inspection_path(safety_inspection.id), class:"btn btn-warning btn-sm me-2" %>
-                                            <%= link_to "Ver informe", ver_informe_inspeccion_path(safety_inspection.id), class:"btn btn-info btn-sm me-2" %>
-                                            <%= link_to "Ver informe PDF", pdf_informe_inspeccion_path(safety_inspection.id, format: 'pdf'), class:"btn btn-success btn-sm me-2" %>
-                                            <% if Current.user.level > 0 && Current.user.level < 3 %>
-                                                 <%= button_to safety_inspection, method: :delete, class: "btn btn-danger btn-sm me-2", form_class: "w-100", data: { turbo_confirm: "¿Está seguro de eliminar este registro? Esta acción no se puede deshacer." } do %>
-                                                     <i class="bi bi-trash"></i> Eliminar
-                                                <% end %>
-                                            <% end %>                            
-                                        </div>
-                                    </td>
-                                </tr>
+    <div class="conesst-page">
+        <div class="conesst-card mb-3">
+            <div class="conesst-card-header">
+                <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-3">
+                    <div>
+                        <h3 class="mb-1">
+                            <%= @entity.business_name %>
+                        </h3>
+                        <small class="text-muted">
+                            NIT:
+                            <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>
+                            <% if @entity.verification_digit.present? %>
+                                -<%= @entity.verification_digit %>
                             <% end %>
-                        </tbody>
-                    </table>
+                        </small>
+                    </div>
+                    <div class="conesst-actions">
+                        <%= link_to new_safety_inspection_path(entity_id: @entity.id), class: "conesst-btn conesst-btn-primary" do %>
+                            <i class="bi bi-plus-circle me-1"></i>
+                            <%= t('common.create_safety_inspection') %>
+                        <% end %>
+                    </div>
                 </div>
             </div>
-            <!-- ========================= -->
-            <!-- VERSION CELULAR -->
-            <!-- ========================= -->
-            <div class="d-lg-none">
-                <% @safety_inspections.each do |safety_inspection| %>
-                    <div class="card shadow-sm mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <%= safety_inspection.area_inspection %>
-                            </h5>
-                            <p class="mb-1">
-                                <strong>Fecha:</strong>
-                                <%= safety_inspection.date_inspection %>
-                            </p>
-                            <p class="mb-1">
-                                <strong>Responsable:</strong>
-                                <%= safety_inspection.name_user(safety_inspection.user_responsible) %>
-                            </p>
-                            <p class="mb-3">
-                                <strong>Firma:</strong>
-                                <% if safety_inspection.firm_responsible.to_i == 0 %>
-                                    <%= link_to t('common.firmar'), firmar_responsable_inspeccion_path(safety_inspection.id, 2), class: 'btn btn-warning btn-sm' %>
-                                <% else %>
-                                    <%= safety_inspection.date_firm_responsible %>
+            <div class="conesst-card-body">
+                <% if @safety_inspections.present? %>
+                    <div class="conesst-table-wrapper">
+                        <table class="conesst-table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        Formato de inspección de seguridad del:
+                                    </th>
+                                    <th scope="col">
+                                        Lugar de la inspección:
+                                    </th>
+                                    <th scope="col">
+                                        Área de trabajo:
+                                    </th>
+                                    <th scope="col">
+                                        <%= t('.user_responsible') %>
+                                    </th>
+                                    <th scope="col">
+                                        Firma
+                                    </th>
+                                    <th scope="col">
+                                        Acciones
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% @safety_inspections.each do |safety_inspection| %>
+                                    <tr>
+                                        <td data-label="Fecha de inspección">
+                                            <%= safety_inspection.date_inspection %>
+                                        </td>
+                                        <td data-label="Lugar de la inspección">
+                                            <%= safety_inspection.place_inspection %>
+                                        </td>
+                                        <td data-label="Área de trabajo">
+                                            <%= safety_inspection.area_inspection %>
+                                        </td>
+                                        <td data-label="Responsable">
+                                            <%= safety_inspection.name_user(safety_inspection.user_responsible) %>
+                                        </td>
+                                        <td data-label="Firma">
+                                            <% if safety_inspection.firm_responsible.to_i == 0 %>
+                                                <%= link_to firmar_responsable_inspeccion_path(safety_inspection.id, 2), class: "conesst-btn conesst-btn-warning" do %>
+                                                    <i class="bi bi-pen me-1"></i>
+                                                    <%= t('common.firmar') %>
+                                                <% end %>
+                                            <% else %>
+                                                <span class="small">
+                                                    <i class="bi bi-check-circle text-success me-1"></i>
+                                                    <%= safety_inspection.date_firm_responsible %>
+                                                </span>
+                                            <% end %>
+                                        </td>
+                                        <td data-label="Acciones">
+                                            <div class="conesst-actions">
+                                                <%= link_to situacion_condicion_path(safety_inspection.id), class: "conesst-btn conesst-btn-primary" do %>
+                                                    <i class="bi bi-search me-1"></i>
+                                                    Ver situación o condición
+                                                <% end %>
+                                                <%= link_to safety_inspection_path(safety_inspection.id), class: "conesst-btn" do %>
+                                                    <i class="bi bi-eye me-1"></i>
+                                                    <%= t('common.show_safety_inspection') %>
+                                                <% end %>
+                                                <%= link_to edit_safety_inspection_path(safety_inspection.id), class: "conesst-btn conesst-btn-warning" do %>
+                                                    <i class="bi bi-pencil me-1"></i>
+                                                    <%= t('common.edit') %>
+                                                <% end %>
+                                                <%= link_to ver_informe_inspeccion_path(safety_inspection.id), class: "conesst-btn" do %>
+                                                    <i class="bi bi-file-text me-1"></i>
+                                                    Ver informe
+                                                <% end %>
+                                                <%= link_to pdf_informe_inspeccion_path(safety_inspection.id, format: 'pdf'), class: "conesst-btn conesst-btn-success" do %>
+                                                    <i class="bi bi-file-earmark-pdf me-1"></i>
+                                                    Ver informe PDF
+                                                <% end %>
+                                                <% if Current.user.level > 0 && Current.user.level < 3 %>
+                                                    <%= button_to safety_inspection, method: :delete, class: "conesst-btn conesst-btn-danger", form_class: "d-inline", data: {turbo_confirm: "¿Está seguro de eliminar este registro? Esta acción no se puede deshacer."} do %>
+                                                        <i class="bi bi-trash me-1"></i>
+                                                        Eliminar
+                                                    <% end %>
+                                                <% end %>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 <% end %>
-                            </p>
-                            <div class="d-grid gap-2">
-                                    <%= link_to "Ver situación o condición", situacion_condicion_path(safety_inspection.id), class:"btn btn-primary btn-sm me-2" %>
-                                    <%= link_to t('common.show_safety_inspection'), safety_inspection_path(safety_inspection.id), class:"btn btn-info btn-sm me-2" %>
-                                    <%= link_to t('common.edit'), edit_safety_inspection_path(safety_inspection.id), class:"btn btn-warning btn-sm me-2" %>
-                                    <%= link_to "Ver informe", ver_informe_inspeccion_path(safety_inspection.id), class:"btn btn-info btn-sm me-2" %>
-                                    <%= link_to "Ver informe PDF", pdf_informe_inspeccion_path(safety_inspection.id, format: 'pdf'), class:"btn btn-success btn-sm me-2" %>
-                                    <% if Current.user.level > 0 && Current.user.level < 3 %>
-                                         <%= button_to safety_inspection, method: :delete, class: "btn btn-danger btn-sm me-2", form_class: "w-100", data: { turbo_confirm: "¿Está seguro de eliminar este registro? Esta acción no se puede deshacer." } do %>
-                                             <i class="bi bi-trash"></i> Eliminar
-                                        <% end %>
-                                    <% end %>                            
-                            </div>
-                        </div>
+                            </tbody>
+                        </table>
+                    </div>
+                <% else %>
+                    <div class="text-center py-4">
+                        <i class="bi bi-clipboard-x fs-1 text-muted"></i>
+                        <p class="text-muted mt-2 mb-0">
+                            No hay inspecciones de seguridad registradas.
+                        </p>
                     </div>
                 <% end %>
             </div>
-        <% end %>
+        </div>
+        <div class="conesst-actions">
+            <%= link_to request.referer || root_path, class: "conesst-btn" do %>
+                <i class="bi bi-arrow-left me-1"></i>
+                Retornar
+            <% end %>
+        </div>
     </div>
-    <%= link_to "Retornar", request.referer || root_path, class: "btn btn-secondary" %>
 <% end %>
-

@@ -1,17 +1,26 @@
-<div class="container-fluid py-4">
-    <div class="card shadow-sm border-0">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">
-                Inspección de Seguridad
-            </h4>
+<div class="conesst-page">
+    <div class="conesst-card">
+        <div class="conesst-card-header">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-clipboard-check fs-5"></i>
+                <div>
+                    <h4 class="mb-0">
+                        Inspección de Seguridad
+                    </h4>
+                    <small class="text-muted">
+                        Registro de información de la inspección
+                    </small>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
+        <div class="conesst-card-body">
             <%= form_with model: @safety_inspection do |form| %>
                 <% if @safety_inspection.errors.any? %>
-                    <div class="alert alert-danger">
-                        <h6 class="mb-2">
+                    <div class="alert alert-danger mb-4">
+                        <div class="fw-semibold mb-2">
+                            <i class="bi bi-exclamation-triangle me-1"></i>
                             Se encontraron los siguientes errores:
-                        </h6>
+                        </div>
                         <ul class="mb-0">
                             <% @safety_inspection.errors.full_messages.each do |error| %>
                                 <li><%= error %></li>
@@ -19,73 +28,51 @@
                         </ul>
                     </div>
                 <% end %>
-                <%= form.hidden_field :entity_id,
-                    value: params[:entity_id].to_i if params[:entity_id].present? %>
-                <!-- Responsable -->
-                <div class="row mb-4">
+                <%= form.hidden_field :entity_id, value: params[:entity_id].to_i if params[:entity_id].present? %>
+                <%= form.hidden_field :code, value: @template.reference if @template.present? %>
+                <%= form.hidden_field :version, value: @template.version.to_i if @template.present? %>
+                <div class="row g-3 mb-4">
                     <div class="col-12 col-lg-6">
-                        <label class="form-label fw-bold">
+                        <label class="form-label fw-semibold">
                             Responsable de la Inspección
                             <button
                                 type="button"
-                                class="btn btn-sm btn-outline-secondary ms-2"
+                                class="btn btn-sm btn-outline-secondary ms-1"
                                 data-bs-toggle="tooltip"
                                 title="Seleccione el Responsable de la Inspección.">
                                 <i class="bi bi-question-circle"></i>
                             </button>
                         </label>
-                        <%= form.collection_select :user_responsible,
-                            User.usuarios_empresa.order(id: :asc),
-                            :id,
-                            :name,
-                            {},
-                            class: "form-select" %>
+                        <%= form.collection_select(:user_responsible, User.usuarios_empresa.order(id: :asc), :id, :name, {}, class: "form-select") %>
                     </div>
                 </div>
-                <!-- Fecha y Número de empleados -->
                 <div class="row g-3 mb-4">
                     <div class="col-12 col-md-6">
-                        <%= form.label :date_inspection,
-                            class: "form-label fw-bold" %>
-                        <%= form.date_field :date_inspection,
-                            class: "form-control" %>
+                        <%= form.label :date_inspection, class: "form-label fw-semibold" %>
+                        <%= form.date_field :date_inspection, class: "form-control" %>
                     </div>
                     <div class="col-12 col-md-6">
-                        <%= form.label :number_employees,
-                            class: "form-label fw-bold" %>
-                        <%= form.number_field :number_employees,
-                            class: "form-control" %>
+                        <%= form.label :number_employees, class: "form-label fw-semibold" %>
+                        <%= form.number_field :number_employees, class: "form-control" %>
                     </div>
                 </div>
-                <!-- Lugar y Área -->
                 <div class="row g-3 mb-4">
                     <div class="col-12 col-lg-6">
-                        <%= form.label :place_inspection,
-                            class: "form-label fw-bold" %>
-                        <%= form.text_field :place_inspection,
-                            class: "form-control" %>
+                        <%= form.label :place_inspection, class: "form-label fw-semibold" %>
+                        <%= form.text_field :place_inspection, class: "form-control" %>
                     </div>
                     <div class="col-12 col-lg-6">
-                        <%= form.label :area_inspection,
-                            class: "form-label fw-bold" %>
-                        <%= form.text_field :area_inspection,
-                            class: "form-control" %>
+                        <%= form.label :area_inspection, class: "form-label fw-semibold" %>
+                        <%= form.text_field :area_inspection, class: "form-control" %>
                     </div>
                 </div>
-                <!-- Afectación -->
                 <div class="mb-4">
-                    <%= form.label :productivity_affectation,
-                        class: "form-label fw-bold" %>
-                    <%= form.text_area :productivity_affectation,
-                        class: "form-control",
-                        rows: 5 %>
+                    <%= form.label :productivity_affectation, class: "form-label fw-semibold" %>
+                    <%= form.text_area :productivity_affectation, class: "form-control", rows: 5 %>
                 </div>
-                <!-- Botones -->
-                <div class="d-flex flex-column flex-md-row justify-content-end gap-2">
-                    <%= form.submit t('common.submit'),
-                        class: "btn btn-primary" %>
-                    <%= link_to request.referer || root_path,
-                        class: "btn btn-secondary" do %>
+                <div class="conesst-actions mt-4">
+                    <%= form.submit t('common.submit'), class: "conesst-btn conesst-btn-primary" %>
+                    <%= link_to request.referer || root_path, class: "conesst-btn" do %>
                         <i class="bi bi-arrow-left me-1"></i>
                         Retornar
                     <% end %>

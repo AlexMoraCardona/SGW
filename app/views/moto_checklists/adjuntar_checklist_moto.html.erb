@@ -1,15 +1,38 @@
-<br>
-<div class="container col-11 card p-5">
-    <%= form_for @moto_checklist do |f| %>
-       <div class="row">
-          <div class="form-group">
-            <h5><%= f.label :"Adjuntar_Archivos:", style: "display: block" %></h5>
-            <%= f.file_field :moto_files, multiple: true %>
-
-            <%= f.submit 'Subir Archivos', class: 'btn btn-primary' %>
-          </div> 
+<div class="conesst-page">
+    <div class="conesst-card">
+        <div class="conesst-card-header">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-paperclip fs-5"></i>
+                <div>
+                    <h5 class="mb-0">
+                        Adjuntar archivos
+                    </h5>
+                    <small class="text-muted">
+                        Lista de chequeo de motocicleta
+                    </small>
+                </div>
+            </div>
         </div>
-    <% end %>
-    <br> 
-</div>  
-<br>
+        <div class="conesst-card-body">
+            <%= form_for @moto_checklist do |f| %>
+                <div class="row g-3">
+                    <div class="col-12">
+                        <%= f.label :moto_files, "Adjuntar archivos", class: "form-label fw-semibold" %>
+                        <%= f.file_field :moto_files, multiple: true, class: "form-control" %>
+                        <div class="form-text mt-2">
+                            Puede seleccionar uno o varios archivos para adjuntar
+                            a esta lista de chequeo.
+                        </div>
+                    </div>
+                </div>
+                <div class="conesst-actions mt-4">
+                    <%= f.submit "Subir Archivos", class: "conesst-btn conesst-btn-primary" %>
+                    <%= link_to moto_checklists_path, class: "conesst-btn" do %>
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Retornar
+                    <% end %>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>

@@ -70,5 +70,18 @@ class Entity < ApplicationRecord
         return resultado;
     end
 
+    def self.horas_asesoradas
+        meeting_minutes = MeetingMinute.where(entity_id: Current.user.entity, date: Time.current.beginning_of_month..Time.current.end_of_month)
+        resultado = 0
+        if meeting_minutes.present?
+            meeting_minutes.each do |meeting|
+                if meeting.start_time.present? && meeting.end_time.present?
+                    resultado += (meeting.end_time - meeting.start_time) / 3600.0
+                end
+            end
+        end
+        return resultado;
+    end 
+   
 
 end

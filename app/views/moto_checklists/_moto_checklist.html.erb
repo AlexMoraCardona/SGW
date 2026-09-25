@@ -1,54 +1,97 @@
 <tr>
-    <td><%= moto_checklist.date_list %></td> 
-    <td>
+    <td data-label="Fecha">
+        <%= moto_checklist.date_list %>
+    </td>
+    <td data-label="Placa">
         <% @dato_eve = MotoChecklist.cant_eve(moto_checklist) %>
         <% if @dato_eve == 0 %>
-            <button class="btn btn-sm btn-outline-success position-relative" data-bs-toggle="modal" data-bs-target="#exampleModal" >
-              <%= highlight moto_checklist.plate_moto, params.dig(:q, :plate_moto_cont) %> 
+            <button
+                class="btn btn-sm btn-outline-success position-relative"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal">
+                <%= highlight(moto_checklist.plate_moto, params.dig(:q, :plate_moto_cont)) %>
                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
-                      <%= @dato_eve %>+
-                    <span class="visually-hidden">unread messages</span>
+                    <%= @dato_eve %>+
+                    <span class="visually-hidden">
+                        eventos
+                    </span>
                 </span>
             </button>
-        <%  else %>
-            <button class="btn btn-sm btn-outline-primary position-relative" data-bs-toggle="modal" data-bs-target="#exampleModal" >
-              <%= highlight moto_checklist.plate_moto, params.dig(:q, :plate_moto_cont) %> 
+        <% else %>
+            <button
+                class="btn btn-sm btn-outline-primary position-relative"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal">
+                <%= highlight(moto_checklist.plate_moto, params.dig(:q, :plate_moto_cont)) %>
                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                      <%= @dato_eve %>+
-                    <span class="visually-hidden">unread messages</span>
+                    <%= @dato_eve %>+
+                    <span class="visually-hidden">
+                        eventos
+                    </span>
                 </span>
             </button>
-        <%  end%>
+        <% end %>
     </td>
-    <td><%= highlight moto_checklist.user.name, params.dig(:q, :user_id_cont) %></td>
-    <td>
-        <%  if  moto_checklist.firm_user == 1 %>
-            <div> 
-                <%= moto_checklist.date_firm_user.strftime("%F") if  moto_checklist.date_firm_user.present? %>
-            </div> 
-        <%  else %>  
-            <div>  
-                <%= link_to "Firmar", firmar_responsable_checklist_moto_path(moto_checklist.id, 2), class: 'btn btn-sm btn-primary' %>                        
-            </div>
-        <%  end%>
+    <td data-label="Conductor">
+        <%= highlight(moto_checklist.user.name, params.dig(:q, :user_id_cont)) %>
     </td>
-    <td><%= User.label_name(moto_checklist.user_autoriza) %></td>
-    <td>
-        <%  if  moto_checklist.user_autoriza_firm == 1 %>
-            <div> 
-                <%= moto_checklist.user_autoriza_date.strftime("%F") if  moto_checklist.user_autoriza_date.present? %>
-            </div> 
-        <%  else %>  
-            <div>  
-                <%= link_to "Firmar", firmar_autorizado_checklist_moto_path(moto_checklist.id, 1), class: 'btn btn-sm btn-primary' %>                        
-            </div>
-        <%  end%>
-    </td> 
-    <td><%= link_to "Adjuntar", adjuntar_checklist_moto_path(moto_checklist.id), class: 'btn btn-sm btn-warning' %> &nbsp;</td>
-    <td>
-        <%= link_to "Ver", moto_checklist_path(moto_checklist.id), class: 'btn btn-sm btn-warning' %> &nbsp;
+    <td data-label="Firma responsable">
+        <% if moto_checklist.firm_user == 1 %>
+            <span class="small">
+                <i class="bi bi-check-circle text-success me-1"></i>
+                <% if moto_checklist.date_firm_user.present? %>
+                    <%= moto_checklist.date_firm_user.strftime("%F") %>
+                <% end %>
+            </span>
+        <% else %>
+            <%= link_to firmar_responsable_checklist_moto_path(moto_checklist.id, 2), class: "conesst-btn conesst-btn-primary" do %>
+                <i class="bi bi-pen me-1"></i>
+                Firmar
+            <% end %>
+        <% end %>
     </td>
-    <td><%= link_to "PDF", ver_checklist_moto_pdf_path(moto_checklist.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;</td>
-    <td><%= button_to "Delete", moto_checklist, method: :delete, class:"btn btn-sm btn-danger" if Current.user.level > 0 && Current.user.level < 3 %></td>
-
+    <td data-label="Autorizado por">
+        <%= User.label_name(moto_checklist.user_autoriza) %>
+    </td>
+    <td data-label="Firma autorización">
+        <% if moto_checklist.user_autoriza_firm == 1 %>
+            <span class="small">
+                <i class="bi bi-check-circle text-success me-1"></i>
+                <% if moto_checklist.user_autoriza_date.present? %>
+                    <%= moto_checklist.user_autoriza_date.strftime("%F") %>
+                <% end %>                        
+            </span>
+        <% else %>
+            <%= link_to firmar_autorizado_checklist_moto_path(moto_checklist.id, 1), class: "conesst-btn conesst-btn-primary" do %>
+                <i class="bi bi-pen me-1"></i>
+                Firmar
+            <% end %>
+        <% end %>
+    </td>
+    <td data-label="Adjuntos">
+        <%= link_to adjuntar_checklist_moto_path(moto_checklist.id), class: "conesst-btn conesst-btn-warning" do %>
+            <i class="bi bi-paperclip me-1"></i>
+            Adjuntar
+        <% end %>
+    </td>
+    <td data-label="Ver">
+        <%= link_to moto_checklist_path(moto_checklist.id), class: "conesst-btn conesst-btn-warning" do %>
+            <i class="bi bi-eye me-1"></i>
+            Ver
+        <% end %>
+    </td>
+    <td data-label="PDF">
+        <%= link_to ver_checklist_moto_pdf_path(moto_checklist.id, format: "pdf"), class: "conesst-btn conesst-btn-success" do %>
+            <i class="bi bi-file-earmark-pdf me-1"></i>
+            PDF
+        <% end %>
+    </td>
+    <td data-label="Borrar">
+        <% if Current.user.level > 0 && Current.user.level < 3 %>
+            <%= button_to moto_checklist, method: :delete, class: "conesst-btn conesst-btn-danger", form: {data: {turbo_confirm: "¿Está seguro de eliminar esta lista de chequeo?"}} do %>
+                <i class="bi bi-trash me-1"></i>
+                Borrar
+            <% end %>
+        <% end %>
+    </td>
 </tr>

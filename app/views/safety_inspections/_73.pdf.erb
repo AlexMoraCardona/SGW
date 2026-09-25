@@ -1,0 +1,335 @@
+<head>
+  <meta charset="utf-8">
+  <%= wicked_pdf_stylesheet_link_tag "pdf_conesst" %>
+</head>
+
+<div class="pdf-document">
+
+  <!-- ========================================================= -->
+  <!-- INFORMACIÓN DE LA INSPECCIÓN                              -->
+  <!-- ========================================================= -->
+
+  <table class="pdf-table">
+    <tr>
+      <td class="pdf-cell-left pdf-col-50">
+        <strong>Fecha de realización de la inspección:</strong>
+      </td>
+
+      <td class="pdf-cell-left pdf-col-50">
+        <%= @safety_inspection.date_inspection if @safety_inspection.present? %>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="pdf-cell-left pdf-col-50">
+        <strong>Lugar de la inspección:</strong>
+      </td>
+
+      <td class="pdf-cell-left pdf-col-50">
+        <%= @safety_inspection.place_inspection if @safety_inspection.present? %>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="pdf-cell-left pdf-col-50">
+        <strong>Área de trabajo a inspeccionar:</strong>
+      </td>
+
+      <td class="pdf-cell-left pdf-col-50">
+        <%= @safety_inspection.area_inspection if @safety_inspection.present? %>
+      </td>
+    </tr>
+  </table>
+
+
+  <div class="pdf-space"></div>
+
+
+  <!-- ========================================================= -->
+  <!-- CONVENCIONES                                              -->
+  <!-- ========================================================= -->
+
+  <table class="pdf-table">
+    <tr>
+      <td class="pdf-cell-left pdf-col-100">
+        <strong>SI:</strong> CUMPLE TOTALMENTE &nbsp;&nbsp;&nbsp;
+        <strong>NO:</strong> NO CUMPLE &nbsp;&nbsp;&nbsp;
+        <strong>PARCIAL:</strong> CUMPLE EN PARTE
+        (Especifique en observaciones cuáles no cumplen)
+      </td>
+    </tr>
+  </table>
+
+
+  <div class="pdf-space"></div>
+
+
+  <!-- ========================================================= -->
+  <!-- ENCABEZADO DE LA TABLA                                    -->
+  <!-- ========================================================= -->
+
+  <table class="pdf-table">
+    <tr class="pdf-table-header">
+      <td class="pdf-cell-center pdf-col-40">
+        <strong>SITUACIÓN O CONDICIÓN A INSPECCIONAR</strong>
+      </td>
+
+      <td class="pdf-cell-center pdf-col-20">
+        <strong>CUMPLIMIENTO</strong>
+      </td>
+
+      <td class="pdf-cell-center pdf-col-40">
+        <strong>OBSERVACIONES</strong>
+      </td>
+    </tr>
+  </table>
+
+
+  <!-- ========================================================= -->
+  <!-- SECCIONES DE INSPECCIÓN                                   -->
+  <!-- ========================================================= -->
+
+  <%
+    secciones_inspeccion = {
+      1 => {
+        titulo: "GENERAL: PASILLOS, ESCALERAS Y ÁREA COMUNES",
+        subtitulo: "CONDICIONES DE ORDEN Y ASEO"
+      },
+      2 => {
+        titulo: "CONDICIONES LOCATIVAS"
+      },
+      3 => {
+        titulo: "OFICINAS Y/O BODEGAS",
+        subtitulo: "CONDICIONES DE CARGA FÍSICA"
+      },
+      4 => {
+        titulo: "CONDICIONES LOCATIVAS"
+      },
+      5 => {
+        titulo: "CONDICIONES ORDEN Y ASEO"
+      },
+      6 => {
+        titulo: "CONDICIONES FÍSICAS"
+      },
+      7 => {
+        titulo: "CONDICIONES ELÉCTRICAS"
+      },
+      8 => {
+        titulo: "ALMACENAMIENTO DE MATERIALES"
+      },
+      9 => {
+        titulo: "PRODUCTOS QUÍMICOS Y SUSTANCIAS PELIGROSAS"
+      },
+      10 => {
+        titulo: "SANEAMIENTO BÁSICO"
+      },
+      11 => {
+        titulo: "PLAN DE EMERGENCIAS"
+      },
+      12 => {
+        titulo: "ELEMENTOS DE PROTECCIÓN PERSONAL"
+      },
+      13 => {
+        titulo: "ENTORNO AMBIENTAL"
+      }
+    }
+  %>
+
+
+  <% secciones_inspeccion.each do |tipo_id, seccion| %>
+
+    <!-- TÍTULO DE LA SECCIÓN -->
+
+    <table class="pdf-table">
+      <tr>
+        <td class="pdf-cell-center pdf-col-100 pdf-table-header">
+          <strong><%= seccion[:titulo] %></strong>
+        </td>
+      </tr>
+
+      <% if seccion[:subtitulo].present? %>
+        <tr>
+          <td class="pdf-cell-center pdf-col-100 pdf-table-header">
+            <strong><%= seccion[:subtitulo] %></strong>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+
+
+    <!-- ÍTEMS DE LA SECCIÓN -->
+
+    <% if @safety_inspection_items.present? %>
+
+      <table class="pdf-table">
+
+        <% @safety_inspection_items.each do |safety_inspection_item| %>
+
+          <% if safety_inspection_item.situation_condition.type_condition_inspection.id == tipo_id %>
+
+            <tr>
+
+              <td class="pdf-cell-left pdf-col-40">
+                <%= safety_inspection_item.situation_condition.name %>
+              </td>
+
+              <td class="pdf-cell-center pdf-col-20">
+                <%= SafetyInspectionItem.label_state_compliance(
+                      safety_inspection_item.state_compliance
+                    ) %>
+              </td>
+
+              <td class="pdf-cell-left pdf-col-40">
+                <%= safety_inspection_item.observation %>
+              </td>
+
+            </tr>
+
+          <% end %>
+
+        <% end %>
+
+      </table>
+
+    <% end %>
+
+
+    <div class="pdf-space"></div>
+
+  <% end %>
+
+
+  <!-- ========================================================= -->
+  <!-- OBSERVACIONES GENERALES                                   -->
+  <!-- ========================================================= -->
+
+  <table class="pdf-table">
+
+    <tr>
+      <td class="pdf-cell-left pdf-col-100">
+
+        <strong>Observaciones generales:</strong>
+
+        <div class="pdf-space"></div>
+
+        <%= @safety_inspection.productivity_affectation %>
+
+      </td>
+    </tr>
+
+  </table>
+
+
+  <div class="pdf-space"></div>
+
+
+  <!-- ========================================================= -->
+  <!-- NOTA                                                       -->
+  <!-- ========================================================= -->
+
+  <table class="pdf-table">
+
+    <tr>
+      <td class="pdf-cell-left pdf-col-100">
+
+        <strong>NOTA.</strong>
+
+        Las situaciones o condiciones inspeccionadas que no cumplen
+        o son parciales, deben ser reportadas al responsable del
+        SG-SST para sus respectivas medidas de intervención.
+
+      </td>
+    </tr>
+
+  </table>
+
+
+  <div class="pdf-space"></div>
+
+
+  <!-- ========================================================= -->
+  <!-- FIRMA DEL RESPONSABLE                                     -->
+  <!-- ========================================================= -->
+
+  <table class="pdf-table pdf-no-break">
+
+    <tr>
+
+      <td class="pdf-cell-center pdf-col-100">
+
+        <div>
+          <strong>Responsable de la Inspección:</strong>
+        </div>
+
+
+        <div class="pdf-space"></div>
+
+
+        <% if @safety_inspection.firm_responsible == 1 %>
+
+          <% if @user_responsable.firm.attached? %>
+
+            <% if @user_responsable.firm.image? %>
+
+              <%= image_tag @user_responsable.firm, class: "firma" %>
+
+              <div>
+                ______________________
+              </div>
+
+            <% end %>
+
+          <% end %>
+
+        <% else %>
+
+          <div>
+            ______________________
+          </div>
+
+        <% end %>
+
+
+        <div class="pdf-space"></div>
+
+
+        <div>
+          <strong>
+            <%= @user_responsable.name %>
+          </strong>
+        </div>
+
+
+        <% if @user_responsable.cargo_rol.present? %>
+
+          <div>
+            <%= User.label_activity(@user_responsable.cargo_rol) %>
+          </div>
+
+        <% end %>
+
+
+        <div>
+
+          <%= @user_responsable.document.abbreviation %>:
+          <%= Firm.miles(@user_responsable.nro_document) %>
+
+        </div>
+
+
+        <% if @user_responsable.level == 2 %>
+
+          <div>
+            Licencia: <%= @user_responsable.license %>
+          </div>
+
+        <% end %>
+
+
+      </td>
+
+    </tr>
+
+  </table>
+
+</div>

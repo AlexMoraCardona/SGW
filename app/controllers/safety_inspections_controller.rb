@@ -19,10 +19,11 @@ class SafetyInspectionsController < ApplicationController
     end  
     
     def show 
-        @template = Template.where("format_number = ? and document_vigente = ?",73,1).last  
         @safety_inspection = SafetyInspection.find(params[:id])
         @entity = Entity.find(@safety_inspection.entity_id) if @safety_inspection.present?
         @user_responsable = User.find(@safety_inspection.user_responsible)
+        @template = Template.where("reference = ? and version = ?",@safety_inspection.code,@safety_inspection.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
         @safety_inspection_items = SafetyInspectionItem.where("safety_inspection_id = ?", @safety_inspection.id).order(:id) if @safety_inspection.present?
         respond_to do |format|
@@ -36,33 +37,33 @@ class SafetyInspectionsController < ApplicationController
     def ver_inspeccion_pdf
         @safety_inspection = SafetyInspection.find(params[:id])
         @safety_inspection_items = SafetyInspectionItem.where("safety_inspection_id = ?", @safety_inspection.id).order(:id) if @safety_inspection.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",73,1).last  
         @entity = Entity.find(@safety_inspection.entity_id) if @safety_inspection.present?
         @user_responsable = User.find(@safety_inspection.user_responsible) if @safety_inspection.present?
+        @template = Template.where("reference = ? and version = ?",@safety_inspection.code,@safety_inspection.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
 
-        nombre_evidencia = 'InformeInspección.pdf'
-
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
                 pdf = WickedPdf.new.pdf_from_string(
                     render_to_string('ver_inspeccion_pdf'),
                     disable_javascript: true,
-                    margin: {top: 10, bottom: 10, left: 10, right: 10 },
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
                     page_size: 'letter',
-                    footer: {right: '[page] de [topage]'}
-                    
-                  )  
-                  send_data(pdf, filename: nombre_evidencia, disposition: 'attachment')      
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
             }
         end    
     end    
 
 
-    def new
+    def new 
       @safety_inspection =  SafetyInspection.new
-      @template = Template.where("format_number = ? and document_vigente = ?",73,1).last  
+      @template = Template.where("reference = ? and document_vigente = ?",'IS-SST',1).last  
     end    
 
     def create
@@ -125,7 +126,6 @@ class SafetyInspectionsController < ApplicationController
     def ver_informe_inspeccion 
             @safety_inspection = SafetyInspection.find(params[:id].to_i)
             @hallazgos = SafetyInspectionItem.where("safety_inspection_id = ? and state_compliance > ?",@safety_inspection.id, 1) if @safety_inspection.present?
-            @template = Template.where("format_number = ? and document_vigente = ?",51,1).last  
             @entity = Entity.find(@safety_inspection.entity_id) if @safety_inspection.present?
             @resposable_sst = User.find(@entity.responsible_sst) if  @entity.responsible_sst.present? &&  @entity.responsible_sst > 0
             @res = User.find(@safety_inspection.user_responsible) if  @safety_inspection.user_responsible.present? &&  @safety_inspection.user_responsible > 0
@@ -133,13 +133,14 @@ class SafetyInspectionsController < ApplicationController
             @economic_activity = EconomicActivityCode.find(@entity.economic_activity)
             @arl = OccupationalRiskManager.find(@entity.entity_arl)
             @claseriesgo = RiskLevel.find(@entity.risk_classification) if @entity.risk_classification.present?
+            @template = Template.where("format_number = ? and version = ?",51,@safety_inspection.version).last  
+            @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
     
     end    
 
     def pdf_informe_inspeccion
         @safety_inspection = SafetyInspection.find(params[:id].to_i)
         @hallazgos = SafetyInspectionItem.where("safety_inspection_id = ? and state_compliance > ?",@safety_inspection.id, 1) if @safety_inspection.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",51,1).last  
         @entity = Entity.find(@safety_inspection.entity_id) if @safety_inspection.present?
         @resposable_sst = User.find(@entity.responsible_sst) if  @entity.responsible_sst.present? &&  @entity.responsible_sst > 0
         @res = User.find(@safety_inspection.user_responsible) if  @safety_inspection.user_responsible.present? &&  @safety_inspection.user_responsible > 0
@@ -147,25 +148,23 @@ class SafetyInspectionsController < ApplicationController
         @economic_activity = EconomicActivityCode.find(@entity.economic_activity)
         @arl = OccupationalRiskManager.find(@entity.entity_arl)
         @claseriesgo = RiskLevel.find(@entity.risk_classification) if @entity.risk_classification.present?
+        @template = Template.where("format_number = ? and version = ?",51,@safety_inspection.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
-        nombre_evidencia = @template.reference.to_s + @safety_inspection.area_inspection.to_s + @safety_inspection.date_inspection.to_s  + '.pdf'
 
-
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {
-                    header_html = render_to_string( partial: 'safety_inspections/header')
-                    pdf = WickedPdf.new.pdf_from_string(
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
+                pdf = WickedPdf.new.pdf_from_string(
                     render_to_string('pdf_informe_inspeccion'),
                     disable_javascript: true,
-                    margin: {top: 50, bottom: 20, left: 10, right: 10 },
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
                     page_size: 'letter',
                     header: {spacing: 5,
-                            content: header_html},
-                    footer: {right: '[page] de [topage]'}
-                    
-                  )  
-                  send_data(pdf, filename: nombre_evidencia, disposition: 'attachment')      
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
             }
         end    
 

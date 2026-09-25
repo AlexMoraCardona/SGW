@@ -23,11 +23,14 @@ class CarChecklistsController < ApplicationController
     end  
     
     def show 
-        @template = Template.where("format_number = ? and document_vigente = ?",98,1).last  
         @car_checklist = CarChecklist.find(params[:id])
         @entity = Entity.find(@car_checklist.entity_id) if @car_checklist.present?
         @user_responsable = User.find(@car_checklist.user_id)
         @user_autoriza = User.find(@car_checklist.user_autoriza) if @car_checklist.user_autoriza.present? && @car_checklist.user_autoriza > 0 
+        @template = Template.where("reference = ? and version = ?",@car_checklist.code,@car_checklist.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+        @entity = Entity.find(@car_checklist.entity_id) if @car_checklist.present?
+
 
         respond_to do |format|
             format.html
@@ -40,37 +43,39 @@ class CarChecklistsController < ApplicationController
     def ver_checklist_car_pdf
         @car_checklist = CarChecklist.find(params[:id])
         @entity = Entity.find(@car_checklist.entity_id) if @car_checklist.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",98,1).last  
         @user_responsable = User.find(@car_checklist.user_id)
         @user_autoriza = User.find(@car_checklist.user_autoriza) if @car_checklist.user_autoriza.present? && @car_checklist.user_autoriza > 0 
+        @template = Template.where("reference = ? and version = ?",@car_checklist.code,@car_checklist.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+        @entity = Entity.find(@car_checklist.entity_id) if @car_checklist.present?
 
-        nombre_evidencia = @template.reference.to_s + '.pdf'
 
-
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
                 pdf = WickedPdf.new.pdf_from_string(
                     render_to_string('ver_checklist_car_pdf'),
                     disable_javascript: true,
-                    margin: {top: 20, bottom: 15, left: 15, right: 15 },
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
                     page_size: 'letter',
-                    footer: {right: '[page] de [topage]'}
-                    
-                  )  
-                  send_data(pdf, filename: nombre_evidencia, disposition: 'attachment')      
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
             }
         end    
-      
+     
     end    
 
 
     def new
       @car_checklist =  CarChecklist.new
-      @template = Template.where("format_number = ? and document_vigente = ?",98,1).last  
       @user = User.find(Current.user.id)
       @entity = Entity.find(Current.user.entity)
       @user_autoriza = User.find_by(id: @entity.responsible_sst) if @entity.responsible_sst.present? && @entity.responsible_sst > 0
+      @template = Template.where("reference = ? and document_vigente = ?",'FLCA-SST',1).last  
+
     end    
 
     def create

@@ -1,134 +1,109 @@
 <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8' />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
     <%= wicked_pdf_stylesheet_link_tag 'pdf_conesst' %>
-    <%= wicked_pdf_javascript_include_tag "chartkick" %>
-    <%= wicked_pdf_javascript_include_tag "application" %>
+    <%= wicked_pdf_javascript_include_tag "chartkick_pdf" %>
 </head>
 <div class="pdf-sociodemografico">
-
-    <!-- =====================================================
-         PORTADA / ENCABEZADO
-         ===================================================== -->
-
     <div class="pdf-cover">
-
-
         <div class="pdf-cover-company">
             <div class="pdf-cover-company-name">
                 <%= @survey_profile.entity.business_name if @survey_profile.present? %>
             </div>
-
             <div class="pdf-cover-company-nit">
                 NIT:
                 <%= @survey_profile.entity.identification_number if @survey_profile.present? %>
             </div>
         </div>
-
         <div class="pdf-cover-title">
             ESTUDIO SOCIODEMOGRÁFICO
         </div>
-
         <div class="pdf-cover-date">
             <%= @survey_profile.date_profile if @survey_profile.present? %>
         </div>
-
     </div>
-
-
-    <!-- =====================================================
-         INFORMACIÓN GENERAL
-         ===================================================== -->
-
     <div class="pdf-section">
-
         <div class="pdf-section-title">
             INFORMACIÓN GENERAL DE LA EMPRESA
         </div>
-
         <table class="pdf-company-table">
-
             <tr>
                 <td class="pdf-company-label">RAZÓN SOCIAL:</td>
                 <td>
                     <%= @survey_profile.entity.business_name if @survey_profile.present? %>
                 </td>
             </tr>
-
             <tr>
                 <td class="pdf-company-label">NIT:</td>
                 <td>
                     <%= @survey_profile.entity.identification_number if @survey_profile.present? %>
                 </td>
             </tr>
-
             <tr>
                 <td class="pdf-company-label">DIRECCIÓN:</td>
                 <td>
                     <%= @survey_profile.entity.entity_address if @survey_profile.present? %>
                 </td>
             </tr>
-
             <tr>
                 <td class="pdf-company-label">TELÉFONO:</td>
                 <td>
                     <%= @survey_profile.entity.phone_number_entity if @survey_profile.present? %>
                 </td>
             </tr>
-
             <tr>
                 <td class="pdf-company-label">CIUDAD/DEPARTAMENTO:</td>
                 <td>
                     <%= @administrative_political_division.municipality_name if @administrative_political_division.present? %>
                 </td>
             </tr>
-
             <tr>
                 <td class="pdf-company-label">REPRESENTANTE LEGAL:</td>
                 <td>
                     <%= [
+
                         @survey_profile.entity.first_name_legal_representative,
+
                         @survey_profile.entity.second_name_legal_representative,
+
                         @survey_profile.entity.surname_legal_representative,
+
                         @survey_profile.entity.second_surname_legal_representative
+
                     ].compact.join(' ') if @survey_profile.present? %>
                 </td>
             </tr>
-
             <tr>
                 <td class="pdf-company-label">CENTROS DE TRABAJO:</td>
                 <td>
                     <%= @cantidadsedes if @cantidadsedes.present? %>
                 </td>
             </tr>
-
             <tr>
                 <td class="pdf-company-label">RESPONSABLE DEL SG-SST:</td>
                 <td>
                     <%= @responsablesst.name if @responsablesst.present? %>
                 </td>
             </tr>
-
             <tr>
                 <td class="pdf-company-label">PAGO:</td>
                 <td>
                     <%= Entity.label_pay(@survey_profile.entity.pay_entity) if @survey_profile.present? %>
                 </td>
             </tr>
-
             <tr>
                 <td class="pdf-company-label">ACTIVIDAD ECONÓMICA:</td>
                 <td>
                     <%= @economic_activity.economic_activity_description if @economic_activity.present? %>
                 </td>
             </tr>
-
             <tr>
                 <td class="pdf-company-label">ARL:</td>
                 <td>
                     <%= @arl.name if @arl.present? %>
                 </td>
             </tr>
-
             <tr>
                 <td class="pdf-company-label">
                     CLASE DE RIESGO ASIGNADO POR LA ARL:
@@ -137,7 +112,6 @@
                     <%= @claseriesgo.name if @claseriesgo.present? %>
                 </td>
             </tr>
-
             <tr>
                 <td class="pdf-company-label">
                     CONTEXTO DE LA ORGANIZACIÓN:
@@ -146,708 +120,350 @@
                     <%= @survey_profile.entity.objeto_entity if @survey_profile.present? %>
                 </td>
             </tr>
-
         </table>
-
     </div>
-
-
-    <!-- =====================================================
-         OBJETIVO
-         ===================================================== -->
-
     <div class="pdf-section">
-
         <div class="pdf-section-title">
             OBJETIVO
         </div>
-
         <div class="pdf-text-box">
-
             Documentar los criterios que permitan elaborar el diagnóstico
+
             de condiciones de salud y perfil sociodemográfico de la
+
             población trabajadora en
+
             <strong>
                 <%= @survey_profile.entity.business_name if @survey_profile.entity.present? %>
             </strong>
+
             con el fin de priorizar las diversas variables que se deban
+
             intervenir, a través de la promoción y prevención en la salud
+
             en el trabajo, de acuerdo con los hallazgos identificados.
-
         </div>
-
     </div>
-
-
-    <!-- =====================================================
-         ALCANCE
-         ===================================================== -->
-
     <div class="pdf-section">
-
         <div class="pdf-section-title">
             ALCANCE
         </div>
-
         <div class="pdf-text-box">
-
             Inicia con la recopilación de los insumos necesarios para
+
             elaborar el diagnóstico de las condiciones de salud y perfil
+
             sociodemográfico, empleando una encuesta de perfil
+
             sociodemográfico, terminando con la elaboración,
+
             socialización y divulgación del informe. El proceso aplica
+
             para todos los empleados y/o colaboradores de
+
             <strong>
                 <%= @survey_profile.entity.business_name if @survey_profile.entity.present? %>
             </strong>.
-
         </div>
-
     </div>
-
-
-    <!-- =====================================================
-         MARCO NORMATIVO
-         ===================================================== -->
-
     <div class="pdf-section">
-
         <div class="pdf-section-title">
             MARCO NORMATIVO
         </div>
-
         <div class="pdf-text-box">
-
             <ul class="pdf-normative-list">
-
                 <li>
                     Decreto 1072 del 26 de mayo del 2015,
-                    artículo 2.2.4.6.20 numeral 9:
-                    "La existencia de un procedimiento para efectuar
-                    el diagnóstico de las condiciones de salud de los
-                    trabajadores, para la definición de las prioridades
-                    de control e intervención".
-                </li>
 
+                    artículo 2.2.4.6.20 numeral 9:
+
+                    "La existencia de un procedimiento para efectuar
+
+                    el diagnóstico de las condiciones de salud de los
+
+                    trabajadores, para la definición de las prioridades
+
+                    de control e intervención".
+
+                </li>
                 <li>
                     Resolución 2346 del 11 de julio de 2007,
+
                     expedida por el Ministerio de la Protección Social.
+
                     "Por la cual se regula la práctica de evaluaciones
+
                     médicas ocupacionales y el manejo del contenido
+
                     de las historias clínicas ocupacionales".
                 </li>
-
                 <li>
                     Resolución 0312 de 2019, estándares mínimos en el
+
                     ciclo Hacer del "PHVA", estándar condiciones de
+
                     salud en el trabajo, en los ítems 3.1.1
+
                     "descripción sociodemográfica. Diagnóstico de
+
                     condiciones de salud", y 3.1.2
+
                     "Actividades de Promoción y Prevención".
                 </li>
-
             </ul>
-
         </div>
-
     </div>
-
-
-    <!-- =====================================================
-         TÍTULO DE VARIABLES
-         ===================================================== -->
-
     <div class="pdf-section">
-
         <div class="pdf-main-title">
             ESTUDIO SOCIODEMOGRÁFICO: VARIABLES ANALIZADAS
         </div>
-
     </div>
-
-
-    <!-- =====================================================
-         CONFIGURACIÓN DE VARIABLES
-         ===================================================== -->
-
     <%
         variables_sociodemograficas = [
-
-            {
-                number: 1,
-                title: "GÉNERO",
-                data: @datos_genero,
-                count: @cant_genero,
-                label: :labelgenero,
-                filename: "Género"
-            },
-
-            {
-                number: 2,
-                title: "EDAD",
-                data: @datos_edad,
-                count: @cant_edad,
-                label: :labeledad,
-                filename: "Edad"
-            },
-
-            {
-                number: 3,
-                title: "ESTADO CIVIL",
-                data: @datos_estado_civil,
-                count: @cant_estado_civil,
-                label: :labelestadocivil,
-                filename: "Estado Civil"
-            },
-
-            {
-                number: 4,
-                title: "TIENE HIJOS",
-                data: @datos_hijos,
-                count: @cant_hijos,
-                label: :labelhijos,
-                filename: "Tiene Hijos"
-            },
-
-            {
-                number: 5,
-                title: "NÚMERO DE HIJOS",
-                data: @datos_numero_hijos,
-                count: @cant_numero_hijos,
-                label: :labelnumerohijos,
-                filename: "Número de Hijos"
-            },
-
-            {
-                number: 6,
-                title: "PERSONAS A CARGO",
-                data: @datos_personas_cargo,
-                count: @cant_personas_cargo,
-                label: :labelpersonasacargo,
-                filename: "Personas a Cargo"
-            },
-
-            {
-                number: 7,
-                title: "CIUDAD - MUNICIPIO",
-                data: @datos_ciudad,
-                count: @cant_ciudad,
-                label: :labelciudad,
-                filename: "Ciudad - Municipio"
-            },
-
-            {
-                number: 8,
-                title: "TENENCIA DE VIVIENDA",
-                data: @datos_vivienda,
-                count: @cant_vivienda,
-                label: :labelvivienda,
-                filename: "Tenencia de Vivienda"
-            },
-
-            {
-                number: 9,
-                title: "ESTRATO",
-                data: @datos_estrato,
-                count: @cant_estrato,
-                label: :labelestrato,
-                filename: "Estrato"
-            },
-
-            {
-                number: 10,
-                title: "NIVEL DE ESCOLARIDAD",
-                data: @datos_nivel,
-                count: @cant_nivel,
-                label: :labelnivel,
-                filename: "Nivel de Escolaridad"
-            },
-
-            {
-                number: 11,
-                title: "PROMEDIO SALARIO",
-                data: @datos_salario,
-                count: @cant_salario,
-                label: :labelsalario,
-                filename: "Promedio Salario"
-            },
-
-            {
-                number: 12,
-                title: "TIPO DE CONTRATO",
-                data: @datos_contrato,
-                count: @cant_contrato,
-                label: :labelcontrato,
-                filename: "Tipo de Contrato"
-            },
-
-            {
-                number: 13,
-                title: "TURNO DE TRABAJO",
-                data: @datos_turno_trabajo,
-                count: @cant_turno_trabajo,
-                label: :labelturno,
-                filename: "Turno de Trabajo"
-            },
-
-            {
-                number: 14,
-                title: "ENTIDAD BANCARIA",
-                data: @datos_banco,
-                count: @cant_banco,
-                label: :labelbanco,
-                filename: "Entidad Bancaria"
-            },
-
-            {
-                number: 15,
-                title: "SERVICIOS BÁSICOS",
-                data: @datos_servicios,
-                count: @cant_servicios,
-                label: :labelservicios,
-                filename: "Servicios Básicos"
-            },
-
-            {
-                number: 16,
-                title: "EPS",
-                data: @datos_eps,
-                count: @cant_eps,
-                label: :labeleps,
-                filename: "EPS"
-            },
-
-            {
-                number: 17,
-                title: "FONDO DE PENSIÓN",
-                data: @datos_pension,
-                count: @cant_pension,
-                label: :labelpension,
-                filename: "Fondo de Pensión"
-            },
-
-            {
-                number: 18,
-                title: "ARL",
-                data: @datos_arl,
-                count: @cant_arl,
-                label: :labelarl,
-                filename: "ARL"
-            },
-
-            {
-                number: 19,
-                title: "FONDO DE CESANTÍAS",
-                data: @datos_cesantia,
-                count: @cant_cesantia,
-                label: :labelcesantia,
-                filename: "Cesantía"
-            },
-
-            {
-                number: 20,
-                title: "¿Vive con personas que tengan alguna discapacidad?",
-                data: @datos_discapacidad,
-                count: @cant_discapacidad,
-                label: :labeldiscapacitadas,
-                filename: "Discapacidad"
-            },
-
-            {
-                number: 21,
-                title: "TIPO DE DISCAPACIDAD",
-                data: @datos_tipo_discapacidad,
-                count: @cant_tipo_discapacidad,
-                label: :labeltipodiscapacitadas,
-                filename: "Tipo de Discapacidad"
-            },
-
-            {
-                number: 22,
-                title: "USO DEL TIEMPO LIBRE",
-                data: @datos_tiempo,
-                count: @cant_tiempo,
-                label: :labeltiempo,
-                filename: "Uso Tiempo Libre"
-            },
-
-            {
-                number: 23,
-                title: "LE HAN DIAGNOSTICADO ALGUNA ENFERMEDAD",
-                data: @datos_enfermedad,
-                count: @cant_enfermedad,
-                label: :labelenfermedad,
-                filename: "Diagnosticado Enfermedad"
-            },
-
-            {
-                number: 24,
-                title: "FUMA",
-                data: @datos_fuma,
-                count: @cant_fuma,
-                label: :labelfuma,
-                filename: "Fuma"
-            },
-
-            {
-                number: 25,
-                title: "CUAL CIGARRILLO",
-                data: @datos_cual_fuma,
-                count: @cant_cual_fuma,
-                label: :labelcualcigarrillo,
-                filename: "Cual Cigarrillo"
-            },
-
-            {
-                number: 26,
-                title: "CONSUME BEBIDAS ALCOHÓLICAS",
-                data: @datos_bebida,
-                count: @cant_bebida,
-                label: :labelbebida,
-                filename: "Bebidas"
-            },
-
-            {
-                number: 27,
-                title: "PRACTICA ALGÚN DEPORTE",
-                data: @datos_deporte,
-                count: @cant_deporte,
-                label: :labeldeporte,
-                filename: "Deporte"
-            },
-
-            {
-                number: 28,
-                title: "TIPO DE SANGRE",
-                data: @datos_sangre,
-                count: @cant_sangre,
-                label: :labelsangre,
-                filename: "Tipo Sangre"
-            },
-
-            {
-                number: 29,
-                title: "ÁREA DE TRABAJO",
-                data: @datos_area,
-                count: @cant_area,
-                label: :labelarea,
-                filename: "Area"
-            },
-
-            {
-                number: 30,
-                title: "MEDIO DE TRANSPORTE",
-                data: @datos_transporte,
-                count: @cant_transporte,
-                label: :labelmediotransporte,
-                filename: "Medio de Transporte"
-            }
-
+            {number: 1, title: "GÉNERO", data: @datos_genero, count: @cant_genero, label: :labelgenero, filename: "Género"},
+            {number: 2, title: "EDAD", data: @datos_edad, count: @cant_edad, label: :labeledad, filename: "Edad"},
+            {number: 3, title: "ESTADO CIVIL", data: @datos_estado_civil, count: @cant_estado_civil, label: :labelestadocivil, filename: "Estado Civil"},
+            {number: 4, title: "TIENE HIJOS", data: @datos_hijos, count: @cant_hijos, label: :labelhijos, filename: "Tiene Hijos"},
+            {number: 5, title: "NÚMERO DE HIJOS", data: @datos_numero_hijos, count: @cant_numero_hijos, label: :labelnumerohijos, filename: "Número de Hijos"},
+            {number: 6, title: "PERSONAS A CARGO", data: @datos_personas_cargo, count: @cant_personas_cargo, label: :labelpersonasacargo, filename: "Personas a Cargo"},
+            {number: 7, title: "CIUDAD - MUNICIPIO", data: @datos_ciudad, count: @cant_ciudad, label: :labelciudad, filename: "Ciudad - Municipio"},
+            {number: 8, title: "TENENCIA DE VIVIENDA", data: @datos_vivienda, count: @cant_vivienda, label: :labelvivienda, filename: "Tenencia de Vivienda"},
+            {number: 9, title: "ESTRATO", data: @datos_estrato, count: @cant_estrato, label: :labelestrato, filename: "Estrato"},
+            {number: 10, title: "NIVEL DE ESCOLARIDAD", data: @datos_nivel, count: @cant_nivel, label: :labelnivel, filename: "Nivel de Escolaridad"},
+            {number: 11, title: "PROMEDIO SALARIO", data: @datos_salario, count: @cant_salario, label: :labelsalario, filename: "Promedio Salario"},
+            {number: 12, title: "TIPO DE CONTRATO", data: @datos_contrato, count: @cant_contrato, label: :labelcontrato, filename: "Tipo de Contrato"},
+            {number: 13, title: "TURNO DE TRABAJO", data: @datos_turno_trabajo, count: @cant_turno_trabajo, label: :labelturno, filename: "Turno de Trabajo"},
+            {number: 14, title: "ENTIDAD BANCARIA", data: @datos_banco, count: @cant_banco, label: :labelbanco, filename: "Entidad Bancaria"},
+            {number: 15, title: "SERVICIOS BÁSICOS", data: @datos_servicios, count: @cant_servicios, label: :labelservicios, filename: "Servicios Básicos"},
+            {number: 16, title: "EPS", data: @datos_eps, count: @cant_eps, label: :labeleps, filename: "EPS"},
+            {number: 17, title: "FONDO DE PENSIÓN", data: @datos_pension, count: @cant_pension, label: :labelpension, filename: "Fondo de Pensión"},
+            {number: 18, title: "ARL", data: @datos_arl, count: @cant_arl, label: :labelarl, filename: "ARL"},
+            {number: 19, title: "FONDO DE CESANTÍAS", data: @datos_cesantia, count: @cant_cesantia, label: :labelcesantia, filename: "Cesantía"},
+            {number: 20, title: "¿Vive con personas que tengan alguna discapacidad?", data: @datos_discapacidad, count: @cant_discapacidad, label: :labeldiscapacitadas, filename: "Discapacidad"},
+            {number: 21, title: "TIPO DE DISCAPACIDAD", data: @datos_tipo_discapacidad, count: @cant_tipo_discapacidad, label: :labeltipodiscapacitadas, filename: "Tipo de Discapacidad"},
+            {number: 22, title: "USO DEL TIEMPO LIBRE", data: @datos_tiempo, count: @cant_tiempo, label: :labeltiempo, filename: "Uso Tiempo Libre"},
+            {number: 23, title: "LE HAN DIAGNOSTICADO ALGUNA ENFERMEDAD", data: @datos_enfermedad, count: @cant_enfermedad, label: :labelenfermedad, filename: "Diagnosticado Enfermedad"},
+            {number: 24, title: "FUMA", data: @datos_fuma, count: @cant_fuma, label: :labelfuma, filename: "Fuma"},
+            {number: 25, title: "CUAL CIGARRILLO", data: @datos_cual_fuma, count: @cant_cual_fuma, label: :labelcualcigarrillo, filename: "Cual Cigarrillo"},
+            {number: 26, title: "CONSUME BEBIDAS ALCOHÓLICAS", data: @datos_bebida, count: @cant_bebida, label: :labelbebida, filename: "Bebidas"},
+            {number: 27, title: "PRACTICA ALGÚN DEPORTE", data: @datos_deporte, count: @cant_deporte, label: :labeldeporte, filename: "Deporte"},
+            {number: 28, title: "TIPO DE SANGRE", data: @datos_sangre, count: @cant_sangre, label: :labelsangre, filename: "Tipo Sangre"},
+            {number: 29, title: "ÁREA DE TRABAJO", data: @datos_area, count: @cant_area, label: :labelarea, filename: "Area"},
+            {number: 30, title: "MEDIO DE TRANSPORTE", data: @datos_transporte, count: @cant_transporte, label: :labelmediotransporte, filename: "Medio de Transporte"}
         ]
     %>
-
-
-    <!-- =====================================================
-         VARIABLES
-         ===================================================== -->
-
     <% variables_sociodemograficas.each do |variable| %>
-
         <% if variable[:data].present? %>
-
             <div class="pdf-variable">
-
                 <div class="pdf-variable-title">
                     <%= variable[:number] %>.
                     <%= variable[:title] %>
                 </div>
-
-
                 <%
                     datos_grafico = []
-
                     variable[:data].each do |dato|
-
-                        etiqueta = Profile.public_send(
-                            variable[:label],
-                            dato[0]
-                        )
-
+                        etiqueta = Profile.public_send(variable[:label], dato[0])
                         if variable[:count].to_i > 0
-
-                            porcentaje =
-                                ((dato[1] * 100.0) /
-                                variable[:count]).round(2)
-
-                            datos_grafico << [
-                                etiqueta,
-                                porcentaje
-                            ]
-
+                            porcentaje = ((dato[1] * 100.0) / variable[:count]).round(2)
+                            datos_grafico << [etiqueta, porcentaje]
                         end
-
                     end
                 %>
-
-
                 <table class="pdf-variable-layout">
-
                     <tr>
-
-                        <!-- ==============================
-                             TABLA
-                             ============================== -->
-
                         <td class="pdf-variable-table-cell">
-
                             <table class="pdf-data-table">
-
                                 <thead>
-
                                     <tr>
                                         <th colspan="2">
                                             <%= variable[:title] %>
                                         </th>
                                     </tr>
-
                                 </thead>
-
                                 <tbody>
-
                                     <% variable[:data].each do |dato| %>
-
                                         <tr>
-
                                             <td>
-                                                <%= Profile.public_send(
-                                                    variable[:label],
-                                                    dato[0]
-                                                ) %>
+                                                <%= Profile.public_send(variable[:label], dato[0]) %>
                                             </td>
-
                                             <td class="pdf-data-number">
                                                 <%= dato[1] %>
                                             </td>
-
                                         </tr>
-
                                     <% end %>
-
                                     <tr class="pdf-total-row">
-
                                         <td>
                                             Total
                                         </td>
-
                                         <td class="pdf-data-number">
                                             <%= variable[:count] %>
                                         </td>
-
                                     </tr>
-
                                 </tbody>
-
                             </table>
-
                         </td>
-
-
-                        <!-- ==============================
-                             GRÁFICO
-                             ============================== -->
-
                         <td class="pdf-variable-chart-cell">
-
                             <div class="pdf-chart">
-
-                                <%= pie_chart datos_grafico,
-                                    title: variable[:title],
-                                    download: {
-                                        filename: variable[:filename],
-                                        background: "#FFFFFF"
-                                    },
-                                    height: "270px",
-                                    width: "100%",
-                                    xtitle: "Tipo de acción",
-                                    ytitle: "Cantidad",
-                                    prefix: "Cantidad: ",
-                                    suffix: "%" %>
-
+                                <canvas
+                                    id="chart-<%= variable[:number] %>"
+                                    width="430"
+                                    height="270">
+                                </canvas>
+                                <script>
+                                    (function() {
+                                        var datos = <%= raw datos_grafico.to_json %>;
+                                        var labels = datos.map(function(item) {
+                                            return item[0];
+                                        });
+                                        var valores = datos.map(function(item) {
+                                            return item[1];
+                                        });
+                                        var canvas = document.getElementById(
+                                            "chart-<%= variable[:number] %>"
+                                        );
+                                        if (!canvas) {
+                                            return;
+                                        }
+                                        var ctx = canvas.getContext("2d");
+                                        new Chart(ctx, {
+                                            type: "pie",
+                                            data: {
+                                                labels: labels,
+                                                datasets: [{
+                                                data: valores,
+                                                backgroundColor: [
+                                                    "#4E79A7",
+                                                    "#F28E2B",
+                                                    "#E15759",
+                                                    "#76B7B2",
+                                                    "#59A14F",
+                                                    "#EDC948",
+                                                    "#B07AA1",
+                                                    "#FF9DA7",
+                                                    "#9C755F",
+                                                    "#BAB0AC",
+                                                    "#2F5597",
+                                                    "#70AD47",
+                                                    "#FFC000",
+                                                    "#4472C4",
+                                                    "#A5A5A5"
+                                                    ],
+                                                    borderColor: "#FFFFFF",
+                                                    borderWidth: 2
+                                                }]
+                                            },
+                                            options: {
+                                                responsive: false,
+                                                animation: false,
+                                                legend: {
+                                                    display: true,
+                                                    position: "right"
+                                                },
+                                                title: {
+                                                    display: true,
+                                                    text: <%= raw variable[:title].to_json %>
+                                                },
+                                                tooltips: {
+                                                    callbacks: {
+                                                        label: function(tooltipItem, data) {
+                                                            var dataset = data.datasets[tooltipItem.datasetIndex];
+                                                            var value = dataset.data[tooltipItem.index];
+                                                            var label = data.labels[tooltipItem.index];
+                                                            return label + ": " + value + "%";
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    })();
+                                </script>
                             </div>
-
                         </td>
-
                     </tr>
-
                 </table>
-
             </div>
-
         <% end %>
-
     <% end %>
-
-
-
-<!-- =========================================================
-     FIRMAS
-     ========================================================= -->
-
 <div class="pdf-signatures">
-
   <table class="pdf-signatures-table">
     <tr>
-
-      <!-- ===================================================
-           ELABORÓ
-           =================================================== -->
       <td class="pdf-signature-cell">
-
         <div class="pdf-signature">
-
           <div class="pdf-signature-label">
             Elaboró:
           </div>
-
           <div class="pdf-signature-space"></div>
-
           <% if @survey_profile.firm_elaboro == 1 %>
-
             <% if @user_elaboro.firm.attached? %>
-
               <% if @user_elaboro.firm.image? %>
-
-                <%= image_tag(
-                      Evaluation.wicked_blob_path(@user_elaboro.firm),
-                      class: "pdf-signature-image"
-                    ) %>
-
+                <%= image_tag(Evaluation.wicked_blob_path(@user_elaboro.firm), class: "pdf-signature-image") %>
                 <div class="pdf-signature-line">
-                  ______________________________________
                 </div>
-
               <% else %>
-
                 <div class="pdf-signature-line">
-                  ______________________________________
                 </div>
-
               <% end %>
-
             <% else %>
-
               <div class="pdf-signature-line">
-                ______________________________________
               </div>
-
             <% end %>
-
           <% else %>
-
             <div class="pdf-signature-line">
-              ______________________________________
             </div>
-
           <% end %>
-
-
           <div class="pdf-signature-name">
             <strong>
               <%= @user_elaboro.name %>
             </strong>
           </div>
-
           <div class="pdf-signature-role">
             Asesor SG-SST
           </div>
-
           <div class="pdf-signature-document">
             <%= @user_elaboro.document.abbreviation %>:
             <%= Firm.miles(@user_elaboro.nro_document) %>
           </div>
-
         </div>
-
       </td>
-
-
-      <!-- ===================================================
-           APROBÓ
-           =================================================== -->
       <td class="pdf-signature-cell">
-
         <div class="pdf-signature">
-
           <div class="pdf-signature-label">
             Aprobó:
           </div>
-
           <div class="pdf-signature-space"></div>
-
           <% if @survey_profile.firm_aprobo == 1 %>
-
             <% if @user_aprobo.firm.attached? %>
-
               <% if @user_aprobo.firm.image? %>
-
-                <%= image_tag(
-                      Evaluation.wicked_blob_path(@user_aprobo.firm),
-                      class: "pdf-signature-image"
-                    ) %>
-
+                <%= image_tag(Evaluation.wicked_blob_path(@user_aprobo.firm), class: "pdf-signature-image") %>
                 <div class="pdf-signature-line">
-                  ______________________________________
                 </div>
-
               <% else %>
-
                 <div class="pdf-signature-line">
-                  ______________________________________
                 </div>
-
               <% end %>
-
             <% else %>
-
               <div class="pdf-signature-line">
-                ______________________________________
               </div>
-
             <% end %>
-
           <% else %>
-
             <div class="pdf-signature-line">
-              ______________________________________
             </div>
-
           <% end %>
-
-
           <div class="pdf-signature-name">
             <strong>
               <%= @user_aprobo.name %>
             </strong>
           </div>
-
           <div class="pdf-signature-role">
             Representante Legal
           </div>
-
           <div class="pdf-signature-document">
             <%= @user_aprobo.document.abbreviation %>:
             <%= Firm.miles(@user_aprobo.nro_document) %>
           </div>
-
         </div>
-
       </td>
-
     </tr>
   </table>
-
 </div>
-
-
 </div>
-

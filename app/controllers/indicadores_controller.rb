@@ -130,7 +130,7 @@ class IndicadoresController < ApplicationController
             format.pdf do
                 html = render_to_string(template: "indicadores/graficos_pdf", layout: false, formats: [:pdf])
                 File.write("/tmp/graficos_pdf.html", html)
-                pdf = WickedPdf.new.pdf_from_string(html, zoom: 0.80, javascript_delay: 5000, enable_local_file_access: true, margin: {top: 10, bottom: 10, left: 1, right: 1 })
+                pdf = WickedPdf.new.pdf_from_string(html, zoom: 0.80, javascript_delay: 5000, enable_local_file_access: true, margin: {top: 10, bottom: 10, left: 10, right: 10 })
                 send_data pdf,
                 filename: nombre_evidencia,
                 disposition: "attachment"

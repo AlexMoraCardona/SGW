@@ -1,15 +1,38 @@
-<br>
-<div class="container col-11 card p-5">
-    <%= form_for @car_checklist do |f| %>
-       <div class="row">
-          <div class="form-group">
-            <h5><%= f.label :"Adjuntar_Archivos:", style: "display: block" %></h5>
-            <%= f.file_field :car_files, multiple: true %>
-
-            <%= f.submit 'Subir Archivos', class: 'btn btn-primary' %>
-          </div> 
+<div class="conesst-page">
+    <div class="conesst-header">
+        <div>
+            <h2 class="conesst-title">
+                <i class="bi bi-paperclip me-2"></i>
+                Adjuntar archivos
+            </h2>
+            <p class="conesst-subtitle mb-0">
+                Adjunte los documentos o archivos relacionados con el checklist.
+            </p>
         </div>
-    <% end %>
-    <br> 
-</div>  
-<br>
+    </div>
+    <div class="conesst-card">
+        <div class="conesst-card-header">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-cloud-arrow-up"></i>
+                <span>Seleccionar archivos</span>
+            </div>
+        </div>
+        <div class="conesst-card-body">
+            <%= form_for @car_checklist do |f| %>
+                <div class="conesst-form-group">
+                    <%= f.label :car_files, "Adjuntar archivos", class: "conesst-form-label" %>
+                    <div class="mt-2">
+                        <%= f.file_field :car_files, multiple: true, class: "form-control" %>
+                    </div>
+                    <div class="form-text mt-2">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Puede seleccionar uno o varios archivos.
+                    </div>
+                </div>
+                <div class="conesst-actions mt-4">
+                    <%= f.submit "Subir archivos", class: "conesst-btn conesst-btn-primary" %>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>

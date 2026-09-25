@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <%= wicked_pdf_stylesheet_link_tag "pdf_conesst" %>
+</head>
+<body>
+<div class="pdf-document">
+    <div class="pdf-title">
+        FORMATO LISTA DE CHEQUEO AUTOMÓVIL
+    </div>
+    <div class="pdf-text">
+        Los prechequeos operacionales son una herramienta útil para revisar
+        tu vehículo antes de salir para evitar varadas, o accidentes que
+        pongan en riesgo tu vida o la de los demás, por esto en SURA queremos
+        proporcionarte este formato para apoyarte en realizar un trayecto más
+        seguro y tener toda la información cumpliendo lo estipulado en el
+        <strong>Plan Estratégico de Seguridad Vial (PESV)</strong>.
+    </div>
+    <div class="pdf-section-title">
+        1. INFORMACIÓN GENERAL DEL USUARIO Y DEL AUTOMÓVIL
+    </div>
+    <table class="pdf-info-table">
+        <tr>
+            <td class="pdf-cell-left">
+                <span class="pdf-label">Nombre del conductor:</span><br>
+                <span class="pdf-value">
+                    <%= @car_checklist.user.name if @car_checklist.present? %>
+                </span>
+            </td>
+            <td class="pdf-cell-left">
+                <span class="pdf-label">Documento de identidad:</span><br>
+                <span class="pdf-value">
+                    <%= @car_checklist.user.nro_document if @car_checklist.present? %>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td class="pdf-cell-left">
+                <span class="pdf-label">Fecha:</span><br>
+                <span class="pdf-value">
+                    <%= @car_checklist.date_list if @car_checklist.present? %>
+                </span>
+            </td>
+            <td class="pdf-cell-left">
+                <span class="pdf-label">Hora:</span><br>
+                <span class="pdf-value">
+                    <%= @car_checklist.time_list.strftime("%I:%M %p") if @car_checklist.present? %>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td class="pdf-cell-left">
+                <span class="pdf-label">Placa:</span><br>
+                <span class="pdf-value">
+                    <%= @car_checklist.plate_car if @car_checklist.present? %>
+                </span>
+            </td>
+            <td class="pdf-cell-left">
+                <span class="pdf-label">Kilometraje:</span><br>
+                <span class="pdf-value">
+                    <%= @car_checklist.mileage if @car_checklist.present? %>
+                </span>
+            </td>
+        </tr>
+    </table>
+    <div class="pdf-section-title">
+        2. CONDICIONES DEL USUARIO
+    </div>
+    <div class="pdf-text">
+        Para garantizar una movilidad segura, es necesario revisar tu estado
+        de salud para conducir en condiciones óptimas.
+    </div>
+    <table class="pdf-table">
+        <thead>
+            <tr>
+                <th class="pdf-col-50">
+                    Condición
+                </th>
+
+                <th class="pdf-col-10">
+                    Cumple
+                </th>
+
+                <th class="pdf-col-40">
+                    Observaciones / Hallazgos
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="pdf-cell-left pdf-cell-text">
+                    ¿Estás en condiciones de salud y descanso para usar
+                    el vehículo (sin malestar, mareos, fiebre, sueño u
+                    otros síntomas)?
+                </td>
+
+                <td class="pdf-cell-center">
+                    <% if @car_checklist.health_conditions == 0 %>
+                        <strong>SI</strong>
+                    <% else %>
+                        <strong>NO</strong>
+                    <% end %>
+                </td>
+                <td class="pdf-cell-left pdf-cell-text">
+                    <%= @car_checklist.health_conditions_obs %>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="pdf-section-title">
+        3. CONDICIONES DEL VEHÍCULO
+    </div>
+    <div class="pdf-text">
+        Conocer el estado de las condiciones principales de los vehículos que
+        conduces se vuelve fundamental para evitar un incidente. En caso de
+        que algún elemento descrito dentro de la lista de chequeo no cumpla,
+        deberás informarlo al responsable de SST en tu empresa, quien deberá
+        definir si el vehículo se podrá movilizar.
+    </div>
+    <table class="pdf-table">
+        <thead>
+            <tr>
+                <th class="pdf-col-20">
+                    Condición
+                </th>
+                <th class="pdf-col-30">
+                    Verificación
+                </th>
+                <th class="pdf-col-10">
+                    Cumple
+                </th>
+                <th class="pdf-col-40">
+                    Observaciones / Hallazgos
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="pdf-cell-left pdf-cell-text">
+                    Estado de llantas
+                </td>
+                <td class="pdf-cell-left pdf-cell-text">
+                    Verifica la profundidad del labrado, presión,
+                    cortaduras o protuberancias.
+                </td>
+                <td class="pdf-cell-center">
+                    <% if @car_checklist.tire_condition == 0 %>
+                        <strong>SI</strong>
+                    <% else %>
+                        <strong>NO</strong>
+                    <% end %>
+                </td>
+                <td class="pdf-cell-left pdf-cell-text">
+                    <%= @car_checklist.tire_condition_obs %>
+                </td>
+            </tr>
+            <tr>
+                <td class="pdf-cell-left pdf-cell-text">
+                    Luces
+                </td>
+                <td class="pdf-cell-left pdf-cell-text">
+                    Verifica el funcionamiento correcto de luces altas y
+                    bajas, posición, direccionales, freno, reversa y
+                    estacionarias.
+                </td>
+                <td class="pdf-cell-center">
+                    <% if @car_checklist.lights_condition == 0 %>
+                        <strong>SI</strong>
+                    <% else %>
+                        <strong>NO</strong>
+                    <% end %>
+                </td>
+                <td class="pdf-cell-left pdf-cell-text">
+                    <%= @car_checklist.lights_condition_obs %>
+                </td>
+            </tr>
+            <tr>
+                <td class="pdf-cell-left pdf-cell-text">
+                    Bocina
+                </td>
+
+                <td class="pdf-cell-left pdf-cell-text">
+                    Verifica su funcionamiento.
+                </td>
+                <td class="pdf-cell-center">
+                    <% if @car_checklist.horn_condition == 0 %>
+                        <strong>SI</strong>
+                    <% else %>
+                        <strong>NO</strong>
+                    <% end %>
+                </td>
+                <td class="pdf-cell-left pdf-cell-text">
+                    <%= @car_checklist.horn_condition_obs %>
+                </td>
+            </tr>
+            <tr>
+                <td class="pdf-cell-left pdf-cell-text">
+                    Espejos
+                </td>
+                <td class="pdf-cell-left pdf-cell-text">
+                    Revisa y posiciona correctamente los espejos laterales
+                    y centrales.
+                </td>
+                <td class="pdf-cell-center">
+                    <% if @car_checklist.mirrors_condition == 0 %>
+                        <strong>SI</strong>
+                    <% else %>
+                        <strong>NO</strong>
+                    <% end %>
+                </td>
+                <td class="pdf-cell-left pdf-cell-text">
+                    <%= @car_checklist.mirrors_condition_obs %>
+                </td>
+            </tr>
+            <tr>
+                <td class="pdf-cell-left pdf-cell-text">
+                    Niveles de líquidos
+                </td>
+                <td class="pdf-cell-left pdf-cell-text">
+                    Verifica el aceite, líquido de frenos,
+                    limpiaparabrisas, refrigerante, y dirección hidráulica
+                    (si aplica).
+                </td>
+                <td class="pdf-cell-center">
+                    <% if @car_checklist.liquids_condition == 0 %>
+                        <strong>SI</strong>
+                    <% else %>
+                        <strong>NO</strong>
+                    <% end %>
+                </td>
+                <td class="pdf-cell-left pdf-cell-text">
+                    <%= @car_checklist.liquids_condition_obs %>
+                </td>
+            </tr>
+            <tr>
+                <td class="pdf-cell-left pdf-cell-text">
+                    Fugas de fluidos
+                </td>
+                <td class="pdf-cell-left pdf-cell-text">
+                    Verifica que no existan fugas ni humedades en el
+                    habitáculo del motor y en el piso donde parqueas.
+                </td>
+                <td class="pdf-cell-center">
+                    <% if @car_checklist.fluids_condition == 0 %>
+                        <strong>SI</strong>
+                    <% else %>
+                        <strong>NO</strong>
+                    <% end %>
+                </td>
+                <td class="pdf-cell-left pdf-cell-text">
+                    <%= @car_checklist.fluids_condition_obs %>
+                </td>
+            </tr>
+            <tr>
+                <td class="pdf-cell-left pdf-cell-text">
+                    Estado de frenos
+                </td>
+                <td class="pdf-cell-left pdf-cell-text">
+                    Verifica el estado de las pastillas y una óptima
+                    tensión del pedal y del freno de parqueo.
+                </td>
+                <td class="pdf-cell-center">
+                    <% if @car_checklist.brakes_condition == 0 %>
+                        <strong>SI</strong>
+                    <% else %>
+                        <strong>NO</strong>
+                    <% end %>
+                </td>
+                <td class="pdf-cell-left pdf-cell-text">
+                    <%= @car_checklist.brakes_condition_obs %>
+                </td>
+            </tr>
+            <tr>
+                <td class="pdf-cell-left pdf-cell-text">
+                    Parabrisas
+                </td>
+                <td class="pdf-cell-left pdf-cell-text">
+                    Verifica que no esté fisurado y el funcionamiento de
+                    las plumillas.
+                </td>
+                <td class="pdf-cell-center">
+                    <% if @car_checklist.windshield_condition == 0 %>
+                        <strong>SI</strong>
+                    <% else %>
+                        <strong>NO</strong>
+                    <% end %>
+                </td>
+                <td class="pdf-cell-left pdf-cell-text">
+                    <%= @car_checklist.windshield_condition_obs %>
+                </td>
+            </tr>
+            <tr>
+                <td class="pdf-cell-left pdf-cell-text">
+                    Elementos de retención
+                </td>
+                <td class="pdf-cell-left pdf-cell-text">
+                    Revisa el estado del cinturón de seguridad y el
+                    anclaje de las sillas.
+                </td>
+                <td class="pdf-cell-center">
+                    <% if @car_checklist.retention_condition == 0 %>
+                        <strong>SI</strong>
+                    <% else %>
+                        <strong>NO</strong>
+                    <% end %>
+                </td>
+                <td class="pdf-cell-left pdf-cell-text">
+                    <%= @car_checklist.retention_condition_obs %>
+                </td>
+            </tr>
+            <tr>
+                <td class="pdf-cell-left pdf-cell-text">
+                    Documentos
+                </td>
+
+                <td class="pdf-cell-left pdf-cell-text">
+                    Verifica la tarjeta de propiedad, SOAT y revisión
+                    técnico mecánica (si aplica).
+                </td>
+                <td class="pdf-cell-center">
+                    <% if @car_checklist.documents_condition == 0 %>
+                        <strong>SI</strong>
+                    <% else %>
+                        <strong>NO</strong>
+                    <% end %>
+                </td>
+                <td class="pdf-cell-left pdf-cell-text">
+                    <%= @car_checklist.documents_condition_obs %>
+                </td>
+            </tr>
+            <tr>
+                <td class="pdf-cell-left pdf-cell-text">
+                    Equipos de prevención
+                </td>
+                <td class="pdf-cell-left pdf-cell-text">
+                    Revisa la caja de herramientas, extintor, botiquín,
+                    conos, tacos, linterna, llanta de repuesto, gato,
+                    cruceta y chaleco reflectivo.
+                </td>
+                <td class="pdf-cell-center">
+                    <% if @car_checklist.prevention_condition == 0 %>
+                        <strong>SI</strong>
+                    <% else %>
+                        <strong>NO</strong>
+                    <% end %>
+                </td>
+                <td class="pdf-cell-left pdf-cell-text">
+                    <%= @car_checklist.prevention_condition_obs %>
+                </td>
+            </tr>
+            <tr>
+                <td class="pdf-cell-left pdf-cell-text">
+                    Luces de tablero y testigos
+                </td>
+                <td class="pdf-cell-left pdf-cell-text">
+                    Antes de iniciar la marcha, verifica que todos los
+                    testigos, excepto el de parqueo, estén apagados.
+                </td>
+                <td class="pdf-cell-center">
+                    <% if @car_checklist.witnesses_condition == 0 %>
+                        <strong>SI</strong>
+                    <% else %>
+                        <strong>NO</strong>
+                    <% end %>
+                </td>
+                <td class="pdf-cell-left pdf-cell-text">
+                    <%= @car_checklist.witnesses_condition_obs %>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="pdf-section-title">
+        ARCHIVOS ADJUNTOS
+    </div>
+    <% if @car_checklist.car_files.attached? %>
+        <div class="conesst-pdf-evidence">
+            <% @car_checklist.car_files.each do |file| %>
+                <div class="conesst-pdf-evidence-item">
+                    <% if file.image? %>
+                        <div class="conesst-pdf-evidence-image">
+                            <%= image_tag(Evaluation.wicked_blob_path(file), class: "conesst-pdf-evidence-img") %>
+                        </div>
+                        <div class="conesst-pdf-file">
+                            <%= file.filename %>
+                        </div>
+                    <% elsif file.video? %>
+                        <div class="conesst-pdf-file">
+                            <%= video_tag(url_for(file), controls: true, class: "pdf-media") %>
+                            <span>
+                                <%= file.filename %>
+                            </span>
+                        </div>
+                    <% elsif file.audio? %>
+                        <div class="conesst-pdf-file">
+                            <%= audio_tag(url_for(file), controls: true) %>
+                            <span>
+                                <%= file.filename %>
+                            </span>
+                        </div>
+                    <% else %>
+                        <div class="conesst-pdf-file">
+                            <span>
+                                <%= file.filename %>
+                            </span>
+                        </div>
+                    <% end %>
+                </div>
+            <% end %>
+        </div>
+    <% else %>
+        <div class="pdf-small-text pdf-center">
+            No hay archivos adjuntos.
+        </div>
+    <% end %>
+    <table class="pdf-signatures-table">
+        <tr>
+            <td class="pdf-signature-cell">
+                <div class="pdf-signature-role">
+                    Responsable
+                </div>
+                <div class="pdf-signature-image-container">
+                    <% if @car_checklist.firm_user == 1 %>
+                        <% if @user_responsable.firm.attached? %>
+                            <% if @user_responsable.firm.image? %>
+                                <%= image_tag(Evaluation.wicked_blob_path(@user_responsable.firm), class: "pdf-signature-image") %>
+                            <% end %>
+                        <% end %>
+                    <% end %>
+                </div>
+                <div class="pdf-signature-line"></div>
+                <div class="pdf-signature-name">
+                    <%= @user_responsable.name %>
+                </div>
+                <div class="pdf-signature-data">
+                    <%= User.label_activity(@user_responsable.activity) %>
+                </div>
+                <div class="pdf-signature-data">
+                    <%= @user_responsable.document.abbreviation %>:
+                    <%= Firm.miles(@user_responsable.nro_document) %>
+                </div>
+            </td>
+            <td class="pdf-signature-cell">
+                <div class="pdf-signature-role">
+                    Responsable SG-SST
+                </div>
+                <div class="pdf-signature-image-container">
+                    <% if @car_checklist.user_autoriza_firm == 1 && @user_autoriza.present? %>
+                        <% if @user_autoriza.firm.attached? %>
+                            <% if @user_autoriza.firm.image? %>
+                                <%= image_tag(Evaluation.wicked_blob_path(@user_autoriza.firm), class: "pdf-signature-image") %>
+                            <% end %>
+                        <% end %>
+                    <% end %>
+                </div>
+                <div class="pdf-signature-line"></div>
+                <div class="pdf-signature-name">
+                    <%= @user_autoriza.name if @user_autoriza.present? %>
+                </div>
+                <div class="pdf-signature-data">
+                    Responsable SG-SST
+                </div>
+                <div class="pdf-signature-data">
+                    <%= @user_autoriza.document.abbreviation if @user_autoriza.present? %>:
+                    <%= Firm.miles(@user_autoriza.nro_document) if @user_autoriza.present? %>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

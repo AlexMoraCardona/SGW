@@ -166,21 +166,28 @@ class SurveyProfilesController < ApplicationController
         @cant_transporte = Profile.cantidad_vector(@datos_transporte) if @datos_transporte.present?
 
         nombre_archivo = @template.reference.to_s + '.pdf'
+
         respond_to do |format| 
-            format.html
-            format.pdf {header_html = render_to_string( partial: 'templates/header')
+            format.pdf do
+                html = render_to_string(
+                    template: "survey_profiles/informe_estudio_socio",
+                    layout: false,
+                    formats: [:pdf]
+                    )
+                File.write("/tmp/graficos_pdf.html", html)
+                header_html = render_to_string(partial: "templates/header")
                 pdf = WickedPdf.new.pdf_from_string(
-                    render_to_string('informe_estudio_socio'),
-                    disable_javascript: true,
-                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
-                    page_size: 'letter',
-                    orientation: 'Landscape',
-                    header: {spacing: 5,
-                    content: header_html}
-                )  
-                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
-            }
-        end    
+                    html,
+                    javascript_delay: 5000,
+                    enable_local_file_access: true,
+                    margin: {top: 50, bottom: 10, left: 10, right: 10},
+                    header: {spacing: 5, content: header_html}
+                    )
+                send_data pdf, 
+                    filename: nombre_archivo, 
+                    disposition: "attachment"
+            end
+        end
     end   
 
 

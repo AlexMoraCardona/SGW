@@ -1,18 +1,70 @@
-
 <tr>
-    <td><%= meeting_minute.date %></td>
-    <td><%= meeting_minute.entity.business_name %></td>
-    <td style="text-align:center;"><%= meeting_minute.record_number %></td>
-    <td style="text-align:center;"><%= MeetingMinute.label_clasificacion(meeting_minute.version) %></td>
-    <td><%= link_to t('common.show'), meeting_minute, class: 'btn btn-sm btn-primary' %></td>
-    <td><%= link_to t('common.edit'), edit_meeting_minute_path(meeting_minute), class: 'btn btn-sm btn-secondary' if Current.user.level > 0 &&  Current.user.level < 4 || Current.user.ccl == 1 || Current.user.secretary_copasst == 1 || Current.user.copasst == 1 %></td>
-    <td><%= button_to "Delete", meeting_minute, method: :delete, class:"btn btn-sm btn-danger" if Current.user.level > 0 &&  Current.user.level < 4 %></td>
-    <td><%= link_to t('common.create_meeting_attendee'), crear_asistente_meeting_minutes_path(meeting_minute.id), class: 'btn btn-sm btn btn-warning' if Current.user.level > 0 &&  Current.user.level < 4 || Current.user.ccl == 1 || Current.user.secretary_copasst == 1 || Current.user.copasst == 1 %></td>
-    <td><%= link_to t('common.create_meeting_commitment'), crear_compromiso_meeting_minutes_path(meeting_minute.id), class: 'btn btn-sm btn btn-warning' if Current.user.level > 0 &&  Current.user.level < 4 || Current.user.ccl == 1 || Current.user.secretary_copasst == 1 || Current.user.copasst == 1 %></td>
-    <td><%= link_to t('common.create_meeting_signature'), crear_firma_meeting_minutes_path(meeting_minute.id), class: 'btn btn-sm btn btn-warning' %></td>
-    <td><%= link_to "PDF", meeting_minute_path(meeting_minute.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
-    <td><%= link_to "Duplicar", crear_copia_acta_meeting_minutes_path(meeting_minute.id), class: 'btn btn-sm btn-success' %></td>
-
-</tr>  
-
-
+    <td data-label="Fecha">
+        <%= meeting_minute.date %>
+    </td>
+    <td data-label="Empresa">
+        <%= meeting_minute.entity.business_name %>
+    </td>
+    <td data-label="N° Acta" class="text-center">
+        <%= meeting_minute.record_number %>
+    </td>
+    <td data-label="Tipo de acta" class="text-center">
+        <%= MeetingMinute.label_clasificacion(meeting_minute.version) %>
+    </td>
+    <td data-label="Ver" class="text-center">
+        <%= link_to meeting_minute, class: "conesst-btn conesst-btn-primary" do %>
+            <i class="bi bi-eye me-1"></i>
+            <%= t('common.show') %>
+        <% end %>
+    </td>
+    <td data-label="Editar" class="text-center">
+        <% if Current.user.level > 0 && Current.user.level < 4 || Current.user.ccl == 1 || Current.user.secretary_copasst == 1 || Current.user.copasst == 1 %>
+            <%= link_to edit_meeting_minute_path(meeting_minute), class: "conesst-btn conesst-btn-primary" do %>
+                <i class="bi bi-pencil-square me-1"></i>
+                <%= t('common.edit') %>
+            <% end %>
+        <% end %>
+    </td>
+    <td data-label="Eliminar" class="text-center">
+        <% if Current.user.level > 0 && Current.user.level < 4 %>
+            <%= button_to meeting_minute, method: :delete, class: "btn btn-sm btn-danger", form: {data: {turbo_confirm: "¿Está seguro de eliminar esta acta?"}} do %>
+                <i class="bi bi-trash me-1"></i>
+                Eliminar
+            <% end %>
+        <% end %>
+    </td>
+    <td data-label="Asistentes" class="text-center">
+        <% if Current.user.level > 0 && Current.user.level < 4 || Current.user.ccl == 1 || Current.user.secretary_copasst == 1 || Current.user.copasst == 1 %>
+            <%= link_to crear_asistente_meeting_minutes_path(meeting_minute.id), class: "conesst-btn conesst-btn-warning" do %>
+                <i class="bi bi-people me-1"></i>
+                <%= t('common.create_meeting_attendee') %>
+            <% end %>
+        <% end %>
+    </td>
+    <td data-label="Compromisos" class="text-center">
+        <% if Current.user.level > 0 && Current.user.level < 4 || Current.user.ccl == 1 || Current.user.secretary_copasst == 1 || Current.user.copasst == 1 %>
+            <%= link_to crear_compromiso_meeting_minutes_path(meeting_minute.id), class: "conesst-btn conesst-btn-warning" do %>
+                <i class="bi bi-list-check me-1"></i>
+                <%= t('common.create_meeting_commitment') %>
+            <% end %>
+        <% end %>
+    </td>
+    <td data-label="Firmas" class="text-center">
+        <%= link_to crear_firma_meeting_minutes_path(meeting_minute.id), class: "conesst-btn conesst-btn-warning" do %>
+            <i class="bi bi-pen me-1"></i>
+            <%= t('common.create_meeting_signature') %>
+        <% end %>
+    </td>
+    <td data-label="PDF" class="text-center">
+        <%= link_to meeting_minute_path(meeting_minute.id, format: "pdf"), class: "conesst-btn conesst-btn-success" do %>
+            <i class="bi bi-file-earmark-pdf me-1"></i>
+            PDF
+        <% end %>
+    </td>
+    <td data-label="Duplicar Acta" class="text-center">
+        <%= link_to crear_copia_acta_meeting_minutes_path(meeting_minute.id), class: "conesst-btn conesst-btn-success" do %>
+            <i class="bi bi-copy me-1"></i>
+            Duplicar
+        <% end %>
+    </td>
+</tr>

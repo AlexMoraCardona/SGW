@@ -1,164 +1,22 @@
-<div align="left"; class="container col-12">
-    <a class="navbar-brand" href="/">
-        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-    </a>
-</div>
-<div class="container col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"> 
-    <%= render 'encabezado' %>
-    <div></br></div>
-    <table class="table table-hover" style="border:1px solid white"> 
-        <tr>
-            <td style="background-color: white;">&nbsp;</td>
-            <th style="border:1px solid black">NOMBRE Y APELLIDO</th>
-            <th style="border:1px solid black">N° DE DOCUMENTO</th>
-            <th style="border:1px solid black">CARGO</th>
-            <th style="border:1px solid black">ÁREA</th>
-            <td style="background-color: white;">&nbsp;</td>
-        </tr>
-        <tr>
-            <td style="background-color: white;">&nbsp;</td>
-            <td style="border:1px solid black"><%=@colaborador.name%></td>
-            <td style="border:1px solid black"><%=@colaborador.nro_document%></td>
-            <td style="border:1px solid black"><%=@provides_protection.post_colaborador%></td>
-            <td style="border:1px solid black"><%=@provides_protection.unit_colaborador%></td>
-            <td style="background-color: white;">&nbsp;</td>
-        </tr>
-    </table>
-    <table class="table table-hover" style="border:1px solid white"> 
-        <tr>
-            <td style="background-color: white;">&nbsp;</td>
-            <td style="border:1px solid white">
-                <div class="row text-center">
-                    <strong>COMPROMISO</strong>
-                </div> 
-            </td>
-            <td style="background-color: white;">&nbsp;</td>
-        </tr>
-        <tr>
-            <td style="background-color: white;">&nbsp;</td>
-            <td style="border:1px solid white">
-                <div class="row text-justify">
-                    <p>Me comprometo a utilizar adecuadamente durante la jornada laboral los elementos de protección personal suministrados por <strong><%= @provides_protection.entity.business_name if @provides_protection.present? %></strong> con el fin de dar cumplimiento a las normas de Seguridad y Salud en el Trabajo vigentes y aplicables para la entidad, las cuales contribuyen a mi bienestar mental, físico y social.</p>
-                </div> 
-            </td>
-            <td style="background-color: white;">&nbsp;</td>
-        </tr>
-        <tr>
-            <td style="background-color: white;">&nbsp;</td>
-            <td style="border:1px solid white">
-                <div class="row text-justify">
-                    <p>"El uso de los equipos y elementos de protección personal (incluyendo ropa de trabajo) está enmarcado en la siguiente normatividad:                                                                                                                                                                                                                                                                                LEY 9 DE 1979: Art. 122, sobre elementos de protección personal: “a- Los empleadores están obligados a proporcionar a cada trabajador, sin costo para este, elementos de protección personal” RESOLUCIÓN 2400 de 1979: Son obligaciones de los trabajadores: Utilizar y mantener adecuadamente las instalaciones de la empresa, los elementos de trabajo, los dispositivos para el control de riesgos y los equipos de protección personal que el patrono suministre, y conservar el orden y aseo en los lugares de trabajo.  Decreto 1072 de 2015 Art. 2.2.4.6.12): Se debe registrar la entrega de Equipos y Elementos de protección personal. Resolución 0312 de 2019 establece los estándares mínimos del Sistema de Gestión de SST" </p>
-                </div> 
-            </td>
-            <td style="background-color: white;">&nbsp;</td>
-        </tr>
-        <tr>
-            <td style="background-color: white;">&nbsp;</td>
-            <td style="border:1px solid white">
-                <div class="row text-justify">
-                    <p>El presente compromiso quedará archivado en el Área de Talento Humano para los fines pertinentes.</p>
-                </div> 
-            </td>
-            <td style="background-color: white;">&nbsp;</td>
-        </tr>
+<div class="container-fluid px-2 px-md-4">
+    <%= render 'templates/encabezado' if @template.present? %>
 
-    </table>
-    <table class="table table-hover" style="border:1px solid white"> 
-        <tr>
-            <td style="background-color: white;">&nbsp;</td>
-            <td style="border:1px solid white;text-align:center">
-                <strong>ELEMENTOS DE PROTECCIÓN PERSONAL (EPP)</strong>
-            </td>
-            <td style="background-color: white;">&nbsp;</td>
-        </tr>
-    </table>
-    <table class="table table-hover" style="border:1px solid white"> 
-        <tr>
-            <th style="border:1px solid black;text-align:center">ITEM</th>
-            <th style="border:1px solid black">DESCRIPCIÓN</th>
-            <th style="border:1px solid black;text-align:center">CANTIDAD</th>
-            <th style="border:1px solid black;text-align:center">FECHA DE ENTREGA</th>
-        </tr>
-        <% @provides_protection_items.each do |provides_protection_item| %>             
-            <tbody>
-                <tr>
-                    <td style="border:1px solid black;text-align:center"><%= provides_protection_item.num %></td>
-                    <td style="border:1px solid black"><%= provides_protection_item.protection_element.name %></td>
-                    <td style="border:1px solid black;text-align:center"><%= provides_protection_item.cant %></td>
-                    <td style="border:1px solid black;text-align:center"><%= provides_protection_item.date_entrega %></td>
-                </tr>
-            </body>
+    <% if @template.present? %>
+        <% format_number = @template.format_number.to_i %>
+        <% plantilla = "provides_protections/#{format_number}" %>
+
+        <% if lookup_context.exists?(plantilla, [], true) %>
+            <%= render plantilla, template: @template %>
+        <% else %>
+            <div class="alert alert-warning text-center my-4">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            La plantilla <strong>#{format_number}</strong> aún no tiene
+            un formato de visualización configurado.
+            </div>
         <% end %>
-    </table>
-    <table class="table table-hover" style="border:1px solid white"> 
-        <tr>
-            <td>&nbsp;</td>
-        </tr>
-        <tr>
-            <td style="border:1px solid white;text-align:center">
-                <strong>DATOS DEL RESPONSABLE DE LA ENTREGA DE LOS ELEMENTOS</strong>
-            </td>
-        </tr>
-    </table>
-    <table class="table table-hover" style="border:1px solid white"> 
-        <tr>
-            <th style="border:1px solid black">NOMBRE Y APELLIDOS</th>
-            <th style="border:1px solid black">CÉDULA</th>
-            <th style="border:1px solid black">CARGO</th>
-            <th style="border:1px solid black">FECHA FIRMA</th>
-            <th style="border:1px solid black">FIRMA</th>
-        </tr>
-        <tr>
-            <td style="border:1px solid black"><%= @responsable.name %></td>
-            <td style="border:1px solid black"><%= @responsable.nro_document %></td>
-            <td style="border:1px solid black"><%= User.label_activity(@responsable.activity) %></td>
-            <td style="border:1px solid black"><%= @provides_protection.date_firm_responsible %></td>
-            <td style="border:1px solid black;text-align:center">
-                <% if @provides_protection.firm_responsible == 1 %>
-                    <% if @responsable.firm.attached? %>
-                       <% if @responsable.firm.image? %> 
-                            <%= image_tag @responsable.firm, class: "firma" %>
-                            <p align="center">________________________________</p>
-                        <% end %>
-                    <% end %>
-                <% end %>    
-            </td>
-        </tr>
-    </table>
-    <table class="table table-hover" style="border:1px solid white"> 
-        <tr>
-            <td style="border:1px solid white;text-align:center">
-                <strong>DATOS DEL COLABORADOR</strong>
-            </td>
-        </tr>
-    </table>
-    <table class="table table-hover" style="border:1px solid white"> 
-        <tr>
-            <th style="border:1px solid black">NOMBRE Y APELLIDOS</th>
-            <th style="border:1px solid black">CÉDULA</th>
-            <th style="border:1px solid black">CARGO</th>
-            <th style="border:1px solid black">FECHA FIRMA</th>
-            <th style="border:1px solid black">FIRMA</th>
-        </tr>
-        <tr>
-            <td style="border:1px solid black"><%= @colaborador.name %></td>
-            <td style="border:1px solid black"><%= @colaborador.nro_document %></td>
-            <td style="border:1px solid black"><%= @provides_protection.post_colaborador %></td>
-            <td style="border:1px solid black"><%= @provides_protection.date_firm_colaborador %></td>
-            <td style="border:1px solid black;text-align:center">
-                <% if @provides_protection.firm_colaborador == 1 %>
-                    <% if @colaborador.firm.attached? %>
-                       <% if @colaborador.firm.image? %> 
-                            <%= image_tag @colaborador.firm, class: "firma" %>
-                            <p align="center">________________________________</p>
-                        <% end %>
-                    <% end %>
-                <% end %>    
-            </td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-        </tr>
-    </table>
+    <% end %>
 
-</div>    
+    <%= render 'evaluation_rule_details/control_cambios' if @template_versions.present? %>
+</div>
+
+ 

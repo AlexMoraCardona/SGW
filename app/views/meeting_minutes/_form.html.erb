@@ -1,148 +1,217 @@
-<div class="container col-11 card p-5"> 
-    <%= render 'encabezado' %>
-
-    <%= form_with model: @meeting_minute do |form| %>
-        <br>
-        <%= form.hidden_field :entity_id, :value => @entity.id, class: "form-control" if @entity.present? %>
-        <%= form.hidden_field :evaluation_id, :value => @evaluation.id, class: "form-control" if @evaluation.present? %>
-        <%= form.hidden_field :user_id, :value => Current.user.id, class: "form-control" if Current.present? %>
-        <%= form.hidden_field :elaborated, :value => Current.user.name, class: "form-control" if Current.present? %>
-        
-
-        <div class="row">
-            <div class="col">
-                <%= form.label :version, style: "display: block" %>
-                <%= form.select(:version, [['Acta de Asesoría', 0], ['Acta del COPASST', 1], ['Acta de la Brigada de Emergencia', 2], ['Acta del Comité de Convivencia', 3]]) %>
-            </div>
+<div class="conesst-page">
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-journal-text fs-5"></i>
+        <div>
+          <h4 class="mb-0">Acta de reunión</h4>
+          <small class="text-muted">
+            Registro y documentación de la reunión
+          </small>
         </div>
-        </br>
-
-        <div class="row">
-            <div class="col-4">
-                <%= form.label :date, style: "display: block" %>
-                <%= form.date_field :date,  class: "form-control" %>
-            </div>
-            <div class="col-4">
-                <%= form.label :area_process_committee,  style: "display: block" %>
-                <%= form.select(:area_process_committee, [['Sin seleccionar', 'Sin seleccionar'], ['SG-SST', 'SG-SST']]) %>
-            </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <%= form_with model: @meeting_minute do |form| %>
+        <%= form.hidden_field :entity_id, value: @entity.id if @entity.present? %>
+        <%= form.hidden_field :evaluation_id, value: @evaluation.id if @evaluation.present? %>
+        <%= form.hidden_field :user_id, value: Current.user.id if Current.present? %>
+        <%= form.hidden_field :elaborated, value: Current.user.name if Current.present? %>
+        <%= form.hidden_field :code, value: @template.reference if @template.present? %>
+        <%= form.hidden_field :vers, value: @template.version.to_i if @template.present? %>
+        <div class="row g-3 mb-4">
+          <div class="col-12 col-md-6">
+            <%= form.label :version, class: "form-label fw-semibold" %>
+            <%= form.select :version, [['Acta de Asesoría', 0], ['Acta del COPASST', 1], ['Acta de la Brigada de Emergencia', 2], ['Acta del Comité de Convivencia', 3]], {}, class: "form-select" %>
+          </div>
         </div>
-        </br>
-        <div class="col">
-            <%= form.label :objective_meeting, style: "display: block" %>
-            <%= form.text_field :objective_meeting,  class: "form-control" %>
-        </div>
-        </br>
-        <div class="col">
-            <%= form.label :meeting_type,  style: "display: block" %>
-            <%= form.select(:meeting_type, [['Sin seleccionar', 'Sin seleccionar'], ['Comité', 'Comité'], ['Asesoría', 'Asesoría'], ['Auditoría', 'Auditoría']]) %>
-        </div>
-        </br>
-        <div class="row">
-            <div class="col-5">
-                <%= form.label :place, style: "display: block" %>
-                <%= form.text_field :place,  class: "form-control" %>
+        <div class="conesst-card mb-4">
+          <div class="conesst-card-header">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-info-circle fs-5"></i>
+              <div>
+                <h5 class="mb-0">Información general</h5>
+                <small class="text-muted">
+                  Datos básicos de la reunión
+                </small>
+              </div>
             </div>
-            <div class="col-3">
-                <%= form.label :start_time, style: "display: block" %>
-                <%= form.time_field :start_time,  class: "form-control" %>
+          </div>
+          <div class="conesst-card-body">
+            <div class="row g-3">
+              <div class="col-12 col-md-4">
+                <%= form.label :date, class: "form-label fw-semibold" %>
+                <%= form.date_field :date, class: "form-control" %>
+              </div>
+              <div class="col-12 col-md-4">
+                <%= form.label :area_process_committee, class: "form-label fw-semibold" %>
+                <%= form.select :area_process_committee, [['Sin seleccionar', 'Sin seleccionar'], ['SG-SST', 'SG-SST']], {}, class: "form-select" %>
+              </div>
+              <div class="col-12">
+                <%= form.label :objective_meeting, class: "form-label fw-semibold" %>
+                <%= form.text_field :objective_meeting, class: "form-control" %>
+              </div>
+              <div class="col-12 col-md-6">
+                <%= form.label :meeting_type, class: "form-label fw-semibold" %>
+                <%= form.select :meeting_type, [['Sin seleccionar', 'Sin seleccionar'], ['Comité', 'Comité'], ['Asesoría', 'Asesoría'], ['Auditoría', 'Auditoría']], {}, class: "form-select" %>
+              </div>
+              <div class="col-12 col-md-6">
+                <%= form.label :place, class: "form-label fw-semibold" %>
+                <%= form.text_field :place, class: "form-control" %>
+              </div>
+              <div class="col-12 col-md-6">
+                <%= form.label :start_time, class: "form-label fw-semibold" %>
+                <%= form.time_field :start_time, class: "form-control" %>
+              </div>
+              <div class="col-12 col-md-6">
+                <%= form.label :end_time, class: "form-label fw-semibold" %>
+                <%= form.time_field :end_time, class: "form-control" %>
+              </div>
             </div>
-            <div class="col-3">
-                <%= form.label :end_time, style: "display: block" %>
-                <%= form.time_field :end_time,  class: "form-control" %>
-            </div>
+          </div>
         </div>
-        </br>
-        <hr>        
         <% if @meeting_attendees.present? %>
-            <%= render partial: 'asistentes'  %>  
+          <div class="conesst-card mb-4">
+            <div class="conesst-card-header">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-people fs-5"></i>
+                <div>
+                  <h5 class="mb-0">Asistentes</h5>
+                  <small class="text-muted">
+                    Personas convocadas a la reunión
+                  </small>
+                </div>
+              </div>
+            </div>
+            <div class="conesst-card-body">
+              <%= render partial: 'asistentes' %>
+            </div>
+          </div>
         <% end %>
-        <br>
-        <hr>   
-        <br>
-        <div class="row">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <h class="display-6">Orden del Día:</h>
-                    </tr>
-                </thead>
-                <hr>
-                <tbody>
-                    <tr>
-                        <%= form.label :order_day, style: "display: block" %>
-                        <%= form.rich_text_area :order_day %>
-                    </tr>
-                </tbody>      
-            </table>
+        <div class="conesst-card mb-4">
+          <div class="conesst-card-header">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-list-ol fs-5"></i>
+              <div>
+                <h5 class="mb-0">Orden del día</h5>
+                <small class="text-muted">
+                  Temas programados para la reunión
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="conesst-card-body">
+            <%= form.label :order_day, class: "form-label fw-semibold" %>
+            <%= form.rich_text_area :order_day %>
+          </div>
         </div>
-        <hr>
-        <br>
-        <div class="row">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <h class="display-6">Temas tratados:</h>
-                    </tr>
-                </thead>
-                <hr>
-                <tbody>
-                    <tr>
-                        <%= form.label :Issues, style: "display: block" %>
-                        <%= form.rich_text_area :Issues,  class: "form-control" %>
-                    </tr>
-                </tbody>      
-            </table>
+        <div class="conesst-card mb-4">
+          <div class="conesst-card-header">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-chat-left-text fs-5"></i>
+              <div>
+                <h5 class="mb-0">Temas tratados</h5>
+                <small class="text-muted">
+                  Desarrollo y contenido de la reunión
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="conesst-card-body">
+            <%= form.label :Issues, "Temas tratados", class: "form-label fw-semibold" %>
+            <%= form.rich_text_area :Issues %>
+          </div>
         </div>
-        <hr>
-        <br>
-        <div class="row">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <h class="display-6">Proposiciones y varios</h>
-                    </tr>
-                </thead>
-                <hr>
-                <tbody>
-                    <tr>
-                        <%= form.label :miscellaneous_propositions, style: "display: block" %>
-                        <%= form.rich_text_area :miscellaneous_propositions,  class: "form-control" %>
-                    </tr>
-                </tbody>      
-            </table>
+        <div class="conesst-card mb-4">
+          <div class="conesst-card-header">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-chat-square-text fs-5"></i>
+              <div>
+                <h5 class="mb-0">Proposiciones y varios</h5>
+                <small class="text-muted">
+                  Otros asuntos tratados durante la reunión
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="conesst-card-body">
+            <%= form.label :miscellaneous_propositions, "Proposiciones y varios", class: "form-label fw-semibold" %>
+            <%= form.rich_text_area :miscellaneous_propositions %>
+          </div>
         </div>
-        <br>
         <% if @meeting_commitments.present? %>
-            <%= render partial: 'commitments'  %>  
-        <% end %>
-        <br>
-        <div class="row">
-            <div class="col">
-                <h5>Agotada la reunión, se da por terminada siendo las: <small class="text-muted"><%= @meeting_minute.end_time if @meeting_minute.present? %></small></h5>                
+          <div class="conesst-card mb-4">
+            <div class="conesst-card-header">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-check2-square fs-5"></i>
+                <div>
+                  <h5 class="mb-0">Compromisos</h5>
+                  <small class="text-muted">
+                    Compromisos establecidos durante la reunión
+                  </small>
+                </div>
+              </div>
             </div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col">
-                <h5>Para constancia firman:</h5>                
+            <div class="conesst-card-body">
+              <%= render partial: 'commitments' %>
             </div>
-        </div>
-        <br>
-        <% if @assistants.present? %>
-            <%= render partial: 'firmantes'  %>  
+          </div>
         <% end %>
-        <br>
-        <div>
-            Elaboró: <%= Current.user.name %>
+        <div class="conesst-card mb-4">
+          <div class="conesst-card-header">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-clock-history fs-5"></i>
+              <div>
+                <h5 class="mb-0">Cierre de la reunión</h5>
+              </div>
+            </div>
+          </div>
+          <div class="conesst-card-body">
+            <p class="mb-0">
+              Agotada la reunión, se da por terminada siendo las:
+              <span class="text-muted">
+                <%= @meeting_minute.end_time if @meeting_minute.present? %>
+              </span>
+            </p>
+          </div>
         </div>
-        <br>
-        <div>
-            <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
-            <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, meeting_minutes_path %>
+        <div class="conesst-card mb-4">
+          <div class="conesst-card-header">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-pen fs-5"></i>
+              <div>
+                <h5 class="mb-0">Firmantes</h5>
+                <small class="text-muted">
+                  Para constancia de la reunión
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="conesst-card-body">
+            <p class="mb-3">
+              Para constancia firman:
+            </p>
+            <% if @assistants.present? %>
+              <%= render partial: 'firmantes' %>
+            <% end %>
+          </div>
         </div>
-    <% end %>
+        <div class="mb-4">
+          <div class="small text-muted">
+            Elaboró
+          </div>
+          <div class="fw-semibold">
+            <%= Current.user.name %>
+          </div>
+        </div>
+        <div class="conesst-actions">
+          <%= form.submit t('common.submit'), class: "conesst-btn conesst-btn-primary" %>
+          <%= link_to meeting_minutes_path, class: "conesst-btn" do %>
+            <i class="bi bi-arrow-left me-1"></i>
+            Retornar
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>
-<br>
-
-

@@ -22,7 +22,7 @@ class MeetingMinute < ApplicationRecord
         acta_nueva.end_time = acta.end_time
         acta_nueva.code = acta.code
         acta_nueva.version = acta.version
-        
+        acta_nueva.vers = acta.vers
         acta_nueva.area_process_committee = acta.area_process_committee
         acta_nueva.objective_meeting = acta.objective_meeting
         acta_nueva.meeting_type = acta.meeting_type

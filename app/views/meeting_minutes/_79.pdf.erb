@@ -1,0 +1,198 @@
+<head>
+    <meta charset="utf-8" />
+    <%= wicked_pdf_stylesheet_link_tag "pdf_conesst" %>
+</head>
+<div class="pdf-document">
+    <div class="pdf-space"></div>
+    <div class="pdf-section-title">
+        Información del acta
+    </div>
+    <table class="pdf-table">
+        <tr>
+            <td class="pdf-cell-left pdf-col-30">
+                <strong>Fecha:</strong>
+                <span class="pdf-text">
+                    <%= @meeting_minute.date if @meeting_minute.present? %>
+                </span>
+            </td>
+            <td class="pdf-cell-left pdf-col-30">
+                <strong>Acta N°:</strong>
+                <span class="pdf-text">
+                    <%= @meeting_minute.record_number if @meeting_minute.present? %>
+                </span>
+            </td>
+            <td class="pdf-cell-left pdf-col-40">
+                <strong>Clasificación Acta:</strong>
+                <span class="pdf-text">
+                    <%= MeetingMinute.label_clasificacion(@meeting_minute.version) if @meeting_minute.present? %>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" class="pdf-cell-left">
+                <strong>Área / Proceso / Comité:</strong>
+                <span class="pdf-text">
+                    <%= @meeting_minute.area_process_committee if @meeting_minute.present? %>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" class="pdf-cell-left">
+                <strong>Objetivo de la Reunión:</strong>
+                <span class="pdf-text">
+                    <%= @meeting_minute.objective_meeting if @meeting_minute.present? %>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" class="pdf-cell-left">
+                <strong>Tipo de reunión:</strong>
+                <span class="pdf-text">
+                    <%= @meeting_minute.meeting_type if @meeting_minute.present? %>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td class="pdf-cell-left pdf-col-40">
+                <strong>Lugar:</strong>
+                <span class="pdf-text">
+                    <%= @meeting_minute.place if @meeting_minute.present? %>
+                </span>
+            </td>
+            <td class="pdf-cell-left pdf-col-30">
+                <strong>Hora inicio:</strong>
+                <span class="pdf-text">
+                    <%= @meeting_minute.start_time.strftime("%I:%M %p") if @meeting_minute.start_time.present? %>
+                </span>
+            </td>
+            <td class="pdf-cell-left pdf-col-30">
+                <strong>Hora fin:</strong>
+                <span class="pdf-text">
+                    <%= @meeting_minute.end_time.strftime("%I:%M %p") if @meeting_minute.end_time.present? %>
+                </span>
+            </td>
+        </tr>
+    </table>
+    <% if @meeting_attendees.present? %>
+        <div class="pdf-space"></div>
+        <div class="pdf-section-title">
+            Asistentes
+        </div>
+        <table class="pdf-table">
+            <tr>
+                <th class="pdf-cell-left pdf-col-40">
+                    Nombre
+                </th>
+                <th class="pdf-cell-left pdf-col-30">
+                    Cargo
+                </th>
+                <th class="pdf-cell-left pdf-col-30">
+                    Área / Proceso
+                </th>
+            </tr>
+            <% @meeting_attendees.each do |meeting_attendee| %>
+                <tr>
+                    <td class="pdf-cell-left pdf-col-40">
+                        <%= meeting_attendee.name %>
+                    </td>
+                    <td class="pdf-cell-left pdf-col-30">
+                        <%= meeting_attendee.post %>
+                    </td>
+                    <td class="pdf-cell-left pdf-col-30">
+                        <%= meeting_attendee.process_area %>
+                    </td>
+                </tr>
+            <% end %>
+        </table>
+    <% end %>
+    <div class="pdf-space"></div>
+    <div class="pdf-section-title">
+        Orden del Día
+    </div>
+    <div class="pdf-text">
+        <%= @meeting_minute.order_day if @meeting_minute.present? %>
+    </div>
+    <div class="pdf-space"></div>
+    <div class="pdf-section-title">
+        Temas tratados
+    </div>
+    <div class="pdf-text">
+        <%= @meeting_minute.Issues if @meeting_minute.present? %>
+    </div>
+    <div class="pdf-space"></div>
+    <div class="pdf-section-title">
+        Proposiciones y varios
+    </div>
+    <div class="pdf-text">
+        <%= @meeting_minute.miscellaneous_propositions if @meeting_minute.present? %>
+    </div>
+    <% if @meeting_commitments.present? %>
+        <div class="pdf-space"></div>
+        <%= render partial: "commitments" %>
+    <% end %>
+    <div class="pdf-space"></div>
+    <div class="pdf-text">
+        Agotada la reunión, se da por terminada siendo las:
+        <strong>
+            <%= @meeting_minute.end_time.strftime("%I:%M %p") if @meeting_minute.end_time.present? %>
+        </strong>
+    </div>
+    <div class="pdf-space"></div>
+    <div class="pdf-text">
+        Para constancia firman:
+    </div>
+    <% if @assistants.present? %>
+        <div class="pdf-space"></div>
+        <table class="pdf-signatures-table">
+            <% @assistants.each_slice(3) do |firmas| %>
+                <tr>
+                    <% firmas.each do |firm| %>
+                        <td class="pdf-signature-cell pdf-col-30">
+                            <div class="pdf-no-break">
+                                <% if firm.firm_assistant == 1 %>
+                                    <% if firm.user.firm.attached? %>
+                                        <% if firm.user.firm.image? %>
+                                            <%= image_tag(Evaluation.wicked_blob_path(firm.user.firm), class: "firmapdf") %>
+                                        <% end %>
+                                    <% end %>
+                                <% end %>
+                                <div class="pdf-text">
+                                    ______________________
+                                </div>
+                                <div class="pdf-text">
+                                    <strong>
+                                        <%= firm.user.name %>
+                                    </strong>
+                                </div>
+                                <div class="pdf-text">
+                                    <%= firm.post %>
+                                </div>
+                                <div class="pdf-text">
+                                    <%= firm.user.document.abbreviation %>:
+                                    <%= Firm.miles(firm.user.nro_document) %>
+                                </div>
+                                <% if firm.user.level == 2 %>
+                                    <div class="pdf-text">
+                                        Licencia:
+                                        <%= firm.user.license %>
+                                    </div>
+                                <% end %>
+                            </div>
+                        </td>
+                    <% end %>
+                    <% if firmas.length < 3 %>
+                        <% (3 - firmas.length).times do %>
+                            <td class="pdf-signature-cell pdf-col-30">
+                            </td>
+                        <% end %>
+                    <% end %>
+                </tr>
+            <% end %>
+        </table>
+    <% end %>
+    <div class="pdf-space"></div>
+    <div class="pdf-text">
+        <strong>Elaboró:</strong>
+        <%= @meeting_minute.elaborated if @meeting_minute.present? %>
+    </div>
+</div>

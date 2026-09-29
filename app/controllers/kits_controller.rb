@@ -18,7 +18,9 @@ class KitsController < ApplicationController
     end    
 
     def new
-      @kit = Kit.new  
+      @kit = Kit.new 
+      @template = Template.where("reference = ? and document_vigente = ?",'IBPA-SST',1).last  
+ 
     end    
 
     
@@ -114,7 +116,10 @@ class KitsController < ApplicationController
 
     def show
         @kit = Kit.find(params[:id])
-        @template = Template.where("format_number = ? and document_vigente = ?",60,1).last  
+        @template = Template.where("reference = ? and version = ?",@kit.code,@kit.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+        @entity = Entity.find(@kit.entity_id) if @kit.present?
+
     end    
 
     def kit_adjunto
@@ -123,22 +128,24 @@ class KitsController < ApplicationController
 
     def kit_pdf
         @kit = Kit.find(params[:id])
-        @template = Template.where("format_number = ? and document_vigente = ?",60,1).last  
+        @template = Template.where("reference = ? and version = ?",@kit.code,@kit.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+        @entity = Entity.find(@kit.entity_id) if @kit.present?
 
-        nombre_evidencia = 'InspecciónBotiquínPrimerosAuxilios.pdf'
 
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
                 pdf = WickedPdf.new.pdf_from_string(
                     render_to_string('kit_pdf'),
                     disable_javascript: true,
-                    margin: {top: 10, bottom: 10, left: 10, right: 10 },
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
                     page_size: 'letter',
-                    footer: {right: '[page] de [topage]'}
-                    
-                  )  
-                  send_data(pdf, filename: nombre_evidencia, disposition: 'attachment')      
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
             }
         end    
     end    
@@ -157,7 +164,7 @@ class KitsController < ApplicationController
     private
 
     def kit_params
-        params.require(:kit).permit(:date_creation, :area, :type_kit, :clasification_kit, :gauze, :gauze_obs, :sticking_plaster, :sticking_plaster_obs, :tongue_depressor, :tongue_depressor_obs, :gloves, :gloves_obs, :elastic_bandage25, :elastic_bandage25_obs, :elastic_bandage55, :elastic_bandage55_obs, :sell_cotton35, :sell_cotton35_obs, :sell_cotton55, :sell_cotton55_obs, :soap, :soap_obs, :saline_solution, :saline_solution_obs, :thermometer, :thermometer_obs, :alcohol, :alcohol_obs, :sterile_gauze, :sterile_gauze_obs, :dressing, :dressing_obs, :scissors, :scissors_obs, :flashlight, :flashlight_obs, :batteries, :batteries_obs, :spinal_board, :spinal_board_obs, :adult_cervical_collar, :adult_cervical_collar_obs, :child_cervical_collar, :child_cervical_collar_obs, :adult_immobilizers_top, :adult_immobilizers_top_obs, :adult_immobilizers_lower, :adult_immobilizers_lower_obs, :child_immobilizers_top, :child_immobilizers_top_obs, :child_immobilizers_lower, :child_immobilizers_lower_obs, :disposable_cups, :disposable_cups_obs, :lood_pressure_monitor, :lood_pressure_monitor_obs, :stethoscope, :stethoscope_obs, :mask_rcp, :mask_rcp_obs, :firm_user, :date_firm_user, :post, :user_id, :recomendaciones, :entity_id, kit_fotos: [])
+        params.require(:kit).permit(:date_creation, :area, :type_kit, :clasification_kit, :gauze, :gauze_obs, :sticking_plaster, :sticking_plaster_obs, :tongue_depressor, :tongue_depressor_obs, :gloves, :gloves_obs, :elastic_bandage25, :elastic_bandage25_obs, :elastic_bandage55, :elastic_bandage55_obs, :sell_cotton35, :sell_cotton35_obs, :sell_cotton55, :sell_cotton55_obs, :soap, :soap_obs, :saline_solution, :saline_solution_obs, :thermometer, :thermometer_obs, :alcohol, :alcohol_obs, :sterile_gauze, :sterile_gauze_obs, :dressing, :dressing_obs, :scissors, :scissors_obs, :flashlight, :flashlight_obs, :batteries, :batteries_obs, :spinal_board, :spinal_board_obs, :adult_cervical_collar, :adult_cervical_collar_obs, :child_cervical_collar, :child_cervical_collar_obs, :adult_immobilizers_top, :adult_immobilizers_top_obs, :adult_immobilizers_lower, :adult_immobilizers_lower_obs, :child_immobilizers_top, :child_immobilizers_top_obs, :child_immobilizers_lower, :child_immobilizers_lower_obs, :disposable_cups, :disposable_cups_obs, :lood_pressure_monitor, :lood_pressure_monitor_obs, :stethoscope, :stethoscope_obs, :mask_rcp, :mask_rcp_obs, :firm_user, :date_firm_user, :post, :user_id, :recomendaciones, :version, :code, :entity_id, kit_fotos: [])
     end 
 
 end  

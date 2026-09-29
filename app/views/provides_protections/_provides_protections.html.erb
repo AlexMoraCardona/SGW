@@ -1,70 +1,182 @@
 <% if @entity.present? %>
-    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
-<% end %>
-<% if @provides_protections.present? %>
-    <%= link_to t('common.create_provides_protection'), new_provides_protection_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level <  4 %>
+  <div class="mb-3">
+    <h4 class="mb-1">
+      <i class="bi bi-building me-2"></i>
+      <%= @entity.business_name %>
+    </h4>
 
-    <hr>
-
-        <%= search_form_for @q do |f| %>
-            <%= f.label :user_colaborador_cont %>
-            <%= f.select :user_colaborador_eq, @users,  {include_blank: true}, style: "width: 200px;" %>
-
-            <button type="submit" class="btn btn-sm btn-primary">Buscar</button>
-        <% end %>
-    </br>        
-    <%== pagy_info(@pagy) %>
-    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
-
-
-    <table class="table table-hover"> 
-        <thead> 
-            <tr>    
-                <th scope="col">Fecha de entrega</th>
-                <th scope="col">Colaborador</th>
-                <th scope="col">Firma Colaborador</th>
-                <th scope="col">Responsable entrega EPP</th>
-                <th scope="col">Firma Responsable</th>
-                <th scope="col">Adicionar EPP</th>
-                <th scope="col">Ver formato</th>
-                <th scope="col">Ver consolidado</th>
-                <th scope="col">Eliminar</th>
-                <th scope="col">PDF</th>
-
-            </tr>
-        </thead>
-        <tbody>
-            <% @provides_protections.each do |provides_protection| %> 
-                <tr>
-                    <td><%= provides_protection.created_at.strftime("%F") %></td>
-                    <td><%= provides_protection.name_user(provides_protection.user_colaborador) %></td>
-                    <td>
-                        <% if provides_protection.firm_colaborador.to_i == 0 %>
-                            <%= link_to t('common.firmar'), firmar_colaborador_provides_protections_path(provides_protection.id, 2), class: 'btn btn-sm btn btn-warning' %>
-                        <% else %>
-                            <%= provides_protection.date_firm_colaborador %> 
-                        <% end %>    
-                    </td>
-                    <td><%= provides_protection.name_user(provides_protection.user_responsible) %></td>
-                    <td>
-                        <% if provides_protection.firm_responsible.to_i == 0 %>
-                            <%= link_to t('common.firmar'), firmar_responsable_provides_protections_path(provides_protection.id, 3), class: 'btn btn-sm btn btn-warning' %>
-                        <% else %>
-                            <%= provides_protection.date_firm_responsible %> 
-                        <% end %>    
-                    </td>
-                    <td><%= link_to t('common.create_item_provides_protection'), crear_item_provide_provides_protections_path(provides_protection.id), class: 'btn btn-sm btn-warning' %></td>
-                    <td><%= link_to t('common.show_provides_protection'), provides_protection_path(provides_protection.id), class: 'btn btn-sm btn-warning' %></td>
-                    <td><%= link_to 'Consolidado', consolidado_provides_protections_path(provides_protection.user_colaborador), class: 'btn btn-sm btn-warning' %></td>
-                    <td><%= button_to "Eliminar", provides_protection, method: :delete, class:"btn btn-sm btn-danger" if Current.user.level > 0 && Current.user.level < 4 %></td>                    
-                    <td><%= link_to "PDF", ver_info_provide_provides_protections_path(provides_protection.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
-                </tr>
-            <% end %> 
-        </tbody>      
-    </table>  
-    <br>
-<% else %>
-    <div>
-        <%= link_to t('common.create_provides_protection'), new_provides_protection_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level <  4  %>
+    <div class="text-muted small">
+      <strong>NIT:</strong>
+      <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>
+      <%= "-#{@entity.verification_digit}" if @entity.verification_digit.present? %>
     </div>
+  </div>
+<% end %>
+
+<% if @provides_protections.present? %>
+  <div class="conesst-actions mb-3">
+    <% if Current.user.level > 0 && Current.user.level < 4 %>
+      <%= link_to new_provides_protection_path(entity_id: @entity.id), class: "conesst-btn conesst-btn-primary" do %>
+        <i class="bi bi-plus-circle me-1"></i>
+        <%= t("common.create_provides_protection") %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="conesst-card mb-3">
+    <div class="conesst-card-header">
+      <div>
+        <h6 class="mb-0">
+          <i class="bi bi-search me-2"></i>
+          Buscar entrega de EPP
+        </h6>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <%= search_form_for @q do |f| %>
+        <div class="row g-3 align-items-end">
+          <div class="col-12 col-md-6 col-lg-5">
+            <%= f.label :user_colaborador_cont, "Colaborador", class: "form-label fw-semibold" %>
+            <%= f.select :user_colaborador_eq, @users, { include_blank: "-- Todos los colaboradores --" }, { class: "form-select" } %>
+          </div>
+          <div class="col-12 col-md-auto">
+            <button type="submit" class="conesst-btn conesst-btn-primary">
+              <i class="bi bi-search me-1"></i>
+              Buscar
+            </button>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 mb-3">
+    <div class="small text-muted">
+      <%== pagy_info(@pagy) %>
+    </div>
+    <div>
+      <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+    </div>
+  </div>
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div>
+        <h6 class="mb-0">
+          <i class="bi bi-shield-check me-2"></i>
+          Entregas de elementos de protección personal
+        </h6>
+      </div>
+    </div>
+    <div class="conesst-card-body p-0">
+      <div class="conesst-table-wrapper">
+        <table class="conesst-table">
+          <thead>
+            <tr>
+              <th>Fecha de entrega</th>
+              <th>Colaborador</th>
+              <th>Firma Colaborador</th>
+              <th>Responsable entrega EPP</th>
+              <th>Firma Responsable</th>
+              <th>Adicionar EPP</th>
+              <th>Ver formato</th>
+              <th>Ver consolidado</th>
+              <th>Eliminar</th>
+              <th>PDF</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @provides_protections.each do |provides_protection| %>
+              <tr>
+                <td data-label="Fecha de entrega">
+                  <%= provides_protection.created_at.strftime("%F") %>
+                </td>
+                <td data-label="Colaborador">
+                  <%= provides_protection.name_user(provides_protection.user_colaborador) %>
+                </td>
+                <td data-label="Firma Colaborador">
+                  <% if provides_protection.firm_colaborador.to_i == 0 %>
+                    <%= link_to firmar_colaborador_provides_protections_path(provides_protection.id, 2), class: "conesst-btn conesst-btn-warning" do %>
+                      <i class="bi bi-pen me-1"></i>
+                      <%= t("common.firmar") %>
+                    <% end %>
+                  <% else %>
+                    <span class="small">
+                      <i class="bi bi-check-circle text-success me-1"></i>
+                      <%= provides_protection.date_firm_colaborador %>
+                    </span>
+                  <% end %>
+                </td>
+                <td data-label="Responsable entrega EPP">
+                  <%= provides_protection.name_user(provides_protection.user_responsible) %>
+                </td>
+                <td data-label="Firma Responsable">
+                  <% if provides_protection.firm_responsible.to_i == 0 %>
+                    <%= link_to firmar_responsable_provides_protections_path(provides_protection.id, 3), class: "conesst-btn conesst-btn-warning" do %>
+                      <i class="bi bi-pen me-1"></i>
+                      <%= t("common.firmar") %>
+                    <% end %>
+                  <% else %>
+                    <span class="small">
+                      <i class="bi bi-check-circle text-success me-1"></i>
+                      <%= provides_protection.date_firm_responsible %>
+                    </span>
+                  <% end %>
+                </td>
+                <td data-label="Adicionar EPP">
+                  <%= link_to crear_item_provide_provides_protections_path(provides_protection.id), class: "conesst-btn conesst-btn-warning" do %>
+                    <i class="bi bi-plus-circle me-1"></i>
+                    Adicionar
+                  <% end %>
+                </td>
+                <td data-label="Ver formato">
+                  <%= link_to provides_protection_path(provides_protection.id), class: "conesst-btn conesst-btn-warning" do %>
+                    <i class="bi bi-eye me-1"></i>
+                    Ver
+                  <% end %>
+                </td>
+                <td data-label="Ver consolidado">
+                  <%= link_to consolidado_provides_protections_path(provides_protection.user_colaborador), class: "conesst-btn conesst-btn-warning" do %>
+                    <i class="bi bi-list-check me-1"></i>
+                    Consolidado
+                  <% end %>
+                </td>
+                <td data-label="Eliminar">
+                  <% if Current.user.level > 0 && Current.user.level < 4 %>
+                    <%= button_to provides_protection, method: :delete, class: "btn btn-sm btn-danger", form: {data: {turbo_confirm: "¿Está seguro de eliminar este formato de entrega de EPP?"}} do %>
+                      <i class="bi bi-trash me-1"></i>
+                      Eliminar
+                    <% end %>
+                  <% end %>
+                </td>
+                <td data-label="PDF">
+                  <%= link_to ver_info_provide_provides_protections_path(provides_protection.id, format: "pdf"), class: "conesst-btn conesst-btn-success" do %>
+                    <i class="bi bi-file-earmark-pdf me-1"></i>
+                    PDF
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <div class="conesst-card">
+    <div class="conesst-card-body text-center py-4">
+      <div class="mb-3">
+        <i class="bi bi-shield-exclamation fs-1 text-muted"></i>
+      </div>
+      <h5 class="mb-2">
+        No hay formatos de entrega de EPP registrados
+      </h5>
+      <p class="text-muted mb-3">
+        Puede crear un nuevo formato de entrega para esta empresa.
+      </p>
+      <% if Current.user.level > 0 && Current.user.level < 4 %>
+        <%= link_to new_provides_protection_path(entity_id: @entity.id), class: "conesst-btn conesst-btn-primary" do %>
+          <i class="bi bi-plus-circle me-1"></i>
+          <%= t("common.create_provides_protection") %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
 <% end %>

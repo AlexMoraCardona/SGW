@@ -33,27 +33,34 @@ class MeetingMinutesController < ApplicationController
         @meeting_attendees = MeetingAttendee.where("meeting_minute_id = ?",@meeting_minute.id) if @meeting_minute.present?
         @meeting_commitments = MeetingCommitment.where("meeting_minute_id = ?",@meeting_minute.id).order(:id) if @meeting_minute.present?
         @assistants = Assistant.where("meeting_minute_id = ?",@meeting_minute.id) if @meeting_minute.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",79,1).last  
+        @template = Template.where("reference = ? and version = ?",@meeting_minute.code,@meeting_minute.vers).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
         
-        respond_to do |format|
+        nombre_archivo = @template.reference.to_s + '.pdf'
+        respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'Acta',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('show'),
+                    disable_javascript: true,
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
+                    page_size: 'letter',
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+            }
+        end    
+
     end    
 
     def new
         @meeting_minute = MeetingMinute.new  
-        @template = Template.where("format_number = ? and document_vigente = ?",79,1).last  
         @entity = Entity.find(Current.user.entity) if Current.present?
         @evaluation = Evaluation.where("entity_id = ?",@entity.id).last if @entity.present?
         @meeting_minutes = MeetingMinute.where("entity_id = ?",@entity) if @entity.present?
+        @template = Template.where("reference = ? and document_vigente = ?",'ADR-SST',1).last  
+
         if @meeting_minutes.present?
             @numero_acta = @meeting_minutes.count + 1
         else
@@ -105,7 +112,8 @@ class MeetingMinutesController < ApplicationController
         @meeting_attendees = MeetingAttendee.where("meeting_minute_id = ?",@meeting_minute.id) if @meeting_minute.present?
         @meeting_commitments = MeetingCommitment.where("meeting_minute_id = ?",@meeting_minute.id).order(:id) if @meeting_minute.present?
         @assistants = Assistant.where("meeting_minute_id = ?",@meeting_minute.id) if @meeting_minute.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",79,1).last  
+        @template = Template.where("reference = ? and version = ?",@meeting_minute.code,@meeting_minute.vers).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
     end
     
@@ -130,7 +138,7 @@ class MeetingMinutesController < ApplicationController
         MeetingAttendee.copiar_asistentes(params[:id], nuevo.id)
         MeetingCommitment.copiar_compromisos(params[:id], nuevo.id)
         Assistant.copiar_firmas(params[:id], nuevo.id)
-        redirect_to meeting_minutes_path, notice: 'Acta copiadaa correctamente', meeting_minute: :see_other
+        redirect_to meeting_minutes_path, notice: 'Acta copiada correctamente', meeting_minute: :see_other
     end  
 
     private 
@@ -138,7 +146,7 @@ class MeetingMinutesController < ApplicationController
     def meeting_minute_params
         params.require(:meeting_minute).permit(:date, :start_time, :end_time, :code, :version,
         :record_number, :area_process_committee, :objective_meeting, :meeting_type, :place, 
-        :order_day, :Issues, :miscellaneous_propositions, :elaborated, :entity_id, :user_id, :evaluation_id)
+        :order_day, :Issues, :miscellaneous_propositions, :elaborated, :entity_id, :user_id, :evaluation_id, :vers)
     end 
 
 end    

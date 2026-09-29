@@ -1,93 +1,148 @@
-<div class="container col-12 card p-5">
-    <br>
-    <%= form_with model: @provides_protection_item do |form| %>
-        <% @provides_protection_item.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %>   
-        </br>
-        <div class="col-sm-4">
-            <%= form.label :protection_element_id,  style: "display: block" %>
-            <%= form.collection_select :protection_element_id, @protection_elements.order(id: :asc), :id, :name, { prompt: '--Seleccionar Elemento de Protección--' },
-            { class: 'form-control input-sm select2' } %>
-        </div>        
-        </br>
-        <div class="row g-2">
-            <div class="col-sm-3">
-                <button type="button" class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la cantidad de elementos entregados."><%= t('.cant') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-                <%= form.number_field :cant,  class: "form-control" %>
-            </div>  
-            <div class="col-sm-1">
-            </div>  
-            <div class="col-sm-4"> 
-                <button type="button" class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la fecha de entrega de los elementos entregados."><%= t('.date_entrega') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-                <%= form.date_field :date_entrega,  class: "form-control" %>
-            </div>        
-        </div>   
-        </br>
-
-
-        <%= form.hidden_field :provides_protection_id, :value => params[:id].to_i, class: "form-control" %>
-        <%= form.hidden_field :num, :value => @cant.to_i, class: "form-control" %>
-
-        <br>    
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, provides_protections_path(entity_id: Current.user.entity.to_i) %>
-    <% end %>
-
-</div>
-<br>
-<div class="container col-12 card p-5">
-    <hr>
-    <br>
-    <div class="d-flex">
-        <div class="container">
-            <h class="display-6">Elementos de Protección Personal Entregados</h>
-        </div> 
+<div class="conesst-page">
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-shield-plus fs-5"></i>
+        <div>
+          <h4 class="mb-0">
+            Adicionar Elemento de Protección Personal
+          </h4>
+          <small class="text-muted">
+            Registro de los elementos entregados al colaborador
+          </small>
+        </div>
+      </div>
     </div>
-    <hr>
-            
-    <% if @provides_protection_items.present? %>
-        <table class="table table-hover">
+    <div class="conesst-card-body">
+      <%= form_with model: @provides_protection_item do |form| %>
+        <% @provides_protection_item.errors.full_messages.each do |error| %>
+          <div class="alert alert-danger mb-4" role="alert">
+            <i class="bi bi-exclamation-triangle me-1"></i>
+            <%= error %>
+          </div>
+        <% end %>
+        <div class="row g-4">
+          <div class="col-12 col-md-7">
+            <%= form.label :protection_element_id, "Elemento de Protección", class: "form-label fw-semibold" %>
+            <%= form.collection_select :protection_element_id, @protection_elements.order(id: :asc), :id, :name, { prompt: "-- Seleccionar Elemento de Protección --" }, { class: "form-select" } %>
+          </div>
+          <div class="col-12 col-md-5 col-lg-3">
+            <%= form.label :cant, t(".cant"), class: "form-label fw-semibold" %>
+            <div class="d-flex align-items-center gap-2">
+              <%= form.number_field :cant, class: "form-control", min: 1 %>
+              <button type="button" class="btn btn-light flex-shrink-0" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la cantidad de elementos entregados.">
+                <%= image_tag "ayuda.png", width: 25, height: 25, alt: "Ayuda" %>
+              </button>
+            </div>
+          </div>
+          <div class="col-12 col-md-5 col-lg-3">
+            <%= form.label :date_entrega, t(".date_entrega"), class: "form-label fw-semibold" %>
+            <div class="d-flex align-items-center gap-2">
+              <%= form.date_field :date_entrega, class: "form-control" %>
+              <button type="button" class="btn btn-light flex-shrink-0" data-bs-toggle="tooltip" data-bs-html="true" title="Especificar la fecha de entrega de los elementos entregados.">
+                <%= image_tag "ayuda.png", width: 25, height: 25, alt: "Ayuda" %>
+              </button>
+            </div>
+          </div>
+        </div>
+        <%= form.hidden_field :provides_protection_id, value: params[:id].to_i %>
+        <%= form.hidden_field :num, value: @cant.to_i %>
+        <div class="conesst-actions mt-4">
+          <%= form.submit t("common.submit"), class: "conesst-btn conesst-btn-primary" %>
+          <%= link_to provides_protections_path(entity_id: Current.user.entity.to_i), class: "conesst-btn" do %>
+            <i class="bi bi-arrow-left me-1"></i>
+            Retornar
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-list-check fs-5"></i>
+        <div>
+          <h5 class="mb-0">
+            Elementos de Protección Personal Entregados
+          </h5>
+          <small class="text-muted">
+            Elementos registrados en esta entrega
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <% if @provides_protection_items.present? %>
+        <div class="conesst-table-wrapper">
+          <table class="conesst-table">
             <thead>
-                <tr>
-                    <th scope="col" style="text-align:center;">ITEM</th>
-                    <th scope="col" style="text-align:center;">ID DEL ELEMENTO</th>
-                    <th scope="col">ELEMENTO DE PROTECCIÓN</th>
-                    <th scope="col">IMAGEN</th>
-                    <th scope="col" style="text-align:center;">CANTIDAD ENTREGADA</th>
-                    <th scope="col">FECHA DE ENTREGA</th>
-                    <th scope="col">Editar</th>
-                    <th scope="col">Eliminar</th>
-                </tr>
+              <tr>
+                <th class="text-center">ITEM</th>
+                <th class="text-center">ID DEL ELEMENTO</th>
+                <th>ELEMENTO DE PROTECCIÓN</th>
+                <th>IMAGEN</th>
+                <th class="text-center">CANTIDAD ENTREGADA</th>
+                <th>FECHA DE ENTREGA</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
+              </tr>
             </thead>
             <tbody>
-                <% @provides_protection_items.each do |provides_protection_item| %>
-                    <tr>
-                        <td style="text-align:center;"><%= provides_protection_item.num %></td>
-                        <td style="text-align:center;"><%= provides_protection_item.protection_element.id %></td>
-                        <td><%= provides_protection_item.protection_element.name %></td>
-                        <td>
-                            <% if provides_protection_item.present? %>
-                                <% if provides_protection_item.protection_element.img_elem.attached? %>
-                                    <% if provides_protection_item.protection_element.img_elem.image? %> 
-                                        <%= image_tag provides_protection_item.protection_element.img_elem, data: {previews_target: "preview"}, class: "image_peq" %>
-                                    <% end %>
-                                <% else %> 
-                                    <%= image_tag("avatar.jpg", class: "avatar-mini") %>
-                                <% end %>
-                            <% end %>     
-                        </td> 
-                        <td style="text-align:center;"><%= provides_protection_item.cant %></td>
-                        <td><%= provides_protection_item.date_entrega %></td>
-                        <td><%= link_to t('common.edit'), edit_provides_protection_item_path(provides_protection_item), class: 'btn btn-sm btn-primary'  %></td>
-                        <td><%= button_to "Delete", provides_protection_item, method: :delete, class:"btn btn-sm btn-danger" %></td>
-                    </tr>
-                <% end %>     
-            </tbody>      
-        </table>
-    <% end %>     
+              <% @provides_protection_items.each do |provides_protection_item| %>
+                <tr>
+                  <td data-label="ITEM" class="text-center">
+                    <%= provides_protection_item.num %>
+                  </td>
+                  <td data-label="ID DEL ELEMENTO" class="text-center">
+                    <%= provides_protection_item.protection_element.id %>
+                  </td>
+                  <td data-label="ELEMENTO DE PROTECCIÓN">
+                    <%= provides_protection_item.protection_element.name %>
+                  </td>
+                  <td data-label="IMAGEN">
+                    <% if provides_protection_item.present? %>
+                      <% if provides_protection_item.protection_element.img_elem.attached? %>
+                        <% if provides_protection_item.protection_element.img_elem.image? %>
+                          <%= image_tag provides_protection_item.protection_element.img_elem, data: {previews_target: "preview"}, class: "image_peq", alt: provides_protection_item.protection_element.name %>
+                        <% end %>
+                      <% else %>
+                        <%= image_tag "avatar.jpg", class: "avatar-mini", alt: "Sin imagen" %>
+                      <% end %>
+                    <% end %>
+                  </td>
+                  <td data-label="CANTIDAD ENTREGADA" class="text-center">
+                    <%= provides_protection_item.cant %>
+                  </td>
+                  <td data-label="FECHA DE ENTREGA">
+                    <%= provides_protection_item.date_entrega %>
+                  </td>
+                  <td data-label="Editar">
+                    <%= link_to edit_provides_protection_item_path(provides_protection_item), class: "conesst-btn conesst-btn-primary" do %>
+                      <i class="bi bi-pencil me-1"></i>
+                      <%= t("common.edit") %>
+                    <% end %>
+                  </td>
+                  <td data-label="Eliminar">
+                    <%= button_to provides_protection_item, method: :delete, class: "btn btn-sm btn-danger", form: {data: {turbo_confirm: "¿Está seguro de eliminar este elemento?"}} do %>
+                      <i class="bi bi-trash me-1"></i>
+                      Eliminar
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="text-center py-4">
+          <div class="mb-2">
+            <i class="bi bi-inbox fs-1 text-muted"></i>
+          </div>
+          <div class="text-muted">
+            No hay elementos de protección personal registrados.
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>
-        
-<br>

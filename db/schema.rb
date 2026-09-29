@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_09_23_004508) do
+ActiveRecord::Schema[7.0].define(version: 2026_09_28_191703) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -92,6 +92,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_23_004508) do
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
     t.bigint "user_id"
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["entity_id"], name: "index_adm_attendances_on_entity_id"
     t.index ["user_id"], name: "index_adm_attendances_on_user_id"
   end
@@ -114,6 +116,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_23_004508) do
     t.integer "time_max", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "version", default: 0
+    t.string "code"
   end
 
   create_table "adm_extinguishers", force: :cascade do |t|
@@ -126,6 +130,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_23_004508) do
     t.bigint "entity_id"
     t.bigint "user_id"
     t.string "post"
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["entity_id"], name: "index_adm_extinguishers_on_entity_id"
     t.index ["user_id"], name: "index_adm_extinguishers_on_user_id"
   end
@@ -1597,6 +1603,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_23_004508) do
     t.bigint "entity_id"
     t.bigint "user_id"
     t.string "recomendaciones"
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["entity_id"], name: "index_kits_on_entity_id"
     t.index ["user_id"], name: "index_kits_on_user_id"
   end
@@ -1999,6 +2007,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_23_004508) do
     t.bigint "entity_id", null: false
     t.bigint "evaluation_id", null: false
     t.bigint "user_id", null: false
+    t.integer "vers", default: 0
     t.index ["entity_id"], name: "index_meeting_minutes_on_entity_id"
     t.index ["evaluation_id"], name: "index_meeting_minutes_on_evaluation_id"
     t.index ["user_id"], name: "index_meeting_minutes_on_user_id"
@@ -3077,6 +3086,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_23_004508) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["user_id"], name: "index_view_videos_on_user_id"
   end
 

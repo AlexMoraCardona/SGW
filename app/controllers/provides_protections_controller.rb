@@ -30,12 +30,14 @@ class ProvidesProtectionsController < ApplicationController
     end  
     
     def show
-        @template = Template.where("format_number = ? and document_vigente = ?",53,1).last  
         @provides_protection = ProvidesProtection.find(params[:id])
         @provides_protection_items = ProvidesProtectionItem.where("provides_protection_id = ?", @provides_protection.id) if @provides_protection.present?
         @colaborador = User.find(@provides_protection.user_colaborador)  if    @provides_protection.user_colaborador.to_i > 0
         @responsable = User.find(@provides_protection.user_responsible)  if    @provides_protection.user_responsible.to_i > 0
         @entity = Entity.find(@provides_protection.entity_id) if @provides_protection.present?
+        @template = Template.where("reference = ? and version = ?",@provides_protection.code,@provides_protection.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+
         respond_to do |format|
             format.html
             format.xlsx{ 
@@ -45,31 +47,35 @@ class ProvidesProtectionsController < ApplicationController
     end  
     
     def ver_info_provide
-        @template = Template.where("format_number = ? and document_vigente = ?",53,1).last  
         @provides_protection = ProvidesProtection.find(params[:id])
         @provides_protection_items = ProvidesProtectionItem.where("provides_protection_id = ?", @provides_protection.id) if @provides_protection.present?
         @colaborador = User.find(@provides_protection.user_colaborador)  if    @provides_protection.user_colaborador.to_i > 0
         @responsable = User.find(@provides_protection.user_responsible)  if    @provides_protection.user_responsible.to_i > 0
         @entity = Entity.find(@provides_protection.entity_id) if @provides_protection.present?
+        @template = Template.where("reference = ? and version = ?",@provides_protection.code,@provides_protection.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'ver_provides_protection',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('ver_info_provide'),
+                    disable_javascript: true,
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
+                    page_size: 'letter',
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+            }
+        end    
       
     end    
 
-
     def new
       @provides_protection = ProvidesProtection.new  
-      @template = Template.where("format_number = ? and document_vigente = ?",53,1).last  
+      @template = Template.where("reference = ? and document_vigente = ?",'FEPP-SST',1).last  
     end    
 
     def create

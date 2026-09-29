@@ -1,0 +1,240 @@
+<div class="conesst-page">
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-person-badge fs-5"></i>
+        <div>
+          <h5 class="mb-0">Información del colaborador</h5>
+          <small class="text-muted">
+            Datos de identificación y ubicación del colaborador
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <div class="row g-3">
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="small text-muted">Nombre y apellido</div>
+          <div class="fw-semibold">
+            <%= @colaborador.name %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="small text-muted">N° de documento</div>
+          <div class="fw-semibold">
+            <%= @colaborador.nro_document %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="small text-muted">Cargo</div>
+          <div class="fw-semibold">
+            <%= @provides_protection.post_colaborador %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="small text-muted">Área</div>
+          <div class="fw-semibold">
+            <%= @provides_protection.unit_colaborador %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-check2-square fs-5"></i>
+        <div>
+          <h5 class="mb-0">Compromiso</h5>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <p>
+        Me comprometo a utilizar adecuadamente durante la jornada laboral
+        los elementos de protección personal suministrados por
+        <strong>
+          <%= @provides_protection.entity.business_name if @provides_protection.present? %>
+        </strong>
+        con el fin de dar cumplimiento a las normas de Seguridad y Salud
+        en el Trabajo vigentes y aplicables para la entidad, las cuales
+        contribuyen a mi bienestar mental, físico y social.
+      </p>
+      <p>
+        "El uso de los equipos y elementos de protección personal
+        (incluyendo ropa de trabajo) está enmarcado en la siguiente
+        normatividad: LEY 9 DE 1979: Art. 122, sobre elementos de
+        protección personal: “a- Los empleadores están obligados a
+        proporcionar a cada trabajador, sin costo para este, elementos
+        de protección personal” RESOLUCIÓN 2400 de 1979: Son obligaciones
+        de los trabajadores: Utilizar y mantener adecuadamente las
+        instalaciones de la empresa, los elementos de trabajo, los
+        dispositivos para el control de riesgos y los equipos de
+        protección personal que el patrono suministre, y conservar el
+        orden y aseo en los lugares de trabajo. Decreto 1072 de 2015
+        Art. 2.2.4.6.12): Se debe registrar la entrega de Equipos y
+        Elementos de protección personal. Resolución 0312 de 2019
+        establece los estándares mínimos del Sistema de Gestión de SST"
+      </p>
+      <p class="mb-0">
+        El presente compromiso quedará archivado en el Área de Talento
+        Humano para los fines pertinentes.
+      </p>
+    </div>
+  </div>
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-shield-check fs-5"></i>
+        <div>
+          <h5 class="mb-0">
+            Elementos de Protección Personal (EPP)
+          </h5>
+          <small class="text-muted">
+            Relación de elementos entregados
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <div class="conesst-table-wrapper">
+        <table class="conesst-table">
+          <thead>
+            <tr>
+              <th class="text-center">ITEM</th>
+              <th>DESCRIPCIÓN</th>
+              <th class="text-center">CANTIDAD</th>
+              <th class="text-center">FECHA DE ENTREGA</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @provides_protection_items.each do |provides_protection_item| %>
+              <tr>
+                <td data-label="ITEM" class="text-center">
+                  <%= provides_protection_item.num %>
+                </td>
+                <td data-label="DESCRIPCIÓN">
+                  <%= provides_protection_item.protection_element.name %>
+                </td>
+                <td data-label="CANTIDAD" class="text-center">
+                  <%= provides_protection_item.cant %>
+                </td>
+                <td data-label="FECHA DE ENTREGA" class="text-center">
+                  <%= provides_protection_item.date_entrega %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-person-check fs-5"></i>
+        <div>
+          <h5 class="mb-0">
+            Datos del responsable de la entrega de los elementos
+          </h5>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <div class="row g-3">
+        <div class="col-12 col-md-6 col-lg">
+          <div class="small text-muted">Nombre y apellidos</div>
+          <div class="fw-semibold">
+            <%= @responsable.name %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg">
+          <div class="small text-muted">Cédula</div>
+          <div class="fw-semibold">
+            <%= @responsable.nro_document %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg">
+          <div class="small text-muted">Cargo</div>
+          <div class="fw-semibold">
+            <%= User.label_activity(@responsable.activity) %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg">
+          <div class="small text-muted">Fecha firma</div>
+          <div class="fw-semibold">
+            <%= @provides_protection.date_firm_responsible %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg">
+          <div class="small text-muted mb-1">Firma</div>
+          <% if @provides_protection.firm_responsible == 1 %>
+            <% if @responsable.firm.attached? %>
+              <% if @responsable.firm.image? %>
+                <%= image_tag @responsable.firm, class: "firma", alt: "Firma del responsable" %>
+              <% else %>
+                <div class="text-muted small">
+                  Firma no disponible como imagen.
+                </div>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-person-check fs-5"></i>
+        <div>
+          <h5 class="mb-0">
+            Datos del colaborador
+          </h5>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <div class="row g-3">
+        <div class="col-12 col-md-6 col-lg">
+          <div class="small text-muted">Nombre y apellidos</div>
+          <div class="fw-semibold">
+            <%= @colaborador.name %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg">
+          <div class="small text-muted">Cédula</div>
+          <div class="fw-semibold">
+            <%= @colaborador.nro_document %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg">
+          <div class="small text-muted">Cargo</div>
+          <div class="fw-semibold">
+            <%= @provides_protection.post_colaborador %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg">
+          <div class="small text-muted">Fecha firma</div>
+          <div class="fw-semibold">
+            <%= @provides_protection.date_firm_colaborador %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg">
+          <div class="small text-muted mb-1">Firma</div>
+          <% if @provides_protection.firm_colaborador == 1 %>
+            <% if @colaborador.firm.attached? %>
+              <% if @colaborador.firm.image? %>
+                <%= image_tag @colaborador.firm, class: "firma", alt: "Firma del colaborador" %>
+              <% else %>
+                <div class="text-muted small">
+                  Firma no disponible como imagen.
+                </div>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

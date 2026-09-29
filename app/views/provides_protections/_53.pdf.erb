@@ -1,0 +1,219 @@
+<head>
+    <meta charset="utf-8">
+    <%= wicked_pdf_stylesheet_link_tag "pdf_conesst" %>
+</head>
+<div class="pdf-document">
+    <div class="pdf-space"></div>
+    <table class="pdf-table">
+        <tr>
+            <th class="pdf-cell-left pdf-col-25">
+                NOMBRE Y APELLIDO
+            </th>
+            <th class="pdf-cell-center pdf-col-20">
+                N° DE DOCUMENTO
+            </th>
+            <th class="pdf-cell-center pdf-col-20">
+                CARGO
+            </th>
+            <th class="pdf-cell-center pdf-col-20">
+                ÁREA
+            </th>
+        </tr>
+        <tr>
+            <td class="pdf-cell-left">
+                <%= @colaborador.name %>
+            </td>
+            <td class="pdf-cell-center">
+                <%= @colaborador.nro_document %>
+            </td>
+            <td class="pdf-cell-center">
+                <%= @provides_protection.post_colaborador %>
+            </td>
+            <td class="pdf-cell-center">
+                <%= @provides_protection.unit_colaborador %>
+            </td>
+        </tr>
+    </table>
+    <div class="pdf-space"></div>
+    <div class="pdf-section-title">
+        COMPROMISO
+    </div>
+    <div class="pdf-text">
+        <p>
+            Me comprometo a utilizar adecuadamente durante la jornada laboral
+            los elementos de protección personal suministrados por
+            <strong>
+                <%= @provides_protection.entity.business_name if @provides_protection.present? %>
+            </strong>
+            con el fin de dar cumplimiento a las normas de Seguridad y Salud
+            en el Trabajo vigentes y aplicables para la entidad, las cuales
+            contribuyen a mi bienestar mental, físico y social.
+        </p>
+        <p>
+            "El uso de los equipos y elementos de protección personal
+            (incluyendo ropa de trabajo) está enmarcado en la siguiente
+            normatividad: LEY 9 DE 1979: Art. 122, sobre elementos de
+            protección personal: “a- Los empleadores están obligados a
+            proporcionar a cada trabajador, sin costo para este, elementos
+            de protección personal” RESOLUCIÓN 2400 de 1979: Son obligaciones
+            de los trabajadores: Utilizar y mantener adecuadamente las
+            instalaciones de la empresa, los elementos de trabajo, los
+            dispositivos para el control de riesgos y los equipos de
+            protección personal que el patrono suministre, y conservar el
+            orden y aseo en los lugares de trabajo. Decreto 1072 de 2015
+            Art. 2.2.4.6.12): Se debe registrar la entrega de Equipos y
+            Elementos de protección personal. Resolución 0312 de 2019
+            establece los estándares mínimos del Sistema de Gestión de SST"
+        </p>
+        <p>
+            El presente compromiso quedará archivado en el Área de Talento
+            Humano para los fines pertinentes.
+        </p>
+    </div>
+    <div class="pdf-space"></div>
+    <div class="pdf-section-title">
+        ELEMENTOS DE PROTECCIÓN PERSONAL (EPP)
+    </div>
+    <table class="pdf-table">
+        <thead>
+            <tr>
+                <th class="pdf-cell-center pdf-col-10">
+                    ITEM
+                </th>
+                <th class="pdf-cell-left pdf-col-50">
+                    DESCRIPCIÓN
+                </th>
+                <th class="pdf-cell-center pdf-col-20">
+                    CANTIDAD
+                </th>
+                <th class="pdf-cell-center pdf-col-20">
+                    FECHA
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @provides_protection_items.each do |provides_protection_item| %>
+                <tr>
+                    <td class="pdf-cell-center">
+                        <%= provides_protection_item.num %>
+                    </td>
+                    <td class="pdf-cell-left">
+                        <%= provides_protection_item.protection_element.name %>
+                    </td>
+                    <td class="pdf-cell-center">
+                        <%= provides_protection_item.cant %>
+                    </td>
+                    <td class="pdf-cell-center">
+                        <%= provides_protection_item.date_entrega %>
+                    </td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+    <div class="pdf-space"></div>
+    <div class="pdf-section-title">
+        DATOS DEL RESPONSABLE DE LA ENTREGA DE LOS ELEMENTOS
+    </div>
+    <table class="pdf-table">
+        <thead>
+            <tr>
+                <th class="pdf-cell-left pdf-col-25">
+                    NOMBRE Y APELLIDOS
+                </th>
+                <th class="pdf-cell-center pdf-col-15">
+                    CÉDULA
+                </th>
+                <th class="pdf-cell-center pdf-col-20">
+                    CARGO
+                </th>
+                <th class="pdf-cell-center pdf-col-15">
+                    FECHA FIRMA
+                </th>
+                <th class="pdf-cell-center pdf-col-25">
+                    FIRMA
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="pdf-no-break">
+                <td class="pdf-cell-left">
+                    <%= @responsable.name %>
+                </td>
+                <td class="pdf-cell-center">
+                    <%= @responsable.nro_document %>
+                </td>
+                <td class="pdf-cell-center">
+                    <%= User.label_activity(@responsable.activity) %>
+                </td>
+                <td class="pdf-cell-center">
+                    <%= @provides_protection.date_firm_responsible %>
+                </td>
+                <td class="pdf-cell-center">
+                    <% if @provides_protection.firm_responsible == 1 %>
+                        <% if @responsable.firm.attached? %>
+                            <% if @responsable.firm.image? %>
+                                <%= image_tag(Evaluation.wicked_blob_path(@responsable.firm), class: "firmapdf") %>
+                                <div class="pdf-text">
+                                    __________________________________
+                                </div>
+                            <% end %>
+                        <% end %>
+                    <% end %>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="pdf-space"></div>
+    <div class="pdf-section-title">
+        DATOS DEL COLABORADOR
+    </div>
+    <table class="pdf-table">
+        <thead>
+            <tr>
+                <th class="pdf-cell-left pdf-col-25">
+                    NOMBRE Y APELLIDOS
+                </th>
+                <th class="pdf-cell-center pdf-col-15">
+                    CÉDULA
+                </th>
+                <th class="pdf-cell-center pdf-col-20">
+                    CARGO
+                </th>
+                <th class="pdf-cell-center pdf-col-15">
+                    FECHA FIRMA
+                </th>
+                <th class="pdf-cell-center pdf-col-25">
+                    FIRMA
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="pdf-no-break">
+                <td class="pdf-cell-left">
+                    <%= @colaborador.name %>
+                </td>
+                <td class="pdf-cell-center">
+                    <%= @colaborador.nro_document %>
+                </td>
+                <td class="pdf-cell-center">
+                    <%= @provides_protection.post_colaborador %>
+                </td>
+                <td class="pdf-cell-center">
+                    <%= @provides_protection.date_firm_colaborador %>
+                </td>
+                <td class="pdf-cell-center">
+                    <% if @provides_protection.firm_colaborador == 1 %>
+                        <% if @colaborador.firm.attached? %>
+                            <% if @colaborador.firm.image? %>
+                                <%= image_tag(Evaluation.wicked_blob_path(@colaborador.firm), class: "firmapdf") %>
+                                <div class="pdf-text">
+                                    __________________________________
+                                </div>
+                            <% end %>
+                        <% end %>
+                    <% end %>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,236 @@
+<div class="conesst-page">
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-journal-text fs-5"></i>
+        <div>
+          <h5 class="mb-0">Información del acta</h5>
+          <small class="text-muted">
+            Datos generales de la reunión
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <div class="row g-3">
+        <div class="col-12 col-md-4">
+          <div class="small text-muted">
+            Fecha
+          </div>
+          <div class="fw-semibold">
+            <%= @meeting_minute.date if @meeting_minute.present? %>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="small text-muted">
+            Acta N°
+          </div>
+          <div class="fw-semibold">
+            <%= @meeting_minute.record_number if @meeting_minute.present? %>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="small text-muted">
+            Clasificación del acta
+          </div>
+          <div class="fw-semibold">
+            <%= MeetingMinute.label_clasificacion(@meeting_minute.version) if @meeting_minute.present? %>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="small text-muted">
+            Área / Proceso / Comité
+          </div>
+          <div class="fw-semibold">
+            <%= @meeting_minute.area_process_committee if @meeting_minute.present? %>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="small text-muted">
+            Objetivo de la reunión
+          </div>
+          <div class="fw-semibold">
+            <%= @meeting_minute.objective_meeting if @meeting_minute.present? %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="small text-muted">
+            Tipo de reunión
+          </div>
+          <div class="fw-semibold">
+            <%= @meeting_minute.meeting_type if @meeting_minute.present? %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="small text-muted">
+            Lugar
+          </div>
+          <div class="fw-semibold">
+            <%= @meeting_minute.place if @meeting_minute.present? %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="small text-muted">
+            Hora de inicio
+          </div>
+          <div class="fw-semibold">
+            <%= @meeting_minute.start_time.strftime("%I:%M %p") if @meeting_minute.start_time.present? %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="small text-muted">
+            Hora de finalización
+          </div>
+          <div class="fw-semibold">
+            <%= @meeting_minute.end_time.strftime("%I:%M %p") if @meeting_minute.end_time.present? %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% if @meeting_attendees.present? %>
+    <div class="conesst-card mb-4">
+      <div class="conesst-card-header">
+        <div class="d-flex align-items-center gap-2">
+          <i class="bi bi-people fs-5"></i>
+          <div>
+            <h5 class="mb-0">Asistentes</h5>
+            <small class="text-muted">
+              Participantes de la reunión
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="conesst-card-body">
+        <%= render partial: "asistentes" %>
+      </div>
+    </div>
+  <% end %>
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-list-ol fs-5"></i>
+        <div>
+          <h5 class="mb-0">Orden del día</h5>
+          <small class="text-muted">
+            Temas programados para la reunión
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <div class="rich-text">
+        <%= @meeting_minute.order_day if @meeting_minute.present? %>
+      </div>
+    </div>
+  </div>
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-chat-left-text fs-5"></i>
+        <div>
+          <h5 class="mb-0">Temas tratados</h5>
+          <small class="text-muted">
+            Desarrollo de la reunión
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <div class="rich-text">
+        <%= @meeting_minute.Issues if @meeting_minute.present? %>
+      </div>
+    </div>
+  </div>
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-chat-square-text fs-5"></i>
+        <div>
+          <h5 class="mb-0">Proposiciones y varios</h5>
+          <small class="text-muted">
+            Otros asuntos tratados durante la reunión
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <div class="rich-text">
+        <%= @meeting_minute.miscellaneous_propositions if @meeting_minute.present? %>
+      </div>
+    </div>
+  </div>
+  <% if @meeting_commitments.present? %>
+    <div class="conesst-card mb-4">
+      <div class="conesst-card-header">
+        <div class="d-flex align-items-center gap-2">
+          <i class="bi bi-check2-square fs-5"></i>
+          <div>
+            <h5 class="mb-0">Compromisos</h5>
+            <small class="text-muted">
+              Compromisos establecidos durante la reunión
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="conesst-card-body">
+        <%= render partial: "commitments" %>
+      </div>
+    </div>
+  <% end %>
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-clock-history fs-5"></i>
+        <div>
+          <h5 class="mb-0">Cierre de la reunión</h5>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <p class="mb-0">
+        Agotada la reunión, se da por terminada siendo las:
+        <span class="text-muted">
+          <%= @meeting_minute.end_time.strftime("%I:%M %p") if @meeting_minute.end_time.present? %>
+        </span>
+      </p>
+    </div>
+  </div>
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-pen fs-5"></i>
+        <div>
+          <h5 class="mb-0">Firmantes</h5>
+          <small class="text-muted">
+            Para constancia de la reunión
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <p class="mb-3">
+        Para constancia firman:
+      </p>
+      <% if @assistants.present? %>
+        <%= render partial: "firmantes" %>
+      <% end %>
+    </div>
+  </div>
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-body">
+      <div class="small text-muted">
+        Elaboró
+      </div>
+      <div class="fw-semibold">
+        <%= @meeting_minute.elaborated if @meeting_minute.present? %>
+      </div>
+    </div>
+  </div>
+  <div class="conesst-actions">
+    <%= link_to meeting_minutes_path, class: "conesst-btn" do %>
+      <i class="bi bi-arrow-left me-1"></i>
+      Retornar
+    <% end %>
+  </div>
+</div>

@@ -1,62 +1,114 @@
-<div class="container col-11 card p-5">
-    <br>
-    <%= form_with model: @assistant do |form| %>
-        <% @assistant.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %>    
-
-        <br>
-        <% if Current.user.level > 0 && Current.user.level < 4 %>
-            <div class="form-group" >    
-                <strong>Seleccionar usuario para firma del acta: </strong>
-                <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-            </div>  
-            <%= form.hidden_field :meeting_minute_id, :value => params[:id].to_s, class: "form-control" %>
-            <br>    
-        <% end %>        
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to 'Retornar', meeting_minutes_path, class: 'btn btn-sm btn-primary'  %>
-    <% end %>
-    <hr>
-    <br>
-    <div class="d-flex">
-        <div class="container">
-            <h class="display-6">Asistentes que firman en esta reunión</h>
-        </div> 
+<div class="conesst-page">
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-pen fs-5"></i>
+        <div>
+          <h5 class="mb-0">Agregar firmante</h5>
+          <small class="text-muted">
+            Seleccione el usuario que podrá firmar el acta de la reunión
+          </small>
+        </div>
+      </div>
     </div>
-    <hr>
-    <table class="table table-hover">
-        <thead>
+    <div class="conesst-card-body">
+      <%= form_with model: @assistant do |form| %>
+        <% @assistant.errors.full_messages.each do |error| %>
+          <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle me-1"></i>
+            <%= error %>
+          </div>
+        <% end %>
+        <% if Current.user.level > 0 && Current.user.level < 4 %>
+          <div class="row g-3">
+            <div class="col-12 col-md-8 col-lg-6">
+              <%= form.label :user_id, "Seleccionar usuario para firma del acta", class: "form-label fw-semibold" %>
+              <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id, :name, { prompt: "-- Seleccionar usuario --" }, { class: "form-select" } %>
+            </div>
+          </div>
+          <%= form.hidden_field :meeting_minute_id, value: params[:id].to_s %>
+        <% end %>
+        <div class="conesst-actions mt-4">
+          <%= form.submit t('common.submit'), class: "conesst-btn conesst-btn-primary" %>
+          <%= link_to meeting_minutes_path, class: "conesst-btn" do %>
+            <i class="bi bi-arrow-left me-1"></i>
+            Retornar
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-people fs-5"></i>
+        <div>
+          <h5 class="mb-0">
+            Asistentes que firman en esta reunión
+          </h5>
+          <small class="text-muted">
+            Usuarios autorizados para firmar el acta
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <div class="conesst-table-wrapper">
+        <table class="conesst-table">
+          <thead>
             <tr>
-                <th scope="col">Nombre</th>
-                <th scope="col">Cargo</th>
-                <th scope="col">Editar</th>
-                <th scope="col">Eliminar</th>
-                <th scope="col">Firmar Acta</th>
-
+              <th>Nombre</th>
+              <th>Cargo</th>
+              <th class="text-center">Editar</th>
+              <th class="text-center">Eliminar</th>
+              <th class="text-center">Firmar Acta</th>
             </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
             <% @assistants.each do |firma| %>
-                <tr>
-                    <td><%= firma.name %></td>
-                    <td><%= firma.post %></td>
-                    <td><%= link_to t('common.edit'), edit_assistant_path(firma), class: 'btn btn-sm btn-primary' if Current.user.level > 0 &&  Current.user.level < 3 %></td>
-                    <td><%= button_to "Delete", firma, method: :delete, class:"btn btn-sm btn-danger" if Current.user.level > 0 &&  Current.user.level < 3 %></td>
-                    <td>
-                        <% if firma.firm_assistant == 0 %>
-                            <%= link_to t('common.firmar_acta'), firmar_assistent_path(firma.id), class: 'btn btn-sm btn-primary' if Current.user.id == firma.user_id %>
-                        <% else %>
-                            <%= firma.date_firm %>
-                        <% end %>
-                    </td>
-                </tr>
-            <% end %>     
-        </tbody>      
-    </table>
-    <br>
-        
-</div>        
-<br>
+              <tr>
+                <td data-label="Nombre">
+                  <%= firma.name %>
+                </td>
+                <td data-label="Cargo">
+                  <%= firma.post %>
+                </td>
+                <td data-label="Editar" class="text-center">
+                  <% if Current.user.level > 0 && Current.user.level < 3 %>
+                    <%= link_to edit_assistant_path(firma), class: "conesst-btn conesst-btn-primary" do %>
+                      <i class="bi bi-pencil-square me-1"></i>
+                      <%= t('common.edit') %>
+                    <% end %>
+                  <% end %>
+                </td>
+                <td data-label="Eliminar" class="text-center">
+                  <% if Current.user.level > 0 && Current.user.level < 3 %>
+                    <%= button_to firma, method: :delete, class: "btn btn-sm btn-danger", form: {data: {turbo_confirm: "¿Está seguro de eliminar este firmante?"}} do %>
+                      <i class="bi bi-trash me-1"></i>
+                      Eliminar
+                    <% end %>
+                  <% end %>
+                </td>
+                <td data-label="Firmar Acta" class="text-center">
+                  <% if firma.firm_assistant == 0 %>
+                    <% if Current.user.id == firma.user_id %>
+                      <%= link_to firmar_assistent_path(firma.id), class: "conesst-btn conesst-btn-primary" do %>
+                        <i class="bi bi-pen me-1"></i>
+                        <%= t('common.firmar_acta') %>
+                      <% end %>
+                    <% end %>
+                  <% else %>
+                    <span class="small">
+                      <i class="bi bi-check-circle text-success me-1"></i>
+                      <%= firma.date_firm %>
+                    </span>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

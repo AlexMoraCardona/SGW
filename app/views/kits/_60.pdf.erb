@@ -1,0 +1,220 @@
+<%= wicked_pdf_stylesheet_link_tag "pdf_conesst" %>
+<meta charset="utf-8">
+
+<div class="pdf-document">
+  <div class="pdf-space"></div>
+  <div class="pdf-section-title">
+    Información de la inspección
+  </div>
+  <table class="pdf-table">
+    <tr>
+      <td class="pdf-cell-left pdf-col-50">
+        <strong>Fecha:</strong>
+        <%= @kit.date_creation if @kit.present? %>
+      </td>
+      <td class="pdf-cell-left pdf-col-50">
+        <strong>Área:</strong>
+        <%= @kit.area if @kit.present? %>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" class="pdf-cell-left pdf-col-100">
+        <strong>Responsable:</strong>
+        <%= @kit.user.name if @kit.present? %>
+      </td>
+    </tr>
+    <tr>
+      <td class="pdf-cell-left pdf-col-50">
+        <strong>Tipo de Botiquín:</strong>
+        <%= Kit.label_type_kit(@kit.type_kit) if @kit.present? %>
+      </td>
+      <td class="pdf-cell-left pdf-col-50">
+        <strong>Clasificación de Botiquín:</strong>
+        <%= Kit.label_clasification_kit(@kit.clasification_kit) if @kit.present? %>
+      </td>
+    </tr>
+  </table>
+  <div class="pdf-space"></div>
+  <div class="pdf-section-title">
+    Inspección de elementos del botiquín
+  </div>
+  <table class="pdf-table">
+    <tr>
+      <th class="pdf-cell-center pdf-col-35">
+        Elemento
+      </th>
+      <th class="pdf-cell-center pdf-col-10">
+        SI
+      </th>
+      <th class="pdf-cell-center pdf-col-10">
+        NO
+      </th>
+      <th class="pdf-cell-center pdf-col-10">
+        N/A
+      </th>
+      <th class="pdf-cell-center pdf-col-35">
+        Observaciones
+      </th>
+    </tr>
+    <%
+      kit_items = [
+        :gauze,
+        :sticking_plaster,
+        :tongue_depressor,
+        :gloves,
+        :elastic_bandage25,
+        :elastic_bandage55,
+        :sell_cotton35,
+        :sell_cotton55,
+        :soap,
+        :saline_solution,
+        :thermometer,
+        :alcohol,
+        :sterile_gauze,
+        :dressing,
+        :scissors,
+        :flashlight,
+        :batteries,
+        :spinal_board,
+        :adult_cervical_collar,
+        :child_cervical_collar,
+        :adult_immobilizers_top,
+        :adult_immobilizers_lower,
+        :child_immobilizers_top,
+        :child_immobilizers_lower,
+        :disposable_cups,
+        :lood_pressure_monitor,
+        :stethoscope,
+        :mask_rcp
+      ]
+    %>
+    <% kit_items.each do |item| %>
+      <%
+        item_value = @kit.public_send(item)
+        observation = @kit.public_send("#{item}_obs")
+      %>
+      <tr>
+        <td class="pdf-cell-left pdf-col-35">
+          <%= t(".#{item}") %>
+        </td>
+        <!-- SI -->
+        <td class="pdf-cell-center pdf-col-10">
+          <% if item_value == 1 %>
+            X
+          <% end %>
+        </td>
+        <!-- NO -->
+        <td class="pdf-cell-center pdf-col-10">
+          <% if item_value == 2 %>
+            X
+          <% end %>
+        </td>
+        <!-- N/A -->
+        <td class="pdf-cell-center pdf-col-10">
+          <% if item_value == 0 %>
+            X
+          <% end %>
+        </td>
+        <!-- Observaciones -->
+        <td class="pdf-cell-left pdf-col-35">
+          <%= observation if @kit.present? %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+  <div class="pdf-space"></div>
+  <div class="pdf-section-title">
+    Recomendaciones
+  </div>
+  <div class="pdf-text">
+    <%= @kit.recomendaciones if @kit.recomendaciones.present? %>
+  </div>
+  <% if @kit.present? && @kit.kit_fotos.attached? %>
+    <div class="pdf-space"></div>
+    <div class="pdf-section-title">
+      Archivos adjuntos
+    </div>
+    <div data-controller="previews">
+      <% @kit.kit_fotos.each do |file| %>
+        <div class="pdf-no-break">
+          <div class="pdf-text">
+            <strong>
+              <%= file.blob.filename %>
+            </strong>
+          </div>
+          <% if file.image? %>
+            <div class="pdf-text">
+              <%= image_tag(Evaluation.wicked_blob_path(file), height: "350", width: "400") %>
+            </div>
+          <% elsif file.video? %>
+            <div class="pdf-text">
+              <%= video_tag(url_for(file), controls: "", width: "400px") %>
+            </div>
+          <% elsif file.audio? %>
+            <div class="pdf-text">
+              <%= audio_tag(url_for(file), controls: "") %>
+            </div>
+          <% else %>
+            <div class="pdf-text">
+              <%= link_to file.filename, url_for(file) %>
+            </div>
+          <% end %>
+        </div>
+        <div class="pdf-space"></div>
+      <% end %>
+    </div>
+  <% end %>
+  <div class="pdf-space"></div>
+  <div class="pdf-space"></div>
+  <div class="pdf-section-title">
+    Responsable de la inspección
+  </div>
+  <table class="pdf-table">
+    <tr>
+      <td class="pdf-cell-left pdf-col-100">
+        <div class="pdf-text">
+          <strong>
+            <u>
+              <%= @kit.user.name if @kit.present? %>
+            </u>
+          </strong>
+        </div>
+        <div class="pdf-small-text">
+          Nombre de quien realiza la inspección
+        </div>
+      </td>
+    </tr>
+    <% if @kit.firm_user == 1 %>
+      <tr>
+        <td class="pdf-cell-left pdf-col-100">
+          <% if @kit.user.firm.attached? %>
+            <% if @kit.user.firm.image? %>
+              <div class="pdf-text">
+                <strong>Firma:</strong>
+              </div>
+              <div class="pdf-text">
+                <%= image_tag(Evaluation.wicked_blob_path(@kit.user.firm), class: "firmapdf") %>
+              </div>
+            <% end %>
+          <% end %>
+          <div class="pdf-text">
+            <strong>Cargo:</strong>
+            <%= @kit.post if @kit.present? %>
+          </div>
+        </td>
+      </tr>
+    <% else %>
+      <tr>
+        <td class="pdf-cell-left pdf-col-100">
+          <div class="pdf-text">
+            Firma: ________________________________
+          </div>
+          <div class="pdf-text">
+            <strong>Cargo:</strong>
+            <%= @kit.post if @kit.present? %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>

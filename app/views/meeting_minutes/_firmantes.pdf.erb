@@ -1,33 +1,31 @@
-<br>
-<table>
+<table class="pdf-table">
     <tbody>
-        <% @assistants.each do |firma| %>
-            <br>
-            <br>
-            <br>
-            <div class="row">
-                <div class="col-6">
-                    <h5>__________________________________</h5>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-6">
-                    <h5><strong><%= firma.name %></strong></h5>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-6">
-                    <h5><%= firma.post %></h5>
-                </div>
-            </div>
-            <% if  firma.user.level == 2 %>
-                <div class="col-11">
-                    <div class="row">
-                        Licencia: <%= firm.user.license %>
+       <% @assistants.each do |firma| %>
+            <tr>
+                <td class="pdf-cell-left pdf-col-60">
+                    <div class="pdf-space"></div>
+                    <div class="pdf-space"></div>
+                    <div class="pdf-text">
+                        __________________________________
                     </div>
-                </div>
-            <% end %>
-            <br/>
+                    <div class="pdf-text">
+                        <strong>
+                            <%= firma.name %>
+                        </strong>
+                    </div>
+                    <div class="pdf-text">
+                        <%= firma.post %>
+                    </div>
+                    <% if firma.user.level == 2 %>
+                        <div class="pdf-text">
+                            Licencia: <%= firma.user.license %>
+                        </div>
+                    <% end %>
+                </td>
+                <td class="pdf-col-40">
+                </td>
+            </tr>
         <% end %>
     </tbody>
 </table>
+<div class="pdf-space"></div>

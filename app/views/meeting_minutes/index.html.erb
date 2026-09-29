@@ -1,63 +1,130 @@
-<div align="left"; class="container col-12">
-    <a class="navbar-brand" href="/">
-        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-    </a>
-</div>
-<div class="container col-11">
-        <div class="d-flex">
-            <div class="container">
-               <h2 class="display-5"> <%= t('.title')%></h2>
-            </div> 
+<div class="conesst-page">
+  <div class="mb-3">
+    <%= link_to root_path, class: "d-inline-block" do %>
+      <%= image_tag "LogoConesst202305232.png", width: 100, height: 100, alt: "CONESST" %>
+    <% end %>
+  </div>
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-journal-text fs-5"></i>
+        <div>
+          <h2 class="mb-0"><%= t('.title') %></h2>
+          <small class="text-muted">
+            Consulta y administración de actas
+          </small>
         </div>
-        <hr>
-
-        <%= search_form_for @q do |f| %>
-            <%= f.label :date_eq %>
-            <%= f.date_field :date_eq %>
-            &nbsp;&nbsp;
-            
-            <%= f.label :entity_id_eq %>
-            <%= f.select :entity_id_eq, Entity.pluck(:business_name, :id).uniq,  {include_blank: true}, style: "width: 200px;" %>
-            &nbsp;&nbsp;
-
-            <%= f.label :version_eq %>
-            <%= f.select :version_eq,  [['Acta de Asesoría', 0], ['Acta del COPASST', 1], ['Acta de la Brigada de Emergencia', 2], ['Acta del Comité de Convivencia', 3]],  {include_blank: true}, style: "width: 200px;" %>
-            &nbsp;&nbsp;
-
-            <button type="submit" class="btn btn-primary">Buscar</button>
-        <% end %>
-    </br>        
-    <%== pagy_info(@pagy) %>
-    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
-
-    <table class="table table-hover">
-        <thead>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <%= search_form_for @q do |f| %>
+        <div class="row g-3 align-items-end">
+          <div class="col-12 col-md-6 col-lg-3">
+            <%= f.label :date_eq, "Fecha", class: "form-label fw-semibold" %>
+            <%= f.date_field :date_eq, class: "form-control" %>
+          </div>
+          <div class="col-12 col-md-6 col-lg-3">
+            <%= f.label :entity_id_eq, "Empresa", class: "form-label fw-semibold" %>
+            <%= f.select :entity_id_eq, Entity.pluck(:business_name, :id).uniq, { include_blank: true }, { class: "form-select" } %>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4">
+            <%= f.label :version_eq, "Tipo de acta", class: "form-label fw-semibold" %>
+            <%= f.select :version_eq, [['Acta de Asesoría', 0], ['Acta del COPASST', 1], ['Acta de la Brigada de Emergencia', 2], ['Acta del Comité de Convivencia', 3]], { include_blank: true }, { class: "form-select" } %>
+          </div>
+          <div class="col-12 col-md-6 col-lg-2">
+            <button type="submit" class="conesst-btn conesst-btn-primary w-100">
+              <i class="bi bi-search me-1"></i>
+              Buscar
+            </button>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
+    <div class="small text-muted">
+      <%== pagy_info(@pagy) %>
+    </div>
+    <div>
+      <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+    </div>
+  </div>
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-list-ul fs-5"></i>
+        <div>
+          <h5 class="mb-0">Actas registradas</h5>
+          <small class="text-muted">
+            Listado de actas disponibles
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body p-0">
+      <div class="conesst-table-wrapper">
+        <table class="conesst-table">
+          <thead>
             <tr>
-                <th scope="col"><%= sort_link(@q, :date, default_order: :desc)  %></th>
-                <th scope="col"><%= sort_link(@q, :entity_id, default_order: :desc) %></th>
-                <th scope="col"><%= sort_link(@q, :record_number, default_order: :desc) %></th>
-                <th scope="col"><%= sort_link(@q, :version, default_order: :desc)  %></th>
-                <th scope="col"><%= t('common.show') %></th>
-                <th scope="col"><%= t('common.edit') %></th>
-                <th scope="col"><%= t('common.delete') %></th>
-                <th scope="col"><%= t('common.attendee') %></th>
-                <th scope="col"><%= t('common.commitment') %></th>
-                <th scope="col"><%= t('common.signature') %></th>
-                <th scope="col">PDF</th>
-                <th scope="col">Duplicar Acta</th>
+              <th>
+                <%= sort_link(@q, :date, default_order: :desc) %>
+              </th>
+              <th>
+                <%= sort_link(@q, :entity_id, default_order: :desc) %>
+              </th>
+              <th>
+                <%= sort_link(@q, :record_number, default_order: :desc) %>
+              </th>
+              <th>
+                <%= sort_link(@q, :version, default_order: :desc) %>
+              </th>
+              <th class="text-center">
+                <%= t('common.show') %>
+              </th>
+              <th class="text-center">
+                <%= t('common.edit') %>
+              </th>
+              <th class="text-center">
+                <%= t('common.delete') %>
+              </th>
+              <th class="text-center">
+                <%= t('common.attendee') %>
+              </th>
+              <th class="text-center">
+                <%= t('common.commitment') %>
+              </th>
+              <th class="text-center">
+                <%= t('common.signature') %>
+              </th>
+              <th class="text-center">
+                PDF
+              </th>
+              <th class="text-center">
+                Duplicar Acta
+              </th>
             </tr>
-        </thead> 
-        <tbody>
-            <%= render partial: 'meeting_minute', collection: @meeting_minutes  %>  
-        </tbody>      
-    </table>
-    </br>        
-    <%== pagy_info(@pagy) %>
-    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
-    </br>        
-    <%= link_to t('.create_meeting_minute'), new_meeting_minute_path, class: 'btn btn-xs btn-primary' if Current.user.level > 0 &&  Current.user.level < 4 || Current.user.ccl == 1 || Current.user.secretary_copasst == 1 || Current.user.copasst == 1 %> 
-    </br> 
+          </thead>
+          <tbody>
+            <%= render partial: 'meeting_minute', collection: @meeting_minutes %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mt-3">
+    <div class="small text-muted">
+      <%== pagy_info(@pagy) %>
+    </div>
+    <div>
+      <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+    </div>
+  </div>
+  <% if Current.user.level > 0 && Current.user.level < 4 || Current.user.ccl == 1 || Current.user.secretary_copasst == 1 || Current.user.copasst == 1 %>
+    <div class="conesst-actions mt-4">
+      <%= link_to new_meeting_minute_path, class: "conesst-btn conesst-btn-primary" do %>
+        <i class="bi bi-plus-circle me-1"></i>
+        <%= t('.create_meeting_minute') %>
+      <% end %>
+    </div>
+  <% end %>
 </div>
-
-
-

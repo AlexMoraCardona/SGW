@@ -1,55 +1,94 @@
-<div class="container col-11 card p-5">
-    <br> 
-    <%= form_with model: @meeting_attendee do |form| %>
-        <% @meeting_attendee.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %>  
-        <br>
-        <div class="form-group" >    
-                <%= form.label :user_id,  style: "display: block" %>
-                <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-        </div>  
-        <br>
-        <%= form.hidden_field :meeting_minute_id, :value => params[:id].to_s, class: "form-control" %>
-        <br>    
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to 'Retornar', meeting_minutes_path, class: 'btn btn-sm btn-primary'  %>
-
-    <% end %>
-    <hr>
-    <br>
-    <div class="d-flex">
-        <div class="container">
-            <h class="display-6">Asistentes</h>
-        </div> 
+<div class="conesst-page">
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-person-plus fs-5"></i>
+        <div>
+          <h5 class="mb-0">Agregar asistente</h5>
+          <small class="text-muted">
+            Seleccione el funcionario que participará en la reunión
+          </small>
+        </div>
+      </div>
     </div>
-    <hr>
-            
-    <table class="table table-hover">
-        <thead>
+    <div class="conesst-card-body">
+      <%= form_with model: @meeting_attendee do |form| %>
+        <% @meeting_attendee.errors.full_messages.each do |error| %>
+          <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle me-1"></i>
+            <%= error %>
+          </div>
+        <% end %>
+        <%= form.hidden_field :meeting_minute_id, value: params[:id].to_s %>
+        <div class="row g-3">
+          <div class="col-12 col-md-8 col-lg-6">
+            <%= form.label :user_id, "Funcionario", class: "form-label fw-semibold" %>
+            <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id, :name, { prompt: "-- Seleccionar funcionario --" }, { class: "form-select" } %>
+          </div>
+        </div>
+        <div class="conesst-actions mt-4">
+          <%= form.submit t('common.submit'), class: "conesst-btn conesst-btn-primary" %>
+          <%= link_to meeting_minutes_path, class: "conesst-btn" do %>
+            <i class="bi bi-arrow-left me-1"></i>
+            Retornar
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-people fs-5"></i>
+        <div>
+          <h5 class="mb-0">Asistentes</h5>
+          <small class="text-muted">
+            Funcionarios registrados en la reunión
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <div class="conesst-table-wrapper">
+        <table class="conesst-table">
+          <thead>
             <tr>
-                <th scope="col">Nombre</th>
-                <th scope="col">Cargo</th>
-                <th scope="col">Área / Proceso</th>
-                <th scope="col">Editar</th>
-                <th scope="col">Eliminar</th>
+              <th>Nombre</th>
+              <th>Cargo</th>
+              <th>Área / Proceso</th>
+              <th class="text-center">Editar</th>
+              <th class="text-center">Eliminar</th>
             </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
             <% @meeting_attendees.each do |meeting_attendee| %>
-                <tr>
-                    <td><%= meeting_attendee.name %></td>
-                    <td><%= meeting_attendee.post %></td>
-                    <td><%= meeting_attendee.process_area %></td>
-                    <td><%= link_to t('common.edit'), edit_meeting_attendee_path(meeting_attendee), class: 'btn btn-sm btn-primary'  %></td>
-                    <td><%= button_to "Delete", meeting_attendee, method: :delete, class:"btn btn-sm btn-danger" %></td>
-                </tr>
-            <% end %>     
-        </tbody>      
-    </table>
-    
-
-</div>        
-<br>
+              <tr>
+                <td data-label="Nombre">
+                  <%= meeting_attendee.name %>
+                </td>
+                <td data-label="Cargo">
+                  <%= meeting_attendee.post %>
+                </td>
+                <td data-label="Área / Proceso">
+                  <%= meeting_attendee.process_area %>
+                </td>
+                <td data-label="Editar" class="text-center">
+                  <%= link_to edit_meeting_attendee_path(meeting_attendee), class: "conesst-btn conesst-btn-primary" do %>
+                    <i class="bi bi-pencil-square me-1"></i>
+                    <%= t('common.edit') %>
+                  <% end %>
+                </td>
+                <td data-label="Eliminar" class="text-center">
+                  <%= button_to meeting_attendee, method: :delete, class: "btn btn-sm btn-danger", form: {data: {turbo_confirm: "¿Está seguro de eliminar este asistente?"}} do %>
+                    <i class="bi bi-trash me-1"></i>
+                    Eliminar
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

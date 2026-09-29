@@ -1,90 +1,227 @@
-<div class="container col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
-    <br>
-    <p><i><b>Encuesta identificación de peligros con participación de la organización</b></i></p>
-    <p><b>Empresa:</b></br> <%= @entity.business_name  if @entity.present? %> </p>
-    <p><b>Fecha:</b></br> <%= Time.now.strftime("%F") %> </p>
-    <p><b>Nombre completo:</b></br> <%= Current.user.name %> </p>
-    <p><b>Número de documento de identidad:</b></br> <%= Current.user.nro_document %> </p>
-
-    <%= form_with model: @admin_extent_danger do |form| %>
-        <% @admin_extent_danger.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
+<div class="conesst-page">
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-clipboard2-check fs-5"></i>
+        <div>
+          <h4 class="mb-0">
+            Encuesta identificación de peligros con participación de la organización
+          </h4>
+          <small class="text-muted">
+            Información del trabajador y condiciones relacionadas con su actividad laboral
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <div class="row g-3 mb-4">
+        <div class="col-12 col-md-6">
+          <div class="border rounded p-3 bg-light h-100">
+            <div class="small text-muted mb-1">
+              <i class="bi bi-building me-1"></i>
+              Empresa
             </div>
-        <% end %>    
+            <div class="fw-semibold">
+              <%= @entity.business_name if @entity.present? %>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="border rounded p-3 bg-light h-100">
+            <div class="small text-muted mb-1">
+              <i class="bi bi-calendar3 me-1"></i>
+              Fecha
+            </div>
+            <div class="fw-semibold">
+              <%= Time.now.strftime("%F") %>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="border rounded p-3 bg-light h-100">
+            <div class="small text-muted mb-1">
+              <i class="bi bi-person me-1"></i>
+              Nombre completo
+            </div>
+            <div class="fw-semibold">
+              <%= Current.user.name %>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="border rounded p-3 bg-light h-100">
+            <div class="small text-muted mb-1">
+              <i class="bi bi-person-vcard me-1"></i>
+              Número de documento de identidad
+            </div>
+            <div class="fw-semibold">
+              <%= Current.user.nro_document %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <%= form_with model: @admin_extent_danger do |form| %>
+        <% @admin_extent_danger.errors.full_messages.each do |error| %>
+          <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle me-1"></i>
+            <%= error %>
+          </div>
+        <% end %>
+        <div class="conesst-card mb-4">
+          <div class="conesst-card-header">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-briefcase fs-5"></i>
+              <div>
+                <h5 class="mb-0">Información laboral</h5>
+                <small class="text-muted">
+                  Indique las características de su vinculación y actividad laboral
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="conesst-card-body">
+            <div class="row g-4">
+              <div class="col-12">
+                <%= form.label :type_contract, class: "form-label fw-semibold" %>
+                <div class="d-flex flex-wrap gap-4 mt-2">
+                  <div class="form-check">
+                    <%= form.radio_button :type_contract, 0, required: true, checked: false, class: "form-check-input" %>
+                    <%= form.label :type_contract, "Vinculado", value: 0, class: "form-check-label" %>
+                  </div>
+                  <div class="form-check">
+                    <%= form.radio_button :type_contract, 1, required: true, checked: false, class: "form-check-input" %>
+                    <%= form.label :type_contract, "Prestación de servicios", value: 1, class: "form-check-label" %>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <%= form.label :post, class: "form-label fw-semibold" %>
+                <%= form.text_field :post, class: "form-control", required: true %>
+              </div>
+              <div class="col-12 col-md-6">
+                <%= form.label :area, class: "form-label fw-semibold" %>
+                <%= form.text_field :area, class: "form-control", required: true %>
+              </div>
+              <div class="col-12">
+                <%= form.label :equipment_operates, class: "form-label fw-semibold" %>
+                <%= form.text_field :equipment_operates, class: "form-control", required: true %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="conesst-card mb-4">
+          <div class="conesst-card-header">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-shield-check fs-5"></i>
+              <div>
+                <h5 class="mb-0">Formación y antecedentes de accidentalidad</h5>
+                <small class="text-muted">
+                  Información relacionada con capacitación y accidentes de trabajo
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="conesst-card-body">
+            <div class="row g-4">
+              <div class="col-12 col-md-6">
+                <%= form.label :received_training, class: "form-label fw-semibold" %>
+                <div class="d-flex flex-wrap gap-4 mt-2">
+                  <div class="form-check">
+                    <%= form.radio_button :received_training, 0, required: true, checked: false, class: "form-check-input" %>
+                    <%= form.label :received_training, "No", value: 0, class: "form-check-label" %>
+                  </div>
+                  <div class="form-check">
+                    <%= form.radio_button :received_training, 1, required: true, checked: false, class: "form-check-input" %>
+                    <%= form.label :received_training, "Sí", value: 1, class: "form-check-label" %>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <%= form.label :suffered_accident, class: "form-label fw-semibold" %>
+                <div class="d-flex flex-wrap gap-4 mt-2">
+                  <div class="form-check">
+                    <%= form.radio_button :suffered_accident, 0, required: true, checked: false, class: "form-check-input" %>
+                    <%= form.label :suffered_accident, "No", value: 0, class: "form-check-label" %>
+                  </div>
+                  <div class="form-check">
+                    <%= form.radio_button :suffered_accident, 1, required: true, checked: false, class: "form-check-input" %>
+                    <%= form.label :suffered_accident, "Sí", value: 1, class: "form-check-label" %>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <%= form.label :cual_suffered_accident, class: "form-label fw-semibold" %>
+                <%= form.text_field :cual_suffered_accident, class: "form-control" %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="conesst-card mb-4">
+          <div class="conesst-card-header">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-person-check fs-5"></i>
+              <div>
+                <h5 class="mb-0">Elementos de protección personal</h5>
+                <small class="text-muted">
+                  Información sobre el uso de EPP en la actividad laboral
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="conesst-card-body">
+            <div class="row g-4">
+              <div class="col-12 col-md-6">
+                <%= form.label :epp, class: "form-label fw-semibold" %>
+                <div class="d-flex flex-wrap gap-4 mt-2">
+                  <div class="form-check">
+                    <%= form.radio_button :epp, 0, required: true, checked: false, class: "form-check-input" %>
+                    <%= form.label :epp, "NO", value: 0, class: "form-check-label" %>
+                  </div>
+                  <div class="form-check">
+                    <%= form.radio_button :epp, 1, required: true, checked: false, class: "form-check-input" %>
+                    <%= form.label :epp, "Sí", value: 1, class: "form-check-label" %>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <%= form.label :epp_cuales, class: "form-label fw-semibold" %>
+                <%= form.text_field :epp_cuales, class: "form-control", required: true %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="conesst-card mb-4">
+          <div class="conesst-card-header">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-lightbulb fs-5"></i>
+              <div>
+                <h5 class="mb-0">Propuesta de control</h5>
+                <small class="text-muted">
+                  Indique una propuesta para prevenir o controlar los peligros identificados
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="conesst-card-body">
+            <%= form.label :control_proposal, class: "form-label fw-semibold" %>
+            <%= form.text_field :control_proposal, class: "form-control" %>
+          </div>
+        </div>
+        <%= form.hidden_field :entity_id, value: @entity.id.to_i if @entity.present? %>
+        <%= form.hidden_field :user_id, value: Current.user.id.to_i if Current.user.present? %>
+        <%= form.hidden_field :state_extent, value: 1 if Current.user.present? %>
+        <%= form.hidden_field :date_creation, value: Time.now if Current.user.present? %>
+        <%= form.hidden_field :code, value: @template.reference if @template.present? %>
+        <%= form.hidden_field :version, value: @template.version.to_i if @template.present? %>
 
-        <br> 
-        <div class="form-group"> 
-            <b><%= form.label :type_contract,  style: "display: block" %></b>
-            <%= form.radio_button :type_contract, 0, required: true, checked: false %>
-            <label for="vinculado">Vinculado</label></br>
-            <%= form.radio_button :type_contract, 1, required: true, checked: false %>
-            <label for="prestacion">Prestación de servicios</label></br>
-        </div>  
-        <br>
-        <div class="form-group">    
-            <b><%= form.label :post, style: "display: block" %></b>
-            <%= form.text_field :post,  class: "form-control", required: true %> 
-        </div>     
-        <br>
-        <div class="form-group">    
-            <b><%= form.label :area, style: "display: block" %></b>
-            <%= form.text_field :area,  class: "form-control", required: true %>
+        <div class="conesst-actions mt-4">
+          <%= form.submit t('common.initialsurvey'), class: "conesst-btn conesst-btn-primary" %>
+          <%= link_to form_preventions_path(entity_id: @entity.id), class: "conesst-btn" do %>
+            <i class="bi bi-arrow-left me-1"></i>
+            Retornar
+          <% end %>
         </div>
-        </br>
-        <div class="form-group"> 
-            <b><%= form.label :received_training,  style: "display: block" %></b>
-            <%= form.radio_button :received_training, 0, required: true, checked: false %>
-            <label for="no">No</label></br>
-            <%= form.radio_button :received_training, 1, required: true, checked: false %>
-            <label for="si">Si</label></br>
-        </div>  
-        <br>
-        <div class="form-group"> 
-            <b><%= form.label :suffered_accident,  style: "display: block" %></b>
-            <%= form.radio_button :suffered_accident, 0, required: true, checked: false %>
-            <label for="no">No</label></br>
-            <%= form.radio_button :suffered_accident, 1, required: true, checked: false %>
-            <label for="si">Si</label></br>
-        </div>  
-        </br>
-        <div class="form-group">    
-            <b><%= form.label :cual_suffered_accident, style: "display: block" %></b>
-            <%= form.text_field :cual_suffered_accident,  class: "form-control" %>
-        </div>
-        </br>
-        <div class="form-group">    
-            <b><%= form.label :equipment_operates, style: "display: block" %></b>
-            <%= form.text_field :equipment_operates,  class: "form-control", required: true %>
-        </div>
-        </br>
-        <div class="col-sm-6">
-            <b><%= form.label :epp,  style: "display: block" %></b>
-            <%= form.radio_button :epp, 0, required: true, checked: false %>
-            <label for="no">NO</label>
-            <%= form.radio_button :epp, 1, required: true, checked: false %>
-            <label for="si">Si</label>
-        </div>
-        </br>
-        <div class="form-group">    
-            <b><%= form.label :epp_cuales, style: "display: block" %></b>
-            <%= form.text_field :epp_cuales,  class: "form-control", required: true %>
-        </div>
-        </br>
-        <div class="form-group">    
-            <b><%= form.label :control_proposal, style: "display: block" %></b>
-            <%= form.text_field :control_proposal,  class: "form-control" %>
-        </div>
-        </br>
-        
-        <%= form.hidden_field :entity_id, :value => @entity.id.to_i, class: "form-control" if @entity.present? %>
-        <%= form.hidden_field :user_id, :value => Current.user.id.to_i, class: "form-control" if Current.user.present? %>
-        <%= form.hidden_field :state_extent, :value => 1, class: "form-control" if Current.user.present? %>
-        <%= form.hidden_field :date_creation, :value => Time.now, class: "form-control" if Current.user.present? %>
-
-        <div><br> </div>    
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.initialsurvey')%></button> 
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, form_preventions_path(entity_id: @entity.id) %>
-    <% end %>
-</div>        
-<br>
+      <% end %>
+    </div>
+  </div>
+</div>

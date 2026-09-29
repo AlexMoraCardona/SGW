@@ -1,238 +1,27 @@
-    <head>
-        <meta charset='utf-8' />
-    </head>
-    <header>
-        <table WIDTH="100%">
-            <tr>
-                <td rowspan="2"; style="width: 25%; text-align:center; border:1px solid black">
-                    <% if @adm_extinguisher.entity.logo.present? then %>
-                        <%= image_tag(Evaluation.wicked_blob_path(@adm_extinguisher.entity.logo),:width => "80",  :height=>"80") %>
-                    <% end %>   
-                </td>
-                <td style="width: 75%; border:1px solid black; text-align:center">
-                    <div><%= @adm_extinguisher.entity.business_name if @adm_extinguisher.present? %></div>
-                </td>
-            </tr>
-            <tr>   
-                <td style="width: 75%; border:1px solid black; text-align:center">
-                    <div><%= @template.name if @template.present? %></div>
-                </td>
-            </tr>
-        </table>
-        <table WIDTH="100%">
-            <tr>    
-                <td style="border:1px solid black; width: 25%">
-                    CÓDIGO:                 
-                </td>
-                <td style="border:1px solid black; width: 25%">
-                    &nbsp;&nbsp;<small class="text-muted"><%= @template.reference if @template.present? %></small>                
-                </td>
+<% if @template.present? %>
+        <% format_number = @template.format_number.to_i %>
+        <% plantilla = "adm_extinguishers/#{format_number}" %>
 
-                <td style="border:1px solid black; width: 25%">
-                    VERSIÓN:                 
-                </td>
-                <td style="border:1px solid black; width: 25%">
-                    &nbsp;&nbsp;<small class="text-muted"><%= @template.version if @template.present? %></small>                
-                </td>
-            </tr>
-            <tr>    
-                <td style="border:1px solid black; width: 25%">
-                    FECHA DE ELABORACIÓN:                 
-                </td>
-                <td style="border:1px solid black; width: 25%">
-                    &nbsp;&nbsp;<small class="text-muted"><%= @template.date if @template.present? %></small>                
-                </td>
-
-                <td style="border:1px solid black; width: 25%">
-                    FECHA DE ACTUALIZACIÓN:                 
-                </td>
-                <td style="border:1px solid black; width: 25%">
-                    &nbsp;&nbsp;<small class="text-muted"><%= @template.date_updated if @template.present? %></small>                
-                </td>
-            </tr>
-        </table>
-        <br>
-    </header>
-    <div><br></div>
-    <table style="width: 100%;"> 
-        <tr>
-            <td style="border:1px solid black;width: 50%;">
-                <strong>Fecha: </strong> <%= @adm_extinguisher.date_creation if @adm_extinguisher.present? %>
-            </td>
-            <td style="border:1px solid black;width: 50%;">
-                <strong>Área: </strong> <%= @adm_extinguisher.area if @adm_extinguisher.present? %>
-            </td>
-        </tr>
-    </table>
-    <table style="width: 100%;"> 
-        <tr>
-            <td style="border:1px solid black; text-align:center;transform: rotate(270deg);">
-                <FONT SIZE=1>Número</font> 
-            </td>
-            <td style="border:1px solid black; text-align:center;transform: rotate(270deg);">
-                <FONT SIZE=1>Tipo,Clase</font> 
-            </td>
-            <td style="height:150px; border:1px solid black; text-align:center;transform: rotate(270deg);">
-                <FONT SIZE=1>Capacidad</font> 
-            </td>
-            <td style="border:1px solid black; text-align:center;transform: rotate(270deg);">
-                <FONT SIZE=1>Anillo_Verificacíon</font> 
-            </td>
-            <td style="border:1px solid black; text-align:center;transform: rotate(270deg);">
-                <FONT SIZE=1>Manómetro</font> 
-            </td>
-            <td style="border:1px solid black; text-align:center;transform: rotate(270deg);">
-                <FONT SIZE=1>Pasador seguridad</font> 
-            </td>
-            <td style="border:1px solid black; text-align:center;transform: rotate(270deg);">
-                <FONT SIZE=1>Manija descarga transporte</font> 
-            </td>
-            <td style="border:1px solid black; text-align:center;transform: rotate(270deg);">
-                <FONT SIZE=1>Válvula</font> 
-            </td>
-            <td style="border:1px solid black; text-align:center;transform: rotate(270deg);">
-                <FONT SIZE=1>Manguera</font> 
-            </td>
-            <td style="border:1px solid black; text-align:center;transform: rotate(270deg);">
-                <FONT SIZE=1>Boquilla</font> 
-            </td>
-            <td style="border:1px solid black; text-align:center;transform: rotate(270deg);">
-                <FONT SIZE=1>Cuerpo cilíndrico</font> 
-            </td>
-            <td style="border:1px solid black; text-align:center;transform: rotate(270deg);">
-                <FONT SIZE=1>Instrucciones</font> 
-            </td>
-            <td style="border:1px solid black; text-align:center;transform: rotate(270deg);">
-                <FONT SIZE=1>Soporte</font> 
-            </td>
-            <td style="border:1px solid black; text-align:center;transform: rotate(270deg);">
-                <FONT SIZE=1>Señalización</font> 
-            </td>
-            <td style="border:1px solid black; text-align:center;transform: rotate(270deg);">
-                <FONT SIZE=1>Ubicación</font> 
-            </td>
-            <td style="border:1px solid black; text-align:center;transform: rotate(270deg);">
-                <FONT SIZE=1>Área de ubicación</font> 
-            </td>
-            <td style="border:1px solid black; text-align:center;transform: rotate(270deg);">
-                <FONT SIZE=1>Próxima recarga</font> 
-            </td>
-            <td style="border:1px solid black; text-align:center;transform: rotate(270deg);">
-                <FONT SIZE=1>Observaciones</font> 
-            </td>
-        </tr>
-        <% if @extinguishers.present? %>
-             <% @extinguishers.each do |extinguishers| %>
-                <tr>
-                    <td style="border:1px solid black; text-align:center;">
-                        <FONT SIZE=1><%= extinguishers.nro %></font> 
-                    </td>
-                    <td style="border:1px solid black;">
-                        <FONT SIZE=1><%= Extinguisher.label_type(extinguishers.type_extinguisher) %></font> 
-                    </td>
-                    <td style="border:1px solid black;text-align:center;">
-                        <FONT SIZE=1><%= extinguishers.ability %></font> 
-                    </td>
-                    <td style="border:1px solid black; text-align:center;">
-                        <FONT SIZE=1><%= Extinguisher.label(extinguishers.ring) %></font> 
-                    </td>
-                    <td style="border:1px solid black; text-align:center;">
-                        <FONT SIZE=1><%= Extinguisher.label(extinguishers.pressure_gauge) %> </font>
-                    </td>
-                    <td style="border:1px solid black; text-align:center;">
-                        <FONT SIZE=1><%= Extinguisher.label(extinguishers.barrette) %></font> 
-                    </td>
-                    <td style="border:1px solid black; text-align:center;">
-                        <FONT SIZE=1><%= Extinguisher.label(extinguishers.handle) %></font> 
-                    </td>
-                    <td style="border:1px solid black; text-align:center;">
-                        <FONT SIZE=1><%= Extinguisher.label(extinguishers.valve) %></font> 
-                    </td>
-                    <td style="border:1px solid black; text-align:center;">
-                        <FONT SIZE=1><%= Extinguisher.label(extinguishers.hose) %></font> 
-                    </td>
-                    <td style="border:1px solid black; text-align:center;">
-                        <FONT SIZE=1><%= Extinguisher.label(extinguishers.nozzle) %></font> 
-                    </td>
-                    <td style="border:1px solid black; text-align:center;">
-                        <FONT SIZE=1><%= Extinguisher.label(extinguishers.cylindrical_body) %></font> 
-                    </td>
-                    <td style="border:1px solid black; text-align:center;">
-                        <FONT SIZE=1><%= Extinguisher.label(extinguishers.decal) %></font> 
-                    </td>
-                    <td style="border:1px solid black; text-align:center;">
-                        <FONT SIZE=1><%= Extinguisher.label(extinguishers.medium) %></font> 
-                    </td>
-                    <td style="border:1px solid black; text-align:center;">
-                        <FONT SIZE=1><%= Extinguisher.label(extinguishers.signaling) %></font> 
-                    </td>
-                    <td style="border:1px solid black; text-align:center;">
-                        <FONT SIZE=1><%= Extinguisher.label(extinguishers.location) %></font> 
-                    </td>
-                    <td style="border:1px solid black;">
-                        <FONT SIZE=1><%= extinguishers.area_location %></font> 
-                    </td>
-                    <td style="border:1px solid black; text-align:center;">
-                        <FONT SIZE=1><%= extinguishers.date_vec_carga %></font> 
-                    </td>
-                    <td style="border:1px solid black;">
-                        <FONT SIZE=1><%= extinguishers.observation %></font> 
-                    </td>
-                </tr>
-            <% end %>
-        <% end %>          
-    </table>
-    <div><br></div>
-    <div><br></div>
-    <% if @extinguishers.present? %>
-        <br>
-        <table style="width: 100%;">
-        <% @extinguishers.each do |extinguishers| %>
-           <tr>
-               <td style="border:0px solid black;">
-                   <% if extinguishers.extinguisher_fotos.attached? %>
-                       <hr>
-                       <div class="form-group">
-                           Archivos adjuntos extintor Nro: <%= extinguishers.nro %>
-                       </div>         
-                       <div data-controller="previews" >
-                           <% extinguishers.extinguisher_fotos.each do |file|%>
-                                <br>
-                                <% if file.image? %>
-                                    <div>
-                                        <%= file.blob.filename %></br>
-                                        <%= image_tag(Evaluation.wicked_blob_path(file), height: "350", width: "400px")%>
-                                    </div> 
-                                <% end %>
-                            <% end %>  
-                        </div>
-                    <% end %>  
-                </td>
-            </tr>
-        <% end %>
-        </table>
-    <% end %>          
-    <div><br></div>
-    <div><br></div>
-    <div><br></div>
-    <div><u><%= @adm_extinguisher.user.name if @adm_extinguisher.present? %></u></div>
-    <div>Nombre de quien realiza la inspección</div>
-    <div>&nbsp;</div>
-        <% if @adm_extinguisher.firm_user == 1 %>
-            <div>
-                <% if @adm_extinguisher.user.firm.attached? %>
-                    <% if @adm_extinguisher.user.firm.image? %> 
-                        <div  style="padding: 0;height: 70px;display: flex;align-items: flex-end;"><strong>Firma: </strong><%= image_tag(Evaluation.wicked_blob_path(@adm_extinguisher.user.firm), class: "firmapdf")%></div>
-                    <% end %>
-                <% end %>
+        <% if lookup_context.exists?(plantilla, [], true) %>
+            <%= render plantilla, template: @template %>
+        <% else %>
+            <div class="alert alert-warning text-center my-4">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            La plantilla <strong>#{format_number}</strong> aún no tiene
+            un formato de visualización configurado.
             </div>
-            <div><strong>Cargo: </strong><%= @adm_extinguisher.post if @adm_extinguisher.present? %></div>
-        <% else %>    
-            <div><strong>Firma: </strong>________________________________</div>
-            <div><strong>Cargo: </strong><%= @adm_extinguisher.post if @adm_extinguisher.present? %></div>
-        <% end %>     
-    </div>
-    <div><br></div>
-    <div><br></div>
-    <div><br></div>
-   
+        <% end %>
+<% end %>
+
+<!-- =========================================================
+     CONTROL DE CAMBIOS
+     ========================================================= -->
+
+<% if @template_versions.present? %>
+
+  <div class="control-cambios">
+    <%= render 'evaluation_rule_details/control_cambios' %>
+  </div>
+
+<% end %>
+

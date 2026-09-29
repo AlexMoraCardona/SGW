@@ -1,32 +1,50 @@
-<div align="left"; class="container col-12">
-    <a class="navbar-brand" href="/">
-        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-    </a>
-</div>
-<div class="container col-11" 
-    <br>
-    <h2>Administración Inspección de Extintores</h2>
-    <hr>
-    
-    <br>
- 
-    <% if params[:entity_id].present?  || @entity.present? %>
-        <%= render 'adm_extinguishers' %> 
-    <% else %>
+<div class="conesst-page">
+  <div class="mb-3">
+    <%= link_to root_path, class: "d-inline-block" do %>
+      <%= image_tag "LogoConesst202305232.png", width: 100, height: 100, alt: "CONESST" %>
+    <% end %>
+  </div>
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-fire-extinguisher fs-5"></i>
+        <div>
+          <h4 class="mb-0">
+            Administración Inspección de Extintores
+          </h4>
+          <small class="text-muted">
+            Consulta y administración de las inspecciones de extintores
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <% if params[:entity_id].present? || @entity.present? %>
+        <%= render "adm_extinguishers" %>
+      <% else %>
         <%= form_with model: @entity, method: :get do |form| %>
-            <div class="row g-2">
-                <div class="col-sm-7">
-                    <h3>Empresa:</h3>
-                    <% if @entities.present? %>
-                        <%= form.collection_select :entity_id, @entities.order(id: :asc), :id, :business_name, { prompt: '--Seleccionar Entidad--' },
-                        { class: 'form-control input-sm select2' } %>
-                    <% else %> 
-                        <%=  @entity.business_name %>
-                        <%= form.hidden_field :entity_id, :value => @entity.id, class: "form-control" %>
-                    <% end %>
+          <div class="row g-3">
+            <div class="col-12 col-md-8 col-lg-7">
+              <%= form.label :entity_id, "Empresa", class: "form-label fw-semibold" %>
+              <% if @entities.present? %>
+                <%= form.collection_select :entity_id, @entities.order(id: :asc), :id, :business_name, { prompt: "-- Seleccionar Entidad --" }, { class: "form-select select2" } %>
+              <% else %>
+                <div class="form-control bg-light">
+                  <%= @entity.business_name %>
                 </div>
-            </div>    
-            <br>    
-            <button type="submit" class="btn btn-sm btn-primary">Consultar</button>
+                <%= form.hidden_field :entity_id, value: @entity.id %>
+              <% end %>
+            </div>
+          </div>
+          <div class="conesst-actions mt-4">
+            <button type="submit"
+                    class="conesst-btn conesst-btn-primary">
+              <i class="bi bi-search me-1"></i>
+              Consultar
+            </button>
+          </div>
         <% end %>
-    <% end %> 
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,40 +1,33 @@
 <div class="conesst-page">
-  <!-- Logo -->
   <div class="conesst-logo-container">
     <%= link_to root_path, class: "d-inline-block" do %>
-      <%= image_tag(
-        'LogoConesst202305232.png',
-        class: 'conesst-logo',
-        alt: 'CONESST'
-      ) %>
+      <%= image_tag('LogoConesst202305232.png', class: 'conesst-logo', alt: 'CONESST') %>
     <% end %>
   </div>
   <div class="conesst-header">
-    <div class="conesst-card-header-content">
+    <div class="conesst-card-header-content-compact">
       <div class="conesst-card-header-title">
-        <i class="bi bi-signpost-2 me-2"></i>
+        <i class="bi bi-signpost-2 me-1"></i>
         <%= t('.title') %>
       </div>
-      <div class="conesst-card-header-subtitle">
-        Consulta y administración de controles de ruta
-      </div>
-    </div>
-  </div>
-  <div class="conesst-card mb-3">
-    <div class="conesst-card-body">
       <div class="conesst-actions">
         <%= link_to new_route_control_path, class: "conesst-btn conesst-btn-primary" do %>
           <i class="bi bi-plus-circle"></i>
-          <%= t('.create_route_control') %>
+          <span>
+            <%= t('.create_route_control') %>
+          </span>
         <% end %>
       </div>
+    </div>
+    <div class="conesst-card-header-subtitle">
+      Consulta y administración de controles de ruta
     </div>
   </div>
   <div class="conesst-card mb-3">
     <div class="conesst-card-header">
       <div class="conesst-card-header-content">
         <div class="conesst-card-header-title">
-          <i class="bi bi-search me-2"></i>
+          <i class="bi bi-search me-1"></i>
           Buscar controles
         </div>
       </div>
@@ -52,7 +45,7 @@
             <%= f.label :user_id, class: "conesst-form-label" do %>
               Usuario
             <% end %>
-            <%= f.select(:user_id_eq, @users.pluck(:name, :id).uniq, { include_blank: true }, { class: "form-select" }) %>
+            <%= f.select :user_id_eq, @users.pluck(:name, :id).uniq, { include_blank: true }, { class: "form-select" } %>
           </div>
           <div class="conesst-form-group">
             <%= f.label :place, class: "conesst-form-label" do %>
@@ -64,7 +57,7 @@
         <div class="conesst-form-actions">
           <button type="submit" class="conesst-btn conesst-btn-primary">
             <i class="bi bi-search"></i>
-            Buscar
+            <span>Buscar</span>
           </button>
         </div>
       <% end %>
@@ -86,7 +79,7 @@
     <div class="conesst-card-header">
       <div class="conesst-card-header-content">
         <div class="conesst-card-header-title">
-          <i class="bi bi-signpost-2 me-2"></i>
+          <i class="bi bi-signpost-2 me-1"></i>
           Controles de ruta
         </div>
         <div class="conesst-card-header-subtitle">
@@ -94,50 +87,165 @@
         </div>
       </div>
     </div>
-    <div class="conesst-card-body p-0">
-      <div class="conesst-table-wrapper">
-        <table class="conesst-table">
-          <thead>
-            <tr>
-              <th>
-                <%= sort_link(@q, :date_control, default_order: :desc) %>
-              </th>
-              <th>
-                <%= t('.entity') %>
-              </th>
-              <th>
-                <%= t('.user_create') %>
-              </th>
-              <th>
-                <%= t('.time_initial_control') %>
-              </th>
-              <th>
-                <%= t('.time_final_control') %>
-              </th>
-              <th>
-                <%= sort_link(@q, :user_id, default_order: :desc) %>
-              </th>
-              <th>
-                <%= sort_link(@q, :place, default_order: :desc) %>
-              </th>
-              <th>
-                <%= t('common.edit') %>
-              </th>
-              <th>
-                <%= t('common.show') %>
-              </th>
-              <th>
-                PDF
-              </th>
-              <th>
-                Eliminar
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <%= render partial: 'route_control', collection: @route_controls %>
-          </tbody>
-        </table>
+    <div class="d-none d-md-block">
+      <div class="conesst-card-body p-0">
+        <div class="conesst-table-wrapper">
+          <table class="conesst-table">
+            <thead>
+              <tr>
+                <th>
+                  <%= sort_link(@q, :date_control, default_order: :desc) %>
+                </th>
+                <th>
+                  <%= t('.entity') %>
+                </th>
+                <th>
+                  <%= t('.user_create') %>
+                </th>
+                <th>
+                  <%= t('.time_initial_control') %>
+                </th>
+                <th>
+                  <%= t('.time_final_control') %>
+                </th>
+                <th>
+                  <%= sort_link(@q, :user_id, default_order: :desc) %>
+                </th>
+                <th>
+                  <%= sort_link(@q, :place, default_order: :desc) %>
+                </th>
+                <th>
+                  <%= t('common.edit') %>
+                </th>
+                <th>
+                  <%= t('common.show') %>
+                </th>
+                <th>
+                  PDF
+                </th>
+                <th>
+                  Eliminar
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <%= render partial: 'route_control', collection: @route_controls %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="d-md-none">
+      <div class="p-2">
+        <% @route_controls.each do |route_control| %>
+          <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body p-3">
+              <div class="d-flex align-items-center mb-2">
+                <div class="fw-semibold text-muted" style="width: 95px; flex-shrink: 0;">
+                  <i class="bi bi-calendar3 me-1"></i>
+                  Fecha
+                </div>
+                <div>
+                  <%= route_control.date_control %>
+                </div>
+              </div>
+              <div class="d-flex align-items-center mb-2">
+                <div class="fw-semibold text-muted" style="width: 95px; flex-shrink: 0;">
+                  <i class="bi bi-building me-1"></i>
+                  Entidad
+                </div>
+                <div>
+                  <%= RouteControl.label_entidad(route_control.entity) %>
+                </div>
+              </div>
+              <div class="d-flex align-items-center mb-2">
+                <div class="fw-semibold text-muted" style="width: 95px; flex-shrink: 0;">
+                  <i class="bi bi-person me-1"></i>
+                  Creado por
+                </div>
+                <div>
+                  <%= RouteControl.label_user(route_control.user_create) %>
+                </div>
+              </div>
+              <div class="d-flex align-items-center mb-2">
+                <div class="fw-semibold text-muted" style="width: 95px; flex-shrink: 0;">
+                  <i class="bi bi-clock me-1"></i>
+                  Hora inicio
+                </div>
+                <div>
+                  <% if route_control.time_initial_control.present? %>
+                    <span class="text-success fw-semibold">
+                      <%= route_control.time_initial_control.strftime("%I:%M %p") %>
+                    </span>
+                  <% else %>
+                    <%= link_to control_hora_inicio_path(id: route_control.id), class: "conesst-btn conesst-btn-primary", title: "Registrar hora de inicio" do %>
+                      <i class="bi bi-clock"></i>
+                      <span>Registrar inicio</span>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+              <div class="d-flex align-items-center mb-2">
+                <div class="fw-semibold text-muted" style="width: 95px; flex-shrink: 0;">
+                  <i class="bi bi-clock-history me-1"></i>
+                  Hora final
+                </div>
+                <div>
+                  <% if route_control.time_final_control.present? %>
+                    <span class="text-success fw-semibold">
+                      <%= route_control.time_final_control.strftime("%I:%M %p") %>
+                    </span>
+                  <% else %>
+                    <%= link_to control_hora_final_path(id: route_control.id), class: "conesst-btn conesst-btn-primary", title: "Registrar hora final" do %>
+                      <i class="bi bi-clock-history"></i>
+                      <span>Registrar final</span>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+              <div class="d-flex align-items-center mb-2">
+                <div class="fw-semibold text-muted" style="width: 95px; flex-shrink: 0;">
+                  <i class="bi bi-person me-1"></i>
+                  Funcionario
+                </div>
+                <div>
+                  <%= highlight(route_control.user.name, params.dig(:q, :user_id_cont)) %>
+                </div>
+              </div>
+              <div class="d-flex align-items-center mb-3">
+                <div class="fw-semibold text-muted" style="width: 95px; flex-shrink: 0;">
+                  <i class="bi bi-geo-alt me-1"></i>
+                  Lugar
+                </div>
+                <div class="text-break">
+                  <%= highlight(route_control.place, params.dig(:q, :place_cont)) %>
+                </div>
+              </div>
+              <div class="border-top pt-3">
+                <div class="d-flex flex-wrap gap-2">
+                  <%= link_to edit_route_control_path(route_control), class: "conesst-btn conesst-btn-warning", title: t('common.edit') do %>
+                    <i class="bi bi-pencil-square"></i>
+                    <span>Editar</span>
+                  <% end %>
+                  <%= link_to route_control_path(route_control), class: "conesst-btn conesst-btn-primary", title: "Ver control de ruta" do %>
+                    <i class="bi bi-eye"></i>
+                    <span>Ver</span>
+                  <% end %>
+                  <%= link_to pdf_informe_route_control_path(route_control, format: :pdf), class: "conesst-btn conesst-btn-success", title: "Generar PDF" do %>
+                    <i class="bi bi-file-earmark-pdf"></i>
+                    <span>PDF</span>
+                  <% end %>
+                  <% if Current.user.level > 0 && Current.user.level < 4 %>
+                    <%= button_to route_control, method: :delete, class: "conesst-btn conesst-btn-danger", title: "Eliminar", form: {data: {turbo_confirm: "¿Está seguro de eliminar este control de ruta?"}} do %>
+                      <i class="bi bi-trash"></i>
+                      <span>Eliminar</span>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>

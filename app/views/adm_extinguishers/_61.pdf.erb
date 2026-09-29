@@ -1,0 +1,220 @@
+<%= wicked_pdf_stylesheet_link_tag "pdf_conesst" %>
+<meta charset="utf-8">
+
+<div class="pdf-document">
+    <div class="pdf-space"></div>
+    <table class="pdf-table">
+        <tr>
+            <td class="pdf-cell-left pdf-col-50">
+                <strong>Fecha:</strong>
+                <%= @adm_extinguisher.date_creation if @adm_extinguisher.present? %>
+            </td>
+            <td class="pdf-cell-left pdf-col-50">
+                <strong>Área:</strong>
+                <%= @adm_extinguisher.area if @adm_extinguisher.present? %>
+            </td>
+        </tr>
+    </table>
+    <div class="pdf-space"></div>
+    <table class="pdf-table">
+        <tr>
+            <th class="pdf-cell-center pdf-col-5"
+                style="writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; height: 150px; min-width: 35px;">
+                Número
+            </th>
+            <th class="pdf-cell-center pdf-col-5"
+                style="writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; height: 150px; min-width: 35px;">
+                Tipo, Clase
+            </th>
+            <th class="pdf-cell-center pdf-col-5"
+                style="writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; height: 150px; min-width: 35px;">
+                Capacidad
+            </th>
+            <th class="pdf-cell-center pdf-col-5"
+                style="writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; height: 150px; min-width: 35px;">
+                Anillo Verificación
+            </th>
+            <th class="pdf-cell-center pdf-col-5"
+                style="writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; height: 150px; min-width: 35px;">
+                Manómetro
+            </th>
+            <th class="pdf-cell-center pdf-col-5"
+                style="writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; height: 150px; min-width: 35px;">
+                Pasador seguridad
+            </th>
+            <th class="pdf-cell-center pdf-col-5"
+                style="writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; height: 150px; min-width: 35px;">
+                Manija descarga transporte
+            </th>
+            <th class="pdf-cell-center pdf-col-5"
+                style="writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; height: 150px; min-width: 35px;">
+                Válvula
+            </th>
+            <th class="pdf-cell-center pdf-col-5"
+                style="writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; height: 150px; min-width: 35px;">
+                Manguera
+            </th>
+            <th class="pdf-cell-center pdf-col-5"
+                style="writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; height: 150px; min-width: 35px;">
+                Boquilla
+            </th>
+            <th class="pdf-cell-center pdf-col-5"
+                style="writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; height: 150px; min-width: 35px;">
+                Cuerpo cilíndrico
+            </th>
+            <th class="pdf-cell-center pdf-col-5"
+                style="writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; height: 150px; min-width: 35px;">
+                Instrucciones
+            </th>
+            <th class="pdf-cell-center pdf-col-5"
+                style="writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; height: 150px; min-width: 35px;">
+                Soporte
+            </th>
+            <th class="pdf-cell-center pdf-col-5"
+                style="writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; height: 150px; min-width: 35px;">
+                Señalización
+            </th>
+            <th class="pdf-cell-center pdf-col-5"
+                style="writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; height: 150px; min-width: 35px;">
+                Ubicación
+            </th>
+            <th class="pdf-cell-center pdf-col-5"
+                style="writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; height: 150px; min-width: 35px;">
+                Área de ubicación
+            </th>
+            <th class="pdf-cell-center pdf-col-5"
+                style="writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; height: 150px; min-width: 35px;">
+                Próxima recarga
+            </th>
+            <th class="pdf-cell-center pdf-col-5"
+                style="writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; height: 150px; min-width: 35px;">
+                Observaciones
+            </th>
+        </tr>
+        <% if @extinguishers.present? %>
+            <% @extinguishers.each do |extinguishers| %>
+                <tr>
+                    <td class="pdf-cell-center pdf-col-5">
+                        <%= extinguishers.nro %>
+                    </td>
+                    <td class="pdf-cell-center pdf-col-5">
+                        <%= Extinguisher.label_type(extinguishers.type_extinguisher) %>
+                    </td>
+                    <td class="pdf-cell-center pdf-col-5">
+                        <%= extinguishers.ability %>
+                    </td>
+                    <td class="pdf-cell-center pdf-col-5">
+                        <%= Extinguisher.label(extinguishers.ring) %>
+                    </td>
+                    <td class="pdf-cell-center pdf-col-5">
+                        <%= Extinguisher.label(extinguishers.pressure_gauge) %>
+                    </td>
+                    <td class="pdf-cell-center pdf-col-5">
+                        <%= Extinguisher.label(extinguishers.barrette) %>
+                    </td>
+                    <td class="pdf-cell-center pdf-col-5">
+                        <%= Extinguisher.label(extinguishers.handle) %>
+                    </td>
+                    <td class="pdf-cell-center pdf-col-5">
+                        <%= Extinguisher.label(extinguishers.valve) %>
+                    </td>
+                    <td class="pdf-cell-center pdf-col-5">
+                        <%= Extinguisher.label(extinguishers.hose) %>
+                    </td>
+                    <td class="pdf-cell-center pdf-col-5">
+                        <%= Extinguisher.label(extinguishers.nozzle) %>
+                    </td>
+                    <td class="pdf-cell-center pdf-col-5">
+                        <%= Extinguisher.label(extinguishers.cylindrical_body) %>
+                    </td>
+                    <td class="pdf-cell-center pdf-col-5">
+                        <%= Extinguisher.label(extinguishers.decal) %>
+                    </td>
+                    <td class="pdf-cell-center pdf-col-5">
+                        <%= Extinguisher.label(extinguishers.medium) %>
+                    </td>
+                    <td class="pdf-cell-center pdf-col-5">
+                        <%= Extinguisher.label(extinguishers.signaling) %>
+                    </td>
+                    <td class="pdf-cell-center pdf-col-5">
+                        <%= Extinguisher.label(extinguishers.location) %>
+                    </td>
+                    <td class="pdf-cell-left pdf-col-5">
+                        <%= extinguishers.area_location %>
+                    </td>
+                    <td class="pdf-cell-center pdf-col-5">
+                        <%= extinguishers.date_vec_carga %>
+                    </td>
+                    <td class="pdf-cell-left pdf-col-5">
+                        <%= extinguishers.observation %>
+                    </td>
+                </tr>
+            <% end %>
+        <% end %>
+    </table>
+    <% if @extinguishers.present? %>
+        <div class="pdf-space"></div>
+        <div class="pdf-space"></div>
+        <% @extinguishers.each do |extinguishers| %>
+            <% if extinguishers.extinguisher_fotos.attached? %>
+                <div class="pdf-no-break">
+                    <div class="pdf-section-title">
+                        Archivos adjuntos extintor Nro:
+                        <%= extinguishers.nro %>
+                    </div>
+                    <% extinguishers.extinguisher_fotos.each do |file| %>
+                        <% if file.image? %>
+                            <div class="pdf-text">
+                                <%= file.blob.filename %>
+                            </div>
+                            <div class="pdf-cell-center">
+                                <%= image_tag(Evaluation.wicked_blob_path(file), height: "350", width: "400") %>
+                            </div>
+                            <div class="pdf-space"></div>
+                        <% end %>
+                    <% end %>
+                </div>
+            <% end %>
+        <% end %>
+    <% end %>
+    <div class="pdf-space"></div>
+    <div class="pdf-space"></div>
+    <div class="pdf-signatures">
+        <table class="pdf-signatures-table">
+            <tr>
+                <td class="pdf-signature-cell">
+                    <div class="pdf-text">
+                        <u>
+                            <%= @adm_extinguisher.user.name if @adm_extinguisher.present? %>
+                        </u>
+                    </div>
+                    <div class="pdf-text">
+                        Nombre de quien realiza la inspección
+                    </div>
+                    <div class="pdf-space"></div>
+                    <% if @adm_extinguisher.firm_user == 1 %>
+                        <% if @adm_extinguisher.user.firm.attached? %>
+                            <% if @adm_extinguisher.user.firm.image? %>
+                                <div class="pdf-text">
+                                    <strong>Firma:</strong>
+                                </div>
+                                <div style="height: 70px;">
+                                    <%= image_tag(Evaluation.wicked_blob_path(@adm_extinguisher.user.firm), class: "firmapdf") %>
+                                </div>
+                            <% end %>
+                        <% end %>
+                    <% else %>
+                        <div class="pdf-text">
+                            <strong>Firma:</strong>
+                            ______________________________________
+                        </div>
+                    <% end %>
+                    <div class="pdf-text">
+                        <strong>Cargo:</strong>
+                        <%= @adm_extinguisher.post if @adm_extinguisher.present? %>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

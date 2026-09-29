@@ -27,7 +27,10 @@ class AdmExtinguishersController < ApplicationController
         
         @adm_extinguisher = AdmExtinguisher.find(params[:id])
         @extinguishers = Extinguisher.where("adm_extinguisher_id = ?", @adm_extinguisher.id).order(:nro) if @adm_extinguisher.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",61,1).last  
+        @template = Template.where("reference = ? and version = ?",@adm_extinguisher.code,@adm_extinguisher.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+        @entity = Entity.find(@adm_extinguisher.entity_id) if @adm_extinguisher.present?
+
         respond_to do |format|
             format.html
             format.xlsx{ 
@@ -39,21 +42,24 @@ class AdmExtinguishersController < ApplicationController
     def ver_extinguisher
         @adm_extinguisher = AdmExtinguisher.find(params[:id])
         @extinguishers = Extinguisher.where("adm_extinguisher_id = ?", @adm_extinguisher.id) if @adm_extinguisher.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",61,1).last  
-        nombre_evidencia = 'InspecciónExtintores.pdf'
+        @template = Template.where("reference = ? and version = ?",@adm_extinguisher.code,@adm_extinguisher.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+        @entity = Entity.find(@adm_extinguisher.entity_id) if @adm_extinguisher.present?
 
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
                 pdf = WickedPdf.new.pdf_from_string(
                     render_to_string('ver_extinguisher'),
                     disable_javascript: true,
-                    margin: {top: 10, bottom: 10, left: 10, right: 10 },
+                    margin: {top: 50, bottom: 10, left: 2, right: 2 },
                     page_size: 'letter',
-                    footer: {right: '[page] de [topage]'}
-                    
-                  )  
-                  send_data(pdf, filename: nombre_evidencia, disposition: 'attachment')      
+                    orientation: 'Landscape',
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
             }
         end    
     end    
@@ -61,7 +67,7 @@ class AdmExtinguishersController < ApplicationController
 
     def new
       @adm_extinguisher =  AdmExtinguisher.new
-      @template = Template.where("format_number = ? and document_vigente = ?",61,1).last  
+      @template = Template.where("reference = ? and document_vigente = ?",'IE-SST',1).last  
     end    
 
     def create
@@ -116,7 +122,7 @@ class AdmExtinguishersController < ApplicationController
     private
 
     def adm_extinguisher_params
-        params.require(:adm_extinguisher).permit(:firm_user, :date_firm_user, :date_creation, :area, :user_id, :entity_id, :post)
+        params.require(:adm_extinguisher).permit(:firm_user, :date_firm_user, :date_creation, :area, :user_id, :entity_id, :post, :version, :code)
     end 
 
 end  

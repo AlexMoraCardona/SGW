@@ -1,38 +1,90 @@
-<% if @entity.present? %>
-    <h class="display-6"><%= @entity.business_name %> Nit: <%=@entity.identification_number %></h>
-<% end %>
-
-<div>
-    <%= link_to t('common.new_admin_extent_danger'), crear_admin_extent_admin_extent_dangers_path, class: 'btn btn-sm btn-outline-primary' %></td>
+<div class="conesst-page">
+  <% if @entity.present? %>
+    <div class="conesst-card mb-4">
+      <div class="conesst-card-header">
+        <div class="d-flex align-items-center gap-2">
+          <i class="bi bi-building fs-5"></i>
+          <div>
+            <h5 class="mb-0"><%= @entity.business_name %></h5>
+            <small class="text-muted">
+              NIT: <%= @entity.identification_number %>
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-shield-exclamation fs-5"></i>
+        <div>
+          <h4 class="mb-0">Peligros y riesgos</h4>
+          <small class="text-muted">
+            Administración de medidas de prevención y control
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <div class="conesst-actions mb-4">
+        <%= link_to crear_admin_extent_admin_extent_dangers_path, class: "conesst-btn conesst-btn-primary" do %>
+          <i class="bi bi-plus-circle me-1"></i>
+          <%= t('common.new_admin_extent_danger') %>
+        <% end %>
+      </div>
+      <% if @admin_extent_dangers.present? %>
+        <div class="conesst-table-wrapper">
+          <table class="conesst-table">
+            <thead>
+              <tr>
+                <th><%= t('.id') %></th>
+                <th><%= t('.date_creation') %></th>
+                <th><%= t('.state_extent') %></th>
+                <th><%= t('.entity_id') %></th>
+                <th><%= t('.user_id') %></th>
+                <th class="text-center">Cargo</th>
+                <th class="text-center">Editar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @admin_extent_dangers.each do |admin_extent_danger| %>
+                <tr>
+                  <td>
+                    <%= admin_extent_danger.id %>
+                  </td>
+                  <td data-label="<%= t('.date_creation') %>">
+                    <%= admin_extent_danger.date_creation %>
+                  </td>
+                  <td data-label="<%= t('.state_extent') %>">
+                    <%= admin_extent_danger.label_state_extent(admin_extent_danger.state_extent) %>
+                  </td>
+                  <td data-label="<%= t('.entity_id') %>">
+                    <%= admin_extent_danger.entity.business_name %>
+                  </td>
+                  <td data-label="<%= t('.user_id') %>">
+                    <%= admin_extent_danger.user.name %>
+                  </td>
+                  <td data-label="Cargo" class="text-center">
+                    <%= admin_extent_danger.post %>
+                  </td>
+                  <td data-label="Editar" class="text-center">
+                    <%= link_to edit_form_prevention_path(admin_extent_danger.id), class: "conesst-btn conesst-btn-warning" do %>
+                      <i class="bi bi-pencil-square me-1"></i>
+                      <%= t('common.edit_matrix_danger_risk') %>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="alert alert-light border mb-0">
+          <i class="bi bi-info-circle me-1"></i>
+          No hay registros de peligros y riesgos para mostrar.
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>
-<div></br></div>
-<% if @admin_extent_dangers.present? %>
-    <table class="table table-hover">
-        <thead> 
-            <tr>    
-                <th style="border:1px solid black;" scope="col"><%= t('.id') %></th>
-                <th style="border:1px solid black;" scope="col"><%= t('.date_creation') %></th>
-                <th style="border:1px solid black;" scope="col"><%= t('.state_extent') %></th>
-                <th style="border:1px solid black;" scope="col"><%= t('.entity_id') %></th>
-                <th style="border:1px solid black;" scope="col"><%= t('.user_id') %></th>
-                <th style="border:1px solid black;text-align:center;" scope="col"> Cargo</th>
-                <th style="border:1px solid black;text-align:center;" scope="col"> Editar</th>
-            </tr>
-        </thead>
-        <tbody>  
-                <% @admin_extent_dangers.each do |admin_extent_danger| %>
-                    <tr>
-                        <td style="border:1px solid black"><%= admin_extent_danger.id %></td>
-                        <td style="border:1px solid black"><%= admin_extent_danger.date_creation %></td>
-                        <td style="border:1px solid black"><%= admin_extent_danger.label_state_extent(admin_extent_danger.state_extent) %></td>
-                        <td style="border:1px solid black"><%= admin_extent_danger.entity.business_name %></td>
-                        <td style="border:1px solid black"><%= admin_extent_danger.user.name %></td>
-                        <td style="border:1px solid black"><%= admin_extent_danger.post %></td>
-                        <td style="border:1px solid black;text-align:center;"><%= link_to t('common.edit_matrix_danger_risk'), edit_form_prevention_path(admin_extent_danger.id), class: 'btn btn-sm btn btn-warning'  %></td>
-                    </tr>
-                <% end %>
-        </tbody>      
-    </table>
-<% end %>
-<hr>
-

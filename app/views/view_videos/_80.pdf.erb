@@ -1,0 +1,49 @@
+<head>
+    <meta charset="utf-8" />
+    <%= wicked_pdf_stylesheet_link_tag "pdf_conesst" %>
+</head>
+
+<div class="pdf-document">
+    <div class="pdf-space"></div>
+    <div class="pdf-title">
+        Control vista de multimedia y presentaciones
+    </div>
+    <div class="pdf-space"></div>
+    <table class="pdf-table">
+        <thead>
+            <tr>
+                <th class="pdf-cell-left pdf-col-20">
+                    Fecha de vista
+                </th>
+                <th class="pdf-cell-left pdf-col-30">
+                    Video o presentación
+                </th>
+                <th class="pdf-cell-left pdf-col-30">
+                    Nombre empleado
+                </th>
+                <th class="pdf-cell-left pdf-col-20">
+                    Tipo de presentación
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @view_videos.each do |view_video| %>
+                <tr>
+                    <td class="pdf-cell-left pdf-col-20">
+                        <%= view_video.date_view %>
+                    </td>
+                    <td class="pdf-cell-left pdf-col-30">
+                        <%= view_video.name_view %>
+                    </td>
+                    <td class="pdf-cell-left pdf-col-30">
+                        <%= view_video.user.name %>
+                    </td>
+                    <td class="pdf-cell-left pdf-col-20">
+                        <%= ViewVideo.label_type(view_video.type_presentation) %>
+                    </td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+    <div class="pdf-space"></div>
+</div>

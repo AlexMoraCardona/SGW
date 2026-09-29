@@ -1,48 +1,79 @@
-<div class="container col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
-    <br>
-    <div>    
+<div class="conesst-page">
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-shield-exclamation fs-5"></i>
         <div>
-            <p><b>Lista de peligros</b></p>
-        </div>     
-        <div style="text-align: justify;">
-            <p>A continuación, encontrará una lista de peligros y riesgos a los que se puede exponer un trabajador en su entorno laboral. Por favor seleccione los riesgos que aplican para su puesto de trabajo.</p>
-        </div>          
-        <div></br></div>
-        <table>  
-            <% @clasification_dangers.each do |clasification_danger| %> 
-                <tr>
-                    <td style="border:0px solid black;"> <%= clasification_danger.name %></td> 
-                </tr>
-                <% @form_preventions.where("clasification_danger_id = ?", clasification_danger.id).each do |preven| %> 
-                    <tr>
-                        <td style="border:1px solid black;width: 60%;"> <%= preven.clasification_danger_detail.name %></td> 
-                        <td style="text-align:center;border:1px solid black;width: 30%;"> 
-                            <%= form_with model: preven do |form| %>
-                                <div style="border:0px solid black;width: 100%;"> 
-                                    <b><%= form.label :Expuesto,  style: "display: block" %></b>
-                                    <%= form.radio_button :exposed, 0, checked: true, :onClick=>"javascript: this.form.submit.click();" %>
-                                    <label for="no">No</label></br>
-                                    <%= form.radio_button :exposed, 1, :onClick=>"javascript: this.form.submit.click();" %>
-                                    <label for="si">Si</label></br>
-                                </div>
-                                <div class="actions" style="display:none;">
-                                    <%= form.submit "", :name => "submit", :remote => "true" %>
-                                </div>                                 
-                            <% end %>     
-                        <div></br></div>
-                        </td>
-                    </tr>
-                <% end %>  
-                <tr>
-                    <td style="border:0px solid black;"></br></td> 
-                </tr>
-            <% end %>  
-        </table>
+          <h4 class="mb-0">Lista de peligros</h4>
+          <small class="text-muted">
+            Selección de peligros a los que está expuesto el trabajador
+          </small>
+        </div>
+      </div>
     </div>
-    <div style="text-align:center;"> 
-        <%= link_to '<button class="btn btn-sm btn-outline-dark" type="button">Finalizar encuesta</button>'.html_safe, form_preventions_path(entity_id: @entity.id) %>
+    <div class="conesst-card-body">
+      <div class="alert alert-light border mb-4">
+        <div class="d-flex align-items-start gap-2">
+          <i class="bi bi-info-circle mt-1"></i>
+          <div>
+            A continuación, encontrará una lista de peligros y riesgos a los que se
+            puede exponer un trabajador en su entorno laboral. Por favor seleccione
+            los riesgos que aplican para su puesto de trabajo.
+          </div>
+        </div>
+      </div>
+      <% @clasification_dangers.each do |clasification_danger| %>
+        <div class="mb-4">
+          <div class="conesst-card-header rounded-top">
+            <div class="fw-semibold">
+              <i class="bi bi-exclamation-triangle me-1"></i>
+              <%= clasification_danger.name %>
+            </div>
+          </div>
+          <div class="conesst-table-wrapper">
+            <table class="conesst-table">
+              <thead>
+                <tr>
+                  <th>Peligro</th>
+                  <th class="text-center">Expuesto</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @form_preventions.where("clasification_danger_id = ?", clasification_danger.id).each do |preven| %>
+                  <tr>
+                    <td data-label="Peligro">
+                      <%= preven.clasification_danger_detail.name %>
+                    </td>
+                    <td data-label="Expuesto" class="text-center">
+                      <%= form_with model: preven do |form| %>
+                        <div class="d-flex justify-content-center align-items-center flex-wrap gap-3">
+                          <div class="form-check">
+                            <%= form.radio_button :exposed, 0, checked: true, class: "form-check-input", onClick: "javascript: this.form.submit.click();" %>
+                            <%= form.label :exposed, "No", value: 0, class: "form-check-label" %>
+                          </div>
+                          <div class="form-check">
+                            <%= form.radio_button :exposed, 1, class: "form-check-input", onClick: "javascript: this.form.submit.click();" %>
+                            <%= form.label :exposed, "Sí", value: 1, class: "form-check-label" %>
+                          </div>
+                        </div>
+                        <div class="d-none">
+                          <%= form.submit "", name: "submit", remote: true %>
+                        </div>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      <% end %>
+      <div class="conesst-actions mt-4">
+        <%= link_to form_preventions_path(entity_id: @entity.id), class: "conesst-btn conesst-btn-primary" do %>
+          <i class="bi bi-check-circle me-1"></i>
+          Finalizar encuesta
+        <% end %>
+      </div>
     </div>
-
-</div> 
-
-<br>
+  </div>
+</div>

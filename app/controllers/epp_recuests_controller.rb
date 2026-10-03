@@ -5,7 +5,7 @@ class EppRecuestsController < ApplicationController
            #@users = User.all.decorate
 
                @entity = Entity.find(params[:entity_id])
-               @epp_recuests = EppRecuest.where("entity_id = ?", params[:entity_id])
+               @epp_recuests = EppRecuest.where("entity_id = ?", params[:entity_id]).order(date_recuest: :desc)
                @q = @epp_recuests.ransack(params[:q])
                @pagy, @epp_recuests = pagy(@q.result(id: :desc), items: 3)
                 
@@ -14,13 +14,13 @@ class EppRecuestsController < ApplicationController
             end    
         elsif Current.user && Current.user.level = 3 
             @entity = Entity.find(Current.user.entity)
-            @epp_recuests = EppRecuest.where("entity_id = ?",Current.user.entity)
+            @epp_recuests = EppRecuest.where("entity_id = ?",Current.user.entity).order(date_recuest: :desc)
             @q = @epp_recuests.ransack(params[:q])
             @pagy, @epp_recuests = pagy(@q.result(id: :desc), items: 3)
 
         elsif Current.user && Current.user.level > 3 
             @entity = Entity.find(Current.user.entity)
-            @epp_recuests = EppRecuest.where("entity_id = ? and user_id = ?",Current.user.entity,Current.user.id)
+            @epp_recuests = EppRecuest.where("entity_id = ? and user_id = ?",Current.user.entity,Current.user.id).order(date_recuest: :desc)
             @q = @epp_recuests.ransack(params[:q])
             @pagy, @epp_recuests = pagy(@q.result(id: :desc), items: 3)
         else

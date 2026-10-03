@@ -9,7 +9,9 @@
       <div class="d-flex align-items-center gap-2">
         <i class="bi bi-journal-text fs-5"></i>
         <div>
-          <h2 class="mb-0"><%= t('.title') %></h2>
+          <h2 class="mb-0">
+            <%= t('.title') %>
+          </h2>
           <small class="text-muted">
             Consulta y administración de actas
           </small>
@@ -24,12 +26,20 @@
             <%= f.date_field :date_eq, class: "form-control" %>
           </div>
           <div class="col-12 col-md-6 col-lg-3">
-            <%= f.label :entity_id_eq, "Empresa", class: "form-label fw-semibold" %>
+            <%= f.label :entity_id_eq, "Empresa",  class: "form-label fw-semibold" %>
             <%= f.select :entity_id_eq, Entity.pluck(:business_name, :id).uniq, { include_blank: true }, { class: "form-select" } %>
           </div>
           <div class="col-12 col-md-6 col-lg-4">
             <%= f.label :version_eq, "Tipo de acta", class: "form-label fw-semibold" %>
-            <%= f.select :version_eq, [['Acta de Asesoría', 0], ['Acta del COPASST', 1], ['Acta de la Brigada de Emergencia', 2], ['Acta del Comité de Convivencia', 3]], { include_blank: true }, { class: "form-select" } %>
+            <%= f.select :version_eq,
+                [
+                  ['Acta de Asesoría', 0],
+                  ['Acta del COPASST', 1],
+                  ['Acta de la Brigada de Emergencia', 2],
+                  ['Acta del Comité de Convivencia', 3]
+                ],
+                { include_blank: true },
+                { class: "form-select" } %>
           </div>
           <div class="col-12 col-md-6 col-lg-2">
             <button type="submit" class="conesst-btn conesst-btn-primary w-100">
@@ -54,7 +64,9 @@
       <div class="d-flex align-items-center gap-2">
         <i class="bi bi-list-ul fs-5"></i>
         <div>
-          <h5 class="mb-0">Actas registradas</h5>
+          <h5 class="mb-0">
+            Actas registradas
+          </h5>
           <small class="text-muted">
             Listado de actas disponibles
           </small>
@@ -62,52 +74,141 @@
       </div>
     </div>
     <div class="conesst-card-body p-0">
-      <div class="conesst-table-wrapper">
-        <table class="conesst-table">
-          <thead>
-            <tr>
-              <th>
-                <%= sort_link(@q, :date, default_order: :desc) %>
-              </th>
-              <th>
-                <%= sort_link(@q, :entity_id, default_order: :desc) %>
-              </th>
-              <th>
-                <%= sort_link(@q, :record_number, default_order: :desc) %>
-              </th>
-              <th>
-                <%= sort_link(@q, :version, default_order: :desc) %>
-              </th>
-              <th class="text-center">
-                <%= t('common.show') %>
-              </th>
-              <th class="text-center">
-                <%= t('common.edit') %>
-              </th>
-              <th class="text-center">
-                <%= t('common.delete') %>
-              </th>
-              <th class="text-center">
-                <%= t('common.attendee') %>
-              </th>
-              <th class="text-center">
-                <%= t('common.commitment') %>
-              </th>
-              <th class="text-center">
-                <%= t('common.signature') %>
-              </th>
-              <th class="text-center">
-                PDF
-              </th>
-              <th class="text-center">
-                Duplicar Acta
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <%= render partial: 'meeting_minute', collection: @meeting_minutes %>
-          </tbody>
-        </table>
+      <div class="d-none d-md-block">
+        <div class="conesst-table-wrapper">
+          <table class="conesst-table">
+            <thead>
+              <tr>
+                <th>
+                  <%= sort_link(@q, :date, default_order: :desc) %>
+                </th>
+                <th>
+                  <%= sort_link(@q, :entity_id, default_order: :desc) %>
+                </th>
+                <th>
+                  <%= sort_link(@q, :record_number, default_order: :desc) %>
+                </th>
+                <th>
+                  <%= sort_link(@q, :version, default_order: :desc) %>
+                </th>
+                <th class="text-center">
+                  <%= t('common.show') %>
+                </th>
+                <th class="text-center">
+                  <%= t('common.edit') %>
+                </th>
+                <th class="text-center">
+                  <%= t('common.delete') %>
+                </th>
+                <th class="text-center">
+                  <%= t('common.attendee') %>
+                </th>
+                <th class="text-center">
+                  <%= t('common.commitment') %>
+                </th>
+                <th class="text-center">
+                  <%= t('common.signature') %>
+                </th>
+                <th class="text-center">
+                  PDF
+                </th>
+                <th class="text-center">
+                  Duplicar Acta
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <%= render partial: 'meeting_minute', collection: @meeting_minutes %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="d-md-none">
+        <% @meeting_minutes.each do |meeting_minute| %>
+          <div class="card shadow-sm border-0 mb-3 mx-2">
+            <div class="card-body p-3">
+              <div class="mb-3">
+                <div class="small text-muted">
+                  Fecha
+                </div>
+                <div class="fw-semibold">
+                  <%= meeting_minute.date %>
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="small text-muted">
+                  Empresa
+                </div>
+                <div class="fw-semibold">
+                  <%= meeting_minute.entity.business_name %>
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="small text-muted">
+                  N° Acta
+                </div>
+                <div class="fw-semibold">
+                  <%= meeting_minute.record_number %>
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="small text-muted">
+                  Tipo de acta
+                </div>
+                <div class="fw-semibold">
+                  <%= MeetingMinute.label_clasificacion(meeting_minute.version) %>
+                </div>
+              </div>
+              <div class="d-flex flex-wrap gap-2 pt-2 border-top">
+                <%= link_to meeting_minute, class: "conesst-btn conesst-btn-primary" do %>
+                  <i class="bi bi-eye me-1"></i>
+                  <%= t('common.show') %>
+                <% end %>
+                <% if Current.user.level > 0 && Current.user.level < 4 || Current.user.ccl == 1 || Current.user.secretary_copasst == 1 || Current.user.copasst == 1 %>
+                  <%= link_to edit_meeting_minute_path(meeting_minute), class: "conesst-btn conesst-btn-primary" do %>
+                    <i class="bi bi-pencil-square me-1"></i>
+                    <%= t('common.edit') %>
+                  <% end %>
+                <% end %>
+                <% if Current.user.level > 0 && Current.user.level < 4 %>
+                  <%= button_to meeting_minute, method: :delete, class: "btn btn-sm btn-danger",
+                      form: {
+                        data: {
+                          turbo_confirm: "¿Está seguro de eliminar esta acta?"
+                        }
+                      } do %>
+                    <i class="bi bi-trash me-1"></i>
+                    Eliminar
+                  <% end %>
+                <% end %>
+                <% if Current.user.level > 0 && Current.user.level < 4 || Current.user.ccl == 1 || Current.user.secretary_copasst == 1 || Current.user.copasst == 1 %>
+                  <%= link_to crear_asistente_meeting_minutes_path(meeting_minute.id), class: "conesst-btn conesst-btn-warning" do %>
+                    <i class="bi bi-people me-1"></i>
+                    <%= t('common.create_meeting_attendee') %>
+                  <% end %>
+                <% end %>
+                <% if Current.user.level > 0 && Current.user.level < 4 || Current.user.ccl == 1 || Current.user.secretary_copasst == 1 || Current.user.copasst == 1 %>
+                  <%= link_to crear_compromiso_meeting_minutes_path(meeting_minute.id), class: "conesst-btn conesst-btn-warning" do %>
+                    <i class="bi bi-list-check me-1"></i>
+                    <%= t('common.create_meeting_commitment') %>
+                  <% end %>
+                <% end %>
+                <%= link_to crear_firma_meeting_minutes_path(meeting_minute.id), class: "conesst-btn conesst-btn-warning" do %>
+                  <i class="bi bi-pen me-1"></i>
+                  <%= t('common.create_meeting_signature') %>
+                <% end %>
+                <%= link_to meeting_minute_path(meeting_minute.id, format: "pdf"), class: "conesst-btn conesst-btn-success" do %>
+                  <i class="bi bi-file-earmark-pdf me-1"></i>
+                  PDF
+                <% end %>
+                <%= link_to crear_copia_acta_meeting_minutes_path(meeting_minute.id), class: "conesst-btn conesst-btn-success" do %>
+                  <i class="bi bi-copy me-1"></i>
+                  Duplicar
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
@@ -121,7 +222,7 @@
   </div>
   <% if Current.user.level > 0 && Current.user.level < 4 || Current.user.ccl == 1 || Current.user.secretary_copasst == 1 || Current.user.copasst == 1 %>
     <div class="conesst-actions mt-4">
-      <%= link_to new_meeting_minute_path, class: "conesst-btn conesst-btn-primary" do %>
+      <%= link_to new_meeting_minute_path,  class: "conesst-btn conesst-btn-primary" do %>
         <i class="bi bi-plus-circle me-1"></i>
         <%= t('.create_meeting_minute') %>
       <% end %>

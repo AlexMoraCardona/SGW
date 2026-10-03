@@ -1,33 +1,118 @@
-<div align="left"; class="container col-12">
-    <a class="navbar-brand" href="/">
-        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-    </a>
-</div>
-<div class="container col-11">
-        <div class="d-flex">
-            <div class="container">
-               <h2 class="display-5"> <%= t('.title')%></h2>
-            </div> 
-        </div>
+<div class="conesst-page">
+  <div class="conesst-logo-container">
+    <%= link_to root_path, class: "d-inline-block" do %>
+      <%= image_tag "LogoConesst202305232.png", class: "conesst-logo", alt: "CONESST" %>
+    <% end %>
+  </div>
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
         <div>
-            <%= link_to t('.create_allow_exam'), new_allow_exam_path, class: 'btn btn-sm btn-primary'  %>
-        </div>
-        <hr>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col"><%= t('.id') %></th>
-                <th scope="col"><%= t('.entity_id') %></th>
-                <th scope="col">Observaciones:</th>
-                <th scope="col"><%= t('.user_id') %></th>
-                <th scope="col">Participantes</th>
-                <th scope="col"><%= t('common.edit') %></th>
-                <th scope="col">Eliminar</th>
-            </tr>
-        </thead>
-        <tbody>
-            <%= render partial: 'allow_exam', collection: @allow_exams  %>  
-        </tbody>      
-    </table>
-</div>
+          <h2 class="conesst-card-header-title">
+            <i class="bi bi-file-earmark-medical me-2"></i>
+            <%= t('.title') %>
+          </h2>
 
+          <p class="conesst-card-header-subtitle mb-0">
+            Administración de autorizaciones de exámenes
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="conesst-card-body">
+      <div class="conesst-actions mt-0">
+        <%= link_to new_allow_exam_path, class: "conesst-btn conesst-btn-primary" do %>
+          <i class="bi bi-plus-circle me-1"></i>
+          <%= t('.create_allow_exam') %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="conesst-card d-none d-md-block">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+        <div>
+          <h5 class="conesst-card-header-title">
+            <i class="bi bi-list-ul me-2"></i>
+            Autorizaciones registradas
+          </h5>
+
+          <p class="conesst-card-header-subtitle mb-0">
+            Listado de autorizaciones de exámenes
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="conesst-card-body p-0">
+      <div class="conesst-table-wrapper">
+        <table class="conesst-table">
+          <thead>
+            <tr>
+              <th scope="col"><%= t('.id') %></th>
+              <th scope="col"><%= t('.entity_id') %></th>
+              <th scope="col">Observaciones</th>
+              <th scope="col"><%= t('.user_id') %></th>
+              <th scope="col">Participantes</th>
+              <th scope="col" class="text-center"><%= t('common.edit') %></th>
+              <th scope="col" class="text-center">Eliminar</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <%= render partial: 'allow_exam', collection: @allow_exams %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-md-none">
+    <% @allow_exams.each do |allow_exam| %>
+      <div class="conesst-card mb-3">
+        <div class="conesst-card-body">
+          <div class="mb-3">
+            <div class="small text-muted"><%= t('.id') %></div>
+            <div class="fw-semibold"><%= allow_exam.id %></div>
+          </div>
+          <div class="mb-3">
+            <div class="small text-muted"><%= t('.entity_id') %></div>
+            <div class="fw-semibold">
+              <%= allow_exam.entity.business_name %>
+            </div>
+          </div>
+          <div class="mb-3">
+            <div class="small text-muted">Observaciones</div>
+            <div>
+              <%= allow_exam.description %>
+            </div>
+          </div>
+          <div class="mb-3">
+            <div class="small text-muted"><%= t('.user_id') %></div>
+            <div class="fw-semibold">
+              <%= allow_exam.user.name %>
+            </div>
+          </div>
+          <div class="pt-2 border-top">
+            <div class="d-flex flex-wrap gap-2">
+              <%= link_to seleccionar_usuarios_examen_path(allow_exam), class: "conesst-btn conesst-btn-primary" do %>
+                <i class="bi bi-people me-1"></i>
+                Participantes
+              <% end %>
+              <%= link_to edit_allow_exam_path(allow_exam), class: "conesst-btn conesst-btn-primary" do %>
+                <i class="bi bi-pencil-square me-1"></i>
+                <%= t('common.edit') %>
+              <% end %>
+              <%= button_to allow_exam, method: :delete, class: "btn btn-sm btn-danger", form: {data: {turbo_confirm: "¿Está seguro de eliminar esta autorización?"}} do %>
+                <i class="bi bi-trash me-1"></i>
+                Eliminar
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

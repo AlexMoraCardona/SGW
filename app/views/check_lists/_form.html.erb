@@ -1,60 +1,102 @@
-<div class="container col-11 card p-5">
-    <br>
-    <%= form_with model: @check_list do |form| %>
-        <% @check_list.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %>    
-        <div class="form-group">    
-            <%= form.label :name, style: "display: block" %>
-            <%= form.text_field :name,  class: "form-control" %>
+<div class="conesst-page">
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+        <div>
+          <h2 class="conesst-card-header-title">
+            <i class="bi bi-clipboard-check me-2"></i>
+            <%= @check_list.new_record? ? "Nueva lista de chequeo" : "Editar lista de chequeo" %>
+          </h2>
+          <p class="conesst-card-header-subtitle mb-0">
+            Configuración de la lista de chequeo
+          </p>
         </div>
-        <br>    
-        <div class="form-group">    
-            <%= form.label :state,  style: "display: block" %>
-            <%= form.select(:state, [['Activo', 0], ['Inactivo', 1]]) %>
-        </div>
-        <br>    
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, check_lists_path %>
-    <% end %>
-      
-    <br>
-    <div class="container col-11">
-            <div class="d-flex"> 
-                <div class="container">
-                   <h2 class="display-5"> Items Listas de Chequeo</h2>
-                </div> 
-            </div>
-            <hr>
-        <table class="table table-hover">
-            <thead> 
-                <tr>    
-                    <th scope="col"><%= t('.id') %></th>
-                    <th scope="col"><%= t('.name') %></th>
-                    <th scope="col"><%= t('.clasification') %></th>
-                    <th scope="col"><%= t('.state') %></th>
-                    <th scope="col"><%= t('.item') %></th>                
-                    <th scope="col"><%= t('common.edit') %></th>
-                    <th scope="col">Borrar</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% if  @check_list_items.present? %>
-                    <%  @check_list_items.each do |check_list_item| %>
-                        <tr>
-                            <td><%= check_list_item.id %></td>
-                            <td><%= check_list_item.name %></td>
-                            <td><%= CheckListItem.label_clasification(check_list_item.clasification) %></td>
-                            <td><%= CheckListItem.label_state(check_list_item.state) %></td>
-                            <td><%= check_list_item.item %></td>
-                            <td><%= link_to t('common.edit'), edit_check_list_item_path(check_list_item), class: 'btn btn-sm btn-primary'  %></td>
-                            <td><%= button_to "Delete", check_list_item, method: :delete, class:"btn btn-sm btn-danger" %></td>
-                        </tr>
-                    <% end %>
-                <% end %>                 
-            </tbody>      
-        </table>
+      </div>
     </div>
-</div>      
+    <div class="conesst-card-body">
+      <%= form_with model: @check_list do |form| %>
+        <% @check_list.errors.full_messages.each do |error| %>
+          <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle me-1"></i>
+            <%= error %>
+          </div>
+        <% end %>
+        <div class="row g-3">
+          <div class="col-12">
+            <%= form.label :name, class: "form-label fw-semibold" %>
+            <%= form.text_field :name, class: "form-control" %>
+          </div>
+          <div class="col-12 col-md-6">
+            <%= form.label :state, class: "form-label fw-semibold" %>
+            <%= form.select :state, [['Activo', 0], ['Inactivo', 1]], {}, class: "form-select" %>
+          </div>
+        </div>
+        <div class="conesst-actions mt-4">
+          <%= form.submit t('common.submit'), class: "conesst-btn conesst-btn-primary" %>
+          <%= link_to check_lists_path, class: "conesst-btn conesst-btn-secondary" do %>
+            <i class="bi bi-arrow-left me-1"></i>
+            Retornar
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+        <div>
+          <h2 class="conesst-card-header-title">
+            <i class="bi bi-list-check me-2"></i>
+            Items Listas de Chequeo
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body p-0">
+      <div class="conesst-table-wrapper">
+        <table class="conesst-table">
+          <thead>
+            <tr>
+              <th><%= t('.id') %></th>
+              <th><%= t('.name') %></th>
+              <th><%= t('.clasification') %></th>
+              <th><%= t('.state') %></th>
+              <th><%= t('.item') %></th>
+              <th><%= t('common.edit') %></th>
+              <th>Borrar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if @check_list_items.present? %>
+              <% @check_list_items.each do |check_list_item| %>
+                <tr>
+                  <td><%= check_list_item.id %></td>
+                  <td><%= check_list_item.name %></td>
+                  <td>
+                    <%= CheckListItem.label_clasification(check_list_item.clasification) %>
+                  </td>
+                  <td>
+                    <%= CheckListItem.label_state(check_list_item.state) %>
+                  </td>
+                  <td><%= check_list_item.item %></td>
+                  <td>
+                    <%= link_to edit_check_list_item_path(check_list_item), class: "conesst-btn conesst-btn-primary" do %>
+                      <i class="bi bi-pencil-square me-1"></i>
+                      <%= t('common.edit') %>
+                    <% end %>
+                  </td>
+                  <td>
+                    <%= button_to check_list_item, method: :delete, class: "btn btn-sm btn-danger" do %>
+                      <i class="bi bi-trash me-1"></i>
+                      Borrar
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

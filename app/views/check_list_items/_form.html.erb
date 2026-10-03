@@ -1,34 +1,66 @@
-<div class="container col-11 card p-5">
-    <br>
-    <%= form_with model: @check_list_item do |form| %>
+<div class="conesst-page">
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+        <div>
+          <h2 class="conesst-card-header-title">
+            <i class="bi bi-list-check me-2"></i>
+            <%= @check_list_item.new_record? ? "Nuevo ítem de lista de chequeo" : "Editar ítem de lista de chequeo" %>
+          </h2>
+          <p class="conesst-card-header-subtitle mb-0">
+            Configuración del ítem de la lista de chequeo
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <%= form_with model: @check_list_item do |form| %>
         <% @check_list_item.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %>    
-        <div class="form-group">    
-            <%= form.label :name, style: "display: block" %>
-            <%= form.text_field :name,  class: "form-control" %>
+          <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle me-1"></i>
+            <%= error %>
+          </div>
+        <% end %>
+        <div class="row g-3">
+          <div class="col-12">
+            <%= form.label :name, class: "form-label fw-semibold" %>
+            <%= form.text_field :name, class: "form-control" %>
+          </div>
+          <div class="col-12 col-md-6">
+            <%= form.label :state, class: "form-label fw-semibold" %>
+            <%= form.select :state, [['Activo', 0], ['Inactivo', 1]], {}, class: "form-select" %>
+          </div>
+          <div class="col-12">
+            <%= form.label :clasification, class: "form-label fw-semibold" %>
+            <%= form.select :clasification,
+                [
+                  ['Condiciones generales del área', 0],
+                  ['Control de sustancias químicas', 1],
+                  ['Uso de EPP', 2],
+                  ['Control de riesgos térmicos', 3],
+                  ['Control de aplicación de químicos y pintura', 4],
+                  ['Control de radiación UV', 5],
+                  ['Control de herramientas y riesgo mecánico', 6],
+                  ['Control de procesos de inmesión y grabado', 7],
+                  ['Condiciones del trabajador', 8]
+                ],
+                {},
+                class: "form-select" %>
+          </div>
+          <div class="col-12">
+            <%= form.label :item, class: "form-label fw-semibold" %>
+            <%= form.text_field :item, class: "form-control" %>
+          </div>
         </div>
-        <br>    
-        <div class="form-group">    
-            <%= form.label :state,  style: "display: block" %>
-            <%= form.select(:state, [['Activo', 0], ['Inactivo', 1]]) %>
+        <%= form.hidden_field :check_list_id, value: @check_list.id if @check_list.present? %>
+        <div class="conesst-actions mt-4">
+          <%= form.submit t('common.submit'), class: "conesst-btn conesst-btn-primary" %>
+          <%= link_to check_lists_path, class: "conesst-btn conesst-btn-secondary" do %>
+            <i class="bi bi-arrow-left me-1"></i>
+            Retornar
+          <% end %>
         </div>
-        <br>    
-        <div class="form-group">    
-            <%= form.label :clasification,  style: "display: block" %>
-            <%= form.select(:clasification, [['Condiciones generales del área', 0], ['Control de sustancias químicas', 1], ['Uso de EPP', 2], ['Control de riesgos térmicos', 3], ['Control de aplicación de químicos y pintura', 4], ['Control de radiación UV', 5], ['Control de herramientas y riesgo mecánico', 6], ['Control de procesos de inmesión y grabado', 7], ['Condiciones del trabajador', 8]]) %>
-        </div>
-        <br>    
-        <div class="form-group">    
-            <%= form.label :item, style: "display: block" %>
-            <%= form.text_field :item,  class: "form-control" %>
-        </div>
-        <br>    
-        <%= form.hidden_field :check_list_id, :value => @check_list.id, class: "form-control" if @check_list.present? %>
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, check_lists_path %>
-    <% end %>
-</div>        
-<br>
+      <% end %>
+    </div>
+  </div>
+</div>

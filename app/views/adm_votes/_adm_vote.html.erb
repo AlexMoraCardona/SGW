@@ -1,42 +1,98 @@
 <% if @entity.present? %>
-    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
+  <div class="mb-3">
+    <div class="fw-bold fs-5">
+      <i class="bi bi-building me-2"></i>
+      <%= @entity.business_name %>
+    </div>
+    <div class="text-muted small mt-1">
+      <strong>NIT:</strong>
+      <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %><%= "-#{@entity.verification_digit}" if @entity.verification_digit.present? %>
+    </div>
+  </div>
 <% end %>
- 
-<div>
-    <%= link_to t('common.create_adm_vote'), new_adm_vote_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary' if Current.user.level > 0 && Current.user.level < 3 %>
-</div>
-
-<table class="table">
-    <thead>
+<% if Current.user.level > 0 && Current.user.level < 3 %>
+  <div class="conesst-actions mb-3">
+    <%= link_to new_adm_vote_path(entity_id: @entity.id), class: "conesst-btn conesst-btn-primary" do %>
+      <i class="bi bi-plus-circle"></i>
+      <span><%= t("common.create_adm_vote") %></span>
+    <% end %>
+  </div>
+<% end %>
+<% if @adm_votes.present? %>
+  <div class="conesst-table-wrapper">
+    <table class="conesst-table table-hover">
+      <thead>
         <tr>
-            <th scope="col">Votación</th>
-            <th scope="col">Empresa</th>
-            <th scope="col">Fecha de inicio</th>
-            <th scope="col">Fecha final</th>
-            <th scope="col">Candidatos</th>
-            <th scope="col">Usuarios Hábiles</th>
-            <th scope="col">Editar</th>
-            <th scope="col">Ver</th>
-            <th scope="col">PDF</th>
+          <th scope="col">Votación</th>
+          <th scope="col">Empresa</th>
+          <th scope="col">Fecha de inicio</th>
+          <th scope="col">Fecha final</th>
+          <th scope="col">Candidatos</th>
+          <th scope="col">Usuarios hábiles</th>
+          <th scope="col">Editar</th>
+          <th scope="col">Ver</th>
+          <th scope="col">PDF</th>
         </tr>
-    </thead>
-    <% if @adm_votes.present? %> 
+      </thead>
+      <tbody>
         <% @adm_votes.each do |adm_vote| %>
-            <tbody>
-                <tr>
-                    <td><%= adm_vote.titulo_vote %></td>
-                    <td><%= adm_vote.entity.business_name %></td>
-                    <td style="text-align:center"><%= adm_vote.date_initial %></td>
-                    <td style="text-align:center"><%= adm_vote.date_final %></td>
-                    <td style="text-align:center"><%= link_to "Candidatos", crear_candidato_path(adm_vote.id), class: 'btn btn-sm btn btn-warning'  if Current.user.level > 0 && Current.user.level < 3 %></td>
-                    <td style="text-align:center"><%= link_to "Hábiles", ver_habiles_path(adm_vote.id), class: 'btn btn-sm btn btn-warning'  if Current.user.level > 0 && Current.user.level < 3 %></td>
-                    <td style="text-align:center"><%= link_to t('common.edit_adm_vote'), edit_adm_vote_path(adm_vote.id), class: 'btn btn-sm btn btn-warning'  if Current.user.level > 0 && Current.user.level < 3 %></td>
-                    <td style="text-align:center"><%= link_to t('common.show_adm_vote'), adm_vote_path(adm_vote.id), class: 'btn btn-sm btn btn-warning' %></td>
-                    <td style="text-align:center"><%= link_to "PDF", adm_vote_pdf_path(adm_vote.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
-                </tr>    
-            </tbody>
-        <% end %> 
-    <% end %> 
-</table>
-
-
+          <tr>
+            <td data-label="Votación">
+              <%= adm_vote.titulo_vote %>
+            </td>
+            <td data-label="Empresa">
+              <%= adm_vote.entity.business_name %>
+            </td>
+            <td data-label="Fecha de inicio">
+              <%= adm_vote.date_initial %>
+            </td>
+            <td data-label="Fecha final">
+              <%= adm_vote.date_final %>
+            </td>
+            <td data-label="Candidatos">
+              <% if Current.user.level > 0 && Current.user.level < 3 %>
+                <%= link_to crear_candidato_path(adm_vote.id), class: "conesst-btn conesst-btn-warning" do %>
+                  <i class="bi bi-people"></i>
+                  <span>Candidatos</span>
+                <% end %>
+              <% end %>
+            </td>
+            <td data-label="Usuarios hábiles">
+              <% if Current.user.level > 0 && Current.user.level < 3 %>
+                <%= link_to ver_habiles_path(adm_vote.id), class: "conesst-btn conesst-btn-warning" do %>
+                  <i class="bi bi-person-check"></i>
+                  <span>Hábiles</span>
+                <% end %>
+              <% end %>
+            </td>
+            <td data-label="Editar">
+              <% if Current.user.level > 0 && Current.user.level < 3 %>
+                <%= link_to edit_adm_vote_path(adm_vote.id), class: "conesst-btn conesst-btn-warning", title: t("common.edit_adm_vote") do %>
+                  <i class="bi bi-pencil-square"></i>
+                  <span><%= t("common.edit_adm_vote") %></span>
+                <% end %>
+              <% end %>
+            </td>
+            <td data-label="Ver">
+              <%= link_to adm_vote_path(adm_vote.id), class: "conesst-btn conesst-btn-primary", title: t("common.show_adm_vote") do %>
+                <i class="bi bi-eye"></i>
+                <span><%= t("common.show_adm_vote") %></span>
+              <% end %>
+            </td>
+            <td data-label="PDF">
+              <%= link_to adm_vote_pdf_path(adm_vote.id, format: "pdf"), class: "conesst-btn conesst-btn-success", title: "Generar PDF" do %>
+                <i class="bi bi-file-earmark-pdf"></i>
+                <span>PDF</span>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <div class="alert alert-light border text-center mb-0">
+    <i class="bi bi-info-circle me-2"></i>
+    No hay campañas de votación registradas.
+  </div>
+<% end %>

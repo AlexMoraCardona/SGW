@@ -1,50 +1,98 @@
-<% if @entity.present? %>
-    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
-<% end %>
-
-<%= link_to 'Solicitar EPP', new_epp_recuest_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary' %>
-
-
-        </br>
-        <%== pagy_info(@pagy) %>
-        <%== pagy_bootstrap_combo_nav_js(@pagy) %>
-        </br>         
-
-
-
-<% if @epp_recuests.present? %>
-
-    <table class="table table-hover"> 
-        <hr>
-        <thead>
-            <tr> 
-                <th scope="col">Fecha solicitud</th>
-                <th scope="col"><%= sort_link(@q, :state_recuest, default_order: :desc) %></th>
-                <th scope="col"><%= sort_link(@q, :user_id, default_order: :desc) %></th>
-                <th scope="col">EPP solicitado</th>
-                <th scope="col">Cantidad</th>
-                <th scope="col">Fecha entrega</th>
-                <th scope="col">Observaciones</th>
-                <th scope="col">Cumplido</th>
-                <th scope="col">Eliminar</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% @epp_recuests.each do |epp_recuest| %>
+<div class="conesst-page">
+  <% if @entity.present? %>
+    <div class="conesst-card">
+      <div class="conesst-card-header">
+        <div class="conesst-card-header-content">
+          <div class="conesst-card-header-title">
+            <i class="bi bi-building me-2"></i>
+            <%= @entity.business_name %>
+          </div>
+          <div class="text-muted small">
+            <strong>NIT:</strong>
+            <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %><%= "-#{@entity.verification_digit}" if @entity.verification_digit.present? %>
+          </div>
+        </div>
+      </div>
+      <div class="conesst-card-body">
+        <div class="conesst-actions">
+          <%= link_to new_epp_recuest_path(entity_id: @entity.id), class: "conesst-btn conesst-btn-primary" do %>
+            <i class="bi bi-plus-circle"></i>
+            <span>Solicitar EPP</span>
+          <% end %>
+        </div>
+        <div class="mt-3 mb-3">
+          <%== pagy_info(@pagy) %>
+        </div>
+        <div class="d-flex justify-content-center mb-3">
+          <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+        </div>
+        <% if @epp_recuests.present? %>
+          <div class="conesst-table-wrapper">
+            <table class="conesst-table table-hover">
+              <thead>
                 <tr>
-                    <td><%= epp_recuest.date_recuest %></td>
-                    <td><%= EppRecuest.label_state_recuest(epp_recuest.state_recuest) %></td>
-                    <td><%= epp_recuest.user.name %></td>
-                    <td><%= epp_recuest.protection_element.name %></td>
-                    <td><%= epp_recuest.cantidad %></td>
-                    <td><%= epp_recuest.date_delivery %></td>
-                    <td><%= epp_recuest.observation %></td>
-                    <td><%= link_to 'Editar', edit_epp_recuest_path(epp_recuest), class: 'btn btn-sm btn-primary' if Current.user.level > 0 &&  Current.user.level < 4 %></td>
-                    <td><%= button_to "Delete", epp_recuest, method: :delete, class:"btn btn-sm btn-danger" if Current.user.level > 0 &&  Current.user.level < 4 %></td>
+                  <th scope="col">Fecha solicitud</th>
+                  <th scope="col">
+                    <%= sort_link(@q, :state_recuest, default_order: :desc) %>
+                  </th>
+                  <th scope="col">
+                    <%= sort_link(@q, :user_id, default_order: :desc) %>
+                  </th>
+                  <th scope="col">EPP solicitado</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Fecha entrega</th>
+                  <th scope="col">Observaciones</th>
+                  <th scope="col">Cumplido</th>
+                  <th scope="col">Eliminar</th>
                 </tr>
-            <% end %>     
-        </tbody>      
-    </table>
-<% end %>     
-
-
+              </thead>
+              <tbody>
+                <% @epp_recuests.each do |epp_recuest| %>
+                  <tr>
+                    <td data-label="Fecha solicitud">
+                      <%= epp_recuest.date_recuest %>
+                    </td>
+                    <td data-label="Estado">
+                      <%= EppRecuest.label_state_recuest(epp_recuest.state_recuest) %>
+                    </td>
+                    <td data-label="Usuario">
+                      <%= epp_recuest.user.name %>
+                    </td>
+                    <td data-label="EPP solicitado">
+                      <%= epp_recuest.protection_element.name %>
+                    </td>
+                    <td data-label="Cantidad">
+                      <%= epp_recuest.cantidad %>
+                    </td>
+                    <td data-label="Fecha entrega">
+                      <%= epp_recuest.date_delivery %>
+                    </td>
+                    <td data-label="Observaciones">
+                      <%= epp_recuest.observation %>
+                    </td>
+                    <td data-label="Cumplido">
+                      <% if Current.user.level > 0 && Current.user.level < 4 %>
+                        <%= link_to edit_epp_recuest_path(epp_recuest), class: "conesst-btn conesst-btn-warning conesst-btn-sm", title: "Editar solicitud" do %>
+                          <i class="bi bi-pencil-square"></i>
+                          <span>Editar</span>
+                        <% end %>
+                      <% end %>
+                    </td>
+                    <td data-label="Eliminar">
+                      <% if Current.user.level > 0 && Current.user.level < 4 %>
+                        <%= button_to epp_recuest, method: :delete, class: "conesst-btn conesst-btn-danger conesst-btn-sm", form: { data: { turbo_confirm: "¿Está seguro de eliminar esta solicitud?" } }, title: "Eliminar solicitud" do %>
+                          <i class="bi bi-trash"></i>
+                          <span>Eliminar</span>
+                        <% end %>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

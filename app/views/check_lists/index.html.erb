@@ -1,88 +1,81 @@
-<div align="left"; class="container col-12">
-    <a class="navbar-brand" href="/">
-        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-    </a>
-</div>
-
-
-<div class="accordion accordion-flush" id="accordionFlushExample">
-  <div class="accordion-item">
-    <h2 class="accordion-header">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-        <div class="d-flex"> 
-            <div class="container">
-               <h2 class="display-5"> Configuración Listas de Chequeo</h2>
-            </div> 
-        </div>
-      </button>
-    </h2>
-    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-      <div class="accordion-body">
-        <div class="container col-11">
-            <div class="container">
-                <%= link_to t('common.create_check_list'), new_check_list_path, class: 'btn btn-sm btn-primary' %>
-            </div>
-            <hr>
-            <table class="table table-hover">
-                <thead> 
-                    <tr>    
-                        <th scope="col"><%= t('.id') %></th>
-                        <th scope="col"><%= t('.name') %></th>
-                        <th scope="col"><%= t('.state') %></th>
-                        <th scope="col"><%= t('common.edit') %></th>
-                        <th scope="col">Adicionar item</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%= render partial: 'check_list', collection: @check_lists  %>  
-                </tbody>      
-            </table>
+<div class="conesst-page">
+  <div class="conesst-logo-container">
+    <%= link_to root_path, class: "d-inline-block" do %>
+      <%= image_tag "LogoConesst202305232.png", class: "conesst-logo", alt: "CONESST" %>
+    <% end %>
+  </div>
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+        <div>
+          <h2 class="conesst-card-header-title">
+            <i class="bi bi-clipboard-check me-2"></i>
+            Configuración Listas de Chequeo
+          </h2>
+          <p class="conesst-card-header-subtitle mb-0">
+            Administración y configuración de listas de chequeo
+          </p>
         </div>
       </div>
     </div>
+    <div class="conesst-card-body">
+      <div class="conesst-actions mt-0 mb-3">
+        <%= link_to t('common.create_check_list'), new_check_list_path, class: "conesst-btn conesst-btn-primary" %>
+      </div>
+      <div class="conesst-table-wrapper">
+        <table class="conesst-table">
+          <thead>
+            <tr>
+              <th><%= t('.id') %></th>
+              <th><%= t('.name') %></th>
+              <th><%= t('.state') %></th>
+              <th><%= t('common.edit') %></th>
+              <th>Adicionar item</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%= render partial: 'check_list', collection: @check_lists %>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
-  <div class="accordion-item">
-    <h2 class="accordion-header">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-        <div class="d-flex"> 
-            <div class="container">
-               <h2 class="display-5"> Listas de Chequeo</h2>
-            </div> 
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+        <div>
+          <h2 class="conesst-card-header-title">
+            <i class="bi bi-list-check me-2"></i>
+            Listas de Chequeo
+          </h2>
+          <p class="conesst-card-header-subtitle mb-0">
+            Consulta y administración de listas de chequeo
+          </p>
         </div>
-      </button>
-    </h2>
-    <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-      <div class="accordion-body">
-        <div class="container col-11">
-            <div class="container">
-                <%= link_to 'Crear lista', new_list_path, class: 'btn btn-sm btn-primary' %>
-            </div>
-            <hr>
-            <table class="table table-hover">
-                <thead>  
-                    <tr>    
-                        <th scope="col">Nro</th>
-                        <th scope="col">Fecha</th>
-                        <th scope="col">Empresa</th>
-                        <th scope="col">Nombre lista</th>
-                        <th scope="col">Ver</th>
-                        <th scope="col">Eliminar</th>
-                        <th scope="col">PDF</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%= render partial: 'list', collection: @lists if  @lists.present? %>  
-                </tbody>      
-            </table>    
-        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <div class="conesst-actions mt-0 mb-3">
+        <%= link_to "Crear lista", new_list_path, class: "conesst-btn conesst-btn-primary" %>
+      </div>
+      <div class="conesst-table-wrapper">
+        <table class="conesst-table">
+          <thead>
+            <tr>
+              <th>Nro</th>
+              <th>Fecha</th>
+              <th>Empresa</th>
+              <th>Nombre lista</th>
+              <th>Ver</th>
+              <th>Eliminar</th>
+              <th>PDF</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%= render partial: 'list', collection: @lists if @lists.present? %>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 </div>
-
-
-
-
-
-
-

@@ -70,18 +70,20 @@ class ListsController < ApplicationController
         @list = List.find(params[:id]) 
         @lists = List.where("numero = ?",@list.numero) if @list.present?
 
+        nombre_archivo = 'ListaChequeo.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'list_pdf',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
-      
+            format.pdf {
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('list_pdf'),
+                    disable_javascript: true,
+                    margin: {top: 10, bottom: 10, left: 5, right: 5 },
+                    page_size: 'letter'
+                    )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+            }
+        end    
+     
     end    
 
 

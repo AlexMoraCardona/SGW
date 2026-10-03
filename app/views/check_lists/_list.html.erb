@@ -1,10 +1,26 @@
 <tr>
-    <td><%= list.numero %></td>
-    <td><%= list.created_at.strftime("%Y-%m-%d")  %></td>
-    <td><%= List.label_entity(list.entity_id)  %></td>
-    <td><%= List.label_name(list.check_list_id) %></td>
-    <td><%= link_to t('common.ver'), list_path(list.id), class: 'btn btn-sm btn-primary'  %></td>
-    <td><%= button_to t('common.delete'), list, method: :delete, class:"btn btn-sm btn-danger" %></td>
-    <td><%= link_to "PDF", list_pdf_path(list.id, format: 'pdf'), class: 'btn btn-sm btn-outline-primary'  %></td>
+  <td><%= list.numero %></td>
+  <td><%= list.created_at.strftime("%Y-%m-%d") %></td>
+  <td><%= List.label_entity(list.entity_id) %></td>
+  <td><%= List.label_name(list.check_list_id) %></td>
 
+  <td>
+    <%= link_to list_path(list.id),
+        class: "conesst-btn conesst-btn-primary" do %>
+      <i class="bi bi-eye me-1"></i>
+      <%= t('common.ver') %>
+    <% end %>
+  </td>
+  <td>
+    <%= button_to list, method: :delete, class: "btn btn-sm btn-danger" do %>
+      <i class="bi bi-trash me-1"></i>
+      <%= t('common.delete') %>
+    <% end %>
+  </td>
+  <td>
+    <%= link_to list_pdf_path(list.id, format: 'pdf'), class: "btn btn-sm btn-outline-primary" do %>
+      <i class="bi bi-file-earmark-pdf me-1"></i>
+      PDF
+    <% end %>
+  </td>
 </tr>

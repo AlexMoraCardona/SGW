@@ -17,7 +17,7 @@
     <div class="conesst-card">
       <div class="conesst-card-header">
         <div class="conesst-card-header-content">
-          <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+          <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 w-100">
             <div>
               <h2 class="conesst-card-header-title">
                 <i class="bi bi-clipboard2-data me-2"></i>
@@ -37,52 +37,104 @@
         </div>
       </div>
       <div class="conesst-card-body">
-        <div class="conesst-table-wrapper">
-          <table class="conesst-table">
-            <thead>
-              <tr>
-                <th scope="col">NIT Entidad</th>
-                <th scope="col">Entidad</th>
-                <th scope="col">
-                  <%= t('.date_profile') %>
-                </th>
-                <th scope="col">
-                  <%= t('.date_vencimiento_profile') %>
-                </th>
-                <th scope="col" class="text-center">
-                  <%= t('common.edit') %>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @survey_profiles.each do |survey_profile| %>
+        <div class="d-none d-md-block">
+          <div class="conesst-table-wrapper">
+            <table class="conesst-table">
+              <thead>
                 <tr>
-                  <td>
-                    <span class="conesst-table-main-text">
-                      <%= EvaluationRuleDetail.miles(survey_profile.entity.identification_number) if survey_profile.entity.identification_number.present? %><%= "-#{survey_profile.entity.verification_digit}" if survey_profile.entity.verification_digit.present? %>
-                    </span>
-                  </td>
-                  <td>
-                    <span class="conesst-table-main-text">
-                      <%= survey_profile.entity.business_name %>
-                    </span>
-                  </td>
-                  <td>
-                    <%= survey_profile.date_profile %>
-                  </td>
-                  <td>
-                    <%= survey_profile.date_vencimiento_profile %>
-                  </td>
-                  <td class="text-center">
-                    <%= link_to edit_survey_profile_path(survey_profile), class: "conesst-btn conesst-btn-primary conesst-btn-sm" do %>
-                      <i class="bi bi-pencil-square me-1"></i>
-                      <%= t('common.edit') %>
-                    <% end %>
-                  </td>
+                  <th scope="col">
+                    NIT Entidad
+                  </th>
+                  <th scope="col">
+                    Entidad
+                  </th>
+                  <th scope="col">
+                    <%= t('.date_profile') %>
+                  </th>
+                  <th scope="col">
+                    <%= t('.date_vencimiento_profile') %>
+                  </th>
+                  <th scope="col" class="text-center">
+                    <%= t('common.edit') %>
+                  </th>
                 </tr>
-              <% end %>
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                <% @survey_profiles.each do |survey_profile| %>
+                  <tr>
+                    <td>
+                      <span class="conesst-table-main-text">
+                        <%= EvaluationRuleDetail.miles(survey_profile.entity.identification_number) if survey_profile.entity.identification_number.present? %><%= "-#{survey_profile.entity.verification_digit}" if survey_profile.entity.verification_digit.present? %>
+                      </span>
+                    </td>
+                    <td>
+                      <span class="conesst-table-main-text">
+                        <%= survey_profile.entity.business_name %>
+                      </span>
+                    </td>
+                    <td>
+                      <%= survey_profile.date_profile %>
+                    </td>
+                    <td>
+                      <%= survey_profile.date_vencimiento_profile %>
+                    </td>
+                    <td class="text-center">
+                      <%= link_to edit_survey_profile_path(survey_profile), class: "conesst-btn conesst-btn-primary conesst-btn-sm" do %>
+                        <i class="bi bi-pencil-square me-1"></i>
+                        <%= t('common.edit') %>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="d-md-none">
+          <% @survey_profiles.each do |survey_profile| %>
+            <div class="card shadow-sm border-0 mb-3">
+              <div class="card-body p-3">
+                <div class="mb-3">
+                  <div class="small text-muted">
+                    NIT Entidad
+                  </div>
+                  <div class="fw-semibold">
+                    <%= EvaluationRuleDetail.miles(survey_profile.entity.identification_number) if survey_profile.entity.identification_number.present? %><%= "-#{survey_profile.entity.verification_digit}" if survey_profile.entity.verification_digit.present? %>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="small text-muted">
+                    Entidad
+                  </div>
+                  <div class="fw-semibold">
+                    <%= survey_profile.entity.business_name %>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="small text-muted">
+                    <%= t('.date_profile') %>
+                  </div>
+                  <div class="fw-semibold">
+                    <%= survey_profile.date_profile %>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="small text-muted">
+                    <%= t('.date_vencimiento_profile') %>
+                  </div>
+                  <div class="fw-semibold">
+                    <%= survey_profile.date_vencimiento_profile %>
+                  </div>
+                </div>
+                <div class="pt-2 border-top">
+                  <%= link_to edit_survey_profile_path(survey_profile), class: "conesst-btn conesst-btn-primary w-100" do %>
+                    <i class="bi bi-pencil-square me-1"></i>
+                    <%= t('common.edit') %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>

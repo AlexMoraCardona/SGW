@@ -1,0 +1,44 @@
+<head>
+    <meta charset="utf-8">
+    <%= wicked_pdf_stylesheet_link_tag "pdf_conesst" %>
+</head>
+<div class="conesst-pdf">
+    <div class="conesst-pdf-card">
+        <table class="conesst-pdf-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Documento</th>
+                    <th>Cargo</th>
+                    <th>Área</th>
+                    <th>Firma</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if @attendances.present? %>
+                    <% @attendances.each do |attendance| %>
+                        <tr>
+                            <td>
+                                <%= attendance.user.name %>
+                            </td>
+                            <td>
+                                <%= attendance.user.nro_document %>
+                            </td>
+                            <td>
+                                <%= User.label_activity(attendance.user.activity) if attendance.user.activity.present? %>
+                            </td>
+                            <td>
+                                <%= User.label_area_employee(attendance.user.area_employee) if attendance.user.area_employee.present? %>
+                            </td>
+                            <td class="conesst-pdf-firma">
+                                <% if attendance.confirm_attendance == 1 %>
+                                    <%= image_tag(Evaluation.wicked_blob_path(attendance.user.firm), width: 120) %>
+                                <% end %>
+                            </td>
+                        </tr>
+                    <% end %>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+</div>

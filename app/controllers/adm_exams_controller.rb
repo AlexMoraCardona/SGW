@@ -45,7 +45,7 @@ class AdmExamsController < ApplicationController
     private
 
     def adm_exam_params
-        params.require(:adm_exam).permit(:name, :description, :cant_questions, :percentage_min, :cant_attempts, :time_max, :img_exam)
+        params.require(:adm_exam).permit(:name, :description, :cant_questions, :percentage_min, :cant_attempts, :time_max, :img_exam, :version, :code)
     end 
 end  
 

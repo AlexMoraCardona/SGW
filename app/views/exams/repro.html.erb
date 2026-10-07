@@ -1,43 +1,176 @@
-<br>
-<div class="container col-11">
-        <div class="d-flex">
-            <div class="container">
-               <h2 class="display-5">Participantes Reprobados</h2>
-            </div> 
+<div class="conesst-page">
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+        <div class="d-flex align-items-center gap-2">
+          <i class="bi bi-person-x fs-4"></i>
+          <div>
+            <h2 class="conesst-card-header-title mb-0">
+              Participantes Reprobados
+            </h2>
+            <div class="conesst-card-header-subtitle">
+              Consulta de participantes que reprobaron la evaluación
+            </div>
+          </div>
         </div>
-        <hr>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">Evaluacion nro:</th>
-                <th scope="col">Fecha</th>
-                <th scope="col">Participante</th>
-                <th scope="col">Respuestas correctas</th>
-                <th scope="col">Respuestas incorrectas</th>
-                <th scope="col">Porcentaje</th>
-                <th scope="col">Detalle</th>
-            </tr>
-        </thead>
-        <tbody> 
-            <% @dets.each do |det| %> 
-                <% if det.resul == "Reprobado"  || det.resul.blank? %> 
-                    <tr> 
-                        <td><%= det.id %></td>
-                        <td><%= det.created_at.strftime("%Y-%m-%d  %I:%M %p") %></td>
-                        <td><%= det.user.name %></td>
-                        <td><%= det.total_good %></td>
-                        <td><%= det.total_bad %></td>
-                        <td><%= det.final_percentage %></td>
-                        <td><%= link_to 'Detalle:', repro_det_path(det.id), class: 'btn btn-sm btn-primary' %></td>
-                    </tr>
-                <% end %>
-            <% end %>     
-        </tbody>      
-    </table>
-    <div class="form-group">    
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+      </div>
     </div>
-    <br>
+    <div class="conesst-card-body">
+      <% reprobados = @dets.select { |det| det.resul == "Reprobado" || det.resul.blank? } %>
+      <% if reprobados.present? %>
+        <div class="conesst-table-wrapper d-none d-md-block">
+          <table class="conesst-table table-hover">
+            <thead>
+              <tr>
+                <th>Evaluación nro.</th>
+                <th>Fecha</th>
+                <th>Participante</th>
+                <th>Respuestas correctas</th>
+                <th>Respuestas incorrectas</th>
+                <th>Porcentaje</th>
+                <th>Detalle</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% reprobados.each do |det| %>
+                <tr>
+                  <td>
+                    <span class="fw-semibold">
+                      <%= det.id %>
+                    </span>
+                  </td>
+                  <td>
+                    <%= det.created_at.strftime("%Y-%m-%d %I:%M %p") %>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <i class="bi bi-person-circle"></i>
+                      <span>
+                        <%= det.user.name %>
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="badge text-bg-success">
+                      <%= det.total_good %>
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge text-bg-danger">
+                      <%= det.total_bad %>
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge text-bg-primary">
+                      <%= det.final_percentage %>
+                    </span>
+                  </td>
+                  <td>
+                    <%= link_to repro_det_path(det.id), class: "conesst-btn conesst-btn-primary" do %>
+                      <i class="bi bi-eye me-1"></i>
+                      Detalle
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <div class="d-md-none">
+          <% reprobados.each do |det| %>
+            <div class="conesst-card mb-3">
+              <div class="conesst-card-header">
+                <div class="d-flex justify-content-between align-items-center gap-2">
+                  <div>
+                    <div class="small text-muted">
+                      Evaluación nro.
+                    </div>
+                    <div class="fw-semibold">
+                      <%= det.id %>
+                    </div>
+                  </div>
+                  <span class="badge text-bg-danger">
+                    Reprobado
+                  </span>
+                </div>
+              </div>
+              <div class="conesst-card-body">
+                <div class="mb-3">
+                  <div class="small text-muted">
+                    <i class="bi bi-calendar3 me-1"></i>
+                    Fecha
+                  </div>
+                  <div class="fw-semibold">
+                    <%= det.created_at.strftime("%Y-%m-%d %I:%M %p") %>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="small text-muted">
+                    <i class="bi bi-person me-1"></i>
+                    Participante
+                  </div>
+                  <div class="fw-semibold">
+                    <%= det.user.name %>
+                  </div>
+                </div>
+                <div class="row g-3">
+                  <div class="col-6">
+                    <div class="small text-muted">
+                      Correctas
+                    </div>
+                    <span class="badge text-bg-success mt-1">
+                      <%= det.total_good %>
+                    </span>
+                  </div>
+                  <div class="col-6">
+                    <div class="small text-muted">
+                      Incorrectas
+                    </div>
+                    <span class="badge text-bg-danger mt-1">
+                      <%= det.total_bad %>
+                    </span>
+                  </div>
+                  <div class="col-6">
+                    <div class="small text-muted">
+                      Porcentaje
+                    </div>
+                    <span class="badge text-bg-primary mt-1">
+                      <%= det.final_percentage %>
+                    </span>
+                  </div>
+                  <div class="col-6">
+                    <div class="small text-muted">
+                      Detalle
+                    </div>
+                    <div class="mt-1">
+                      <%= link_to repro_det_path(det.id), class: "conesst-btn conesst-btn-primary" do %>
+                        <i class="bi bi-eye me-1"></i>
+                        Ver detalle
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-5">
+          <i class="bi bi-person-check fs-1 text-muted"></i>
+          <h5 class="mt-3">
+            No hay participantes reprobados
+          </h5>
+          <p class="text-muted mb-0">
+            No se encontraron participantes que hayan reprobado esta evaluación.
+          </p>
+        </div>
+      <% end %>
+      <div class="conesst-actions mt-4">
+        <%= link_to :back, class: "conesst-btn conesst-btn-primary" do %>
+          <i class="bi bi-arrow-left me-1"></i>
+          Retornar
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>
-
-

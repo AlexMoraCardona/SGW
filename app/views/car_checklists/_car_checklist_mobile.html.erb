@@ -1,0 +1,119 @@
+<div class="conesst-card mb-3">
+  <div class="conesst-card-body">
+    <div class="mb-3">
+      <div class="fw-semibold">
+        <i class="bi bi-calendar3 me-1"></i>
+        Fecha
+      </div>
+      <div class="text-muted">
+        <%= car_checklist.date_list %>
+      </div>
+    </div>
+    <div class="mb-3">
+      <div class="fw-semibold">
+        <i class="bi bi-car-front me-1"></i>
+        Placa
+      </div>
+      <div class="mt-1">
+        <% @dato_eve = CarChecklist.cant_eve(car_checklist) %>
+        <% if @dato_eve == 0 %>
+          <button
+            type="button"
+            class="conesst-btn conesst-btn-success position-relative"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal">
+            <%= highlight(car_checklist.plate_car, params.dig(:q, :plate_car_cont)) %>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+              <%= @dato_eve %>+
+              <span class="visually-hidden">eventos</span>
+            </span>
+          </button>
+        <% else %>
+          <button
+            type="button"
+            class="conesst-btn conesst-btn-primary position-relative"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal">
+            <%= highlight(car_checklist.plate_car, params.dig(:q, :plate_car_cont)) %>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              <%= @dato_eve %>+
+              <span class="visually-hidden">eventos</span>
+            </span>
+          </button>
+        <% end %>
+      </div>
+    </div>
+    <div class="mb-3">
+      <div class="fw-semibold">
+        <i class="bi bi-person me-1"></i>
+        Funcionario
+      </div>
+      <div class="text-muted">
+        <%= highlight(car_checklist.user.name, params.dig(:q, :user_id_cont)) %>
+      </div>
+    </div>
+    <div class="mb-3">
+      <div class="fw-semibold mb-2">
+        <i class="bi bi-pen me-1"></i>
+        Firma funcionario
+      </div>
+      <% if car_checklist.firm_user == 1 %>
+        <span class="conesst-status conesst-status-success">
+          <i class="bi bi-check-circle me-1"></i>
+          <%= car_checklist.date_firm_user.strftime("%F") if car_checklist.date_firm_user.present? %>
+        </span>
+      <% else %>
+        <%= link_to firmar_responsable_checklist_car_path(car_checklist.id, 2), class: "conesst-btn conesst-btn-primary" do %>
+          <i class="bi bi-pen me-1"></i>
+          Firmar
+        <% end %>
+      <% end %>
+    </div>
+    <div class="mb-3">
+      <div class="fw-semibold">
+        <i class="bi bi-person-check me-1"></i>
+        Usuario autoriza
+      </div>
+      <div class="text-muted">
+        <%= User.label_name(car_checklist.user_autoriza) %>
+      </div>
+    </div>
+    <div class="mb-3">
+      <div class="fw-semibold mb-2">
+        <i class="bi bi-pen me-1"></i>
+        Firma autorizado
+      </div>
+      <% if car_checklist.user_autoriza_firm == 1 %>
+        <span class="conesst-status conesst-status-success">
+          <i class="bi bi-check-circle me-1"></i>
+          <%= car_checklist.user_autoriza_date.strftime("%F") if car_checklist.user_autoriza_date.present? %>
+        </span>
+      <% else %>
+        <%= link_to firmar_autorizado_checklist_car_path(car_checklist.id, 1), class: "conesst-btn conesst-btn-primary" do %>
+          <i class="bi bi-pen me-1"></i>
+          Firmar
+        <% end %>
+      <% end %>
+    </div>
+    <div class="conesst-actions mt-3">
+      <%= link_to adjuntar_checklist_car_path(car_checklist.id), class: "conesst-btn conesst-btn-warning" do %>
+        <i class="bi bi-paperclip me-1"></i>
+        Adjuntar
+      <% end %>
+      <%= link_to car_checklist_path(car_checklist.id), class: "conesst-btn conesst-btn-warning" do %>
+        <i class="bi bi-eye me-1"></i>
+        Ver
+      <% end %>
+      <%= link_to ver_checklist_car_pdf_path(car_checklist.id, format: "pdf"), class: "conesst-btn conesst-btn-success" do %>
+        <i class="bi bi-file-earmark-pdf me-1"></i>
+        PDF
+      <% end %>
+      <% if Current.user.level > 0 && Current.user.level < 3 %>
+        <%= button_to car_checklist, method: :delete, class: "conesst-btn conesst-btn-danger", form: {data: {turbo_confirm: "¿Está seguro de eliminar este registro?"}} do %>
+          <i class="bi bi-trash me-1"></i>
+          Borrar
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

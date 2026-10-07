@@ -43,7 +43,7 @@ class AttendancesController < ApplicationController
     def destroy
         @attendance = Attendance.find(params[:id])
         @attendance.destroy
-        redirect_to attendances_path, notice: 'Asistencia borrada correctamente', attendance: :see_other
+        redirect_to adm_attendance_path(@attendance.adm_attendance_id), notice: 'Asistencia borrada correctamente', attendance: :see_other
     end  
     
     def registrar_asistencia

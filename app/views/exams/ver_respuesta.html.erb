@@ -1,111 +1,289 @@
-<div class="container col-11">
-    <br>
-        <h4 style="text-align:center">Resultado Evaluación <%= @exam.user.name %></h4>
-        <hr>
-
-        <div class="row g-2">
-            <div class="col-sm-5">
-                <strong>Evaluación Nro:</strong>
-                <%= @exam.id %> 
-            </div>        
-            <div class="col-sm-5">
-               <strong>Fecha:</strong>
-               <%= @exam.created_at.strftime("%Y-%m-%d  %I:%M %p") %>
-            </div>        
-        </div>   
-
-        <div class="form-group">    
-            <strong>Usuario:</strong>
+<div class="conesst-page">
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+        <div class="d-flex align-items-center gap-2">
+          <i class="bi bi-clipboard-check fs-4"></i>
+          <div>
+            <h2 class="conesst-card-header-title mb-0">
+              Resultado Evaluación
+            </h2>
+            <div class="conesst-card-header-subtitle">
+              <%= @exam.user.name %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <div class="row g-3">
+        <div class="col-12 col-md-6">
+          <div class="small text-muted">
+            <i class="bi bi-hash me-1"></i>
+            Evaluación Nro.
+          </div>
+          <div class="fw-semibold">
+            <%= @exam.id %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="small text-muted">
+            <i class="bi bi-calendar3 me-1"></i>
+            Fecha
+          </div>
+          <div class="fw-semibold">
+            <%= @exam.created_at.strftime("%Y-%m-%d %I:%M %p") %>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="small text-muted">
+            <i class="bi bi-person me-1"></i>
+            Usuario
+          </div>
+          <div class="fw-semibold">
             <%= @exam.user.name %>
+          </div>
         </div>
-
-        <div class="form-group">    
-            <strong>Evaluación:</strong>
+        <div class="col-12">
+          <div class="small text-muted">
+            <i class="bi bi-file-earmark-text me-1"></i>
+            Evaluación
+          </div>
+          <div class="fw-semibold">
             <%= @exam.adm_exam.name %>
+          </div>
         </div>
-
-        <div class="row g-2">
-            <div class="col-sm-5">
-                <strong>Respuestas correctas:</strong>
-                <%= @exam.total_good %> 
-            </div>        
-            <div class="col-sm-5">
-               <strong>Respuestas incorrectas:</strong>
-               <%= @exam.total_bad %>
-            </div>        
-        </div>   
-
-        <div class="row g-2">
-            <div class="col-sm-5">
-                <strong>Porcentaje mínimo de aprobación:</strong>
-                <%= @exam.percentage_min %>% 
-            </div>        
-            <div class="col-sm-5">
-               <strong>Porcentaje aprobado:</strong>
-               <%= @exam.final_percentage %>%
-            </div>        
-        </div>   
-
-
-        <div class="row g-2">
-            <div class="col-sm-5">
-                <% if @exam.resul == 'Aprobado'  %>
-                    <strong>Resultado final:</strong>
-                    <div style="color:#008000";><%= @exam.resul %> </div>
-                <% end  %>
-                <% if @exam.resul == 'Reprobado'  %>
-                    <strong>Resultado final:</strong>
-                    <div style="color:#FF0000";><%= @exam.resul %> </div>
-                <% end  %>
+        <div class="col-12 col-md-6">
+          <div class="small text-muted">
+            <i class="bi bi-check-circle me-1"></i>
+            Respuestas correctas
+          </div>
+          <div class="fw-semibold fs-5">
+            <%= @exam.total_good %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="small text-muted">
+            <i class="bi bi-x-circle me-1"></i>
+            Respuestas incorrectas
+          </div>
+          <div class="fw-semibold fs-5">
+            <%= @exam.total_bad %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="small text-muted">
+            <i class="bi bi-percent me-1"></i>
+            Porcentaje mínimo de aprobación
+          </div>
+          <div class="fw-semibold">
+            <%= @exam.percentage_min %>%
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="small text-muted">
+            <i class="bi bi-bar-chart me-1"></i>
+            Porcentaje aprobado
+          </div>
+          <div class="fw-semibold">
+            <%= @exam.final_percentage %>%
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="small text-muted">
+            <i class="bi bi-flag me-1"></i>
+            Resultado final
+          </div>
+          <% if @exam.resul == 'Aprobado' %>
+            <span class="badge text-bg-success">
+              <i class="bi bi-check-circle me-1"></i>
+              <%= @exam.resul %>
+            </span>
+          <% elsif @exam.resul == 'Reprobado' %>
+            <span class="badge text-bg-danger">
+              <i class="bi bi-x-circle me-1"></i>
+              <%= @exam.resul %>
+            </span>
+          <% end %>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="small text-muted">
+            <i class="bi bi-arrow-repeat me-1"></i>
+            Número de intentos
+          </div>
+          <div class="fw-semibold">
+            <%= @can_intentos %>
+          </div>
+        </div>
+      </div>
+      <div class="mt-5">
+        <div class="border-top pt-4 mb-3">
+          <h4 class="text-center mb-1">
+            <i class="bi bi-question-circle me-1"></i>
+            Preguntas no respondidas correctamente
+          </h4>
+          <div class="text-center small text-muted">
+            Evaluación <%= @exam.id %>
+          </div>
+        </div>
+        <% preguntas_incorrectas = @exam_details.where("correct = ?", 0) %>
+        <% if preguntas_incorrectas.present? %>
+          <div class="conesst-table-wrapper d-none d-md-block">
+            <table class="conesst-table table-hover">
+              <tbody>
+                <% preguntas_incorrectas.each do |det| %>
+                  <tr>
+                    <td>
+                      <i class="bi bi-x-circle text-danger me-2"></i>
+                      <%= det.exam_question.question %>?
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+          <div class="d-md-none">
+            <% preguntas_incorrectas.each_with_index do |det, index| %>
+              <div class="conesst-card mb-2">
+                <div class="conesst-card-body py-3">
+                  <div class="d-flex align-items-start gap-2">
+                    <span class="badge text-bg-danger">
+                      <%= index + 1 %>
+                    </span>
+                    <div>
+                      <i class="bi bi-x-circle text-danger me-1"></i>
+                      <%= det.exam_question.question %>?
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="text-center py-4">
+            <i class="bi bi-check-circle fs-2 text-success"></i>
+            <div class="fw-semibold mt-2">
+              No hay preguntas respondidas incorrectamente
             </div>
-            <div class="col-sm-5">
-                <strong>Número de intentos: </strong><%= @can_intentos %>
-            </div>
-        </div>    
-        <hr>
-        <h4 style="text-align:center">Preguntas no respondidas correctamente evaluación <%= @exam.id %></h4>
-
-        <table class="table table-hover">
-            <tbody>
-                <% @exam_details.where("correct = ?", 0).each do |det| %>
-                    <tr>
-                        <td><%= det.exam_question.question%>?</td>
-                    </tr>
-                <% end %>     
-            </tbody>      
-        </table>        
-        <hr>
-        <h4 style="text-align:center">Resumen resultados de los intentos realizados</h4>
-
-        <table class="table table-hover">
-            <thead>
+          </div>
+        <% end %>
+      </div>
+      <div class="mt-5">
+        <div class="border-top pt-4 mb-3">
+          <h4 class="text-center mb-1">
+            <i class="bi bi-clock-history me-1"></i>
+            Resumen resultados de los intentos realizados
+          </h4>
+        </div>
+        <% if @intentos.present? %>
+          <div class="conesst-table-wrapper d-none d-md-block">
+            <table class="conesst-table table-hover">
+              <thead>
                 <tr>
-                    <td>Evaluación Nro:</td>
-                    <td>Fecha:</td>
-                    <td>Porcentaje logrado:</td>
-                    <td>Resultado:</td>
+                  <th>Evaluación Nro.</th>
+                  <th>Fecha</th>
+                  <th>Porcentaje logrado</th>
+                  <th>Resultado</th>
                 </tr>
-            </thead>      
-
-            <tbody>
+              </thead>
+              <tbody>
                 <% @intentos.each do |int| %>
-                    <tr>
-                        <td><%= int.id %></td>
-                        <td><%= int.created_at.strftime("%Y-%m-%d  %I:%M %p") %></td>
-                        <td><%= int.final_percentage %>%</td>
-                        <% if int.resul == 'Aprobado'  %>
-                            <td><div style="color:#008000";><%= int.resul %></div></td>
-                        <% end  %>
-                        <% if int.resul == 'Reprobado'  %>
-                            <td><div style="color:#FF0000";><%= int.resul %></div></td>
-                        <% end  %>
-                    </tr>
-                <% end %>     
-            </tbody>      
-        </table>        
-        <hr>
-        <%= link_to '<button class="btn btn-primary" type="button">Salir</button>'.html_safe, home_path %>
-        <br>
-        <br>            
-</div>  
-
+                  <tr>
+                    <td>
+                      <span class="fw-semibold">
+                        <%= int.id %>
+                      </span>
+                    </td>
+                    <td>
+                      <%= int.created_at.strftime("%Y-%m-%d %I:%M %p") %>
+                    </td>
+                    <td>
+                      <span class="badge text-bg-primary">
+                        <%= int.final_percentage %>%
+                      </span>
+                    </td>
+                    <td>
+                      <% if int.resul == 'Aprobado' %>
+                        <span class="badge text-bg-success">
+                          <i class="bi bi-check-circle me-1"></i>
+                          <%= int.resul %>
+                        </span>
+                      <% elsif int.resul == 'Reprobado' %>
+                        <span class="badge text-bg-danger">
+                          <i class="bi bi-x-circle me-1"></i>
+                          <%= int.resul %>
+                        </span>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+          <div class="d-md-none">
+            <% @intentos.each do |int| %>
+              <div class="conesst-card mb-3">
+                <div class="conesst-card-header">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <div class="small text-muted">
+                        Evaluación Nro.
+                      </div>
+                      <div class="fw-semibold">
+                        <%= int.id %>
+                      </div>
+                    </div>
+                    <% if int.resul == 'Aprobado' %>
+                      <span class="badge text-bg-success">
+                        <i class="bi bi-check-circle me-1"></i>
+                        Aprobado
+                      </span>
+                    <% elsif int.resul == 'Reprobado' %>
+                      <span class="badge text-bg-danger">
+                        <i class="bi bi-x-circle me-1"></i>
+                        Reprobado
+                      </span>
+                    <% end %>
+                  </div>
+                </div>
+                <div class="conesst-card-body">
+                  <div class="mb-3">
+                    <div class="small text-muted">
+                      <i class="bi bi-calendar3 me-1"></i>
+                      Fecha
+                    </div>
+                    <div class="fw-semibold">
+                      <%= int.created_at.strftime("%Y-%m-%d %I:%M %p") %>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="small text-muted">
+                      <i class="bi bi-bar-chart me-1"></i>
+                      Porcentaje logrado
+                    </div>
+                    <span class="badge text-bg-primary mt-1">
+                      <%= int.final_percentage %>%
+                    </span>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="text-center py-4">
+            <i class="bi bi-info-circle fs-2 text-muted"></i>
+            <div class="text-muted mt-2">
+              No hay intentos registrados.
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="conesst-actions mt-4">
+        <%= link_to home_path, class: "conesst-btn conesst-btn-primary" do %>
+          <i class="bi bi-box-arrow-left me-1"></i>
+          Salir
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

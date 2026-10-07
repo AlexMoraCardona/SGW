@@ -1,38 +1,77 @@
-<div align="left"; class="container col-12">
-    <a class="navbar-brand" href="/">
-        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-    </a>
-</div>
-<div class="container col-11">
-        <div class="d-flex">
-            <div class="container">
-               <h2 class="display-5"> <%= t('.title')%></h2>
-            </div> 
+<div class="conesst-page">
+    <div class="mb-3">
+        <%= link_to root_path, class: "d-inline-block" do %>
+            <%= image_tag "LogoConesst202305232.png", width: 100, height: 100,  alt: "CONESST" %>
+        <% end %>
+    </div>
+    <div class="conesst-card">
+        <div class="conesst-card-header">
+            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-2">
+                <div>
+                    <h2 class="mb-0">
+                        <i class="bi bi-calendar-check me-2"></i>
+                        <%= t('.title') %>
+                    </h2>
+                    <small class="text-muted">
+                        Administración y control de asistencias
+                    </small>
+                </div>
+                <div class="conesst-actions">
+                    <%= link_to new_adm_attendance_path, class: "conesst-btn conesst-btn-primary" do %>
+                        <i class="bi bi-plus-circle me-1"></i>
+                        <%= t('common.create_adm_attendance') %>
+                    <% end %>
+                </div>
+            </div>
         </div>
-        <div class="container">
-            <%= link_to t('common.create_adm_attendance'), new_adm_attendance_path, class: 'btn btn-sm btn-primary' %>
-        </div>
-        <hr>
-    <table class="table table-hover">
-        <thead> 
-            <tr>    
-                <th scope="col"><%= t('.date_attendance') %></th>
-                <th scope="col"><%= t('.entity_id') %></th>
-                <th scope="col"><%= t('.description') %></th>
-                <th scope="col"><%= t('common.edit') %></th>
-                <th scope="col">Ingresar Participantes</th>
-                <th scope="col">PDF</th>
-                <th scope="col">Registrados</th>
-                <th scope="col">Pendientes</th>
-            </tr>
-        </thead>
-        <tbody>
+        <div class="conesst-card-body">
             <% if @adm_attendances.present? %>
-                <%= render partial: 'adm_attendance', collection: @adm_attendances  %>  
-            <% end %>    
-        </tbody>      
-    </table>
+                <div class="conesst-table-wrapper d-none d-md-block">
+                    <table class="conesst-table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    <%= t('.date_attendance') %>
+                                </th>
+                                <th scope="col">
+                                    <%= t('.entity_id') %>
+                                </th>
+                                <th scope="col">
+                                    <%= t('.description') %>
+                                </th>
+                                <th scope="col">
+                                    <%= t('common.edit') %>
+                                </th>
+                                <th scope="col">
+                                    Ingresar Participantes
+                                </th>
+                                <th scope="col">
+                                    PDF
+                                </th>
+                                <th scope="col">
+                                    Registrados
+                                </th>
+                                <th scope="col">
+                                    Pendientes
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%= render partial: 'adm_attendance', collection: @adm_attendances %>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-md-none">
+                    <%= render partial: 'adm_attendance_mobile', collection: @adm_attendances, as: :adm_attendance %>
+                </div>
+            <% else %>
+                <div class="text-center py-4">
+                    <i class="bi bi-calendar-x fs-1 text-muted"></i>
+                    <p class="text-muted mt-2 mb-0">
+                        No hay registros de asistencia para mostrar.
+                    </p>
+                </div>
+            <% end %>
+        </div>
+    </div>
 </div>
-
-
-

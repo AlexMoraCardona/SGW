@@ -1,110 +1,201 @@
-<div id="carouselExample" class="carousel carousel-dark slide" >
-  <div class="carousel-inner" data-bs-theme="dark">
-    <div class="carousel-item active" data-bs-theme="dark" data-bs-interval="900000">
-      <div class="row g-3">
-        <div class="col-sm-2">
-        </div>
-        <div class="col-sm-7" style="text-align:center;">
-          <% if @adm_exam.img_exam.present? then %>
-            <%=  image_tag  @adm_exam.img_exam, class: "image_evaluacion" %>
-          <% end %>  
-          </br>
+<div class="conesst-page">
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+        <div class="d-flex align-items-center gap-2">
+          <i class="bi bi-clipboard-check fs-4"></i>
           <div>
-            <h1 style="color:#000000";><%= @entity.business_name if @entity.present? %></br> </h1>
-            <h1 style="color:#000000";><%= @adm_exam.description %></h1>
+            <h2 class="conesst-card-header-title mb-0">
+              Evaluación
+            </h2>
+            <div class="conesst-card-header-subtitle">
+              <%= @adm_exam.description %>
+            </div>
           </div>
-          <div>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next" >
-              <span  class="carousel-control-next-icon" aria-hidden="true" ></span>
-              <span  class="visually-hidden" >Next</span>
-            </button>
-          </div>
-        </div>  
-        <div class="col-sm-2">
         </div>
       </div>
     </div>
-    
-    <% if @exam_questions.present? %> 
-      <div class="carousel-item" data-bs-interval="900000">
-        <%= form_tag guardar_respuesta_path(@exam.id), method: :post do %>
-
-          <% i = 1 %>
-          <div class="row g-3">
-            <div class="col-sm-2">
-            </div>
-            <div class="col-sm-7">
-              <% @exam_questions.each do |q| %>
-                <br>
-                <h4>Pregunta <%= i %>:<br> <%= q.question %><h4>
-                <%  @pre =  ExamQuestion.crear_preguntas(q.id) %>  
-                <% if @pre.present? %>
-                  <div class="btn-group-vertical" role="group" aria-label="Vertical radio toggle button group">
-                    <% if @pre[0].present? %>
-                      <% @dato = @pre[0].to_s %>
-                      <% @dato = @dato[2..-3] %>
-                      <% if not  @dato.blank? %>
-                        <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[0]%>" id="vbtn-radio1<%= i %>" autocomplete="off" required>
-                        <label class="btn btn-outline-dark" for="vbtn-radio1<%= i %>"><%= @dato  %></label>
-                      <% end %>  
-                    <% end %> 
-                    <br>
-                    <% if @pre[1].present? %>
-                      <% @dato = @pre[1].to_s %>
-                      <% @dato = @dato[2..-3] %>
-                      <% if not  @dato.blank? %>
-                        <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[1]%>" id="vbtn-radio2<%= i %>" autocomplete="off" required>
-                        <label class="btn btn-outline-dark" for="vbtn-radio2<%= i %>"><%= @dato %></label>
-                      <% end %>  
-                    <% end %>  
-                    <br>
-                    <% if @pre[2].present? %>
-                      <% @dato = @pre[2].to_s %>
-                      <% @dato = @dato[2..-3] %>
-                      <% if not  @dato.blank? %>
-                        <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[2]%>" id="vbtn-radio3<%= i %>" autocomplete="off" required>
-                        <label class="btn btn-outline-dark" for="vbtn-radio3<%= i %>"><%= @dato %></label>
-                      <% end %>  
-                    <% end %>  
-                    <br>
-                    <% if @pre[3].present? %>
-                      <% @dato = @pre[3].to_s %>
-                      <% @dato = @dato[2..-3] %>
-                      <% if not  @dato.blank? %>
-                        <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[3]%>" id="vbtn-radio4<%= i %>" autocomplete="off" required>
-                        <label class="btn btn-outline-dark" for="vbtn-radio4<%= i %>"><%= @dato %></label>
-                      <% end %>  
-                    <% end %>  
-                    <br>
-                    <% if @pre[4].present? %>
-                      <% @dato = @pre[4].to_s %>
-                      <% @dato = @dato[2..-3] %>
-                      <% if not  @dato.blank? %>
-                        <input type="radio" class="btn-check" name="<%= i.to_i %>" value="<%=q.id.to_i%><%=@pre[4]%>" id="vbtn-radio5<%= i %>" autocomplete="off" required>
-                        <label class="btn btn-outline-dark" for="vbtn-radio5<%= i %>"><%= @dato %></label>
-                      <% end %>  
-                    <% end %>  
-                    <br>
-                  </div>
-                <% end %>  
-                <% i += 1 %>
-                <hr>
-
-              <% end %> 
+    <div class="conesst-card-body text-center">
+      <% if @adm_exam.img_exam.present? %>
+        <div class="mb-3">
+          <%= image_tag @adm_exam.img_exam, class: "image_evaluacion" %>
+        </div>
+      <% end %>
+      <% if @entity.present? %>
+        <h3 class="mb-2">
+          <%= @entity.business_name %>
+        </h3>
+      <% end %>
+      <div class="text-muted">
+        <%= @adm_exam.description %>
+      </div>
+    </div>
+  </div>
+  <% if @exam_questions.present? %>
+    <%= form_tag guardar_respuesta_path(@exam.id), method: :post do %>
+      <% i = 1 %>
+      <% @exam_questions.each do |q| %>
+        <% @pre = ExamQuestion.crear_preguntas(q.id) %>
+        <div class="conesst-card mb-3">
+          <div class="conesst-card-header">
+            <div class="d-flex align-items-start gap-2">
+              <span class="badge text-bg-primary">
+                <%= i %>
+              </span>
               <div>
-                <br> 
-                <%= submit_tag 'Enviar respuestas!',  :class => 'btn btn-primary btn-block spin pull-right' %>
-                <br>
+                <h5 class="mb-0">
+                  Pregunta <%= i %>
+                </h5>
               </div>
-              <div>
-                <br> 
-              </div>
-            </div>  
-            <div class="col-sm-2">
             </div>
           </div>
-        <% end %>          
+          <div class="conesst-card-body">
+            <div class="mb-4">
+              <div class="fw-semibold">
+                <%= q.question %>
+              </div>
+            </div>
+            <% if @pre.present? %>
+              <div class="d-flex flex-column gap-2">
+                <% if @pre[0].present? %>
+                  <% @dato = @pre[0].to_s %>
+                  <% @dato = @dato[2..-3] %>
+                  <% unless @dato.blank? %>
+                    <div>
+                      <input
+                        type="radio"
+                        class="btn-check"
+                        name="<%= i %>"
+                        value="<%= q.id %><%= @pre[0] %>"
+                        id="respuesta_<%= i %>_1"
+                        autocomplete="off"
+                        required>
+                      <label
+                        class="btn btn-outline-dark text-start w-100 p-3"
+                        for="respuesta_<%= i %>_1">
+                        <i class="bi bi-circle me-2"></i>
+                        <%= @dato %>
+                      </label>
+                    </div>
+                  <% end %>
+                <% end %>
+                <% if @pre[1].present? %>
+                  <% @dato = @pre[1].to_s %>
+                  <% @dato = @dato[2..-3] %>
+                  <% unless @dato.blank? %>
+                    <div>
+                      <input
+                        type="radio"
+                        class="btn-check"
+                        name="<%= i %>"
+                        value="<%= q.id %><%= @pre[1] %>"
+                        id="respuesta_<%= i %>_2"
+                        autocomplete="off"
+                        required>
+                      <label
+                        class="btn btn-outline-dark text-start w-100 p-3"
+                        for="respuesta_<%= i %>_2">
+                        <i class="bi bi-circle me-2"></i>
+                        <%= @dato %>
+                      </label>
+                    </div>
+                  <% end %>
+                <% end %>
+                <% if @pre[2].present? %>
+                  <% @dato = @pre[2].to_s %>
+                  <% @dato = @dato[2..-3] %>
+                  <% unless @dato.blank? %>
+                    <div>
+                      <input
+                        type="radio"
+                        class="btn-check"
+                        name="<%= i %>"
+                        value="<%= q.id %><%= @pre[2] %>"
+                        id="respuesta_<%= i %>_3"
+                        autocomplete="off"
+                        required>
+                      <label
+                        class="btn btn-outline-dark text-start w-100 p-3"
+                        for="respuesta_<%= i %>_3">
+                        <i class="bi bi-circle me-2"></i>
+                        <%= @dato %>
+                      </label>
+                    </div>
+                  <% end %>
+                <% end %>
+                <% if @pre[3].present? %>
+                  <% @dato = @pre[3].to_s %>
+                  <% @dato = @dato[2..-3] %>
+                  <% unless @dato.blank? %>
+                    <div>
+                      <input
+                        type="radio"
+                        class="btn-check"
+                        name="<%= i %>"
+                        value="<%= q.id %><%= @pre[3] %>"
+                        id="respuesta_<%= i %>_4"
+                        autocomplete="off"
+                        required>
+                      <label
+                        class="btn btn-outline-dark text-start w-100 p-3"
+                        for="respuesta_<%= i %>_4">
+                        <i class="bi bi-circle me-2"></i>
+                        <%= @dato %>
+                      </label>
+                    </div>
+                  <% end %>
+                <% end %>
+                <% if @pre[4].present? %>
+                  <% @dato = @pre[4].to_s %>
+                  <% @dato = @dato[2..-3] %>
+                  <% unless @dato.blank? %>
+                    <div>
+                      <input
+                        type="radio"
+                        class="btn-check"
+                        name="<%= i %>"
+                        value="<%= q.id %><%= @pre[4] %>"
+                        id="respuesta_<%= i %>_5"
+                        autocomplete="off"
+                        required>
+                      <label
+                        class="btn btn-outline-dark text-start w-100 p-3"
+                        for="respuesta_<%= i %>_5">
+                        <i class="bi bi-circle me-2"></i>
+                        <%= @dato %>
+                      </label>
+                    </div>
+                  <% end %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <% i += 1 %>
+      <% end %>
+      <div class="conesst-card mt-4">
+        <div class="conesst-card-body">
+          <div class="text-center">
+            <div class="mb-3 text-muted">
+              <i class="bi bi-check2-square me-1"></i>
+              Verifique sus respuestas antes de enviar la evaluación.
+            </div>
+            <%= submit_tag "Enviar respuestas", class: "conesst-btn conesst-btn-primary" %>
+          </div>
+        </div>
       </div>
     <% end %>
-  </div>
+  <% else %>
+    <div class="conesst-card">
+      <div class="conesst-card-body text-center py-5">
+        <i class="bi bi-exclamation-circle fs-1 text-muted"></i>
+        <h5 class="mt-3">
+          No hay preguntas disponibles
+        </h5>
+        <p class="text-muted mb-0">
+          Esta evaluación no tiene preguntas configuradas.
+        </p>
+      </div>
+    </div>
+  <% end %>
 </div>

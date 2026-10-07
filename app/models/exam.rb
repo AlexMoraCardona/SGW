@@ -162,19 +162,21 @@ class Exam < ApplicationRecord
         if allow_examenes.count > 0
             allow_examenes.each do |allow_exam|
                 vector = allow_exam.user_cites
-                nvector = vector.gsub('"', '')
-                nvector = nvector.gsub('[', '')
-                nvector = nvector.gsub(']', '')        
-                fvector = nvector.split(',')
-                cant = fvector.count
-                n = 0
-                @nom_usuarios = ''
-                while n < cant
-                    if fvector[n].to_i == usuario.to_i
-                        examenes_activos << allow_exam
-                    end  
-                    n = n + 1
-                end      
+                if vector.present?
+                    nvector = vector.gsub('"', '')
+                    nvector = nvector.gsub('[', '')
+                    nvector = nvector.gsub(']', '')        
+                    fvector = nvector.split(',')
+                    cant = fvector.count
+                    n = 0
+                    @nom_usuarios = ''
+                    while n < cant
+                        if fvector[n].to_i == usuario.to_i
+                            examenes_activos << allow_exam
+                        end  
+                        n = n + 1
+                    end
+                end          
             end                
         end
         return examenes_activos    

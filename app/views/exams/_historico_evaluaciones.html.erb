@@ -1,88 +1,184 @@
-        <br>
-        <h class="display-5" style="text-align:center">Resultados Evaluaciones</h>
-        <hr> 
+<div class="conesst-card">
+    <div class="conesst-card-header">
+        <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-clipboard-check fs-4"></i>
+            <div>
+                <h2 class="mb-0">
+                    Resultados Evaluaciones
+                </h2>
+                <small class="text-muted">
+                    Consulta de resultados y resumen de las evaluaciones
+                </small>
+            </div>
+        </div>
+    </div>
+    <div class="conesst-card-body">
         <% @allow_exams.each do |allow_exam| %>
-            <% @filtro_exams =    Exam.filtro_exams(allow_exam.id) %>
-            <% @filtro_cant =    @filtro_exams.count %>
+            <% @filtro_exams = Exam.filtro_exams(allow_exam.id) %>
+            <% @filtro_cant = @filtro_exams.count %>
             <% if @filtro_cant > -1 %>
-                <div class="form-group">    
-                    <h5><strong>Evaluación Número:</strong>
-                        <%= allow_exam.id %> <%= link_to 'Ficha Técnica', ver_detalle_path(allow_exam), class: 'btn btn-sm btn-success' %>
-                    </h5>
+                <div class="conesst-card mb-4">
+                    <div class="conesst-card-header">
+                        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-2">
+                            <div>
+                                <h4 class="mb-1">
+                                    Evaluación Número:
+                                    <%= allow_exam.id %>
+                                </h4>
+                                <small class="text-muted">
+                                    <%= allow_exam.name_exam %>
+                                </small>
+                            </div>
+                            <div class="conesst-actions">
+                                <%= link_to ver_detalle_path(allow_exam), class: "conesst-btn conesst-btn-success" do %>
+                                    <i class="bi bi-file-earmark-text me-1"></i>
+                                    Ficha Técnica
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="conesst-card-body">
+                        <div class="row g-3">
+                            <div class="col-12 col-md-6">
+                                <div class="small text-muted">
+                                    Fecha de creación
+                                </div>
+                                <div class="fw-semibold">
+                                    <%= allow_exam.created_at.strftime("%Y-%m-%d %I:%M %p") %>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="small text-muted">
+                                    Evaluación
+                                </div>
+                                <div class="fw-semibold">
+                                    <%= allow_exam.name_exam %>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="small text-muted">
+                                    Entidad
+                                </div>
+                                <div class="fw-semibold">
+                                    <%= @entity.business_name %>
+                                    <span class="text-muted">
+                                        — Nit:
+                                    </span>
+                                    <%= @entity.identification_number %>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="small text-muted">
+                                    Fecha inicio evaluación
+                                </div>
+                                <div class="fw-semibold">
+                                    <%= allow_exam.date_initial %>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="small text-muted">
+                                   Fecha final evaluación
+                                </div>
+                                <div class="fw-semibold">
+                                    <%= allow_exam.date_final %>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="small text-muted">
+                                    Observaciones
+                                </div>
+                                <div class="fw-semibold">
+                                    <%= allow_exam.description %>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <div class="border-top pt-3 mb-3">
+                                <h4 class="mb-1 text-center">
+                                    <i class="bi bi-bar-chart-line me-1"></i>
+                                    Resumen Evaluación
+                                </h4>
+                            </div>
+                            <% @vec = Exam.realiza(
+                                @entity.id,
+                                allow_exam.id,
+                                allow_exam.date_initial,
+                                allow_exam.date_final,
+                                allow_exam.user_cites
+                            ) if @entity.present? %>
+                            <div class="row g-3">
+                                <div class="col-12 col-md-6">
+                                    <div class="p-3 border rounded h-100">
+                                        <div class="small text-muted">
+                                            Cantidad de empleados citados
+                                        </div>
+                                        <div class="fs-5 fw-semibold mt-1">
+                                            <%= Exam.numero_empleados(
+                                                @entity.id,
+                                                allow_exam.date_initial,
+                                                allow_exam.date_final,
+                                                allow_exam.user_cites
+                                            ) if @entity.present? %>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="p-3 border rounded h-100">
+                                        <div class="small text-muted">
+                                            Empleados que realizaron la evaluación
+                                        </div>
+                                        <div class="fs-5 fw-semibold mt-1">
+                                            <%= @vec[0] if @vec[0].present? %>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="p-3 border rounded h-100">
+                                        <div class="mb-2">
+                                            <%= link_to apro_path(@entity.id, allow_exam.id), class: "conesst-btn conesst-btn-primary" do %>
+                                                <i class="bi bi-check-circle me-1"></i>
+                                                Aprobaron
+                                            <% end %>
+                                        </div>
+                                        <div class="small text-muted">
+                                            Total:
+                                            <strong>
+                                                <%= @vec[1] if @vec[1].present? %>
+                                            </strong>
+                                            &nbsp; - &nbsp;
+                                            Porcentaje:
+                                            <strong>
+                                                <%= @vec[3] if @vec[3].present? %>%
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="p-3 border rounded h-100">
+                                        <div class="mb-2">
+                                            <%= link_to repro_path(@entity.id, allow_exam.id), class: "conesst-btn conesst-btn-primary" do %>
+                                                <i class="bi bi-x-circle me-1"></i>
+                                                Reprobaron
+                                            <% end %>
+                                        </div>
+                                        <div class="small text-muted">
+                                            Total:
+                                            <strong>
+                                                <%= @vec[2] if @vec[2].present? %>
+                                            </strong>
+                                            &nbsp; - &nbsp;
+                                            Porcentaje:
+                                            <strong>
+                                                <%= @vec[4] if @vec[4].present? %>%
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">    
-                    <h5><strong>Fecha de creación:</strong>
-                        <%= allow_exam.created_at.strftime("%Y-%m-%d  %I:%M %p") %>
-                    </h5>
-                </div>
-
-                <div class="form-group">    
-                    <h5><strong>Evaluación:</strong>
-                        <%= allow_exam.name_exam %>
-                    </h5>
-                </div>
-                <div class="form-group">    
-                    <h5><strong>Entidad:</strong>
-                        <%= @entity.business_name %> Nit: <%=@entity.identification_number %>
-                    </h5>    
-                </div>
-                <div class="row g-2">
-                    <div class="col-sm-5">
-                        <h5><strong>Fecha inicio evaluación:</strong>
-                            <%= allow_exam.date_initial  %> 
-                        </h5>    
-                    </div>        
-                    <div class="col-sm-5">
-                        <h5><strong>Fecha final evaluación:</strong>
-                            <%= allow_exam.date_final  %>
-                        </h5>
-                    </div>        
-                </div>   
-                <div class="form-group">    
-                    <h5><strong>Observaciones:</strong>
-                        <%= allow_exam.description %>
-                    </h5>    
-                </div>
-                <br> 
-                <h class="display-7" style="text-align:center">Resumen Evaluación</h>
-                <div class="row g-2">
-                    <div class="col-sm-5"> 
-                        <h5><strong>Cantidad de Empleados citados:</strong>
-                            <%= Exam.numero_empleados(@entity.id, allow_exam.date_initial, allow_exam.date_final, allow_exam.user_cites) if @entity.present?  %> 
-                        </h5>
-                    </div>        
-                    <div class="col-sm-5">
-                        <% @vec = Exam.realiza(@entity.id, allow_exam.id, allow_exam.date_initial, allow_exam.date_final, allow_exam.user_cites) if @entity.present? %>
-                        
-                        <h5><strong>Empleados que realizaron la evaluación:</strong>
-                            <%= @vec[0] if @vec[0].present?  %>
-                        </h5>    
-                    </div>        
-                </div>   
-
-                <div class="row g-2"> 
-                    <div class="col-sm-5">
-                        <h5><%= link_to 'Aprobaron:', apro_path(@entity.id, allow_exam.id), class: 'btn btn-sm btn-primary' %>
-                            Total <%= @vec[1] if @vec[1].present? %> - Porcentaje <%= @vec[3] if @vec[3].present? %>%
-                        </h5>    
-                    </div>        
-                    <div class="col-sm-5">
-                        <h5><%= link_to 'Reprobaron:', repro_path(@entity.id, allow_exam.id), class: 'btn btn-sm btn-primary' %>
-                            Total <%= @vec[2] if @vec[2].present? %> - Porcentaje <%= @vec[4] if @vec[4].present? %>%
-                        </h5>    
-                    </div>        
-                </div>   
-                <hr>
-                <br>
-
             <% end %>
-            
         <% end %>
-
-
-
-
-
-
-
-
+    </div>
+</div>

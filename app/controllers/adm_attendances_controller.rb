@@ -14,6 +14,7 @@ class AdmAttendancesController < ApplicationController
 
     def new
       @adm_attendance = AdmAttendance.new  
+      @template = Template.where("reference = ? and document_vigente = ?",'LA-SST',1).last  
     end    
 
     def create
@@ -49,32 +50,31 @@ class AdmAttendancesController < ApplicationController
         @adm_attendance =  AdmAttendance.find(params[:id])
         @entity = Entity.find(@adm_attendance.entity_id) if @adm_attendance.present?
         @attendances = Attendance.where("adm_attendance_id = ?",@adm_attendance.id) if @adm_attendance.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",95,1).last
-        nombre_evidencia = 'Listado Asistencia ' + @adm_attendance.description.to_s + @adm_attendance.date_attendance.to_s + '.pdf'
+        @template = Template.where("reference = ? and version = ?",@adm_attendance.code,@adm_attendance.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
+
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {
-                header_html = render_to_string( partial: 'adm_attendances/header')
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
                 pdf = WickedPdf.new.pdf_from_string(
                     render_to_string('adm_attendance_pdf'),
                     disable_javascript: true,
-                    margin: {top: 50, bottom: 15, left: 15, right: 15 },
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
                     page_size: 'letter',
+                    orientation: 'Landscape',
                     header: {spacing: 5,
-                            content: header_html},
-                    footer: {right: '[page] de [topage]'}
-                    
-                  )  
-                  send_data(pdf, filename: nombre_evidencia, disposition: 'attachment')      
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
             }
         end    
-
-
     end    
 
     def seleccion_participantes
             @users = User.where("entity = ? and state = ?", Current.user.entity, 1)
+            @attendances = Attendance.where("adm_attendance_id = ?",params[:id])
     end 
 
     def citar_participantes
@@ -97,7 +97,7 @@ class AdmAttendancesController < ApplicationController
     private
 
     def adm_attendance_params
-        params.require(:adm_attendance).permit(:date_attendance, :description, :time_initial, :time_final, :entity_id, :user_id)
+        params.require(:adm_attendance).permit(:date_attendance, :description, :time_initial, :time_final, :entity_id, :user_id, :version, :code)
     end 
 
 end  

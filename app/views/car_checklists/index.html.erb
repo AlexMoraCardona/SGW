@@ -1,11 +1,7 @@
 <div class="conesst-page">
   <div class="conesst-logo-container">
     <%= link_to root_path, class: "d-inline-block" do %>
-      <%= image_tag(
-        'LogoConesst202305232.png',
-        class: 'conesst-logo',
-        alt: 'CONESST'
-      ) %>
+      <%= image_tag('LogoConesst202305232.png', class: 'conesst-logo', alt: 'CONESST') %>
     <% end %>
   </div>
   <div class="conesst-header">
@@ -23,7 +19,7 @@
     <div class="conesst-card-body">
       <div class="conesst-actions">
         <%= link_to new_car_checklist_path, class: "conesst-btn conesst-btn-primary" do %>
-          <i class="bi bi-plus-circle"></i>
+          <i class="bi bi-plus-circle me-1"></i>
           <%= t('.create_car_checklist') %>
         <% end %>
       </div>
@@ -43,29 +39,23 @@
     </div>
     <div class="conesst-card-body">
       <%= search_form_for @q do |f| %>
-        <div class="conesst-form-grid conesst-form-grid-2">
-          <div class="conesst-form-group">
-            <%= f.label :date_list, class: "conesst-form-label" do %>
-              <%= t('.date_list') %>
-            <% end %>
+        <div class="row g-3">
+          <div class="col-12 col-md-4">
+            <%= f.label :date_list, t('.date_list'), class: "form-label fw-semibold" %>
             <%= f.date_field :date_list_eq, class: "form-control" %>
           </div>
-          <div class="conesst-form-group">
-            <%= f.label :user_id, class: "conesst-form-label" do %>
-              <%= t('.user_id') %>
-            <% end %>
-            <%= f.select(:user_id_eq, @users.pluck(:name, :id).uniq, { include_blank: true }, { class: "form-select" }) %>
+          <div class="col-12 col-md-4">
+            <%= f.label :user_id, t('.user_id'), class: "form-label fw-semibold" %>
+            <%= f.select :user_id_eq, @users.pluck(:name, :id).uniq, { include_blank: "-- Todos los usuarios --" }, { class: "form-select" } %>
           </div>
-          <div class="conesst-form-group">
-            <%= f.label :plate_car, class: "conesst-form-label" do %>
-              <%= t('.plate_car') %>
-            <% end %>
+          <div class="col-12 col-md-4">
+            <%= f.label :plate_car, t('.plate_car'), class: "form-label fw-semibold" %>
             <%= f.search_field :plate_car_cont, class: "form-control", placeholder: "Buscar por placa" %>
           </div>
         </div>
-        <div class="conesst-form-actions mt-3">
+        <div class="conesst-actions mt-3">
           <button type="submit" class="conesst-btn conesst-btn-primary">
-            <i class="bi bi-search"></i>
+            <i class="bi bi-search me-1"></i>
             Buscar
           </button>
         </div>
@@ -74,7 +64,7 @@
   </div>
   <div class="conesst-card mb-3">
     <div class="conesst-card-body">
-      <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
+      <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-2">
         <div class="small text-muted">
           <%== pagy_info(@pagy) %>
         </div>
@@ -84,7 +74,7 @@
       </div>
     </div>
   </div>
-  <div class="conesst-card">
+  <div class="conesst-card d-none d-md-block">
     <div class="conesst-card-header">
       <div class="conesst-card-header-content">
         <div class="conesst-card-header-title">
@@ -139,5 +129,21 @@
         </table>
       </div>
     </div>
+  </div>
+  <div class="d-md-none">
+    <div class="conesst-card mb-3">
+      <div class="conesst-card-header">
+        <div class="conesst-card-header-content">
+          <div class="conesst-card-header-title">
+            <i class="bi bi-clipboard-check me-2"></i>
+            Listas de chequeo
+          </div>
+          <div class="conesst-card-header-subtitle">
+            Prechequeos operacionales
+          </div>
+        </div>
+      </div>
+    </div>
+    <%= render partial: 'car_checklist_mobile', collection: @car_checklists, as: :car_checklist %>
   </div>
 </div>

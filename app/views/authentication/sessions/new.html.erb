@@ -763,6 +763,45 @@
             justify-content: center;
         }
     }
+
+    /* Ajustes responsive del CAPTCHA de Cloudflare */
+    .login-card {
+        min-width: 0;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .login-card .row {
+        min-width: 0;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .conesst-turnstile-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        overflow: hidden;
+        box-sizing: border-box;
+    }
+
+    .conesst-turnstile-wrapper .cf-turnstile {
+        max-width: 100%;
+    }
+
+    @media (max-width: 380px) {
+        .login-card {
+            padding: 8px;
+        }
+
+        .conesst-turnstile-wrapper {
+            justify-content: center;
+        }
+    }
+    
 </style>
 
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
@@ -809,8 +848,13 @@
                                         <i class="bi bi-box-arrow-in-right"></i>
                                     </button>
                                 </div>
-                                <div class="col-12 d-flex justify-content-center mt-2">
-                                    <div class="cf-turnstile" data-sitekey="<%= Rails.application.credentials.dig(:cloudflare_turnstile, :login_site_key) %>"></div>
+                                <div class="col-12 mt-2">
+                                    <div class="conesst-turnstile-wrapper">
+                                        <div class="cf-turnstile"
+                                            data-sitekey="<%= Rails.application.credentials.dig(:cloudflare_turnstile, :login_site_key) %>"
+                                            data-size="flexible">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         <% end %>                    

@@ -143,7 +143,7 @@ class TemplatesController < ApplicationController
         :firm_asesor, :firm_presidente_copasst, :firm_secretario_copasst, :firm_vigia, :participant_responsable, 
         :participant_representante, :participant_asesor, :participant_vigia, :participant_colaborador, 
         :type_document, :process_document, :type_soport, :name_dependence, :observations, :dependence_admin, 
-        :control_changes, :not_current, :document_vigente, :conservation_time, :ubication_document, :medium_storage)
+        :control_changes, :not_current, :document_vigente, :conservation_time, :ubication_document, :medium_storage, :participant_secretary)
     end 
 
 end  

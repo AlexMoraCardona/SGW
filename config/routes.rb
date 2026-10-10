@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'virtual_assistant/index'
   get 'surveillance_workers/index'
   get 'surveillance_workers/show'
   get 'surveillance_workers/new'
@@ -8,6 +9,9 @@ Rails.application.routes.draw do
   get 'home', to:  "homes#index"
   
   namespace :authentication, path: '', as: ''  do
+    get '/users/bloqueados', to: 'users#bloqueados', as: 'usuarios_bloqueados'
+    patch '/users/:id/desbloquear', to: 'users#desbloquear', as: 'desbloquear_usuario'
+    get '/users/historial_sesiones', to: 'users#historial_sesiones', as: 'historial_sesiones'    
     resources :users
     resources :sessions, only: [:new, :create, :destroy]
     get '/users/cambio_empresa/:id', to: 'users#cambio_empresa', as: 'cambio_empresa'
@@ -281,6 +285,8 @@ Rails.application.routes.draw do
   get '/matrix_goals/firmar_res_goal/:id', to: 'matrix_goals#firmar_res_goal', as: 'firmar_res_goal'
   get '/extinguishers/extinguisher_foto/:id', to: 'extinguishers#extinguisher_foto', as: 'extinguisher_foto'
   get '/kits/kit_foto/:id', to: 'kits#kit_foto', as: 'kit_foto'
+  get "virtual_assistant", to: "virtual_assistant#index"
+  post "virtual_assistant/message", to: "virtual_assistant#message"
 
   resources :epidemiological_surveillance_programs do
     resources :surveillance_activities

@@ -1,0 +1,63 @@
+<div class="conesst-page">
+  <div class="conesst-header">
+    <div class="conesst-header-icon">
+      <i class="bi bi-person-lock"></i>
+    </div>
+    <div>
+      <h1>Usuarios bloqueados</h1>
+      <p>Consulta los usuarios bloqueados por múltiples intentos fallidos de inicio de sesión.</p>
+    </div>
+  </div>
+  <div class="conesst-card">
+    <% if @users.any? %>
+      <div class="table-responsive">
+        <table class="table conesst-table align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Documento</th>
+              <th>Empresa</th>
+              <th>Intentos</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @users.each do |user| %>
+              <tr>
+                <td data-label="Usuario">
+                  <strong><%= user.name %></strong>
+                  <div class="small text-muted">
+                    <%= user.username %>
+                  </div>
+                </td>
+                <td data-label="Documento">
+                  <%= user.nro_document %>
+                </td>
+                <td data-label="Empresa">
+                  <%= user.entity %>
+                </td>
+                <td data-label="Intentos">
+                  <span class="badge rounded-pill text-bg-danger">
+                    <%= user.login_attempt&.failed_attempts || 0 %>
+                  </span>
+                </td>
+                <td data-label="Acción">
+                    <%= button_to desbloquear_usuario_path(user), method: :patch, class: "btn btn-sm btn-outline-success", data: { turbo_confirm: "¿Está seguro de desbloquear este usuario?" } do %>
+                        <i class="bi bi-unlock"></i>
+                        Desbloquear
+                    <% end %>
+                </td>                
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div class="conesst-empty-state">
+        <i class="bi bi-shield-check"></i>
+        <h5>No hay usuarios bloqueados</h5>
+        <p>Actualmente no existen usuarios bloqueados para tu empresa.</p>
+      </div>
+    <% end %>
+  </div>
+</div>

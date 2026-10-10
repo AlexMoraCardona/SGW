@@ -1,5 +1,8 @@
 class User < ApplicationRecord
     has_secure_password
+    has_one :login_attempt
+    has_many :login_audits
+    has_many :login_sessions
     has_many :meeting_minutes
     has_one_attached :avatar
     has_one_attached :firm

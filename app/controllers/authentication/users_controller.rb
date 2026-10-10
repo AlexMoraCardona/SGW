@@ -1,4 +1,5 @@
 class Authentication::UsersController < ApplicationController
+    before_action :check_registration_access, only: [:new]
     skip_before_action :protect_pages 
 
     def index
@@ -13,22 +14,44 @@ class Authentication::UsersController < ApplicationController
 
         end    
     end    
- 
-    
+     
     def new
-        @user = User.new 
+        @user = User.new
+        session[:registration_form_access] = true
     end
 
     def create
+        unless session.delete(:registration_form_access)
+            render plain: "Acceso no autorizado al formulario de registro.", status: :forbidden
+            return
+        end        
+        
+        turnstile_token = params["cf-turnstile-response"]
+
+        unless CloudflareTurnstileVerifier.verify(
+            turnstile_token,
+            request.remote_ip
+        )
+            @user = User.new(user_params)
+            @user.errors.add(
+                :base,
+                "Por favor completa correctamente la verificación de seguridad."
+            )
+
+            render :new, status: :unprocessable_entity
+            return
+        end
+
         @user = User.new(user_params)
-        if @user.save 
-            session[:user_id] = @user.id  
+
+        if @user.save
+            session[:user_id] = @user.id
             session.delete(:user_id)
             redirect_to levels_path, notice: 'Usuario creado correctamente'
         else
             render :new, status: :unprocessable_entity
-        end     
-    end   
+        end
+    end
     
     def edit
         if  Current.user.present?
@@ -134,8 +157,51 @@ class Authentication::UsersController < ApplicationController
         @user = User.find(params[:id])
     end    
     
+    def bloqueados
+        if Current.user.present? && (Current.user.level == 1 || Current.user.level == 2)
+            @users = User.where(state: 0, entity: Current.user.entity).order(name: :asc)
+        else
+            redirect_to new_session_path, alert: t('common.not_logged_in') 
+            session.delete(:user_id)
+        end
+    end  
+    
+    def historial_sesiones
+        if Current.user.present? && (Current.user.level == 1 || Current.user.level == 2)
+            @users = User.where(entity: Current.user.entity).order(name: :asc)
+
+            @q = LoginSession.joins(:user).where(users: { entity: Current.user.entity }).ransack(params[:q])
+            @login_sessions = @q.result.includes(:user).order(started_at: :desc)
+        else
+            redirect_to new_session_path, alert: t('common.not_logged_in')
+            session.delete(:user_id)
+        end
+    end
+
+    def desbloquear
+        if Current.user.present? && (Current.user.level == 1 || Current.user.level == 2)
+            @user = User.find(params[:id])
+
+            if @user.entity.to_i == Current.user.entity.to_i && @user.state.to_i == 0
+                @user.update!(state: 1)
+                @user.login_attempt&.reset_attempts
+                redirect_to usuarios_bloqueados_path, notice: "Usuario desbloqueado correctamente."
+            else
+                redirect_to usuarios_bloqueados_path, alert: "No tienes autorización para desbloquear este usuario."
+            end
+        else
+            redirect_to new_session_path, alert: t('common.not_logged_in')
+            session.delete(:user_id)
+        end
+    end
 
     private
+    def check_registration_access
+        unless RegistrationAccess.allow_access?(request.remote_ip)
+            render plain: 'Has alcanzado el límite de accesos al formulario de registro. Intenta nuevamente después de 24 horas.', status: :too_many_requests
+        end
+    end    
+
     def user_params
         params.require(:user).permit(:nro_document, :name, :username, :email, :password, :state, :level, :entity, :activity, :avatar, :firm, :document_id, 
         :legal_representative, :copasst, :ccl, :collaborator, :president_copasst, :secretary_copasst, :vigia_sgsst, 

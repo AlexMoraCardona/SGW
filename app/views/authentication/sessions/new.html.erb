@@ -765,7 +765,7 @@
     }
 </style>
 
-
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <div class="conesst-page">
     <!-- =====================================================
          ENCABEZADO
@@ -782,7 +782,7 @@
                 <!-- BOTONERA -->
                 <div class="col-12 col-md-5">
                     <div class="top-actions">
-                        <a href="/sessions/cambioclave/path" class="top-action" data-bs-toggle="tooltip" title="Cambiar contraseña">
+                        <a href="/sessions/cambioclave/path" class="top-action" data-turbo="false" data-bs-toggle="tooltip" title="Cambiar contraseña">
                             <i class="bi bi-key fs-5"></i>
                             <span>Clave</span>
                         </a>
@@ -795,6 +795,7 @@
                 <!-- LOGIN -->
                 <div class="col-12 col-md-4">
                     <div class="login-card">
+
                         <%= form_with(url: sessions_path) do |form| %>
                             <div class="row g-2">
                                 <div class="col-12 col-sm-5">
@@ -804,13 +805,16 @@
                                     <%= form.password_field :password, class: "form-control form-control-sm", required: true, placeholder: "Clave", autocomplete: "current-password" %>
                                 </div>
                                 <div class="col-12 col-sm-2">
-                                    <button type="submit" class="btn btn-light btn-sm btn-login">
+                                    <button type="submit" class="btn btn-light btn-sm btn-login" data-bs-toggle="tooltip" title="Ingresar">
                                         <i class="bi bi-box-arrow-in-right"></i>
-                                        <span>Ingresar</span>
                                     </button>
                                 </div>
+                                <div class="col-12 d-flex justify-content-center mt-2">
+                                    <div class="cf-turnstile" data-sitekey="<%= Rails.application.credentials.dig(:cloudflare_turnstile, :login_site_key) %>"></div>
+                                </div>
                             </div>
-                        <% end %>
+                        <% end %>                    
+
                     </div>
                 </div>
             </div>

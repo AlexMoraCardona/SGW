@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_09_28_191703) do
+ActiveRecord::Schema[7.0].define(version: 2026_10_10_002118) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -146,6 +146,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_28_191703) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["entity_id"], name: "index_adm_votes_on_entity_id"
   end
 
@@ -1446,6 +1448,8 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_28_191703) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
+    t.integer "version", default: 0
+    t.string "code"
     t.index ["entity_id"], name: "index_internal_reports_on_entity_id"
   end
 
@@ -1677,6 +1681,34 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_28_191703) do
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
     t.index ["entity_id"], name: "index_locations_on_entity_id"
+  end
+
+  create_table "login_attempts", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "failed_attempts", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_login_attempts_on_user_id"
+  end
+
+  create_table "login_audits", force: :cascade do |t|
+    t.bigint "user_id"
+    t.boolean "success", default: false, null: false
+    t.string "ip_address"
+    t.string "reason"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_login_audits_on_user_id"
+  end
+
+  create_table "login_sessions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.datetime "started_at", null: false
+    t.datetime "ended_at"
+    t.string "ip_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_login_sessions_on_user_id"
   end
 
   create_table "matrix_action_items", force: :cascade do |t|
@@ -2174,6 +2206,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_28_191703) do
     t.string "phone"
     t.integer "brigade_position", default: 0
     t.integer "brigade_personnel", default: 0
+    t.integer "secretary_ccl", default: 0
     t.index ["evidence_id"], name: "index_participants_on_evidence_id"
     t.index ["user_id"], name: "index_participants_on_user_id"
   end
@@ -2303,6 +2336,15 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_28_191703) do
     t.datetime "updated_at", null: false
     t.bigint "entity_id"
     t.index ["entity_id"], name: "index_provides_protections_on_entity_id"
+  end
+
+  create_table "registration_accesses", force: :cascade do |t|
+    t.string "ip_address", null: false
+    t.integer "access_count", default: 0, null: false
+    t.datetime "window_started_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ip_address"], name: "index_registration_accesses_on_ip_address", unique: true
   end
 
   create_table "report_officials", force: :cascade do |t|
@@ -2934,6 +2976,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_28_191703) do
     t.text "conservation_time"
     t.text "ubication_document"
     t.text "medium_storage"
+    t.integer "participant_secretary", default: 0
     t.index ["standar_detail_item_id"], name: "index_templates_on_standar_detail_item_id"
   end
 
@@ -3259,6 +3302,9 @@ ActiveRecord::Schema[7.0].define(version: 2026_09_28_191703) do
   add_foreign_key "lists", "check_lists"
   add_foreign_key "lists", "entities"
   add_foreign_key "locations", "entities"
+  add_foreign_key "login_attempts", "users"
+  add_foreign_key "login_audits", "users"
+  add_foreign_key "login_sessions", "users"
   add_foreign_key "matrix_action_items", "matrix_corrective_actions"
   add_foreign_key "matrix_conditions", "entities"
   add_foreign_key "matrix_corrective_actions", "entities"

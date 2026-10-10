@@ -84,11 +84,11 @@ class EvaluationRuleDetailsController < ApplicationController
             @cargo_colaborador = participant.post_copasst if participant.collaborator == 1 && participant.person_complaining == 0
             @presidente_comite = User.find(participant.user_id) if participant.joint_committee_president == 1 
             @secretario_comite = User.find(participant.user_id) if participant.joint_committee_secretary == 1 
+            @secretario_comite_ccl = User.find(participant.user_id) if participant.secretary_ccl == 1 
             @vigia = User.find(participant.user_id) if participant.vigia == 1 
             @colaborador_queja = User.find(participant.user_id) if participant.person_complaining == 1 
             @usuario_inf = User.find(participant.user_id) if @template.format_number == 116
         end   
-               
         @vista = 'evaluation_rule_details/plantillas/' + @evidence.template_id.to_s 
         @footer = 'Nit: ' + @evidence.entity.identification_number.to_s + ', Dirección: ' + @evidence.entity.entity_address.to_s
         nombre_evidencia = @template.reference.to_s + '.pdf'

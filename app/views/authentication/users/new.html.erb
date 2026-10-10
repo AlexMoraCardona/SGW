@@ -1,57 +1,146 @@
-<body>
-    <div style="background-color: #0090e4;border-top-right-radius: 20px;border-bottom-right-radius: 20px;border-top-left-radius: 20px;border-bottom-left-radius: 20px;", class="container col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5 text-white">
-        <br>
-        <h2>Crear Usuario</h2>
-        <%= form_with model: @user do |form| %>
+<div class="conesst-page">
+  <div class="conesst-card conesst-user-card">
+    <div class="conesst-header">
+      <div class="conesst-header-content">
+        <div class="conesst-header-icon conesst-user-icon">
+          <i class="bi bi-person-plus-fill"></i>
+        </div>
+        <div>
+          <h2 class="conesst-title">
+            Crear Usuario
+          </h2>
+          <p class="conesst-subtitle">
+            Completa la información para crear tu cuenta.
+          </p>
+        </div>
+      </div>
+      <%= link_to root_path,
+          class: "conesst-icon-button conesst-back-button",
+          title: "Ingresar",
+          data: {
+            bs_toggle: "tooltip",
+            bs_placement: "top",
+            turbo: false
+          } do %>
+
+        <i class="bi bi-box-arrow-left"></i>
+      <% end %>
+    </div>
+    <div class="conesst-card-body">
+      <%= form_with model: @user, local: true, data: { turbo: false } do |form| %>
+        <% if @user.errors.any? %>
+          <div class="alert alert-danger conesst-form-alert" role="alert">
             <% @user.errors.full_messages.each do |error| %>
-                <div class="alert alert-danger" role="alert">
-                    <%= error%> <%= alert %>
-                </div>
+              <div>
+                <i class="bi bi-exclamation-triangle me-1"></i>
+                <%= error %>
+              </div>
             <% end %>
-
-            <div class="form-group">    
-                <%= form.label :nro_document,  style: "display: block" %>
-                <%= form.text_field :nro_document,  class: "form-control", required: true %>
-            </div>
-            <div class="form-group">    
-                <%= form.label :name,  style: "display: block" %>
-                <%= form.text_field :name,  class: "form-control", required: true %>
-            </div>
-            <div class="form-group">    
-                <%= form.label :username,  style: "display: block" %>
-                 <%= form.text_field :username,  class: "form-control", required: true %>
-            </div>
-            <div class="form-group">    
-                <%= form.label :email,  style: "display: block" %>
-                 <%= form.email_field :email,  class: "form-control", required: true %>
-            </div>
-            <div class="form-group">    
-                <%= form.label :password,  style: "display: block" %>
-                <%= form.password_field :password,  class: "form-control", required: true %>
-            </div>
-            <br>
-            <p>Al hacer uso de esta aplicación web estás aceptando las políticas de privacidad y tratamiento de datos personales; la cual puedes consultar en: <a href="https://www.conesst.com/users/politicas/1" class="link-light">Política de privacidad aquí</a></br>
-            ¿Si estás de acuerdo selecciona la siguiente casilla? <input id="myCheckbox" type="checkbox" />
-            <script> 
-                const checkbox = document.getElementById('myCheckbox')
-
-                checkbox.addEventListener('change', (event) => {
-                if (event.currentTarget.checked) {
-                   $('#submitButton').attr('disabled', false);
-                } else {
-                    $('#submitButton').attr('disabled', true);
-                }
-                })
-            </script>
-            </p>
-
-            <%= form.hidden_field :document_id, :value => 1, class: "form-control" %>
-            <%= form.hidden_field :authorization_date, :value => Time.now, class: "form-control" %>
-            <%= form.hidden_field :authorization_police, :value => 1, class: "form-control" %>
-            <div>
-            <%= form.submit value= t('common.submitlog'), id: "submitButton", disabled: true  %>     
-            <br>
+          </div>
         <% end %>
-    </div> 
-</body>
-<div></br></div>
+        <div class="mb-3">
+          <%= form.label :nro_document, "Documento",  class: "form-label" %>
+          <%= form.text_field :nro_document,
+              class: "form-control",
+              required: true,
+              autocomplete: "off",
+              inputmode: "numeric",
+              placeholder: "Número de documento" %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :name, "Nombre completo", class: "form-label" %>
+          <%= form.text_field :name,
+              class: "form-control",
+              required: true,
+              autocomplete: "name",
+              placeholder: "Nombre completo" %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :username, "Usuario", class: "form-label" %>
+          <%= form.text_field :username,
+              class: "form-control",
+              required: true,
+              autocomplete: "username",
+              placeholder: "Usuario" %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :email, "Correo electrónico", class: "form-label" %>
+          <%= form.email_field :email,
+              class: "form-control",
+              required: true,
+              autocomplete: "email",
+              placeholder: "Correo electrónico" %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :password, "Contraseña", class: "form-label" %>
+          <%= form.password_field :password,
+              class: "form-control",
+              required: true,
+              autocomplete: "new-password",
+              placeholder: "Contraseña" %>
+        </div>
+        <div class="conesst-turnstile-wrapper">
+          <div class="cf-turnstile"
+               data-sitekey="<%= Rails.application.credentials.dig(
+                 :cloudflare_turnstile,
+                 :site_key
+               ) %>"
+               data-theme="light">
+          </div>
+        </div>
+        <div class="conesst-privacy-box">
+          <p class="conesst-privacy-text">
+            Al hacer uso de esta aplicación web estás aceptando las
+            políticas de privacidad y tratamiento de datos personales.
+            Puedes consultar la información completa en:
+
+            <%= link_to "Política de privacidad",
+                "https://www.conesst.com/users/politicas/1",
+                target: "_blank",
+                rel: "noopener noreferrer",
+                class: "conesst-privacy-link" %>.
+          </p>
+          <div class="conesst-authorization">
+            <input id="myCheckbox"
+                   type="checkbox"
+                   class="form-check-input">
+            <label for="myCheckbox">
+              Acepto las políticas de privacidad y tratamiento
+              de datos personales.
+            </label>
+          </div>
+        </div>
+        <%= form.hidden_field :document_id, value: 1 %>
+        <%= form.hidden_field :authorization_date, value: Time.now %>
+        <%= form.hidden_field :authorization_police, value: 1 %>
+        <div class="conesst-actions">
+          <%= form.submit t('common.submitlog'), id: "submitButton", disabled: true, class: "btn conesst-btn-primary" %>
+          <%= link_to root_path, class: "btn conesst-btn-secondary", data: { turbo: false } do %>
+            <i class="bi bi-arrow-left me-1"></i>
+            Cancelar
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        async
+        defer></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+
+    const checkbox = document.getElementById("myCheckbox");
+    const submitButton = document.getElementById("submitButton");
+
+    if (!checkbox || !submitButton) {
+      return;
+    }
+
+    checkbox.addEventListener("change", function () {
+      submitButton.disabled = !this.checked;
+    });
+
+  });
+</script>

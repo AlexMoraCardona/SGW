@@ -1,0 +1,117 @@
+<div class="conesst-page">
+  <div class="conesst-header">
+    <div class="conesst-header-icon">
+            <%= link_to root_path, class: "btn btn-secondary" do %>
+                <i class="bi bi-house-door-fill"></i>
+                Inicio
+            <% end %>
+
+    </div>
+    <div>
+      <h1>Historial de sesiones</h1>
+      <p> 
+        Consulta los ingresos y tiempos de permanencia de los usuarios de tu empresa.
+      </p>
+      
+      
+
+    </div>
+  </div>
+  <div class="conesst-card">
+    <div class="mb-3">
+      <%= search_form_for @q, url: historial_sesiones_path, method: :get, html: { class: "row g-2 align-items-end" } do |form| %>
+        <div class="col-12 col-md-4">
+        <%= form.label :user_id_eq, "Usuario", class: "form-label fw-semibold" %>
+        <%= form.collection_select :user_id_eq, @users, :id, :name, { include_blank: "Todos los usuarios" }, { class: "form-select" } %>
+        </div>
+        <div class="col-12 col-md-3">
+        <%= form.label :started_at_gteq, "Fecha inicial", class: "form-label fw-semibold" %>
+        <%= form.date_field :started_at_gteq, class: "form-control" %>
+        </div>
+        <div class="col-12 col-md-3">
+        <%= form.label :started_at_lteq, "Fecha final", class: "form-label fw-semibold" %>
+        <%= form.date_field :started_at_lteq, class: "form-control" %>
+        </div>
+        <div class="col-12 col-md-2 d-flex gap-2">
+        <%= form.submit "Consultar", class: "btn btn-primary flex-grow-1" %>
+        <%= link_to "Limpiar", historial_sesiones_path, class: "btn btn-outline-secondary" %>
+        </div>
+      <% end %>
+    </div>
+    <% if @login_sessions.any? %>
+      <div class="table-responsive">
+        <table class="table conesst-table align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Fecha</th>
+              <th>Hora ingreso</th>
+              <th>Hora salida</th>
+              <th>Duración</th>
+              <th>IP</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @login_sessions.each do |login_session| %>
+              <tr>
+                <td data-label="Usuario">
+                  <strong>
+                    <%= login_session.user.name %>
+                  </strong>
+                  <div class="small text-muted">
+                    <%= login_session.user.username %>
+                  </div>
+                </td>
+                <td data-label="Fecha">
+                  <%= login_session.started_at.strftime("%Y-%m-%d") %>
+                </td>
+                <td data-label="Hora ingreso">
+                  <span class="conesst-status-badge">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    <%= login_session.started_at.strftime("%I:%M:%S %p") %>
+                  </span>
+                </td>
+                <td data-label="Hora salida">
+                  <% if login_session.ended_at.present? %>
+                    <span class="conesst-status-badge">
+                      <i class="bi bi-box-arrow-right"></i>
+                      <%= login_session.ended_at.strftime("%I:%M:%S %p") %>
+                    </span>
+                  <% else %>
+                    <span class="badge rounded-pill text-bg-success">
+                      Sesión activa
+                    </span>
+                  <% end %>
+                </td>
+                <td data-label="Duración">
+                  <% if login_session.duration_minutes.present? %>
+                    <span class="badge rounded-pill text-bg-primary">
+                      <%= login_session.duration_minutes %> min
+                    </span>
+                  <% else %>
+                    <span class="text-muted">
+                      En curso
+                    </span>
+                  <% end %>
+                </td>
+                <td data-label="IP">
+                  <span class="small text-muted">
+                    <%= login_session.ip_address %>
+                  </span>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <div class="conesst-empty-state">
+        <i class="bi bi-clock-history"></i>
+        <h5>No hay sesiones registradas</h5>
+        <p>
+          Actualmente no existen sesiones registradas para los usuarios de tu empresa.
+        </p>
+      </div>
+    <% end %>
+  </div>
+</div>

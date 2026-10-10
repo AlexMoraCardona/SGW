@@ -38,7 +38,18 @@ class Participant < ApplicationRecord
             user_representante_legal = User.find_by("entity = ? and legal_representative = ?", evidence.entity_id.to_i, 1) 
             user_asesor_externo = User.find(entidad.external_consultant.to_i) if entidad.present? && entidad.external_consultant.to_i > 0 
             user_vigia = User.find_by("entity = ? and vigia_sgsst = ?", evidence.entity_id.to_i, 1) 
+            user_secretary_ccl = User.find_by("entity = ? and ccl = ? and cargo_rol = ?", evidence.entity_id.to_i, 1, "Secretario(a) CCL") 
 
+
+
+            if template.present? && user_secretary_ccl.present? && template.participant_secretary == 1  then
+                participante_nuevo  = Participant.new
+                participante_nuevo.user_id = user_secretary_ccl.id
+                participante_nuevo.evidence_id = evidence.id
+                participante_nuevo.post_copasst = 'Secretario(a) CCL'  
+                participante_nuevo.secretary_ccl = 1
+                participante_nuevo.save
+            end   
 
 
             if template.present? && user_vigia.present? && template.participant_vigia == 1  then

@@ -1,6 +1,5 @@
 <%= javascript_include_tag "https://www.google.com/jsapi" %>
 <%= wicked_pdf_javascript_include_tag "chartkick" %>
-<%= wicked_pdf_javascript_include_tag "application", "chartkick" %>
 
 
 <%= render 'shared/header' %>
@@ -1687,6 +1686,17 @@
                         <i class="bi bi-people"></i>
                         Usuarios
                     </a>
+
+                    <% if Current.user.level == 1 || Current.user.level == 2 %>
+                        <a href="/users/bloqueados">
+                             <i class="bi bi-person-lock"></i>
+                            Usuarios bloqueados
+                        </a>
+                        <a href="/users/historial_sesiones">
+                            <i class="bi bi-clock-history"></i>
+                            Historial de sesiones
+                        </a>
+                    <% end %>
 
                     <% if Current.user.level == 2 || Current.user.level == 3 %>
 

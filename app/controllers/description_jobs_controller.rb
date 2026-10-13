@@ -16,6 +16,7 @@ class DescriptionJobsController < ApplicationController
 
     def new
       @description_job = DescriptionJob.new  
+      @entity =  Current.user.entity.to_i if Current.user.present?
       @protection_elements = ProtectionElement.where("(entity = ? or entity = ?) and state_protection = ?",6,Current.user.entity,1)
       @company_areas = CompanyArea.where("entity_id = ?",Current.user.entity.to_i) if Current.user.entity.present?
     end    

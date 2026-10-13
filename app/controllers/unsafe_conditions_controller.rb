@@ -23,6 +23,8 @@ class UnsafeConditionsController < ApplicationController
       @unsafe_condition = UnsafeCondition.new 
       @entity = Entity.find(params[:entity_id].to_i) if params[:entity_id].present? 
       @asesor_recibe = User.find(@entity.responsible_sst) if @entity.responsible_sst > 0 
+      @template = Template.where("reference = ? and document_vigente = ?",'RACI-SST',1).last  
+
     end    
 
     def create
@@ -72,11 +74,15 @@ class UnsafeConditionsController < ApplicationController
     end    
 
     def show
-        @template = Template.where("format_number = ? and document_vigente = ?",64,1).last  
         @unsafe_condition = UnsafeCondition.find(params[:id])
         @reporta = User.find(@unsafe_condition.user_reports) if  @unsafe_condition.user_reports.present? && @unsafe_condition.user_reports > 0
         @recibe = User.find(@unsafe_condition.user_receiving) if  @unsafe_condition.user_receiving.present? && @unsafe_condition.user_receiving > 0
         @coordinador = User.find(@unsafe_condition.user_coordinator) if  @unsafe_condition.user_coordinator.present? && @unsafe_condition.user_coordinator > 0
+        @entity = Entity.find(@unsafe_condition.entity_id) if @unsafe_condition.present?
+        @template = Template.where("reference = ? and version = ?",@unsafe_condition.code,@unsafe_condition.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+
+
         respond_to do |format|
             format.html
             format.xlsx{ 
@@ -113,23 +119,29 @@ class UnsafeConditionsController < ApplicationController
     end     
     
     def unsafe_condition_pdf
-        @template = Template.where("format_number = ? and document_vigente = ?",64,1).last  
         @unsafe_condition = UnsafeCondition.find(params[:id])
         @reporta = User.find(@unsafe_condition.user_reports) if  @unsafe_condition.user_reports.present? && @unsafe_condition.user_reports > 0
         @recibe = User.find(@unsafe_condition.user_receiving) if  @unsafe_condition.user_receiving.present? && @unsafe_condition.user_receiving > 0
         @coordinador = User.find(@unsafe_condition.user_coordinator) if  @unsafe_condition.user_coordinator.present? && @unsafe_condition.user_coordinator > 0
+        @entity = Entity.find(@unsafe_condition.entity_id) if @unsafe_condition.present?
+        @template = Template.where("reference = ? and version = ?",@unsafe_condition.code,@unsafe_condition.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'unsafe_condition_pdf',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('unsafe_condition_pdf'),
+                    disable_javascript: true,
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
+                    page_size: 'letter',
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+            }
+        end    
       
     end    
 
@@ -145,7 +157,7 @@ class UnsafeConditionsController < ApplicationController
         :psychoactive_substances, :ignore_dangerous, :use_wrong_tool, :wrong_position, :heights_without_authorization, 
         :workplace_distractions, :gen_on_desk, :other_features, :alternative_soluctions, :user_receiving, 
         :user_coordinator, :date_firm_user_reports, :date_firm_user_receiving, :date_firm_user_coordinator, 
-        :firm_user_reports, :firm_user_receiving, :firm_user_coordinator, :entity_id, :exact_ubication, evidencias: [])
+        :firm_user_reports, :firm_user_receiving, :firm_user_coordinator, :entity_id, :version, :code, :exact_ubication, evidencias: [])
     end 
 
 end  

@@ -1,56 +1,144 @@
-<div align="left"; class="container col-12">
-    <a class="navbar-brand" href="/">
-        <%= image_tag 'LogoConesst202305232.png',:width => "100",  :height=>"100" %>
-    </a>
-</div>
-
-<div class="container col-11">
-        <div class="d-flex">
-            <div class="container">
-               <h2 class="display-5"> <%= t('.title')%></h2>
-            </div> 
+<div class="conesst-page container-fluid" style="width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box;">
+  <div class="conesst-logo-container">
+    <%= link_to root_path, class: "navbar-brand", aria: { label: "Inicio CONESST" } do %>
+      <%= image_tag "LogoConesst202305232.png", class: "conesst-logo", alt: "Logo CONESST", style: "width: 85px; height: 85px; object-fit: contain;" %>
+    <% end %>
+  </div>
+  <div class="conesst-header d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+    <div>
+      <h2 class="conesst-title mb-1">
+        <i class="bi bi-people-fill me-2"></i>
+        <%= t(".title") %>
+      </h2>
+      <p class="conesst-subtitle mb-0">
+        Consulta y administra los usuarios registrados en CONESST.
+      </p>
+    </div>
+  </div>
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
+        <div class="conesst-card-header-title">
+          <h5 class="mb-0">
+            <i class="bi bi-funnel me-2"></i>
+            Filtros de búsqueda
+          </h5>
         </div>
-        <hr>
-        </br>
-        <%= search_form_for @q do |f| %> 
-            <%= f.label :entity_eq %>
-            <%= f.select :entity_eq, Entity.pluck(:business_name, :id).uniq,  {include_blank: true}, style: "width: 200px;" %>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <%= search_form_for @q, html: { class: "row g-3 align-items-end" } do |f| %>
+        <div class="col-12 col-md-6 col-lg-4">
+          <%= f.label :entity_eq, class: "form-label fw-semibold" do %>
+            <i class="bi bi-building me-1"></i>
+            Empresa
+          <% end %>
+          <%= f.select :entity_eq, Entity.order(:business_name).pluck(:business_name, :id).uniq, { include_blank: "Todas las empresas" }, class: "form-select w-100" %>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <%= f.label :nro_document_cont, class: "form-label fw-semibold" do %>
+            <i class="bi bi-card-text me-1"></i>
+            Número de documento
+          <% end %>
+          <%= f.number_field :nro_document_cont, class: "form-control", placeholder: "Número de documento" %>
+        </div>
 
-            &nbsp;&nbsp;<%= f.label :nro_document_cont %>
-            <%= f.number_field :nro_document_cont %>
-            </br>
-            <%= f.label :name_cont %> 
-            <%= f.search_field :name_cont %>
-            &nbsp;&nbsp;
-            <button type="submit" class="btn btn-sm btn-primary">Buscar</button>
-        <% end %>
+        <div class="col-12 col-md-8 col-lg-3">
+          <%= f.label :name_cont, class: "form-label fw-semibold" do %>
+            <i class="bi bi-person me-1"></i>
+            Nombre del usuario
+          <% end %>
+          <%= f.search_field :name_cont, class: "form-control", placeholder: "Buscar por nombre" %>
+        </div>
 
-        <%== pagy_info(@pagy) %>
-        <%== pagy_bootstrap_combo_nav_js(@pagy) %>
-        </br>         
-    <table class="table table-hover">
-        <thead>
+        <div class="col-12 col-md-4 col-lg-2">
+          <div class="d-flex flex-column flex-sm-row gap-2">
+            <%= f.submit "Buscar", class: "btn conesst-btn conesst-btn-primary w-100" %>
+            <%= link_to request.path, class: "btn conesst-btn btn-outline-secondary w-100" do %>
+              <i class="bi bi-eraser me-1"></i>
+              Limpiar
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="d-flex flex-column flex-md-row
+              justify-content-between align-items-md-center gap-2 mb-3">
+
+    <div class="small text-muted">
+      <i class="bi bi-info-circle me-1"></i>
+      <%== pagy_info(@pagy) %>
+    </div>
+
+    <div class="conesst-pagination">
+      <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+    </div>
+
+  </div>
+
+
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+        <div class="conesst-card-header-title">
+          <h5 class="mb-0">
+            <i class="bi bi-list-ul me-2"></i>
+            Usuarios registrados
+          </h5>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body p-0">
+      <div class="conesst-table-wrapper" style="display: block; width: 100%;  max-width: 100%; min-width: 0;  overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch;">
+        <table class="table table-hover conesst-table align-middle mb-0" style="min-width: 1050px;">
+          <thead>
             <tr>
-                <th scope="col"><%= t('.avatar') %></th> 
-                <th scope="col"><%= sort_link(@q, :entity, default_order: :desc) %></th>
-                <th scope="col"><%= sort_link(@q, :nro_document, default_order: :desc) %></th>
-                <th scope="col"><%= sort_link(@q, :name, default_order: :desc) %></th>
-                <th scope="col"><%= t('.username') %></th>
-                <th scope="col"><%= t('.area_employee') %></th>
-                <th scope="col"><%= t('.activity') %></th>
-                <th scope="col"><%= t('.state') %></th>
-                <th scope="col"><%= t('.level') %></th>
-                <th scope="col"><%= t('common.edit') %></th>
+              <th scope="col">
+                <%= t(".avatar") %>
+              </th>
+              <th scope="col">
+                <%= sort_link(@q, :entity, default_order: :desc) %>
+              </th>
+              <th scope="col">
+                <%= sort_link(@q, :nro_document, default_order: :desc) %>
+              </th>
+              <th scope="col">
+                <%= sort_link(@q, :name, default_order: :desc) %>
+              </th>
+              <th scope="col">
+                <%= t(".username") %>
+              </th>
+              <th scope="col">
+                <%= t(".area_employee") %>
+              </th>
+              <th scope="col">
+                <%= t(".activity") %>
+              </th>
+              <th scope="col">
+                <%= t(".state") %>
+              </th>
+              <th scope="col">
+                <%= t(".level") %>
+              </th>
+              <th scope="col" class="text-center">
+                <%= t("common.edit") %>
+              </th>
             </tr>
-        </thead>
-        <tbody>
-            <%= render partial: 'user', collection: @users  %>  
-        </tbody>      
-    </table>
-    </br>        
-    <%== pagy_info(@pagy) %>
-    <%== pagy_bootstrap_combo_nav_js(@pagy) %>
-    </br>     
+          </thead>
+          <tbody>
+            <%= render partial: "user", collection: @users %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mt-3 mb-4">
+    <div class="small text-muted">
+      <%== pagy_info(@pagy) %>
+    </div>
+    <div class="conesst-pagination">
+      <%== pagy_bootstrap_combo_nav_js(@pagy) %>
+    </div>
+  </div>
 </div>
-
-

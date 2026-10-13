@@ -1,13 +1,13 @@
-<div class="conesst-page">
+<div class="conesst-page" style="width: 100%; max-width: 100%; box-sizing: border-box; overflow-x: hidden;">
   <div class="conesst-logo-container">
     <%= link_to root_path, class: "d-inline-block" do %>
       <%= image_tag "LogoConesst202305232.png", class: "conesst-logo", alt: "CONESST" %>
     <% end %>
   </div>
-  <div class="conesst-card mb-4">
+  <div class="conesst-card mb-4" style="width: 100%; max-width: 100%; min-width: 0;">
     <div class="conesst-card-header">
       <div class="conesst-card-header-content">
-        <div>
+        <div style="min-width: 0;">
           <h2 class="conesst-card-header-title">
             <i class="bi bi-clipboard-check me-2"></i>
             Configuración Listas de Chequeo
@@ -18,12 +18,12 @@
         </div>
       </div>
     </div>
-    <div class="conesst-card-body">
+    <div class="conesst-card-body" style="width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box;">
       <div class="conesst-actions mt-0 mb-3">
         <%= link_to t('common.create_check_list'), new_check_list_path, class: "conesst-btn conesst-btn-primary" %>
       </div>
-      <div class="conesst-table-wrapper">
-        <table class="conesst-table">
+      <div class="conesst-table-wrapper" style="display: block; width: 100%; max-width: 100%; min-width: 0; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch;">
+        <table class="conesst-table" style="margin: 0;">
           <thead>
             <tr>
               <th><%= t('.id') %></th>
@@ -40,10 +40,10 @@
       </div>
     </div>
   </div>
-  <div class="conesst-card">
+  <div class="conesst-card" style="width: 100%; max-width: 100%; min-width: 0;">
     <div class="conesst-card-header">
       <div class="conesst-card-header-content">
-        <div>
+        <div style="min-width: 0;">
           <h2 class="conesst-card-header-title">
             <i class="bi bi-list-check me-2"></i>
             Listas de Chequeo
@@ -54,12 +54,12 @@
         </div>
       </div>
     </div>
-    <div class="conesst-card-body">
+    <div class="conesst-card-body" style="width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box;">
       <div class="conesst-actions mt-0 mb-3">
         <%= link_to "Crear lista", new_list_path, class: "conesst-btn conesst-btn-primary" %>
       </div>
-      <div class="conesst-table-wrapper">
-        <table class="conesst-table">
+      <div class="conesst-table-wrapper" style="display: block; width: 100%; max-width: 100%; min-width: 0; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch;">
+        <table class="conesst-table" style="margin: 0;">
           <thead>
             <tr>
               <th>Nro</th>
@@ -72,7 +72,16 @@
             </tr>
           </thead>
           <tbody>
-            <%= render partial: 'list', collection: @lists if @lists.present? %>
+            <% if @lists.present? %>
+              <%= render partial: 'list', collection: @lists %>
+            <% else %>
+              <tr>
+                <td colspan="7" class="text-center py-4">
+                  <i class="bi bi-inbox fs-4 d-block mb-2"></i>
+                  No hay listas de chequeo registradas.
+                </td>
+              </tr>
+            <% end %>
           </tbody>
         </table>
       </div>

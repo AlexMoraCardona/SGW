@@ -1,264 +1,448 @@
-<div class="container col-11">
-    <br>
-
-    <%= form_with model: @user do |form| %>
-        <% @user.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %>
-
-        <div class="form-group">    
-            <%= form.label :document_id,  style: "display: block" %>
-            <%= form.collection_select :document_id, Document.all.order(id: :asc), :id, :document_type %>
-        </div> 
-        
-        <div class="form-group">    
-            <%= form.label :nro_document, style: "display: block" %>
-            <%= form.text_field :nro_document,  class: "form-control" %>
-        </div>
-        <div class="form-group">    
-            <%= form.label :name, style: "display: block" %>
-            <%= form.text_field :name,  class: "form-control" %>
-        </div>
-        <div class="form-group">    
-            <%= form.label :username, style: "display: block" %>
-            <%= form.text_field :username,  class: "form-control" %>
-        </div>
-        <div class="form-group">    
-            <%= form.label :email, style: "display: block" %>
-            <%= form.email_field :email,  class: "form-control" %>
-        </div>
-        <br>
-        <div class="row g-2">
-            <div class="col-sm-5">
-                <%= form.label :sex,  style: "display: block" %>
-                <%= form.radio_button :sex, 0 %>
-                <label for="Hombre">Hombre</label>
-                <%= form.radio_button :sex, 1 %>
-                <label for="Mujer">Mujer</label>
-            </div>
-            <div class="col-sm-5">
-                <%= form.label :date_nacimiento, style: "display: block" %>
-                <%= form.date_field :date_nacimiento,  class: "form-control" %>
-            </div>
-        </div>    
-        <br>
-        <div class="row g-2">
-            <div class="col-sm-5">
-                <%= form.label :phone, style: "display: block" %>
-                <%= form.text_field :phone,  class: "form-control" %>
-            </div>
-            <div class="col-sm-5">
-                <%= form.label :cel, style: "display: block" %>
-                <%= form.text_field :cel,  class: "form-control" %>
-            </div>
-        </div>    
-        <br>
-        <div class="row g-3">
-            <div class="col-sm-5">
-                <%= form.label :license, style: "display: block" %>
-                <%= form.text_field :license,  class: "form-control" %>
-            </div>
-            <div class="col-sm-5">
-                <%= form.label :de_license, style: "display: block" %>
-                <%= form.text_field :de_license,  class: "form-control" %>
-            </div>
-        </div>    
-        <br>
-        <div class="form-group">
-            <%= form.label :state,  style: "display: block" %>
-            <%= form.radio_button :state, 0 %>
-            <label for="Inactivo"><%= t('common.inactivo') %></label>
-            <%= form.radio_button :state, 1 %>
-            <label for="Activo"><%= t('common.activo') %></label>
-        </div>
-
-        <br>    
-        <div class="row g-2">
-            <div class="col-sm-4">
-                <%= form.label :date_entry_company , style: "display: block" %>
-                <%= form.date_field :date_entry_company,  class: "form-control" %>
-            </div>        
-            <div class="col-sm-4">
-                <%= form.label :date_retirement_company, style: "display: block" %>
-                <%= form.date_field :date_retirement_company,  class: "form-control" %>
-            </div>        
-        </div>  
-        <br>
-
-        <div class="form-group">    
-            <%= form.label :level,  style: "display: block" %>
-            <%= form.collection_select :level, Level.all.order(id: :asc), :id, :name %>
-        </div> 
-
-        <div class="form-group">    
-            <%= form.label :entity,  style: "display: block" %>
-            <%= form.collection_select :entity, Entity.all.order(id: :asc), :id, :business_name %>
-        </div> 
-
-        <div class="row g-2">
-            <div class="col-sm-4">
-                <%= form.label :activity, style: "display: block" %>
-                <%= form.collection_select :activity, @company_positions, :id, :name if @company_positions.present? %>
-            </div>
-            <div class="col-sm-4">
-                <%= form.label :area_employee, style: "display: block" %>
-                <%= form.collection_select :area_employee, @company_areas, :id, :name if @company_areas.present? %>
-            </div>
-        </div>
-        <br>    
-        <div class="form-group">
-            <%= form.label :clasification_post,  style: "display: block" %>
-            <%= form.radio_button :clasification_post, 0 %>
-            <label for="Administrativo">Administrativo</label>
-            <%= form.radio_button :clasification_post, 1 %>
-            <label for="Operativo">Operativo</label>
-        </div>
-        <br> 
-
-        <div class="row g-2">
-            <div class="col-sm-5">
-                <%= form.label :legal_representative,  style: "display: block" %>
-                <%= form.radio_button :legal_representative, 0 %>
-                <label for="Inactivo">NO</label>
-                <%= form.radio_button :legal_representative, 1 %>
-                <label for="Activo">SI</label>
-            </div>
-            <div class="col-sm-5">
-                <%= form.label :vigia_sgsst,  style: "display: block" %>
-                <%= form.radio_button :vigia_sgsst, 0 %>
-                <label for="Inactivo">NO</label>
-                <%= form.radio_button :vigia_sgsst, 1 %>
-                <label for="Activo">SI</label>
-            </div>
-        </div>        
-        <br>
-        <div class="row g-2">
-            <div class="col-sm-5">
-                <%= form.label :ccl,  style: "display: block" %>
-                <%= form.radio_button :ccl, 0 %>
-                <label for="Inactivo">NO</label>
-                <%= form.radio_button :ccl, 1 %>
-                <label for="Activo">SI</label>
-            </div>
-            <div class="col-sm-5">
-                <%= form.label :collaborator,  style: "display: block" %>
-                <%= form.radio_button :collaborator, 0 %>
-                <label for="Inactivo">NO</label>
-                <%= form.radio_button :collaborator, 1 %>
-                <label for="Activo">SI</label>
-            </div>
-        </div>        
-        <br>
-        <div class="row g-2">
-            <div class="col-sm-5">
-                <%= form.label :copasst,  style: "display: block" %>
-                <%= form.radio_button :copasst, 0 %>
-                <label for="Inactivo">NO</label>
-                <%= form.radio_button :copasst, 1 %>
-                <label for="Activo">SI</label>
-            </div>
-            <div class="col-sm-5">
-                <%= form.label :president_copasst,  style: "display: block" %>
-                <%= form.radio_button :president_copasst, 0 %>
-                <label for="Inactivo">NO</label>
-                <%= form.radio_button :president_copasst, 1 %>
-                <label for="Activo">SI</label>
-            </div>
-        </div>
-        <br>
-        <div class="row g-2">
-            <div class="col-sm-5">
-                <%= form.label :secretary_copasst,  style: "display: block" %>
-                <%= form.radio_button :secretary_copasst, 0 %>
-                <label for="Inactivo">NO</label>
-                <%= form.radio_button :secretary_copasst, 1 %>
-                <label for="Activo">SI</label>
-            </div>
-            <div class="col-sm-5">
-                <%= form.label :cargo_rol, style: "display: block" %>
-                <%= form.select(:cargo_rol, [['', ''],['Representante Legal', 'Representante Legal'], ['Responsable SG-SST', 'Responsable SG-SST'], ['Asesor externo SG-SST', 'Asesor externo SG-SST'], ['Integrante COPASST', 'Integrante COPASST'], ['Vigía SG-SST', 'Vigía SG-SST'], ['Integrante CCL', 'Integrante CCL'], ['Presidente CCL', 'Presidente CCL'], ['Secretario(a) CCL', 'Secretario(a) CCL'], ['Lider Brigada de Emergencia', 'Lider Brigada de Emergencia'], ['Colaborador', 'Colaborador'], ['Auditor Interno', 'Auditor Interno'], ['Brigada de Evacuación', 'Brigada de Evacuación'], ['Brigada de Primeros Auxilios', 'Brigada de Primeros Auxilios'], ['Brigada de Incendio', 'Brigada de Incendio'], ['Brigada de Sustancias Peligrosas', 'Brigada de Sustancias Peligrosas']]) %>
-            </div>
-        </div> 
-        <div class="row g-2">
-            <div class="col-sm-5">
-                <%= form.label :brigade,  style: "display: block" %>
-                <%= form.radio_button :brigade, 0 %>
-                <label for="Inactivo">NO</label>
-                <%= form.radio_button :brigade, 1 %>
-                <label for="Activo">SI</label>
-            </div>
-            <div class="col-sm-5">
-
-            </div>
-        </div> 
-        </br>
-        <hr>
-        <div class="d-flex">
-            <div class="container">
-               <h2 class="display-5">Autorización políticas de protección de datos</h2></br>
-               <p>Autoriza políticas de protección de datos: <%= User.label_politica(@user.authorization_police) if @user.present? %></p>
-               <p>Fecha de autorización políticas de protección de datos: <%= @user.authorization_date.strftime("%F") if  @user.authorization_date.present? %></p>
-            </div> 
-        </div>
-        <hr>
-        </br>
-        <div class="row g-2">
-            <div class="col-sm-5">
-                <%= form.label :password,  style: "display: block" %>
-                <%= form.password_field :password,  class: "form-control" %>
-            </div>
-            <div class="col-sm-5">
-                Última fecha de cambio de clave: </br><%= @user.date_change_password.strftime("%F") if @user.date_change_password.present? %>  
-
-            </div>
-        </div>
-        <br>
-
-        <div class="row g-2">
-            <div class="col-sm-5">
-                <%= form.label :avatar,  style: "display: block" %> 
-                <%= form.file_field :avatar,  class: "form-control", accept:"image/*", capture:"environment" %>
-            </div>
-            <div class="col-sm-5">
-                <% if @user.present? %>
-                    <% if @user.avatar.attached? %>
-                        <% if @user.avatar.image? %> 
-                            <%= image_tag @user.avatar, data: {previews_target: "preview"}, class: "avatar-mini" %>
-                        <% end %>
-                    <% else %> 
-                        <%= image_tag("avatar.jpg", class: "avatar-mini") %>
-                    <% end %>
-                <% end %> 
-            </div>
-        </div>            
-        <br>
-        <div class="row g-2">
-            <div class="col-sm-5">
-                <%= form.label :firm,  style: "display: block" %> 
-                <%= form.file_field :firm,  class: "form-control", accept:"image/*", capture:"environment" %>
-            </div>
-            <div class="col-sm-5">
-                <% if @user.present? %>
-                    <% if @user.firm.attached? %>
-                        <% if @user.firm.image? %> 
-                            <%= image_tag @user.firm, data: {previews_target: "preview"} %>
-                        <% end %>
-                    <% else %> 
-                        <%= image_tag("avatar.jpg", class: "avatar-mini") %>
-                    <% end %>
-                <% end %> 
-            </div>
-        </div>            
-
-        
-        <br> 
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, users_path %>
-
+<div class="conesst-page container-fluid" style="width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box;">
+  <div class="conesst-logo-container">
+    <%= link_to root_path, class: "navbar-brand", aria: { label: "Inicio CONESST" } do %>
+      <%= image_tag "LogoConesst202305232.png", class: "conesst-logo", alt: "Logo CONESST", style: "width: 85px; height: 85px; object-fit: contain;" %>
     <% end %>
-    <br> 
-</div>        
- 
-
+  </div>
+  <div class="conesst-header mb-4">
+    <h2 class="conesst-title mb-1">
+      <i class="bi bi-person-gear me-2"></i>
+      Administración de usuarios
+    </h2>
+    <p class="conesst-subtitle mb-0">
+      Registro y actualización de la información personal, laboral y de responsabilidades del usuario.
+    </p>
+  </div>
+  <%= form_with model: @user, local: true do |form| %>
+    <%# Errores de validación %>
+    <% if @user.errors.any? %>
+      <div class="alert alert-danger mb-4" role="alert">
+        <div class="fw-bold mb-2">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          No fue posible guardar el usuario.
+        </div>
+        <ul class="mb-0 ps-4">
+          <% @user.errors.full_messages.each do |error| %>
+            <li><%= error %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div class="conesst-card mb-4">
+      <div class="conesst-card-header">
+        <div class="conesst-card-header-content">
+          <div class="conesst-card-header-title">
+            <h5 class="mb-0">
+              <i class="bi bi-person-vcard me-2"></i>
+              Información personal
+            </h5>
+          </div>
+        </div>
+      </div>
+      <div class="conesst-card-body">
+        <div class="row g-3">
+          <div class="col-12 col-md-4">
+            <%= form.label :document_id, class: "form-label fw-semibold" %>
+            <%= form.collection_select :document_id, Document.order(id: :asc), :id, :document_type, {}, class: "form-select w-100" %>
+          </div>
+          <div class="col-12 col-md-4">
+            <%= form.label :nro_document, class: "form-label fw-semibold" %>
+            <%= form.text_field :nro_document, class: "form-control", autocomplete: "off" %>
+          </div>
+          <div class="col-12 col-md-4">
+            <%= form.label :name, class: "form-label fw-semibold" %>
+            <%= form.text_field :name, class: "form-control", autocomplete: "name" %>
+          </div>
+          <div class="col-12 col-md-4">
+            <%= form.label :username, class: "form-label fw-semibold" %>
+            <%= form.text_field :username, class: "form-control", autocomplete: "username" %>
+          </div>
+          <div class="col-12 col-md-8">
+            <%= form.label :email, class: "form-label fw-semibold" %>
+            <%= form.email_field :email, class: "form-control", autocomplete: "email" %>
+          </div>
+          <div class="col-12 col-md-4">
+            <%= form.label :sex, class: "form-label fw-semibold d-block" %>
+            <div class="conesst-radio-group">
+              <label class="conesst-radio-option">
+                <%= form.radio_button :sex, 0 %>
+                <span>Hombre</span>
+              </label>
+              <label class="conesst-radio-option">
+                <%= form.radio_button :sex, 1 %>
+                <span>Mujer</span>
+              </label>
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <%= form.label :date_nacimiento, class: "form-label fw-semibold" %>
+            <%= form.date_field :date_nacimiento, class: "form-control" %>
+          </div>
+          <div class="col-12 col-md-4">
+            <%= form.label :phone, class: "form-label fw-semibold" %>
+            <%= form.text_field :phone, class: "form-control", autocomplete: "tel" %>
+          </div>
+          <div class="col-12 col-md-4">
+            <%= form.label :cel, class: "form-label fw-semibold" %>
+            <%= form.text_field :cel, class: "form-control", autocomplete: "tel" %>
+          </div>
+          <div class="col-12 col-md-4">
+            <%= form.label :license, class: "form-label fw-semibold" %>
+            <%= form.text_field :license, class: "form-control" %>
+          </div>
+          <div class="col-12 col-md-4">
+            <%= form.label :de_license, class: "form-label fw-semibold" %>
+            <%= form.text_field :de_license, class: "form-control" %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card mb-4">
+      <div class="conesst-card-header">
+        <div class="conesst-card-header-content">
+          <div class="conesst-card-header-title">
+            <h5 class="mb-0">
+              <i class="bi bi-building me-2"></i>
+              Estado y vinculación laboral
+            </h5>
+          </div>
+        </div>
+      </div>
+      <div class="conesst-card-body">
+        <div class="row g-3">
+          <div class="col-12 col-md-4">
+            <%= form.label :state, class: "form-label fw-semibold d-block" %>
+            <div class="conesst-radio-group">
+              <label class="conesst-radio-option">
+                <%= form.radio_button :state, 0 %>
+                <span><%= t("common.inactivo") %></span>
+              </label>
+              <label class="conesst-radio-option">
+                <%= form.radio_button :state, 1 %>
+                <span><%= t("common.activo") %></span>
+              </label>
+            </div>
+          </div>
+          <div class="col-12 col-md-4">
+            <%= form.label :date_entry_company, class: "form-label fw-semibold" %>
+            <%= form.date_field :date_entry_company, class: "form-control" %>
+          </div>
+          <div class="col-12 col-md-4">
+            <%= form.label :date_retirement_company, class: "form-label fw-semibold" %>
+            <%= form.date_field :date_retirement_company, class: "form-control" %>
+          </div>
+          <div class="col-12 col-md-6">
+            <%= form.label :level, class: "form-label fw-semibold" %>
+            <%= form.collection_select :level, Level.order(id: :asc), :id, :name, {}, class: "form-select w-100" %>
+          </div>
+          <div class="col-12 col-md-6">
+            <%= form.label :entity, class: "form-label fw-semibold" %>
+            <%= form.collection_select :entity, Entity.order(id: :asc), :id, :business_name, {}, class: "form-select w-100" %>
+          </div>
+          <div class="col-12 col-md-6">
+            <%= form.label :activity, class: "form-label fw-semibold" %>
+            <% if @company_positions.present? %>
+              <%= form.collection_select :activity, @company_positions, :id, :name, {}, class: "form-select w-100" %>
+            <% else %>
+              <div class="form-control bg-light text-muted">
+                No hay cargos disponibles.
+              </div>
+            <% end %>
+          </div>
+          <div class="col-12 col-md-6">
+            <%= form.label :area_employee, class: "form-label fw-semibold" %>
+            <% if @company_areas.present? %>
+              <%= form.collection_select :area_employee, @company_areas, :id, :name, {}, class: "form-select w-100" %>
+            <% else %>
+              <div class="form-control bg-light text-muted">
+                No hay áreas disponibles.
+              </div>
+            <% end %>
+          </div>
+          <div class="col-12 col-md-6">
+            <%= form.label :clasification_post, class: "form-label fw-semibold d-block" %>
+            <div class="conesst-radio-group">
+              <label class="conesst-radio-option">
+                <%= form.radio_button :clasification_post, 0 %>
+                <span>Administrativo</span>
+              </label>
+              <label class="conesst-radio-option">
+                <%= form.radio_button :clasification_post, 1 %>
+                <span>Operativo</span>
+              </label>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <%= form.label :cargo_rol, class: "form-label fw-semibold" %>
+            <%= form.select :cargo_rol,
+                            [
+                              ["", ""],
+                              ["Representante Legal", "Representante Legal"],
+                              ["Responsable SG-SST", "Responsable SG-SST"],
+                              ["Asesor externo SG-SST", "Asesor externo SG-SST"],
+                              ["Integrante COPASST", "Integrante COPASST"],
+                              ["Vigía SG-SST", "Vigía SG-SST"],
+                              ["Integrante CCL", "Integrante CCL"],
+                              ["Presidente CCL", "Presidente CCL"],
+                              ["Secretario(a) CCL", "Secretario(a) CCL"],
+                              ["Lider Brigada de Emergencia", "Lider Brigada de Emergencia"],
+                              ["Colaborador", "Colaborador"],
+                              ["Auditor Interno", "Auditor Interno"],
+                              ["Brigada de Evacuación", "Brigada de Evacuación"],
+                              ["Brigada de Primeros Auxilios", "Brigada de Primeros Auxilios"],
+                              ["Brigada de Incendio", "Brigada de Incendio"],
+                              ["Brigada de Sustancias Peligrosas", "Brigada de Sustancias Peligrosas"]
+                            ],
+                            {},
+                            class: "form-select w-100" %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card mb-4">
+      <div class="conesst-card-header">
+        <div class="conesst-card-header-content">
+          <div class="conesst-card-header-title">
+            <h5 class="mb-0">
+              <i class="bi bi-shield-check me-2"></i>
+              Responsabilidades y participación en SST
+            </h5>
+          </div>
+        </div>
+      </div>
+      <div class="conesst-card-body">
+        <div class="row g-3">
+          <div class="col-12 col-md-6 col-lg-4">
+            <%= form.label :legal_representative, class: "form-label fw-semibold d-block" %>
+            <div class="conesst-radio-group">
+              <label class="conesst-radio-option">
+                <%= form.radio_button :legal_representative, 0 %>
+                <span>No</span>
+              </label>
+              <label class="conesst-radio-option">
+                <%= form.radio_button :legal_representative, 1 %>
+                <span>Sí</span>
+              </label>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4">
+            <%= form.label :vigia_sgsst, class: "form-label fw-semibold d-block" %>
+            <div class="conesst-radio-group">
+              <label class="conesst-radio-option">
+                <%= form.radio_button :vigia_sgsst, 0 %>
+                <span>No</span>
+              </label>
+              <label class="conesst-radio-option">
+                <%= form.radio_button :vigia_sgsst, 1 %>
+                <span>Sí</span>
+              </label>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4">
+            <%= form.label :ccl, class: "form-label fw-semibold d-block" %>
+            <div class="conesst-radio-group">
+              <label class="conesst-radio-option">
+                <%= form.radio_button :ccl, 0 %>
+                <span>No</span>
+              </label>
+              <label class="conesst-radio-option">
+                <%= form.radio_button :ccl, 1 %>
+                <span>Sí</span>
+              </label>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4">
+            <%= form.label :collaborator, class: "form-label fw-semibold d-block" %>
+            <div class="conesst-radio-group">
+              <label class="conesst-radio-option">
+                <%= form.radio_button :collaborator, 0 %>
+                <span>No</span>
+              </label>
+              <label class="conesst-radio-option">
+                <%= form.radio_button :collaborator, 1 %>
+                <span>Sí</span>
+              </label>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4">
+            <%= form.label :copasst, class: "form-label fw-semibold d-block" %>
+            <div class="conesst-radio-group">
+              <label class="conesst-radio-option">
+                <%= form.radio_button :copasst, 0 %>
+                <span>No</span>
+              </label>
+              <label class="conesst-radio-option">
+                <%= form.radio_button :copasst, 1 %>
+                <span>Sí</span>
+              </label>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4">
+            <%= form.label :president_copasst, class: "form-label fw-semibold d-block" %>
+            <div class="conesst-radio-group">
+              <label class="conesst-radio-option">
+                <%= form.radio_button :president_copasst, 0 %>
+                <span>No</span>
+              </label>
+              <label class="conesst-radio-option">
+                <%= form.radio_button :president_copasst, 1 %>
+                <span>Sí</span>
+              </label>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4">
+            <%= form.label :secretary_copasst, class: "form-label fw-semibold d-block" %>
+            <div class="conesst-radio-group">
+              <label class="conesst-radio-option">
+                <%= form.radio_button :secretary_copasst, 0 %>
+                <span>No</span>
+              </label>
+              <label class="conesst-radio-option">
+                <%= form.radio_button :secretary_copasst, 1 %>
+                <span>Sí</span>
+              </label>
+            </div>
+          </div>
+          <div class="col-12 col-md-6 col-lg-4">
+            <%= form.label :brigade, class: "form-label fw-semibold d-block" %>
+            <div class="conesst-radio-group">
+              <label class="conesst-radio-option">
+                <%= form.radio_button :brigade, 0 %>
+                <span>No</span>
+              </label>
+              <label class="conesst-radio-option">
+                <%= form.radio_button :brigade, 1 %>
+                <span>Sí</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card mb-4">
+      <div class="conesst-card-header">
+        <div class="conesst-card-header-content">
+          <div class="conesst-card-header-title">
+            <h5 class="mb-0">
+              <i class="bi bi-shield-lock me-2"></i>
+              Autorización de políticas de protección de datos
+            </h5>
+          </div>
+        </div>
+      </div>
+      <div class="conesst-card-body">
+        <div class="row g-3">
+          <div class="col-12 col-md-6">
+            <div class="conesst-user-info">
+              <div class="conesst-user-info-label">
+                Autorización de políticas de protección de datos
+              </div>
+              <div class="conesst-user-info-value">
+                <%= User.label_politica(@user.authorization_police) if @user.present? %>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="conesst-user-info">
+              <div class="conesst-user-info-label">
+                Fecha de autorización
+              </div>
+              <div class="conesst-user-info-value">
+                <%= @user.authorization_date.strftime("%F") if @user.authorization_date.present? %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card mb-4">
+      <div class="conesst-card-header">
+        <div class="conesst-card-header-content">
+          <div class="conesst-card-header-title">
+            <h5 class="mb-0">
+              <i class="bi bi-key me-2"></i>
+              Seguridad de la cuenta
+            </h5>
+          </div>
+        </div>
+      </div>
+      <div class="conesst-card-body">
+        <div class="row g-3 align-items-end">
+          <div class="col-12 col-md-6">
+            <%= form.label :password, class: "form-label fw-semibold" %>
+            <%= form.password_field :password, class: "form-control", autocomplete: "new-password" %>
+            <div class="form-text">
+              Si tu aplicación permite dejar este campo vacío para conservar la clave actual,
+              puedes mantener ese comportamiento.
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="conesst-user-info">
+              <div class="conesst-user-info-label">
+                Última fecha de cambio de clave
+              </div>
+              <div class="conesst-user-info-value">
+                <%= @user.date_change_password.strftime("%F") if @user.date_change_password.present? %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card mb-4">
+      <div class="conesst-card-header">
+        <div class="conesst-card-header-content">
+          <div class="conesst-card-header-title">
+            <h5 class="mb-0">
+              <i class="bi bi-images me-2"></i>
+              Fotografía y firma
+            </h5>
+          </div>
+        </div>
+      </div>
+      <div class="conesst-card-body">
+        <div class="row g-4">
+          <div class="col-12 col-md-6">
+            <%= form.label :avatar, class: "form-label fw-semibold" %>
+            <%= form.file_field :avatar, class: "form-control", accept: "image/*", capture: "environment" %>
+            <div class="conesst-file-preview mt-3">
+              <% if @user.present? && @user.avatar.attached? && @user.avatar.image? %>
+                <%= image_tag @user.avatar, data: { previews_target: "preview" }, class: "avatar-mini", alt: "Fotografía del usuario" %>
+              <% else %>
+                <%= image_tag "avatar.jpg", class: "avatar-mini", alt: "Fotografía predeterminada" %>
+              <% end %>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <%= form.label :firm, class: "form-label fw-semibold" %>
+            <%= form.file_field :firm, class: "form-control", accept: "image/*", capture: "environment" %>
+            <div class="conesst-file-preview mt-3">
+              <% if @user.present? && @user.firm.attached? && @user.firm.image? %>
+                <%= image_tag @user.firm, data: { previews_target: "preview" }, class: "conesst-signature-image", alt: "Firma del usuario" %>
+              <% else %>
+                <span class="text-muted small">
+                  <i class="bi bi-pen me-1"></i>
+                  No hay una firma cargada.
+                </span>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card mb-4">
+      <div class="conesst-card-body">
+        <div class="conesst-actions d-flex flex-column flex-sm-row justify-content-end gap-2">
+          <%= form.button type: "submit", class: "conesst-btn conesst-btn-primary" do %>
+            <i class="bi bi-check-circle me-1"></i>
+            <%= t("common.submit") %>
+          <% end %>
+          <%= link_to users_path, class: "conesst-btn btn-outline-secondary" do %>
+            <i class="bi bi-arrow-left-circle me-1"></i>
+            Retornar
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

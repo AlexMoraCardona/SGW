@@ -1,35 +1,93 @@
-<div class="container col-11 card p-5">
-    <br>
-    <%= form_with model: @unsafe_condition do |form| %>
-        <% @unsafe_condition.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
+<div class="container-fluid px-2 px-md-4 py-3">
+  <div class="conesst-company-header mb-3">
+    <div class="d-flex align-items-center gap-3">
+      <div class="conesst-company-icon">
+        <i class="bi bi-pen"></i>
+      </div>
+      <div>
+        <h2 class="conesst-company-title mb-1">
+          Autorización de firma
+        </h2>
+        <p class="text-muted mb-0">
+          Reporte de condiciones y actos inseguros
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-person-check fs-5"></i>
+        <span>Usuario que recibe el reporte</span>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <%= form_with model: @unsafe_condition, local: true do |form| %>
+        <% if @unsafe_condition.errors.any? %>
+          <div class="alert alert-danger" role="alert">
+            <div class="fw-bold mb-2">
+              <i class="bi bi-exclamation-triangle-fill me-1"></i>
+              Se encontraron los siguientes errores:
             </div>
+            <ul class="mb-0 ps-3">
+              <% @unsafe_condition.errors.full_messages.each do |error| %>
+                <li><%= error %></li>
+              <% end %>
+            </ul>
+          </div>
         <% end %>
+        <div class="conesst-info-card mb-4">
+          <div class="d-flex align-items-start gap-3">
+            <div class="flex-shrink-0">
+              <i class="bi bi-person-circle fs-2"></i>
+            </div>
+            <div class="flex-grow-1">
+              <div class="conesst-data-label mb-1">
+                Usuario que recibe
+              </div>
+              <div class="conesst-data-value fw-semibold">
+                <%= UnsafeCondition.name_user(@unsafe_condition.user_receiving) %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="conesst-section-title mb-3">
+          <i class="bi bi-vector-pen me-2"></i>
+          Firma autorizada
+        </div>
+        <p class="text-muted mb-3">
+          Indique si el usuario autoriza el uso de su firma para este reporte.
+        </p>
+        <div class="conesst-info-card mb-4">
+          <div class="fw-semibold mb-3">
+            <%= form.label :firm_user_receiving, "¿Autoriza la firma del usuario que recibe?", class: "form-label mb-0" %>
+          </div>
+          <div class="d-flex flex-wrap gap-3">
 
-        <table>
-            <tr>
-                <td>
-                    <h4>Usuario que recibe</h4> 
-                    <%= UnsafeCondition.name_user(@unsafe_condition.user_receiving) %>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <h4>Firma autorizada del Usuario que recibe</h4> 
-                    <%= form.radio_button :firm_user_receiving, 0 %>
-                    <label for="no">No</label>&nbsp;&nbsp; 
-                    <%= form.radio_button :firm_user_receiving, 1 %>
-                    <label for="si">Si</label>&nbsp;&nbsp;   
-                </td>
-            </tr>
-        </table>
-        <%= form.hidden_field :date_firm_user_receiving, :value => Time.now, class: "form-control" %>
-        <br>    
-
-        
-        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, :back %>
-    <% end %>
-</div>        
-<br>
+            <div class="form-check border rounded p-3 ps-5 flex-grow-1">
+              <%= form.radio_button :firm_user_receiving, 0, class: "form-check-input", id: "firm_user_receiving_no" %>
+              <%= form.label :firm_user_receiving_no, "No autorizo", class: "form-check-label fw-semibold" %>
+            </div>
+            <div class="form-check border rounded p-3 ps-5 flex-grow-1">
+              <%= form.radio_button :firm_user_receiving, 1, class: "form-check-input", id: "firm_user_receiving_si" %>
+              <%= form.label :firm_user_receiving_si, "Sí autorizo", class: "form-check-label fw-semibold" %>
+            </div>
+          </div>
+        </div>
+        <%# Fecha de autorización %>
+        <%= form.hidden_field :date_firm_user_receiving, value: Time.current %>
+        <hr class="my-4">
+        <div class="conesst-actions-wrap">
+          <%= form.button type: "submit", class: "conesst-btn conesst-btn-primary" do %>
+            <i class="bi bi-check-circle me-1"></i>
+            <%= t("common.submit") %>
+          <% end %>
+          <%= link_to :back, class: "conesst-btn conesst-btn-secondary" do %>
+            <i class="bi bi-arrow-left me-1"></i>
+            Retornar
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

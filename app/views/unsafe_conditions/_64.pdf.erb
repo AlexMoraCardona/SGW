@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <%= wicked_pdf_stylesheet_link_tag "pdf_conesst" %>
+</head>
+<body>
+  <div class="pdf-document">
+    <div class="pdf-title">
+      REPORTE DE CONDICIONES Y ACTOS INSEGUROS
+    </div>
+    <div class="pdf-space"></div>
+    <div class="pdf-section-title">
+      Información del reporte
+    </div>
+    <table class="pdf-table">
+      <tbody>
+        <tr>
+          <td class="pdf-cell-left pdf-col-30">
+            <strong>Fecha de reporte</strong>
+          </td>
+          <td class="pdf-cell-left pdf-col-70">
+            <%= @unsafe_condition.date_report.presence || "No registrada" %>
+          </td>
+        </tr>
+        <tr>
+          <td class="pdf-cell-left pdf-col-30">
+            <strong>Lugar y sede del reporte</strong>
+          </td>
+          <td class="pdf-cell-left pdf-col-70">
+            <%= @unsafe_condition.place_report.presence || "No registrado" %>
+          </td>
+        </tr>
+        <tr>
+          <td class="pdf-cell-left pdf-col-30">
+            <strong>Ubicación exacta del acto o condición insegura</strong>
+          </td>
+          <td class="pdf-cell-left pdf-col-70">
+            <%= @unsafe_condition.exact_ubication.presence || "No registrada" %>
+          </td>
+        </tr>
+        <tr>
+          <td class="pdf-cell-left pdf-col-30">
+            <strong>Persona que reporta</strong>
+          </td>
+          <td class="pdf-cell-left pdf-col-70">
+            <%= @reporta.name if @reporta.present? %>
+          </td>
+        </tr>
+        <tr>
+          <td class="pdf-cell-left pdf-col-30">
+            <strong>Cargo de la persona que reporta</strong>
+          </td>
+          <td class="pdf-cell-left pdf-col-70">
+            <%= User.label_activity(@reporta.activity) if @reporta.present? %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pdf-space"></div>
+    <div class="pdf-section-title">
+      Descripción de la condición insegura
+    </div>
+    <table class="pdf-table">
+      <tbody>
+        <tr>
+          <td class="pdf-cell-left">
+            <%= simple_format(
+                  @unsafe_condition.description_condition.presence ||
+                  "Sin descripción registrada"
+                ) %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pdf-space"></div>
+    <div class="pdf-section-title">
+      Características de la condición insegura
+    </div>
+    <table class="pdf-table">
+      <thead>
+        <tr>
+          <td class="pdf-cell-left pdf-col-70">
+            <strong>Característica</strong>
+          </td>
+          <td class="pdf-cell-center pdf-col-30">
+            <strong>Respuesta</strong>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <% condiciones_inseguras = [
+          :equipment_condition,
+          :lack_alarm,
+          :floors_condition,
+          :lack_cleanliness,
+          :not_demarcate_areas,
+          :lack_space_work,
+          :gases_dusts,
+          :incorrect_storage,
+          :unsafe_work_design,
+          :excessive_noise_levels,
+          :inadequate_signage,
+          :inadequate_lighting_ventilation,
+          :defective_tools
+        ] %>
+        <% condiciones_inseguras.each do |campo| %>
+          <% valor = @unsafe_condition.public_send(campo) %>
+          <tr>
+            <td class="pdf-cell-left pdf-col-70">
+              <%= t("unsafe_conditions.unsafe_condition.#{campo}") %>
+            </td>
+            <td class="pdf-cell-center pdf-col-30">
+              <% if valor == 0 %>
+                No
+              <% elsif valor == 1 %>
+                Sí
+              <% else %>
+                Sin información
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        <tr>
+          <td class="pdf-cell-left pdf-col-70">
+            <strong><%= t("unsafe_conditions.unsafe_condition.other_unsafe_conditions") %></strong>
+          </td>
+          <td class="pdf-cell-left pdf-col-30">
+            <%= @unsafe_condition.other_unsafe_conditions.presence || "No registrado" %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pdf-space"></div>
+    <div class="pdf-section-title">
+      Descripción del acto inseguro
+    </div>
+    <table class="pdf-table">
+      <tbody>
+        <tr>
+          <td class="pdf-cell-left">
+            <%= simple_format(
+                  @unsafe_condition.description_act_unsafe.presence ||
+                  "Sin descripción registrada"
+                ) %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pdf-space"></div>
+    <div class="pdf-section-title">
+      Características del acto inseguro
+    </div>
+    <table class="pdf-table">
+      <thead>
+        <tr>
+          <td class="pdf-cell-left pdf-col-70">
+            <strong>Característica</strong>
+          </td>
+          <td class="pdf-cell-center pdf-col-30">
+            <strong>Respuesta</strong>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <% actos_inseguros = [
+          :not_using_equipment,
+          :use_wrong_tool,
+          :operating_without_authorization,
+          :wrong_position,
+          :running_facilities,
+          :heights_without_authorization,
+          :using_defective_tool,
+          :workplace_distractions,
+          :psychoactive_substances,
+          :gen_on_desk,
+          :ignore_dangerous
+        ] %>
+        <% actos_inseguros.each do |campo| %>
+          <% valor = @unsafe_condition.public_send(campo) %>
+          <tr>
+            <td class="pdf-cell-left pdf-col-70">
+              <%= t("unsafe_conditions.unsafe_condition.#{campo}") %>
+            </td>
+            <td class="pdf-cell-center pdf-col-30">
+              <% if valor == 0 %>
+                No
+              <% elsif valor == 1 %>
+                Sí
+              <% else %>
+                Sin información
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        <tr>
+          <td class="pdf-cell-left pdf-col-70">
+            <strong><%= t("unsafe_conditions.unsafe_condition.other_features") %></strong>
+          </td>
+          <td class="pdf-cell-left pdf-col-30">
+            <%= @unsafe_condition.other_features.presence || "No registrado" %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pdf-space"></div>
+    <div class="pdf-section-title">
+      Alternativas de solución
+    </div>
+    <table class="pdf-table">
+      <tbody>
+        <tr>
+          <td class="pdf-cell-left">
+            <%= simple_format(@unsafe_condition.alternative_soluctions.presence || "Sin alternativas registradas") %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pdf-space"></div>
+    <div class="pdf-section-title">
+      Evidencias y archivos adjuntos
+    </div>
+    <% if @unsafe_condition.evidencias.attached? %>
+      <% @unsafe_condition.evidencias.each do |file| %>
+        <table class="pdf-table">
+          <tbody>
+            <tr>
+              <td class="pdf-cell-left">
+                <strong>Archivo:</strong>
+                <%= file.filename %>
+              </td>
+            </tr>
+            <% if file.image? %>
+              <tr>
+                <td class="pdf-cell-center">
+                  <%= image_tag(file, style: "max-width: 450px; max-height: 350px; width: auto; height: auto;") %>
+                </td>
+              </tr>
+            <% else %>
+              <tr>
+                <td class="pdf-cell-left">
+                  <strong>Tipo:</strong>
+                  <%= file.content_type.presence || "No especificado" %>
+                  <br>
+                  <strong>Tamaño:</strong>
+                  <%= number_to_human_size(file.byte_size) %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <div class="pdf-space"></div>
+      <% end %>
+    <% else %>
+      <table class="pdf-table">
+        <tbody>
+          <tr>
+            <td class="pdf-cell-left pdf-small-text">
+              No hay archivos adjuntos registrados.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    <% end %>
+    <div class="pdf-space"></div>
+    <div class="pdf-section-title">
+      Responsables y firmas
+    </div>
+    <table class="pdf-table">
+      <thead>
+        <tr>
+          <td class="pdf-cell-center pdf-col-50">
+            <strong><%= t("unsafe_conditions.unsafe_condition.user_reports") %></strong>
+          </td>
+          <td class="pdf-cell-center pdf-col-50">
+            <strong><%= t("unsafe_conditions.unsafe_condition.user_receiving") %></strong>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="pdf-cell-center pdf-col-50">
+            <%= UnsafeCondition.name_user(@unsafe_condition.user_reports) %>
+          </td>
+          <td class="pdf-cell-center pdf-col-50">
+            <%= UnsafeCondition.name_user(@unsafe_condition.user_receiving) %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="pdf-signatures-table">
+      <tbody>
+        <tr>
+          <td class="pdf-signature-cell">
+            <div class="pdf-signature-role">
+              Firma de quien reporta
+            </div>
+            <% if @unsafe_condition.firm_user_reports == 1 && @reporta.present? && @reporta.firm.attached? && @reporta.firm.image? %>
+              <%= image_tag(@reporta.firm, class: "pdf-signature-image") %>
+            <% else %>
+              <div class="pdf-signature-line"></div>
+              <div class="pdf-signature-data">
+                No registrada o no autorizada.
+              </div>
+            <% end %>
+            <div class="pdf-signature-name">
+              <%= UnsafeCondition.name_user(@unsafe_condition.user_reports) %>
+            </div>
+          </td>
+          <td class="pdf-signature-cell">
+            <div class="pdf-signature-role">
+              Firma de quien recibe
+            </div>
+            <% if @unsafe_condition.firm_user_receiving == 1 && @recibe.present? && @recibe.firm.attached? && @recibe.firm.image? %>
+              <%= image_tag(@recibe.firm, class: "pdf-signature-image") %>
+            <% else %>
+              <div class="pdf-signature-line"></div>
+              <div class="pdf-signature-data">
+                No registrada o no autorizada.
+              </div>
+            <% end %>
+            <div class="pdf-signature-name">
+              <%= UnsafeCondition.name_user(@unsafe_condition.user_receiving) %>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

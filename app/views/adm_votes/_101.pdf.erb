@@ -1,0 +1,90 @@
+<head>
+    <meta charset="utf-8" />
+    <%= wicked_pdf_stylesheet_link_tag "pdf_conesst" %>
+</head>
+
+<div class="pdf-document">
+
+    <!-- Título de la votación -->
+    <table class="pdf-roles-table">
+        <tbody>
+            <tr>
+                <td colspan="2">
+                    <strong>
+                        <%= @adm_vote.titulo_vote %>
+                    </strong>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Resultados de la votación -->
+    <div class="pdf-table-title">
+        RESULTADO DE VOTACIONES
+    </div>
+
+    <table class="pdf-roles-table">
+        <thead>
+            <tr>
+                <th style="width: 70%;">
+                    Nombre del candidato
+                </th>
+                <th style="width: 30%;">
+                    Cantidad de votos
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% if @candidate_votes.present? %>
+                <% @candidate_votes.each do |candidato| %>
+                    <tr>
+                        <td>
+                            <%= candidato.user&.name %>
+                        </td>
+
+                        <td class="pdf-center">
+                            <%= Vote.conteo(candidato.id, @adm_vote.id) %>
+                        </td>
+                    </tr>
+                <% end %>
+            <% else %>
+                <tr>
+                    <td colspan="2" class="pdf-center">
+                        No hay candidatos registrados para esta votación.
+                    </td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+
+    <!-- Resumen de empleados -->
+    <table class="pdf-roles-table">
+        <tbody>
+            <tr>
+                <td>
+                    Total de empleados hábiles:
+                </td>
+
+                <td class="pdf-center">
+                    <strong>
+                        <%= Vote.totalhabiles(@adm_vote.id) %>
+                    </strong>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Total de empleados que votaron:
+                </td>
+
+                <td class="pdf-center">
+                    <strong>
+                        <%= Vote.totalvotaron(@adm_vote.id) %>
+                    </strong>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

@@ -1,8 +1,8 @@
 <div class="conesst-card mb-3">
     <div class="conesst-card-header">
-        <div class="d-flex align-items-center gap-2">
-            <i class="bi bi-calendar-check fs-5"></i>
-            <div>
+        <div class="d-flex align-items-center gap-2 w-100">
+            <i class="bi bi-calendar-check fs-5 flex-shrink-0"></i>
+            <div class="flex-grow-1" style="min-width: 0;">
                 <div class="fw-semibold">
                     <%= adm_attendance.date_attendance %>
                 </div>
@@ -18,7 +18,7 @@
                 <i class="bi bi-card-text me-1"></i>
                 Descripción
             </div>
-            <div class="fw-semibold">
+            <div class="fw-semibold" style="overflow-wrap: anywhere;">
                 <%= adm_attendance.description %>
             </div>
         </div>
@@ -28,43 +28,31 @@
                 <i class="bi bi-people me-1"></i>
                 Participantes
             </div>
-            <% if @cant_reg > 0 %>
-                <button
-                    class="conesst-btn conesst-btn-primary position-relative"
-                    disabled>
-                    <i class="bi bi-people me-1"></i>
-                    Participantes
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
-                        <%= @cant_reg %>+
-                    </span>
-                </button>
-            <% else %>
-                <%= link_to seleccion_participantes_path(adm_attendance.id), class: "conesst-btn conesst-btn-primary" do %>
-                    <i class="bi bi-people me-1"></i>
-                    Ingresar participantes
-                <% end %>
+            <%= link_to seleccion_participantes_path(adm_attendance.id), class: "conesst-btn conesst-btn-primary" do %>
+                <i class="bi bi-people me-1"></i>
+                Ingresar participantes
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+                    <%= @cant_reg %>+
+                </span>
             <% end %>
         </div>
         <div class="mb-3">
             <% @attendances = AdmAttendance.asistentes(adm_attendance.id) %>
-            <% @count_registrados = 0 %>
-            <% @count_registrados = @attendances.count if @attendances.present? %>
+            <% @count_registrados = @attendances.present? ? @attendances.count : 0 %>
             <div class="text-muted small mb-1">
                 <i class="bi bi-person-check me-1"></i>
                 Participantes registrados
             </div>
             <button
+                type="button"
                 class="conesst-btn conesst-btn-success position-relative"
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModalMobile<%= adm_attendance.id %>">
-
                 <i class="bi bi-person-check me-1"></i>
                 Registrados
-
                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
                     <%= @count_registrados %>+
                 </span>
-
             </button>
             <div
                 class="modal fade"
@@ -72,13 +60,14 @@
                 tabindex="-1"
                 aria-labelledby="exampleModalMobileLabel<%= adm_attendance.id %>"
                 aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                    <div class="modal-content">
+                <div
+                    class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+                    style="width: calc(100% - 1rem); max-width: 500px; margin: 0.5rem auto;">
+                    <div class="modal-content" style="max-width: 100%;">
                         <div class="modal-header">
                             <h5
                                 class="modal-title"
                                 id="exampleModalMobileLabel<%= adm_attendance.id %>">
-
                                 <i class="bi bi-person-check me-2"></i>
                                 Asistencia
                             </h5>
@@ -86,26 +75,32 @@
                                 type="button"
                                 class="btn-close"
                                 data-bs-dismiss="modal"
-                                aria-label="Close">
+                                aria-label="Cerrar">
                             </button>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body" style="overflow-x: hidden;">
                             <% if @attendances.present? %>
-                                <div class="conesst-table-wrapper">
-                                    <table class="conesst-table">
+                                <div
+                                    class="conesst-table-wrapper w-100"
+                                    style="width: 100%; max-width: 100%; overflow-x: auto;">
+                                    <table class="conesst-table w-100" style="width: 100%; max-width: 100%; table-layout: fixed;">
                                         <thead>
                                             <tr>
-                                                <th>Documento</th>
-                                                <th>Nombre</th>
+                                                <th style="width: 35%; overflow-wrap: anywhere;">
+                                                    Documento
+                                                </th>
+                                                <th style="width: 65%; overflow-wrap: anywhere;">
+                                                    Nombre
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <% @attendances.each do |attendance| %>
                                                 <tr>
-                                                    <td>
+                                                    <td style="overflow-wrap: anywhere; word-break: break-word;">
                                                         <%= attendance.user.nro_document %>
                                                     </td>
-                                                    <td>
+                                                    <td style="overflow-wrap: anywhere; word-break: break-word;">
                                                         <%= attendance.user.name %>
                                                     </td>
                                                 </tr>
@@ -115,6 +110,7 @@
                                 </div>
                             <% else %>
                                 <div class="alert alert-light text-center mb-0">
+                                    <i class="bi bi-info-circle me-1"></i>
                                     No hay participantes registrados.
                                 </div>
                             <% end %>
@@ -134,13 +130,13 @@
         </div>
         <div class="mb-3">
             <% @ca = AdmAttendance.pendientes(adm_attendance.id) %>
-            <% @cant = 0 %>
-            <% @cant = @ca.count if @ca.present? %>
+            <% @cant = @ca.present? ? @ca.count : 0 %>
             <div class="text-muted small mb-1">
                 <i class="bi bi-person-exclamation me-1"></i>
                 Participantes pendientes
             </div>
             <button
+                type="button"
                 class="conesst-btn conesst-btn-warning position-relative"
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModalpMobile<%= adm_attendance.id %>">
@@ -156,37 +152,39 @@
                 tabindex="-1"
                 aria-labelledby="exampleModalpMobileLabel<%= adm_attendance.id %>"
                 aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                    <div class="modal-content">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="width: calc(100% - 1rem); max-width: 500px; margin: 0.5rem auto;">
+                    <div class="modal-content" style="max-width: 100%;">
                         <div class="modal-header">
                             <h5
                                 class="modal-title"
                                 id="exampleModalpMobileLabel<%= adm_attendance.id %>">
-
                                 <i class="bi bi-person-exclamation me-2"></i>
-                                Pendientes
-
+                                Participantes pendientes
                             </h5>
                             <button
                                 type="button"
                                 class="btn-close"
                                 data-bs-dismiss="modal"
-                                aria-label="Close">
+                                aria-label="Cerrar">
                             </button>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body" style="overflow-x: hidden;">
                             <% if @ca.present? %>
-                                <div class="conesst-table-wrapper">
-                                    <table class="conesst-table">
+                                <div
+                                    class="conesst-table-wrapper w-100"
+                                    style="width: 100%; max-width: 100%; overflow-x: auto;">
+                                    <table class="conesst-table w-100" style="width: 100%; max-width: 100%; table-layout: fixed;">
                                         <thead>
                                             <tr>
-                                                <th>Nombre</th>
+                                                <th style="width: 100%; overflow-wrap: anywhere;">
+                                                    Nombre
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <% @ca.each do |nombre| %>
                                                 <tr>
-                                                    <td>
+                                                    <td style="overflow-wrap: anywhere; word-break: break-word;">
                                                         <%= nombre %>
                                                     </td>
                                                 </tr>
@@ -196,6 +194,7 @@
                                 </div>
                             <% else %>
                                 <div class="alert alert-light text-center mb-0">
+                                    <i class="bi bi-info-circle me-1"></i>
                                     No hay participantes pendientes.
                                 </div>
                             <% end %>

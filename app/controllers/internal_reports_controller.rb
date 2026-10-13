@@ -2,11 +2,11 @@ class InternalReportsController < ApplicationController
     def index 
         if Current.user && Current.user.level > 0 && Current.user.level < 4 
             @entity = Entity.find(Current.user.entity)
-            @internal_reports = InternalReport.where("entity_id = ?",@entity.id)
+            @internal_reports = InternalReport.where("entity_id = ?",@entity.id).order(id: :desc)
         else
             if Current.user && Current.user.level > 3 && Current.user.level < 6 
                 @entity = Entity.find(Current.user.entity)
-                @internal_reports = InternalReport.where("entity_id = ?",@entity.id)
+                @internal_reports = InternalReport.where("entity_id = ?",@entity.id).order(id: :desc)
             else
                 redirect_to new_session_path, alert: t('common.not_logged_in')    
                 session.delete(:user_id)  
@@ -17,8 +17,10 @@ class InternalReportsController < ApplicationController
     def show
         @internal_report = InternalReport.find(params[:id])
         @entity = Entity.find(@internal_report.entity_id) if @internal_report.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",115,1).last  
         @usuario = User.find(@internal_report.user) if @internal_report.user.present? && @internal_report.user > 0
+        @template = Template.where("reference = ? and version = ?",@internal_report.code,@internal_report.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+
 
         respond_to do |format|
             format.html
@@ -31,21 +33,26 @@ class InternalReportsController < ApplicationController
     def ver_reporte_interno
         @internal_report = InternalReport.find(params[:id])
         @entity = Entity.find(@internal_report.entity_id) if @internal_report.present?
-        @template = Template.where("format_number = ? and document_vigente = ?",115,1).last  
         @usuario = User.find(@internal_report.user) if @internal_report.user.present? && @internal_report.user > 0
+        @template = Template.where("reference = ? and version = ?",@internal_report.code,@internal_report.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'ver_reporte_interno',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
-      
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('ver_reporte_interno'),
+                    disable_javascript: true,
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
+                    page_size: 'letter',
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+            }
+        end    
+     
     end  
     
     def firma_internal_report
@@ -70,7 +77,7 @@ class InternalReportsController < ApplicationController
     def new
       @internal_report =  InternalReport.new
       @entity = Entity.find(Current.user.entity)
-      @template = Template.where("format_number = ? and document_vigente = ?",115,1).last  
+      @template = Template.where("reference = ? and document_vigente = ?",'RIAI-SST',1).last  
     end    
 
     def create
@@ -85,7 +92,7 @@ class InternalReportsController < ApplicationController
     def edit
           @internal_report = InternalReport.find(params[:id])
           @entity = Entity.find(@internal_report.entity_id)
-          @template = Template.where("format_number = ? and document_vigente = ?",115,1).last  
+          @template = Template.where("reference = ? and version = ?",@internal_report.code,@internal_report.version).last  
     end
     
     def update
@@ -108,13 +115,13 @@ class InternalReportsController < ApplicationController
 
     def internal_report_params
         params.require(:internal_report).permit(:date_report, :type_report, :time_report,
-         :place, :description, :name_person, :user, :date_user, :firm_user, :entity_id, :state_report, 
+         :place, :description, :name_person, :user, :date_user, :version, :code, :firm_user, :entity_id, :state_report, 
          imagenes_reports: [])
     end 
 
     def update_internal_report_params
         params.require(:internal_report).permit(:date_report, :type_report, :time_report,
-         :place, :description, :name_person, :date_user, :firm_user, :entity_id, :state_report, 
+         :place, :description, :name_person, :date_user, :firm_user, :entity_id, :version, :code, :state_report, 
          imagenes_reports: [])
     end 
 

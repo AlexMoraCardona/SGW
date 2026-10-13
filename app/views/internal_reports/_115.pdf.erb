@@ -1,0 +1,153 @@
+<head>
+  <meta charset="utf-8">
+  <%= wicked_pdf_stylesheet_link_tag "pdf_conesst" %>
+</head>
+<body>
+  <div class="pdf-document">
+    <div class="pdf-space"></div>
+    <div class="pdf-section-title">
+      REPORTE INTERNO DE INCIDENTES Y ACCIDENTES
+    </div>
+    <div class="pdf-space"></div>
+    <div class="pdf-subsection-title">
+      Información del incidente o accidente
+    </div>
+    <div class="pdf-space"></div>
+    <table class="pdf-table">
+      <tr>
+        <td class="pdf-cell-left pdf-col-30">
+          <strong>TIPO DE EVENTO:</strong>
+        </td>
+        <td class="pdf-cell-left pdf-col-70">
+          <%= InternalReport.label_type_report(@internal_report.type_report) %>
+        </td>
+      </tr>
+      <tr>
+        <td class="pdf-cell-left pdf-col-30">
+          <strong>FECHA DE OCURRENCIA:</strong>
+        </td>
+        <td class="pdf-cell-left pdf-col-70">
+          <%= @internal_report.date_report if @internal_report.date_report.present? %>
+        </td>
+      </tr>
+      <tr>
+        <td class="pdf-cell-left pdf-col-30">
+          <strong>HORA DE OCURRENCIA:</strong>
+        </td>
+        <td class="pdf-cell-left pdf-col-70">
+          <%= @internal_report.time_report.strftime("%T") if @internal_report.time_report.present? %>
+        </td>
+      </tr>
+      <tr>
+        <td class="pdf-cell-left pdf-col-30">
+          <strong>LUGAR DEL INCIDENTE O ACCIDENTE:</strong>
+        </td>
+        <td class="pdf-cell-left pdf-col-70">
+          <%= @internal_report.place %>
+        </td>
+      </tr>
+      <tr>
+        <td class="pdf-cell-left pdf-col-30">
+          <strong>DESCRIPCIÓN DEL INCIDENTE O ACCIDENTE:</strong>
+        </td>
+        <td class="pdf-cell-left pdf-col-70">
+          <%= @internal_report.description %>
+        </td>
+      </tr>
+      <tr>
+        <td class="pdf-cell-left pdf-col-30">
+          <strong>NOMBRE DE LA PERSONA ACCIDENTADA:</strong>
+        </td>
+        <td class="pdf-cell-left pdf-col-70">
+          <%= @internal_report.name_person %>
+        </td>
+      </tr>
+    </table>
+    <div class="pdf-space"></div>
+    <div class="pdf-section-title">
+      Registro fotográfico y archivos adjuntos
+    </div>
+    <div class="pdf-space"></div>
+    <% if @internal_report.imagenes_reports.attached? %>
+      <% @internal_report.imagenes_reports.each do |file| %>
+        <table class="pdf-table">
+          <tr>
+            <td class="pdf-cell-left">
+              <strong>
+                <%= file.filename %>
+              </strong>
+              <div class="pdf-space"></div>
+              <% if file.image? %>
+                <div style="text-align: center;">
+                  <%= image_tag Evaluation.wicked_blob_path(file), width: 200, height: 200 %>
+                </div>
+              <% elsif file.video? %>
+                <div>
+                  <%= video_tag url_for(file), controls: true, width: "400px" %>
+                </div>
+              <% elsif file.audio? %>
+                <div>
+                  <%= audio_tag url_for(file), controls: true %>
+                </div>
+              <% else %>
+                <div>
+                  Archivo adjunto: <%= file.filename %>
+                </div>
+              <% end %>
+            </td>
+          </tr>
+        </table>
+        <div class="pdf-space"></div>
+      <% end %>
+    <% else %>
+      <table class="pdf-table">
+        <tr>
+          <td class="pdf-cell-left">
+            No hay archivos adjuntos para este reporte.
+          </td>
+        </tr>
+      </table>
+    <% end %>
+    <div class="pdf-space"></div>
+    <div class="pdf-section-title">
+      Usuario que realiza el reporte
+    </div>
+    <div class="pdf-space"></div>
+    <table class="pdf-table">
+      <tr>
+        <td class="pdf-cell-center pdf-col-100">
+          <% if @internal_report.firm_user == 1 %>
+            <% if @usuario.present? && @usuario.firm.attached? && @usuario.firm.image? %>
+              <div style="text-align: center;">
+                <%= image_tag Evaluation.wicked_blob_path(@usuario.firm), class: "firmapdf" %>
+              </div>
+            <% end %>
+          <% end %>
+          <div class="pdf-space"></div>
+          <div style="text-align: center;">
+            ____________________________________
+          </div>
+          <div style="text-align: center;">
+            <strong>
+              <%= @usuario.name if @usuario.present? %>
+            </strong>
+          </div>
+          <div style="text-align: center;">
+            <%= @usuario.cargo_rol if @usuario.present? %>
+          </div>
+          <div style="text-align: center;">
+            <% if @usuario.present? %>
+              <%= @usuario.document.abbreviation if @usuario.document.present? %>:
+              <%= Firm.miles(@usuario.nro_document) %>
+            <% end %>
+          </div>
+          <% if @usuario.present? && @usuario.level == 2 %>
+            <div style="text-align: center;">
+              Licencia: <%= @usuario.license %>
+            </div>
+          <% end %>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>

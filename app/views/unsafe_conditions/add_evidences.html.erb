@@ -1,53 +1,108 @@
-
-<div><br></div>
-<div class="container col-11 card p-5">
-    <%= form_for @unsafe_condition do |f| %>
-       <div class="row">
-          <div class="form-group">
-            <h5><%= f.label :"Adjuntar_Archivos:", style: "display: block" %></h5>
-            <%= f.file_field :evidencias, multiple: true %>
-
-            <%= f.submit 'Subir Archivos', class: 'btn btn-sm btn-primary' %>
-          </div> 
+<div class="container-fluid px-2 px-md-4 py-3">
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-cloud-arrow-up fs-5"></i>
+        <span>Adjuntar archivos</span>
+      </div>
+      <div class="conesst-actions-wrap d-flex flex-wrap justify-content mb-4">
+        <%= link_to :back, class: "conesst-btn conesst-btn-secondary" do %>
+            <i class="bi bi-arrow-left"></i>
+            Retornar
+        <% end %>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <%= form_with model: @unsafe_condition, local: true, html: { multipart: true } do |f| %>
+        <div class="mb-3">
+          <%= f.label :evidencias, "Seleccionar archivos", class: "form-label fw-semibold" %>
+          <%= f.file_field :evidencias, multiple: true, class: "form-control", direct_upload: false %>
+          <div class="form-text">
+            Puedes seleccionar varios archivos para adjuntarlos al reporte.
+          </div>
         </div>
-    <% end %>
-    <br> 
-</div>  
-<br>
-
-<hr>
-<br>
-<div class="container col-11 card p-5">
-    <div class="form-group">
-        <h5>Archivos adjuntos:</h5>
-    </div>         
-    <hr>
-    <% if @unsafe_condition.evidencias.attached? %>
-        <div data-controller="previews" >
-            <% @unsafe_condition.evidencias.each do |file|%>
-                <br>
-                <% if file.image? %>
-                    <div>
-                        <%= image_tag file, data: {previews_target: "preview"}, class: "image" %>
-                        <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
-                        <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                    </div> 
-                <% elsif file.video? %>
-                    <%= video_tag url_for(file), controls: "", width: "400px" %>          
-                    <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
-                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                <% elsif file.audio? %>
-                    <%= audio_tag(url_for(file), controls: "") %>          
-                    <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
-                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                <% else %>
-                    <%= link_to file.filename, url_for(file) %>          
-                    <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' %> 
-                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                <% end %>
-            <% end %>  
+        <div class="conesst-actions-wrap">
+          <%= f.button type: "submit", class: "conesst-btn conesst-btn-primary" do %>
+            <i class="bi bi-upload me-1"></i>
+            Subir archivos
+          <% end %>
         </div>
-    <% end %>  
-</div>        
-</div>        
-<br>
+      <% end %>
+    </div>
+  </div>
+  <div class="conesst-card">
+    <div class="conesst-card-header">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-paperclip fs-5"></i>
+        <span>Archivos adjuntos</span>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <% if @unsafe_condition.evidencias.attached? %>
+        <div data-controller="previews">
+          <div class="row g-3">
+            <% @unsafe_condition.evidencias.each do |file| %>
+              <div class="col-12 col-md-6 col-xl-4">
+                <div class="conesst-info-card h-100">
+                  <% if file.image? %>
+                    <div class="text-center mb-3">
+                      <%= image_tag file, data: { previews_target: "preview" }, class: "img-fluid rounded", style: "max-height: 300px; object-fit: contain;", alt: file.filename.to_s %>
+                    </div>
+                  <% elsif file.video? %>
+                    <div class="mb-3">
+                      <%= video_tag url_for(file), controls: true, class: "img-fluid w-100 rounded", preload: "metadata" %>
+                    </div>
+                  <% elsif file.audio? %>
+                    <div class="mb-3">
+                      <%= audio_tag url_for(file), controls: true, class: "w-100" %>
+                    </div>
+                  <% else %>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                      <i class="bi bi-file-earmark fs-2"></i>
+                      <div class="flex-grow-1 text-break">
+                        <div class="fw-semibold">
+                          <%= file.filename %>
+                        </div>
+                        <small class="text-muted">
+                          <%= number_to_human_size(file.byte_size) %>
+                        </small>
+                      </div>
+                    </div>
+                  <% end %>
+                  <% if file.image? || file.video? || file.audio? %>
+                    <div class="small text-muted text-break mb-3">
+                      <i class="bi bi-file-earmark me-1"></i>
+                      <%= file.filename %>
+                      <span class="d-block mt-1">
+                        <%= number_to_human_size(file.byte_size) %>
+                      </span>
+                    </div>
+                  <% end %>
+                  <%# Acciones del archivo %>
+                  <div class="conesst-actions-wrap">
+                    <%= link_to rails_blob_path(file, disposition: "attachment"), class: "conesst-btn conesst-btn-success", target: "_blank", rel: "noopener" do %>
+                      <i class="bi bi-download me-1"></i>
+                      Descargar
+                    <% end %>
+                    <%= link_to purge_attachment_path(file), class: "conesst-btn conesst-btn-danger", data: {turbo_method: :delete, turbo_confirm: "¿Está seguro de eliminar este archivo?"} do %>
+                      <i class="bi bi-trash me-1"></i>
+                      Eliminar
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% else %>
+        <div class="conesst-empty text-center py-4">
+          <i class="bi bi-folder2-open fs-1 d-block mb-2"></i>
+          <p class="mb-1 fw-semibold">No hay archivos adjuntos</p>
+          <small class="text-muted">
+            Los archivos que cargues aparecerán aquí.
+          </small>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,130 +1,286 @@
-<br>
-<div class="container col-12 card p-5">
-    <br>
-    <h2>Usuarios Hábiles</h2>  
-    <div class="row g-2">
-        <div class="col-sm-4">
-            <% @cant_reg =   @habiles.where("vote = ?",0).count if  @habiles.present? %>
-            <% if @cant_reg.present? %>
-                <!-- Button trigger modal --> 
-                <button class="btn btn-sm btn-outline-danger position-relative" data-bs-toggle="modal" data-bs-target="#exampleModal" >
-                    Usuarios pendientes por votar
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                          <%= @cant_reg %>+
-                        <span class="visually-hidden">unread messages</span>
-                    </span>
-                </button>
-                <div class="row" >  
-                    <div align="right"; class="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-              
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel"><strong>Usuarios pendientes por votar</strong></h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="conesst-page">
+    <div class="container-fluid px-2 px-md-3">
+        <div class="conesst-card">
+            <div class="conesst-card-header">
+                <div class="conesst-card-header-content">
+                    <h2 class="conesst-card-header-title">
+                        <i class="bi bi-people me-2"></i>
+                        Usuarios Hábiles
+                    </h2>
+                    <p class="conesst-card-header-subtitle">
+                        Consulte el estado de participación de los usuarios en la votación.
+                    </p>
+                </div>
+            </div>
+            <div class="card-body p-3 p-md-4">
+                <% if @habiles.present? %>
+                    <% @cant_reg = @habiles.where(vote: 0).count %>
+                    <% @cant_regya = @habiles.where(vote: 1).count %>
+                <% else %>
+                    <% @cant_reg = 0 %>
+                    <% @cant_regya = 0 %>
+                <% end %>
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-md-6">
+                        <div class="card h-100 border-danger">
+                            <div class="card-body p-3">
+                                <div class="d-flex align-items-center justify-content-between gap-2">
+                                    <div class="flex-grow-1">
+                                        <div class="fw-semibold text-danger">
+                                            <i class="bi bi-hourglass-split me-1"></i>
+                                            Pendientes por votar
+                                        </div>
+                                        <div class="text-muted small mt-1">
+                                            Usuarios que aún no han registrado su voto.
+                                        </div>
                                     </div>
-                                    <div class="modal-body">
-                                        <table>
-                                            <tr>     
-                                                <td style="width: 15%;"><strong>Documento</strong></td>
-                                                <td style="width: 30%;"><strong>Nombre</strong></td>
-                                            </tr>    
-                                            <% if  @habiles.present? %>
-                                                <%  @habiles.where("vote = ?",0).each do |habiles| %>
-                                                    <tr>
-                                                        <td style="width: 15%;"><h5></br><%= habiles.user.nro_document %></h5></td>
-                                                        <td style="width: 30%;"><h5></br><%= habiles.user.name %></h5></td>
-                                                    </tr>
-                                                <% end %>
-                                            <% end %>        
-                                        </table>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    <div class="text-danger fw-bold fs-3">
+                                        <%= @cant_reg %>
                                     </div>
                                 </div>
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-danger mt-3"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalPendientes">
+                                    <i class="bi bi-eye me-1"></i>
+                                    Ver usuarios
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="card h-100 border-primary">
+                            <div class="card-body p-3">
+                                <div class="d-flex align-items-center justify-content-between gap-2">
+                                    <div class="flex-grow-1">
+                                        <div class="fw-semibold text-primary">
+                                            <i class="bi bi-check-circle me-1"></i>
+                                            Usuarios que ya votaron
+                                        </div>
+                                        <div class="text-muted small mt-1">
+                                            Usuarios que ya registraron su voto.
+                                        </div>
+                                    </div>
+                                    <div class="text-primary fw-bold fs-3">
+                                        <%= @cant_regya %>
+                                    </div>
+                                </div>
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-primary mt-3"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalVotaron">
+                                    <i class="bi bi-eye me-1"></i>
+                                    Ver usuarios
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-            <% end %>
-        </div>
-        <div class="col-sm-5">        
-            <% @cant_regya =   @habiles.where("vote = ?",1).count if  @habiles.present? %>
-            <% if @cant_regya.present? %>
-                <!-- Button trigger modal --> 
-                <button class="btn btn-sm btn-outline-primary position-relative" data-bs-toggle="modal" data-bs-target="#exampleModaldos" >
-                    Usuarios que ya votaron
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
-                          <%= @cant_regya %>+
-                         <span class="visually-hidden">unread messages</span>
-                    </span>
-                </button>
-                <div class="row" >  
-                    <div align="right"; class="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-              
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModaldos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel"><strong>Usuarios pendientes por votar</strong></h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal fade"
+                     id="modalPendientes"
+                     tabindex="-1"
+                     aria-labelledby="modalPendientesLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalPendientesLabel">
+                                    <i class="bi bi-hourglass-split me-2 text-danger"></i>
+                                    Usuarios pendientes por votar
+                                </h5>
+                                <button type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body">
+                                <% pendientes = @habiles.select { |habil| habil.vote == 0 || habil.vote.to_s == "0" } %>
+                                <% if pendientes.any? %>
+                                    <div class="list-group list-group-flush">
+                                        <% pendientes.each do |habil| %>
+                                            <div class="list-group-item px-0">
+                                                <div class="fw-semibold text-break">
+                                                    <%= habil.user&.name %>
+                                                </div>
+                                                <div class="small text-muted">
+                                                    Documento:
+                                                    <%= habil.user&.nro_document %>
+                                                </div>
+                                            </div>
+                                        <% end %>
                                     </div>
-                                    <div class="modal-body">
-                                        <table>
-                                            <tr>     
-                                                <td style="width: 15%;"><strong>Documento</strong></td>
-                                                <td style="width: 30%;"><strong>Nombre</strong></td>
-                                            </tr>    
-                                            <% if  @habiles.present? %>
-                                                <%  @habiles.where("vote = ?",1).each do |habiles| %>
-                                                    <tr>
-                                                        <td style="width: 15%;"><h5></br><%= habiles.user.nro_document %></h5></td>
-                                                        <td style="width: 30%;"><h5></br><%= habiles.user.name %></h5></td>
-                                                    </tr>
-                                                <% end %>
-                                            <% end %>        
-                                        </table>
+                                <% else %>
+                                    <div class="text-center text-muted py-3">
+                                        No hay usuarios pendientes por votar.
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                    </div>
-                                </div>
+                                <% end %>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button"
+                                        class="btn btn-outline-secondary"
+                                        data-bs-dismiss="modal">
+                                    Cerrar
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-            <% end %>
-        </div>
-    </div>    
-    <hr>
-    <% if @habiles.present? %>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Cargo</th>
-                    <th scope="col">Voto</th>
-                    <th scope="col">Ver</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% @habiles.each do |habil| %>
-                    <tr> 
-                        <td><%= habil.user.name %></td>
-                        <td><%= User.label_activity(habil.user.activity) %></td>
-                        <td><%= HabilVote.label_voto(habil.vote) %></td>
-                        <td><%= link_to "Ver", ver_votacion_path(habil.id), class: 'btn btn-sm btn-primary'  %></td>
-                    </tr>
-                <% end %>     
-            </tbody>      
-        </table>
-    <% end %> 
-    <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, adm_votes_path(entity_id: Current.user.entity) %>
-</div>
-<br>    
+                <div class="modal fade"
+                     id="modalVotaron"
+                     tabindex="-1"
+                     aria-labelledby="modalVotaronLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalVotaronLabel">
+                                    <i class="bi bi-check-circle me-2 text-primary"></i>
+                                    Usuarios que ya votaron
+                                </h5>
+                                <button type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body">
+                                <% votaron = @habiles.select { |habil| habil.vote == 1 || habil.vote.to_s == "1" } %>
+                                <% if votaron.any? %>
+                                    <div class="list-group list-group-flush">
+                                        <% votaron.each do |habil| %>
+                                            <div class="list-group-item px-0">
+                                                <div class="fw-semibold text-break">
+                                                    <%= habil.user&.name %>
+                                                </div>
+                                                <div class="small text-muted">
+                                                    Documento:
+                                                    <%= habil.user&.nro_document %>
+                                                </div>
+                                            </div>
+                                        <% end %>
+                                    </div>
+                                <% else %>
+                                    <div class="text-center text-muted py-3">
+                                        No hay usuarios que hayan votado.
+                                    </div>
+                                <% end %>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button"
+                                        class="btn btn-outline-secondary"
+                                        data-bs-dismiss="modal">
+                                    Cerrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-4">
+                <% if @habiles.present? %>
+                    <div class="d-none d-md-block">
+                        <div class="conesst-table-wrapper">
+                            <table class="table table-hover align-middle conesst-table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Cargo</th>
+                                        <th scope="col">Voto</th>
+                                        <th scope="col" class="text-center">Ver</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% @habiles.each do |habil| %>
+                                        <tr>
+                                            <td class="text-break">
+                                                <%= habil.user&.name %>
+                                            </td>
 
- 
+                                            <td class="text-break">
+                                                <%= User.label_activity(habil.user.activity) if habil.user.present? %>
+                                            </td>
+                                            <td>
+                                                <% if habil.vote == 1 || habil.vote.to_s == "1" %>
+                                                    <span class="badge rounded-pill text-bg-success">
+                                                        <i class="bi bi-check-circle me-1"></i>
+                                                        <%= HabilVote.label_voto(habil.vote) %>
+                                                    </span>
+                                                <% else %>
+                                                    <span class="badge rounded-pill text-bg-danger">
+                                                        <i class="bi bi-clock me-1"></i>
+                                                        <%= HabilVote.label_voto(habil.vote) %>
+                                                    </span>
+                                                <% end %>
+                                            </td>
+                                            <td class="text-center">
+                                                <%= link_to ver_votacion_path(habil.id),
+                                                    class: "conesst-btn conesst-btn-primary btn-sm" do %>
+                                                    <i class="bi bi-eye me-1"></i>
+                                                    Ver
+                                                <% end %>
+                                            </td>
+                                        </tr>
+                                    <% end %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="d-md-none">
+                        <div class="row g-3">
+                            <% @habiles.each do |habil| %>
+                                <div class="col-12">
+                                    <div class="card border shadow-sm">
+                                        <div class="card-body p-3">
+                                            <div class="d-flex align-items-start gap-2 mb-3">
+                                                <div class="flex-grow-1 min-w-0">
+                                                    <div class="fw-semibold text-break">
+                                                        <%= habil.user&.name %>
+                                                    </div>
+                                                    <div class="text-muted small text-break">
+                                                        <%= User.label_activity(habil.user.activity) if habil.user.present? %>
+                                                    </div>
+                                                </div>
+                                                <% if habil.vote == 1 || habil.vote.to_s == "1" %>
+                                                    <span class="badge rounded-pill text-bg-success flex-shrink-0">
+                                                        <i class="bi bi-check-circle me-1"></i>
+                                                        Votó
+                                                    </span>
+                                                <% else %>
+                                                    <span class="badge rounded-pill text-bg-danger flex-shrink-0">
+                                                        <i class="bi bi-clock me-1"></i>
+                                                        Pendiente
+                                                    </span>
+                                                <% end %>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center gap-2">
+                                                <span class="small text-muted">
+                                                    Estado: <%= HabilVote.label_voto(habil.vote) %>
+                                                </span>
+                                                <%= link_to ver_votacion_path(habil.id), class: "conesst-btn conesst-btn-primary btn-sm flex-shrink-0" do %>
+                                                    <i class="bi bi-eye me-1"></i>
+                                                    Ver
+                                                <% end %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% end %>
+                        </div>
+                    </div>
+                <% else %>
+                    <div class="text-center py-5">
+                        <i class="bi bi-people fs-1 text-muted"></i>
+                        <h5 class="mt-3">No hay usuarios hábiles registrados</h5>
+                        <p class="text-muted mb-0">
+                            Cuando existan usuarios habilitados para votar, aparecerán en este listado.
+                        </p>
+                    </div>
+                <% end %>
+                <div class="conesst-actions mt-4">
+                    <%= link_to adm_votes_path(entity_id: Current.user.entity), class: "conesst-btn btn-sm btn-outline-secondary" do %>
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Retornar
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

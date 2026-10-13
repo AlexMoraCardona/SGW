@@ -18,6 +18,7 @@ class AdmVotesController < ApplicationController
     end    
 
     def new
+      @template = Template.where("reference = ? and document_vigente = ?",'FV-SST',1).last  
       @adm_vote = AdmVote.new  
     end    
 
@@ -67,34 +68,37 @@ class AdmVotesController < ApplicationController
     end   
     
     def show
-        @template = Template.where("format_number = ? and document_vigente = ?",101,1).last  
         @adm_vote = AdmVote.find(params[:id])
         @candidate_votes = CandidateVote.where("adm_vote_id = ?",@adm_vote.id) if @adm_vote.present?
         @entity = Entity.find(@adm_vote.entity_id) if @adm_vote.present?
+        @template = Template.where("reference = ? and version = ?",@adm_vote.code,@adm_vote.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
+
 
     end    
 
     def adm_vote_pdf
-        @template = Template.where("format_number = ? and document_vigente = ?",101,1).last  
         @adm_vote = AdmVote.find(params[:id])
         @candidate_votes = CandidateVote.where("adm_vote_id = ?",@adm_vote.id) if @adm_vote.present?
         @entity = Entity.find(@adm_vote.entity_id) if @adm_vote.present?
+        @template = Template.where("reference = ? and version = ?",@adm_vote.code,@adm_vote.version).last  
+        @template_versions = Template.where(reference: @template.reference, standar_detail_item_id: @template.standar_detail_item_id).order(:date, :version) if @template.present?
 
-        @footer = 'Nit: ' + @entity.identification_number.to_s + ', Dirección: ' + @entity.entity_address.to_s
-
-
+        nombre_archivo = @template.reference.to_s + '.pdf'
         respond_to do |format| 
             format.html
-            format.pdf {render  pdf: 'verpdfvotos',
-                margin: {top: 10, bottom: 10, left: 10, right: 10 },
-                disable_javascript: true,
-                page_size: 'letter',
-                footer: {
-                    right: 'Página: [page] de [topage]'
-                   }                
-                       } 
-        end
-
+            format.pdf {header_html = render_to_string( partial: 'templates/header')
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string('adm_vote_pdf'),
+                    disable_javascript: true,
+                    margin: {top: 50, bottom: 10, left: 5, right: 5 },
+                    page_size: 'letter',
+                    header: {spacing: 5,
+                    content: header_html}
+                )  
+                send_data(pdf, filename: nombre_archivo, disposition: 'attachment')      
+            }
+        end    
 
     end    
 
@@ -103,7 +107,7 @@ class AdmVotesController < ApplicationController
     private  
       
     def adm_vote_params
-        params.require(:adm_vote).permit(:date_initial, :date_final, :total_candidates, :votes_max, :titulo_vote, :observation, :entity_id)
+        params.require(:adm_vote).permit(:date_initial, :date_final, :total_candidates, :votes_max, :titulo_vote, :observation, :entity_id, :version, :code)
     end
 end    
 

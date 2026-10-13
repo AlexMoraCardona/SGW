@@ -1,53 +1,154 @@
-<div class="container col-12">
-    <% if @entity.present? %>
-        <h2><%= @entity.business_name %> Nit: <%=@entity.identification_number %></h2>
-    <% end %>
-    <br>
-    <%= link_to t('.create_unsafe_condition'), new_unsafe_condition_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
-    <br>
-    <% if @unsafe_conditions.present? %>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col"><%= t('.date_report') %></th>
-                    <th scope="col"><%= t('.user_reports') %></th>
-                    <th scope="col"><%= t('.user_receiving') %></th>
-                    <th scope="col">Firma usuario reporta</th>
-                    <th scope="col">Firma usuario recibe</th>
-                    <th scope="col">Adicionar Evidencias</th>
-                    <th scope="col">Editar</th>
-                    <th scope="col">Ver</th>
-                    <th scope="col">PDF</th>
-                </tr>
-            </thead> 
-            <tbody> 
-                <% @unsafe_conditions.each do |unsafe_condition| %>
-                    <tr>
-                        <td><%= unsafe_condition.date_report %></td>
-                        <td><%= UnsafeCondition.name_user(unsafe_condition.user_reports) %></td>
-                        <td><%= UnsafeCondition.name_user(unsafe_condition.user_receiving) %></td>
-                        <td style="text-align:center">
-                            <% if unsafe_condition.firm_user_reports.to_i == 0 %>
-                                <%= link_to t('common.firmar'), firmar_reporta_path(unsafe_condition.id, 1), class: 'btn btn-sm btn btn-warning' %>
-                            <% end %>
-                        </td>
-                        <td style="text-align:center">
-                            <% if unsafe_condition.firm_user_receiving.to_i == 0 %>
-                                <%= link_to t('common.firmar'), firmar_recibe_path(unsafe_condition.id, 2), class: 'btn btn-sm btn btn-warning' %>
-                            <% else %>
-                                <%= unsafe_condition.date_firm_user_receiving %>
-                            <% end %>
-                        </td>
-                        <td style="text-align:center"><%= link_to t('common.add_evidences'), add_evidences_path(unsafe_condition.id), class: 'btn btn-sm btn-warning' %></td>
-                        <td><%= link_to t('common.edit'), edit_unsafe_condition_path(unsafe_condition.id), class: 'btn btn-sm btn-warning'  %></td>
-                        <td style="text-align:center"><%= link_to t('common.show'), unsafe_condition_path(unsafe_condition.id), class: 'btn btn-sm btn-primary' %></td>
-                        <td style="text-align:center"><%= link_to "PDF", unsafe_condition_pdf_path(unsafe_condition.id, format: 'pdf'), class: 'btn btn-sm btn-success' %> &nbsp;</td>
-
-                    </tr>
-                <% end %>           
-            </tbody>      
-        </table>  
-    <% end %>     
-<div>
-
-
+<div class="container-fluid px-2 px-md-3 py-3">
+  <% if @entity.present? %>
+    <div class="conesst-company-header mb-4">
+      <div class="d-flex align-items-center gap-3">
+        <div class="conesst-company-icon">
+          <i class="bi bi-building"></i>
+        </div>
+        <div class="flex-grow-1">
+          <h4 class="conesst-company-title mb-1">
+            <%= @entity.business_name %>
+          </h4>
+          <div class="conesst-company-nit">
+            <strong>NIT:</strong>
+            <%= @entity.identification_number %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        <div>
+          <h5 class="mb-1">
+            <i class="bi bi-shield-exclamation me-2"></i>
+            Reportes de actos y condiciones inseguras
+          </h5>
+          <small class="text-muted">
+            Consulta, seguimiento y administración de reportes.
+          </small>
+        </div>
+        <div class="conesst-actions-wrap">
+          <%= link_to new_unsafe_condition_path(entity_id: @entity.id),  class: "conesst-btn conesst-btn-primary" do %>
+            <i class="bi bi-plus-circle me-1"></i>
+            <%= t('.create_unsafe_condition') %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body">
+      <% if @unsafe_conditions.present? %>
+        <% @unsafe_conditions.each do |unsafe_condition| %>
+          <div class="conesst-info-card mb-3">
+            <div class="conesst-info-card-title">
+              <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <span>
+                  <i class="bi bi-calendar-event me-2"></i>
+                  <%= t('.date_report') %>
+                </span>
+                <strong>
+                  <%= unsafe_condition.date_report %>
+                </strong>
+              </div>
+            </div>
+            <div class="p-3">
+              <div class="row g-3 mb-3">
+                <div class="col-12 col-md-6">
+                  <div class="conesst-data-label">
+                    <i class="bi bi-person-check me-1"></i>
+                    <%= t('.user_reports') %>
+                  </div>
+                  <div class="conesst-data-value">
+                    <%= UnsafeCondition.name_user(unsafe_condition.user_reports) %>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="conesst-data-label">
+                    <i class="bi bi-person-badge me-1"></i>
+                    <%= t('.user_receiving') %>
+                  </div>
+                  <div class="conesst-data-value">
+                    <%= UnsafeCondition.name_user(unsafe_condition.user_receiving) %>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="row g-3 mb-3">
+                <div class="col-12 col-md-6">
+                  <div class="conesst-data-label mb-2">
+                    <i class="bi bi-pen me-1"></i>
+                    Firma usuario que reporta
+                  </div>
+                  <% if unsafe_condition.firm_user_reports.to_i == 0 %>
+                    <%= link_to firmar_reporta_path(unsafe_condition.id, 1),  class: "conesst-btn conesst-btn-warning" do %>
+                      <i class="bi bi-vector-pen me-1"></i>
+                      <%= t('common.firmar') %>
+                    <% end %>
+                  <% else %>
+                    <span class="text-success">
+                      <i class="bi bi-check-circle-fill me-1"></i>
+                      Firmado
+                    </span>
+                  <% end %>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="conesst-data-label mb-2">
+                    <i class="bi bi-pen me-1"></i>
+                    Firma usuario que recibe
+                  </div>
+                  <% if unsafe_condition.firm_user_receiving.to_i == 0 %>
+                    <%= link_to firmar_recibe_path(unsafe_condition.id, 2), class: "conesst-btn conesst-btn-warning" do %>
+                      <i class="bi bi-vector-pen me-1"></i>
+                      <%= t('common.firmar') %>
+                    <% end %>
+                  <% else %>
+                    <div class="conesst-data-value">
+                      <i class="bi bi-check-circle-fill text-success me-1"></i>
+                      <%= unsafe_condition.date_firm_user_receiving %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+              <hr>
+              <div class="conesst-data-label mb-2">
+                <i class="bi bi-gear me-1"></i>
+                Acciones del reporte
+              </div>
+              <div class="conesst-actions-wrap">
+                <%= link_to add_evidences_path(unsafe_condition.id), class: "conesst-btn conesst-btn-warning" do %>
+                  <i class="bi bi-paperclip me-1"></i>
+                  <%= t('common.add_evidences') %>
+                <% end %>
+                <%= link_to edit_unsafe_condition_path(unsafe_condition.id), class: "conesst-btn conesst-btn-warning" do %>
+                  <i class="bi bi-pencil-square me-1"></i>
+                  <%= t('common.edit') %>
+                <% end %>
+                <%= link_to unsafe_condition_path(unsafe_condition.id), class: "conesst-btn conesst-btn-primary" do %>
+                  <i class="bi bi-eye me-1"></i>
+                  <%= t('common.show') %>
+                <% end %>
+                <%= link_to unsafe_condition_pdf_path(unsafe_condition.id, format: 'pdf'), class: "conesst-btn conesst-btn-success" do %>
+                  <i class="bi bi-file-earmark-pdf me-1"></i>
+                  PDF
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="conesst-empty text-center py-4">
+          <i class="bi bi-clipboard2-x fs-1 d-block mb-3"></i>
+          <h6>No hay reportes registrados</h6>
+          <p class="mb-3">
+            Todavía no hay actos o condiciones inseguras para consultar.
+          </p>
+          <%= link_to new_unsafe_condition_path(entity_id: @entity.id), class: "conesst-btn conesst-btn-primary" do %>
+            <i class="bi bi-plus-circle me-1"></i>
+            <%= t('.create_unsafe_condition') %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,41 +1,83 @@
-<div class="container col-12 card p-5">
-    <br>
-    <%= form_with model: @candidate_vote do |form| %>
-        <% @candidate_vote.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
+<div class="conesst-page">
+    <div class="container-fluid px-2 px-md-3">
+        <div class="conesst-card">
+            <div class="conesst-card-header">
+                <div class="conesst-card-header-content">
+                    <h2 class="conesst-card-header-title">
+                        <i class="bi bi-person-gear me-2"></i>
+                        Configuración de Candidatos
+                    </h2>
+                    <p class="conesst-card-header-subtitle">
+                        Registre o actualice la información del candidato.
+                    </p>
+                </div>
             </div>
-        <% end %>  
-        <br>
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Seleccione el candidato.">Candidato:<%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>
-                <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id,  :name, style: "width=50px" %>
-        </div>
-        </br>
-        <div class="form-group">    
-            <button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-html="true" title="Observaciones."><%= t('.observations') %> <%= image_tag 'ayuda.png',:width => "25",  :height=>"25" %></button>           
-            <%= form.text_field :observations,  class: "form-control" %>
-        </div>
-        <br>
-        <div class="row g-2">
-            <div class="col-sm-5">
-                <%= form.label :avatar_candidate,  style: "display: block" %> 
-                <%= form.file_field :avatar_candidate,  class: "form-control", accept:"image/*", capture:"environment" %>
-            </div>
-            <div class="col-sm-5">
-                <% if @candidate_vote.present? %>
-                    <% if @candidate_vote.avatar_candidate.attached? %>
-                        <% if @candidate_vote.avatar_candidate.image? %> 
-                            <%= image_tag @candidate_vote.avatar_candidate, data: {previews_target: "preview"}, class: "avatar-mini" %>
-                        <% end %>
-                    <% else %> 
-                        <%= image_tag("avatar.jpg", class: "avatar-mini") %>
+            <div class="card-body p-3 p-md-4">
+                <%= form_with model: @candidate_vote do |form| %>
+                    <% if @candidate_vote.errors.any? %>
+                        <div class="alert alert-danger" role="alert">
+                            <ul class="mb-0">
+                                <% @candidate_vote.errors.full_messages.each do |error| %>
+                                    <li><%= error %></li>
+                                <% end %>
+                            </ul>
+                        </div>
                     <% end %>
-                <% end %> 
+                    <div class="row g-3">
+                        <div class="col-12 col-md-6">
+                            <%= form.label :user_id, class: "form-label fw-semibold" do %>
+                                Candidato
+                                <%= image_tag "ayuda.png", width: 20, height: 20, data: { bs_toggle: "tooltip" }, title: "Seleccione el candidato." %>
+                            <% end %>
+                            <%= form.collection_select :user_id, User.usuarios_empresa.order(id: :asc), :id, :name, { prompt: "Seleccione un candidato" }, { class: "form-select", required: true } %>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <%= form.label :observations, class: "form-label fw-semibold" do %>
+                                <%= t('.observations') %>
+                                <%= image_tag "ayuda.png", width: 20, height: 20, data: { bs_toggle: "tooltip" }, title: "Ingrese las observaciones del candidato." %>
+                            <% end %>
+                            <%= form.text_field :observations, class: "form-control" %>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <%= form.label :avatar_candidate, "Fotografía del candidato", class: "form-label fw-semibold" %>
+
+                            <%= form.file_field :avatar_candidate, class: "form-control", accept: "image/*",
+                                capture: "environment" %>
+
+                            <small class="form-text text-muted">
+                                Seleccione una imagen para el candidato.
+                            </small>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label class="form-label fw-semibold">
+                                Fotografía actual
+                            </label>
+
+                            <div class="d-flex align-items-center">
+                                <% if @candidate_vote.avatar_candidate.attached? && @candidate_vote.avatar_candidate.image? %>
+                                    <%= image_tag @candidate_vote.avatar_candidate, data: { previews_target: "preview" }, class: "avatar-mini" %>
+                                <% else %>
+                                    <%= image_tag "avatar.jpg", class: "avatar-mini" %>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="conesst-actions mt-4">
+                        <%= form.button type: "submit", class: "conesst-btn conesst-btn-primary" do %>
+                            <i class="bi bi-save me-1"></i>
+                            <%= t('common.submit') %>
+                        <% end %>
+                        <%= link_to adm_votes_path(entity_id: @candidate_vote.adm_vote.entity_id), class: "conesst-btn btn-sm btn-outline-secondary" do %>
+                            <i class="bi bi-arrow-left me-1"></i>
+                            Retornar
+                        <% end %>
+                    </div>
+                <% end %>
             </div>
-        </div>            
-        <br> 
-        <button type="submit" class="btn btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-primary" type="button">Retornar</button>'.html_safe, adm_votes_path(entity_id: @candidate_vote.adm_vote.entity_id) %>
-    <% end %>
-</div>        
+        </div>
+    </div>
+</div>

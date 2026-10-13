@@ -1,18 +1,24 @@
 <tr>
-  <td><%= list.numero %></td>
-  <td><%= list.created_at.strftime("%Y-%m-%d") %></td>
-  <td><%= List.label_entity(list.entity_id) %></td>
-  <td><%= List.label_name(list.check_list_id) %></td>
-
   <td>
-    <%= link_to list_path(list.id),
-        class: "conesst-btn conesst-btn-primary" do %>
+    <%= list.numero %>
+  </td>
+  <td>
+    <%= list.created_at.strftime("%Y-%m-%d") %>
+  </td>
+  <td style="overflow-wrap: anywhere;">
+    <%= List.label_entity(list.entity_id) %>
+  </td>
+  <td style="overflow-wrap: anywhere;">
+    <%= List.label_name(list.check_list_id) %>
+  </td>
+  <td>
+    <%= link_to list_path(list.id), class: "conesst-btn conesst-btn-primary" do %>
       <i class="bi bi-eye me-1"></i>
       <%= t('common.ver') %>
     <% end %>
   </td>
   <td>
-    <%= button_to list, method: :delete, class: "btn btn-sm btn-danger" do %>
+    <%= button_to list, method: :delete, class: "btn btn-sm btn-danger", form: {data: {turbo_confirm: "¿Está seguro de eliminar esta lista de chequeo?"}} do %>
       <i class="bi bi-trash me-1"></i>
       <%= t('common.delete') %>
     <% end %>

@@ -1,36 +1,96 @@
-<div class="container col-11 card p-5">
-    <br>
-    <%= form_with model: @description_job do |form| %>
-        <% @description_job.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
+<div class="conesst-page" style="width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box;">
+  <div class="conesst-card mb-4">
+    <div class="conesst-card-header">
+      <div class="conesst-card-header-content">
+        <div style="min-width: 0;">
+          <h5 class="conesst-card-header-title">
+            <i class="bi bi-pen me-2"></i>
+            Autorización de firma
+          </h5>
+          <p class="conesst-card-header-subtitle mb-0">
+            Usuario responsable de elaborar la descripción del cargo.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card-body" style="width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box;">
+      <%= form_with model: @description_job, local: true do |form| %>
+        <% if @description_job.errors.any? %>
+          <div class="alert alert-danger" role="alert">
+            <div class="fw-bold mb-2">
+              <i class="bi bi-exclamation-triangle me-2"></i>
+              No fue posible guardar la información.
             </div>
+            <ul class="mb-0 ps-3">
+              <% @description_job.errors.full_messages.each do |error| %>
+                <li><%= error %></li>
+              <% end %>
+            </ul>
+          </div>
         <% end %>
-
-        <table>
-            <tr>
-                <td>
-                    <h4>Usuario Elaboró Cargo</h4> 
-                    <%= DescriptionJob.name_user(@description_job.user_elaboro) %>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <h4>Firma autorizada del Usuario</h4> 
-                    <%= form.radio_button :firm_elaboro, 0 %>
-                    <label for="no">No</label>&nbsp;&nbsp; 
-                    <%= form.radio_button :firm_elaboro, 1 %>
-                    <label for="si">Si</label>&nbsp;&nbsp;   
-                </td>
-            </tr>
-        </table>
-        <%= form.hidden_field :date_firm_elaboro, :value => Time.now, class: "form-control" %>
-
-
-        <br>    
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
-    <% end %>
-</div>        
-<br>
-
+        <div class="rounded-3 border p-3 p-md-4 mb-4" style="background-color: #f8fafc; min-width: 0;">
+          <div class="d-flex align-items-start gap-3">
+            <div class="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0"
+                 style="width: 48px; height: 48px; background-color: #e8f4fc; color: #075f91;">
+              <i class="bi bi-person-badge fs-4"></i>
+            </div>
+            <div style="min-width: 0; overflow-wrap: anywhere;">
+              <div class="text-muted small mb-1">
+                Usuario elaboró el cargo
+              </div>
+              <h6 class="fw-bold mb-0">
+                <%= DescriptionJob.name_user(@description_job.user_elaboro) %>
+              </h6>
+            </div>
+          </div>
+        </div>
+        <div class="mb-4">
+          <h6 class="fw-bold mb-2">
+            <i class="bi bi-shield-check me-2" style="color: #075f91;"></i>
+            Firma autorizada del usuario
+          </h6>
+          <p class="text-muted small mb-3">
+            Indica si el usuario está autorizado para firmar la elaboración
+            de la descripción del cargo.
+          </p>
+          <div class="row g-3">
+            <!-- Opción No -->
+            <div class="col-12 col-sm-6">
+              <label for="<%= form.field_id(:firm_elaboro, 0) %>" class="d-flex align-items-center gap-3 border rounded-3 p-3 h-100" style="cursor: pointer; min-width: 0;">
+                <%= form.radio_button :firm_elaboro, 0, class: "form-check-input flex-shrink-0 m-0" %>
+                <div style="min-width: 0;">
+                  <div class="fw-semibold">No</div>
+                  <div class="text-muted small">
+                    No autorizar la firma.
+                  </div>
+                </div>
+              </label>
+            </div>
+            <div class="col-12 col-sm-6">
+              <label for="<%= form.field_id(:firm_elaboro, 1) %>" class="d-flex align-items-center gap-3 border rounded-3 p-3 h-100" style="cursor: pointer; min-width: 0;">
+                <%= form.radio_button :firm_elaboro, 1, class: "form-check-input flex-shrink-0 m-0" %>
+                <div style="min-width: 0;">
+                  <div class="fw-semibold">Sí</div>
+                  <div class="text-muted small">
+                    Autorizar la firma.
+                  </div>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+        <%= form.hidden_field :date_firm_elaboro, value: Time.current, class: "form-control" %>
+        <div class="conesst-actions mt-4">
+          <button type="submit" class="conesst-btn conesst-btn-primary">
+            <i class="bi bi-check-circle me-2"></i>
+            <%= t('common.submit') %>
+          </button>
+          <%= link_to :back, class: "conesst-btn", style: "background-color: #6c757d; color: #fff; text-decoration: none;" do %>
+            <i class="bi bi-arrow-left me-2"></i>
+            Retornar
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,62 +1,155 @@
 <% if @entity.present? %>
-    <h2><%= @entity.business_name %> Nit: <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %>-<%= @entity.verification_digit if @entity.verification_digit.present? %></h2>
-<% end %>
-
-
-<% if @description_jobs.present? %>
-    <%= link_to t('common.create_description_job'), new_description_job_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
-
-    <table class="table table-hover"> 
-        <thead>
-            <tr>
-                <th scope="col">Fecha de Emisión</th>
-                <th scope="col"><%= t('.name_job') %></th>
-                <th scope="col"><%= t('.state_job') %></th>
-                <th scope="col">Firma Elaboró</th>
-                <th scope="col">Firma Revisó</th>
-                <th scope="col">Firma Aprobó</th>
-                <th scope="col"><%= t('common.show') %></th>
-                <th scope="col"><%= t('common.edit') %></th>
-                <th scope="col"><%= t('common.delete') %></th>
-                <th scope="col"><%= t('common.pdf') %></th>
-            </tr>
-        </thead>
-
-        <% @description_jobs.each do |description_job| %>
-            <tr> 
-                <td><%= description_job.date_firm_aprobo if description_job.date_firm_aprobo.present? %></td>
-                <td><%= description_job.name_job %></td>
-                <td><%= description_job.label_state_job(description_job.state_job) %></td>
-
-                <% if description_job.firm_elaboro.to_i == 0 %>
-                    <td><%= link_to t('common.firmar'), firmar_ela_description_jobs_path(description_job.id, 1), class: 'btn btn-sm btn btn-warning' %></td>
-                <% else %> 
-                    <td><%= description_job.label_firma(description_job.firm_elaboro) %></td>
-                <% end %>      
-
-                <% if description_job.firm_reviso.to_i == 0 %>
-                    <td><%= link_to t('common.firmar'), firmar_rev_description_jobs_path(description_job.id, 2), class: 'btn btn-sm btn btn-warning' %></td>
-                <% else %> 
-                    <td><%= description_job.label_firma(description_job.firm_reviso) %></td>
-                <% end %> 
-
-                <% if description_job.firm_aprobo.to_i == 0 %>
-                    <td><%= link_to t('common.firmar'), firmar_apr_description_jobs_path(description_job.id, 3), class: 'btn btn-sm btn btn-warning' %></td>
-                <% else %> 
-                    <td><%= description_job.label_firma(description_job.firm_aprobo) %></td>
-                <% end %>  
-
-                <td><%= link_to t('common.show'), description_job, class: 'btn btn-sm btn-primary' %></td>
-                <td><%= link_to t('common.edit'), edit_description_job_path(description_job), class: 'btn btn-sm btn-primary'  %></td>
-                <td><%= button_to "Delete", description_job, method: :delete, class:"btn btn-sm btn-danger" %></td>
-                <td><%= link_to "PDF", pdf_description_jobs_path(description_job.id, format: 'pdf'), class: 'btn btn-sm btn-success' %></td>
-        </tr>
-        <% end %>  
-        <hr>  
-    </table>  
-    <br>
-<% else %>
-    <div>
-        <%= link_to t('common.create_description_job'), new_description_job_path(entity_id: @entity.id), class: 'btn btn-sm btn-primary'  %>
+  <div class="mb-4" style="min-width: 0; max-width: 100%;">
+    <div class="d-flex align-items-start gap-3">
+      <div class="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0"
+           style="width: 46px; height: 46px; background-color: #e8f4fc; color: #075f91;">
+        <i class="bi bi-building fs-4"></i>
+      </div>
+      <div style="min-width: 0; overflow-wrap: anywhere;">
+        <h5 class="fw-bold mb-2">
+          <%= @entity.business_name %>
+        </h5>
+        <div class="text-muted small">
+          <i class="bi bi-card-text me-1"></i>
+          <strong>NIT:</strong>
+          <%= EvaluationRuleDetail.miles(@entity.identification_number) if @entity.identification_number.present? %><% if @entity.verification_digit.present? %>-<%= @entity.verification_digit %><% end %>
+        </div>
+      </div>
     </div>
+  </div>
+<% end %>
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3" style="min-width: 0; max-width: 100%;">
+  <div style="min-width: 0;">
+    <h6 class="fw-bold mb-1">
+      <i class="bi bi-person-vcard me-2" style="color: #075f91;"></i>
+      Descripciones de cargos
+    </h6>
+    <p class="text-muted small mb-0">
+      Consulta, firma y administración de las descripciones de cargos.
+    </p>
+  </div>
+  <div class="conesst-actions flex-shrink-0">
+    <%= link_to new_description_job_path(entity_id: @entity.id), class: "conesst-btn conesst-btn-primary" do %>
+      <i class="bi bi-plus-circle me-2"></i>
+      <%= t('common.create_description_job') %>
+    <% end %>
+  </div>
+</div>
+<% if @description_jobs.present? %>
+  <div class="table-responsive" style="width: 100%; max-width: 100%; min-width: 0; overflow-x: auto; -webkit-overflow-scrolling: touch;">
+    <table class="table table-hover table-bordered align-middle mb-0" style="min-width: 1050px; font-size: 0.88rem;">
+      <thead style="background-color: #f1f5f9;">
+        <tr>
+          <th scope="col" class="text-nowrap">Fecha de emisión</th>
+          <th scope="col"><%= t('.name_job') %></th>
+          <th scope="col" class="text-center">Estado</th>
+          <th scope="col" class="text-center">Firma elaboró</th>
+          <th scope="col" class="text-center">Firma revisó</th>
+          <th scope="col" class="text-center">Firma aprobó</th>
+          <th scope="col" class="text-center"><%= t('common.show') %></th>
+          <th scope="col" class="text-center"><%= t('common.edit') %></th>
+          <th scope="col" class="text-center"><%= t('common.delete') %></th>
+          <th scope="col" class="text-center">PDF</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @description_jobs.each do |description_job| %>
+          <tr>
+            <td class="text-nowrap">
+              <% if description_job.date_firm_aprobo.present? %>
+                <i class="bi bi-calendar3 me-1 text-muted"></i>
+                <%= description_job.date_firm_aprobo %>
+              <% else %>
+                <span class="text-muted">Sin fecha</span>
+              <% end %>
+            </td>
+            <td style="min-width: 180px; overflow-wrap: anywhere;">
+              <span class="fw-semibold">
+                <%= description_job.name_job %>
+              </span>
+            </td>
+            <td class="text-center">
+              <span class="badge rounded-pill bg-light text-dark border">
+                <%= description_job.label_state_job(description_job.state_job) %>
+              </span>
+            </td>
+            <td class="text-center text-nowrap">
+              <% if description_job.firm_elaboro.to_i == 0 %>
+                <%= link_to firmar_ela_description_jobs_path(description_job.id, 1), class: "btn btn-sm btn-warning", title: "Firmar elaboración" do %>
+                  <i class="bi bi-pen me-1"></i>
+                  <%= t('common.firmar') %>
+                <% end %>
+              <% else %>
+                <span class="badge rounded-pill bg-success">
+                  <i class="bi bi-check-circle me-1"></i>
+                  <%= description_job.label_firma(description_job.firm_elaboro) %>
+                </span>
+              <% end %>
+            </td>
+            <td class="text-center text-nowrap">
+              <% if description_job.firm_reviso.to_i == 0 %>
+                <%= link_to firmar_rev_description_jobs_path(description_job.id, 2), class: "btn btn-sm btn-warning", title: "Firmar revisión" do %>
+                  <i class="bi bi-pen me-1"></i>
+                  <%= t('common.firmar') %>
+                <% end %>
+              <% else %>
+                <span class="badge rounded-pill bg-success">
+                  <i class="bi bi-check-circle me-1"></i>
+                  <%= description_job.label_firma(description_job.firm_reviso) %>
+                </span>
+              <% end %>
+            </td>
+            <td class="text-center text-nowrap">
+              <% if description_job.firm_aprobo.to_i == 0 %>
+                <%= link_to firmar_apr_description_jobs_path(description_job.id, 3), class: "btn btn-sm btn-warning", title: "Firmar aprobación" do %>
+                  <i class="bi bi-pen me-1"></i>
+                  <%= t('common.firmar') %>
+                <% end %>
+              <% else %>
+                <span class="badge rounded-pill bg-success">
+                  <i class="bi bi-check-circle me-1"></i>
+                  <%= description_job.label_firma(description_job.firm_aprobo) %>
+                </span>
+              <% end %>
+            </td>
+            <td class="text-center">
+              <%= link_to description_job, class: "btn btn-sm btn-outline-primary", title: t('common.show'), aria: { label: t('common.show') } do %>
+                <i class="bi bi-eye"></i>
+              <% end %>
+            </td>
+            <td class="text-center">
+              <%= link_to edit_description_job_path(description_job), class: "btn btn-sm btn-outline-primary", title: t('common.edit'), aria: { label: t('common.edit') } do %>
+                <i class="bi bi-pencil-square"></i>
+              <% end %>
+            </td>
+            <td class="text-center">
+              <%= button_to description_job, method: :delete, class: "btn btn-sm btn-outline-danger", form: { class: "d-inline" }, title: t('common.delete'), aria: { label: t('common.delete') }, data: { turbo_confirm: "¿Está seguro de eliminar esta descripción de cargo?" } do %>
+                <i class="bi bi-trash"></i>
+              <% end %>
+            </td>
+            <td class="text-center">
+              <%= link_to pdf_description_jobs_path(description_job.id, format: 'pdf'), class: "btn btn-sm btn-outline-success", title: t('common.pdf'), aria: { label: t('common.pdf') } do %>
+                <i class="bi bi-file-earmark-pdf"></i>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="text-muted small mt-2">
+    <i class="bi bi-arrow-left-right me-1"></i>
+    En pantallas pequeñas, desliza la tabla horizontalmente para consultar todas las columnas.
+  </div>
+<% else %>
+  <div class="text-center py-4 px-3 rounded-3 border" style="background-color: #f8fafc; overflow-wrap: anywhere;">
+    <div class="mb-3">
+      <i class="bi bi-clipboard2-x"
+         style="font-size: 2.5rem; color: #64748b;"></i>
+    </div>
+    <h6 class="fw-bold mb-2">No hay descripciones de cargos registradas</h6>
+    <p class="text-muted small mb-0">
+      Puedes crear la primera descripción de cargo utilizando el botón superior.
+    </p>
+  </div>
 <% end %>

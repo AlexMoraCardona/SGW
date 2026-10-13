@@ -1,131 +1,180 @@
-<div class="container col-12 card p-5">
-    <br> 
-    <%= form_with model: @internal_report do |form| %>
-        <% @internal_report.errors.full_messages.each do |error| %>
-            <div class="alert alert-danger" role="alert">
-                <%= error%> <%= alert %>
-            </div>
-        <% end %> 
-        <table style="width: 100%;">
-            <tr>    
-                <td style="width: 30%;border:1px solid black;text-align:center">
-                    <strong>TIPO DE EVENTO:</strong>               
-                </td>
-                <td style="width: 70%;border:1px solid black;text-align:center">
-                    <%= form.radio_button :type_report, 0 %>
-                    <label for="accionpreventiva">INCIDENTE</label>
-                    <%= form.radio_button :type_report, 1 %>
-                    <label for="accionmejora">ACCIDENTE</label>                    
-                    <%= form.radio_button :type_report, 2 %>
-                    <label for="accioncorrectiva">ACCIDENTE GRAVE</label>                    
-                    <%= form.radio_button :type_report, 3 %>
-                    <label for="accioncorrectiva">ACCIDENTE MORTAL</label>                    
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;text-align:center">
-                    <strong>FECHA DE OCURRENCIA:</strong>               
-                </td>
-                <td style="width: 70%;border:1px solid black;text-align:center">
-                    <%= form.date_field :date_report,  class: "form-control" %>               
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;text-align:center">
-                    <strong>HORA DE OCURRENCIA:</strong>               
-                </td>
-                <td style="width: 70%;border:1px solid black;text-align:center">
-                    <%= form.time_field :time_report,  class: "form-control" %>               
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;text-align:center">
-                    <strong>LUGAR DEL INCIDENTE O ACCIDENTE:</strong>               
-                </td>
-                <td style="width: 70%;border:1px solid black;text-align:center">
-                    <%= form.text_field :place,  class: "form-control" %>               
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;text-align:center">
-                    <strong>DESCRIPCIÓN DEL INCIDENTE O ACCIDENTE:</strong>               
-                </td>
-                <td style="width: 70%;border:1px solid black;text-align:center">
-                    <%= form.text_area :description,  class: "form-control" %>               
-                </td>
-            </tr>
-            <tr>    
-                <td style="width: 30%;border:1px solid black;text-align:center">
-                    <strong>NOMBRE DE LA PERSONA ACCIDENTADA:</strong>               
-                </td>
-                <td style="width: 70%;border:1px solid black;text-align:center">
-                    <%= form.text_area :name_person,  class: "form-control" %>               
-                </td>
-            </tr>
-        </table>
-        <table style="width: 100%;">
-            <tr>
-                <td style="width: 100%;border:1px solid black;text-align:center">
-                    <strong>REGISTRO FOTOGRAFICO  </strong>
-                        <br>
-                        <div class="container col-11 card p-5">
-                                <div class="row">
-                                    <div class="form-group">
-                                        <h5><%= form.label :"Adjuntar_Archivos:", style: "display: block" %></h5>
-                                        <%= form.file_field :imagenes_reports, multiple: true %>
-                                    </div> 
-                                </div>
-                            <br> 
-                        </div>  
-                        <br>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <br>
-                    <div class="form-group">
-                        <h5>Archivos adjuntos:</h5>
-                    </div>         
-                    <hr>
-                    <% if @internal_report.imagenes_reports.attached? %>
-                        <div data-controller="previews" >
-                            <% @internal_report.imagenes_reports.each do |file|%>
-                                <br>
-                                <% if file.image? %>
-                                    <div>
-                                        <%= image_tag file, data: {previews_target: "preview"}, class: "image_inv" %>
-                                        <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' if Current.user.level > 0 && Current.user.level < 3 && file.id.present? %> 
-                                        <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                                    </div> 
-                                <% elsif file.video? %>
-                                    <%= video_tag url_for(file), controls: "", width: "400px" %>          
-                                    <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' if Current.user.level > 0 && Current.user.level < 3 && file.id.present? %> 
-                                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                                <% elsif file.audio? %>
-                                    <%= audio_tag(url_for(file), controls: "") %>          
-                                    <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' if Current.user.level > 0 && Current.user.level < 3 && file.id.present? %> 
-                                <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                                <% else %>
-                                    <%= link_to file.filename, url_for(file) %>          
-                                    <%= link_to "Borrar Archivo", purge_attachment_path(file), data: { 'turbo-method': :delete, 'turbo-confirm': 'Está seguro de eliminar el archivo?' }, class: 'btn btn-sm btn-danger' if Current.user.level > 0 && Current.user.level < 3 && file.id.present? %> 
-                                    <%= link_to "Descargar Archivo", rails_blob_path(file, disposition: 'attachment'), class: 'btn btn-sm btn-success' %>    
-                                <% end %>
-                            <% end %>  
-                        </div>
-                    <% end %>  
-                    <hr>
-                    <br>             
-                </td>    
-            </tr>
-        </table> 
- 
-       </br> 
-        <%= form.hidden_field :entity_id, :value => Current.user.entity, class: "form-control" if Current.user.present? %>
-        <%= form.hidden_field :user, :value => Current.user.id, class: "form-control" if Current.user.present? %>
-        <button type="submit" class="btn btn-sm btn-primary"><%=t('common.submit')%></button>
-        <%= link_to '<button class="btn btn-sm btn-primary" type="button">Retornar</button>'.html_safe, :back %>
+<div class="container-fluid px-2 px-md-3 py-3">
+  <%= form_with model: @internal_report, local: true do |form| %>
+    <% if @internal_report.errors.any? %>
+      <div class="alert alert-danger" role="alert">
+        <strong>
+          <i class="bi bi-exclamation-triangle me-2"></i>
+          No fue posible guardar el reporte:
+        </strong>
+        <ul class="mb-0 mt-2">
+          <% @internal_report.errors.full_messages.each do |error| %>
+            <li><%= error %></li>
+          <% end %>
+        </ul>
+      </div>
     <% end %>
-</div>        
-<br>
-
- 
+    <div class="conesst-card mb-4">
+      <div class="conesst-card-header">
+        <i class="bi bi-clipboard2-pulse me-2"></i>
+        Reporte interno de incidentes y accidentes
+      </div>
+      <div class="conesst-card-body">
+        <div class="conesst-section-title mb-3">
+          <i class="bi bi-exclamation-diamond me-2"></i>
+          Tipo de evento
+        </div>
+        <div class="row g-3 mb-4">
+          <div class="col-12 col-sm-6 col-xl-3">
+            <div class="conesst-info-card h-100">
+              <label class="d-flex align-items-center gap-2">
+                <%= form.radio_button :type_report, 0, class: "form-check-input" %>
+                <span class="fw-semibold">
+                  <i class="bi bi-exclamation-circle me-1"></i>
+                  INCIDENTE
+                </span>
+              </label>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-xl-3">
+            <div class="conesst-info-card h-100">
+              <label class="d-flex align-items-center gap-2">
+                <%= form.radio_button :type_report, 1, class: "form-check-input" %>
+                <span class="fw-semibold">
+                  <i class="bi bi-bandaid me-1"></i>
+                  ACCIDENTE
+                </span>
+              </label>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-xl-3">
+            <div class="conesst-info-card h-100">
+              <label class="d-flex align-items-center gap-2">
+                <%= form.radio_button :type_report, 2, class: "form-check-input" %>
+                <span class="fw-semibold">
+                  <i class="bi bi-hospital me-1"></i>
+                  ACCIDENTE GRAVE
+                </span>
+              </label>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-xl-3">
+            <div class="conesst-info-card h-100">
+              <label class="d-flex align-items-center gap-2">
+                <%= form.radio_button :type_report, 3, class: "form-check-input" %>
+                <span class="fw-semibold">
+                  <i class="bi bi-heartbreak me-1"></i>
+                  ACCIDENTE MORTAL
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="conesst-section-title mb-3">
+          <i class="bi bi-card-list me-2"></i>
+          Información del evento
+        </div>
+        <div class="row g-3">
+          <div class="col-12 col-md-6">
+            <%= form.label :date_report, "Fecha de ocurrencia", class: "form-label fw-semibold" %>
+            <%= form.date_field :date_report, class: "form-control" %>
+          </div>
+          <div class="col-12 col-md-6">
+            <%= form.label :time_report, "Hora de ocurrencia", class: "form-label fw-semibold" %>
+            <%= form.time_field :time_report, class: "form-control" %>
+          </div>
+          <div class="col-12">
+            <%= form.label :place, "Lugar del incidente o accidente", class: "form-label fw-semibold" %>
+            <%= form.text_field :place, class: "form-control", placeholder: "Indique el lugar donde ocurrió el evento" %>
+          </div>
+          <div class="col-12">
+            <%= form.label :description, "Descripción del incidente o accidente", class: "form-label fw-semibold" %>
+            <%= form.text_area :description, class: "form-control", rows: 4, placeholder: "Describa cómo ocurrió el evento..." %>
+          </div>
+          <div class="col-12">
+            <%= form.label :name_person, "Nombre de la persona accidentada", class: "form-label fw-semibold" %>
+            <%= form.text_area :name_person, class: "form-control", rows: 2, placeholder: "Ingrese el nombre de la persona accidentada" %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="conesst-card mb-4">
+      <div class="conesst-card-header">
+        <i class="bi bi-camera me-2"></i>
+        Registro fotográfico y archivos adjuntos
+      </div>
+      <div class="conesst-card-body">
+        <div class="conesst-section-title mb-3">
+          <i class="bi bi-cloud-arrow-up me-2"></i>
+          Adjuntar archivos
+        </div>
+        <div class="mb-4">
+          <%= form.label :imagenes_reports, "Seleccionar archivos", class: "form-label fw-semibold" %>
+          <%= form.file_field :imagenes_reports, multiple: true, class: "form-control" %>
+          <div class="form-text">
+            Puedes seleccionar varias imágenes y otros archivos de evidencia.
+          </div>
+        </div>
+        <% if @internal_report.imagenes_reports.attached? %>
+          <div class="conesst-section-title mb-3">
+            <i class="bi bi-paperclip me-2"></i>
+            Archivos adjuntos
+          </div>
+          <div data-controller="previews">
+            <div class="row g-3">
+              <% @internal_report.imagenes_reports.each do |file| %>
+                <div class="col-12 col-md-6 col-xl-4">
+                  <div class="conesst-info-card h-100">
+                    <div class="conesst-info-card-title text-break">
+                      <i class="bi bi-file-earmark me-2"></i>
+                      <%= file.filename %>
+                    </div>
+                    <div class="mt-3">
+                      <% if file.image? %>
+                        <%= image_tag file, data: { previews_target: "preview" }, class: "img-fluid rounded", alt: file.filename.to_s %>
+                      <% elsif file.video? %>
+                        <%= video_tag url_for(file), controls: true, class: "w-100" %>
+                      <% elsif file.audio? %>
+                        <%= audio_tag url_for(file), controls: true, class: "w-100" %>
+                      <% else %>
+                        <div class="text-break">
+                          <i class="bi bi-file-earmark-text me-2"></i>
+                          <%= file.filename %>
+                        </div>
+                      <% end %>
+                    </div>
+                    <div class="conesst-actions-wrap d-flex flex-wrap mt-3">
+                      <% if Current.user.level > 0 && Current.user.level < 3 && file.id.present? %>
+                        <%= link_to purge_attachment_path(file), data: {turbo_method: :delete, turbo_confirm: "¿Está seguro de eliminar el archivo?"}, class: "conesst-btn conesst-btn-danger" do %>
+                          <i class="bi bi-trash"></i>
+                          Borrar archivo
+                        <% end %>
+                      <% end %>
+                      <%= link_to rails_blob_path(file, disposition: "attachment"), class: "conesst-btn conesst-btn-success" do %>
+                        <i class="bi bi-download"></i>
+                        Descargar archivo
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <%= form.hidden_field :entity_id, value: Current.user.entity if Current.user.present? %>
+    <%= form.hidden_field :user, value: Current.user.id if Current.user.present? %>
+    <%= form.hidden_field :code, value: @template.reference if @template.present? %>
+    <%= form.hidden_field :version, value: @template.version.to_i if @template.present? %>
+    <div class="conesst-actions-wrap d-flex flex-wrap justify-content-center gap-2 mb-4">
+      <%= form.button type: "submit", class: "conesst-btn conesst-btn-primary" do %>
+        <i class="bi bi-save"></i>
+        <%= t("common.submit") %>
+      <% end %>
+      <%= link_to :back, class: "conesst-btn conesst-btn-secondary" do %>
+        <i class="bi bi-arrow-left"></i>
+        Retornar
+      <% end %>
+    </div>
+  <% end %>
+</div>

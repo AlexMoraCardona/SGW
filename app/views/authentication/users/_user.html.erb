@@ -1,26 +1,61 @@
-<tr>
-    <td>
-        <% if user.present? %>
-            <% if user.avatar.attached? %>
-               <% if user.avatar.image? %> 
-                    <%= image_tag user.avatar, data: {previews_target: "preview"}, class: "avatar-mini" %>
-                <% end %>
-            <% else %> 
-               <%= image_tag("avatar.jpg", class: "avatar-mini") %>
-            <% end %>
-        <% end %> 
-    </td>
-    <td><%= highlight User.label_entity(user.entity), params.dig(:q, :entity_cont) if user.entity.present?  %></td>
-    <td><%= highlight user.nro_document, params.dig(:q, :nro_document_cont)  %></td>
-    <td><%= highlight user.name, params.dig(:q, :name_cont) %></td>
-    <td><%= user.username %></td>
-    <td><%= CompanyArea.name_area(user.area_employee) %></td>
-    <td><%= CompanyPosition.name_cargo(user.activity) %></td>
-    <td><%= user.label_state(user.state) %></td>
-    <td><%= user.label_level(user.level) %></td>
-    <td><%= link_to t('common.edit'), edit_user_path(user), class: 'btn btn-sm btn-primary'  %></td>
-    
+<tr class="conesst-user-row">
+  <td class="text-center align-middle">
+    <% if user.present? %>
+      <% if user.avatar.attached? && user.avatar.image? %>
+        <%= image_tag user.avatar, data: { previews_target: "preview" }, class: "avatar-mini conesst-user-avatar", alt: "Avatar de #{user.name}" %>
+      <% else %>
+        <%= image_tag "avatar.jpg", class: "avatar-mini conesst-user-avatar", alt: "Avatar predeterminado" %>
+      <% end %>
+    <% end %>
+  </td>
+  <td class="align-middle conesst-user-cell">
+    <% if user.entity.present? %>
+      <span class="conesst-user-text">
+        <%= highlight(User.label_entity(user.entity), params.dig(:q, :entity_cont)) %>
+      </span>
+    <% else %>
+      <span class="text-muted">Sin empresa</span>
+    <% end %>
+  </td>
+  <td class="align-middle text-nowrap">
+    <span class="conesst-user-text">
+      <%= highlight(user.nro_document.to_s, params.dig(:q, :nro_document_cont)) %>
+    </span>
+  </td>
+  <td class="align-middle conesst-user-cell">
+    <span class="conesst-user-name">
+      <%= highlight(user.name.to_s, params.dig(:q, :name_cont)) %>
+    </span>
+  </td>
+  <td class="align-middle conesst-user-cell">
+    <span class="conesst-user-text">
+      <%= user.username %>
+    </span>
+  </td>
+  <td class="align-middle conesst-user-cell">
+    <span class="conesst-user-text">
+      <%= CompanyArea.name_area(user.area_employee) %>
+    </span>
+  </td>
+  <td class="align-middle conesst-user-cell">
+    <span class="conesst-user-text">
+      <%= CompanyPosition.name_cargo(user.activity) %>
+    </span>
+  </td>
+  <td class="align-middle text-center">
+    <span class="conesst-user-badge">
+      <%= user.label_state(user.state) %>
+    </span>
+  </td>
+  <td class="align-middle text-center">
+    <span class="conesst-user-badge">
+      <%= user.label_level(user.level) %>
+    </span>
+  </td>
+  <td class="align-middle text-center">
+    <%= link_to edit_user_path(user), class: "conesst-btn conesst-btn-primary", title: t("common.edit"), aria: { label: "#{t('common.edit')} usuario #{user.name}" } do %>
+        <i class="bi bi-pencil-square me-1"></i>
+        <span><%= t("common.edit") %></span>
+    <% end %>
+  </td>
 </tr>
-
-
-

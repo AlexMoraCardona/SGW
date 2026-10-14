@@ -1,23 +1,50 @@
 class UnsafeConditionsController < ApplicationController
+
     def index
-        if  Current.user && Current.user.level > 0 && Current.user.level < 3
+        if Current.user && Current.user.level > 0 && Current.user.level < 3
+
             if params[:entity_id].present?
                 @entity = Entity.find(params[:entity_id])
-                @unsafe_conditions = UnsafeCondition.where("entity_id = ?", params[:entity_id]).order(id: :desc)
-            else 
+                @unsafe_conditions = UnsafeCondition.where(entity_id: @entity.id)
+            else
                 @entities = Entity.all
-            end    
-        elsif Current.user && Current.user.level == 3 
+            end
+        elsif Current.user && Current.user.level == 3
             @entity = Entity.find(Current.user.entity)
-            @unsafe_conditions = UnsafeCondition.where("entity_id = ?",Current.user.entity)
-        elsif Current.user && Current.user.level == 5 
+            @unsafe_conditions = UnsafeCondition.where(entity_id: Current.user.entity)
+        elsif Current.user && Current.user.level == 5
             @entity = Entity.find(Current.user.entity)
-            @unsafe_conditions = UnsafeCondition.where("entity_id = ? and user_reports = ?",Current.user.entity, Current.user.id)
+            @unsafe_conditions = UnsafeCondition.where(entity_id: Current.user.entity, user_reports: Current.user.id)
         else
-            redirect_to new_session_path, alert: t('common.not_logged_in')    
-            session.delete(:user_id)  
-        end     
-    end    
+            redirect_to new_session_path, alert: t('common.not_logged_in')
+            session.delete(:user_id)
+            return
+        end
+        
+        return unless @unsafe_conditions
+        @users = User.where(entity: @entity.id).order(:name)
+        if Current.user.level == 5
+            @users = @users.where(id: Current.user.id)
+        end
+
+        @filter_user = params[:user_reports].presence
+        @date_from = parse_filter_date(params[:date_from])
+        @date_to = parse_filter_date(params[:date_to])
+
+        if Current.user.level != 5 && @filter_user.present?
+            @unsafe_conditions = @unsafe_conditions.where(user_reports: @filter_user)
+        end
+
+        if @date_from.present?
+            @unsafe_conditions = @unsafe_conditions.where("date_report >= ?", @date_from)
+        end
+
+        if @date_to.present?
+            @unsafe_conditions = @unsafe_conditions.where("date_report <= ?", @date_to)
+        end
+
+        @unsafe_conditions = @unsafe_conditions.order(id: :desc)
+    end
 
     def new
       @unsafe_condition = UnsafeCondition.new 
@@ -160,6 +187,12 @@ class UnsafeConditionsController < ApplicationController
         :firm_user_reports, :firm_user_receiving, :firm_user_coordinator, :entity_id, :version, :code, :exact_ubication, evidencias: [])
     end 
 
+    def parse_filter_date(value)
+      return if value.blank?
+      Date.iso8601(value)
+        rescue ArgumentError, TypeError
+        nil
+    end
 end  
 
 

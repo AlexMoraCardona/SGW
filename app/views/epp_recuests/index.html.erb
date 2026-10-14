@@ -1,7 +1,124 @@
-<div class="conesst-page">
+<style>
+  .epp-index-page {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0 auto;
+    padding: 12px 16px;
+    box-sizing: border-box;
+  }
+
+  .epp-index-page *,
+  .epp-index-page *::before,
+  .epp-index-page *::after {
+    box-sizing: border-box;
+  }
+
+  .epp-index-page .conesst-logo-container {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  .epp-index-page .conesst-logo {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .epp-index-page .conesst-header {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0 0 12px;
+  }
+
+  .epp-index-page .conesst-card-header-content {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .epp-index-page .conesst-card-header-title {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .epp-index-page > .conesst-card {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0;
+  }
+
+  .epp-index-page > .conesst-card > .conesst-card-body {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .epp-index-page .conesst-form-grid,
+  .epp-index-page .conesst-form-group {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .epp-index-page .conesst-form-group .form-select,
+  .epp-index-page .conesst-form-group .form-control {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+
+  @media (max-width: 767.98px) {
+    .epp-index-page {
+      width: 100%;
+      max-width: 100%;
+      padding: 6px 3px;
+      margin: 0;
+    }
+
+    .epp-index-page .conesst-logo-container {
+      margin-bottom: 10px;
+    }
+
+    .epp-index-page .conesst-header {
+      margin-bottom: 8px;
+      padding: 10px;
+    }
+
+    .epp-index-page .conesst-card-header-title {
+      font-size: 0.98rem;
+      line-height: 1.4;
+    }
+
+    .epp-index-page > .conesst-card {
+      border-radius: 12px;
+    }
+
+    .epp-index-page > .conesst-card > .conesst-card-body {
+      padding: 8px;
+    }
+
+    .epp-index-page .conesst-form-actions {
+      width: 100%;
+    }
+  }
+
+
+  @media (min-width: 768px) {
+    .epp-index-page {
+      padding: 16px 24px;
+    }
+  }
+</style>
+
+<div class="epp-index-page">
+
   <div class="conesst-logo-container">
     <%= link_to root_path, class: "d-inline-block" do %>
-      <%= image_tag('LogoConesst202305232.png', class: 'conesst-logo', alt: 'CONESST') %>
+      <%= image_tag "LogoConesst202305232.png",  class: "conesst-logo",  alt: "CONESST" %>
     <% end %>
   </div>
   <div class="conesst-header">
@@ -15,7 +132,7 @@
   <div class="conesst-card">
     <div class="conesst-card-body">
       <% if params[:entity_id].present? || @entity.present? %>
-        <%= render 'epp_recuests' %>
+        <%= render "epp_recuests" %>
       <% else %>
         <%= form_with model: @entity, method: :get do |form| %>
           <div class="conesst-form-grid conesst-form-grid-2">
@@ -27,7 +144,7 @@
                 <div class="form-control bg-light">
                   <%= @entity.business_name %>
                 </div>
-                <%= form.hidden_field(:entity_id, value: @entity.id) %>
+                <%= form.hidden_field :entity_id, value: @entity.id %>
               <% end %>
             </div>
           </div>

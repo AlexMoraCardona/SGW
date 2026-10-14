@@ -1,7 +1,184 @@
+<style>
+  .conesst-users-mobile {
+    display: none;
+  }
+
+  .conesst-users-desktop {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* Tarjeta móvil */
+
+  .conesst-mobile-user-card {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    margin: 0 0 12px 0;
+    padding: 14px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    text-align: left;
+  }
+
+  .conesst-mobile-user-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
+    margin: 0 0 14px 0;
+    text-align: left;
+  }
+
+  .conesst-mobile-user-avatar {
+    display: block;
+    flex: 0 0 54px;
+    width: 54px;
+    height: 54px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #e2e8f0;
+  }
+
+  .conesst-mobile-user-heading {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    text-align: left;
+  }
+
+  .conesst-mobile-user-name {
+    margin: 0;
+    color: #075f91;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.4;
+    text-align: left;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  .conesst-mobile-user-data {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    text-align: left;
+  }
+
+  .conesst-mobile-user-field {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    color: #334155;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    text-align: left;
+    overflow-wrap: anywhere;
+  }
+
+  .conesst-mobile-user-label {
+    color: #64748b;
+    font-weight: 600;
+    margin-right: 5px;
+  }
+
+  .conesst-mobile-user-value {
+    color: #334155;
+    overflow-wrap: anywhere;
+  }
+
+  .conesst-mobile-user-footer {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #edf0f4;
+  }
+
+  .conesst-mobile-user-footer .conesst-btn {
+    min-height: 36px;
+  }
+
+  .conesst-mobile-user-empty {
+    padding: 24px 12px;
+    color: #64748b;
+    text-align: center;
+  }
+
+
+  @media screen and (max-width: 767.98px) {
+
+    .conesst-page .conesst-users-desktop {
+      display: none !important;
+    }
+
+    .conesst-page .conesst-users-mobile {
+      display: block !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      box-sizing: border-box !important;
+      margin: 0 !important;
+      padding: 10px !important;
+      overflow: visible !important;
+    }
+
+    .conesst-page .conesst-mobile-user-card {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      box-sizing: border-box !important;
+      transform: none !important;
+    }
+
+    .conesst-page .conesst-mobile-user-header,
+    .conesst-page .conesst-mobile-user-data,
+    .conesst-page .conesst-mobile-user-field,
+    .conesst-page .conesst-mobile-user-footer {
+      text-align: left !important;
+    }
+
+    .conesst-page .conesst-mobile-user-name {
+      text-align: left !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+
+  }
+
+  @media screen and (min-width: 768px) {
+
+    .conesst-page .conesst-users-mobile {
+      display: none !important;
+    }
+
+    .conesst-page .conesst-users-desktop {
+      display: block !important;
+    }
+
+  }
+</style>
+
+
 <div class="conesst-page container-fluid" style="width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box;">
   <div class="conesst-logo-container">
     <%= link_to root_path, class: "navbar-brand", aria: { label: "Inicio CONESST" } do %>
-      <%= image_tag "LogoConesst202305232.png", class: "conesst-logo", alt: "Logo CONESST", style: "width: 85px; height: 85px; object-fit: contain;" %>
+      <%= image_tag "LogoConesst202305232.png",  class: "conesst-logo",  alt: "Logo CONESST", style: "width: 85px; height: 85px; object-fit: contain;" %>
     <% end %>
   </div>
   <div class="conesst-header d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
@@ -42,7 +219,6 @@
           <% end %>
           <%= f.number_field :nro_document_cont, class: "form-control", placeholder: "Número de documento" %>
         </div>
-
         <div class="col-12 col-md-8 col-lg-3">
           <%= f.label :name_cont, class: "form-label fw-semibold" do %>
             <i class="bi bi-person me-1"></i>
@@ -50,7 +226,6 @@
           <% end %>
           <%= f.search_field :name_cont, class: "form-control", placeholder: "Buscar por nombre" %>
         </div>
-
         <div class="col-12 col-md-4 col-lg-2">
           <div class="d-flex flex-column flex-sm-row gap-2">
             <%= f.submit "Buscar", class: "btn conesst-btn conesst-btn-primary w-100" %>
@@ -63,21 +238,15 @@
       <% end %>
     </div>
   </div>
-  <div class="d-flex flex-column flex-md-row
-              justify-content-between align-items-md-center gap-2 mb-3">
-
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
     <div class="small text-muted">
       <i class="bi bi-info-circle me-1"></i>
       <%== pagy_info(@pagy) %>
     </div>
-
     <div class="conesst-pagination">
       <%== pagy_bootstrap_combo_nav_js(@pagy) %>
     </div>
-
   </div>
-
-
   <div class="conesst-card">
     <div class="conesst-card-header">
       <div class="conesst-card-header-content">
@@ -90,46 +259,107 @@
       </div>
     </div>
     <div class="conesst-card-body p-0">
-      <div class="conesst-table-wrapper" style="display: block; width: 100%;  max-width: 100%; min-width: 0;  overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch;">
-        <table class="table table-hover conesst-table align-middle mb-0" style="min-width: 1050px;">
-          <thead>
-            <tr>
-              <th scope="col">
-                <%= t(".avatar") %>
-              </th>
-              <th scope="col">
-                <%= sort_link(@q, :entity, default_order: :desc) %>
-              </th>
-              <th scope="col">
-                <%= sort_link(@q, :nro_document, default_order: :desc) %>
-              </th>
-              <th scope="col">
-                <%= sort_link(@q, :name, default_order: :desc) %>
-              </th>
-              <th scope="col">
-                <%= t(".username") %>
-              </th>
-              <th scope="col">
-                <%= t(".area_employee") %>
-              </th>
-              <th scope="col">
-                <%= t(".activity") %>
-              </th>
-              <th scope="col">
-                <%= t(".state") %>
-              </th>
-              <th scope="col">
-                <%= t(".level") %>
-              </th>
-              <th scope="col" class="text-center">
-                <%= t("common.edit") %>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <%= render partial: "user", collection: @users %>
-          </tbody>
-        </table>
+      <div class="conesst-users-mobile">
+        <% if @users.any? %>
+          <% @users.each do |user| %>
+            <article class="conesst-mobile-user-card">
+              <div class="conesst-mobile-user-header">
+                <% if user.avatar.attached? && user.avatar.image? %>
+                  <%= image_tag user.avatar, class: "conesst-mobile-user-avatar", alt: "Avatar de #{user.name}" %>
+                <% else %>
+                  <%= image_tag "avatar.jpg", class: "conesst-mobile-user-avatar", alt: "Avatar predeterminado" %>
+                <% end %>
+                <div class="conesst-mobile-user-heading">
+                  <h6 class="conesst-mobile-user-name">
+                    <%= highlight(user.name.to_s, params.dig(:q, :name_cont)) %>
+                  </h6>
+                </div>
+              </div>
+              <div class="conesst-mobile-user-data">
+                <p class="conesst-mobile-user-field">
+                  <span class="conesst-mobile-user-label">
+                    Documento:
+                  </span>
+                  <span class="conesst-mobile-user-value">
+                    <%= highlight(user.nro_document.to_s, params.dig(:q, :nro_document_cont)) %>
+                  </span>
+                </p>
+                <p class="conesst-mobile-user-field">
+                  <span class="conesst-mobile-user-label">
+                    Usuario:
+                  </span>
+                  <span class="conesst-mobile-user-value">
+                    <%= user.username %>
+                  </span>
+                </p>
+                <p class="conesst-mobile-user-field">
+                  <span class="conesst-mobile-user-label">
+                    Estado:
+                  </span>
+                  <span class="conesst-user-badge">
+                    <%= user.label_state(user.state) %>
+                  </span>
+                </p>
+              </div>
+              <div class="conesst-mobile-user-footer">
+                <%= link_to edit_user_path(user), class: "conesst-btn conesst-btn-primary", title: t("common.edit"), aria: {label: "#{t('common.edit')} usuario #{user.name}"} do %>
+                  <i class="bi bi-pencil-square me-1"></i>
+                  <span>
+                    <%= t("common.edit") %>
+                  </span>
+                <% end %>
+              </div>
+            </article>
+          <% end %>
+        <% else %>
+          <div class="conesst-mobile-user-empty">
+            <i class="bi bi-people fs-3 d-block mb-2"></i>
+            No se encontraron usuarios.
+          </div>
+        <% end %>
+      </div>
+      <div class="conesst-users-desktop">
+        <div class="conesst-table-wrapper" style="display: block; width: 100%; max-width: 100%; min-width: 0; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch;">
+          <table class="table table-hover conesst-table align-middle mb-0"  style="min-width: 1050px;">
+            <thead>
+              <tr>
+                <th scope="col">
+                  <%= t(".avatar") %>
+                </th>
+                <th scope="col">
+                  <%= sort_link(@q, :entity, default_order: :desc) %>
+                </th>
+                <th scope="col">
+                  <%= sort_link(@q, :nro_document, default_order: :desc) %>
+                </th>
+                <th scope="col">
+                  <%= sort_link(@q, :name, default_order: :desc) %>
+                </th>
+                <th scope="col">
+                  <%= t(".username") %>
+                </th>
+                <th scope="col">
+                  <%= t(".area_employee") %>
+                </th>
+                <th scope="col">
+                  <%= t(".activity") %>
+                </th>
+                <th scope="col">
+                  <%= t(".state") %>
+                </th>
+                <th scope="col">
+                  <%= t(".level") %>
+                </th>
+                <th scope="col" class="text-center">
+                  <%= t("common.edit") %>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <%= render partial: "user", collection: @users %>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

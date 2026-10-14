@@ -1,4 +1,308 @@
-<div class="container-fluid px-2 px-md-3 py-3">
+<style>
+  /* ==========================================
+     ACTOS Y CONDICIONES INSEGURAS
+     Estilos específicos de esta vista
+     ========================================== */
+
+  .unsafe-reports-page {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 12px;
+    box-sizing: border-box;
+  }
+
+  .unsafe-reports-page *,
+  .unsafe-reports-page *::before,
+  .unsafe-reports-page *::after {
+    box-sizing: border-box;
+  }
+
+  /* Encabezado de la empresa */
+  .unsafe-reports-page .conesst-company-header {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 14px;
+  }
+
+  .unsafe-reports-page .conesst-company-title {
+    overflow-wrap: anywhere;
+    line-height: 1.4;
+  }
+
+  /* Tarjeta principal */
+  .unsafe-reports-page .unsafe-main-card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .unsafe-reports-page .unsafe-main-card > .conesst-card-header,
+  .unsafe-reports-page .unsafe-main-card > .conesst-card-body {
+    min-width: 0;
+  }
+
+  .unsafe-reports-page .unsafe-main-title {
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  /* Tarjeta individual del reporte */
+  .unsafe-reports-page .unsafe-report-card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin-right: 0;
+    margin-left: 0;
+    overflow: hidden;
+  }
+
+  .unsafe-reports-page .unsafe-report-card > .p-3 {
+    min-width: 0;
+  }
+
+  /* Información */
+  .unsafe-reports-page .conesst-data-label {
+    line-height: 1.5;
+  }
+
+  .unsafe-reports-page .conesst-data-value {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    line-height: 1.5;
+  }
+
+  /* Botones de acciones */
+  .unsafe-reports-page .unsafe-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .unsafe-reports-page .unsafe-actions > a {
+    margin: 0;
+  }
+
+  /* ==========================================
+     CELULARES
+     ========================================== */
+
+  @media (max-width: 767.98px) {
+
+    .unsafe-reports-page {
+      padding: 6px 3px;
+    }
+
+    /* Empresa */
+    .unsafe-reports-page .conesst-company-header {
+      padding: 10px;
+      margin-bottom: 12px !important;
+    }
+
+    .unsafe-reports-page .conesst-company-header .d-flex {
+      gap: 10px !important;
+    }
+
+    .unsafe-reports-page .conesst-company-icon {
+      flex-shrink: 0;
+    }
+
+    .unsafe-reports-page .conesst-company-title {
+      font-size: 1.05rem;
+    }
+
+    .unsafe-reports-page .conesst-company-nit {
+      font-size: 0.9rem;
+    }
+
+    /* Tarjeta principal */
+    .unsafe-reports-page .unsafe-main-card {
+      border-radius: 12px;
+      margin-bottom: 12px !important;
+    }
+
+    .unsafe-reports-page .unsafe-main-card > .conesst-card-header {
+      padding: 12px;
+    }
+
+    .unsafe-reports-page .unsafe-main-card > .conesst-card-body {
+      padding: 8px;
+    }
+
+    .unsafe-reports-page .unsafe-main-title {
+      font-size: 1.05rem;
+    }
+
+    /* Botón para crear reporte */
+    .unsafe-reports-page .unsafe-create-actions {
+      width: 100%;
+    }
+
+    .unsafe-reports-page .unsafe-create-actions .conesst-btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      max-width: 100%;
+      min-height: 42px;
+      padding: 10px 12px;
+      white-space: normal;
+      text-align: center;
+    }
+
+    /* Tarjeta individual */
+    .unsafe-reports-page .unsafe-report-card {
+      border-radius: 12px;
+      margin-bottom: 12px !important;
+    }
+
+    .unsafe-reports-page .unsafe-report-card > .conesst-info-card-title {
+      padding: 12px;
+      font-size: 0.96rem;
+    }
+
+    .unsafe-reports-page .unsafe-report-card > .p-3 {
+      padding: 12px !important;
+    }
+
+    /* Espacio entre los datos */
+    .unsafe-reports-page .unsafe-report-card .row {
+      --bs-gutter-x: 0.75rem;
+      --bs-gutter-y: 1rem;
+    }
+
+    .unsafe-reports-page .conesst-data-label {
+      margin-bottom: 5px;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .unsafe-reports-page .conesst-data-value {
+      font-size: 0.98rem;
+    }
+
+    /* Firmas */
+    .unsafe-reports-page .unsafe-signature-section {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .unsafe-reports-page .unsafe-signature-item {
+      min-width: 0;
+    }
+
+    .unsafe-reports-page .unsafe-signature-item .conesst-btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      max-width: 100%;
+      min-height: 44px;
+      padding: 10px 12px;
+      white-space: normal;
+      text-align: center;
+    }
+
+    /* Acciones: dos columnas con separación */
+    .unsafe-reports-page .unsafe-actions {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      width: 100%;
+      margin-top: 12px;
+    }
+
+    .unsafe-reports-page .unsafe-actions > a {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      min-height: 44px;
+      padding: 9px 6px;
+      font-size: 0.85rem;
+      line-height: 1.3;
+      text-align: center;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    /* Evitar desbordamientos de nombres y observaciones */
+    .unsafe-reports-page .text-success,
+    .unsafe-reports-page .unsafe-report-card strong {
+      overflow-wrap: anywhere;
+    }
+  }
+
+  /* ==========================================
+     COMPUTADOR
+     ========================================== */
+
+  @media (min-width: 768px) {
+    .unsafe-reports-page .unsafe-signature-section {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .unsafe-reports-page .unsafe-actions {
+      display: flex !important;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+  }
+
+  .unsafe-reports-page .unsafe-filters {
+    width: 100%;
+    min-width: 0;
+    padding: 16px;
+    border: 1px solid #dce7ef;
+    border-radius: 12px;
+    background: #f8fbfd;
+  }
+
+  .unsafe-reports-page .unsafe-filters-title {
+    color: #075f91;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  .unsafe-reports-page .unsafe-filters-form {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .unsafe-reports-page .unsafe-filters-form .form-control,
+  .unsafe-reports-page .unsafe-filters-form .form-select {
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+  }
+
+  @media (max-width: 767.98px) {
+    .unsafe-reports-page .unsafe-filters {
+      padding: 10px;
+      margin-bottom: 16px !important;
+    }
+
+    .unsafe-reports-page .unsafe-filters-form .conesst-btn,
+    .unsafe-reports-page .unsafe-filters-form .btn {
+      min-height: 44px;
+      justify-content: center;
+    }
+  }  
+</style>
+
+<div class="unsafe-reports-page">
   <% if @entity.present? %>
     <div class="conesst-company-header mb-4">
       <div class="d-flex align-items-center gap-3">
@@ -17,11 +321,11 @@
       </div>
     </div>
   <% end %>
-  <div class="conesst-card mb-4">
+  <div class="conesst-card unsafe-main-card mb-4">
     <div class="conesst-card-header">
       <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
-        <div>
-          <h5 class="mb-1">
+        <div class="min-w-0">
+          <h5 class="mb-1 unsafe-main-title">
             <i class="bi bi-shield-exclamation me-2"></i>
             Reportes de actos y condiciones inseguras
           </h5>
@@ -29,7 +333,7 @@
             Consulta, seguimiento y administración de reportes.
           </small>
         </div>
-        <div class="conesst-actions-wrap">
+        <div class="conesst-actions-wrap unsafe-create-actions">
           <%= link_to new_unsafe_condition_path(entity_id: @entity.id),  class: "conesst-btn conesst-btn-primary" do %>
             <i class="bi bi-plus-circle me-1"></i>
             <%= t('.create_unsafe_condition') %>
@@ -38,9 +342,46 @@
       </div>
     </div>
     <div class="conesst-card-body">
+      <div class="unsafe-filters mb-4">
+        <div class="unsafe-filters-title mb-3">
+          <i class="bi bi-funnel me-2"></i>
+          Filtrar reportes
+        </div>
+        <%= form_with url: unsafe_conditions_path, method: :get, local: true, class: "unsafe-filters-form" do |form| %>
+          <%= hidden_field_tag :entity_id, @entity.id %>
+          <div class="row g-3 align-items-end">
+            <% if Current.user.level != 5 %>
+              <div class="col-12 col-md-4">
+                <%= form.label :user_reports, "Usuario que reporta", class: "form-label fw-semibold" %>
+                <%= form.collection_select(:user_reports, @users, :id, :name, { include_blank: "Todos los usuarios", selected: @filter_user }, { class: "form-select" }) %>
+              </div>
+            <% end %>
+            <div class="col-12 col-md-3">
+              <%= form.label :date_from, "Fecha desde", class: "form-label fw-semibold" %>
+              <%= form.date_field :date_from, value: @date_from, class: "form-control" %>
+            </div>
+            <div class="col-12 col-md-3">
+              <%= form.label :date_to, "Fecha hasta", class: "form-label fw-semibold" %>
+              <%= form.date_field :date_to, value: @date_to, class: "form-control" %>
+            </div>
+            <div class="col-12 col-md-2">
+              <div class="d-flex flex-column gap-2">
+                <%= form.button type: "submit", class: "conesst-btn conesst-btn-primary w-100" do %>
+                  <i class="bi bi-search me-1"></i>
+                  Filtrar
+                <% end %>
+                <%= link_to unsafe_conditions_path(entity_id: @entity.id), class: "btn btn-outline-secondary w-100" do %>
+                  <i class="bi bi-x-circle me-1"></i>
+                  Limpiar
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>    
       <% if @unsafe_conditions.present? %>
         <% @unsafe_conditions.each do |unsafe_condition| %>
-          <div class="conesst-info-card mb-3">
+          <div class="conesst-info-card unsafe-report-card mb-3">
             <div class="conesst-info-card-title">
               <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
                 <span>
@@ -74,14 +415,14 @@
                 </div>
               </div>
               <hr>
-              <div class="row g-3 mb-3">
-                <div class="col-12 col-md-6">
+              <div class="unsafe-signature-section mb-3">
+                <div class="unsafe-signature-item">
                   <div class="conesst-data-label mb-2">
                     <i class="bi bi-pen me-1"></i>
                     Firma usuario que reporta
                   </div>
                   <% if unsafe_condition.firm_user_reports.to_i == 0 %>
-                    <%= link_to firmar_reporta_path(unsafe_condition.id, 1),  class: "conesst-btn conesst-btn-warning" do %>
+                    <%= link_to firmar_reporta_path(unsafe_condition.id, 1), class: "conesst-btn conesst-btn-warning" do %>
                       <i class="bi bi-vector-pen me-1"></i>
                       <%= t('common.firmar') %>
                     <% end %>
@@ -92,7 +433,7 @@
                     </span>
                   <% end %>
                 </div>
-                <div class="col-12 col-md-6">
+                <div class="unsafe-signature-item">
                   <div class="conesst-data-label mb-2">
                     <i class="bi bi-pen me-1"></i>
                     Firma usuario que recibe
@@ -115,21 +456,21 @@
                 <i class="bi bi-gear me-1"></i>
                 Acciones del reporte
               </div>
-              <div class="conesst-actions-wrap">
+              <div class="conesst-actions-wrap unsafe-actions">
                 <%= link_to add_evidences_path(unsafe_condition.id), class: "conesst-btn conesst-btn-warning" do %>
-                  <i class="bi bi-paperclip me-1"></i>
+                  <i class="bi bi-paperclip"></i>
                   <%= t('common.add_evidences') %>
                 <% end %>
                 <%= link_to edit_unsafe_condition_path(unsafe_condition.id), class: "conesst-btn conesst-btn-warning" do %>
-                  <i class="bi bi-pencil-square me-1"></i>
+                  <i class="bi bi-pencil-square"></i>
                   <%= t('common.edit') %>
                 <% end %>
-                <%= link_to unsafe_condition_path(unsafe_condition.id), class: "conesst-btn conesst-btn-primary" do %>
-                  <i class="bi bi-eye me-1"></i>
+                <%= link_to unsafe_condition_path(unsafe_condition.id),  class: "conesst-btn conesst-btn-primary" do %>
+                  <i class="bi bi-eye"></i>
                   <%= t('common.show') %>
                 <% end %>
                 <%= link_to unsafe_condition_pdf_path(unsafe_condition.id, format: 'pdf'), class: "conesst-btn conesst-btn-success" do %>
-                  <i class="bi bi-file-earmark-pdf me-1"></i>
+                  <i class="bi bi-file-earmark-pdf"></i>
                   PDF
                 <% end %>
               </div>

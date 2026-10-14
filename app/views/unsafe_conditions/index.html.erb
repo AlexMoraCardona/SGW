@@ -1,14 +1,134 @@
-<div class="container-fluid px-3 px-md-4 py-3">
-  <div class="conesst-company-header mb-4">
+<style>
+  .unsafe-condition-index {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 12px 16px;
+    box-sizing: border-box;
+  }
+
+  .unsafe-condition-index *,
+  .unsafe-condition-index *::before,
+  .unsafe-condition-index *::after {
+    box-sizing: border-box;
+  }
+
+  .unsafe-condition-index .unsafe-index-logo {
+    margin-bottom: 14px;
+  }
+
+  .unsafe-condition-index .unsafe-index-logo img {
+    display: block;
+    width: 100px;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .unsafe-condition-index > .conesst-card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .unsafe-condition-index > .conesst-card > .conesst-card-header,
+  .unsafe-condition-index > .conesst-card > .conesst-card-body {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .unsafe-condition-index .unsafe-index-title {
+    min-width: 0;
+    font-size: 1.3rem;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  .unsafe-condition-index .unsafe-index-company-form,
+  .unsafe-condition-index .unsafe-index-company-form > div {
+    min-width: 0;
+  }
+
+  .unsafe-condition-index .unsafe-index-company-form .form-select {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  @media (max-width: 767.98px) {
+    .unsafe-condition-index {
+      padding: 6px 3px;
+    }
+
+    .unsafe-condition-index .unsafe-index-logo {
+      margin-bottom: 10px;
+    }
+
+    .unsafe-condition-index .unsafe-index-logo img {
+      width: 76px;
+      height: auto;
+    }
+
+    .unsafe-condition-index > .conesst-card {
+      margin-bottom: 12px !important;
+      border-radius: 12px;
+    }
+
+    .unsafe-condition-index > .conesst-card > .conesst-card-header {
+      padding: 12px;
+    }
+
+    .unsafe-condition-index > .conesst-card > .conesst-card-body {
+      padding: 8px;
+    }
+
+    .unsafe-condition-index .unsafe-index-title {
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+
+    .unsafe-condition-index .unsafe-index-title-icon {
+      flex-shrink: 0;
+      font-size: 1.3rem !important;
+    }
+
+    .unsafe-condition-index .unsafe-index-company-form {
+      row-gap: 12px;
+    }
+
+    .unsafe-condition-index .unsafe-index-company-form .conesst-actions-wrap {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .unsafe-condition-index .unsafe-index-company-form .conesst-btn {
+      justify-content: center;
+      min-height: 42px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .unsafe-condition-index {
+      padding: 16px 24px;
+    }
+  }
+</style>
+
+<div class="unsafe-condition-index">
+  <div class="unsafe-index-logo">
     <%= link_to root_path, class: "navbar-brand" do %>
-      <%= image_tag "LogoConesst202305232.png", width: 100, height: 100, alt: "Logo CONESST", class: "img-fluid" %>
+      <%= image_tag "LogoConesst202305232.png", alt: "Logo CONESST", class: "img-fluid" %>
     <% end %>
   </div>
   <div class="conesst-card mb-4">
     <div class="conesst-card-header">
       <div class="d-flex align-items-center gap-2">
-        <i class="bi bi-shield-exclamation fs-4"></i>
-        <h2 class="mb-0">
+        <i class="bi bi-shield-exclamation unsafe-index-title-icon"></i>
+        <h2 class="mb-0 unsafe-index-title">
           REPORTE DE ACTOS Y CONDICIONES INSEGURAS
         </h2>
       </div>
@@ -24,11 +144,11 @@
           Selección de empresa
         </div>
         <%= form_with model: @entity, method: :get, local: true do |form| %>
-          <div class="row g-3 align-items-end">
+          <div class="row g-3 align-items-end unsafe-index-company-form">
             <div class="col-12 col-md-8">
               <%= form.label :entity_id, "Empresa", class: "form-label fw-semibold" %>
               <% if @entities.present? %>
-                <%= form.collection_select :entity_id, @entities.order(id: :asc), :id, :business_name, { prompt: "-- Seleccionar empresa --" }, { class: "form-select select2", required: true } %>
+                <%= form.collection_select(:entity_id, @entities.order(id: :asc), :id, :business_name, { prompt: "-- Seleccionar empresa --" }, {class: "form-select select2", required: true}) %>
               <% else %>
                 <div class="conesst-info-card">
                   <div class="d-flex align-items-center gap-2">

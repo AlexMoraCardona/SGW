@@ -1,3 +1,48 @@
+<style>
+.internal-report-actions {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  width: 100%;
+  margin-top: 12px;
+}
+
+.internal-report-actions > a,
+.internal-report-actions > form {
+  display: flex !important;
+  width: 100%;
+  min-width: 0;
+  margin: 0 !important;
+}
+
+.internal-report-actions > a,
+.internal-report-actions > form > button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  min-height: 42px;
+  padding: 9px 6px;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  font-size: 0.85rem;
+}
+
+@media (min-width: 768px) {
+  .internal-report-index .internal-report-actions {
+    display: flex !important;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .internal-report-index .internal-report-actions > a,
+  .internal-report-index .internal-report-actions > form {
+    width: auto;
+  }
+}
+</style>
 <% if @entity.present? %>
     <div class="conesst-company-header">
         <div class="conesst-company-icon">
@@ -157,7 +202,7 @@
                                 Acciones del reporte
                             </div>
                         </h6>
-                        <div class="d-flex conesst-actions-wrap">
+                        <div class="internal-report-actions">
                             <%= link_to internal_report_path(internal_report), class: "conesst-btn conesst-btn-primary" do %>
                                 <i class="bi bi-eye"></i>
                                 Ver
